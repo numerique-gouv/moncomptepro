@@ -1,0 +1,34 @@
+<section>
+    <div class="container">
+        <h3 class="section__title">Erreur</h3>
+
+        <% if (locals.notifications) { %>
+            <% notifications.forEach(({type, message}) => { %>
+                <div class="notification <%= type %>">
+                    <%= message %>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <p>
+            Une erreur est survenue. Le code de l'erreur est <i><%= error_code %> (<%= error_message %>)</i>.
+        </p>
+        <p>
+            Merci de réessayer ultérieurement.
+        </p>
+        <p>
+            Vous pouvez également nous signaler cette erreur par mail à
+            <a href="mailto:contact@api.gouv.fr?subject=Erreur%20sur%20auth.api.gouv.fr">contact@api.gouv.fr</a>.
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="text-center">
+        <div class="container">
+            <div class="text-center">
+                <p><a href="https://api.gouv.fr">Retour à l'acceuil</a></p>
+            </div>
+        </div>
+    </div>
+</div>

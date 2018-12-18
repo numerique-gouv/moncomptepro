@@ -1,0 +1,27 @@
+.header-logo {
+    width: 200px;
+    margin: 20px auto;
+    height: auto
+}
+
+section {
+    max-width: 800px;
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+}
+
+input.button.large, input.button.large:focus {
+    width: 100%;
+    display: block;
+}
+
+.container a {
+    color: #0081d5;
+    text-decoration: none;
+}
+
+input.button {
+    cursor: pointer;
+}

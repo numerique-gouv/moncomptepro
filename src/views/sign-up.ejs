@@ -1,0 +1,40 @@
+<section>
+    <div class="container">
+        <h3 class="section__title">Créer un compte</h3>
+
+        <form autocomplete="off" action="/users/sign-up" method="post">
+
+        <% if (locals.notifications) { %>
+            <% notifications.forEach(({type, message}) => { %>
+            <div class="notification <%= type %>">
+                <%= message %>
+            </div>
+            <% }) %>
+        <% } %>
+
+        <div class="form__group">
+            <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+        </div>
+
+        <div class="form__group">
+            <input class="form-control" required type="password" name="password" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        </div>
+
+        <div class="form__group">
+            <input type="submit" value="Connexion" class="button large">
+        </div>
+        </form>
+    </div>
+</section>
+
+<div class="container">
+    <div class="text-center">
+        <div class="container">
+            <div class="text-center">
+                <p><a href="/users/sign-in">J'ai déjà un compte</a></p>
+
+                <p><a href="/users/reset-password">Mot de passe oublié ?</a></p>
+            </div>
+        </div>
+    </div>
+</div>
