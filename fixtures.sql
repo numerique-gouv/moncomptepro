@@ -1,0 +1,72 @@
+INSERT INTO users (email, encrypted_password, created_at, updated_at, roles, legacy_account_type)
+VALUES
+  (
+  'particulier@domain.user',
+--  hashed 'password' string
+  '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{"api-particulier-token-admin"}',
+  'api_particulier'
+  ),
+  (
+  'franceconnect@domain.user',
+--  hashed 'password' string
+  '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{}',
+  'franceconnect'
+  ),
+  (
+  'api_droits_cnam@domain.user',
+--  hashed 'password' string
+  '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{}',
+  'api_droits_cnam'
+  ),
+  (
+  'dgfip@domain.user',
+--  hashed 'password' string
+  '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{}',
+  'dgfip'
+  ),
+  (
+  'service_provider@domain.user',
+--  hashed 'password' string
+  '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{}',
+  'service_provider'
+  )
+ON CONFLICT (email)
+DO UPDATE
+  SET (encrypted_password, created_at, updated_at, roles, legacy_account_type)
+  = (EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.roles, EXCLUDED.legacy_account_type);
+
+INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris)
+VALUES
+  (
+  1,
+  'signup.api.gouv.fr',
+  '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
+  '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
+  '{"https://back.signup-development.api.gouv.fr/users/auth/resource_provider/callback"}'
+  ),
+  (
+  2,
+  'signup.api.gouv.fr',
+  '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
+  '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
+  '{"https://back.signup-development.api.gouv.fr/users/auth/resource_provider/callback"}'
+  )
+ON CONFLICT (id)
+DO UPDATE
+  SET (name, client_id, client_secret, redirect_uris)
+  = (EXCLUDED.name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris);
