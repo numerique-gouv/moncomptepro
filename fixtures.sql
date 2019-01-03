@@ -75,10 +75,10 @@ VALUES
   ),
   (
   2,
-  'signup.api.gouv.fr',
-  '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
-  '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
-  '{"https://back.signup-development.api.gouv.fr/users/auth/resource_provider/callback"}'
+  'api-particulier-auth',
+  'dc1328d666cefc1f0ca9b14d6cde82d03f24a64ed9a0aeb861ccc200aba505f9',
+  'e82cd22f5941761e05cec47010254f39f1315ccd06c0bf8bf7527255d5d88412',
+  '{"https://particulier-development.api.gouv.fr/admin/oauth-callback"}'
   )
 ON CONFLICT (id)
 DO UPDATE
