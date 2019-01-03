@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import { set } from 'lodash';
 import helmet from 'helmet';
@@ -6,6 +7,7 @@ import session from 'express-session';
 import Provider from 'oidc-provider';
 import RedisClient from 'ioredis';
 import connectRedis from 'connect-redis';
+import morgan from 'morgan';
 
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import {
@@ -26,6 +28,14 @@ redisClient.on('connect', () =>
 
 const app = express();
 app.use(helmet());
+
+const logger = morgan('combined', {
+  stream: fs.createWriteStream(
+    process.env.ACCESS_LOG_PATH || './api-scopes.log',
+    { flags: 'a' }
+  ),
+});
+app.use(logger);
 
 app.use(
   session({
