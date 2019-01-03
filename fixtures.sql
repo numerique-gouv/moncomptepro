@@ -1,3 +1,17 @@
+INSERT INTO users (id, email, created_at, updated_at)
+VALUES
+  (
+-- keep this id synchronised with the corresponding uid in signup-back/test/fixtures/users.yml
+  1,
+  'service_provider@domain.user',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP
+  )
+ON CONFLICT (id)
+DO UPDATE
+  SET (id, email, created_at, updated_at)
+  = (EXCLUDED.id, EXCLUDED.email, EXCLUDED.created_at, EXCLUDED.updated_at);
+
 INSERT INTO users (email, encrypted_password, created_at, updated_at, roles, legacy_account_type)
 VALUES
   (
