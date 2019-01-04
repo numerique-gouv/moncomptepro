@@ -12,9 +12,15 @@ export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
 export const provider = {
   acrValues: ['urn:mace:incommon:iap:bronze'],
   cookies: {
-    long: { signed: true, maxAge: cookiesMaxAge },
+    names: {
+      session: 'api_gouv_session',
+      interaction: 'api_gouv_grant',
+      resume: 'api_gouv_grant',
+      state: 'api_gouv_state',
+    },
+    long: { signed: true, secure: true, maxAge: cookiesMaxAge },
     // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
-    short: { signed: true, maxAge: 30 * 60 * 1000 }, // 20 minutes in ms,
+    short: { signed: true, secure: true, maxAge: 30 * 60 * 1000 }, // 30 minutes in ms,
     keys: cookiesSecrets,
   },
   claims: {

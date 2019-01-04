@@ -1,13 +1,10 @@
 // source https://github.com/panva/node-oidc-provider/blob/86c4cc82447e1061ee933144fceec836613e4592/example/adapters/redis.js
-const Redis = require('ioredis'); // eslint-disable-line import/no-unresolved
+import { getNewRedisClient } from './redis';
 const { isEmpty } = require('lodash');
 
-const client = new Redis({
+const client = getNewRedisClient({
   keyPrefix: 'oidc:',
 });
-client.on('connect', () =>
-  console.log('Connected to database : redis://:@127.0.0.1:6380')
-);
 
 const grantable = new Set([
   'AccessToken',

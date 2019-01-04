@@ -20,10 +20,12 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-redis": "^3.4.0",
+    "csurf": "^1.9.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "helmet": "^3.15.0",
+    "http-errors": "^1.7.1",
     "ioredis": "^4.3.0",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
@@ -31,7 +33,8 @@
     "node-mailjet": "^3.3.1",
     "node-pg-migrate": "^3.14.2",
     "oidc-provider": "^5.0.1",
-    "pg": "^7.7.1"
+    "pg": "^7.7.1",
+    "rate-limiter-flexible": "^0.21.2"
   },
   "devDependencies": {
     "prettier": "^1.15.3"
