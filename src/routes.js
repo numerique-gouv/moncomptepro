@@ -34,13 +34,13 @@ module.exports = (app, provider) => {
     next();
   });
 
-  app.use((req, res, next) => {
+  app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
     res.set('Cache-Control', 'no-cache, no-store');
     next();
   });
 
-  app.use(urlencoded({ extended: false }));
+  app.use(/^\/(users|interaction)/, urlencoded({ extended: false }));
 
   const errorMessages = {
     invalid_credentials: {
