@@ -4,3 +4,4 @@
 *.orig
 
 .idea
+src/keystore.json

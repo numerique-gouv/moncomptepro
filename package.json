@@ -8,8 +8,10 @@
   "scripts": {
     "lint": "prettier --write */*.js",
     "start": "node .",
-    "build": "node-pg-migrate up",
-    "migrate": "node-pg-migrate"
+    "build": "node-pg-migrate up && node scripts/generate-keys.js",
+    "migrate": "node-pg-migrate",
+    "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
+    "generate-keystore": "node scripts/generate-keys.js"
   },
   "license": "MIT",
   "dependencies": {
