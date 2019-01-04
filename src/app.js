@@ -1,15 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { set } from 'lodash';
 import helmet from 'helmet';
 import express from 'express';
 import session from 'express-session';
 import Provider from 'oidc-provider';
-import RedisClient from 'ioredis';
 import connectRedis from 'connect-redis';
 import morgan from 'morgan';
 
 import adapter from './connectors/oidc-persistance-redis-adapter';
+import { getNewRedisClient } from './connectors/redis';
 import {
   provider as providerConfiguration,
   cookiesMaxAge,
@@ -21,13 +20,19 @@ import { getClients } from './services/oidc-clients';
 
 const { PORT = 3000, ISSUER = `http://localhost:${PORT}` } = process.env;
 const RedisStore = connectRedis(session);
-const redisClient = new RedisClient();
-redisClient.on('connect', () =>
-  console.log('Connected to database : redis://:@127.0.0.1:6380')
-);
 
 const app = express();
+
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", 'unpkg.com'],
+      fontSrc: ["'self'", 'unpkg.com'],
+    },
+  })
+);
 
 const logger = morgan('combined', {
   stream: fs.createWriteStream(
@@ -37,16 +42,17 @@ const logger = morgan('combined', {
 });
 app.use(logger);
 
+app.set('trust proxy', 1);
+
 app.use(
   session({
     store: new RedisStore({
-      client: redisClient,
+      client: getNewRedisClient(),
     }),
     secret: cookiesSecrets,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: cookiesMaxAge },
-    // cookie: { secure: true }, // TODO app.set('trust proxy'); does not seems to work
+    cookie: { maxAge: cookiesMaxAge, secure: true },
   })
 );
 
@@ -65,10 +71,7 @@ let server;
     clients: await getClients(),
     keystore: { keys },
   });
-  // app.enable('trust proxy');
   provider.proxy = true;
-  set(providerConfiguration, 'cookies.short.secure', true); // TODO does not work, see https://www.npmjs.com/package/express-session#cookiesecure ?
-  set(providerConfiguration, 'cookies.long.secure', true); // TODO does not work
 
   routes(app, provider);
   app.use(provider.callback);

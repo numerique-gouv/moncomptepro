@@ -1,5 +1,6 @@
 import { urlencoded } from 'express';
 import { isEmpty } from 'lodash';
+import csrf from 'csurf';
 
 import {
   changePassword,
@@ -7,6 +8,7 @@ import {
   sendResetPasswordEmail,
   signup,
 } from './services/user-manager';
+import { rateLimiterMiddleware } from './services/rate-limiter';
 
 module.exports = (app, provider) => {
   const {
@@ -14,6 +16,8 @@ module.exports = (app, provider) => {
       errors: { SessionNotFound },
     },
   } = provider;
+
+  const csrfProtection = csrf();
 
   app.use((req, res, next) => {
     // cheap layout implementation for ejs
@@ -30,13 +34,13 @@ module.exports = (app, provider) => {
     next();
   });
 
-  app.use((req, res, next) => {
+  app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
     res.set('Cache-Control', 'no-cache, no-store');
     next();
   });
 
-  app.use(urlencoded({ extended: false }));
+  app.use(/^\/(users|interaction)/, urlencoded({ extended: false }));
 
   const errorMessages = {
     invalid_credentials: {
@@ -49,7 +53,8 @@ module.exports = (app, provider) => {
     },
     password_change_success: {
       type: 'success',
-      message: 'Votre mot de passe a été mis à jour.',
+      message:
+        'Votre mot de passe a été mis à jour. Veuillez vous connecter avec votre nouveau mot de passe.',
     },
     passwords_do_not_match: {
       type: 'error',
@@ -135,93 +140,117 @@ module.exports = (app, provider) => {
     }
   });
 
-  app.get('/users/sign-in', async (req, res, next) => {
+  app.get('/users/sign-in', csrfProtection, async (req, res, next) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
       : [];
 
     return res.render('sign-in', {
       notifications,
+      csrfToken: req.csrfToken(),
     });
   });
 
-  app.post('/users/sign-in', async (req, res, next) => {
-    try {
-      req.session.user = await login(req.body.login, req.body.password);
+  app.post(
+    '/users/sign-in',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
+        req.session.user = await login(req.body.login, req.body.password);
 
-      if (req.session.interactionId) {
-        return res.redirect(`/interaction/${req.session.interactionId}/login`);
+        if (req.session.interactionId) {
+          return res.redirect(
+            `/interaction/${req.session.interactionId}/login`
+          );
+        }
+
+        return res.redirect('https://api.gouv.fr');
+      } catch (error) {
+        if (error.message === 'invalid_credentials') {
+          return res.redirect(`/users/sign-in?notification=${error.message}`);
+        }
+
+        next(error);
       }
-
-      return res.redirect('https://api.gouv.fr');
-    } catch (error) {
-      if (error.message === 'invalid_credentials') {
-        return res.redirect(`/users/sign-in?notification=${error.message}`);
-      }
-
-      next(error);
     }
-  });
+  );
 
-  app.get('/users/sign-up', async (req, res, next) => {
+  app.get('/users/sign-up', csrfProtection, async (req, res, next) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
       : [];
 
     return res.render('sign-up', {
       notifications,
+      csrfToken: req.csrfToken(),
       loginHint: req.query.login_hint,
     });
   });
 
-  app.post('/users/sign-up', async (req, res, next) => {
-    try {
-      req.session.user = await signup(req.body.login, req.body.password);
+  app.post(
+    '/users/sign-up',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
+        req.session.user = await signup(req.body.login, req.body.password);
 
-      if (req.session.interactionId) {
-        return res.redirect(`/interaction/${req.session.interactionId}/login`);
-      }
+        if (req.session.interactionId) {
+          return res.redirect(
+            `/interaction/${req.session.interactionId}/login`
+          );
+        }
 
-      return res.redirect('https://api.gouv.fr');
-    } catch (error) {
-      if (error.message === 'username_unavailable') {
-        return res.redirect(`/users/sign-up?notification=${error.message}`);
-      }
-      if (error.message === 'weak_password') {
-        return res.redirect(
-          `/users/sign-up?notification=${error.message}&login_hint=${
-            req.body.login
-          }`
-        );
-      }
+        return res.redirect('https://api.gouv.fr');
+      } catch (error) {
+        if (error.message === 'username_unavailable') {
+          return res.redirect(`/users/sign-up?notification=${error.message}`);
+        }
+        if (error.message === 'weak_password') {
+          return res.redirect(
+            `/users/sign-up?notification=${error.message}&login_hint=${
+              req.body.login
+            }`
+          );
+        }
 
-      next(error);
+        next(error);
+      }
     }
-  });
+  );
 
-  app.get('/users/reset-password', async (req, res, next) => {
+  app.get('/users/reset-password', csrfProtection, async (req, res, next) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
       : [];
 
-    return res.render('reset-password', { notifications });
+    return res.render('reset-password', {
+      notifications,
+      csrfToken: req.csrfToken(),
+    });
   });
 
-  app.post('/users/reset-password', async (req, res, next) => {
-    try {
-      const login = req.body.login;
+  app.post(
+    '/users/reset-password',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
+        const login = req.body.login;
 
-      await sendResetPasswordEmail(login);
+        await sendResetPasswordEmail(login);
 
-      return res.redirect(
-        `/users/sign-in?notification=reset_password_email_sent`
-      );
-    } catch (error) {
-      next(error);
+        return res.redirect(
+          `/users/sign-in?notification=reset_password_email_sent`
+        );
+      } catch (error) {
+        next(error);
+      }
     }
-  });
+  );
 
-  app.get('/users/change-password', async (req, res, next) => {
+  app.get('/users/change-password', csrfProtection, async (req, res, next) => {
     const resetPasswordToken = req.query.reset_password_token;
 
     const notifications = errorMessages[req.query.notification]
@@ -231,50 +260,56 @@ module.exports = (app, provider) => {
     return res.render('change-password', {
       resetPasswordToken,
       notifications,
+      csrfToken: req.csrfToken(),
     });
   });
 
-  app.post('/users/change-password', async (req, res, next) => {
-    try {
-      const resetPasswordToken = req.body.reset_password_token;
-
-      if (req.body.password !== req.body.password_confirmation) {
-        return res.redirect(
-          `/users/change-password?reset_password_token=${resetPasswordToken}&notification=passwords_do_not_match`
-        );
-      }
-
-      await changePassword(resetPasswordToken, req.body.password);
-
-      return res.redirect(
-        `/users/sign-in?notification=password_change_success`
-      );
-    } catch (error) {
-      if (error.message === 'invalid_token') {
-        return res.redirect(
-          `/users/reset-password?notification=${error.message}`
-        );
-      }
-
-      if (error.message === 'weak_password') {
+  app.post(
+    '/users/change-password',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
         const resetPasswordToken = req.body.reset_password_token;
 
-        return res.redirect(
-          `/users/change-password?reset_password_token=${resetPasswordToken}&notification=${
-            error.message
-          }`
-        );
-      }
+        if (req.body.password !== req.body.password_confirmation) {
+          return res.redirect(
+            `/users/change-password?reset_password_token=${resetPasswordToken}&notification=passwords_do_not_match`
+          );
+        }
 
-      next(error);
+        await changePassword(resetPasswordToken, req.body.password);
+
+        return res.redirect(
+          `/users/sign-in?notification=password_change_success`
+        );
+      } catch (error) {
+        if (error.message === 'invalid_token') {
+          return res.redirect(
+            `/users/reset-password?notification=${error.message}`
+          );
+        }
+
+        if (error.message === 'weak_password') {
+          const resetPasswordToken = req.body.reset_password_token;
+
+          return res.redirect(
+            `/users/change-password?reset_password_token=${resetPasswordToken}&notification=${
+              error.message
+            }`
+          );
+        }
+
+        next(error);
+      }
     }
-  });
+  );
 
   app.use((err, req, res, next) => {
     console.error(err);
 
     return res.render('error', {
-      error_code: err.statusCode || err,
+      error_code: err.statusCode || err,
       error_message: err.message,
     });
   });

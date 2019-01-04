@@ -12,6 +12,8 @@
             <% }) %>
         <% } %>
 
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
         <div class="form__group">
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
