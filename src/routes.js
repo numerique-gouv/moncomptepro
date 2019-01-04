@@ -53,7 +53,8 @@ module.exports = (app, provider) => {
     },
     password_change_success: {
       type: 'success',
-      message: 'Votre mot de passe a été mis à jour.',
+      message:
+        'Votre mot de passe a été mis à jour. Veuillez vous connecter avec votre nouveau mot de passe.',
     },
     passwords_do_not_match: {
       type: 'error',
