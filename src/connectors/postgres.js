@@ -24,6 +24,12 @@ export const getDatabaseConnection = () => {
     );
   });
 
+  pool.on('remove', client => {
+    console.log(
+      `Disconnected from database : postgres://${user}@127.0.0.1:${port}/${database}`
+    );
+  });
+
   pool.on('error', (error, client) => {
     console.error(`Database error: ${error}`);
   });
