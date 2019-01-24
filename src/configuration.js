@@ -4,7 +4,7 @@ import path from 'path';
 import { findById } from './connectors/oidc-account-adapter';
 import { render } from './services/utils';
 
-const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env
+const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env;
 
 export const cookiesSecrets = [SESSION_COOKIE_SECRET];
 export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
