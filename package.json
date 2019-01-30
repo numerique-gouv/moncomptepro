@@ -11,7 +11,8 @@
     "build": "node-pg-migrate up && node scripts/generate-keys.js",
     "migrate": "node-pg-migrate",
     "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
-    "generate-keystore": "node scripts/generate-keys.js"
+    "generate-keystore": "node scripts/generate-keys.js",
+    "test": "prettier */*.js --list-different && npm audit"
   },
   "license": "MIT",
   "dependencies": {
