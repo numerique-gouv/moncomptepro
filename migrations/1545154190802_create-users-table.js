@@ -34,6 +34,7 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 `);
 
+  // do not override existing legacy ids in production (approximately 3000 users)
   await pgm.db.query(`
 ALTER SEQUENCE users_id_seq RESTART WITH 5000;
   `);
