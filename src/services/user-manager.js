@@ -49,7 +49,7 @@ export const login = async (email, password) => {
 };
 
 export const signup = async (email, password) => {
-  if (!isEmailValid()) {
+  if (!isEmailValid(email)) {
     throw new Error('invalid_email');
   }
 

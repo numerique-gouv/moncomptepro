@@ -11,6 +11,7 @@ import {
   verifyEmail,
 } from './services/user-manager';
 import { rateLimiterMiddleware } from './services/rate-limiter';
+import { ejsLayoutMiddelwareFactory } from './services/utils';
 
 module.exports = (app, provider) => {
   const {
@@ -21,21 +22,7 @@ module.exports = (app, provider) => {
 
   const csrfProtection = csrf();
 
-  // TODO move this to utils
-  app.use((req, res, next) => {
-    // cheap layout implementation for ejs
-    const orig = res.render;
-    res.render = (view, locals) => {
-      app.render(view, locals, (err, html) => {
-        if (err) throw err;
-        orig.call(res, '_layout', {
-          ...locals,
-          body: html,
-        });
-      });
-    };
-    next();
-  });
+  app.use(ejsLayoutMiddelwareFactory(app));
 
   app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
@@ -167,7 +154,7 @@ module.exports = (app, provider) => {
       if (error instanceof SessionNotFound) {
         // we may have took to long to provide a session to the user since he has been redirected
         // we fail silently
-        return res.redirect('https://api.gouv.fr'); // TODO change to signup home + variabilise
+        return res.redirect('https://api.gouv.fr');
       }
 
       next(error);
