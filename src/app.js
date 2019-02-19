@@ -28,6 +28,8 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
+      imgSrc: ["'self'", 'stats.data.gouv.fr'],
+      scriptSrc: ["'self'", 'stats.data.gouv.fr'],
       styleSrc: ["'self'", 'unpkg.com'],
       fontSrc: ["'self'", 'unpkg.com'],
     },
