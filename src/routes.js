@@ -5,10 +5,13 @@ import csrf from 'csurf';
 import {
   changePassword,
   login,
+  sendEmailAddressVerificationEmail,
   sendResetPasswordEmail,
   signup,
+  verifyEmail,
 } from './services/user-manager';
 import { rateLimiterMiddleware } from './services/rate-limiter';
+import { ejsLayoutMiddelwareFactory } from './services/utils';
 
 module.exports = (app, provider) => {
   const {
@@ -19,20 +22,7 @@ module.exports = (app, provider) => {
 
   const csrfProtection = csrf();
 
-  app.use((req, res, next) => {
-    // cheap layout implementation for ejs
-    const orig = res.render;
-    res.render = (view, locals) => {
-      app.render(view, locals, (err, html) => {
-        if (err) throw err;
-        orig.call(res, '_layout', {
-          ...locals,
-          body: html,
-        });
-      });
-    };
-    next();
-  });
+  app.use(ejsLayoutMiddelwareFactory(app));
 
   app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
@@ -47,9 +37,13 @@ module.exports = (app, provider) => {
       type: 'error',
       message: 'Email ou mot de passe incorrect.',
     },
+    invalid_email: {
+      type: 'error',
+      message: 'Adresse email invalide.',
+    },
     invalid_token: {
       type: 'warning',
-      message: 'Votre lien a expiré. Merci de recommencer cette procédure.',
+      message: 'Le lien que vous avez utilisé est invalide ou expiré.',
     },
     password_change_success: {
       type: 'success',
@@ -64,11 +58,23 @@ module.exports = (app, provider) => {
       type: 'info',
       message: 'Vous allez recevoir un lien de réinitialisation par e-mail.',
     },
-    username_unavailable: {
+    email_unavailable: {
       type: 'warning',
       message: `Un compte existe déjà avec cet email.
       Cliquez sur "J'ai déjà un compte" pour vous connecter.
       Si vous avez oublié votre mot de passe cliquez sur "Mot de passe oublié ?".`,
+    },
+    email_verification_required: {
+      type: 'info',
+      message: 'Vous devez activer votre compte avant de continuer.',
+    },
+    email_verification_sent: {
+      type: 'success',
+      message: "Un email d'activation de votre compte vous a été envoyé.",
+    },
+    verify_email_success: {
+      type: 'success',
+      message: 'Votre compte a été activé avec succès.',
     },
     weak_password: {
       type: 'error',
@@ -91,9 +97,18 @@ module.exports = (app, provider) => {
       }
 
       if (error === 'consent_required') {
+        // Consent to share the user's data is implicitly given.
         // If consent is required, we redirect the user to the end of the login process
         // There, his consent will be accepted by default.
-        return res.redirect(`/interaction/${req.params.grant}/login`);
+        // However we experienced some bugs concerning the consent granting process.
+        // We log it until we understand the issue.
+        const details = await provider.interactionDetails(req);
+        console.error(
+          'ERROR: a consent_required error occured and this should not happen!'
+        );
+        console.error('Here are the interaction details: ', details);
+
+        return res.redirect(`/users/sign-in`);
       }
 
       return res.render('error', {
@@ -166,6 +181,12 @@ module.exports = (app, provider) => {
       try {
         req.session.user = await login(req.body.login, req.body.password);
 
+        if (!req.session.user.email_verified) {
+          return res.redirect(
+            `/users/send-email-verification?notification=email_verification_required`
+          );
+        }
+
         if (req.session.interactionId) {
           return res.redirect(
             `/interaction/${req.session.interactionId}/login`
@@ -203,6 +224,8 @@ module.exports = (app, provider) => {
       try {
         req.session.user = await signup(req.body.login, req.body.password);
 
+        await sendEmailAddressVerificationEmail(req.session.user.email);
+
         if (req.session.interactionId) {
           return res.redirect(
             `/interaction/${req.session.interactionId}/login`
@@ -211,7 +234,10 @@ module.exports = (app, provider) => {
 
         return res.redirect('https://api.gouv.fr');
       } catch (error) {
-        if (error.message === 'username_unavailable') {
+        if (
+          error.message === 'email_unavailable' ||
+          error.message === 'invalid_email'
+        ) {
           return res.redirect(`/users/sign-up?notification=${error.message}`);
         }
         if (error.message === 'weak_password') {
@@ -227,10 +253,78 @@ module.exports = (app, provider) => {
     }
   );
 
+  app.get('/users/verify-email', csrfProtection, async (req, res, next) => {
+    try {
+      const verifyEmailToken = req.query.verify_email_token;
+
+      await verifyEmail(verifyEmailToken);
+
+      return res.redirect(
+        `/users/send-email-verification?notification=verify_email_success`
+      );
+    } catch (error) {
+      if (error.message === 'invalid_token') {
+        return res.redirect(
+          `/users/send-email-verification?notification=invalid_token`
+        );
+      }
+
+      next(error);
+    }
+  });
+
+  app.get(
+    '/users/send-email-verification',
+    csrfProtection,
+    async (req, res, next) => {
+      const notifications = errorMessages[req.query.notification]
+        ? [errorMessages[req.query.notification]]
+        : [];
+
+      return res.render('send-email-verification', {
+        notifications,
+        displaySendEmailButton: ![
+          'verify_email_success',
+          'email_verification_sent',
+        ].includes(req.query.notification),
+        csrfToken: req.csrfToken(),
+        continueLink:
+          req.query.notification === 'verify_email_success' &&
+          req.session.interactionId
+            ? `/interaction/${req.session.interactionId}/login`
+            : null,
+      });
+    }
+  );
+
+  app.post(
+    '/users/send-email-verification',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
+        if (isEmpty(req.session.user)) {
+          return next(
+            new Error('user must be logged in to perform an email verification')
+          );
+        }
+
+        await sendEmailAddressVerificationEmail(req.session.user.email);
+
+        return res.redirect(
+          `/users/send-email-verification?notification=email_verification_sent`
+        );
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
   app.get('/users/reset-password', csrfProtection, async (req, res, next) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
       : [];
+    // TODO email_hint
 
     return res.render('reset-password', {
       notifications,

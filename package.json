@@ -12,7 +12,7 @@
     "migrate": "node-pg-migrate",
     "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
     "generate-keystore": "node scripts/generate-keys.js",
-    "test": "prettier */*.js --list-different && npm audit"
+    "test": "NODE_ENV=test mocha --require babel-polyfill --require babel-register --exit && prettier */*.js --list-different && npm audit"
   },
   "license": "MIT",
   "dependencies": {
@@ -40,6 +40,7 @@
     "rate-limiter-flexible": "^0.21.2"
   },
   "devDependencies": {
+    "mocha": "^5.2.0",
     "prettier": "^1.15.3"
   }
 }

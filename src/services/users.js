@@ -21,7 +21,20 @@ export const findByEmail = async email => {
   return result;
 };
 
-export const findByToken = async reset_password_token => {
+export const findByVerifyEmailToken = async verify_email_token => {
+  const connection = getDatabaseConnection();
+
+  const {
+    rows: [result],
+  } = await connection.query(
+    'SELECT * FROM users WHERE verify_email_token = $1',
+    [verify_email_token]
+  );
+
+  return result;
+};
+
+export const findByResetPasswordToken = async reset_password_token => {
   const connection = getDatabaseConnection();
 
   const {

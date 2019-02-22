@@ -22,6 +22,7 @@ const mailjetConnection = mailjet.connect(
 
 const subjects = {
   'reset-password': 'Instructions pour la réinitialisation du mot de passe',
+  'verify-email': 'Activation de votre compte',
 };
 
 export const sendMail = async ({ to, template, params }) => {

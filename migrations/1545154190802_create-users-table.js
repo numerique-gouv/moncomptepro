@@ -34,6 +34,8 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 `);
 
+  // We start incrementing user id at 5000 because of a previous database migration that
+  // had ids from 1 to approx 3000. This avoids any conflict between old and new ids.
   await pgm.db.query(`
 ALTER SEQUENCE users_id_seq RESTART WITH 5000;
   `);

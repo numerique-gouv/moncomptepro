@@ -14,6 +14,9 @@ export const findById = async (ctx, sub, token) => {
       const {
         id,
         email,
+        email_verified,
+        verify_email_token,
+        verify_email_sent_at,
         encrypted_password,
         reset_password_token,
         reset_password_sent_at,
@@ -38,7 +41,7 @@ export const findById = async (ctx, sub, token) => {
         },
         birthdate: null,
         email,
-        email_verified: false,
+        email_verified,
         family_name: null,
         gender: null,
         given_name: null,

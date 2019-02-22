@@ -1,28 +1,36 @@
 import { isEmpty } from 'lodash';
 
-import { findByEmail, findByToken, insert, update } from './users';
+import {
+  findByEmail,
+  findByResetPasswordToken,
+  findByVerifyEmailToken,
+  insert,
+  update,
+} from './users';
 import {
   generateToken,
   hashPassword,
+  isEmailValid,
   isPasswordSecure,
   validatePassword,
 } from './security';
 import { sendMail } from '../connectors/mailer';
 
-const EXPIRATION_DURATION_IN_MINUTES = 15;
+const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
+const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 8 * 60;
 
-const isExpired = emittedDate => {
+const isExpired = (emittedDate, expirationDurationInMinutes) => {
   if (!(emittedDate instanceof Date)) {
     return true;
   }
 
   const nowDate = new Date();
 
-  return nowDate - emittedDate > EXPIRATION_DURATION_IN_MINUTES * 60e3;
+  return nowDate - emittedDate > expirationDurationInMinutes * 60e3;
 };
 
-export const login = async (login, password) => {
-  const user = await findByEmail(login);
+export const login = async (email, password) => {
+  const user = await findByEmail(email);
 
   if (isEmpty(user)) {
     throw new Error('invalid_credentials');
@@ -40,11 +48,15 @@ export const login = async (login, password) => {
   });
 };
 
-export const signup = async (login, password) => {
-  const user = await findByEmail(login);
+export const signup = async (email, password) => {
+  if (!isEmailValid(email)) {
+    throw new Error('invalid_email');
+  }
+
+  const user = await findByEmail(email);
 
   if (!isEmpty(user)) {
-    throw new Error('username_unavailable');
+    throw new Error('email_unavailable');
   }
 
   if (!isPasswordSecure(password)) {
@@ -54,7 +66,10 @@ export const signup = async (login, password) => {
   const hashedPassword = await hashPassword(password);
 
   return await insert({
-    email: login,
+    email,
+    email_verified: false,
+    verify_email_token: null,
+    verify_email_sent_at: null,
     encrypted_password: hashedPassword,
     reset_password_token: null,
     reset_password_sent_at: null,
@@ -67,8 +82,60 @@ export const signup = async (login, password) => {
   });
 };
 
-export const sendResetPasswordEmail = async login => {
-  const user = await findByEmail(login);
+export const sendEmailAddressVerificationEmail = async email => {
+  const user = await findByEmail(email);
+
+  if (user.email_verified) {
+    throw new Error('email_verified_already');
+  }
+
+  const verifyEmailToken = await generateToken();
+
+  await update(user.id, {
+    verify_email_token: verifyEmailToken,
+    verify_email_sent_at: new Date().toISOString(),
+  });
+
+  // do not await for email to be sent as it can take a while
+  sendMail({
+    to: email,
+    template: 'verify-email',
+    params: { verifyEmailToken },
+  });
+
+  return true;
+};
+
+export const verifyEmail = async token => {
+  if (!token || token === '') {
+    throw new Error('invalid_token');
+  }
+
+  const user = await findByVerifyEmailToken(token);
+
+  if (isEmpty(user)) {
+    throw new Error('invalid_token');
+  }
+
+  const isTokenExpired = isExpired(
+    user.verify_email_sent_at,
+    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+  );
+
+  if (isTokenExpired) {
+    throw new Error('invalid_token');
+  }
+
+  return await update(user.id, {
+    email_verified: true,
+    updated_at: new Date().toISOString(),
+    verify_email_token: null,
+    verify_email_sent_at: null,
+  });
+};
+
+export const sendResetPasswordEmail = async email => {
+  const user = await findByEmail(email);
 
   if (isEmpty(user)) {
     // failing silently as we do not want to give info on whether the user exists or not
@@ -84,7 +151,7 @@ export const sendResetPasswordEmail = async login => {
 
   // do not await for mail to be sent as it can take a while
   sendMail({
-    to: login,
+    to: email,
     template: 'reset-password',
     params: { resetPasswordToken },
   });
@@ -98,13 +165,16 @@ export const changePassword = async (token, password) => {
     throw new Error('invalid_token');
   }
 
-  const user = await findByToken(token);
+  const user = await findByResetPasswordToken(token);
 
   if (isEmpty(user)) {
     throw new Error('invalid_token');
   }
 
-  const isTokenExpired = isExpired(user.reset_password_sent_at);
+  const isTokenExpired = isExpired(
+    user.reset_password_sent_at,
+    RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+  );
 
   if (isTokenExpired) {
     throw new Error('invalid_token');
