@@ -97,15 +97,16 @@ module.exports = (app, provider) => {
       }
 
       if (error === 'consent_required') {
+        // Consent to share the user's data is implicitly given.
         // If consent is required, we redirect the user to the end of the login process
         // There, his consent will be accepted by default.
-        // Has this error occurs sometimes in production and we do not now why
-        // We log it until we understand the issue
+        // However we experienced some bugs concerning the consent granting process.
+        // We log it until we understand the issue.
         const details = await provider.interactionDetails(req);
         console.error(
-          'ERROR: a consent_required error occured and this should not happens!'
+          'ERROR: a consent_required error occured and this should not happen!'
         );
-        console.error('here are the interaction details: ', details);
+        console.error('Here are the interaction details: ', details);
 
         return res.redirect(`/users/sign-in`);
       }
