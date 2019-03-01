@@ -18,8 +18,9 @@
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
 
-        <div class="form__group">
-            <input class="form-control" required type="password" name="password" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        <div class="form__group with-input-hint">
+            <input class="form-control" required type="password" name="password" placeholder="Mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+            <small class="card__meta"><i>*10 caractères minimum</i></small>
         </div>
 
         <div class="form__group">

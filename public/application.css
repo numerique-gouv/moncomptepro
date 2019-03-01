@@ -25,3 +25,7 @@ a.external-link {
 input.button {
     cursor: pointer;
 }
+
+div.with-input-hint {
+    text-align: left;
+}
