@@ -18,8 +18,13 @@
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
 
-        <div class="form__group">
+        <div class="form__group with-input-hint">
             <input class="form-control" required type="password" name="password" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+            <small class="card__meta">
+                <i>
+                    <a class="external-link" href="/users/reset-password" tabindex="-1">Mot de passe oublié ?</a>
+                </i>
+            </small>
         </div>
 
         <div class="form__group">
