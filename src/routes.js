@@ -181,6 +181,13 @@ module.exports = (app, provider) => {
       try {
         req.session.user = await login(req.body.login, req.body.password);
 
+        if (
+          !req.session.user.email_verified &&
+          !req.session.user.verify_email_sent_at
+        ) {
+          await sendEmailAddressVerificationEmail(req.session.user.email);
+        }
+
         if (!req.session.user.email_verified) {
           return res.redirect(
             `/users/send-email-verification?notification=email_verification_required`
