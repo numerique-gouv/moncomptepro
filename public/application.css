@@ -17,7 +17,7 @@ input.button.large, input.button.large:focus {
     display: block;
 }
 
-.container a {
+a.external-link {
     color: #0081d5;
     text-decoration: none;
 }
