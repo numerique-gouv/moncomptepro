@@ -2,7 +2,7 @@
     <div class="container">
         <h3 class="section__title">Créer un compte</h3>
 
-        <form autocomplete="off" action="/users/sign-up" method="post">
+        <form action="/users/sign-up" method="post">
 
         <% if (locals.notifications) { %>
             <% notifications.forEach(({type, message}) => { %>
@@ -12,14 +12,15 @@
             <% }) %>
         <% } %>
 
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
         <div class="form__group">
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
 
-        <div class="form__group">
-            <input class="form-control" required type="password" name="password" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        <div class="form__group with-input-hint">
+            <input class="form-control" required type="password" name="password" placeholder="Mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+            <small class="card__meta"><i>*10 caractères minimum</i></small>
         </div>
 
         <div class="form__group">
@@ -33,9 +34,7 @@
     <div class="text-center">
         <div class="container">
             <div class="text-center">
-                <p><a href="/users/sign-in">J'ai déjà un compte</a></p>
-
-                <p><a href="/users/reset-password">Mot de passe oublié ?</a></p>
+                <p>J'ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
             </div>
         </div>
     </div>

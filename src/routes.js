@@ -22,7 +22,8 @@ module.exports = (app, provider) => {
 
   const csrfProtection = csrf();
 
-  app.use(ejsLayoutMiddelwareFactory(app));
+  // wrap template within layout except for welcome.ejs page
+  app.use(/^\/users\/.+$/, ejsLayoutMiddelwareFactory(app));
 
   app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
@@ -93,7 +94,7 @@ module.exports = (app, provider) => {
       req.session.interactionId = interactionId;
 
       if (error === 'login_required') {
-        return res.redirect(`/users/sign-in`);
+        return res.redirect(`/users/`);
       }
 
       if (error === 'consent_required') {
@@ -162,6 +163,12 @@ module.exports = (app, provider) => {
     }
   });
 
+  app.get('/users/', csrfProtection, async (req, res, next) => {
+    return res.render('welcome', {
+      csrfToken: req.csrfToken(),
+    });
+  });
+
   app.get('/users/sign-in', csrfProtection, async (req, res, next) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
@@ -180,6 +187,13 @@ module.exports = (app, provider) => {
     async (req, res, next) => {
       try {
         req.session.user = await login(req.body.login, req.body.password);
+
+        if (
+          !req.session.user.email_verified &&
+          !req.session.user.verify_email_sent_at
+        ) {
+          await sendEmailAddressVerificationEmail(req.session.user.email);
+        }
 
         if (!req.session.user.email_verified) {
           return res.redirect(

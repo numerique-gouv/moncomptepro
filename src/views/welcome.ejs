@@ -1,0 +1,62 @@
+<html>
+<% include partials/head %>
+<body>
+<div class="main">
+    <header class="navbar" role="navigation">
+        <div class="navbar__container">
+            <a class="navbar__home" href="index.html">
+                <img class="navbar__logo" src="/assets/logo_api.svg" alt="template.data.gouv.fr">
+            </a>
+            <form class="inline" action="/users/sign-in" method="post">
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+                <div class="form__group">
+                    <label for="signin-email">Email</label>
+                    <input required type="email" name="login" autofocus="on">
+                </div>
+
+                <div class="form__group">
+                    <label for="password">Mot de passe
+                        <small class="card__meta">
+                            <i>
+                                <a class="external-link" href="/users/reset-password" tabindex="-1">(Mot de passe oublié ?)</a>
+                            </i>
+                        </small>
+                    </label>
+                    <input class="form-control" required type="password" name="password">
+                </div>
+
+                <div class="form__group">
+                    <input type="submit" value="Connexion" class="button large">
+                </div>
+            </form>
+        </div>
+    </header>
+    <div class="text-center">
+        <section>
+            <div class="container">
+                <h3 class="section__title">Créer un compte</h3>
+
+                <form action="/users/sign-up" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+                    <div class="form__group">
+                        <input class="form-control" required type="email" name="login" placeholder="Email">
+                    </div>
+
+                    <div class="form__group with-input-hint">
+                        <input class="form-control" required type="password" name="password" placeholder="Mot de passe*">
+                        <small class="card__meta"><i>*10 caractères minimum</i></small>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="submit" value="Créer mon compte" class="button large">
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
