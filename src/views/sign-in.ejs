@@ -2,7 +2,7 @@
     <div class="container">
         <h3 class="section__title">Se connecter</h3>
 
-        <form autocomplete="off" action="/users/sign-in" method="post">
+        <form action="/users/sign-in" method="post">
 
         <% if (locals.notifications) { %>
             <% notifications.forEach(({type, message}) => { %>
@@ -12,7 +12,7 @@
             <% }) %>
         <% } %>
 
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
         <div class="form__group">
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
