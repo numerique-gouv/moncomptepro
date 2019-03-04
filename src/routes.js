@@ -291,6 +291,15 @@ module.exports = (app, provider) => {
     '/users/send-email-verification',
     csrfProtection,
     async (req, res, next) => {
+      if (isEmpty(req.session.user)) {
+        // user must be logged in to access this page
+        const notificationParams = req.query.notification
+          ? `?notification=${req.query.notification}`
+          : '';
+
+        return res.redirect(`/users/sign-in${notificationParams}`);
+      }
+
       const notifications = errorMessages[req.query.notification]
         ? [errorMessages[req.query.notification]]
         : [];
