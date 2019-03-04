@@ -112,7 +112,7 @@ module.exports = (app, provider) => {
         return res.redirect(`/users/sign-in`);
       }
 
-      return res.render('error', {
+      return res.status(500).render('error', {
         error_code: error,
         error_message: error_description,
       });
@@ -423,7 +423,7 @@ module.exports = (app, provider) => {
   app.use((err, req, res, next) => {
     console.error(err);
 
-    return res.render('error', {
+    return res.status(err.statusCode || 500).render('error', {
       error_code: err.statusCode || err,
       error_message: err.message,
     });
