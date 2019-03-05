@@ -63,11 +63,13 @@ module.exports = (app, provider) => {
       type: 'warning',
       message: `Un compte existe déjà avec cet email.
       Cliquez sur "J'ai déjà un compte" pour vous connecter.
-      Si vous avez oublié votre mot de passe cliquez sur "Mot de passe oublié ?".`,
+      Si vous avez oublié votre mot de passe cliquez sur "J'ai déjà un compte"
+      puis sur "Mot de passe oublié ?".`,
     },
     email_verification_required: {
       type: 'info',
-      message: 'Vous devez activer votre compte avant de continuer.',
+      message: `Vous devez activer votre compte avant de continuer.
+      Pour cela cliquez sur le lien d'activation que vous avez reçu par mail.`,
     },
     email_verification_sent: {
       type: 'success',
