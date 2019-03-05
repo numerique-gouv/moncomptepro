@@ -11,12 +11,10 @@
         <% } %>
 
         <% if (displaySendEmailButton) { %>
-        <form autocomplete="off" action="/users/send-email-verification" method="post">
+        <form id="send-email-verification" autocomplete="off" action="/users/send-email-verification" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
-            <div class="form__group">
-                <input type="submit" value="Me renvoyer un email d'activation" class="button large">
-            </div>
+            Je n'ai pas reçu d'email ? <input type="submit" value="Me renvoyer un email d'activation" class="link-submit">
         </form>
         <% } %>
 
