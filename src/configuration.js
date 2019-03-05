@@ -20,7 +20,7 @@ export const provider = {
     },
     long: { signed: true, secure: true, maxAge: cookiesMaxAge },
     // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
-    short: { signed: true, secure: true, maxAge: 30 * 60 * 1000 }, // 30 minutes in ms,
+    short: { signed: true, secure: true, maxAge: 3 * 60 * 60 * 1000 }, // 3 hours in ms,
     keys: cookiesSecrets,
   },
   claims: {
@@ -90,5 +90,9 @@ export const provider = {
     ctx.body = await render(path.resolve(`${__dirname}/views/_layout.ejs`), {
       body: bodyHtml,
     });
+  },
+  ttl: {
+    AccessToken: 3 * 60 * 60, // 3 hours in second
+    IdToken: 3 * 60 * 60, // 3 hours in second
   },
 };
