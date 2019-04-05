@@ -78,7 +78,6 @@ export const signup = async (email, password) => {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     roles: [],
-    legacy_account_type: 'service_provider',
   });
 };
 

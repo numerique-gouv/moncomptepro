@@ -13,7 +13,7 @@ DO UPDATE
   = (EXCLUDED.id, EXCLUDED.email, EXCLUDED.created_at, EXCLUDED.updated_at);
 
 -- TODO Add validated email here
-INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, roles, legacy_account_type)
+INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, roles)
 VALUES
   (
   'particulier@domain.user',
@@ -22,8 +22,7 @@ VALUES
   '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
-  '{"api-particulier-token-admin"}',
-  'api_particulier'
+  '{"api_particulier","api-particulier-token-admin"}'
   ),
   (
   'franceconnect@domain.user',
@@ -32,8 +31,7 @@ VALUES
   '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
-  '{}',
-  'franceconnect'
+  '{"franceconnect"}'
   ),
   (
   'api_droits_cnam@domain.user',
@@ -42,8 +40,7 @@ VALUES
   '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
-  '{}',
-  'api_droits_cnam'
+  '{"api_droits_cnam"}'
   ),
   (
   'dgfip@domain.user',
@@ -52,8 +49,7 @@ VALUES
   '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
-  '{}',
-  'dgfip'
+  '{"dgfip"}'
   ),
   (
   'service_provider@domain.user',
@@ -62,13 +58,12 @@ VALUES
   '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
-  '{}',
-  'service_provider'
+  '{"service_provider"}'
   )
 ON CONFLICT (email)
 DO UPDATE
-  SET (email_verified, encrypted_password, created_at, updated_at, roles, legacy_account_type)
-  = (EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.roles, EXCLUDED.legacy_account_type);
+  SET (email_verified, encrypted_password, created_at, updated_at, roles)
+  = (EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.roles);
 
 INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris)
 VALUES

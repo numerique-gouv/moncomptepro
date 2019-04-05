@@ -25,7 +25,6 @@ export const findById = async (ctx, sub, token) => {
         created_at,
         updated_at,
         roles,
-        legacy_account_type,
       } = user;
 
       return {
@@ -58,7 +57,6 @@ export const findById = async (ctx, sub, token) => {
         website: null,
         zoneinfo: null,
         roles,
-        legacy_account_type,
       };
     },
   };

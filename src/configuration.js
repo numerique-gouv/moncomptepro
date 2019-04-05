@@ -44,7 +44,7 @@ export const provider = {
       'website',
       'zoneinfo',
     ],
-    roles: ['roles', 'legacy_account_type'],
+    roles: ['roles'],
   },
   features: {
     devInteractions: false,
