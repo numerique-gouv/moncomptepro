@@ -3,7 +3,7 @@ VALUES
   (
 -- keep this id synchronised with the corresponding uid in signup-back/test/fixtures/users.yml
   1,
-  'service_provider@domain.user',
+  'user@test',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP
   )
@@ -12,11 +12,19 @@ DO UPDATE
   SET (id, email, created_at, updated_at)
   = (EXCLUDED.id, EXCLUDED.email, EXCLUDED.created_at, EXCLUDED.updated_at);
 
--- TODO Add validated email here
 INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, roles)
 VALUES
   (
-  'particulier@domain.user',
+  'user@test',
+  'true',
+--  hashed 'password' string
+  '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{}'
+  ),
+  (
+  'particulier@test',
   'true',
 --  hashed 'password' string
   '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
@@ -25,7 +33,7 @@ VALUES
   '{"api_particulier","api-particulier-token-admin"}'
   ),
   (
-  'franceconnect@domain.user',
+  'franceconnect@test',
   'true',
 --  hashed 'password' string
   '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2',
@@ -34,7 +42,16 @@ VALUES
   '{"franceconnect"}'
   ),
   (
-  'api_droits_cnam@domain.user',
+  'entreprise@test',
+  'true',
+--  hashed 'password' string
+  '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  '{"api_entreprise"}'
+  ),
+  (
+  'api_droits_cnam@test',
   'true',
 --  hashed 'password' string
   '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa',
@@ -43,22 +60,13 @@ VALUES
   '{"api_droits_cnam"}'
   ),
   (
-  'dgfip@domain.user',
+  'dgfip@test',
   'true',
 --  hashed 'password' string
   '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
   '{"dgfip"}'
-  ),
-  (
-  'service_provider@domain.user',
-  'true',
---  hashed 'password' string
-  '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m',
-  CURRENT_TIMESTAMP,
-  CURRENT_TIMESTAMP,
-  '{"service_provider"}'
   )
 ON CONFLICT (email)
 DO UPDATE
