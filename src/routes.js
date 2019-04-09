@@ -158,7 +158,7 @@ module.exports = (app, provider) => {
       if (error instanceof SessionNotFound) {
         // we may have took to long to provide a session to the user since he has been redirected
         // we fail silently
-        return res.redirect('https://api.gouv.fr');
+        return res.redirect('https://api.gouv.fr/?filter=signup');
       }
 
       next(error);
@@ -209,7 +209,7 @@ module.exports = (app, provider) => {
           );
         }
 
-        return res.redirect('https://api.gouv.fr');
+        return res.redirect('https://api.gouv.fr/?filter=signup');
       } catch (error) {
         if (error.message === 'invalid_credentials') {
           return res.redirect(`/users/sign-in?notification=${error.message}`);
@@ -248,7 +248,7 @@ module.exports = (app, provider) => {
           );
         }
 
-        return res.redirect('https://api.gouv.fr');
+        return res.redirect('https://api.gouv.fr/?filter=signup');
       } catch (error) {
         if (
           error.message === 'email_unavailable' ||
