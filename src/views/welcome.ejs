@@ -33,8 +33,9 @@
             </form>
         </div>
     </header>
-    <div class="text-center">
-        <section>
+
+    <section>
+        <div class="text-center">
             <div class="container">
                 <h3 class="section__title">Créer un compte</h3>
 
@@ -42,11 +43,13 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
                     <div class="form__group">
-                        <input class="form-control" required type="email" name="login" placeholder="Email">
+                        <input class="form-control" required type="email" name="login"
+                               placeholder="Votre adresse email">
                     </div>
 
                     <div class="form__group with-input-hint">
-                        <input class="form-control" required type="password" name="password" placeholder="Mot de passe*">
+                        <input class="form-control" required type="password" name="password"
+                               placeholder="Choisissez un mot de passe*">
                         <small class="card__meta"><i>*10 caractères minimum</i></small>
                     </div>
 
@@ -55,7 +58,17 @@
                     </div>
                 </form>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="text-center">
+            <div class="container">
+                <div class="text-center">
+                    <p>Vous avez déjà un compte ou vous avez déjà fait une demande ? <a class="external-link" href="/users/sign-in">Connectez-vous</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
