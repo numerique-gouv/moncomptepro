@@ -95,4 +95,5 @@ export const provider = {
     AccessToken: 3 * 60 * 60, // 3 hours in second
     IdToken: 3 * 60 * 60, // 3 hours in second
   },
+  extraParams: ['source'],
 };

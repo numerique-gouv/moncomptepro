@@ -91,12 +91,13 @@ module.exports = (app, provider) => {
       const {
         uuid: interactionId,
         interaction: { error, error_description },
+        params: { source },
       } = await provider.interactionDetails(req);
 
       req.session.interactionId = interactionId;
 
       if (error === 'login_required') {
-        return res.redirect(`/users/`);
+        return res.redirect(`/users/${source ? '?source=' + source : ''}`);
       }
 
       if (error === 'consent_required') {
@@ -166,8 +167,11 @@ module.exports = (app, provider) => {
   });
 
   app.get('/users/', csrfProtection, async (req, res, next) => {
+    const source = req.query.source;
+
     return res.render('welcome', {
       csrfToken: req.csrfToken(),
+      source,
     });
   });
 
@@ -349,7 +353,6 @@ module.exports = (app, provider) => {
     const notifications = errorMessages[req.query.notification]
       ? [errorMessages[req.query.notification]]
       : [];
-    // TODO email_hint
 
     return res.render('reset-password', {
       notifications,
