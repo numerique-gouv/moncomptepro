@@ -60,7 +60,7 @@ div.with-input-hint {
     text-align: left;
 }
 
-header.navbar + div.text-center {
+header.navbar + section {
     margin-top: 3em;
 }
 

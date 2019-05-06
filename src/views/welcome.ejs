@@ -33,20 +33,39 @@
             </form>
         </div>
     </header>
-    <div class="text-center">
-        <section>
+
+    <section>
+        <div class="text-center">
             <div class="container">
-                <h3 class="section__title">Créer un compte</h3>
+                <% if (locals.source === 'partnerpage_publicorganisation') { %>
+                    <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                    <h3>Vous représentez une administration ou une collectivité</h3>
+                    <p>
+                        Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
+                        ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                    </p>
+                <% } else if (locals.source === 'partnerpage_privateorganisation') { %>
+                    <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                    <h3>Vous représentez une société de droit privé</h3>
+                    <p>
+                        Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
+                        ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                    </p>
+                <% } else { %>
+                    <h3 class="section__title">Créer un compte</h3>
+                <% } %>
 
                 <form action="/users/sign-up" method="post">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
                     <div class="form__group">
-                        <input class="form-control" required type="email" name="login" placeholder="Email">
+                        <input class="form-control" required type="email" name="login"
+                               placeholder="Votre adresse email">
                     </div>
 
                     <div class="form__group with-input-hint">
-                        <input class="form-control" required type="password" name="password" placeholder="Mot de passe*">
+                        <input class="form-control" required type="password" name="password"
+                               placeholder="Choisissez un mot de passe*">
                         <small class="card__meta"><i>*10 caractères minimum</i></small>
                     </div>
 
@@ -55,7 +74,17 @@
                     </div>
                 </form>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="text-center">
+            <div class="container">
+                <div class="text-center">
+                    <p>Vous avez déjà un compte ou vous avez déjà fait une demande ? <a class="external-link" href="/users/sign-in">Connectez-vous</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
