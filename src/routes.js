@@ -62,8 +62,8 @@ module.exports = (app, provider) => {
     email_unavailable: {
       type: 'warning',
       message: `Un compte existe déjà avec cet email.
-      Cliquez sur "J'ai déjà un compte" pour vous connecter.
-      Si vous avez oublié votre mot de passe cliquez sur "J'ai déjà un compte"
+      Cliquez sur "je me connecte" pour vous connecter.
+      Si vous avez oublié votre mot de passe cliquez sur "je me connecte"
       puis sur "Mot de passe oublié ?".`,
     },
     email_verification_required: {
@@ -242,7 +242,12 @@ module.exports = (app, provider) => {
     rateLimiterMiddleware,
     async (req, res, next) => {
       try {
-        req.session.user = await signup(req.body.login, req.body.password);
+        req.session.user = await signup(
+          req.body.given_name,
+          req.body.family_name,
+          req.body.login,
+          req.body.password
+        );
 
         await sendEmailAddressVerificationEmail(req.session.user.email);
 

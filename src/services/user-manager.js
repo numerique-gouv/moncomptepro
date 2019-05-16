@@ -48,7 +48,7 @@ export const login = async (email, password) => {
   });
 };
 
-export const signup = async (email, password) => {
+export const signup = async (given_name, family_name, email, password) => {
   if (!isEmailValid(email)) {
     throw new Error('invalid_email');
   }
@@ -77,6 +77,8 @@ export const signup = async (email, password) => {
     last_sign_in_at: null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    given_name,
+    family_name,
     roles: [],
   });
 };

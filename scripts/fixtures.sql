@@ -12,7 +12,7 @@ DO UPDATE
   SET (id, email, created_at, updated_at)
   = (EXCLUDED.id, EXCLUDED.email, EXCLUDED.created_at, EXCLUDED.updated_at);
 
-INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, roles)
+INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
 VALUES
   (
   'user@test',
@@ -21,6 +21,8 @@ VALUES
   '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'User',
+  'Test',
   '{}'
   ),
   (
@@ -30,6 +32,8 @@ VALUES
   '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'Particulier',
+  'Test',
   '{"api_particulier","api-particulier-token-admin"}'
   ),
   (
@@ -39,6 +43,8 @@ VALUES
   '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'Franceconnect',
+  'Test',
   '{"franceconnect"}'
   ),
   (
@@ -48,6 +54,8 @@ VALUES
   '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'Entreprise',
+  'Test',
   '{"api_entreprise"}'
   ),
   (
@@ -57,6 +65,8 @@ VALUES
   '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'Cnam',
+  'Test',
   '{"api_droits_cnam"}'
   ),
   (
@@ -66,12 +76,14 @@ VALUES
   '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6',
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP,
+  'Dgfip',
+  'Test',
   '{"dgfip"}'
   )
 ON CONFLICT (email)
 DO UPDATE
-  SET (email_verified, encrypted_password, created_at, updated_at, roles)
-  = (EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.roles);
+  SET (email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
+  = (EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.given_name, EXCLUDED.family_name, EXCLUDED.roles);
 
 INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris)
 VALUES

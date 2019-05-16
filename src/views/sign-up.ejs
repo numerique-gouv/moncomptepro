@@ -14,12 +14,23 @@
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
+        <div class="form-row">
+            <div class="form-col">
+                <input class="form-control" required type="text" name="given_name"
+                       placeholder="Votre prénom">
+            </div>
+            <div class="form-col">
+                <input class="form-control" required type="text" name="family_name"
+                       placeholder="Votre nom de famille">
+            </div>
+        </div>
+
         <div class="form__group">
-            <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+            <input class="form-control" required type="email" name="login" placeholder="Votre adresse email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
 
         <div class="form__group with-input-hint">
-            <input class="form-control" required type="password" name="password" placeholder="Mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+            <input class="form-control" required type="password" name="password" placeholder="Votre nouveau mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
             <small class="card__meta"><i>*10 caractères minimum</i></small>
         </div>
 
