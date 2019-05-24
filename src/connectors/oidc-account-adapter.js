@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import { findById as findUserById } from '../services/users';
+import { findByUserId as getUsersOrganizations } from '../services/organizations';
 
 export const findById = async (ctx, sub, token) => {
   const user = await findUserById(sub);
@@ -7,6 +8,8 @@ export const findById = async (ctx, sub, token) => {
   if (isEmpty(user)) {
     return null;
   }
+
+  const organizations = await getUsersOrganizations(sub);
 
   return {
     accountId: sub,
@@ -37,6 +40,7 @@ export const findById = async (ctx, sub, token) => {
         given_name,
         family_name,
         roles,
+        organizations,
       };
     },
   };

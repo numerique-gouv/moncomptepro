@@ -12,6 +12,10 @@ import {
 } from './services/user-manager';
 import { rateLimiterMiddleware } from './services/rate-limiter';
 import { ejsLayoutMiddelwareFactory } from './services/utils';
+import {
+  createOrganization,
+  getOrganizationsByUserId,
+} from './services/organization-manager';
 
 module.exports = (app, provider) => {
   const {
@@ -42,6 +46,10 @@ module.exports = (app, provider) => {
       type: 'error',
       message: 'Adresse email invalide.',
     },
+    invalid_siret: {
+      type: 'error',
+      message: 'SIRET invalide.',
+    },
     invalid_token: {
       type: 'warning',
       message: 'Le lien que vous avez utilisé est invalide ou expiré.',
@@ -58,6 +66,12 @@ module.exports = (app, provider) => {
     reset_password_email_sent: {
       type: 'info',
       message: 'Vous allez recevoir un lien de réinitialisation par e-mail.',
+    },
+    organization_unavailable: {
+      type: 'warning',
+      message: `Un utilisateur a déjà créé une organisation avec ce numéro SIRET.
+      Pour rejoindre cette organisation, merci de nous transmettre une demande
+      écrite à l'adresse contact@api.gouv.fr.`,
     },
     email_unavailable: {
       type: 'warning',
@@ -182,6 +196,7 @@ module.exports = (app, provider) => {
 
     return res.render('sign-in', {
       notifications,
+      referer: req.query.referer,
       csrfToken: req.csrfToken(),
     });
   });
@@ -207,10 +222,18 @@ module.exports = (app, provider) => {
           );
         }
 
+        if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
+          return res.redirect(`/users/join-organization`);
+        }
+
         if (req.session.interactionId) {
           return res.redirect(
             `/interaction/${req.session.interactionId}/login`
           );
+        }
+
+        if (req.body.referer) {
+          return res.redirect(req.body.referer);
         }
 
         return res.redirect('https://api.gouv.fr/?filter=signup');
@@ -251,13 +274,7 @@ module.exports = (app, provider) => {
 
         await sendEmailAddressVerificationEmail(req.session.user.email);
 
-        if (req.session.interactionId) {
-          return res.redirect(
-            `/interaction/${req.session.interactionId}/login`
-          );
-        }
-
-        return res.redirect('https://api.gouv.fr/?filter=signup');
+        return res.redirect(`/users/join-organization`);
       } catch (error) {
         if (
           error.message === 'email_unavailable' ||
@@ -270,6 +287,76 @@ module.exports = (app, provider) => {
             `/users/sign-up?notification=${error.message}&login_hint=${
               req.body.login
             }`
+          );
+        }
+
+        next(error);
+      }
+    }
+  );
+
+  app.get(
+    '/users/join-organization',
+    csrfProtection,
+    async (req, res, next) => {
+      if (isEmpty(req.session.user)) {
+        // user must be logged in to access this page
+        const notificationParams = req.query.notification
+          ? `?notification=${req.query.notification}`
+          : '';
+
+        return res.redirect(
+          `/users/sign-in${notificationParams}?referer=/users/join-organization`
+        );
+      }
+
+      const notifications = errorMessages[req.query.notification]
+        ? [errorMessages[req.query.notification]]
+        : [];
+
+      return res.render('join-organization', {
+        notifications,
+        csrfToken: req.csrfToken(),
+        siretHint: req.query.siret_hint,
+      });
+    }
+  );
+
+  app.post(
+    '/users/join-organization',
+    csrfProtection,
+    rateLimiterMiddleware,
+    async (req, res, next) => {
+      try {
+        if (isEmpty(req.session.user)) {
+          return next(
+            new Error('user must be logged in to join an organization')
+          );
+        }
+
+        await createOrganization(req.body.siret, req.session.user.id);
+
+        if (req.session.interactionId) {
+          return res.redirect(
+            `/interaction/${req.session.interactionId}/login`
+          );
+        }
+
+        return res.redirect('https://api.gouv.fr/?filter=signup');
+      } catch (error) {
+        if (error.message === 'organization_unavailable') {
+          return res.redirect(
+            `/users/join-organization?notification=${
+              error.message
+            }&siret_hint=${req.body.siret}`
+          );
+        }
+
+        if (error.message === 'invalid_siret') {
+          return res.redirect(
+            `/users/join-organization?notification=${
+              error.message
+            }&siret_hint=${req.body.siret}`
           );
         }
 
@@ -308,7 +395,9 @@ module.exports = (app, provider) => {
           ? `?notification=${req.query.notification}`
           : '';
 
-        return res.redirect(`/users/sign-in${notificationParams}`);
+        return res.redirect(
+          `/users/sign-in${notificationParams}?referer=/users/send-email-verification`
+        );
       }
 
       const notifications = errorMessages[req.query.notification]

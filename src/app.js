@@ -29,6 +29,7 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", 'stats.data.gouv.fr'],
+      connectSrc: ["'self'", 'sirene.entreprise.api.gouv.fr'],
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
       styleSrc: ["'self'", 'unpkg.com'],
       fontSrc: ["'self'", 'unpkg.com'],
