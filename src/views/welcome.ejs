@@ -58,6 +58,17 @@
                 <form action="/users/sign-up" method="post">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
+                    <div class="form-row">
+                        <div class="form-col">
+                            <input class="form-control" required type="text" name="given_name"
+                                   placeholder="Votre prénom">
+                        </div>
+                        <div class="form-col">
+                            <input class="form-control" required type="text" name="family_name"
+                                   placeholder="Votre nom de famille">
+                        </div>
+                    </div>
+
                     <div class="form__group">
                         <input class="form-control" required type="email" name="login"
                                placeholder="Votre adresse email">
@@ -65,7 +76,7 @@
 
                     <div class="form__group with-input-hint">
                         <input class="form-control" required type="password" name="password"
-                               placeholder="Choisissez un mot de passe*">
+                               placeholder="Votre nouveau mot de passe*">
                         <small class="card__meta"><i>*10 caractères minimum</i></small>
                     </div>
 

@@ -1,0 +1,57 @@
+<section>
+    <div class="container">
+        <h3>Votre organisation</h3>
+        <p>
+            Afin de compléter votre inscription, merci de nous renseigner le numéro SIRET de
+            l'organisation que vous représentez.
+        </p>
+
+        <form action="/users/join-organization" method="post">
+
+        <% if (locals.notifications) { %>
+            <% notifications.forEach(({type, message}) => { %>
+            <div class="notification <%= type %>">
+                <%= message %>
+            </div>
+            <% }) %>
+        <% } %>
+
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+        <div class="form__group">
+            <input
+                id="siret-selector"
+                class="form-control"
+                required
+                type="text"
+                name="siret"
+                placeholder="Votre numéro SIRET"
+                autofocus="on"
+                pattern="^(\s*\d){14}$"
+                title="identifiant composé de 14 chiffres attribué par l'INSEE à votre organisation"
+                <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"<% } %>
+            >
+        </div>
+
+
+        <div class="form__group">
+            <div id="organization-info" class="notification"></div>
+        </div>
+
+        <div class="form__group">
+            <input type="submit" value="Rejoindre cette organisation" class="button large">
+        </div>
+        </form>
+    </div>
+    <script src="/assets/fetch-organization-info.js"></script>
+</section>
+
+<div class="container">
+    <div class="text-center">
+        <div class="container">
+            <div class="text-center">
+                <p>J'ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
+            </div>
+        </div>
+    </div>
+</div>

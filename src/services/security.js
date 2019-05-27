@@ -58,3 +58,13 @@ export const isEmailValid = email => {
 export const generateToken = async () => {
   return await nanoid();
 };
+
+export const isSiretValid = siret => {
+  if (!isString(siret) || isEmpty(siret)) {
+    return false;
+  }
+
+  const siretNoSpaces = siret.replace(/\s/g, '');
+
+  return !!siretNoSpaces.match(/^\d{14}$/);
+};

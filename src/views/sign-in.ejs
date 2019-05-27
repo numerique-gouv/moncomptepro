@@ -14,6 +14,10 @@
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
+        <% if (locals.referer) { %>
+            <input type="hidden" name="referer" value="<%= referer %>" autocomplete="off">
+        <% } %>
+
         <div class="form__group">
             <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
         </div>
