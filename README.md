@@ -25,3 +25,32 @@ npm run migrate up
 ```
 
 More info available at [https://github.com/salsita/node-pg-migrate](https://github.com/salsita/node-pg-migrate).
+
+## Add a user to an organisation
+
+Connect to api-auth database then:
+
+```postgresql
+SELECT * FROM users
+INNER JOIN users_organizations AS uo ON uo.user_id = users.id
+INNER JOIN organizations AS o ON uo.organization_id = o.id
+WHERE o.siret = '<siret>';
+```
+
+```postgresql
+SELECT * FROM users WHERE email = '<email>';
+INSERT INTO users_organizations ( user_id, organization_id ) VALUES('<user_id>', '<organization_id>');
+```
+
+Send the following mail to the current users of the organization:
+
+```
+Bonjour,
+
+<given_name> <family_name> a rejoint l'organisation <nom_raison_sociale> sur https://signup.api.gouv.fr.
+
+Cordialement,
+
+Raphaël Dubigny,
+Équipe api.gouv.fr
+```
