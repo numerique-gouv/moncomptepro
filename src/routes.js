@@ -73,6 +73,16 @@ module.exports = (app, provider) => {
       Pour rejoindre cette organisation, merci de nous transmettre une demande
       écrite à l'adresse contact@api.gouv.fr.`,
     },
+    organization_needed: {
+      type: 'warning',
+      message: `Pour continuer, merci de renseigner le numéro SIRET de l'organisation que
+      vous représentez.`,
+    },
+    signup_step2: {
+      type: 'info',
+      message: `Afin de compléter votre inscription, merci de renseigner le numéro SIRET de
+      l'organisation que vous représentez.`,
+    },
     email_unavailable: {
       type: 'warning',
       message: `Un compte existe déjà avec cet email.
@@ -223,7 +233,9 @@ module.exports = (app, provider) => {
         }
 
         if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
-          return res.redirect(`/users/join-organization`);
+          return res.redirect(
+            `/users/join-organization?notification=organization_needed`
+          );
         }
 
         if (req.session.interactionId) {
@@ -274,7 +286,9 @@ module.exports = (app, provider) => {
 
         await sendEmailAddressVerificationEmail(req.session.user.email);
 
-        return res.redirect(`/users/join-organization`);
+        return res.redirect(
+          `/users/join-organization?notification=signup_step2`
+        );
       } catch (error) {
         if (
           error.message === 'email_unavailable' ||
