@@ -45,6 +45,8 @@ INSERT INTO users_organizations ( user_id, organization_id ) VALUES('<user_id>',
 Send the following mail to the current users of the organization:
 
 ```
+Subject: Votre organisation sur api.gouv.fr
+
 Bonjour,
 
 <given_name> <family_name> a rejoint l'organisation <nom_raison_sociale> sur https://signup.api.gouv.fr.
