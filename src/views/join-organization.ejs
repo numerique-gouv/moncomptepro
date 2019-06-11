@@ -1,10 +1,6 @@
 <section>
     <div class="container">
         <h3>Votre organisation</h3>
-        <p>
-            Afin de compléter votre inscription, merci de nous renseigner le numéro SIRET de
-            l'organisation que vous représentez.
-        </p>
 
         <form action="/users/join-organization" method="post">
 
@@ -14,6 +10,12 @@
                 <%= message %>
             </div>
             <% }) %>
+        <% } %>
+
+        <% if (locals.notifications.length < 1) { %>
+            <p>
+                Pour rejoindre votre organisation, veuillez renseigner son numéro SIRET.
+            </p>
         <% } %>
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
