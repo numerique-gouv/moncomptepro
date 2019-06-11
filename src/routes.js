@@ -219,22 +219,17 @@ module.exports = (app, provider) => {
       try {
         req.session.user = await login(req.body.login, req.body.password);
 
-        if (
-          !req.session.user.email_verified &&
-          !req.session.user.verify_email_sent_at
-        ) {
-          await sendEmailAddressVerificationEmail(req.session.user.email);
-        }
-
-        if (!req.session.user.email_verified) {
-          return res.redirect(
-            `/users/send-email-verification?notification=email_verification_required`
-          );
-        }
-
         if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
           return res.redirect(
             `/users/join-organization?notification=organization_needed`
+          );
+        }
+
+        // Note that if the user make a sign in attempt with no email_verify and no organization,
+        // only the organization check will be triggered not the email_verified check below.
+        if (!req.session.user.email_verified) {
+          return res.redirect(
+            `/users/send-email-verification?notification=email_verification_required`
           );
         }
 
