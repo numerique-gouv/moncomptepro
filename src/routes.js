@@ -422,7 +422,7 @@ module.exports = (app, provider) => {
         displaySendEmailButton: ![
           'verify_email_success',
           'email_verification_sent',
-          'email_verified_already'
+          'email_verified_already',
         ].includes(req.query.notification),
         csrfToken: req.csrfToken(),
         continueLink:
