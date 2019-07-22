@@ -99,6 +99,10 @@ module.exports = (app, provider) => {
       type: 'success',
       message: "Un email d'activation de votre compte vous a été envoyé.",
     },
+    email_verified_already: {
+      type: 'error',
+      message: `Votre compte est déjà activé.`,
+    },
     verify_email_success: {
       type: 'success',
       message: 'Votre compte a été activé avec succès.',
@@ -418,6 +422,7 @@ module.exports = (app, provider) => {
         displaySendEmailButton: ![
           'verify_email_success',
           'email_verification_sent',
+          'email_verified_already'
         ].includes(req.query.notification),
         csrfToken: req.csrfToken(),
         continueLink:
@@ -447,6 +452,12 @@ module.exports = (app, provider) => {
           `/users/send-email-verification?notification=email_verification_sent`
         );
       } catch (error) {
+        if (error.message === 'email_verified_already') {
+          return res.redirect(
+            `/users/send-email-verification?notification=${error.message}`
+          );
+        }
+
         next(error);
       }
     }
