@@ -17,7 +17,7 @@ export const createOrganization = async (siret, user_id) => {
       },
     } = await axios({
       method: 'get',
-      url: `https://sirene.entreprise.api.gouv.fr/v1/siret/${siretNoSpaces}`,
+      url: `https://entreprise.data.gouv.fr/api/sirene/v1/siret/${siretNoSpaces}`,
     });
 
     if (siretFromSireneApi !== siretNoSpaces) {

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    xmlhttp.open("GET", "https://sirene.entreprise.api.gouv.fr/v1/siret/" + siret, true);
+    xmlhttp.open("GET", "https://entreprise.data.gouv.fr/api/sirene/v1/siret/" + siret, true);
     xmlhttp.send();
   }
 
