@@ -99,7 +99,7 @@ export const sendEmailAddressVerificationEmail = async email => {
 
   // do not await for email to be sent as it can take a while
   sendMail({
-    to: email,
+    to: [email],
     template: 'verify-email',
     params: { verifyEmailToken },
   });
@@ -152,7 +152,7 @@ export const sendResetPasswordEmail = async email => {
 
   // do not await for mail to be sent as it can take a while
   sendMail({
-    to: email,
+    to: [email],
     template: 'reset-password',
     params: { resetPasswordToken },
   });

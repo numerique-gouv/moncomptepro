@@ -15,17 +15,15 @@ const secretKey =
 const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
 const host = process.env.API_AUTH_HOST;
 
-const mailjetConnection = mailjet.connect(
-  apiKey,
-  secretKey
-);
+const mailjetConnection = mailjet.connect(apiKey, secretKey);
 
 const subjects = {
   'reset-password': 'Instructions pour la réinitialisation du mot de passe',
   'verify-email': 'Activation de votre compte',
+  'join-organization': 'Votre organisation sur api.gouv.fr',
 };
 
-export const sendMail = async ({ to, template, params }) => {
+export const sendMail = async ({ to = [], template, params, cc = [] }) => {
   const subject = subjects[template];
 
   const body = await render(
@@ -46,7 +44,8 @@ export const sendMail = async ({ to, template, params }) => {
     FromName: 'API Gouv',
     Subject: subject,
     'Text-part': body,
-    Recipients: [{ Email: to }],
+    Recipients: [to.map(e => ({ Email: e }))],
+    Cc: [cc.map(e => ({ Email: e }))],
   };
 
   await sendEmail.request(emailData);
