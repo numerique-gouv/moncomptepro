@@ -40,19 +40,13 @@ WHERE o.siret = '<siret>';
 ```postgresql
 SELECT * FROM users WHERE email = '<email>';
 INSERT INTO users_organizations ( user_id, organization_id ) VALUES('<user_id>', '<organization_id>');
+UPDATE organizations set authorized_email_domains = array_append(authorized_email_domains, '<email_domain>') where id='<organization_id>';
 ```
 
 Send the following mail to the current users of the organization:
 
 ```
 Subject: Votre organisation sur api.gouv.fr
-
-Bonjour,
-
-<given_name> <family_name> a rejoint l'organisation <nom_raison_sociale> sur https://signup.api.gouv.fr.
-
-Cordialement,
-
-Raphaël Dubigny,
-Équipe api.gouv.fr
 ```
+
+Body: [see template](src/views/mails/join-organization.ejs)

@@ -13,7 +13,7 @@ import {
 import { rateLimiterMiddleware } from './services/rate-limiter';
 import { ejsLayoutMiddelwareFactory } from './services/utils';
 import {
-  createOrganization,
+  joinOrganization,
   getOrganizationsByUserId,
 } from './services/organization-manager';
 
@@ -67,9 +67,9 @@ module.exports = (app, provider) => {
       type: 'info',
       message: 'Vous allez recevoir un lien de réinitialisation par e-mail.',
     },
-    organization_unavailable: {
+    unable_to_auto_join_organization: {
       type: 'warning',
-      message: `Un utilisateur a déjà créé une organisation avec ce numéro SIRET.
+      message: `Nous ne sommes pas en mesure de traiter votre demande automatiquement.
       Pour rejoindre cette organisation, merci de nous transmettre une demande
       écrite à l'adresse contact@api.gouv.fr.`,
     },
@@ -347,7 +347,7 @@ module.exports = (app, provider) => {
           );
         }
 
-        await createOrganization(req.body.siret, req.session.user.id);
+        await joinOrganization(req.body.siret, req.session.user.id);
 
         if (req.session.interactionId) {
           return res.redirect(
@@ -357,7 +357,7 @@ module.exports = (app, provider) => {
 
         return res.redirect('https://api.gouv.fr/?filter=signup');
       } catch (error) {
-        if (error.message === 'organization_unavailable') {
+        if (error.message === 'unable_to_auto_join_organization') {
           return res.redirect(
             `/users/join-organization?notification=${
               error.message
