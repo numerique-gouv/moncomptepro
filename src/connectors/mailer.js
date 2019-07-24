@@ -44,8 +44,8 @@ export const sendMail = async ({ to = [], template, params, cc = [] }) => {
     FromName: 'API Gouv',
     Subject: subject,
     'Text-part': body,
-    Recipients: [to.map(e => ({ Email: e }))],
-    Cc: [cc.map(e => ({ Email: e }))],
+    Recipients: to.map(e => ({ Email: e })),
+    Cc: cc.map(e => ({ Email: e })),
   };
 
   await sendEmail.request(emailData);

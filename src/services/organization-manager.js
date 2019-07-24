@@ -73,7 +73,8 @@ export const joinOrganization = async (siret, user_id) => {
   await addUser({ organization_id: organization.id, user_id });
 
   if (usersInOrganizationAlready.length > 0) {
-    await sendMail({
+    // do not await for mail to be sent as it can take a while
+    sendMail({
       to: usersInOrganizationAlready.map(({ email }) => email),
       template: 'join-organization',
       params: { given_name, family_name, nom_raison_sociale },
