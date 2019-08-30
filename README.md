@@ -28,25 +28,24 @@ More info available at [https://github.com/salsita/node-pg-migrate](https://gith
 
 ## Add a user to an organisation
 
-Connect to api-auth database then:
+If the mail provider is not a free mail provider or a disposable mail provider, add it to the organization. Connect to api-auth database then:
 
 ```postgresql
-SELECT * FROM users
-INNER JOIN users_organizations AS uo ON uo.user_id = users.id
-INNER JOIN organizations AS o ON uo.organization_id = o.id
-WHERE o.siret = '<siret>';
-```
-
-```postgresql
-SELECT * FROM users WHERE email = '<email>';
-INSERT INTO users_organizations ( user_id, organization_id ) VALUES('<user_id>', '<organization_id>');
 UPDATE organizations set authorized_email_domains = array_append(authorized_email_domains, '<email_domain>') where id='<organization_id>';
 ```
 
-Send the following mail to the current users of the organization:
+Then send back the following email :
 
 ```
-Subject: Votre organisation sur api.gouv.fr
-```
+Bonjour,
 
-Body: [see template](src/views/mails/join-organization.ejs)
+La procédure pour rejoindre une organisation est un processus encore en partie manuel sur https://signup.api.gouv.fr.
+
+Je viens de lever le blocage vous concernant. Vous pouvez de nouveau soumettre une demande pour rejoindre l'organisation : https://auth.api.gouv.fr/users/join-organization .
+
+Je reste à votre disposition pour toute information complémentaire.
+
+Cordialement,
+
+Équipe API Particulier
+```
