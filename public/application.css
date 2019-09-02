@@ -46,7 +46,27 @@ div.with-input-hint {
     text-align: left;
 }
 
-/* inline form */
+/* side by side forms on a single line */
+.inline-form {
+    margin-top: 2em;
+}
+.inline-form form {
+    display: inline-block;
+}
+.inline-form form {
+    margin: 0 0.25em;
+}
+
+@media (max-width: 550px) {
+    .inline-form form {
+        display: block;
+    }
+    .inline-form form {
+        margin: 0.5em 0 0 0;
+    }
+}
+
+/* form with inline content */
 form.inline {
     text-align: left;
     margin: 0 0 0 auto;
