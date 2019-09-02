@@ -38,6 +38,37 @@ input.button.large, input.button.large:focus {
     width: 100%;
 }
 
+/* override template style for submit button */
+input.link-submit,
+input.link-submit:active,
+input.link-submit:visited,
+input.link-submit:focus,
+input.link-submit:hover {
+    display: inline;
+    padding: inherit;
+    /*--theme-primary*/
+    color: #0053b3;
+    background-color: #fff;
+    border: inherit;
+    box-shadow: inherit;
+    -webkit-box-shadow: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    position: inherit;
+    top: inherit;
+    overflow: inherit;
+    text-decoration: inherit;
+    -webkit-transform: inherit;
+    -moz-transform: inherit;
+    -ms-transform: inherit;
+    -o-transform: inherit;
+    transform: inherit;
+    cursor: pointer;
+    width: inherit;
+    line-height: inherit;
+    vertical-align: inherit;
+}
+
 a.external-link {
     text-decoration: none;
 }
