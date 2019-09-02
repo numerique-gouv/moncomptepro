@@ -34,12 +34,16 @@ export const provider = {
   features: {
     devInteractions: false,
     discovery: false,
+    frontchannelLogout: true,
     encryption: true,
   },
   findById,
   formats: {
     default: 'opaque',
     AccessToken: 'jwt',
+  },
+  postLogoutRedirectUri: ctx => {
+    return ctx.headers.referer;
   },
   subjectTypes: ['public', 'pairwise'],
   pairwiseIdentifier(accountId, { sectorIdentifier }) {
@@ -54,11 +58,24 @@ export const provider = {
     // eslint-disable-line no-unused-vars
     return `/interaction/${ctx.oidc.uuid}`;
   },
+  logoutSource: async (ctx, form) => {
+    const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+    const bodyHtml = await render(
+      path.resolve(`${__dirname}/views/logout.ejs`),
+      { xsrfToken }
+    );
+
+    ctx.type = 'html';
+    ctx.body = await render(path.resolve(`${__dirname}/views/_layout.ejs`), {
+      body: bodyHtml,
+    });
+  },
   clientCacheDuration: 1 * 24 * 60 * 60, // 1 day in seconds,
   routes: {
     authorization: '/oauth/authorize',
     token: '/oauth/token',
     userinfo: '/oauth/userinfo',
+    end_session: '/oauth/logout',
   },
   renderError: async (ctx, { error, error_description }, err) => {
     console.error(err);

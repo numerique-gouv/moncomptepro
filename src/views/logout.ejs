@@ -1,0 +1,23 @@
+<div class="box-container">
+    <h3 class="section__title">Souhaitez vous être déconnecté de api.gouv.fr&nbsp;?</h3>
+    <div class="inline-form">
+        <form action="/oauth/logout" method="post">
+            <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
+            <input type="hidden" name="logout" value="non-empty-value">
+            <button type="submit" class="button">
+                Oui, déconnectez moi
+            </button>
+        </form>
+
+        <form action="/oauth/logout" method="post">
+            <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
+            <button type="submit" class="button-outline secondary">
+                Non, je reste connecté
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="container text-center">
+    <p><a class="external-link" href="https://api.gouv.fr/?filter=signup">Retour à l'accueil</a></p>
+</div>
