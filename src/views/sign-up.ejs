@@ -1,52 +1,44 @@
-<section>
-    <div class="container">
-        <h3 class="section__title">Créer un compte</h3>
+<div class="box-container">
+    <h3 class="section__title">Créer un compte</h3>
 
-        <form action="/users/sign-up" method="post">
+    <form action="/users/sign-up" method="post">
 
-        <% if (locals.notifications) { %>
-            <% notifications.forEach(({type, message}) => { %>
-            <div class="notification <%= type %>">
-                <%= message %>
-            </div>
-            <% }) %>
-        <% } %>
-
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-        <div class="form-row">
-            <div class="form-col">
-                <input class="form-control" required type="text" name="given_name"
-                       placeholder="Votre prénom">
-            </div>
-            <div class="form-col">
-                <input class="form-control" required type="text" name="family_name"
-                       placeholder="Votre nom de famille">
-            </div>
+    <% if (locals.notifications) { %>
+        <% notifications.forEach(({type, message}) => { %>
+        <div class="notification <%= type %>">
+            <%= message %>
         </div>
+        <% }) %>
+    <% } %>
 
-        <div class="form__group">
-            <input class="form-control" required type="email" name="login" placeholder="Votre adresse email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+    <div class="form-row">
+        <div class="form-col">
+            <input class="form-control" required type="text" name="given_name"
+                   placeholder="Votre prénom">
         </div>
-
-        <div class="form__group with-input-hint">
-            <input class="form-control" required type="password" name="password" placeholder="Votre nouveau mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
-            <small class="card__meta"><i>*10 caractères minimum</i></small>
-        </div>
-
-        <div class="form__group">
-            <input type="submit" value="Créer mon compte" class="button large">
-        </div>
-        </form>
-    </div>
-</section>
-
-<div class="container">
-    <div class="text-center">
-        <div class="container">
-            <div class="text-center">
-                <p>J'ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
-            </div>
+        <div class="form-col">
+            <input class="form-control" required type="text" name="family_name"
+                   placeholder="Votre nom de famille">
         </div>
     </div>
+
+    <div class="form__group">
+        <input class="form-control" required type="email" name="login" placeholder="Votre adresse email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+    </div>
+
+    <div class="form__group with-input-hint">
+        <input class="form-control" required type="password" name="password" placeholder="Votre nouveau mot de passe*" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        <small class="card__meta"><i>*10 caractères minimum</i></small>
+    </div>
+
+    <div class="form__group">
+        <input type="submit" value="Créer mon compte" class="button large">
+    </div>
+    </form>
+</div>
+
+<div class="container text-center">
+    <p>J'ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
 </div>

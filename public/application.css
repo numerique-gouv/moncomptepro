@@ -1,69 +1,52 @@
+body {
+    /*--theme-background-grey*/
+    background-color: #ebeff3;
+}
+
 .header-logo {
     width: 200px;
     margin: 20px auto;
     height: auto
 }
 
-section {
+.box-container {
     max-width: 800px;
     margin: auto;
+    padding: 3em;
     border-radius: 5px;
     border: 1px solid #aaa;
     background-color: #fff;
 }
 
-input.button.large, input.button.large:focus {
-    width: 100%;
-    display: block;
+@media (max-width: 750px) {
+    .box-container {
+        padding: 3em 10%;
+    }
 }
 
-/* override template style for submit button */
-input.link-submit,
-input.link-submit:active,
-input.link-submit:visited,
-input.link-submit:focus,
-input.link-submit:hover {
-    display: inline;
-    padding: inherit;
-    color: #0081d5;
-    background-color: #fff;
-    border: inherit;
-    box-shadow: inherit;
-    -webkit-box-shadow: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    position: inherit;
-    top: inherit;
-    overflow: inherit;
-    text-decoration: inherit;
-    -webkit-transform: inherit;
-    -moz-transform: inherit;
-    -ms-transform: inherit;
-    -o-transform: inherit;
-    transform: inherit;
-    cursor: pointer;
-    width: inherit;
-    line-height: inherit;
-    vertical-align: inherit;
+@media (max-width: 400px) {
+    .box-container {
+        padding: 3em 5%;
+    }
+}
+
+header.navbar + .box-container {
+    margin-top: 3em;
+}
+
+input.button.large, input.button.large:focus {
+    width: 100%;
 }
 
 a.external-link {
-    color: #0081d5;
     text-decoration: none;
-}
-
-input.button {
-    cursor: pointer;
 }
 
 div.with-input-hint {
     text-align: left;
 }
 
-header.navbar + section {
-    margin-top: 3em;
-}
-
+/* inline form */
 form.inline {
     text-align: left;
     margin: 0 0 0 auto;
