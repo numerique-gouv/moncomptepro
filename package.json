@@ -36,7 +36,7 @@
     "nanoid": "^2.0.0",
     "node-mailjet": "^3.3.1",
     "node-pg-migrate": "^3.14.2",
-    "oidc-provider": "^5.0.1",
+    "oidc-provider": "^6.7.0",
     "pg": "^7.7.1",
     "rate-limiter-flexible": "^0.21.2"
   },

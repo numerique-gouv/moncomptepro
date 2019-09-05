@@ -85,23 +85,25 @@ DO UPDATE
   SET (email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
   = (EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.given_name, EXCLUDED.family_name, EXCLUDED.roles);
 
-INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris)
+INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris, post_logout_redirect_uris)
 VALUES
   (
   1,
   'signup.api.gouv.fr',
   '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
   '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
-  '{"https://back.signup-development.api.gouv.fr/users/auth/api_gouv/callback"}'
+  '{"https://back.signup-development.api.gouv.fr/users/auth/api_gouv/callback"}',
+  '{"https://signup-development.api.gouv.fr/"}'
   ),
   (
   2,
   'api-particulier-auth',
   'dc1328d666cefc1f0ca9b14d6cde82d03f24a64ed9a0aeb861ccc200aba505f9',
   'e82cd22f5941761e05cec47010254f39f1315ccd06c0bf8bf7527255d5d88412',
-  '{"https://particulier-development.api.gouv.fr/admin/oauth-callback"}'
+  '{"https://particulier-development.api.gouv.fr/admin/oauth-callback"}',
+  '{}'
   )
 ON CONFLICT (id)
 DO UPDATE
-  SET (name, client_id, client_secret, redirect_uris)
-  = (EXCLUDED.name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris);
+  SET (name, client_id, client_secret, redirect_uris, post_logout_redirect_uris)
+  = (EXCLUDED.name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris, EXCLUDED.post_logout_redirect_uris);

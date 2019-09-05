@@ -1,7 +1,10 @@
 <div class="box-container">
+    <%# NB: note that this implementation with 2 forms is compliant with IE11 %>
+    <%# unlike the default template (https://github.com/panva/node-oidc-provider/blob/1d302cda5a283bf7a703a889834cd3428a442c0f/lib/helpers/defaults.js#L1861-L1879) %>
+    <%# NB2: it may break on future release of oidc-provider as it rely on internal strucure of form %>
     <h3 class="section__title">Souhaitez vous être déconnecté de api.gouv.fr&nbsp;?</h3>
     <div class="inline-form">
-        <form action="/oauth/logout" method="post">
+        <form action="/oauth/logout/confirm" method="post">
             <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
             <input type="hidden" name="logout" value="non-empty-value">
             <button type="submit" class="button">
@@ -9,7 +12,7 @@
             </button>
         </form>
 
-        <form action="/oauth/logout" method="post">
+        <form action="/oauth/logout/confirm" method="post">
             <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
             <button type="submit" class="button-outline secondary">
                 Non, je reste connecté

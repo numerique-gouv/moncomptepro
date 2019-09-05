@@ -1,8 +1,7 @@
 import crypto from 'crypto';
-import path from 'path';
 
-import { findById } from './connectors/oidc-account-adapter';
-import { render } from './services/utils';
+import { findAccount } from './connectors/oidc-account-adapter';
+import { renderWithEjsLayout } from './services/utils';
 
 const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env;
 
@@ -14,12 +13,15 @@ export const provider = {
   cookies: {
     names: {
       session: 'api_gouv_session',
-      interaction: 'api_gouv_grant',
-      resume: 'api_gouv_grant',
+      interaction: 'api_gouv_interaction',
+      resume: 'api_gouv_interaction_resume',
       state: 'api_gouv_state',
     },
     long: { signed: true, secure: true, maxAge: cookiesMaxAge },
     // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
+    // This parameter set the session duration on signup.
+    // On api-particulier-auth, it his the duration the session will remain open after the last activity.
+    // Also related to https://github.com/panva/node-oidc-provider/issues/382.
     short: { signed: true, secure: true, maxAge: 3 * 60 * 60 * 1000 }, // 3 hours in ms,
     keys: cookiesSecrets,
   },
@@ -32,21 +34,16 @@ export const provider = {
     roles: ['roles'],
   },
   features: {
-    devInteractions: false,
-    discovery: false,
-    frontchannelLogout: true,
-    encryption: true,
+    devInteractions: { enabled: false },
+    frontchannelLogout: { enabled: true },
+    encryption: { enabled: true },
   },
-  findById,
+  findAccount,
   formats: {
-    default: 'opaque',
     AccessToken: 'jwt',
   },
-  postLogoutRedirectUri: ctx => {
-    return ctx.headers.referer;
-  },
   subjectTypes: ['public', 'pairwise'],
-  pairwiseIdentifier(accountId, { sectorIdentifier }) {
+  pairwiseIdentifier(ctx, accountId, { sectorIdentifier }) {
     return crypto
       .createHash('sha256')
       .update(sectorIdentifier)
@@ -54,23 +51,16 @@ export const provider = {
       .update(OIDC_PAIRWISE_IDENTIFIER_SALT)
       .digest('hex');
   },
-  interactionUrl: function interactionUrl(ctx, interaction) {
-    // eslint-disable-line no-unused-vars
-    return `/interaction/${ctx.oidc.uuid}`;
-  },
   logoutSource: async (ctx, form) => {
     const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
-    const bodyHtml = await render(
-      path.resolve(`${__dirname}/views/logout.ejs`),
-      { xsrfToken }
-    );
 
     ctx.type = 'html';
-    ctx.body = await render(path.resolve(`${__dirname}/views/_layout.ejs`), {
-      body: bodyHtml,
-    });
+    ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
   },
-  clientCacheDuration: 1 * 24 * 60 * 60, // 1 day in seconds,
+  postLogoutSuccessSource: async ctx => {
+    ctx.type = 'html';
+    ctx.body = await renderWithEjsLayout('logout-success');
+  },
   routes: {
     authorization: '/oauth/authorize',
     token: '/oauth/token',
@@ -80,20 +70,14 @@ export const provider = {
   renderError: async (ctx, { error, error_description }, err) => {
     console.error(err);
 
-    const bodyHtml = await render(
-      path.resolve(`${__dirname}/views/error.ejs`),
-      {
-        error_code: err.statusCode || err,
-        error_message: `${error}: ${error_description}`,
-      }
-    );
-
     ctx.type = 'html';
-    ctx.body = await render(path.resolve(`${__dirname}/views/_layout.ejs`), {
-      body: bodyHtml,
+    ctx.body = await renderWithEjsLayout('error', {
+      error_code: err.statusCode || err,
+      error_message: `${error}: ${error_description}`,
     });
   },
   ttl: {
+    // note that session is limited by short term cookie duration
     AccessToken: 3 * 60 * 60, // 3 hours in second
     IdToken: 3 * 60 * 60, // 3 hours in second
   },

@@ -14,7 +14,7 @@ import {
   cookiesMaxAge,
   cookiesSecrets,
 } from './configuration';
-import { keys } from './keystore';
+import jwks from './jwks';
 import routes from './routes';
 import { getClients } from './services/oidc-clients';
 
@@ -64,15 +64,14 @@ app.set('view engine', 'ejs');
 
 app.use('/assets', express.static('public'));
 
-const provider = new Provider(ISSUER, providerConfiguration);
-
 let server;
 
 (async () => {
-  await provider.initialize({
-    adapter,
+  const provider = new Provider(ISSUER, {
     clients: await getClients(),
-    keystore: { keys },
+    adapter,
+    jwks,
+    ...providerConfiguration,
   });
   provider.proxy = true;
 
@@ -84,5 +83,5 @@ let server;
 })().catch(err => {
   if (server && server.listening) server.close();
   console.error(err);
-  process.exitCode = 1;
+  process.exit(1);
 });
