@@ -1,4 +1,4 @@
-// source https://github.com/panva/node-oidc-provider/blob/86c4cc82447e1061ee933144fceec836613e4592/example/adapters/redis.js
+// source https://github.com/panva/node-oidc-provider/blob/ae8a4589c582b96f4e9ca0432307da15792ac29d/example/adapters/redis.js
 import { getNewRedisClient } from './redis';
 const { isEmpty } = require('lodash');
 
@@ -6,8 +6,7 @@ const client = getNewRedisClient({
   keyPrefix: 'oidc:',
 });
 
-const grantable = new Set([
-  'AccessToken',
+const consumable = new Set([
   'AuthorizationCode',
   'RefreshToken',
   'DeviceCode',
@@ -21,6 +20,10 @@ function userCodeKeyFor(userCode) {
   return `userCode:${userCode}`;
 }
 
+function uidKeyFor(uid) {
+  return `uid:${uid}`;
+}
+
 class RedisAdapter {
   constructor(name) {
     this.name = name;
@@ -28,15 +31,11 @@ class RedisAdapter {
 
   async upsert(id, payload, expiresIn) {
     const key = this.key(id);
-    const store = grantable.has(this.name)
-      ? {
-          dump: JSON.stringify(payload),
-          ...(payload.grantId ? { grantId: payload.grantId } : undefined),
-        }
-      : JSON.stringify(payload);
+    const store = consumable.has(this.name)
+      ? { payload: JSON.stringify(payload) } : JSON.stringify(payload);
 
     const multi = client.multi();
-    multi[grantable.has(this.name) ? 'hmset' : 'set'](key, store);
+    multi[consumable.has(this.name) ? 'hmset' : 'set'](key, store);
 
     if (expiresIn) {
       multi.expire(key, expiresIn);
@@ -59,11 +58,17 @@ class RedisAdapter {
       multi.expire(userCodeKey, expiresIn);
     }
 
+    if (payload.uid) {
+      const uidKey = uidKeyFor(payload.uid);
+      multi.set(uidKey, id);
+      multi.expire(uidKey, expiresIn);
+    }
+
     await multi.exec();
   }
 
   async find(id) {
-    const data = grantable.has(this.name)
+    const data = consumable.has(this.name)
       ? await client.hgetall(this.key(id))
       : await client.get(this.key(id));
 
@@ -74,11 +79,16 @@ class RedisAdapter {
     if (typeof data === 'string') {
       return JSON.parse(data);
     }
-    const { dump, ...rest } = data;
+    const { payload, ...rest } = data;
     return {
       ...rest,
-      ...JSON.parse(dump),
+      ...JSON.parse(payload),
     };
+  }
+
+  async findByUid(uid) {
+    const id = await client.get(uidKeyFor(uid));
+    return this.find(id);
   }
 
   async findByUserCode(userCode) {
@@ -88,16 +98,15 @@ class RedisAdapter {
 
   async destroy(id) {
     const key = this.key(id);
-    if (grantable.has(this.name)) {
-      const multi = client.multi();
-      const grantId = await client.hget(key, 'grantId');
-      const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
-      tokens.forEach(token => multi.del(token));
-      multi.del(grantKeyFor(grantId));
-      await multi.exec();
-    } else {
-      await client.del(key);
-    }
+    await client.del(key);
+  }
+
+  async revokeByGrantId(grantId) { // eslint-disable-line class-methods-use-this
+    const multi = client.multi();
+    const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
+    tokens.forEach((token) => multi.del(token));
+    multi.del(grantKeyFor(grantId));
+    await multi.exec();
   }
 
   async consume(id) {
@@ -109,4 +118,4 @@ class RedisAdapter {
   }
 }
 
-module.exports = RedisAdapter;
+export default RedisAdapter;

@@ -4,4 +4,4 @@
 *.orig
 
 .idea
-src/keystore.json
+src/jwks.json

@@ -5,7 +5,7 @@ export const getClients = async () => {
 
   const {
     rows: results,
-  } = await connection.query('SELECT client_id, client_secret, redirect_uris FROM oidc_clients');
+  } = await connection.query('SELECT client_id, client_secret, redirect_uris, post_logout_redirect_uris FROM oidc_clients');
 
   return results;
 };

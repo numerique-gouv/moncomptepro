@@ -11,7 +11,10 @@ import {
   verifyEmail,
 } from './services/user-manager';
 import { rateLimiterMiddleware } from './services/rate-limiter';
-import { ejsLayoutMiddelwareFactory } from './services/utils';
+import {
+  ejsLayoutMiddlewareFactory,
+  renderWithEjsLayout,
+} from './services/utils';
 import {
   joinOrganization,
   getOrganizationsByUserId,
@@ -27,7 +30,8 @@ module.exports = (app, provider) => {
   const csrfProtection = csrf();
 
   // wrap template within layout except for welcome.ejs page
-  app.use(/^\/users\/.+$/, ejsLayoutMiddelwareFactory(app));
+  const routeWithTemplateRegex = /^\/users\/.+$/;
+  app.use(routeWithTemplateRegex, ejsLayoutMiddlewareFactory(app));
 
   app.use(/^\/(users|interaction)/, (req, res, next) => {
     res.set('Pragma', 'no-cache');
@@ -117,35 +121,30 @@ module.exports = (app, provider) => {
   app.get('/interaction/:grant', async (req, res, next) => {
     try {
       const {
-        uuid: interactionId,
-        interaction: { error, error_description },
+        uid: interactionId,
+        prompt,
         params: { source },
       } = await provider.interactionDetails(req);
 
       req.session.interactionId = interactionId;
 
-      if (error === 'login_required') {
+      if (prompt.name === 'login') {
         return res.redirect(`/users/${source ? '?source=' + source : ''}`);
       }
 
-      if (error === 'consent_required') {
+      if (prompt.name === 'consent') {
         // Consent to share the user's data is implicitly given.
         // If consent is required, we redirect the user to the end of the login process
         // There, his consent will be accepted by default.
-        // However we experienced some bugs concerning the consent granting process.
-        // We log it until we understand the issue.
-        const details = await provider.interactionDetails(req);
-        console.error(
-          'ERROR: a consent_required error occured and this should not happen!'
-        );
-        console.error('Here are the interaction details: ', details);
-
+        if (!isEmpty(req.session.user)) {
+          return res.redirect(`/interaction/${interactionId}/login`);
+        }
         return res.redirect(`/users/sign-in`);
       }
 
       return res.status(500).render('error', {
-        error_code: error,
-        error_message: error_description,
+        error_code: 'unknown_interaction_name',
+        error_message: prompt.name,
       });
     } catch (error) {
       return next(error);
@@ -548,12 +547,23 @@ module.exports = (app, provider) => {
     }
   );
 
-  app.use((err, req, res, next) => {
+  app.use(async (err, req, res, next) => {
     console.error(err);
 
-    return res.status(err.statusCode || 500).render('error', {
+    const statusCode = err.statusCode || 500;
+    const templateName = 'error';
+    const params = {
       error_code: err.statusCode || err,
       error_message: err.message,
-    });
+    };
+
+    if (req.originalUrl.match(routeWithTemplateRegex)) {
+      // the layout has already been applied on this route (see above)
+      return res.status(statusCode).render(templateName, params);
+    }
+
+    const html = await renderWithEjsLayout(templateName, params);
+
+    return res.status(statusCode).send(html);
   });
 };

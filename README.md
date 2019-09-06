@@ -6,7 +6,7 @@ Plateforme d'authentification unique à destination des services api.gouv.fr (ht
 
 API Auth is part of the Signup ecosystem.
 
-The instructions to install the whole Signup ecosystem is available on a [private gitlab](https://gitlab.incubateur.net/beta.gouv.fr/signup-ansible).
+The instructions to install the whole Signup ecosystem is available on a [private gitlab repository](https://gitlab.incubateur.net/beta.gouv.fr/signup-ansible).
 
 ## Migrations
 
@@ -26,15 +26,16 @@ npm run migrate up
 
 More info available at [https://github.com/salsita/node-pg-migrate](https://github.com/salsita/node-pg-migrate).
 
-## Add a user to an organisation
+## Add a user to an organisation on the production environment
 
-If the mail provider is not a free mail provider or a disposable mail provider, add it to the organization. Connect to api-auth database then:
+If the given email address is not from a free mail provider or a disposable mail provider, add the email domain to the organization authorized domains.
+To do so, connect to api-auth database then:
 
 ```postgresql
 UPDATE organizations set authorized_email_domains = array_append(authorized_email_domains, '<email_domain>') where id='<organization_id>';
 ```
 
-Then send back the following email :
+Then send back the following email:
 
 ```
 Bonjour,
