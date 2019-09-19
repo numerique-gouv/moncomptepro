@@ -35,23 +35,25 @@
     </header>
 
     <div class="box-container">
-        <% if (locals.source === 'partnerpage_publicorganisation') { %>
-            <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
-            <h3>Vous représentez une administration ou une collectivité</h3>
-            <p>
-                Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
-                ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
-            </p>
-        <% } else if (locals.source === 'partnerpage_privateorganisation') { %>
-            <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
-            <h3>Vous représentez une société de droit privé</h3>
-            <p>
-                Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
-                ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
-            </p>
-        <% } else { %>
-            <h3 class="section__title">Créer un compte</h3>
-        <% } %>
+        <div class="text-center">
+            <% if (locals.source === 'partnerpage_publicorganisation') { %>
+                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                <h3>Vous représentez une administration ou une collectivité</h3>
+                <p>
+                    Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
+                    ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'partnerpage_privateorganisation') { %>
+                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                <h3>Vous représentez une société de droit privé</h3>
+                <p>
+                    Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
+                    ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else { %>
+                <h3 class="section__title">Créer un compte</h3>
+            <% } %>
+        </div>
 
         <form action="/users/sign-up" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
