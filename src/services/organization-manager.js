@@ -72,12 +72,15 @@ export const joinOrganization = async (siret, user_id) => {
 
   await addUser({ organization_id: organization.id, user_id });
 
+  const user_label =
+    !given_name && !family_name ? email : `${given_name} ${family_name}`;
+
   if (usersInOrganizationAlready.length > 0) {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: usersInOrganizationAlready.map(({ email }) => email),
       template: 'join-organization',
-      params: { given_name, family_name, nom_raison_sociale },
+      params: { user_label, nom_raison_sociale },
       cc: [email, 'signup@api.gouv.fr'],
     });
   }
