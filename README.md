@@ -42,11 +42,13 @@ Bonjour,
 
 La procédure pour rejoindre une organisation est un processus encore en partie manuel sur https://signup.api.gouv.fr.
 
-Je viens de lever le blocage vous concernant. Vous pouvez de nouveau soumettre une demande pour rejoindre l'organisation : https://auth.api.gouv.fr/users/join-organization .
+Je viens de lever le blocage vous concernant. Vous pouvez de nouveau soumettre une demande pour rejoindre l'organisation via le lien suivant : https://auth.api.gouv.fr/users/join-organization .
+
+Suite à cela, vous serez en mesure de soumettre une demande d'habilitation FranceConnect via le lien suivant : https://signup.api.gouv.fr/franceconnect
 
 Je reste à votre disposition pour toute information complémentaire.
 
 Cordialement,
 
-Équipe API Particulier
+Équipe api.gouv.fr
 ```
