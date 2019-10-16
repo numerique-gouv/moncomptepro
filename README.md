@@ -52,3 +52,57 @@ Cordialement,
 
 Équipe api.gouv.fr
 ```
+
+## Add a non existing user to an organization on the production environment
+
+```postgresql
+INSERT INTO users (email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
+VALUES
+  (
+  'EMAIL',
+  'true',
+  'not_set',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP,
+  'GIVEN_NAME',
+  'FAMILY_NAME',
+  '{"TARGET_API","TARGET_API_2"}'
+  )
+RETURNING *;
+
+INSERT INTO organizations (siret, authorized_email_domains)
+VALUES
+  (
+  'SIRET',
+  '{"MAIL_DOMAIN"}'
+  )
+RETURNING *;
+
+INSERT INTO users_organizations (user_id, organization_id)
+VALUES
+  (
+  USER_ID,
+  ORGANIZATION_ID
+  )
+;
+```
+
+The send the following email:
+
+```
+Subject: Création de votre compte « Signup »
+To: EMAIL
+CC: signup@api.gouv.fr
+
+Bonjour,
+
+Votre compte « Signup » a été créé. Il vous permet d'administrer les demandes d'habilitation à l'TARGET_API via le lien : https://signup.api.gouv.fr.
+
+Pour y avoir accès merci de définir votre mot de passe en remplissant le formulaire de mot de passe oublié : https://auth.api.gouv.fr/users/reset-password.
+
+Nous restons à votre disposition pour tout complément d'information.
+
+Cordialement,
+
+Équipe api.gouv.fr
+```
