@@ -70,7 +70,7 @@ VALUES
   '{"api_droits_cnam"}'
   ),
   (
-  'dgfip@test',
+  'api_impot_particulier@test',
   'true',
 --  hashed 'password' string
   '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6',
@@ -78,7 +78,7 @@ VALUES
   CURRENT_TIMESTAMP,
   'Dgfip',
   'Test',
-  '{"dgfip"}'
+  '{"api_impot_particulier", "api_impot_particulier_step2"}'
   )
 ON CONFLICT (email)
 DO UPDATE
