@@ -16,7 +16,7 @@
     <div class="form-row">
         <div class="form-col">
             <input class="form-control" required type="text" name="given_name"
-                   placeholder="Votre prénom">
+                   placeholder="Votre prénom" autofocus="on">
         </div>
         <div class="form-col">
             <input class="form-control" required type="text" name="family_name"
@@ -25,7 +25,7 @@
     </div>
 
     <div class="form__group">
-        <input class="form-control" required type="email" name="login" placeholder="Votre adresse email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+        <input class="form-control" required type="email" name="login" placeholder="Votre adresse email" <% if (locals.loginHint) { %>value="<%= locals.loginHint %>" <% } %>>
     </div>
 
     <div class="form__group with-input-hint">
