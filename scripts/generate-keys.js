@@ -14,7 +14,7 @@ try {
     process.exit();
   }
 } catch (e) {
-  console.error(e)
+  console.error(e);
   // do nothing
 }
 

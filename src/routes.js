@@ -79,7 +79,7 @@ module.exports = (app, provider) => {
     },
     user_in_organization_already: {
       type: 'error',
-      message: 'Vous appartenez déjà à cette organisation.'
+      message: 'Vous appartenez déjà à cette organisation.',
     },
     organization_needed: {
       type: 'warning',
