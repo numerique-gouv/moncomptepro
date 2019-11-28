@@ -39,7 +39,7 @@ app.use(
 
 const logger = morgan('combined', {
   stream: fs.createWriteStream(
-    process.env.ACCESS_LOG_PATH || './api-scopes.log',
+    process.env.ACCESS_LOG_PATH || './api-auth.log',
     { flags: 'a' }
   ),
 });
