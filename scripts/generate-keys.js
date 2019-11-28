@@ -6,6 +6,17 @@ const {
 } = require('@panva/jose');
 
 const keystore = new KeyStore();
+const keysFilePath = path.resolve('../jwks.json');
+
+try {
+  if (fs.existsSync(keysFilePath)) {
+    console.log(`Key file already exist at ${keysFilePath}. Doing nothing.`);
+    process.exit();
+  }
+} catch (e) {
+  console.error(e)
+  // do nothing
+}
 
 Promise.all([
   keystore.generate('RSA', 2048, { use: 'sig' }),
@@ -15,7 +26,9 @@ Promise.all([
   keystore.generate('OKP', 'Ed25519', { use: 'sig' }),
 ]).then(() => {
   fs.writeFileSync(
-    path.resolve('src/jwks.json'),
-    JSON.stringify(keystore.toJWKS(true), null, 2)
+    keysFilePath,
+    JSON.stringify(keystore.toJWKS(true), null, 2),
+    { mode: 0o600 }
   );
+  console.log(`A new key file has been generated at ${keysFilePath}`);
 });
