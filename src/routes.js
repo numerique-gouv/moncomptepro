@@ -77,6 +77,10 @@ module.exports = (app, provider) => {
       Pour rejoindre cette organisation, merci de nous transmettre une demande
       écrite à l'adresse contact@api.gouv.fr.`,
     },
+    user_in_organization_already: {
+      type: 'error',
+      message: 'Vous appartenez déjà à cette organisation.'
+    },
     organization_needed: {
       type: 'warning',
       message: `Pour continuer, merci de renseigner le numéro SIRET de l'organisation que
@@ -365,6 +369,14 @@ module.exports = (app, provider) => {
         }
 
         if (error.message === 'invalid_siret') {
+          return res.redirect(
+            `/users/join-organization?notification=${
+              error.message
+            }&siret_hint=${req.body.siret}`
+          );
+        }
+
+        if (error.message === 'user_in_organization_already') {
           return res.redirect(
             `/users/join-organization?notification=${
               error.message

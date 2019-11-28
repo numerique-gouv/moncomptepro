@@ -5,7 +5,7 @@ import {
   addUser,
   getUsers,
 } from './organizations';
-import { isEmpty } from 'lodash';
+import { isEmpty, some } from 'lodash';
 import axios from 'axios';
 import { isSiretValid } from './security';
 import { findById as findUserById } from './users';
@@ -67,9 +67,16 @@ export const joinOrganization = async (siret, user_id) => {
     });
   }
 
-  // Link user to organization
+  // Ensure user is not in organization already
   const usersInOrganizationAlready = await getUsers(organization.id);
+  if (
+    !isEmpty(organization) &&
+    some(usersInOrganizationAlready, ['email', email])
+  ) {
+    throw new Error('user_in_organization_already');
+  }
 
+  // Link user to organization
   await addUser({ organization_id: organization.id, user_id });
 
   const user_label =
