@@ -57,7 +57,7 @@ VALUES
   ),
   (
     6,
-    'api_impot_particulier2@test',
+    'api_impot_particulier@test',
     'true',
     '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6', -- hashed 'password' string
     CURRENT_TIMESTAMP,
