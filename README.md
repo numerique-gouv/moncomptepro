@@ -6,7 +6,7 @@ Plateforme d'authentification unique à destination des services api.gouv.fr (ht
 
 API Auth is part of the Signup ecosystem.
 
-The instructions to install the whole Signup ecosystem is available on a [private gitlab repository](https://gitlab.incubateur.net/beta.gouv.fr/signup-ansible).
+The instructions to install the whole Signup ecosystem is available on a [private gitlab repository](https://gitlab.com/etalab/api.gouv.fr/signup-ansible).
 
 ## Migrations
 
