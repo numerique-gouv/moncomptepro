@@ -2,7 +2,7 @@ INSERT INTO users (id, email, email_verified, encrypted_password, created_at, up
 VALUES
   (
     1, -- keep this id synchronised with the corresponding uid in signup-back/test/fixtures/users.yml
-    'user@test',
+    'user@yopmail.com',
     'true',
     '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -13,7 +13,7 @@ VALUES
   ),
   (
     2,
-    'api_particulier@test',
+    'api-particulier@yopmail.com',
     'true',
     '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -24,7 +24,7 @@ VALUES
   ),
   (
     3,
-    'franceconnect@test',
+    'franceconnect@yopmail.com',
     'true',
     '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -35,7 +35,7 @@ VALUES
   ),
   (
     4,
-    'api_entreprise@test',
+    'api-entreprise@yopmail.com',
     'true',
     '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -46,7 +46,7 @@ VALUES
   ),
   (
     5,
-    'api_droits_cnam@test',
+    'api-droits_cnam@yopmail.com',
     'true',
     '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -57,7 +57,7 @@ VALUES
   ),
   (
     6,
-    'api_impot_particulier@test',
+    'api-impot-particulier@yopmail.com',
     'true',
     '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6', -- hashed 'password' string
     CURRENT_TIMESTAMP,
@@ -73,8 +73,8 @@ DO UPDATE
 
 INSERT INTO organizations (id, siret, authorized_email_domains)
 VALUES
-  (1, '21920023500014', '{"test"}'),
-  (2, '13002526500013', '{"test"}')
+  (1, '21920023500014', '{"yopmail.com"}'),
+  (2, '13002526500013', '{"yopmail.com"}')
 ON CONFLICT (id)
 DO UPDATE
   SET (siret, authorized_email_domains)
