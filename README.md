@@ -1,6 +1,8 @@
-# API Auth
+# auth.api.gouv.fr
 
 Plateforme d'authentification unique à destination des services api.gouv.fr (https://signup.api.gouv.fr, https://particulier.api.gouv.fr/admin, ...).
+
+Les instructions d'installation se trouve ici : https://github.com/betagouv/signup-ansible
 
 ## How to run api-auth
 
