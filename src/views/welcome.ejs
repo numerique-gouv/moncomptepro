@@ -37,18 +37,60 @@
     <div class="box-container">
         <div class="text-center">
             <% if (locals.source === 'partnerpage_publicorganisation') { %>
-                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" height="90">
                 <h3>Vous représentez une administration ou une collectivité</h3>
                 <p>
                     Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
                     ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
                 </p>
             <% } else if (locals.source === 'partnerpage_privateorganisation') { %>
-                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" width="170">
+                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" height="90">
                 <h3>Vous représentez une société de droit privé</h3>
                 <p>
                     Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
                     ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup_franceconnect') { %>
+                <img src="/assets/logo_franceconnect.png" alt="Logo FranceConnect" height="90">
+                <h3>Créer un compte</h3>
+                <p>
+                    Vous souhaitez intégrer le bouton d'identification FranceConnect à votre service en
+                    ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup_api-particulier') { %>
+                <img src="/assets/logo-beta-gouv.svg" alt="Logo API Particulier" height="90">
+                <h3>Créer un compte</h3>
+                <p>
+                    Vous souhaitez connecter votre service en ligne à l'API Particulier. Merci de créer
+                    un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup_api-entreprise') { %>
+                <img src="/assets/logo-beta-gouv.svg" alt="Logo API Entreprise" height="90">
+                <h3>Créer un compte</h3>
+                <p>
+                    Vous souhaitez connecter votre service en ligne à l'API Entreprise. Merci de créer
+                    un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup_api-impot-particulier') { %>
+                <img src="/assets/logo-dgfip.jpg" alt="Logo API Impôt particulier" height="90">
+                <h3>Créer un compte</h3>
+                <p>
+                    Vous souhaitez connecter votre service en ligne à l'API Impôt particulier. Merci de
+                    créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup_api-droits-cnam') { %>
+                <img src="/assets/cnam.jpg" alt="Logo API de droits à l'Assurance Maladie" height="90">
+                <h3>Créer un compte</h3>
+                <p>
+                    Vous souhaitez connecter l'API de droits à l'Assurance Maladie à votre service en
+                    ligne. Merci de créer un compte pour déposer votre demande et suivre son traitement.
+                </p>
+            <% } else if (locals.source === 'signup') { %>
+                <h3 class="section__title">Créer un compte</h3>
+                <p>
+                    Vous souhaitez déposer une demande d'habilitation ou alors suivre le traitement d'une
+                    demande d'habilitation. Merci de vous créer un compte afin que nous puissions
+                    configurer vos accès.
                 </p>
             <% } else { %>
                 <h3 class="section__title">Créer un compte</h3>
