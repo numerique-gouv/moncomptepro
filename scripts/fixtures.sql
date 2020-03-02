@@ -46,7 +46,7 @@ VALUES
   ),
   (
     5,
-    'api-droits_cnam@yopmail.com',
+    'api-droits-cnam@yopmail.com',
     'true',
     '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa', -- hashed 'password' string
     CURRENT_TIMESTAMP,
