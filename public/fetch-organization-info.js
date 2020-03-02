@@ -34,6 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
           organizationInfoElement.style.display = 'block';
           organizationInfoElement.classList.add("error");
           organizationInfoElement.innerHTML = "Nous n'avons pas trouvé votre organisation.";
+        } else {
+          organizationInfoElement.style.display = 'block';
+          organizationInfoElement.classList.add("error");
+          organizationInfoElement.innerHTML =
+            "Erreur inconnue lors de la récupération des informations de cet établissement. " +
+            "Merci de réessayer ultérieurement. " +
+            "Vous pouvez également nous signaler cette erreur par mail à contact@api.gouv.fr."
         }
       }
     };
