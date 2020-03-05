@@ -6,7 +6,7 @@ const {
 } = require('@panva/jose');
 
 const keystore = new KeyStore();
-const keysFilePath = path.resolve('../jwks.json');
+const keysFilePath = path.resolve('/opt/apps/api-auth/jwks.json');
 
 try {
   if (fs.existsSync(keysFilePath)) {

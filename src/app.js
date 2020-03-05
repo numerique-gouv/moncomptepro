@@ -14,7 +14,7 @@ import {
   cookiesMaxAge,
   cookiesSecrets,
 } from './configuration';
-import jwks from '../../jwks';
+import jwks from '/opt/apps/api-auth/jwks';
 import routes from './routes';
 import { getClients } from './services/oidc-clients';
 
