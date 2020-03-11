@@ -127,13 +127,16 @@ module.exports = (app, provider) => {
       const {
         uid: interactionId,
         prompt,
-        params: { source },
       } = await provider.interactionDetails(req);
 
       req.session.interactionId = interactionId;
 
+      if (prompt.name === 'create_account') {
+        return res.redirect(`/users/sign-up`);
+      }
+
       if (prompt.name === 'login') {
-        return res.redirect(`/users/${source ? '?source=' + source : ''}`);
+        return res.redirect(`/users/sign-in`);
       }
 
       if (prompt.name === 'consent') {
@@ -181,6 +184,7 @@ module.exports = (app, provider) => {
           rejectedScopes: [],
           rejectedClaims: [],
         },
+        create_account: {},
       };
 
       req.session.interactionId = null;
@@ -195,15 +199,6 @@ module.exports = (app, provider) => {
 
       next(error);
     }
-  });
-
-  app.get('/users/', csrfProtection, async (req, res, next) => {
-    const source = req.query.source;
-
-    return res.render('welcome', {
-      csrfToken: req.csrfToken(),
-      source,
-    });
   });
 
   app.get('/users/sign-in', csrfProtection, async (req, res, next) => {

@@ -30,10 +30,6 @@ body {
     }
 }
 
-header.navbar + .box-container {
-    margin-top: 3em;
-}
-
 input.button.large, input.button.large:focus {
     width: 100%;
 }
@@ -95,44 +91,6 @@ div.with-input-hint {
     .inline-form form {
         margin: 0.5em 0 0 0;
     }
-}
-
-/* form with inline content */
-form.inline {
-    text-align: left;
-    margin: 0 0 0 auto;
-}
-
-form.inline .section__title {
-    font-size: inherit;
-    margin: inherit;
-}
-
-form.inline .form__group {
-    display: inline-block;
-}
-
-form.inline .form__group + .form__group {
-    margin-top: inherit;
-}
-
-form.inline .form__group label {
-    font-size: 0.9em;
-    margin-bottom: inherit;
-}
-
-form.inline .form__group input {
-    width: inherit;
-    padding: inherit;
-    line-height: inherit;
-}
-
-form.inline .form__group input.button.large {
-    display: inline-block;
-    box-shadow: inherit;
-    -webkit-box-shadow: inherit;
-    padding: 0.05em 1em;
-    font-size: inherit;
 }
 
 /* side by side input field */

@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { interactionPolicy } from 'oidc-provider';
 
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/utils';
@@ -7,6 +8,19 @@ const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env;
 
 export const cookiesSecrets = [SESSION_COOKIE_SECRET];
 export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
+
+// Create a new prompt type allows applications to ask for a login or a create account interface
+// copied from https://github.com/panva/node-oidc-provider/blob/v6.7.0/example/support/configuration.js#L3-L13
+const { Prompt, base: policy } = interactionPolicy;
+// copies the default policy, already has login and consent prompt policies
+const interactions = policy();
+// create a requestable prompt with no implicit checks
+const selectAccount = new Prompt({
+  name: 'create_account',
+  requestable: true,
+});
+// add to index 0, order goes create_account > login > consent
+interactions.add(selectAccount, 0);
 
 export const provider = {
   acrValues: ['urn:mace:incommon:iap:bronze'],
@@ -81,5 +95,5 @@ export const provider = {
     AccessToken: 3 * 60 * 60, // 3 hours in second
     IdToken: 3 * 60 * 60, // 3 hours in second
   },
-  extraParams: ['source'],
+  interactions: { policy: interactions },
 };
