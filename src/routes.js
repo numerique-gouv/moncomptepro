@@ -124,10 +124,9 @@ module.exports = (app, provider) => {
 
   app.get('/interaction/:grant', async (req, res, next) => {
     try {
-      const {
-        uid: interactionId,
-        prompt,
-      } = await provider.interactionDetails(req);
+      const { uid: interactionId, prompt } = await provider.interactionDetails(
+        req
+      );
 
       req.session.interactionId = interactionId;
 
