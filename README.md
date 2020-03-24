@@ -4,7 +4,7 @@ Plateforme d'authentification unique à destination des services api.gouv.fr (ht
 
 ## Installation
 
-Les instructions d'installation se trouve ici : https://github.com/betagouv/signup
+Les instructions d'installation se trouvent ici : https://github.com/betagouv/signup
 
 ## Migrations
 
