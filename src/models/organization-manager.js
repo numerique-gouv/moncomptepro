@@ -1,14 +1,15 @@
+import { isEmpty, some } from 'lodash';
+import axios from 'axios';
+
 import {
   findBySiret,
   findByUserId,
   create,
   addUser,
   getUsers,
-} from './organizations';
-import { isEmpty, some } from 'lodash';
-import axios from 'axios';
-import { isSiretValid } from './security';
-import { findById as findUserById } from './users';
+} from './organization-repository';
+import { isSiretValid } from '../services/security';
+import { findById as findUserById } from './user-repository';
 import { sendMail } from '../connectors/mailer';
 
 export const joinOrganization = async (siret, user_id) => {

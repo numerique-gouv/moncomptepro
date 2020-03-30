@@ -20,6 +20,7 @@ export const validatePassword = async (plainPassword, storedHash) => {
 };
 
 // TODO use https://www.npmjs.com/package/owasp-password-strength-test instead
+// TODO call https://haveibeenpwned.com/Passwords
 export const isPasswordSecure = plainPassword => {
   return plainPassword && plainPassword.length >= 10;
 };

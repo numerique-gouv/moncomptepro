@@ -2,7 +2,7 @@ import path from 'path';
 import mailjet from 'node-mailjet';
 import { isEmpty } from 'lodash';
 
-import { render } from '../services/utils';
+import { render } from '../services/renderer';
 
 const apiKey =
   process.env.MAILJET_API_KEY && !isEmpty(process.env.MAILJET_API_KEY)

@@ -6,18 +6,18 @@ import {
   findByVerifyEmailToken,
   insert,
   update,
-} from './users';
+} from './user-repository';
 import {
   generateToken,
   hashPassword,
   isEmailValid,
   isPasswordSecure,
   validatePassword,
-} from './security';
+} from '../services/security';
 import { sendMail } from '../connectors/mailer';
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
-const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 8 * 60;
+const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 30;
 
 const isExpired = (emittedDate, expirationDurationInMinutes) => {
   if (!(emittedDate instanceof Date)) {

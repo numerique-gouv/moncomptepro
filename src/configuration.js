@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { interactionPolicy } from 'oidc-provider';
 
 import { findAccount } from './connectors/oidc-account-adapter';
-import { renderWithEjsLayout } from './services/utils';
+import { renderWithEjsLayout } from './services/renderer';
 
 const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env;
 
