@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import nanoid from 'nanoid/async';
+import { nanoid } from 'nanoid/async';
 import { isEmpty, isString } from 'lodash';
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
