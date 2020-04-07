@@ -8,6 +8,7 @@ import {
   update,
 } from './user-repository';
 import {
+  generatePinToken,
   generateToken,
   hashPassword,
   isEmailValid,
@@ -90,7 +91,7 @@ export const sendEmailAddressVerificationEmail = async email => {
     throw new Error('email_verified_already');
   }
 
-  const verifyEmailToken = await generateToken();
+  const verifyEmailToken = await generatePinToken();
 
   await update(user.id, {
     verify_email_token: verifyEmailToken,
@@ -100,6 +101,7 @@ export const sendEmailAddressVerificationEmail = async email => {
   // do not await for email to be sent as it can take a while
   sendMail({
     to: [email],
+    subject: `Code de confirmation api.gouv.fr : ${verifyEmailToken}`,
     template: 'verify-email',
     params: { verifyEmailToken },
   });
@@ -153,6 +155,7 @@ export const sendResetPasswordEmail = async email => {
   // do not await for mail to be sent as it can take a while
   sendMail({
     to: [email],
+    subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
     params: { resetPasswordToken },
   });

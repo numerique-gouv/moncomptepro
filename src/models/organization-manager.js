@@ -87,9 +87,10 @@ export const joinOrganization = async (siret, user_id) => {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: usersInOrganizationAlready.map(({ email }) => email),
+      cc: [email, 'signup@api.gouv.fr'],
+      subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale },
-      cc: [email, 'signup@api.gouv.fr'],
     });
   }
 

@@ -17,15 +17,7 @@ const host = process.env.API_AUTH_HOST;
 
 const mailjetConnection = mailjet.connect(apiKey, secretKey);
 
-const subjects = {
-  'reset-password': 'Instructions pour la réinitialisation du mot de passe',
-  'verify-email': 'Activation de votre compte',
-  'join-organization': 'Votre organisation sur api.gouv.fr',
-};
-
-export const sendMail = async ({ to = [], template, params, cc = [] }) => {
-  const subject = subjects[template];
-
+export const sendMail = async ({ to = [], cc = [], subject, template, params }) => {
   const body = await render(
     path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
     { ...params, host }

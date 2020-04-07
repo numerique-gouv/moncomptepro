@@ -38,16 +38,6 @@ const notificationMessages = {
     type: 'error',
     message: 'Vous appartenez déjà à cette organisation.',
   },
-  organization_needed: {
-    type: 'warning',
-    message: `Pour continuer, merci de renseigner le numéro SIRET de l'organisation que
-      vous représentez.`,
-  },
-  signup_step2: {
-    type: 'info',
-    message: `Afin de compléter votre inscription, merci de renseigner le numéro SIRET de
-      l'organisation que vous représentez.`,
-  },
   email_unavailable: {
     type: 'warning',
     message: `Un compte existe déjà avec cet email.
@@ -55,22 +45,18 @@ const notificationMessages = {
       Si vous avez oublié votre mot de passe cliquez sur "je me connecte"
       puis sur "Mot de passe oublié ?".`,
   },
-  email_verification_required: {
-    type: 'info',
-    message: `Vous devez activer votre compte avant de continuer.
-      Pour cela cliquez sur le lien d'activation que vous avez reçu par mail.`,
-  },
   email_verification_sent: {
     type: 'success',
-    message: "Un email d'activation de votre compte vous a été envoyé.",
+    message: 'Un nouveau code de confirmation vous a été envoyé.',
   },
   email_verified_already: {
     type: 'error',
-    message: `Votre compte est déjà activé.`,
+    message: `Votre compte a déjà été confirmé.`,
   },
-  verify_email_success: {
-    type: 'success',
-    message: 'Votre compte a été activé avec succès.',
+  invalid_verify_email_code: {
+    type: 'error',
+    message:
+      'Le code de confirmation que vous avez utilisé est invalide ou expiré.',
   },
   weak_password: {
     type: 'error',

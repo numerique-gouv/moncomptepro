@@ -26,7 +26,7 @@ export const getJoinOrganizationController = async (req, res, next) => {
   });
 };
 
-export const postJoinOrganizationController = async (req, res, next) => {
+export const postJoinOrganizationMiddleware = async (req, res, next) => {
   try {
     if (isEmpty(req.session.user)) {
       return next(new Error('user must be logged in to join an organization'));
@@ -34,11 +34,7 @@ export const postJoinOrganizationController = async (req, res, next) => {
 
     await joinOrganization(req.body.siret, req.session.user.id);
 
-    if (req.session.interactionId) {
-      return res.redirect(`/interaction/${req.session.interactionId}/login`);
-    }
-
-    return res.redirect('https://api.gouv.fr/rechercher-api?filter=signup');
+    next();
   } catch (error) {
     if (error.message === 'unable_to_auto_join_organization') {
       return res.redirect(

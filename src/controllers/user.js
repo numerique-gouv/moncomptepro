@@ -11,6 +11,29 @@ import {
 } from '../models/user-manager';
 import { getOrganizationsByUserId } from '../models/organization-manager';
 
+// check that user go through all requirements before issuing a session
+export const checkUserSignInRequirementsController = async (req, res, next) => {
+  if (!req.session.user.email_verified) {
+    await sendEmailAddressVerificationEmail(req.session.user.email);
+
+    return res.redirect(`/users/verify-email`);
+  }
+
+  if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
+    return res.redirect('/users/join-organization');
+  }
+
+  if (req.session.interactionId) {
+    return res.redirect(`/interaction/${req.session.interactionId}/login`);
+  }
+
+  if (req.body.referer) {
+    return res.redirect(req.body.referer);
+  }
+
+  return res.redirect('https://api.gouv.fr/rechercher-api?filter=signup');
+};
+
 export const getSignInController = async (req, res, next) => {
   const notifications = notificationMessages[req.query.notification]
     ? [notificationMessages[req.query.notification]]
@@ -23,33 +46,11 @@ export const getSignInController = async (req, res, next) => {
   });
 };
 
-export const postSignInController = async (req, res, next) => {
+export const postSignInMiddleware = async (req, res, next) => {
   try {
     req.session.user = await login(req.body.login, req.body.password);
 
-    if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
-      return res.redirect(
-        `/users/join-organization?notification=organization_needed`
-      );
-    }
-
-    // Note that if the user make a sign in attempt with no email_verify and no organization,
-    // only the organization check will be triggered not the email_verified check below.
-    if (!req.session.user.email_verified) {
-      return res.redirect(
-        `/users/send-email-verification?notification=email_verification_required`
-      );
-    }
-
-    if (req.session.interactionId) {
-      return res.redirect(`/interaction/${req.session.interactionId}/login`);
-    }
-
-    if (req.body.referer) {
-      return res.redirect(req.body.referer);
-    }
-
-    return res.redirect('https://api.gouv.fr/rechercher-api?filter=signup');
+    next();
   } catch (error) {
     if (error.message === 'invalid_credentials') {
       return res.redirect(`/users/sign-in?notification=${error.message}`);
@@ -71,7 +72,7 @@ export const getSignUpController = async (req, res, next) => {
   });
 };
 
-export const postSignUpController = async (req, res, next) => {
+export const postSignUpMiddleware = async (req, res, next) => {
   try {
     req.session.user = await signup(
       req.body.given_name,
@@ -80,9 +81,7 @@ export const postSignUpController = async (req, res, next) => {
       req.body.password
     );
 
-    await sendEmailAddressVerificationEmail(req.session.user.email);
-
-    return res.redirect(`/users/join-organization?notification=signup_step2`);
+    next();
   } catch (error) {
     if (
       error.message === 'email_unavailable' ||
@@ -103,26 +102,6 @@ export const postSignUpController = async (req, res, next) => {
 };
 
 export const getVerifyEmailController = async (req, res, next) => {
-  try {
-    const verifyEmailToken = req.query.verify_email_token;
-
-    await verifyEmail(verifyEmailToken);
-
-    return res.redirect(
-      `/users/send-email-verification?notification=verify_email_success`
-    );
-  } catch (error) {
-    if (error.message === 'invalid_token') {
-      return res.redirect(
-        `/users/send-email-verification?notification=invalid_token`
-      );
-    }
-
-    next(error);
-  }
-};
-
-export const getSendEmailVerificationController = async (req, res, next) => {
   if (isEmpty(req.session.user)) {
     // user must be logged in to access this page
     const notificationParams = req.query.notification
@@ -130,7 +109,7 @@ export const getSendEmailVerificationController = async (req, res, next) => {
       : '';
 
     return res.redirect(
-      `/users/sign-in${notificationParams}?referer=/users/send-email-verification`
+      `/users/sign-in${notificationParams}?referer=/users/verify-email`
     );
   }
 
@@ -138,20 +117,29 @@ export const getSendEmailVerificationController = async (req, res, next) => {
     ? [notificationMessages[req.query.notification]]
     : [];
 
-  return res.render('send-email-verification', {
+  return res.render('verify-email', {
     notifications,
-    displaySendEmailButton: ![
-      'verify_email_success',
-      'email_verification_sent',
-      'email_verified_already',
-    ].includes(req.query.notification),
+    email: req.session.user.email,
     csrfToken: req.csrfToken(),
-    continueLink:
-      req.query.notification === 'verify_email_success' &&
-      req.session.interactionId
-        ? `/interaction/${req.session.interactionId}/login`
-        : null,
   });
+};
+
+export const postVerifyEmailMiddleware = async (req, res, next) => {
+  try {
+    const verifyEmailToken = req.body.verify_email_token;
+
+    req.session.user = await verifyEmail(verifyEmailToken);
+
+    next();
+  } catch (error) {
+    if (error.message === 'invalid_token') {
+      return res.redirect(
+        `/users/verify-email?notification=invalid_verify_email_code`
+      );
+    }
+
+    next(error);
+  }
 };
 
 export const postSendEmailVerificationController = async (req, res, next) => {
@@ -165,13 +153,11 @@ export const postSendEmailVerificationController = async (req, res, next) => {
     await sendEmailAddressVerificationEmail(req.session.user.email);
 
     return res.redirect(
-      `/users/send-email-verification?notification=email_verification_sent`
+      `/users/verify-email?notification=email_verification_sent`
     );
   } catch (error) {
     if (error.message === 'email_verified_already') {
-      return res.redirect(
-        `/users/send-email-verification?notification=${error.message}`
-      );
+      return res.redirect(`/users/verify-email?notification=${error.message}`);
     }
 
     next(error);

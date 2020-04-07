@@ -30,8 +30,30 @@ body {
     }
 }
 
-input.button.large, input.button.large:focus {
+input.button.large.wide, input.button.large.wide:focus {
     width: 100%;
+}
+
+input.verify_email_token {
+    font-size: 2em;
+    width: 6em;
+    padding: 0 0.3em;
+    margin: 1em 0;
+}
+
+/* hide the HTML5 number input’s spin box (see. https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box#answer-27935448) */
+input.verify_email_token::-webkit-outer-spin-button,
+input.verify_email_token::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input.verify_email_token {
+    -moz-appearance: textfield;
+}
+
+#send-email-verification-input {
+    visibility: hidden;
 }
 
 /* override template style for submit button */
@@ -44,7 +66,7 @@ input.link-submit:hover {
     padding: inherit;
     /*--theme-primary*/
     color: #0053b3;
-    background-color: #fff;
+    background-color: #ffffff00;
     border: inherit;
     box-shadow: inherit;
     -webkit-box-shadow: inherit;
@@ -77,9 +99,11 @@ div.with-input-hint {
 .inline-form {
     margin-top: 2em;
 }
+
 .inline-form form {
     display: inline-block;
 }
+
 .inline-form form {
     margin: 0 0.25em;
 }
@@ -88,6 +112,7 @@ div.with-input-hint {
     .inline-form form {
         display: block;
     }
+
     .inline-form form {
         margin: 0.5em 0 0 0;
     }

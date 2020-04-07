@@ -11,21 +11,22 @@ import {
   interactionStartControllerFactory,
 } from './controllers/interaction';
 import {
+  checkUserSignInRequirementsController,
   getChangePasswordController,
   getResetPasswordController,
-  getSendEmailVerificationController,
   getSignInController,
   getSignUpController,
   getVerifyEmailController,
   postChangePasswordController,
   postResetPasswordController,
   postSendEmailVerificationController,
-  postSignInController,
-  postSignUpController,
+  postSignInMiddleware,
+  postSignUpMiddleware,
+  postVerifyEmailMiddleware,
 } from './controllers/user';
 import {
   getJoinOrganizationController,
-  postJoinOrganizationController,
+  postJoinOrganizationMiddleware,
 } from './controllers/organisation';
 
 module.exports = (app, provider) => {
@@ -54,14 +55,16 @@ module.exports = (app, provider) => {
     '/users/sign-in',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postSignInController
+    postSignInMiddleware,
+    checkUserSignInRequirementsController
   );
   app.get('/users/sign-up', csrfProtectionMiddleware, getSignUpController);
   app.post(
     '/users/sign-up',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postSignUpController
+    postSignUpMiddleware,
+    checkUserSignInRequirementsController
   );
 
   app.get(
@@ -69,10 +72,11 @@ module.exports = (app, provider) => {
     csrfProtectionMiddleware,
     getVerifyEmailController
   );
-  app.get(
-    '/users/send-email-verification',
+  app.post(
+    '/users/verify-email',
     csrfProtectionMiddleware,
-    getSendEmailVerificationController
+    postVerifyEmailMiddleware,
+    checkUserSignInRequirementsController
   );
   app.post(
     '/users/send-email-verification',
@@ -112,7 +116,8 @@ module.exports = (app, provider) => {
     '/users/join-organization',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postJoinOrganizationController
+    postJoinOrganizationMiddleware,
+    checkUserSignInRequirementsController
   );
 
   app.use(async (err, req, res, next) => {
