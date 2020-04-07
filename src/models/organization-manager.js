@@ -1,14 +1,15 @@
+import { isEmpty, some } from 'lodash';
+import axios from 'axios';
+
 import {
   findBySiret,
   findByUserId,
   create,
   addUser,
   getUsers,
-} from './organizations';
-import { isEmpty, some } from 'lodash';
-import axios from 'axios';
-import { isSiretValid } from './security';
-import { findById as findUserById } from './users';
+} from './organization-repository';
+import { isSiretValid } from '../services/security';
+import { findById as findUserById } from './user-repository';
 import { sendMail } from '../connectors/mailer';
 
 export const joinOrganization = async (siret, user_id) => {
@@ -86,9 +87,10 @@ export const joinOrganization = async (siret, user_id) => {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: usersInOrganizationAlready.map(({ email }) => email),
+      cc: [email, 'signup@api.gouv.fr'],
+      subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale },
-      cc: [email, 'signup@api.gouv.fr'],
     });
   }
 

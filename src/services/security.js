@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
-import nanoid from 'nanoid/async';
+import { nanoid, customAlphabet } from 'nanoid/async';
 import { isEmpty, isString } from 'lodash';
+
+const nanoidPin = customAlphabet('0123456789', 10);
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async plainPassword => {
@@ -20,6 +22,7 @@ export const validatePassword = async (plainPassword, storedHash) => {
 };
 
 // TODO use https://www.npmjs.com/package/owasp-password-strength-test instead
+// TODO call https://haveibeenpwned.com/Passwords
 export const isPasswordSecure = plainPassword => {
   return plainPassword && plainPassword.length >= 10;
 };
@@ -53,6 +56,10 @@ export const isEmailValid = email => {
   }
 
   return true;
+};
+
+export const generatePinToken = async () => {
+  return await nanoidPin();
 };
 
 export const generateToken = async () => {

@@ -1,5 +1,5 @@
-import { getDatabaseConnection } from '../connectors/postgres';
 import _ from 'lodash';
+import { getDatabaseConnection } from '../connectors/postgres';
 
 export const findById = async id => {
   const connection = getDatabaseConnection();

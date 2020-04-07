@@ -6,18 +6,19 @@ import {
   findByVerifyEmailToken,
   insert,
   update,
-} from './users';
+} from './user-repository';
 import {
+  generatePinToken,
   generateToken,
   hashPassword,
   isEmailValid,
   isPasswordSecure,
   validatePassword,
-} from './security';
+} from '../services/security';
 import { sendMail } from '../connectors/mailer';
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
-const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 8 * 60;
+const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 30;
 
 const isExpired = (emittedDate, expirationDurationInMinutes) => {
   if (!(emittedDate instanceof Date)) {
@@ -90,7 +91,7 @@ export const sendEmailAddressVerificationEmail = async email => {
     throw new Error('email_verified_already');
   }
 
-  const verifyEmailToken = await generateToken();
+  const verifyEmailToken = await generatePinToken();
 
   await update(user.id, {
     verify_email_token: verifyEmailToken,
@@ -100,6 +101,7 @@ export const sendEmailAddressVerificationEmail = async email => {
   // do not await for email to be sent as it can take a while
   sendMail({
     to: [email],
+    subject: `Code de confirmation api.gouv.fr : ${verifyEmailToken}`,
     template: 'verify-email',
     params: { verifyEmailToken },
   });
@@ -153,6 +155,7 @@ export const sendResetPasswordEmail = async email => {
   // do not await for mail to be sent as it can take a while
   sendMail({
     to: [email],
+    subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
     params: { resetPasswordToken },
   });

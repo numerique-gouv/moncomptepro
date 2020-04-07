@@ -11,11 +11,9 @@
             <% }) %>
         <% } %>
 
-        <% if (locals.notifications.length < 1) { %>
-            <p>
-                Pour rejoindre une organisation, veuillez renseigner son numéro SIRET.
-            </p>
-        <% } %>
+        <p>
+            Merci de renseigner le numéro SIRET de l'organisation que vous souhaitez représenter.
+        </p>
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
@@ -41,7 +39,7 @@
         </div>
 
         <div class="form__group">
-            <input type="submit" value="Rejoindre cette organisation" class="button large">
+            <input type="submit" value="Rejoindre cette organisation" class="button large wide">
         </div>
     </form>
 </div>

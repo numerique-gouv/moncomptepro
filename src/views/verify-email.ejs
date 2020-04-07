@@ -1,0 +1,56 @@
+<div class="box-container">
+    <h3 class="section__title">Confirmation de votre email</h3>
+
+    <form id="verify-email" action="/users/verify-email" method="post">
+        <% if (locals.notifications) { %>
+            <% notifications.forEach(({type, message}) => { %>
+                <div class="notification <%= type %>">
+                    <%= message %>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <p>
+            Merci de le saisir ci-dessous le code de confirmation à 10 chiffres que nous vous avons envoyé à
+            <b><%= email %></b>.
+        </p>
+
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off"/>
+
+
+        <div class="form__group">
+            <input
+                    class="form-control verify_email_token"
+                    required
+                    max="9999999999"
+                    min="0"
+                    type="number"
+                    name="verify_email_token"
+                    autofocus
+                    placeholder="Code">
+        </div>
+
+        <div class="form__group">
+            <input type="submit" value="Confirmer mon email" class="button large">
+        </div>
+    </form>
+</div>
+
+<div class="container text-center">
+    <form id="send-email-verification" autocomplete="off" action="/users/send-email-verification" method="post">
+        <p>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+            Je n'ai pas reçu d'email ? <input type="submit"
+                                              value="Me renvoyer un code de confirmation"
+                                              class="link-submit">.
+        </p>
+    </form>
+</div>
+<div class="container text-center">
+    <p>
+        <a class="external-link" href="https://api.gouv.fr/rechercher-api?filter=signup">
+            Retour à l'accueil
+        </a>
+    </p>
+</div>
