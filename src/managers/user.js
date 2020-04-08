@@ -6,7 +6,7 @@ import {
   findByVerifyEmailToken,
   insert,
   update,
-} from './user-repository';
+} from '../repositories/user';
 import {
   generatePinToken,
   generateToken,

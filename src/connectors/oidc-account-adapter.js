@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
-import { findById as findUserById } from '../models/user-repository';
-import { findByUserId as getUsersOrganizations } from '../models/organization-repository';
+import { findById as findUserById } from '../repositories/user';
+import { findByUserId as getUsersOrganizations } from '../repositories/organization';
 
 export const findAccount = async (ctx, sub, token) => {
   const user = await findUserById(sub);

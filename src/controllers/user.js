@@ -8,8 +8,8 @@ import {
   sendResetPasswordEmail,
   signup,
   verifyEmail,
-} from '../models/user-manager';
-import { getOrganizationsByUserId } from '../models/organization-manager';
+} from '../managers/user';
+import { getOrganizationsByUserId } from '../managers/organization';
 
 // check that user go through all requirements before issuing a session
 export const checkUserSignInRequirementsController = async (req, res, next) => {

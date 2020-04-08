@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 
 import notificationMessages from '../notificationMessages';
-import { joinOrganization } from '../models/organization-manager';
+import { joinOrganization } from '../managers/organization';
 
 export const getJoinOrganizationController = async (req, res, next) => {
   if (isEmpty(req.session.user)) {

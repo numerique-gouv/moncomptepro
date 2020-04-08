@@ -7,9 +7,9 @@ import {
   create,
   addUser,
   getUsers,
-} from './organization-repository';
+} from '../repositories/organization';
 import { isSiretValid } from '../services/security';
-import { findById as findUserById } from './user-repository';
+import { findById as findUserById } from '../repositories/user';
 import { sendMail } from '../connectors/mailer';
 
 export const joinOrganization = async (siret, user_id) => {
