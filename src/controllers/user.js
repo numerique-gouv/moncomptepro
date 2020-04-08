@@ -1,3 +1,4 @@
+import { parse as parseUrl } from 'url';
 import { isEmpty } from 'lodash';
 
 import notificationMessages from '../notificationMessages';
@@ -10,6 +11,19 @@ import {
   verifyEmail,
 } from '../managers/user';
 import { getOrganizationsByUserId } from '../managers/organization';
+
+// redirect user to login page if no active session is available
+export const checkUserIsConnectedMiddleware = async (req, res, next) => {
+  if (isEmpty(req.session.user) && req.method === 'GET') {
+    return res.redirect(`/users/sign-in?referer=${parseUrl(req.url).pathname}`);
+  }
+
+  if (isEmpty(req.session.user)) {
+    return next(new Error('user must be logged in to perform this action'));
+  }
+
+  return next();
+};
 
 // check that user go through all requirements before issuing a session
 export const checkUserSignInRequirementsController = async (req, res, next) => {
@@ -102,17 +116,6 @@ export const postSignUpMiddleware = async (req, res, next) => {
 };
 
 export const getVerifyEmailController = async (req, res, next) => {
-  if (isEmpty(req.session.user)) {
-    // user must be logged in to access this page
-    const notificationParams = req.query.notification
-      ? `?notification=${req.query.notification}`
-      : '';
-
-    return res.redirect(
-      `/users/sign-in${notificationParams}?referer=/users/verify-email`
-    );
-  }
-
   const notifications = notificationMessages[req.query.notification]
     ? [notificationMessages[req.query.notification]]
     : [];
@@ -144,12 +147,6 @@ export const postVerifyEmailMiddleware = async (req, res, next) => {
 
 export const postSendEmailVerificationController = async (req, res, next) => {
   try {
-    if (isEmpty(req.session.user)) {
-      return next(
-        new Error('user must be logged in to perform an email verification')
-      );
-    }
-
     await sendEmailAddressVerificationEmail(req.session.user.email);
 
     return res.redirect(

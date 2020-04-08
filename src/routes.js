@@ -11,6 +11,7 @@ import {
   interactionStartControllerFactory,
 } from './controllers/interaction';
 import {
+  checkUserIsConnectedMiddleware,
   checkUserSignInRequirementsController,
   getChangePasswordController,
   getResetPasswordController,
@@ -70,11 +71,14 @@ module.exports = (app, provider) => {
   app.get(
     '/users/verify-email',
     csrfProtectionMiddleware,
+    checkUserIsConnectedMiddleware,
     getVerifyEmailController
   );
   app.post(
     '/users/verify-email',
     csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserIsConnectedMiddleware,
     postVerifyEmailMiddleware,
     checkUserSignInRequirementsController
   );
@@ -82,6 +86,7 @@ module.exports = (app, provider) => {
     '/users/send-email-verification',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
+    checkUserIsConnectedMiddleware,
     postSendEmailVerificationController
   );
   app.get(
@@ -110,12 +115,14 @@ module.exports = (app, provider) => {
   app.get(
     '/users/join-organization',
     csrfProtectionMiddleware,
+    checkUserIsConnectedMiddleware,
     getJoinOrganizationController
   );
   app.post(
     '/users/join-organization',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
+    checkUserIsConnectedMiddleware,
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsController
   );

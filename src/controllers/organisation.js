@@ -4,17 +4,6 @@ import notificationMessages from '../notificationMessages';
 import { joinOrganization } from '../managers/organization';
 
 export const getJoinOrganizationController = async (req, res, next) => {
-  if (isEmpty(req.session.user)) {
-    // user must be logged in to access this page
-    const notificationParams = req.query.notification
-      ? `?notification=${req.query.notification}`
-      : '';
-
-    return res.redirect(
-      `/users/sign-in${notificationParams}?referer=/users/join-organization`
-    );
-  }
-
   const notifications = notificationMessages[req.query.notification]
     ? [notificationMessages[req.query.notification]]
     : [];
@@ -28,10 +17,6 @@ export const getJoinOrganizationController = async (req, res, next) => {
 
 export const postJoinOrganizationMiddleware = async (req, res, next) => {
   try {
-    if (isEmpty(req.session.user)) {
-      return next(new Error('user must be logged in to join an organization'));
-    }
-
     await joinOrganization(req.body.siret, req.session.user.id);
 
     next();
