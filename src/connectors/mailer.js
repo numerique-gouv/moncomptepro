@@ -34,6 +34,7 @@ export const sendMail = async ({ to = [], cc = [], subject, template, params }) 
   const emailData = {
     FromEmail: 'contact@api.gouv.fr',
     FromName: 'API Gouv',
+    'Mj-MonitoringCategory': 'apigouvfr',
     Subject: subject,
     'Text-part': body,
     To: to.map(e => `<${e}>`).join(','),
