@@ -12,18 +12,20 @@ import {
 } from './controllers/interaction';
 import {
   checkUserIsConnectedMiddleware,
-  checkUserSignInRequirementsController,
+  checkUserIsVerifiedMiddleware,
+  checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
   getResetPasswordController,
   getSignInController,
   getSignUpController,
   getVerifyEmailController,
+  issueSessionOrRedirectController,
   postChangePasswordController,
   postResetPasswordController,
   postSendEmailVerificationController,
   postSignInMiddleware,
-  postSignUpMiddleware,
-  postVerifyEmailMiddleware,
+  postSignUpController,
+  postVerifyEmailController,
 } from './controllers/user';
 import {
   getJoinOrganizationController,
@@ -48,6 +50,7 @@ module.exports = (app, provider) => {
   app.get('/interaction/:grant', interactionStartControllerFactory(provider));
   app.get(
     '/interaction/:grant/login',
+    checkUserSignInRequirementsMiddleware,
     interactionEndControllerFactory(provider)
   );
 
@@ -57,15 +60,14 @@ module.exports = (app, provider) => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     postSignInMiddleware,
-    checkUserSignInRequirementsController
+    issueSessionOrRedirectController
   );
   app.get('/users/sign-up', csrfProtectionMiddleware, getSignUpController);
   app.post(
     '/users/sign-up',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postSignUpMiddleware,
-    checkUserSignInRequirementsController
+    postSignUpController
   );
 
   app.get(
@@ -79,8 +81,7 @@ module.exports = (app, provider) => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
-    postVerifyEmailMiddleware,
-    checkUserSignInRequirementsController
+    postVerifyEmailController
   );
   app.post(
     '/users/send-email-verification',
@@ -115,16 +116,16 @@ module.exports = (app, provider) => {
   app.get(
     '/users/join-organization',
     csrfProtectionMiddleware,
-    checkUserIsConnectedMiddleware,
+    checkUserIsVerifiedMiddleware,
     getJoinOrganizationController
   );
   app.post(
     '/users/join-organization',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserIsConnectedMiddleware,
+    checkUserIsVerifiedMiddleware,
     postJoinOrganizationMiddleware,
-    checkUserSignInRequirementsController
+    issueSessionOrRedirectController
   );
 
   app.use(async (err, req, res, next) => {
