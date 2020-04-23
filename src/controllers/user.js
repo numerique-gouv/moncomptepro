@@ -25,18 +25,28 @@ export const checkUserIsConnectedMiddleware = async (req, res, next) => {
   return next();
 };
 
+export const checkUserIsVerifiedMiddleware = async (req, res, next) => {
+  return checkUserIsConnectedMiddleware(req, res, () => {
+    if (!req.session.user.email_verified) {
+      return res.redirect(`/users/verify-email`);
+    }
+
+    return next();
+  });
+};
+
 // check that user go through all requirements before issuing a session
-export const checkUserSignInRequirementsController = async (req, res, next) => {
-  if (!req.session.user.email_verified) {
-    await sendEmailAddressVerificationEmail(req.session.user.email);
+export const checkUserSignInRequirementsMiddleware = async (req, res, next) => {
+  return checkUserIsVerifiedMiddleware(req, res, async () => {
+    if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
+      return res.redirect('/users/join-organization');
+    }
 
-    return res.redirect(`/users/verify-email`);
-  }
+    return next();
+  });
+};
 
-  if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
-    return res.redirect('/users/join-organization');
-  }
-
+export const issueSessionOrRedirectController = async (req, res, next) => {
   if (req.session.interactionId) {
     return res.redirect(`/interaction/${req.session.interactionId}/login`);
   }
@@ -86,7 +96,7 @@ export const getSignUpController = async (req, res, next) => {
   });
 };
 
-export const postSignUpMiddleware = async (req, res, next) => {
+export const postSignUpController = async (req, res, next) => {
   try {
     req.session.user = await signup(
       req.body.given_name,
@@ -95,7 +105,9 @@ export const postSignUpMiddleware = async (req, res, next) => {
       req.body.password
     );
 
-    next();
+    await sendEmailAddressVerificationEmail(req.session.user.email);
+
+    return res.redirect(`/users/verify-email`);
   } catch (error) {
     if (
       error.message === 'email_unavailable' ||
@@ -127,13 +139,13 @@ export const getVerifyEmailController = async (req, res, next) => {
   });
 };
 
-export const postVerifyEmailMiddleware = async (req, res, next) => {
+export const postVerifyEmailController = async (req, res, next) => {
   try {
     const verifyEmailToken = req.body.verify_email_token;
 
     req.session.user = await verifyEmail(verifyEmailToken);
 
-    next();
+    return res.redirect(`/users/join-organization`);
   } catch (error) {
     if (error.message === 'invalid_token') {
       return res.redirect(

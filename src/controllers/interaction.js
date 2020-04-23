@@ -51,12 +51,6 @@ export const interactionEndControllerFactory = provider => async (
   } = provider;
 
   try {
-    if (isEmpty(req.session.user)) {
-      // This may occur if the oidc session cookie duration (maxAge) is longer
-      // in time than the express session one.
-      return next(new Error('user not in session'));
-    }
-
     const result = {
       login: {
         account: req.session.user.id,
