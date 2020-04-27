@@ -55,7 +55,7 @@ export const issueSessionOrRedirectController = async (req, res, next) => {
     return res.redirect(req.body.referer);
   }
 
-  return res.redirect('https://api.gouv.fr/rechercher-api?filter=signup');
+  return res.redirect('https://api.gouv.fr/signup/api');
 };
 
 export const getSignInController = async (req, res, next) => {
