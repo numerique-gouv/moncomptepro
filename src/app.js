@@ -18,7 +18,11 @@ import jwks from '/opt/apps/api-auth/jwks';
 import routes from './routes';
 import { getClients } from './repositories/oidc-client';
 
-const { PORT = 3000, ISSUER = `http://localhost:${PORT}` } = process.env;
+const {
+  PORT = 3000,
+  API_AUTH_HOST = `http://localhost:${PORT}`,
+  ISSUER = `${API_AUTH_HOST}`,
+} = process.env;
 const RedisStore = connectRedis(session);
 
 const app = express();
