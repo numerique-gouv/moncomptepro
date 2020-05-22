@@ -29,10 +29,13 @@ const notificationMessages = {
     message: 'Vous allez recevoir un lien de réinitialisation par e-mail.',
   },
   unable_to_auto_join_organization: {
-    type: 'warning',
-    message: `Nous ne sommes pas en mesure de traiter votre demande automatiquement.
-      Pour rejoindre cette organisation, merci de nous transmettre une demande
-      écrite à l'adresse contact@api.gouv.fr.`,
+    type: 'info',
+    message: `Vous souhaitez rejoindre une organisation existante.
+
+Nous avons besoin de vérifier par nous-même que vous faites bien partie de cette organisation.
+Vous recevrez un email dès que nous aurons terminé (délai moyen : 1 jour ouvré).
+
+Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   },
   user_in_organization_already: {
     type: 'error',

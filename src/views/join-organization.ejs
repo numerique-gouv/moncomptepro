@@ -5,12 +5,11 @@
 
         <% if (locals.notifications) { %>
             <% notifications.forEach(({type, message}) => { %>
-                <div class="notification <%= type %>">
-                    <%= message %>
-                </div>
+                <div class="notification <%= disabled ? 'multiline' : ''%> <%= type %>"><%= message %></div>
             <% }) %>
         <% } %>
 
+        <% if (!locals.disabled) { %>
         <p>
             Merci de renseigner le numéro SIRET de l'organisation que vous souhaitez représenter.
         </p>
@@ -41,6 +40,7 @@
         <div class="form__group">
             <input type="submit" value="Rejoindre cette organisation" class="button large wide">
         </div>
+        <% } %>
     </form>
 </div>
 <script src="/assets/fetch-organization-info.js"></script>

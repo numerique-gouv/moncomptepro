@@ -12,6 +12,7 @@ export const getJoinOrganizationController = async (req, res, next) => {
     notifications,
     csrfToken: req.csrfToken(),
     siretHint: req.query.siret_hint,
+    disabled: req.query.notification === 'unable_to_auto_join_organization'
   });
 };
 

@@ -57,6 +57,13 @@ export const joinOrganization = async (siret, user_id) => {
     !isEmpty(organization) &&
     !organization.authorized_email_domains.includes(emailDomain)
   ) {
+    // do not await for mail to be sent as it can take a while
+    sendMail({
+      to: ['signup@api.gouv.fr'],
+      subject: '[Signup] Demande pour rejoindre une organisation',
+      template: 'unable-to-auto-join-organization',
+      params: { email, siret: siretNoSpaces },
+    });
     throw new Error('unable_to_auto_join_organization');
   }
 

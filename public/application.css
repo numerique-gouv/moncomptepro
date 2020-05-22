@@ -147,3 +147,9 @@ div.with-input-hint {
         margin-top: 2em;
     }
 }
+
+/* multiline notification */
+.notification.multiline {
+    white-space: pre-line;
+    text-align: initial;
+}
