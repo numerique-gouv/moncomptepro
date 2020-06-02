@@ -2,5 +2,8 @@
 *.swp
 *.swo
 *.orig
+.env
+jwks.json
+*.log
 
 .idea
