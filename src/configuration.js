@@ -4,8 +4,13 @@ import { interactionPolicy } from 'oidc-provider';
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
-const { OIDC_PAIRWISE_IDENTIFIER_SALT, SESSION_COOKIE_SECRET } = process.env;
+const {
+  OIDC_PAIRWISE_IDENTIFIER_SALT,
+  SESSION_COOKIE_SECRET,
+  SECURE_COOKIES = 'true',
+} = process.env;
 
+const secureCookies = SECURE_COOKIES === 'true';
 export const cookiesSecrets = [SESSION_COOKIE_SECRET];
 export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
 
@@ -31,12 +36,8 @@ export const provider = {
       resume: 'api_gouv_interaction_resume',
       state: 'api_gouv_state',
     },
-    long: { signed: true, secure: true, maxAge: cookiesMaxAge },
-    // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
-    // This parameter set the session duration on signup.
-    // On api-particulier-auth, it his the duration the session will remain open after the last activity.
-    // Also related to https://github.com/panva/node-oidc-provider/issues/382.
-    short: { signed: true, secure: true, maxAge: 3 * 60 * 60 * 1000 }, // 3 hours in ms,
+    long: { signed: true, secure: secureCookies, maxAge: cookiesMaxAge },
+    short: { signed: true, secure: secureCookies, maxAge: 3 * 60 * 60 * 1000 },
     keys: cookiesSecrets,
   },
   claims: {
@@ -53,11 +54,11 @@ export const provider = {
     encryption: { enabled: true },
   },
   findAccount,
-  formats: {
-    AccessToken: 'jwt',
-  },
+  formats: { AccessToken: 'jwt' },
   subjectTypes: ['public', 'pairwise'],
   pairwiseIdentifier(ctx, accountId, { sectorIdentifier }) {
+    // Also related to https://github.com/panva/node-oidc-provider/issues/382. // On api-particulier-auth, it his the duration the session will remain open after the last activity. // This parameter set the session duration on signup. // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
+    // 3 hours in ms,
     return crypto
       .createHash('sha256')
       .update(sectorIdentifier)
@@ -92,8 +93,8 @@ export const provider = {
   },
   ttl: {
     // note that session is limited by short term cookie duration
-    AccessToken: 3 * 60 * 60, // 3 hours in second
-    IdToken: 3 * 60 * 60, // 3 hours in second
+    AccessToken: 3 * 60 * 60,
+    IdToken: 3 * 60 * 60,
   },
   interactions: { policy: interactions },
-};
+}; // 3 hours in second // 3 hours in second

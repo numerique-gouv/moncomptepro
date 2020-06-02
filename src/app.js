@@ -22,8 +22,10 @@ const {
   API_AUTH_HOST = `http://localhost:${PORT}`,
   ISSUER = `${API_AUTH_HOST}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks',
+  SECURE_COOKIES = 'true',
 } = process.env;
 const jwks = require(JWKS_PATH);
+const secureCookies = SECURE_COOKIES === 'true';
 const RedisStore = connectRedis(session);
 
 const app = express();
@@ -60,7 +62,7 @@ app.use(
     secret: cookiesSecrets,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: cookiesMaxAge, secure: true },
+    cookie: { maxAge: cookiesMaxAge, secure: secureCookies },
   })
 );
 
