@@ -6,9 +6,7 @@ const {
   JWKS: { KeyStore },
 } = require('@panva/jose');
 
-const {
-  JWKS_PATH = '/opt/apps/api-auth/jwks'
-} = process.env;
+const { JWKS_PATH = '/opt/apps/api-auth/jwks' } = process.env;
 
 const keystore = new KeyStore();
 const keysFilePath = path.resolve(JWKS_PATH);
