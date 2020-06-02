@@ -14,7 +14,6 @@ import {
   cookiesMaxAge,
   cookiesSecrets,
 } from './configuration';
-import jwks from '/opt/apps/api-auth/jwks';
 import routes from './routes';
 import { getClients } from './repositories/oidc-client';
 
@@ -22,7 +21,9 @@ const {
   PORT = 3000,
   API_AUTH_HOST = `http://localhost:${PORT}`,
   ISSUER = `${API_AUTH_HOST}`,
+  JWKS_PATH = '/opt/apps/api-auth/jwks'
 } = process.env;
+const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
 
 const app = express();
