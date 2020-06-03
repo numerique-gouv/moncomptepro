@@ -1,12 +1,15 @@
 // src https://github.com/panva/node-oidc-provider-example/blob/d770e3387539d766d65a83cde52596b36f998a7d/01-oidc-configured/generate-keys.js
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const {
   JWKS: { KeyStore },
 } = require('@panva/jose');
 
+const { JWKS_PATH = '/opt/apps/api-auth/jwks' } = process.env;
+
 const keystore = new KeyStore();
-const keysFilePath = path.resolve('/opt/apps/api-auth/jwks.json');
+const keysFilePath = path.resolve(JWKS_PATH);
 
 try {
   if (fs.existsSync(keysFilePath)) {
