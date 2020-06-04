@@ -44,7 +44,7 @@ export const sendMail = async ({
   }
 
   if (doNotSendMail) {
-    console.log(`${tags} mail not send to ${to}:`);
+    console.log(`${template} mail not send to ${to}:`);
     console.log(data);
     return;
   }
@@ -62,7 +62,9 @@ export const sendMail = async ({
     });
 
     console.log(
-      `${tags} email sent to ${to} with message id ${response.data.messageId}`
+      `${template} email sent to ${to} with message id ${
+        response.data.messageId
+      }`
     );
   } catch (error) {
     console.error(error);
