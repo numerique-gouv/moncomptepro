@@ -21,7 +21,7 @@ const {
   PORT = 3000,
   API_AUTH_HOST = `http://localhost:${PORT}`,
   ISSUER = `${API_AUTH_HOST}`,
-  JWKS_PATH = '/opt/apps/api-auth/jwks',
+  JWKS_PATH = '/opt/apps/api-auth/jwks.json',
   SECURE_COOKIES = 'true',
 } = process.env;
 const jwks = require(JWKS_PATH);
