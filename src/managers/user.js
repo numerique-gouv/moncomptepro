@@ -15,7 +15,7 @@ import {
   isPasswordSecure,
   validatePassword,
 } from '../services/security';
-import { sendMail } from '../connectors/mailer';
+import { sendMail } from '../connectors/mailjet';
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 30;

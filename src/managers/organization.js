@@ -10,7 +10,8 @@ import {
 } from '../repositories/organization';
 import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
-import { sendMail } from '../connectors/mailer';
+import { sendMail as sendMailDeprecated } from '../connectors/mailjet';
+import { sendMail } from '../connectors/sendinblue';
 
 export const joinOrganization = async (siret, user_id) => {
   // Ensure siret is valid
@@ -58,7 +59,7 @@ export const joinOrganization = async (siret, user_id) => {
     !organization.authorized_email_domains.includes(emailDomain)
   ) {
     // do not await for mail to be sent as it can take a while
-    sendMail({
+    sendMailDeprecated({
       to: ['signup@api.gouv.fr'],
       subject: '[Signup] Demande pour rejoindre une organisation',
       template: 'unable-to-auto-join-organization',
