@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
           organizationInfoElement.style.display = 'block';
           organizationInfoElement.classList.add("info");
           const response = JSON.parse(xmlhttp.response);
-          organizationInfoElement.innerHTML = "Entreprise : " + response.etablissement.nom_raison_sociale;
+          organizationInfoElement.innerHTML = "Entreprise : " + response.etablissement.denomination_usuelle;
         } else if (xmlhttp.status === 404) {
           organizationInfoElement.style.display = 'block';
           organizationInfoElement.classList.add("error");
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    xmlhttp.open("GET", "https://entreprise.data.gouv.fr/api/sirene/v1/siret/" + siret, true);
+    xmlhttp.open("GET", "https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/" + siret, true);
     xmlhttp.send();
   }
 
