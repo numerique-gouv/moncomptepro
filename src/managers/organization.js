@@ -27,11 +27,11 @@ export const joinOrganization = async (siret, user_id) => {
       data: { etablissement },
     } = await axios({
       method: 'get',
-      url: `https://entreprise.data.gouv.fr/api/sirene/v1/siret/${siretNoSpaces}`,
+      url: `https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/${siretNoSpaces}`,
     });
 
     const siretFromSireneApi = etablissement.siret;
-    nom_raison_sociale = etablissement.nom_raison_sociale;
+    nom_raison_sociale = etablissement.unite_legale.denomination;
 
     if (siretFromSireneApi !== siretNoSpaces) {
       throw new Error('invalid response from sirene API');
