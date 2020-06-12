@@ -37,7 +37,6 @@
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
     "nanoid": "^3.0.2",
-    "node-mailjet": "^3.3.1",
     "node-pg-migrate": "^5.0.1",
     "oidc-provider": "^6.7.0",
     "pg": "^7.7.1",

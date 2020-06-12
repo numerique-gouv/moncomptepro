@@ -1,5 +1,8 @@
+import path from 'path';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+
+import { render } from '../services/renderer';
 
 const apiKey =
   process.env.SENDINBLUE_API_KEY && !isEmpty(process.env.SENDINBLUE_API_KEY)
@@ -11,6 +14,8 @@ const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
 // active templates are listed at https://app-smtp.sendinblue.com/templates
 const templateToId = {
   'join-organization': 5,
+  'verify-email': 6,
+  'reset-password': 7,
 };
 
 export const sendMail = async ({
@@ -19,6 +24,7 @@ export const sendMail = async ({
   subject,
   template,
   params,
+  sendText = false,
 }) => {
   const data = {
     sender: {
@@ -31,13 +37,21 @@ export const sendMail = async ({
     },
     to: to.map(e => ({ email: e })),
     subject,
-    templateId: templateToId[template],
     params,
     tags: [template],
     headers: {
       charset: 'iso-8859-1',
     },
   };
+
+  if (sendText) {
+    data.textContent = await render(
+      path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
+      params
+    );
+  } else {
+    data.templateId = templateToId[template];
+  }
 
   if (!isEmpty(cc)) {
     data.cc = cc.map(e => ({ email: e }));

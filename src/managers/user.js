@@ -15,7 +15,9 @@ import {
   isPasswordSecure,
   validatePassword,
 } from '../services/security';
-import { sendMail } from '../connectors/mailjet';
+import { sendMail } from '../connectors/sendinblue';
+
+const { API_AUTH_HOST } = process.env;
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 30;
@@ -91,19 +93,23 @@ export const sendEmailAddressVerificationEmail = async email => {
     throw new Error('email_verified_already');
   }
 
-  const verifyEmailToken = await generatePinToken();
+  const verify_email_token = await generatePinToken();
 
   await update(user.id, {
-    verify_email_token: verifyEmailToken,
+    verify_email_token,
     verify_email_sent_at: new Date().toISOString(),
   });
 
   // do not await for email to be sent as it can take a while
   sendMail({
     to: [email],
-    subject: `Code de confirmation api.gouv.fr : ${verifyEmailToken}`,
+    subject: `Code de confirmation api.gouv.fr : ${verify_email_token}`,
     template: 'verify-email',
-    params: { verifyEmailToken },
+    params: {
+      given_name: user.given_name,
+      family_name: user.family_name,
+      verify_email_token,
+    },
   });
 
   return true;
@@ -157,7 +163,11 @@ export const sendResetPasswordEmail = async email => {
     to: [email],
     subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
-    params: { resetPasswordToken },
+    params: {
+      given_name: user.given_name,
+      family_name: user.family_name,
+      reset_password_link: `${API_AUTH_HOST}/users/change-password?reset_password_token=${resetPasswordToken}`,
+    },
   });
 
   return true;
