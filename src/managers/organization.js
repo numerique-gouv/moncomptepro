@@ -20,6 +20,7 @@ export const joinOrganization = async (siret, user_id) => {
 
   const siretNoSpaces = siret.replace(/\s/g, '');
   let nom_raison_sociale = null;
+  let tranche_effectifs = null;
 
   try {
     const {
@@ -31,6 +32,7 @@ export const joinOrganization = async (siret, user_id) => {
 
     const siretFromSireneApi = etablissement.siret;
     nom_raison_sociale = etablissement.unite_legale.denomination;
+    tranche_effectifs = etablissement.tranche_effectifs;
 
     if (siretFromSireneApi !== siretNoSpaces) {
       throw new Error('invalid response from sirene API');
@@ -105,6 +107,20 @@ export const joinOrganization = async (siret, user_id) => {
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale },
+    });
+  }
+
+  // Notify administrators if someone joined an organization with more than 1000 employees
+  if (['42', '51', '52', '53'].includes(tranche_effectifs)) {
+    // see https://www.sirene.fr/sirene/public/variable/tefen
+    // do not await for mail to be sent as it can take a while
+    sendMail({
+      to: ['signup@api.gouv.fr'],
+      subject:
+        '[Signup] Un utilisateur à rejoint une organisation de plus de 1000 employés',
+      template: 'notify-join-big-organization',
+      params: { user_label, email, nom_raison_sociale, siret: siretNoSpaces },
+      sendText: true,
     });
   }
 
