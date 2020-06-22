@@ -27,9 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
       if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
         if (xmlhttp.status === 200) {
           organizationInfoElement.style.display = 'block';
-          organizationInfoElement.classList.add("info");
           const response = JSON.parse(xmlhttp.response);
-          organizationInfoElement.innerHTML = "Entreprise : " + response.etablissement.unite_legale.denomination;
+          organizationInfoElement.innerHTML = "Organisation : " + response.etablissement.unite_legale.denomination;
+          if (response.etablissement.etat_administratif === 'A') {
+            organizationInfoElement.classList.add("info");
+          } else {
+            organizationInfoElement.classList.add("error");
+            organizationInfoElement.innerHTML += " (État administratif de l'établissement : fermé)"
+          }
+
         } else if (xmlhttp.status === 404) {
           organizationInfoElement.style.display = 'block';
           organizationInfoElement.classList.add("error");

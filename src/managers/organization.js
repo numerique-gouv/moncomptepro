@@ -35,6 +35,12 @@ export const joinOrganization = async (siret, user_id) => {
     if (siretFromSireneApi !== siretNoSpaces) {
       throw new Error('invalid response from sirene API');
     }
+
+    if (etablissement.etat_administratif !== 'A') {
+      // A : Actif;
+      // see: https://www.sirene.fr/sirene/public/variable/etatAdministratifEtablissement
+      throw new Error('organization is not active');
+    }
   } catch (error) {
     console.error(error);
 
