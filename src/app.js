@@ -69,7 +69,10 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use('/assets', express.static('public'));
+app.use(
+  '/assets',
+  express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
+); // 1 year in milliseconds
 
 let server;
 

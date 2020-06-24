@@ -18,14 +18,14 @@
     <% } %>
 
     <div class="form__group">
-        <input class="form-control" required type="email" name="login" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
+        <input class="form-control" required type="email" name="login" aria-label="Email" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
     </div>
 
     <div class="form__group with-input-hint">
-        <input class="form-control" required type="password" name="password" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        <input class="form-control" required type="password" name="password" aria-label="Mot de passe" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
         <small class="card__meta">
             <i>
-                <a class="external-link" href="/users/reset-password" tabindex="-1">Mot de passe oublié ?</a>
+                <a class="external-link" href="/users/reset-password">Mot de passe oublié ?</a>
             </i>
         </small>
     </div>
