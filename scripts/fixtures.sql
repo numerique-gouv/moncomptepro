@@ -65,6 +65,17 @@ VALUES
     'Dgfip',
     'Test',
     '{"api_impot_particulier", "api_impot_particulier_step2"}'
+  ),
+  (
+    7,
+    'le-taxi@yopmail.com',
+    'true',
+    '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6', -- hashed 'password' string
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP,
+    'le.Taxi',
+    'Test',
+    '{"le_taxi"}'
   )
 ON CONFLICT (id)
 DO UPDATE
@@ -87,7 +98,8 @@ VALUES
   (3, 2),
   (4, 2),
   (5, 2),
-  (6, 2)
+  (6, 2),
+  (7, 2)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris, post_logout_redirect_uris)
