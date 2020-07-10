@@ -28,7 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (xmlhttp.status === 200) {
           organizationInfoElement.style.display = 'block';
           const response = JSON.parse(xmlhttp.response);
-          organizationInfoElement.innerHTML = "Organisation : " + response.etablissement.unite_legale.denomination;
+          const organizationLabel =
+            response.etablissement.unite_legale.denomination ||
+            response.etablissement.denomination_usuelle;
+          organizationInfoElement.innerHTML = "Organisation : " + organizationLabel;
           if (response.etablissement.etat_administratif === 'A') {
             organizationInfoElement.classList.add("info");
           } else {
