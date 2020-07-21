@@ -64,7 +64,7 @@ VALUES
     CURRENT_TIMESTAMP,
     'Dgfip',
     'Test',
-    '{"api_impot_particulier", "api_impot_particulier_step2"}'
+    '{"api_impot_particulier_fc_sandbox", "api_impot_particulier_fc_production", "api_impot_particulier_sandbox", "api_impot_particulier_production"}'
   ),
   (
     7,
