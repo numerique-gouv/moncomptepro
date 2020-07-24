@@ -1,10 +1,10 @@
 # auth.api.gouv.fr
 
-Plateforme d'authentification unique à destination des services api.gouv.fr (https://signup.api.gouv.fr, https://particulier.api.gouv.fr/admin, ...).
+Plateforme d'authentification unique à destination des services api.gouv.fr (http://datapass.api.gouv.fr, https://particulier.api.gouv.fr/admin, ...).
 
 ## Installation
 
-Les instructions d'installation se trouvent ici : https://github.com/betagouv/signup
+Les instructions d'installation se trouvent ici : https://github.com/betagouv/datapass
 
 ## Migrations
 

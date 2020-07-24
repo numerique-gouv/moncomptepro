@@ -67,8 +67,8 @@ export const joinOrganization = async (siret, user_id) => {
   ) {
     // do not await for mail to be sent as it can take a while
     sendMail({
-      to: ['signup@api.gouv.fr'],
-      subject: '[Signup] Demande pour rejoindre une organisation',
+      to: ['auth@api.gouv.fr'],
+      subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
       template: 'unable-to-auto-join-organization',
       params: { email, siret: siretNoSpaces },
       sendText: true,
@@ -103,7 +103,7 @@ export const joinOrganization = async (siret, user_id) => {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: usersInOrganizationAlready.map(({ email }) => email),
-      cc: [email, 'signup@api.gouv.fr'],
+      cc: [email, 'auth@api.gouv.fr'],
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale },
@@ -115,9 +115,9 @@ export const joinOrganization = async (siret, user_id) => {
     // see https://www.sirene.fr/sirene/public/variable/tefen
     // do not await for mail to be sent as it can take a while
     sendMail({
-      to: ['signup@api.gouv.fr'],
+      to: ['auth@api.gouv.fr'],
       subject:
-        '[Signup] Un utilisateur à rejoint une organisation de plus de 1000 employés',
+        '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 1000 employés',
       template: 'notify-join-big-organization',
       params: { user_label, email, nom_raison_sociale, siret: siretNoSpaces },
       sendText: true,

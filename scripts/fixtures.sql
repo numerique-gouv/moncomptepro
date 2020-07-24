@@ -106,11 +106,11 @@ INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris, pos
 VALUES
   (
     1,
-    'signup.api.gouv.fr',
+    'datapass.api.gouv.fr',
     '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
     '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
-    '{"https://back.signup-development.api.gouv.fr/users/auth/api_gouv/callback"}',
-    '{"https://signup-development.api.gouv.fr"}'
+    '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback"}',
+    '{"https://datapass-development.api.gouv.fr"}'
   ),
   (
     2,
