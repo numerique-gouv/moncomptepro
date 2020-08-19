@@ -55,7 +55,7 @@ export const issueSessionOrRedirectController = async (req, res, next) => {
     return res.redirect(req.body.referer);
   }
 
-  return res.redirect('https://api.gouv.fr/signup/api');
+  return res.redirect('https://api.gouv.fr/datapass/api');
 };
 
 export const getSignInController = async (req, res, next) => {
