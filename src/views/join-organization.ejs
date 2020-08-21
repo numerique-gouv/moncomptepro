@@ -16,7 +16,7 @@
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-        <div class="form__group">
+        <div class="form__group with-input-hint">
             <input
                     id="siret-selector"
                     class="form-control"
@@ -31,6 +31,18 @@
                     <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
                     <% } %>
             >
+            <small class="card__meta">
+                <i>
+                    <a
+                            class="external-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://entreprise.data.gouv.fr/"
+                    >
+                        Trouver mon numéro SIRET ?
+                    </a>
+                </i>
+            </small>
         </div>
 
 
