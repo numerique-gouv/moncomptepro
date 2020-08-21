@@ -110,14 +110,14 @@ export const joinOrganization = async (siret, user_id) => {
     });
   }
 
-  // Notify administrators if someone joined an organization with more than 1000 employees
-  if (['42', '51', '52', '53'].includes(tranche_effectifs)) {
+  // Notify administrators if someone joined an organization with more than 500 employees
+  if (['41', '42', '51', '52', '53'].includes(tranche_effectifs)) {
     // see https://www.sirene.fr/sirene/public/variable/tefen
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: ['auth@api.gouv.fr'],
       subject:
-        '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 1000 employés',
+        '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 500 employés',
       template: 'notify-join-big-organization',
       params: { user_label, email, nom_raison_sociale, siret: siretNoSpaces },
       sendText: true,
