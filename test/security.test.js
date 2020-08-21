@@ -1,6 +1,10 @@
 import assert from 'assert';
 
-import { isEmailValid, isSiretValid } from '../src/services/security';
+import {
+  isEmailValid,
+  isSiretValid,
+  isUrlTrusted,
+} from '../src/services/security';
 
 describe('isEmailValid', () => {
   it('should return false for undefined value', () => {
@@ -86,5 +90,70 @@ describe('isSiretValid', () => {
 
   it('should return true if it contains exactly 14 numbers with spaces', () => {
     assert.equal(isSiretValid('   123 456  789\n\r01234 \n'), true);
+  });
+});
+
+describe('isUrlTrusted', () => {
+  it('should not trust null url', () => {
+    assert.equal(isUrlTrusted(null), false);
+  });
+  it('should not trust no string url', () => {
+    assert.equal(isUrlTrusted(['api.gouv.fr']), false);
+  });
+  it('should not trust empty url', () => {
+    assert.equal(isUrlTrusted(''), false);
+  });
+  it('should not trust random string url', () => {
+    assert.equal(isUrlTrusted('12345'), false);
+  });
+  it('should not trust external domain (over http)', () => {
+    assert.equal(isUrlTrusted('http://www.google.com'), false);
+  });
+  it('should not trust external domain (over https)', () => {
+    assert.equal(isUrlTrusted('https://www.google.com'), false);
+  });
+  it('should not trust other .gouv.fr domains', () => {
+    assert.equal(isUrlTrusted('https://rogueapi.gouv.fr/franceconnect'), false);
+  });
+  it('should not trust domains starting with api.gouv.fr', () => {
+    assert.equal(isUrlTrusted('https://api.gouv.frrogue'), false);
+  });
+  it('should not trust domains starting with api.gouv.fr', () => {
+    assert.equal(isUrlTrusted('https://api.gouv.frrogue/franceconnect'), false);
+  });
+  it('should not trust uri other than using http protocol', () => {
+    assert.equal(isUrlTrusted('data://yolo_https://api.gouv.fr'), false);
+  });
+  it('should trust url on api.gouv.fr (over http)', () => {
+    assert.equal(isUrlTrusted('http://api.gouv.fr'), true);
+  });
+  it('should trust url on api.gouv.fr (over https)', () => {
+    assert.equal(isUrlTrusted('https://api.gouv.fr'), true);
+  });
+  it('should trust url on api.gouv.fr with path', () => {
+    assert.equal(
+      isUrlTrusted('https://api.gouv.fr/les-api/api-particulier'),
+      true
+    );
+  });
+  it('should trust url on api.gouv.fr subdomains', () => {
+    assert.equal(
+      isUrlTrusted('https://particulier.api.gouv.fr/dashboard'),
+      true
+    );
+  });
+  it('should trust url on api.gouv.fr subdomains', () => {
+    assert.equal(
+      isUrlTrusted('https://datapass-staging.api.gouv.fr/franceconnect'),
+      true
+    );
+  });
+  it('should trust url on api.gouv.fr subdomains with params', () => {
+    assert.equal(
+      isUrlTrusted(
+        'https://signup-staging.api.gouv.fr/api-impot-particulier-sandbox?scopes=%7B%22dgfip_eligibilite_lep%22%3A%20true%2C%22dgfip_annee_n_moins_1%22%3Atrue%2C%22dgfip_acces_etat_civil%22%3Atrue%7D#donnees'
+      ),
+      true
+    );
   });
 });

@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { parse as parseUrl } from 'url';
 import { nanoid, customAlphabet } from 'nanoid/async';
 import { isEmpty, isString } from 'lodash';
 
@@ -74,4 +75,17 @@ export const isSiretValid = siret => {
   const siretNoSpaces = siret.replace(/\s/g, '');
 
   return !!siretNoSpaces.match(/^\d{14}$/);
+};
+
+export const isUrlTrusted = url => {
+  if (!isString(url) || isEmpty(url)) {
+    return false;
+  }
+
+  const parsedUrl = parseUrl(url);
+
+  return (
+    !!parsedUrl.hostname &&
+    parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
+  );
 };

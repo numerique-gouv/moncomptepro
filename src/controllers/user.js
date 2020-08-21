@@ -11,6 +11,7 @@ import {
   verifyEmail,
 } from '../managers/user';
 import { getOrganizationsByUserId } from '../managers/organization';
+import { isUrlTrusted } from "../services/security";
 
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (req, res, next) => {
@@ -51,7 +52,7 @@ export const issueSessionOrRedirectController = async (req, res, next) => {
     return res.redirect(`/interaction/${req.session.interactionId}/login`);
   }
 
-  if (req.body.referer) {
+  if (req.body.referer && isUrlTrusted(req.body.referer)) {
     return res.redirect(req.body.referer);
   }
 
