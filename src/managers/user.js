@@ -82,7 +82,6 @@ export const signup = async (given_name, family_name, email, password) => {
     updated_at: new Date().toISOString(),
     given_name,
     family_name,
-    roles: [],
   });
 };
 

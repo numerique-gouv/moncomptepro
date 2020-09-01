@@ -1,4 +1,4 @@
-INSERT INTO users (id, email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
+INSERT INTO users (id, email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name)
 VALUES
   (
     1, -- keep this id synchronised with the corresponding uid in signup-back/test/fixtures/users.yml
@@ -8,8 +8,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'User',
-    'Test',
-    '{}'
+    'Test'
   ),
   (
     2,
@@ -19,8 +18,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Particulier',
-    'Test',
-    '{"api_particulier","api-particulier-token-admin"}'
+    'Test'
   ),
   (
     3,
@@ -30,8 +28,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Franceconnect',
-    'Test',
-    '{"franceconnect"}'
+    'Test'
   ),
   (
     4,
@@ -41,8 +38,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Entreprise',
-    'Test',
-    '{"api_entreprise"}'
+    'Test'
   ),
   (
     5,
@@ -52,8 +48,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Cnam',
-    'Test',
-    '{"api_droits_cnam"}'
+    'Test'
   ),
   (
     6,
@@ -63,8 +58,7 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Dgfip',
-    'Test',
-    '{"api_impot_particulier_fc_sandbox", "api_impot_particulier_fc_production", "api_impot_particulier_sandbox", "api_impot_particulier_production"}'
+    'Test'
   ),
   (
     7,
@@ -74,13 +68,12 @@ VALUES
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'le.Taxi',
-    'Test',
-    '{"le_taxi"}'
+    'Test'
   )
 ON CONFLICT (id)
 DO UPDATE
-  SET (email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name, roles)
-  = (EXCLUDED.email, EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.given_name, EXCLUDED.family_name, EXCLUDED.roles);
+  SET (email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name)
+  = (EXCLUDED.email, EXCLUDED.email_verified, EXCLUDED.encrypted_password, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.given_name, EXCLUDED.family_name);
 
 INSERT INTO organizations (id, siret, authorized_email_domains)
 VALUES

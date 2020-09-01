@@ -50,7 +50,6 @@ export const provider = {
     email: ['email', 'email_verified'],
     profile: ['family_name', 'given_name', 'updated_at'],
     organizations: ['organizations'],
-    roles: ['roles'],
   },
   features: {
     devInteractions: { enabled: false },
