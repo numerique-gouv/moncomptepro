@@ -156,4 +156,7 @@ describe('isUrlTrusted', () => {
       true
     );
   });
+  it('should trust absolute path on same domain', () => {
+    assert.equal(isUrlTrusted('/users/join-organization'), true);
+  });
 });

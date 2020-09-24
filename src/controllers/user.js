@@ -11,12 +11,17 @@ import {
   verifyEmail,
 } from '../managers/user';
 import { getOrganizationsByUserId } from '../managers/organization';
-import { isUrlTrusted } from "../services/security";
+import { isUrlTrusted } from '../services/security';
 
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (req, res, next) => {
   if (isEmpty(req.session.user) && req.method === 'GET') {
-    return res.redirect(`/users/sign-in?referer=${parseUrl(req.url).pathname}`);
+    const redirectPath = `${parseUrl(req.url).pathname}${
+      parseUrl(req.url).search
+    }`;
+    return res.redirect(
+      `/users/sign-in?referer=${encodeURIComponent(redirectPath)}`
+    );
   }
 
   if (isEmpty(req.session.user)) {

@@ -84,8 +84,7 @@ export const isUrlTrusted = url => {
 
   const parsedUrl = parseUrl(url);
 
-  return (
-    !!parsedUrl.hostname &&
-    parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
-  );
+  return !!parsedUrl.hostname
+    ? parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
+    : parsedUrl.pathname.match(/^(\/[a-zA-Z-_0-9]*)+$/) !== null;
 };
