@@ -17,7 +17,7 @@ import { isUrlTrusted } from '../services/security';
 export const checkUserIsConnectedMiddleware = async (req, res, next) => {
   if (isEmpty(req.session.user) && req.method === 'GET') {
     const redirectPath = `${parseUrl(req.url).pathname}${
-      parseUrl(req.url).search
+      parseUrl(req.url).search ? parseUrl(req.url).search : ''
     }`;
     return res.redirect(
       `/users/sign-in?referer=${encodeURIComponent(redirectPath)}`
