@@ -27,10 +27,21 @@ document.addEventListener('DOMContentLoaded', function () {
       if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
         if (xmlhttp.status === 200) {
           organizationInfoElement.style.display = 'block';
-          const response = JSON.parse(xmlhttp.response);
-          const organizationLabel =
+          var response = JSON.parse(xmlhttp.response);
+          var nom = response.etablissement.unite_legale.nom;
+          var prenom_1 = response.etablissement.unite_legale.prenom_1;
+          var prenom_2 = response.etablissement.unite_legale.prenom_2;
+          var prenom_3 = response.etablissement.unite_legale.prenom_3;
+          var prenom_4 = response.etablissement.unite_legale.prenom_4;
+          var nom_prenom = (nom ? nom + "*" : "") +
+            (prenom_1 ? prenom_1 : "") +
+            (prenom_2 ? " " + prenom_2 : "") +
+            (prenom_3 ? " " + prenom_3 : "") +
+            (prenom_4 ? " " + prenom_4 : "");
+          var organizationLabel =
             response.etablissement.unite_legale.denomination ||
-            response.etablissement.denomination_usuelle;
+            response.etablissement.denomination_usuelle ||
+            nom_prenom;
           organizationInfoElement.innerHTML = "Organisation : " + organizationLabel;
           if (response.etablissement.etat_administratif === 'A') {
             organizationInfoElement.classList.add("info");
