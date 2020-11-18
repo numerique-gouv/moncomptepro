@@ -125,6 +125,10 @@ div.with-input-hint {
     position: relative;
 }
 
+.form__group + .form-row {
+    margin-top: 2em;
+}
+
 .form-row + .form__group {
     margin-top: 2em;
 }
