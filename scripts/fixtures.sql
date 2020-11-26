@@ -1,10 +1,10 @@
 INSERT INTO users (id, email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name)
 VALUES
   (
-    1, -- keep this id synchronised with the corresponding uid in signup-back/test/fixtures/users.yml
-    'user@yopmail.com',
+    1,
+    'user@yopmail.com', -- keep these emails synchronised with the corresponding emails in signup-back/test/fixtures/users.yml
     'true',
-    '$2a$11$TzOShc0yg7K0nahltAI9fOJmuoaPqmawZ0geuZ/JFsTXFdM3Xsq.m', -- hashed 'password' string
+    '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', -- password is 'user@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'User',
@@ -14,7 +14,7 @@ VALUES
     2,
     'api-particulier@yopmail.com',
     'true',
-    '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi', -- hashed 'password' string
+    '$2a$10$lciw8zIj7f46yqINJUkWUe1ZeZQRwLym/v7bO9Vza6w0Jtxzd6u5m', -- password is 'api-particulier@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Particulier',
@@ -24,7 +24,7 @@ VALUES
     3,
     'franceconnect@yopmail.com',
     'true',
-    '$2a$11$oFX9YmL11QNRdebu9HsQqeDHkCXEUgXicBmwY4N7ImcN1WVz67ku2', -- hashed 'password' string
+    '$2a$10$dHC3xdeOc8BuXwmF/nD7R.8TWAj2tU/hyybXr3VzIxrBg9Lynt5WK', -- password is 'franceconnect@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Franceconnect',
@@ -34,7 +34,7 @@ VALUES
     4,
     'api-entreprise@yopmail.com',
     'true',
-    '$2a$11$LERSTLNbSPG./JlOreoz3u7Tt8MtEAfgEb.FvO4LG4VJ6BgQCxuNi', -- hashed 'password' string
+    '$2a$10$K92VjN/bxsU3PEdK.McpIe7VO7XC.ESse4Lk2BPLmR4QwkcHKLt7K', -- password is 'api-entreprise@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
     'Entreprise',
@@ -42,32 +42,22 @@ VALUES
   ),
   (
     5,
-    'api-droits-cnam@yopmail.com',
+    'api-impot-particulier@yopmail.com',
     'true',
-    '$2a$11$mc1hvQrVd2w2CdXN.SnRAusxztIRP7DB.taBGZz2W9GEbQaVsBnsa', -- hashed 'password' string
+    '$2a$10$24hdVRIbS6swY.zQy6wNXeeOCPOj.efXsBWfvGSqyvXaMsFC.fltq', -- password is 'api-impot-particulier@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
-    'Cnam',
+    'Impôt particulier',
     'Test'
   ),
   (
     6,
-    'api-impot-particulier@yopmail.com',
+    'datapass@yopmail.com',
     'true',
-    '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6', -- hashed 'password' string
+    '$2a$10$P/M19MBC3b/k64X2QX4tQeMnvYUIkGPKhSx7CP9g02xoiA.ZRFg9C', -- password is 'datapass@yopmail.com'
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP,
-    'Dgfip',
-    'Test'
-  ),
-  (
-    7,
-    'le-taxi@yopmail.com',
-    'true',
-    '$2a$11$kwLTRJFLWckwieevXHTqu.scZ3tnwy0spo0btQfmKvCX5WwHjlqv6', -- hashed 'password' string
-    CURRENT_TIMESTAMP,
-    CURRENT_TIMESTAMP,
-    'le.Taxi',
+    'Administrator',
     'Test'
   )
 ON CONFLICT (id)
@@ -91,8 +81,7 @@ VALUES
   (3, 2),
   (4, 2),
   (5, 2),
-  (6, 2),
-  (7, 2)
+  (6, 2)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO oidc_clients (id, name, client_id, client_secret, redirect_uris, post_logout_redirect_uris)
