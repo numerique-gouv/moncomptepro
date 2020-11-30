@@ -70,7 +70,7 @@ export const joinOrganization = async (siret, user_id) => {
       to: ['auth@api.gouv.fr'],
       subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
       template: 'unable-to-auto-join-organization',
-      params: { email, siret: siretNoSpaces },
+      params: { email, siret: siretNoSpaces, nom_raison_sociale },
       sendText: true,
     });
     throw new Error('unable_to_auto_join_organization');
