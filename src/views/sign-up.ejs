@@ -26,7 +26,7 @@
 
     <div class="form__group">
         <input class="form-control" required type="email" name="login" aria-label="Votre adresse email"
-               placeholder="Votre adresse email" <% if (locals.loginHint) { %>value="<%= locals.loginHint %>" <% } %>>
+               placeholder="Votre adresse email" <% if (locals.loginHint) { %>value="<%= locals.loginHint %>" <% } %> <% if (locals.forceEmail) { %>disabled<% } %>>
     </div>
 
     <div class="form__group with-input-hint">
@@ -44,3 +44,4 @@
 <div class="container text-center">
     <p>J'ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
 </div>
+
