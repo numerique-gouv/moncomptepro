@@ -99,6 +99,7 @@ export const getSignUpController = async (req, res, next) => {
     notifications,
     csrfToken: req.csrfToken(),
     loginHint: req.query.login_hint,
+    forceEmail: req.query.login_hint && req.query.force_email,
   });
 };
 
