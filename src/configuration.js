@@ -55,6 +55,7 @@ export const provider = {
     devInteractions: { enabled: false },
     frontchannelLogout: { enabled: true },
     encryption: { enabled: true },
+    introspection: { enabled: true },
   },
   findAccount,
   formats: { AccessToken: 'jwt' },
@@ -82,6 +83,7 @@ export const provider = {
     token: '/oauth/token',
     userinfo: '/oauth/userinfo',
     end_session: '/oauth/logout',
+    introspection: '/oauth/token/introspection',
   },
   renderError: async (ctx, { error, error_description }, err) => {
     console.error(err);
