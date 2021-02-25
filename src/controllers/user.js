@@ -8,6 +8,7 @@ import {
   sendEmailAddressVerificationEmail,
   sendResetPasswordEmail,
   signup,
+  updatePersonalInformations,
   verifyEmail,
 } from '../managers/user';
 import { getOrganizationsByUserId } from '../managers/organization';
@@ -41,9 +42,29 @@ export const checkUserIsVerifiedMiddleware = async (req, res, next) => {
   });
 };
 
+export const checkUserHasPersonalInformationsMiddleware = async (
+  req,
+  res,
+  next
+) => {
+  return checkUserIsVerifiedMiddleware(req, res, async () => {
+    const { given_name, family_name, phone_number, job } = req.session.user;
+    if (
+      isEmpty(given_name) ||
+      isEmpty(family_name) ||
+      isEmpty(phone_number) ||
+      isEmpty(job)
+    ) {
+      return res.redirect('/users/personal-informations');
+    }
+
+    return next();
+  });
+};
+
 // check that user go through all requirements before issuing a session
 export const checkUserSignInRequirementsMiddleware = async (req, res, next) => {
-  return checkUserIsVerifiedMiddleware(req, res, async () => {
+  return checkUserHasPersonalInformationsMiddleware(req, res, async () => {
     if (isEmpty(await getOrganizationsByUserId(req.session.user.id))) {
       return res.redirect('/users/join-organization');
     }
@@ -105,12 +126,7 @@ export const getSignUpController = async (req, res, next) => {
 
 export const postSignUpController = async (req, res, next) => {
   try {
-    req.session.user = await signup(
-      req.body.given_name,
-      req.body.family_name,
-      req.body.login,
-      req.body.password
-    );
+    req.session.user = await signup(req.body.login, req.body.password);
 
     await sendEmailAddressVerificationEmail(req.session.user.email);
 
@@ -152,7 +168,7 @@ export const postVerifyEmailController = async (req, res, next) => {
 
     req.session.user = await verifyEmail(verifyEmailToken);
 
-    return res.redirect(`/users/join-organization`);
+    return res.redirect(`/users/personal-informations`);
   } catch (error) {
     if (error.message === 'invalid_token') {
       return res.redirect(
@@ -246,6 +262,44 @@ export const postChangePasswordController = async (req, res, next) => {
         `/users/change-password?reset_password_token=${resetPasswordToken}&notification=${
           error.message
         }`
+      );
+    }
+
+    next(error);
+  }
+};
+
+export const getPersonalInformationsController = async (req, res, next) => {
+  const notifications = notificationMessages[req.query.notification]
+    ? [notificationMessages[req.query.notification]]
+    : [];
+
+  return res.render('personal-informations', {
+    given_name: req.session.user.given_name,
+    family_name: req.session.user.family_name,
+    phone_number: req.session.user.phone_number,
+    job: req.session.user.job,
+    notifications,
+    csrfToken: req.csrfToken(),
+  });
+};
+
+export const postPersonalInformationsController = async (req, res, next) => {
+  try {
+    const { given_name, family_name, phone_number, job } = req.body;
+
+    req.session.user = await updatePersonalInformations(req.session.user.id, {
+      given_name,
+      family_name,
+      phone_number,
+      job,
+    });
+
+    next();
+  } catch (error) {
+    if (error.message === 'invalid_personal_informations') {
+      return res.redirect(
+        `/users/personal-informations?notification=${error.message}`
       );
     }
 

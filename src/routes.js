@@ -11,16 +11,19 @@ import {
   interactionStartControllerFactory,
 } from './controllers/interaction';
 import {
+  checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
+  getPersonalInformationsController,
   getResetPasswordController,
   getSignInController,
   getSignUpController,
   getVerifyEmailController,
   issueSessionOrRedirectController,
   postChangePasswordController,
+  postPersonalInformationsController,
   postResetPasswordController,
   postSendEmailVerificationController,
   postSignInMiddleware,
@@ -114,16 +117,31 @@ module.exports = (app, provider) => {
   );
 
   app.get(
-    '/users/join-organization',
+    '/users/personal-informations',
     csrfProtectionMiddleware,
     checkUserIsVerifiedMiddleware,
+    getPersonalInformationsController
+  );
+  app.post(
+    '/users/personal-informations',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserIsVerifiedMiddleware,
+    postPersonalInformationsController,
+    issueSessionOrRedirectController
+  );
+
+  app.get(
+    '/users/join-organization',
+    csrfProtectionMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
     getJoinOrganizationController
   );
   app.post(
     '/users/join-organization',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserIsVerifiedMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
     postJoinOrganizationMiddleware,
     issueSessionOrRedirectController
   );
