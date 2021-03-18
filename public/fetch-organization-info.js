@@ -43,7 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
             response.etablissement.denomination_usuelle ||
             nom_prenom;
           organizationInfoElement.innerHTML = "Organisation : " + organizationLabel;
-          if (response.etablissement.etat_administratif === 'A') {
+          if (response.etablissement.statut_diffusion === 'N' ) {
+            organizationInfoElement.classList.add("error");
+            organizationInfoElement.innerHTML += " (Cet établissement est non-diffusible. Merci de le rendre diffusible. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>)";
+          } else if (response.etablissement.etat_administratif === 'A') {
             organizationInfoElement.classList.add("info");
           } else {
             organizationInfoElement.classList.add("error");
