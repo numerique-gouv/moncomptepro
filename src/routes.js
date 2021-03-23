@@ -63,6 +63,7 @@ module.exports = (app, provider) => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     postSignInMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
   app.get('/users/sign-up', csrfProtectionMiddleware, getSignUpController);
@@ -70,7 +71,9 @@ module.exports = (app, provider) => {
     '/users/sign-up',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postSignUpController
+    postSignUpController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
   );
 
   app.get(
@@ -84,7 +87,9 @@ module.exports = (app, provider) => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
-    postVerifyEmailController
+    postVerifyEmailController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
   );
   app.post(
     '/users/send-email-verification',
@@ -128,6 +133,7 @@ module.exports = (app, provider) => {
     rateLimiterMiddleware,
     checkUserIsVerifiedMiddleware,
     postPersonalInformationsController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
 
@@ -143,6 +149,7 @@ module.exports = (app, provider) => {
     rateLimiterMiddleware,
     checkUserHasPersonalInformationsMiddleware,
     postJoinOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
 

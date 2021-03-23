@@ -130,7 +130,7 @@ export const postSignUpController = async (req, res, next) => {
 
     await sendEmailAddressVerificationEmail(req.session.user.email);
 
-    return res.redirect(`/users/verify-email`);
+    next();
   } catch (error) {
     if (
       error.message === 'email_unavailable' ||
@@ -168,7 +168,7 @@ export const postVerifyEmailController = async (req, res, next) => {
 
     req.session.user = await verifyEmail(verifyEmailToken);
 
-    return res.redirect(`/users/personal-informations`);
+    next();
   } catch (error) {
     if (error.message === 'invalid_token') {
       return res.redirect(
