@@ -157,3 +157,12 @@ div.with-input-hint {
     white-space: pre-line;
     text-align: initial;
 }
+
+/* legal informations */
+.legal {
+    color: grey;
+}
+
+.legal a.external-link {
+    color: grey;
+}

@@ -14,8 +14,8 @@
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
     <div class="form__group">
-        <input class="form-control" required type="email" name="login" aria-label="Votre adresse email"
-               placeholder="Votre adresse email"
+        <input class="form-control" required type="email" name="login" aria-label="Votre adresse email professionnelle"
+               placeholder="Votre adresse email professionnelle"
                <% if (!locals.loginHint && !locals.forceEmail) { %>autofocus="on"<% } %>
                <% if (locals.loginHint) { %> value="<%= locals.loginHint %>" <% } %>
                <% if (locals.forceEmail) { %>disabled<% } %>>
