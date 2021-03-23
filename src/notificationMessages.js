@@ -64,7 +64,11 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   weak_password: {
     type: 'error',
     message:
-      "Votre mot de passe est trop court. Merci de choisir un mot de passe d'au moins 10 caractères",
+      "Votre mot de passe est trop court. Merci de choisir un mot de passe d'au moins 10 caractères.",
+  },
+  invalid_personal_informations: {
+    type: 'error',
+    message: 'Le format des informations personnelles est invalide.',
   },
 };
 

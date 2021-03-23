@@ -59,6 +59,18 @@ export const isEmailValid = email => {
   return true;
 };
 
+export const isPhoneNumberValid = phoneNumber => {
+  if (!isString(phoneNumber)) {
+    return false;
+  }
+
+  if (!phoneNumber.match(/^\+?(?:[0-9][ -]?){6,14}[0-9]$/)) {
+    return false;
+  }
+
+  return true;
+};
+
 export const generatePinToken = async () => {
   return await nanoidPin();
 };

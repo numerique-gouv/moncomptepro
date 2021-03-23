@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isString } from 'lodash';
 
 import {
   findByEmail,
@@ -13,6 +13,7 @@ import {
   hashPassword,
   isEmailValid,
   isPasswordSecure,
+  isPhoneNumberValid,
   validatePassword,
 } from '../services/security';
 import { sendMail } from '../connectors/sendinblue';
@@ -51,7 +52,7 @@ export const login = async (email, password) => {
   });
 };
 
-export const signup = async (given_name, family_name, email, password) => {
+export const signup = async (email, password) => {
   if (!isEmailValid(email)) {
     throw new Error('invalid_email');
   }
@@ -80,8 +81,6 @@ export const signup = async (given_name, family_name, email, password) => {
     last_sign_in_at: null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    given_name,
-    family_name,
   });
 };
 
@@ -105,8 +104,6 @@ export const sendEmailAddressVerificationEmail = async email => {
     subject: `Code de confirmation api.gouv.fr : ${verify_email_token}`,
     template: 'verify-email',
     params: {
-      given_name: user.given_name,
-      family_name: user.family_name,
       verify_email_token,
     },
   });
@@ -163,8 +160,6 @@ export const sendResetPasswordEmail = async email => {
     subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
     params: {
-      given_name: user.given_name,
-      family_name: user.family_name,
       reset_password_link: `${API_AUTH_HOST}/users/change-password?reset_password_token=${resetPasswordToken}`,
     },
   });
@@ -204,5 +199,26 @@ export const changePassword = async (token, password) => {
     updated_at: new Date().toISOString(),
     reset_password_token: null,
     reset_password_sent_at: null,
+  });
+};
+
+export const updatePersonalInformations = async (userId, {
+  given_name,
+  family_name,
+  phone_number,
+  job,
+}) => {
+  if (!isString(given_name) || !isString(family_name) || !isString(job)) {
+    throw new Error('invalid_personal_informations');
+  }
+  if (!isPhoneNumberValid(phone_number)) {
+    throw new Error('invalid_personal_informations');
+  }
+
+  return await update(userId, {
+    given_name,
+    family_name,
+    phone_number,
+    job,
   });
 };
