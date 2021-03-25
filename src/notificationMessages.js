@@ -50,7 +50,13 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   },
   email_verification_sent: {
     type: 'success',
-    message: 'Un nouveau code de confirmation vous a été envoyé.',
+    message: `Un nouveau code de confirmation vous a été envoyé.
+
+La réception de ce code peut prendre jusqu'à 15 minutes.
+Si vous n'avez rien reçu après ce délai, merci de vérifier votre boîte de SPAM.
+Merci également de contacter votre hébergeur de mail en lui rapportant que les mails en provenance de contact@api.gouv.fr (adresse IP : 212.146.242.6) ne sont pas reçu.
+
+Enfin, si vous avez essayé ces solutions et que vous ne recevez toujours pas le code, vous pouvez nous contacter à contact@api.gouv.fr`,
   },
   email_verified_already: {
     type: 'error',

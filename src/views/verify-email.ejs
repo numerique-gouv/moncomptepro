@@ -4,9 +4,7 @@
     <form id="verify-email" action="/users/verify-email" method="post">
         <% if (locals.notifications) { %>
             <% notifications.forEach(({type, message}) => { %>
-                <div class="notification <%= type %>">
-                    <%= message %>
-                </div>
+                <div class="notification multiline <%= type %>"><%= message %></div>
             <% }) %>
         <% } %>
 
