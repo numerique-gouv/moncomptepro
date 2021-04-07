@@ -29,6 +29,8 @@ export const findAccount = async (ctx, sub, token) => {
         updated_at,
         given_name,
         family_name,
+        phone_number,
+        job,
       } = user;
 
       return {
@@ -38,6 +40,8 @@ export const findAccount = async (ctx, sub, token) => {
         updated_at,
         given_name,
         family_name,
+        phone_number,
+        job,
         organizations,
       };
     },

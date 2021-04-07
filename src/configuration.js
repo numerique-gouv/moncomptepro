@@ -46,9 +46,8 @@ export const provider = {
   },
   claims: {
     amr: null,
-    address: ['address'],
     email: ['email', 'email_verified'],
-    profile: ['family_name', 'given_name', 'updated_at'],
+    profile: ['family_name', 'given_name', 'updated_at', 'phone_number', 'job'],
     organizations: ['organizations'],
   },
   features: {
