@@ -55,7 +55,7 @@ export const checkUserHasPersonalInformationsMiddleware = async (
       isEmpty(phone_number) ||
       isEmpty(job)
     ) {
-      return res.redirect('/users/personal-informations');
+      return res.redirect('/users/personal-information');
     }
 
     return next();
@@ -274,7 +274,7 @@ export const getPersonalInformationsController = async (req, res, next) => {
     ? [notificationMessages[req.query.notification]]
     : [];
 
-  return res.render('personal-informations', {
+  return res.render('personal-information', {
     given_name: req.session.user.given_name,
     family_name: req.session.user.family_name,
     phone_number: req.session.user.phone_number,
@@ -299,7 +299,7 @@ export const postPersonalInformationsController = async (req, res, next) => {
   } catch (error) {
     if (error.message === 'invalid_personal_informations') {
       return res.redirect(
-        `/users/personal-informations?notification=${error.message}`
+        `/users/personal-information?notification=${error.message}`
       );
     }
 

@@ -122,13 +122,13 @@ module.exports = (app, provider) => {
   );
 
   app.get(
-    '/users/personal-informations',
+    '/users/personal-information',
     csrfProtectionMiddleware,
     checkUserIsVerifiedMiddleware,
     getPersonalInformationsController
   );
   app.post(
-    '/users/personal-informations',
+    '/users/personal-information',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsVerifiedMiddleware,
