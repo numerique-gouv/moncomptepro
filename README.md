@@ -1,10 +1,37 @@
-# auth.api.gouv.fr
+# Comptes api.gouv.fr
 
-Plateforme d'authentification unique à destination des services api.gouv.fr (http://datapass.api.gouv.fr, https://particulier.api.gouv.fr/admin, ...).
+Fédérateur d’identité personne morale utilisée sur :
+- DataPass : http://datapass.api.gouv.fr
+- L’API Manager API Particulier : https://admin.portail.api.gouv.fr/
+- L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/login
+
+## Détails techniques
+
+- documentation officielle open id connect, e particulier sur le flow « Authorization Code » : https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
+- paramètres de configuration de l’instance de staging : https://auth-staging.api.gouv.fr/.well-known/openid-configuration
+- paramètres de configuration de l’instance de production : https://auth.api.gouv.fr/.well-known/openid-configuration
+- exemple des données retournées par le serveur open id :
+
+```
+{
+    "email": "user@monentreprise.com",
+    "email_verified": true,
+    "organizations":
+    [{
+        "id": 16,
+        "siret": "21630215800011"
+    }, {
+        "id": 17,
+        "siret": "21770138200012"
+    }],
+    "sub": 154,
+    "updated_at": "2020-07-23T15:34:06.637Z"
+}
+```
 
 ## Installation
 
-Les instructions d'installation se trouvent ici : https://github.com/betagouv/datapass
+Les instructions d’installation se trouvent ici : https://github.com/betagouv/datapass
 
 ## Migrations
 
