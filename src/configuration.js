@@ -1,11 +1,9 @@
-import crypto from 'crypto';
 import { interactionPolicy } from 'oidc-provider';
 
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
 const {
-  OIDC_PAIRWISE_IDENTIFIER_SALT,
   SESSION_COOKIE_SECRET,
   SECURE_COOKIES = 'true',
 } = process.env;
@@ -58,15 +56,7 @@ export const provider = {
   },
   findAccount,
   formats: { AccessToken: 'jwt' },
-  subjectTypes: ['public', 'pairwise'],
-  pairwiseIdentifier(ctx, accountId, { sectorIdentifier }) {
-    return crypto
-      .createHash('sha256')
-      .update(sectorIdentifier)
-      .update(accountId)
-      .update(OIDC_PAIRWISE_IDENTIFIER_SALT)
-      .digest('hex');
-  },
+  interactions: { policy: interactions },
   logoutSource: async (ctx, form) => {
     const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
 
@@ -93,10 +83,11 @@ export const provider = {
       error_message: `${error}: ${error_description}`,
     });
   },
+  scopes: ['openid', 'email', 'profile', 'organizations'],
+  subjectTypes: ['public'],
   ttl: {
     // note that session is limited by short term cookie duration
     AccessToken: 3 * 60 * 60, // 3 hours in second
     IdToken: 3 * 60 * 60, // 3 hours in second
   },
-  interactions: { policy: interactions },
 };
