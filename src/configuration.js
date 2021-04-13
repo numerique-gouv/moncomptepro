@@ -3,10 +3,7 @@ import { interactionPolicy } from 'oidc-provider';
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
-const {
-  SESSION_COOKIE_SECRET,
-  SECURE_COOKIES = 'true',
-} = process.env;
+const { SESSION_COOKIE_SECRET, SECURE_COOKIES = 'true' } = process.env;
 
 const secureCookies = SECURE_COOKIES === 'true';
 export const cookiesSecrets = [SESSION_COOKIE_SECRET];
