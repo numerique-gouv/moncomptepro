@@ -11,7 +11,7 @@
 
         <% if (!locals.disabled) { %>
         <p>
-            Merci de renseigner le numéro SIRET de l'organisation que vous souhaitez représenter.
+            Merci de renseigner le numéro SIRET de l’organisation que vous souhaitez représenter.
         </p>
 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
@@ -27,7 +27,7 @@
                     placeholder="Votre numéro SIRET"
                     autofocus="on"
                     pattern="^(\s*\d){14}$"
-                    title="identifiant composé de 14 chiffres attribué par l'INSEE à votre organisation"
+                    title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
                     <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
                     <% } %>
             >
@@ -61,7 +61,7 @@
 <div class="container text-center">
     <p>
         <a class="external-link" href="https://api.gouv.fr/datapass/api">
-            Retour à l'accueil
+            Retour à l’accueil
         </a>
     </p>
 </div>

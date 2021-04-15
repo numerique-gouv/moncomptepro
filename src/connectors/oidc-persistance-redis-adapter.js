@@ -6,11 +6,7 @@ const client = getNewRedisClient({
   keyPrefix: 'oidc:',
 });
 
-const consumable = new Set([
-  'AuthorizationCode',
-  'RefreshToken',
-  'DeviceCode',
-]);
+const consumable = new Set(['AuthorizationCode', 'RefreshToken', 'DeviceCode']);
 
 function grantKeyFor(id) {
   return `grant:${id}`;
@@ -32,7 +28,8 @@ class RedisAdapter {
   async upsert(id, payload, expiresIn) {
     const key = this.key(id);
     const store = consumable.has(this.name)
-      ? { payload: JSON.stringify(payload) } : JSON.stringify(payload);
+      ? { payload: JSON.stringify(payload) }
+      : JSON.stringify(payload);
 
     const multi = client.multi();
     multi[consumable.has(this.name) ? 'hmset' : 'set'](key, store);
@@ -44,7 +41,7 @@ class RedisAdapter {
     if (payload.grantId) {
       const grantKey = grantKeyFor(payload.grantId);
       multi.rpush(grantKey, key);
-      // if you're seeing grant key lists growing out of acceptable proportions consider using LTRIM
+      // if you’re seeing grant key lists growing out of acceptable proportions consider using LTRIM
       // here to trim the list to an appropriate length
       const ttl = await client.ttl(grantKey);
       if (expiresIn > ttl) {
@@ -101,10 +98,10 @@ class RedisAdapter {
     await client.del(key);
   }
 
-  async revokeByGrantId(grantId) { // eslint-disable-line class-methods-use-this
+  async revokeByGrantId(grantId) {
     const multi = client.multi();
     const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
-    tokens.forEach((token) => multi.del(token));
+    tokens.forEach(token => multi.del(token));
     multi.del(grantKeyFor(grantId));
     await multi.exec();
   }
