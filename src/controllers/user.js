@@ -104,7 +104,13 @@ export const postSignInMiddleware = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.message === 'invalid_credentials') {
-      return res.redirect(`/users/sign-in?notification=${error.message}`);
+      const refererQueryParam = req.body.referer
+        ? `&referer=${encodeURIComponent(req.body.referer)}`
+        : '';
+
+      return res.redirect(
+        `/users/sign-in?notification=${error.message}${refererQueryParam}`
+      );
     }
 
     next(error);
