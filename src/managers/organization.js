@@ -12,7 +12,7 @@ import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
 import { sendMail } from '../connectors/sendinblue';
 
-export const joinOrganization = async (siret, user_id) => {
+export const joinOrganization = async (siret, user_id, is_external) => {
   // Ensure siret is valid
   if (!isSiretValid(siret)) {
     throw new Error('invalid_siret');
@@ -63,14 +63,22 @@ export const joinOrganization = async (siret, user_id) => {
 
   if (
     !isEmpty(organization) &&
-    !organization.authorized_email_domains.includes(emailDomain)
+    (is_external
+      ? !organization.external_authorized_email_domains.includes(emailDomain)
+      : !organization.authorized_email_domains.includes(emailDomain))
   ) {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: ['auth@api.gouv.fr'],
       subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
       template: 'unable-to-auto-join-organization',
-      params: { email, siret: siretNoSpaces, nom_raison_sociale },
+      params: {
+        email,
+        siret: siretNoSpaces,
+        emailDomain,
+        nom_raison_sociale,
+        is_external,
+      },
       sendText: true,
     });
     throw new Error('unable_to_auto_join_organization');
@@ -80,7 +88,8 @@ export const joinOrganization = async (siret, user_id) => {
   if (isEmpty(organization)) {
     organization = await create({
       siret: siretNoSpaces,
-      authorized_email_domains: [emailDomain],
+      authorized_email_domains: is_external ? [] : [emailDomain],
+      external_authorized_email_domains: is_external ? [emailDomain] : [],
     });
   }
 
@@ -94,19 +103,29 @@ export const joinOrganization = async (siret, user_id) => {
   }
 
   // Link user to organization
-  await addUser({ organization_id: organization.id, user_id });
+  await addUser({
+    organization_id: organization.id,
+    user_id,
+    is_external,
+  });
 
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
-
-  if (usersInOrganizationAlready.length > 0) {
+  const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
+    ({ is_external }) => !is_external
+  );
+  const ccList = ['auth@api.gouv.fr'];
+  if (!is_external) {
+    ccList.push(email);
+  }
+  if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     // do not await for mail to be sent as it can take a while
     sendMail({
-      to: usersInOrganizationAlready.map(({ email }) => email),
-      cc: [email, 'auth@api.gouv.fr'],
+      to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
+      cc: ccList,
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
-      params: { user_label, nom_raison_sociale },
+      params: { user_label, nom_raison_sociale, email, is_external },
     });
   }
 
@@ -119,7 +138,13 @@ export const joinOrganization = async (siret, user_id) => {
       subject:
         '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 500 employés',
       template: 'notify-join-big-organization',
-      params: { user_label, email, nom_raison_sociale, siret: siretNoSpaces },
+      params: {
+        user_label,
+        email,
+        nom_raison_sociale,
+        is_external,
+        siret: siretNoSpaces,
+      },
       sendText: true,
     });
   }

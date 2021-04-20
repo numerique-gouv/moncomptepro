@@ -95,6 +95,14 @@ div.with-input-hint {
     text-align: left;
 }
 
+div.radio-button-list {
+    text-align: left;
+}
+
+div.radio-button-list > * {
+    margin: 0.5em 0 0.5em 1em;
+}
+
 /* side by side forms on a single line */
 .inline-form {
     margin-top: 2em;

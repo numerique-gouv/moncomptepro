@@ -1,6 +1,8 @@
+Bonjour,
+
 <%= user_label %> (<%= email %>)
 
-à rejoint une organisation de plus de 500 employés
+à rejoint une organisation de plus de 500 employés<% if (is_external) { %> en tant qu’externe<% } %>
 
 <%= nom_raison_sociale %> (<%= siret %>)
 

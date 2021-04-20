@@ -1,5 +1,3 @@
-import { isEmpty } from 'lodash';
-
 import notificationMessages from '../notificationMessages';
 import { joinOrganization } from '../managers/organization';
 
@@ -12,13 +10,18 @@ export const getJoinOrganizationController = async (req, res, next) => {
     notifications,
     csrfToken: req.csrfToken(),
     siretHint: req.query.siret_hint,
-    disabled: req.query.notification === 'unable_to_auto_join_organization'
+    isExternalHint: req.query.is_external_hint,
+    disabled: req.query.notification === 'unable_to_auto_join_organization',
   });
 };
 
 export const postJoinOrganizationMiddleware = async (req, res, next) => {
   try {
-    await joinOrganization(req.body.siret, req.session.user.id);
+    await joinOrganization(
+      req.body.siret,
+      req.session.user.id,
+      req.body.is_external === 'true'
+    );
 
     next();
   } catch (error) {
