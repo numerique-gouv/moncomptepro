@@ -114,15 +114,11 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
     ({ is_external }) => !is_external
   );
-  const ccList = ['auth@api.gouv.fr'];
-  if (!is_external) {
-    ccList.push(email);
-  }
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
-      cc: ccList,
+      cc: ['auth@api.gouv.fr'],
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale, email, is_external },
