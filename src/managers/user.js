@@ -4,7 +4,7 @@ import {
   findByEmail,
   findByResetPasswordToken,
   findByVerifyEmailToken,
-  insert,
+  create,
   update,
 } from '../repositories/user';
 import {
@@ -69,7 +69,7 @@ export const signup = async (email, password) => {
 
   const hashedPassword = await hashPassword(password);
 
-  return await insert({
+  return await create({
     email,
     email_verified: false,
     verify_email_token: null,
@@ -79,8 +79,6 @@ export const signup = async (email, password) => {
     reset_password_sent_at: null,
     sign_in_count: 0,
     last_sign_in_at: null,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
   });
 };
 
@@ -133,7 +131,6 @@ export const verifyEmail = async token => {
 
   return await update(user.id, {
     email_verified: true,
-    updated_at: new Date().toISOString(),
     verify_email_token: null,
     verify_email_sent_at: null,
   });
@@ -196,18 +193,15 @@ export const changePassword = async (token, password) => {
 
   return await update(user.id, {
     encrypted_password: hashedPassword,
-    updated_at: new Date().toISOString(),
     reset_password_token: null,
     reset_password_sent_at: null,
   });
 };
 
-export const updatePersonalInformations = async (userId, {
-  given_name,
-  family_name,
-  phone_number,
-  job,
-}) => {
+export const updatePersonalInformations = async (
+  userId,
+  { given_name, family_name, phone_number, job }
+) => {
   if (!isString(given_name) || !isString(family_name) || !isString(job)) {
     throw new Error('invalid_personal_informations');
   }

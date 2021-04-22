@@ -50,7 +50,12 @@ export const findByResetPasswordToken = async reset_password_token => {
 export const update = async (id, fieldsToUpdate) => {
   const connection = getDatabaseConnection();
 
-  const paramsString = _(fieldsToUpdate)
+  const fieldsToUpdateWithTimestamps = {
+    ...fieldsToUpdate,
+    updated_at: new Date().toISOString(),
+  };
+
+  const paramsString = _(fieldsToUpdateWithTimestamps)
     // { email: 'email@xy.z', encrypted_password: 'hash' }
     .toPairs()
     // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
@@ -60,7 +65,7 @@ export const update = async (id, fieldsToUpdate) => {
     .join(', ');
   // 'email = $2, encrypted_password = $3'
 
-  const values = Object.values(fieldsToUpdate);
+  const values = Object.values(fieldsToUpdateWithTimestamps);
   // [ 'email@xy.z', 'hash' ]
 
   const {
@@ -73,13 +78,18 @@ export const update = async (id, fieldsToUpdate) => {
   return result;
 };
 
-export const insert = async user => {
+export const create = async user => {
   const connection = getDatabaseConnection();
 
-  const paramsString = Object.keys(user).join(', ');
+  const userWithTimestamps = {
+    ...user,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  const paramsString = Object.keys(userWithTimestamps).join(', ');
   // 'email, encrypted_password'
 
-  const valuesString = _(user)
+  const valuesString = _(userWithTimestamps)
     // { email: 'email@xy.z', encrypted_password: 'hash' }
     .toPairs()
     // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
@@ -88,7 +98,7 @@ export const insert = async user => {
     .join(', ');
   // '$1, $2'
 
-  const values = Object.values(user);
+  const values = Object.values(userWithTimestamps);
   // [ 'email@xy.z', 'hash' ]
 
   const {

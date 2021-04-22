@@ -19,15 +19,19 @@ Fédérateur d’identité personne morale utilisée sur :
     "organizations":
     [{
         "id": 16,
-        "siret": "21630215800011"
+        "siret": "21630215800011",
+        "is_external": "true"
     }, {
         "id": 17,
-        "siret": "21770138200012"
+        "siret": "21770138200012",
+        "is_external": "false"
     }],
     "sub": 154,
     "updated_at": "2020-07-23T15:34:06.637Z"
 }
 ```
+
+> NB : `is_external` vaut `true` lorsque l’utilisateur est externe à l’organisation (ex : prestataire, sous-traitant, mandataire, etc.)
 
 ## Installation
 
