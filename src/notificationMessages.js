@@ -33,7 +33,7 @@ const notificationMessages = {
     message: `Vous souhaitez rejoindre une organisation existante.
 
 Nous avons besoin de vérifier par nous-même que vous faites bien partie de cette organisation.
-Vous recevrez un email dès que nous aurons terminé (délai moyen : 1 jour ouvré).
+Vous recevrez un email dès que nous aurons terminé (délai moyen : 3 jours ouvrés).
 
 Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   },
