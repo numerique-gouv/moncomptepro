@@ -11,6 +11,7 @@ import {
 import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
 import { sendMail } from '../connectors/sendinblue';
+import { createOrganizationJoinBlock } from '../repositories/moderation';
 
 export const joinOrganization = async (siret, user_id, is_external) => {
   // Ensure siret is valid
@@ -81,6 +82,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       },
       sendText: true,
     });
+    createOrganizationJoinBlock(user, organization);
     throw new Error('unable_to_auto_join_organization');
   }
 
