@@ -82,7 +82,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       },
       sendText: true,
     });
-    createOrganizationJoinBlock(user, organization);
+    createOrganizationJoinBlock(user, organization, is_external);
     throw new Error('unable_to_auto_join_organization');
   }
 
