@@ -79,7 +79,7 @@ export const interactionEndControllerFactory = provider => async (
     if (error instanceof SessionNotFound) {
       // we may have took to long to provide a session to the user since he has been redirected
       // we fail silently
-      return res.redirect('https://api.gouv.fr/datapass/api');
+      return res.redirect('https://datapass.api.gouv.fr');
     }
 
     next(error);
