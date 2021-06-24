@@ -1,28 +1,28 @@
 Bonjour,
-
+<br /><br />
 <%= email %>
 <%= emailDomain %>
-
+<br /><br />
 souhaite rejoindre l’organisation<% if (is_external) { %> en tant qu’externe<% } %>
-
+<br /><br />
 <%= siret %>
-
+<br /><br />
 https://annuaire-entreprises.data.gouv.fr/entreprise/<%= siret %>
-
+<br /><br />
 Documentation : https://gitlab.com/etalab/api.gouv.fr/datapass-secrets#add-a-user-to-an-organisation-on-the-production-environment
-
+<br /><br />
 Template de réponse si légitime :
-
+<br /><br />
 Bonjour,
-
+<br /><br />
 Votre demande pour rejoindre l’organisation <%= nom_raison_sociale %> a été débloquée sur https://datapass.api.gouv.fr.
-
+<br /><br />
 Vous pouvez de nouveau soumettre la demande pour rejoindre l’organisation via le lien suivant : https://auth.api.gouv.fr/users/join-organization?siret_hint=<%= siret %>&is_external_hint=<%= is_external %> .
-
+<br /><br />
 Suite à cela, vous serez en mesure de soumettre une demande d’habilitation via le lien suivant : https://datapass.api.gouv.fr/
-
+<br /><br />
 Je reste à votre disposition pour toute information complémentaire.
-
+<br /><br />
 Cordialement,
-
+<br /><br />
 Équipe api.gouv.fr
