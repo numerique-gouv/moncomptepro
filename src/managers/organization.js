@@ -80,7 +80,15 @@ export const joinOrganization = async (siret, user_id, is_external) => {
         nom_raison_sociale,
         is_external,
       },
-      sendText: true,
+    });
+    sendMail({
+      to: email,
+      cc: ['auth@api.gouv.fr'],
+      subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
+      template: 'unable-to-auto-join-organization-acknowledgment',
+      params: {
+        nom_raison_sociale,
+      },
     });
     createOrganizationJoinBlock(user, organization, is_external);
     throw new Error('unable_to_auto_join_organization');
@@ -143,7 +151,6 @@ export const joinOrganization = async (siret, user_id, is_external) => {
         is_external,
         siret: siretNoSpaces,
       },
-      sendText: true,
     });
   }
 

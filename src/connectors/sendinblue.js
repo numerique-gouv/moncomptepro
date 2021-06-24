@@ -16,6 +16,7 @@ const templateToId = {
   'join-organization': 5,
   'verify-email': 6,
   'reset-password': 7,
+  default: 21,
 };
 
 export const sendMail = async ({
@@ -24,7 +25,6 @@ export const sendMail = async ({
   subject,
   template,
   params,
-  sendText = false,
 }) => {
   const data = {
     sender: {
@@ -35,7 +35,7 @@ export const sendMail = async ({
       name: 'L’équipe d’api.gouv.fr',
       email: 'contact@api.gouv.fr',
     },
-    to: to.map(e => ({ email: e })),
+    to: to.map((e) => ({ email: e })),
     subject,
     params,
     tags: [template],
@@ -44,17 +44,20 @@ export const sendMail = async ({
     },
   };
 
-  if (sendText) {
-    data.textContent = await render(
-      path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
-      params
-    );
-  } else {
+  if (templateToId[template]) {
     data.templateId = templateToId[template];
+  } else {
+    data.templateId = templateToId['default'];
+    data.params = {
+      text_content: await render(
+        path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
+        params
+      ),
+    };
   }
 
   if (!isEmpty(cc)) {
-    data.cc = cc.map(e => ({ email: e }));
+    data.cc = cc.map((e) => ({ email: e }));
   }
 
   if (doNotSendMail) {
@@ -76,9 +79,7 @@ export const sendMail = async ({
     });
 
     console.log(
-      `${template} email sent to ${to} with message id ${
-        response.data.messageId
-      }`
+      `${template} email sent to ${to} with message id ${response.data.messageId}`
     );
   } catch (error) {
     console.error(error);
