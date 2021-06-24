@@ -71,7 +71,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     // do not await for mail to be sent as it can take a while
     sendMail({
       to: ['auth@api.gouv.fr'],
-      subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
+      subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
       template: 'unable-to-auto-join-organization',
       params: {
         email,
@@ -84,7 +84,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     sendMail({
       to: email,
       cc: ['auth@api.gouv.fr'],
-      subject: '[api.gouv.fr] Demande pour rejoindre une organisation',
+      subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
       template: 'unable-to-auto-join-organization-acknowledgment',
       params: {
         nom_raison_sociale,
