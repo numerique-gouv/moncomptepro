@@ -96,8 +96,7 @@ export const sendEmailAddressVerificationEmail = async email => {
     verify_email_sent_at: new Date().toISOString(),
   });
 
-  // do not await for email to be sent as it can take a while
-  sendMail({
+  await sendMail({
     to: [email],
     subject: `Code de confirmation api.gouv.fr : ${verify_email_token}`,
     template: 'verify-email',

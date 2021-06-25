@@ -121,11 +121,21 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     is_external,
   });
 
+  const userOrganizations = await getOrganizationsByUserId(user_id);
+  if (userOrganizations.length === 1) {
+    // Welcome the user when he join is first organization as he may now be able to connect
+    await sendMail({
+      to: [email],
+      subject: 'Votre compte api.gouv.fr a bien été créé',
+      template: 'welcome',
+      params: { given_name, family_name, email },
+    });
+  }
+
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
-  const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
-    ({ is_external }) => !is_external
-  );
+  const usersInOrganizationAlreadyWithoutExternal =
+    usersInOrganizationAlready.filter(({ is_external }) => !is_external);
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     await sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
@@ -133,6 +143,21 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale, email, is_external },
+    });
+  }
+
+  // Inform internal users of members already in the organization
+  if (!is_external && usersInOrganizationAlready.length > 0) {
+    await sendMail({
+      to: [email],
+      subject: 'Votre organisation sur api.gouv.fr',
+      template: 'organization-welcome',
+      params: {
+        given_name,
+        family_name,
+        nom_raison_sociale,
+        usersInOrganizationAlready,
+      },
     });
   }
 
