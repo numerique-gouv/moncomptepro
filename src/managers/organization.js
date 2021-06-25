@@ -68,8 +68,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       ? !organization.external_authorized_email_domains.includes(emailDomain)
       : !organization.authorized_email_domains.includes(emailDomain))
   ) {
-    // do not await for mail to be sent as it can take a while
-    sendMail({
+    await sendMail({
       to: ['auth@api.gouv.fr'],
       subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
       template: 'unable-to-auto-join-organization',
@@ -81,8 +80,9 @@ export const joinOrganization = async (siret, user_id, is_external) => {
         is_external,
       },
     });
-    sendMail({
-      to: email,
+
+    await sendMail({
+      to: [email],
       cc: ['auth@api.gouv.fr'],
       subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
       template: 'unable-to-auto-join-organization-acknowledgment',
@@ -90,7 +90,9 @@ export const joinOrganization = async (siret, user_id, is_external) => {
         nom_raison_sociale,
       },
     });
-    createOrganizationJoinBlock(user, organization, is_external);
+
+    await createOrganizationJoinBlock(user, organization, is_external);
+
     throw new Error('unable_to_auto_join_organization');
   }
 
@@ -125,8 +127,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     ({ is_external }) => !is_external
   );
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
-    // do not await for mail to be sent as it can take a while
-    sendMail({
+    await sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
       cc: ['auth@api.gouv.fr'],
       subject: 'Votre organisation sur api.gouv.fr',
@@ -138,8 +139,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   // Notify administrators if someone joined an organization with more than 500 employees
   if (['41', '42', '51', '52', '53'].includes(tranche_effectifs)) {
     // see https://www.sirene.fr/sirene/public/variable/tefen
-    // do not await for mail to be sent as it can take a while
-    sendMail({
+    await sendMail({
       to: ['auth@api.gouv.fr'],
       subject:
         '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 500 employés',

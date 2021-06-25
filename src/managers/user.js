@@ -151,8 +151,7 @@ export const sendResetPasswordEmail = async email => {
     reset_password_sent_at: new Date().toISOString(),
   });
 
-  // do not await for mail to be sent as it can take a while
-  sendMail({
+  await sendMail({
     to: [email],
     subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
