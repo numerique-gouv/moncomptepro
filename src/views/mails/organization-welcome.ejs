@@ -3,7 +3,7 @@ Bonjour <%= given_name %> <%= family_name %>,
 Votre organisation <%= nom_raison_sociale %> possède un compte api.gouv.fr.
 <br /><br />
 Nous tenions à vous informer que les personnes suivantes ont également la possibilité d’effectuer de nouvelles demandes d’habilitation pour <%= nom_raison_sociale %> sur
-<a href="https://datapass.api.gouv.fr">DataPass</a> :
+<a href="https://datapass.api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">DataPass</a> :
 <br /><br />
 <ul>
     <% usersInOrganizationAlready.map(function({ given_name, family_name, is_external }) { %>
@@ -13,7 +13,13 @@ Nous tenions à vous informer que les personnes suivantes ont également la poss
 <br /><br />
 Vous n’avez rien de plus à faire !
 <br /><br />
-<a href="mailto:contact@api.gouv.fr?subject=Erreur%20-%20Mon%20organisation%20api.gouv.fr">Vous pensez qu’il s’agit d’une erreur ? Faites-le nous savoir en répondant à cet email.</a>
+<strong>
+    <a href="mailto:contact@api.gouv.fr?subject=Erreur%20-%20Mon%20organisation%20api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">
+        <u>
+            Vous pensez qu’il s’agit d’une erreur ? Faites-le nous savoir en répondant à cet email.
+        </u>
+    </a>
+</strong>
 <br /><br />
 Cordialement,
 <br /><br />
