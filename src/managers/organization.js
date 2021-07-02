@@ -69,19 +69,6 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       : !organization.authorized_email_domains.includes(emailDomain))
   ) {
     await sendMail({
-      to: ['auth@api.gouv.fr'],
-      subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
-      template: 'unable-to-auto-join-organization',
-      params: {
-        email,
-        siret: siretNoSpaces,
-        emailDomain,
-        nom_raison_sociale,
-        is_external,
-      },
-    });
-
-    await sendMail({
       to: [email],
       cc: ['auth@api.gouv.fr'],
       subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
