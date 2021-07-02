@@ -7,7 +7,7 @@ Nous tenions à vous informer que les personnes suivantes ont également la poss
 <br /><br />
 <ul>
     <% usersInOrganizationAlready.map(function({ given_name, family_name, is_external }) { %>
-        <li><%= given_name %> <%= family_name.toUpperCase() %><% if(is_external) { %> (externe)<% } %></li>
+        <li><%= given_name %> <%= (family_name || '').toUpperCase() %><% if(is_external) { %> (externe)<% } %></li>
     <% }) %>
 </ul>
 <br /><br />
