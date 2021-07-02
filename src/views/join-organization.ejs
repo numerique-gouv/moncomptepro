@@ -50,23 +50,14 @@
             <div id="organization-info" class="notification"></div>
         </div>
 
-        <div class="form__group radio-button-list">
+        <div class="form__group">
             <div>
                 <input
-                        type="radio" id="is-member" name="is_external" value="false" required
-                        <% if (locals.isExternalHint === "false") { %>checked<% } %>
-                >
-                <label for="is-member" class="label-inline">
-                    je fais partie de l’organisation
-                </label>
-            </div>
-            <div>
-                <input
-                        type="radio" id="is-external" name="is_external" value="true"
+                        type="checkbox" id="is-external" name="is_external" value="true"
                         <% if (locals.isExternalHint === "true") { %>checked<% } %>
                 >
                 <label for="is-external" class="label-inline">
-                    je suis externe à l’organisation (prestataire, sous-traitant, mandataire, etc.)
+                    je suis l’éditeur ou le prestataire technique de l’organisation
                 </label>
             </div>
         </div>

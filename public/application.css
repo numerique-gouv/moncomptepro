@@ -95,14 +95,6 @@ div.with-input-hint {
     text-align: left;
 }
 
-div.radio-button-list {
-    text-align: left;
-}
-
-div.radio-button-list > * {
-    margin: 0.5em 0 0.5em 1em;
-}
-
 /* side by side forms on a single line */
 .inline-form {
     margin-top: 2em;
@@ -173,4 +165,9 @@ div.radio-button-list > * {
 
 .legal a.external-link {
     color: grey;
+}
+
+/* fix checkbox without compromising Content Security Policy */
+input[type="checkbox"]::before {
+    background: url(/assets/checkmark.svg) center center no-repeat !important;
 }
