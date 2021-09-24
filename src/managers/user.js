@@ -34,7 +34,12 @@ const isExpired = (emittedDate, expirationDurationInMinutes) => {
 };
 
 export const login = async (email, password) => {
-  const user = await findByEmail(email);
+  if (!isEmailValid(email)) {
+    throw new Error('invalid_email');
+  }
+
+  const sanitizedEmail = email.toLowerCase().trim()
+  const user = await findByEmail(sanitizedEmail);
 
   if (isEmpty(user)) {
     throw new Error('invalid_credentials');
@@ -57,7 +62,8 @@ export const signup = async (email, password) => {
     throw new Error('invalid_email');
   }
 
-  const user = await findByEmail(email);
+  const sanitizedEmail = email.toLowerCase().trim()
+  const user = await findByEmail(sanitizedEmail);
 
   if (!isEmpty(user)) {
     throw new Error('email_unavailable');
@@ -70,7 +76,7 @@ export const signup = async (email, password) => {
   const hashedPassword = await hashPassword(password);
 
   return await create({
-    email,
+    email: sanitizedEmail,
     email_verified: false,
     verify_email_token: null,
     verify_email_sent_at: null,
@@ -83,7 +89,12 @@ export const signup = async (email, password) => {
 };
 
 export const sendEmailAddressVerificationEmail = async email => {
-  const user = await findByEmail(email);
+  if (!isEmailValid(email)) {
+    throw new Error('invalid_email');
+  }
+
+  const sanitizedEmail = email.toLowerCase().trim()
+  const user = await findByEmail(sanitizedEmail);
 
   if (user.email_verified) {
     throw new Error('email_verified_already');
@@ -97,7 +108,7 @@ export const sendEmailAddressVerificationEmail = async email => {
   });
 
   await sendMail({
-    to: [email],
+    to: [user.email],
     subject: `Code de confirmation api.gouv.fr : ${verify_email_token}`,
     template: 'verify-email',
     params: {
@@ -136,7 +147,12 @@ export const verifyEmail = async token => {
 };
 
 export const sendResetPasswordEmail = async email => {
-  const user = await findByEmail(email);
+  if (!isEmailValid(email)) {
+    throw new Error('invalid_email');
+  }
+
+  const sanitizedEmail = email.toLowerCase().trim()
+  const user = await findByEmail(sanitizedEmail);
 
   if (isEmpty(user)) {
     // failing silently as we do not want to give info on whether the user exists or not
@@ -151,7 +167,7 @@ export const sendResetPasswordEmail = async email => {
   });
 
   await sendMail({
-    to: [email],
+    to: [user.email],
     subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
     params: {
