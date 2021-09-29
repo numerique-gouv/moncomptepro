@@ -31,18 +31,18 @@
         </div>
         <br>
         <br>
-        <div class="container notification warning text-center">
-            <form id="send-email-verification" autocomplete="off" action="/users/send-email-verification" method="post">
-                <p>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-                    Vous ne recevez pas le code ? <input type="submit" value="Recevoir un nouveau code"
-                        class="link-submit">.
-                </p>
-            </form>
-            <p>Toujours rien ? <a href="/users/help">Consultez notre page d'aide</a></p>
-        </div>
     </form>
+    <div class="container notification warning text-center">
+        <form id="send-email-verification" autocomplete="off" action="/users/send-email-verification" method="post">
+            <p>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+                Vous ne recevez pas le code ? <input type="submit" value="Recevoir un nouveau code"
+                    class="link-submit">.
+            </p>
+        </form>
+        <p>Toujours rien ? <a href="/users/help">Consultez notre page d'aide</a></p>
+    </div>
 </div>
 
 <div class="container text-center">
