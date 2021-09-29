@@ -29,6 +29,7 @@ import {
   postSignInMiddleware,
   postSignUpController,
   postVerifyEmailController,
+  getHelpController
 } from './controllers/user';
 import {
   getJoinOrganizationController,
@@ -152,6 +153,11 @@ module.exports = (app, provider) => {
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
+
+  app.get(
+    '/users/help',
+    getHelpController
+  )
 
   app.use(async (err, req, res, next) => {
     console.error(err);

@@ -158,6 +158,11 @@ div.with-input-hint {
     text-align: initial;
 }
 
+.notification.info {
+    background: #f9f8f6;
+    border: 1px solid #ebe5da;
+}
+
 /* legal informations */
 .legal {
     color: grey;

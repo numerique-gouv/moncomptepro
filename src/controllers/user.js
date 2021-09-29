@@ -312,3 +312,7 @@ export const postPersonalInformationsController = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getHelpController = async (req, res, next) => {
+  return res.render('help', {});
+};
