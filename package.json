@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "prettier --write */*.js",
     "start": "node .",
+    "start:dev": "node-dev .",
     "build": "node-pg-migrate up && node scripts/generate-keys.js",
     "import": "node scripts/import-babel-wrapper.js",
     "migrate": "node-pg-migrate",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "mocha": "^7.2.0",
+    "node-dev": "^7.0.0",
     "prettier": "^1.15.3"
   }
 }
