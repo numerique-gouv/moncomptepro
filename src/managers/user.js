@@ -16,7 +16,7 @@ import {
   isPhoneNumberValid,
   validatePassword,
 } from '../services/security';
-import { sendMail } from '../connectors/sendinblue';
+import { sendMail } from '../managers/mail';
 
 const { API_AUTH_HOST } = process.env;
 
@@ -38,7 +38,7 @@ export const login = async (email, password) => {
     throw new Error('invalid_email');
   }
 
-  const sanitizedEmail = email.toLowerCase().trim()
+  const sanitizedEmail = email.toLowerCase().trim();
   const user = await findByEmail(sanitizedEmail);
 
   if (isEmpty(user)) {
@@ -62,7 +62,7 @@ export const signup = async (email, password) => {
     throw new Error('invalid_email');
   }
 
-  const sanitizedEmail = email.toLowerCase().trim()
+  const sanitizedEmail = email.toLowerCase().trim();
   const user = await findByEmail(sanitizedEmail);
 
   if (!isEmpty(user)) {
@@ -93,7 +93,7 @@ export const sendEmailAddressVerificationEmail = async email => {
     throw new Error('invalid_email');
   }
 
-  const sanitizedEmail = email.toLowerCase().trim()
+  const sanitizedEmail = email.toLowerCase().trim();
   const user = await findByEmail(sanitizedEmail);
 
   if (user.email_verified) {
@@ -151,7 +151,7 @@ export const sendResetPasswordEmail = async email => {
     throw new Error('invalid_email');
   }
 
-  const sanitizedEmail = email.toLowerCase().trim()
+  const sanitizedEmail = email.toLowerCase().trim();
   const user = await findByEmail(sanitizedEmail);
 
   if (isEmpty(user)) {
