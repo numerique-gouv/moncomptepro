@@ -7,3 +7,4 @@ jwks.json
 *.log
 
 .idea
+.vscode
