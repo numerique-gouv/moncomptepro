@@ -92,7 +92,7 @@ VALUES
     '82546188522214c3577d35c283ce8842786649b35a026a9d44908037a597f29b',
     '1ff180ba922fbbbb4cf6fe0d3e82efadaa48a14de454a2137e2d656aac5e97c4',
     '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback"}',
-    '{"https://datapass-development.api.gouv.fr", "http://localhost:4000"}',
+    '{"https://datapass-development.api.gouv.fr", "http://localhost:3000"}',
     'openid email profile organizations'
   ),
   (
