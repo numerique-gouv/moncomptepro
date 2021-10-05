@@ -8,12 +8,14 @@
   "scripts": {
     "lint": "prettier --write */*.js",
     "start": "node .",
+    "start:dev": "node-dev .",
     "build": "node-pg-migrate up && node scripts/generate-keys.js",
     "import": "node scripts/import-babel-wrapper.js",
     "migrate": "node-pg-migrate",
     "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
     "generate-keystore": "node scripts/generate-keys.js",
-    "test": "NODE_ENV=test mocha --require babel-polyfill --require babel-register --exit && prettier */*.js --list-different && npm audit"
+    "test:lint": "prettier */*.js --list-different",
+    "test": "mocha --require babel-polyfill --require babel-register"
   },
   "license": "MIT",
   "dependencies": {
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "mocha": "^7.2.0",
+    "node-dev": "^7.0.0",
     "prettier": "^1.15.3"
   }
 }
