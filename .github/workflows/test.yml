@@ -25,4 +25,3 @@ jobs:
       - run: npm ci
       - run: npm run test:lint
       - run: npm test
-      - run: npm audit
