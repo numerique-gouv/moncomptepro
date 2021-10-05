@@ -5,11 +5,12 @@ const {
 } = require('../connectors/sendinblue');
 
 export const sendMail = payload => {
+  const concatenatedEmails = payload.to.join(',');
   const abTestedMailer = abTestOnEmail(
     sendMailWithSendinBlue,
     sendMailWithMailjet,
     10,
-    payload.email
+    concatenatedEmails
   );
   return abTestedMailer(payload);
 };
