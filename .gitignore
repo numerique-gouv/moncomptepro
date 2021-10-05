@@ -9,4 +9,5 @@ jwks.json
 .idea
 .vscode
 
+cypress/screenshots
 cypress/videos
