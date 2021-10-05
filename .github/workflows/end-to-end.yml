@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JWKS_PATH: "jwks.json"
+      JWKS_PATH: "/tmp/jwks.json"
     services:
       redis:
         image: redis
