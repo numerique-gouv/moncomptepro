@@ -1,4 +1,4 @@
-describe('The signup Page', () => {
+describe('The signup flow', () => {
   before(function() {
     return cy
       .mailslurp()
