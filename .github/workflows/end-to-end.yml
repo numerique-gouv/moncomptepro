@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JWKS_PATH: "~/jwks.json"
+      JWKS_PATH: "jwks.json"
     services:
       redis:
         image: redis
@@ -64,3 +64,14 @@ jobs:
           SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
           NODE_ENV: production
           CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+      # Store tests runs in case of failure
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
