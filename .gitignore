@@ -8,3 +8,5 @@ jwks.json
 
 .idea
 .vscode
+
+cypress/videos
