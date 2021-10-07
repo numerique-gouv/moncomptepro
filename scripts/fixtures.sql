@@ -103,7 +103,17 @@ VALUES
     '{"https://particulier-development.api.gouv.fr/admin/oauth-callback"}',
     '{}',
     'openid email'
+  ),
+  (
+    3,
+    'dashboard.entreprise.api.gouv.fr',
+    '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
+    'oauth_api_gouv_client_secret',
+    '{"http://localhost:3000/auth/api_gouv/callback"}',
+    '{"http://localhost:3000"}',
+    'openid email'
   )
+
 ON CONFLICT (id)
 DO UPDATE
   SET (name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope)
