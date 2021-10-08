@@ -1,6 +1,6 @@
 import path from 'path';
 import axios from 'axios';
-import { isEmpty } from 'lodash';
+import { isEmpty, shuffle } from 'lodash';
 
 import { render } from '../services/renderer';
 
@@ -14,6 +14,9 @@ const secretKey =
     : null;
 
 const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
+
+// Mailjet has a limitiation of 50 recipients per API call
+const MAX_RECIPIENTS = 50;
 
 // active templates are listed at https://app.mailjet.com/templates/transactional
 const templateToId = {
@@ -30,6 +33,7 @@ export const sendMail = async ({
   template,
   params,
 }) => {
+  to = shuffle(to).slice(0, MAX_RECIPIENTS);
   const data = {
     Messages: [
       {
@@ -62,7 +66,9 @@ export const sendMail = async ({
     };
   }
 
-  if (!isEmpty(cc)) {
+  if (!isEmpty(cc) && to.length < MAX_RECIPIENTS) {
+    const remainingRecipientsCount = MAX_RECIPIENTS - to.length;
+    cc = shuffle(cc).slice(0, remainingRecipientsCount);
     data.Messages[0].Cc = cc.map(e => ({ Email: e }));
   }
 
