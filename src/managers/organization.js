@@ -11,7 +11,10 @@ import {
 import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
 import { sendMail } from '../managers/mail';
-import { createOrganizationJoinBlock } from '../repositories/moderation';
+import {
+  createBigOrganizationJoinModeration,
+  createOrganizationJoinBlockModeration,
+} from '../repositories/moderation';
 
 export const joinOrganization = async (siret, user_id, is_external) => {
   // Ensure siret is valid
@@ -78,7 +81,11 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       },
     });
 
-    await createOrganizationJoinBlock(user, organization, is_external);
+    await createOrganizationJoinBlockModeration({
+      user_id,
+      organization_id: organization.id,
+      as_external: is_external,
+    });
 
     throw new Error('unable_to_auto_join_organization');
   }
@@ -121,13 +128,11 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
-  const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
-    ({ is_external }) => !is_external
-  );
+  const usersInOrganizationAlreadyWithoutExternal =
+    usersInOrganizationAlready.filter(({ is_external }) => !is_external);
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     await sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
-      cc: ['auth@api.gouv.fr'],
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
       params: { user_label, nom_raison_sociale, email, is_external },
@@ -149,21 +154,17 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     });
   }
 
-  // Notify administrators if someone joined an organization with more than 500 employees
-  if (['41', '42', '51', '52', '53'].includes(tranche_effectifs)) {
-    // see https://www.sirene.fr/sirene/public/variable/tefen
-    await sendMail({
-      to: ['auth@api.gouv.fr'],
-      subject:
-        '[auth.api.gouv.fr] Un utilisateur à rejoint une organisation de plus de 500 employés',
-      template: 'notify-join-big-organization',
-      params: {
-        user_label,
-        email,
-        nom_raison_sociale,
-        is_external,
-        siret: siretNoSpaces,
-      },
+  // Notify administrators if someone joined an organization with more than 50 employees
+  // see https://www.sirene.fr/sirene/public/variable/tefen
+  if (
+    ['21', '22', '31', '32', '41', '42', '51', '52', '53'].includes(
+      tranche_effectifs
+    )
+  ) {
+    await createBigOrganizationJoinModeration({
+      user_id,
+      organization_id: organization.id,
+      as_external: is_external,
     });
   }
 
