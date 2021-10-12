@@ -10,7 +10,7 @@ import {
 } from '../repositories/organization';
 import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
-import { sendMail } from '../managers/mail';
+import { sendMail } from './mail';
 import {
   createBigOrganizationJoinModeration,
   createOrganizationJoinBlockModeration,
