@@ -30,29 +30,39 @@ export const isPasswordSecure = plainPassword => {
 
 /*
  * specifications of this function can be found at
- * https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet#Email_Address_Validation
+ * https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html#email-address-validation
  */
 export const isEmailValid = email => {
   if (!isString(email) || isEmpty(email)) {
     return false;
   }
 
-  const parts = email.split('@');
+  const parts = email.split('@').filter(part => part);
 
-  // Check for presence of at least one @ symbol in the address
-  if (parts.length < 2) {
+  // The email address contains two parts, separated with an @ symbol.
+  // => these parts are non empty strings
+  // => there are two and only two parts
+  if (parts.length !== 2) {
     return false;
   }
 
-  // Ensure the domain is no longer than 255 bytes
-  const domain = parts.pop();
-  if (Buffer.from(domain).length > 255) {
+  // The email address does not contain dangerous characters
+  // => the postgres connector is taking care of this
+
+  // The domain part contains only letters, numbers, hyphens (-) and periods (.)
+  const domain = parts[1];
+  if (domain.match(/^[a-zA-Z0-9.-]*$/) === null) {
     return false;
   }
 
-  // Ensure the local-part (left of the rightmost @ character) is no longer than 64 bytes
-  const localPart = parts.join('');
-  if (Buffer.from(localPart).length > 64) {
+  // The local part (before the @) should be no more than 63 characters.
+  const localPart = parts[0];
+  if (Buffer.from(localPart).length > 63) {
+    return false;
+  }
+
+  // The total length should be no more than 254 characters.
+  if (Buffer.from(email).length > 254) {
     return false;
   }
 

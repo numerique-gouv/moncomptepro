@@ -19,19 +19,31 @@ describe('isEmailValid', () => {
     assert.equal(isEmailValid('test'), false);
   });
 
-  it('should return false if local part is longer than 64 bytes', () => {
+  it('should return false if no domain is present', () => {
+    assert.equal(isEmailValid('test@'), false);
+  });
+
+  it('should return false if two @ are present', () => {
+    assert.equal(isEmailValid('test@test@test'), false);
+  });
+
+  it('should return false if domains contain other than letters, numbers, hyphens (-) and periods (.)', () => {
+    assert.equal(isEmailValid('test@test_test'), false);
+  });
+
+  it('should return false if local part is longer than 63 characters', () => {
     assert.equal(
       isEmailValid(
-        '12345678901234567890123456789012345678901234567890123456789012345@test'
+        '1234567890123456789012345678901234567890123456789012345678901234@test'
       ),
       false
     );
   });
 
-  it('should return false if domain is longer than 255 bytes', () => {
+  it('should return false if total length is longer than 254 characters', () => {
     assert.equal(
       isEmailValid(
-        'test@1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456'
+        'test@1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
       ),
       false
     );
@@ -45,15 +57,10 @@ describe('isEmailValid', () => {
     'disposable.style.email.with+symbol@example.com',
     'other.email-with-dash@example.com',
     "#!$%&'*+-/=?^_`{}|~@example.org",
-    '"()[]:,;@\\"!#$%&\'*+-/=?^_`{}| ~.a"@example.org',
+    '"()[]:,;\\"!#$%&\'*+-/=?^_`{}| ~.a"@example.org',
     '" "@example.org', // space between the quotes
     'üñîçøðé@example.com', // Unicode characters in local part
-    'üñîçøðé@üñîçøðé.com', // Unicode characters in domain part
     'Pelé@example.com', // Latin
-    'δοκιμή@παράδειγμα.δοκιμή', // Greek
-    '我買@屋企.香港', // Chinese
-    '甲斐@黒川.日本', // Japanese
-    'чебурашка@ящик-с-апельсинами.рф', // Cyrillic
   ];
 
   validEmailAddresses.forEach(validEmailAddress => {
