@@ -16,7 +16,7 @@ import {
   isPhoneNumberValid,
   validatePassword,
 } from '../services/security';
-import { sendMail } from '../managers/mail';
+import { sendMail } from '../connectors/sendinblue';
 
 const { API_AUTH_HOST } = process.env;
 
