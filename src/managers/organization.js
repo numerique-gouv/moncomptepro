@@ -10,7 +10,7 @@ import {
 } from '../repositories/organization';
 import { isSiretValid } from '../services/security';
 import { findById as findUserById } from '../repositories/user';
-import { sendMail } from './mail';
+import { sendMail } from '../connectors/sendinblue';
 import {
   createBigOrganizationJoinModeration,
   createOrganizationJoinBlockModeration,
@@ -128,8 +128,9 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
-  const usersInOrganizationAlreadyWithoutExternal =
-    usersInOrganizationAlready.filter(({ is_external }) => !is_external);
+  const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
+    ({ is_external }) => !is_external
+  );
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     await sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
