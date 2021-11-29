@@ -20,8 +20,8 @@ import { sendMail } from '../connectors/sendinblue';
 
 const { API_AUTH_HOST } = process.env;
 
-const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 15;
-const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 30;
+const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
+const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 
 const isExpired = (emittedDate, expirationDurationInMinutes) => {
   if (!(emittedDate instanceof Date)) {
