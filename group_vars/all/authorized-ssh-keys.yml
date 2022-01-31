@@ -1,4 +1,4 @@
 ---
-target_users: 
+team_login_users:
   - "{{ ansible_user }}"
   - "{{ app_user }}"

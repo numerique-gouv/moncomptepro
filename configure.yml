@@ -11,8 +11,8 @@
   roles:
     - role: app-user
       tags: app-user
-    - role: team-ssh-keys
-      tags: team-ssh-keys
+    - role: authorized-ssh-keys
+      tags: authorized-ssh-keys
     - role: ufw
       tags: ufw
     - role: nginx
@@ -46,10 +46,10 @@
       app_user: retool
       when: retool_ssh_key is defined
       tags: retool
-    - role: team-ssh-keys
-      target_users:
-        - retool
-      team_ssh_keys:
-        - "{{ retool_ssh_key }}"
+    - role: authorized-ssh-keys
+      authorized_ssh_keys:
+        - key: "{{ retool_ssh_key }}"
+          users:
+            - retool
       when: retool_ssh_key is defined
       tags: retool
