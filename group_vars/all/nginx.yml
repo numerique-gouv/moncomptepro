@@ -1,0 +1,2 @@
+---
+server_name: "{{ api_auth_domain_name }}"

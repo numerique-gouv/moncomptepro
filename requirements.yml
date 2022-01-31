@@ -1,0 +1,8 @@
+collections:
+  - name: https://github.com/etalab/api-infrastructure.git
+    type: git
+    version: master
+
+roles:
+  - name: thefinn93.letsencrypt
+  - name: geerlingguy.nodejs

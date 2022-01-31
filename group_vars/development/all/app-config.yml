@@ -1,0 +1,8 @@
+---
+api_auth_domain_name: auth-development.api.gouv.fr
+session_cookie_secret: 'gVxf0KQrjF1rTRPuOucti2cRcok4D5SCzm7oXmPyXS5UEgYz'
+api_gouv_host: https://api.gouv.fr
+do_not_send_mail: true
+mailjet_api_key: ''
+mailjet_secret_key: ''
+sendinblue_api_key: ''

@@ -1,0 +1,4 @@
+---
+target_users: 
+  - "{{ ansible_user }}"
+  - "{{ app_user }}"

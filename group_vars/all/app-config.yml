@@ -1,0 +1,11 @@
+---
+env_var:
+  PGUSER: "{{ pg_user }}"
+  PGPASSWORD: "{{ pg_password }}"
+  PGDATABASE: "{{ pg_database }}"
+  PGPORT: 5432
+  DATABASE_URL: "postgres://{{ pg_user }}:{{ pg_password }}@127.0.0.1:5432/{{ pg_database }}"
+  SENDINBLUE_API_KEY: "{{ sendinblue_api_key }}"
+  API_AUTH_HOST: "https://{{ api_auth_domain_name }}"
+  DO_NOT_SEND_MAIL: "{{ do_not_send_mail | default('true') }}"
+  SESSION_COOKIE_SECRET: "{{ session_cookie_secret }}"

@@ -11,3 +11,6 @@ jwks.json
 
 cypress/screenshots
 cypress/videos
+
+.vagrant
+ansible_modules

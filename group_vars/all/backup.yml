@@ -1,0 +1,5 @@
+---
+backup_user: api-auth
+store_identifier: api-auth
+backup_type: postgresql
+frequency: daily

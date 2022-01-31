@@ -1,0 +1,55 @@
+- hosts: all
+  become: true
+  collections:
+    - etalab.api_infrastructure
+  pre_tasks:
+    - name: Install acl to let ansible become whoever it needs to
+      apt:
+        name: acl
+        update_cache: true
+        cache_valid_time: 86400
+  roles:
+    - role: app-user
+      tags: app-user
+    - role: team-ssh-keys
+      tags: team-ssh-keys
+    - role: ufw
+      tags: ufw
+    - role: nginx
+      tags: nginx
+    - role: geerlingguy.nodejs
+      tags: nodejs
+
+- hosts: all
+  become: true
+  collections:
+    - etalab.api_infrastructure
+  roles:
+    - role: ssl
+      tags: ssl
+    - role: postgres
+    - role: backup-script
+      tags: backup-script
+      when: disable_backup is not defined
+    - role: redis
+      tags: redis
+    - role: node-app
+      tags:
+        - app-config
+
+- hosts: all
+  become: true
+  collections:
+    - etalab.api_infrastructure
+  roles:
+    - role: app-user
+      app_user: retool
+      when: retool_ssh_key is defined
+      tags: retool
+    - role: team-ssh-keys
+      target_users:
+        - retool
+      team_ssh_keys:
+        - "{{ retool_ssh_key }}"
+      when: retool_ssh_key is defined
+      tags: retool
