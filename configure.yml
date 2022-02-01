@@ -36,6 +36,8 @@
     - role: node-app
       tags:
         - app-config
+    - role: app-deployment
+      tags: app-deployment
 
 - hosts: all
   become: true

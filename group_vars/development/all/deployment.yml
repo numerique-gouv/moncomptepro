@@ -1,0 +1,5 @@
+---
+dev_deployment: true
+deployment_installation_commands: |
+  NODE_ENV=development npm install
+  npm run build

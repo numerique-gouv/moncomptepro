@@ -1,0 +1,7 @@
+---
+deployment_script_dir: "/home/{{ app_user }}"
+deployment_script_owner: "{{ app_user }}"
+deployed_app_name: "{{ app_service_name }}"
+deployment_installation_commands: |
+  npm install
+  npm run build
