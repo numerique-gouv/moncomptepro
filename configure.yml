@@ -30,7 +30,7 @@
     - role: postgres
     - role: backup-script
       tags: backup-script
-      when: disable_backup is not defined
+      when: enable_backup | default(false)
     - role: redis
       tags: redis
     - role: node-app
@@ -50,7 +50,7 @@
       tags: retool
     - role: authorized-ssh-keys
       authorized_ssh_keys:
-        - key: "{{ retool_ssh_key }}"
+        - key: '{{ retool_ssh_key }}'
           users:
             - retool
       when: retool_ssh_key is defined

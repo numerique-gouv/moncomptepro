@@ -1,5 +1,5 @@
 ---
-backup_user: api-auth
-store_identifier: api-auth
-backup_type: postgresql
+backup_user: '{{ app_user }}'
+backup_identifier: api-auth-database
+gpg_recipient: contact@api.gouv.fr
 frequency: daily
