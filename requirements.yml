@@ -6,3 +6,4 @@ collections:
 roles:
   - name: thefinn93.letsencrypt
   - name: geerlingguy.nodejs
+  - name: geerlingguy.certbot
