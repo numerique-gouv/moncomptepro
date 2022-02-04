@@ -1,11 +1,4 @@
 ---
-# certbot_auto_renew_user: '{{ ansible_user }}'
-# certbot_auto_renew_minute: '0'
-# certbot_auto_renew_hour: '3'
-# certbot_admin_email: contact@api.gouv.fr
-# certbot_create_if_missing: true
-# certbot_create_command: "{{ certbot_script }} certonly --dns-ovh --dns-ovh-credentials /etc/letsencrypt/ovh-dns-secrets/{{ ovh_zone }}.ini --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }}"
-# ovh_zone: api.gouv.fr
 certbot_certs:
   - domains:
       - '{{ api_auth_domain_name }}'

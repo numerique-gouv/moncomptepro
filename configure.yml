@@ -28,9 +28,10 @@
     - role: ssl
       tags: ssl
     - role: postgres
+      tags: postgres
     - role: backup-script
       tags: backup-script
-      when: enable_backup | default(false)
+      when: enable_backup
     - role: redis
       tags: redis
     - role: node-app

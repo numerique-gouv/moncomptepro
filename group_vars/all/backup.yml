@@ -3,3 +3,5 @@ backup_user: '{{ app_user }}'
 backup_identifier: api-auth-database
 gpg_recipient: contact@api.gouv.fr
 frequency: daily
+enable_backup: true
+public_pgp_key_path: '{{ inventory_dir }}/pgp-keys/{{ inventory_file | basename }}/backup.pub.asc'

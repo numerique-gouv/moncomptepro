@@ -1,7 +1,12 @@
 ---
-deployment_script_dir: "/home/{{ app_user }}"
-deployment_script_owner: "{{ app_user }}"
-deployed_app_name: "{{ app_service_name }}"
+deployment_script_dir: '/home/{{ app_user }}'
+deployment_script_owner: '{{ app_user }}'
+deployed_app_name: '{{ app_service_name }}'
 deployment_installation_commands: |
-  npm install
+  PREVIOUS_NODE_MODULE_PATH=$(ls -r -d ${APP_PATH}/releases/* | tail -n +2 | head -n 1)/node_modules
+  if [ -d "$PREVIOUS_NODE_MODULE_PATH" ]; then
+    echo "$(logPrefix) Copying node modules from previous release..."
+    rsync -a $PREVIOUS_NODE_MODULE_PATH node_modules
+  fi
+  npm i
   npm run build
