@@ -1,4 +1,11 @@
 ---
 team_login_users:
-  - "{{ ansible_user }}"
-  - "{{ app_user }}"
+  - '{{ ansible_user }}'
+
+authorized_ssh_keys:
+  - key: https://github.com/rdubigny.keys
+    users: '{{ team_login_users }}'
+  - key: https://github.com/xavierjp.keys
+    users: '{{ team_login_users }}'
+  - key: https://github.com/bernardstanislas.keys
+    users: '{{ team_login_users }}'
