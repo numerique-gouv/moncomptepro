@@ -5,3 +5,4 @@ gpg_recipient: contact@api.gouv.fr
 frequency: daily
 enable_backup: true
 public_pgp_key_path: '{{ inventory_dir }}/pgp-keys/{{ inventory_file | basename }}/backup.pub.asc'
+backup_command: 'pg_dump --clean --format=custom {{ pg_database }}'
