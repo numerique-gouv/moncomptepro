@@ -61,7 +61,7 @@ Add the following hosts in `/etc/hosts`:
 Then create and configure your virtual machine:
 
 ```bash
-vagrant up api-auth # This can take a while, go make a loaf of bread or something
+vagrant up
 ```
 
 > **If you are using macOS.**
@@ -70,7 +70,7 @@ vagrant up api-auth # This can take a while, go make a loaf of bread or somethin
 > Connect to each guest machine
 
 ```bash
-vagrant ssh api-auth
+vagrant ssh
 ```
 
 > And copy your hosts to `/etc/hosts`
@@ -83,7 +83,7 @@ vagrant ssh api-auth
 #### Interactive mode
 
 ```bash
-vagrant ssh api-auth
+vagrant ssh
 sudo systemctl stop api-auth
 sudo su - api-auth
 cd /opt/apps/api-auth/current
