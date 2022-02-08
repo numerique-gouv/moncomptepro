@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "configure.yml"
-    ansible.inventory_path = "development"
+    ansible.inventory_path = "../api-auth-secrets/development"
 
     roles_file = 'requirements.yml'
 
