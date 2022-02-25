@@ -35,7 +35,7 @@ Fédérateur d’identité personne morale utilisée sur :
 
 ## Installation
 
-Les instructions d’installation se trouvent ici : https://github.com/betagouv/datapass
+Les instructions d’installation se trouvent ici : https://gitlab.com/etalab/api.gouv.fr/api-auth-infrastructure
 
 ## Migrations
 
