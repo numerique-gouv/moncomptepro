@@ -142,7 +142,7 @@ export const postSignUpController = async (req, res, next) => {
       error.message === 'email_unavailable' ||
       error.message === 'invalid_email'
     ) {
-      return res.redirect(`/users/sign-up?notification=${error.message}`);
+      return res.redirect(`/users/sign-up?notification=${error.message}&login_hint=${req.body.login}`);
     }
     if (error.message === 'weak_password') {
       return res.redirect(
