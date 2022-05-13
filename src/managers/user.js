@@ -17,6 +17,7 @@ import {
   validatePassword,
 } from '../services/security';
 import { sendMail } from '../connectors/sendinblue';
+import {isEmailSafeToSendTransactional} from "../connectors/debounce";
 
 const { API_AUTH_HOST } = process.env;
 
@@ -63,6 +64,11 @@ export const signup = async (email, password) => {
   }
 
   const sanitizedEmail = email.toLowerCase().trim();
+
+  if (!await isEmailSafeToSendTransactional(sanitizedEmail)) {
+    throw new Error('invalid_email');
+  }
+
   const user = await findByEmail(sanitizedEmail);
 
   if (!isEmpty(user)) {
