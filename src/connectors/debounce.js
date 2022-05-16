@@ -10,6 +10,8 @@ const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
 
 export const isEmailSafeToSendTransactional = async email => {
   if (doNotValidateMail) {
+    console.log(`email address "${email}" not verified`);
+
     return true;
   }
 
@@ -25,6 +27,12 @@ export const isEmailSafeToSendTransactional = async email => {
         accept: 'application/json',
       },
     });
+
+    console.log(
+      `email address "${email}" is ${
+        send_transactional === '1' ? '' : 'NOT '
+      }safe to send`
+    );
 
     return send_transactional === '1';
   } catch (error) {
