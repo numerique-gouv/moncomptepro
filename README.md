@@ -4,6 +4,7 @@ Fédérateur d’identité personne morale utilisée sur :
 - DataPass : http://datapass.api.gouv.fr
 - L’API Manager API Particulier : https://admin.portail.api.gouv.fr/
 - L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/login
+- HubEE : https://hubee.numerique.gouv.fr/
 
 ## Détails techniques
 
