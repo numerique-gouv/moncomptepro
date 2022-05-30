@@ -1,4 +1,4 @@
-# Comptes api.gouv.fr
+# Comptes DataPass
 
 Fédérateur d’identité personne morale utilisée sur :
 - DataPass : http://datapass.api.gouv.fr
