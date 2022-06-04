@@ -1,7 +1,7 @@
 const notificationMessages = {
   invalid_credentials: {
     type: 'error',
-    message: 'Email ou mot de passe incorrect.',
+    message: 'Mot de passe incorrect.',
   },
   invalid_email: {
     type: 'error',
@@ -13,16 +13,13 @@ const notificationMessages = {
   },
   invalid_token: {
     type: 'warning',
-    message: 'Le lien que vous avez utilisé est invalide ou expiré.',
+    message:
+      'Le lien que vous avez utilisé est invalide ou expiré. Veuillez cliquer sur « Réinitialiser mon mot de passe » pour recevoir un nouveau lien',
   },
   password_change_success: {
     type: 'success',
     message:
       'Votre mot de passe a été mis à jour. Veuillez vous connecter avec votre nouveau mot de passe.',
-  },
-  passwords_do_not_match: {
-    type: 'error',
-    message: 'Les mots de passe ne correspondent pas.',
   },
   reset_password_email_sent: {
     type: 'info',
@@ -44,9 +41,7 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   email_unavailable: {
     type: 'warning',
     message: `Un compte existe déjà avec cet email.
-      Cliquez sur "je me connecte" pour vous connecter.
-      Si vous avez oublié votre mot de passe cliquez sur "je me connecte"
-      puis sur "Mot de passe oublié ?".`,
+      Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ? ».`,
   },
   email_verification_sent: {
     type: 'success',

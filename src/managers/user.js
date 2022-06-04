@@ -1,10 +1,10 @@
 import { isEmpty, isString } from 'lodash';
 
 import {
+  create,
   findByEmail,
   findByResetPasswordToken,
   findByVerifyEmailToken,
-  create,
   update,
 } from '../repositories/user';
 import {
@@ -17,7 +17,7 @@ import {
   validatePassword,
 } from '../services/security';
 import { sendMail } from '../connectors/sendinblue';
-import {isEmailSafeToSendTransactional} from "../connectors/debounce";
+import { isEmailSafeToSendTransactional } from '../connectors/debounce';
 
 const { API_AUTH_HOST } = process.env;
 
@@ -34,17 +34,23 @@ const isExpired = (emittedDate, expirationDurationInMinutes) => {
   return nowDate - emittedDate > expirationDurationInMinutes * 60e3;
 };
 
-export const login = async (email, password) => {
+export const startLogin = async email => {
   if (!isEmailValid(email)) {
     throw new Error('invalid_email');
   }
 
   const sanitizedEmail = email.toLowerCase().trim();
-  const user = await findByEmail(sanitizedEmail);
+  const userExists = !isEmpty(await findByEmail(sanitizedEmail));
 
-  if (isEmpty(user)) {
-    throw new Error('invalid_credentials');
+  if (!userExists && !(await isEmailSafeToSendTransactional(sanitizedEmail))) {
+    throw new Error('invalid_email');
   }
+
+  return { email: sanitizedEmail, userExists };
+};
+
+export const login = async (email, password) => {
+  const user = await findByEmail(email);
 
   const isMatch = await validatePassword(password, user.encrypted_password);
 
@@ -59,17 +65,7 @@ export const login = async (email, password) => {
 };
 
 export const signup = async (email, password) => {
-  if (!isEmailValid(email)) {
-    throw new Error('invalid_email');
-  }
-
-  const sanitizedEmail = email.toLowerCase().trim();
-
-  if (!await isEmailSafeToSendTransactional(sanitizedEmail)) {
-    throw new Error('invalid_email');
-  }
-
-  const user = await findByEmail(sanitizedEmail);
+  const user = await findByEmail(email);
 
   if (!isEmpty(user)) {
     throw new Error('email_unavailable');
@@ -82,7 +78,7 @@ export const signup = async (email, password) => {
   const hashedPassword = await hashPassword(password);
 
   return await create({
-    email: sanitizedEmail,
+    email,
     email_verified: false,
     verify_email_token: null,
     verify_email_sent_at: null,

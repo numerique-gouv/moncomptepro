@@ -12,11 +12,14 @@ describe('The signup flow', () => {
 
   it('creates a user', function() {
     // Visit the signup page
-    cy.visit('http://localhost:3000/users/sign-up');
+    cy.visit('http://localhost:3000/users/start-sign-in');
 
     // Sign up with the previously created inbox
     cy.get('[name="login"]').type(this.emailAddress);
+    cy.get('[type="submit"]').click();
+
     cy.get('[name="password"]').type(this.emailAddress);
+    cy.get('[name="confirm_password"]').type(this.emailAddress);
     cy.get('[type="submit"]').click();
 
     // Check that the website is waiting for the user to confirm their email

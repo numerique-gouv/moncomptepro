@@ -1,7 +1,7 @@
 <div class="box-container">
-    <h3 class="section__title">Mot de passe oublié ?</h3>
+    <h3 class="section__title">Votre compte DataPass</h3>
 
-    <form action="/users/reset-password" method="post">
+    <form action="/users/start-sign-in" method="post">
 
     <% if (locals.notifications) { %>
         <% notifications.forEach(({type, message}) => { %>
@@ -24,9 +24,8 @@
             </i>
         </small>
     </div>
-
     <div class="form__group">
-        <input type="submit" value="Réinitialiser mon mot de passe" class="button large wide">
+        <input type="submit" value="Valider" class="button large wide">
     </div>
     </form>
 </div>

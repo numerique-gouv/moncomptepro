@@ -30,6 +30,9 @@ import {
   postSignUpController,
   postVerifyEmailController,
   getHelpController,
+  getStartSignInController,
+  postStartSignInController,
+  checkEmailInSessionMiddleware,
 } from './controllers/user';
 import {
   getJoinOrganizationController,
@@ -58,20 +61,44 @@ module.exports = (app, provider) => {
     interactionEndControllerFactory(provider)
   );
 
-  app.get('/users/sign-in', csrfProtectionMiddleware, getSignInController);
+  app.get(
+    '/users/start-sign-in',
+    csrfProtectionMiddleware,
+    getStartSignInController
+  );
+  app.post(
+    '/users/start-sign-in',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    postStartSignInController
+  );
+
+  app.get(
+    '/users/sign-in',
+    csrfProtectionMiddleware,
+    checkEmailInSessionMiddleware,
+    getSignInController
+  );
   app.post(
     '/users/sign-in',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
+    checkEmailInSessionMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
-  app.get('/users/sign-up', csrfProtectionMiddleware, getSignUpController);
+  app.get(
+    '/users/sign-up',
+    csrfProtectionMiddleware,
+    checkEmailInSessionMiddleware,
+    getSignUpController
+  );
   app.post(
     '/users/sign-up',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
+    checkEmailInSessionMiddleware,
     postSignUpController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController

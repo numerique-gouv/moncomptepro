@@ -1,5 +1,5 @@
 <div class="box-container">
-    <h3 class="section__title">Se connecter</h3>
+    <h3 class="section__title">Votre compte DataPass</h3>
 
     <form action="/users/sign-in" method="post">
 
@@ -13,16 +13,9 @@
 
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-    <% if (locals.referer) { %>
-        <input type="hidden" name="referer" value="<%= referer %>" autocomplete="off">
-    <% } %>
-
-    <div class="form__group">
-        <input class="form-control" required type="email" name="login" aria-label="Email" placeholder="Email" <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>>
-    </div>
-
     <div class="form__group with-input-hint">
-        <input class="form-control" required type="password" name="password" aria-label="Mot de passe" placeholder="Mot de passe" <% if (locals.loginHint) { %>autofocus="on"<% } %>>
+        <label for="password">Mot de passe</label>
+        <input class="form-control" required type="password" name="password" aria-label="Mot de passe" autofocus="on">
         <small class="card__meta">
             <i>
                 <a class="external-link" href="/users/reset-password">Mot de passe oublié ?</a>
@@ -34,8 +27,4 @@
         <input type="submit" value="Connexion" class="button large wide">
     </div>
     </form>
-</div>
-
-<div class="container text-center">
-    <p>Je n’ai pas de compte ? <a class="external-link" href="/users/sign-up">je crée mon compte</a></p>
 </div>

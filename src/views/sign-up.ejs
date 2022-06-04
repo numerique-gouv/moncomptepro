@@ -1,5 +1,5 @@
 <div class="box-container">
-    <h3 class="section__title">Créer un compte</h3>
+    <h3 class="section__title">Choisir votre mot de passe</h3>
 
     <form action="/users/sign-up" method="post">
 
@@ -13,18 +13,15 @@
 
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-    <div class="form__group">
-        <input class="form-control" required type="email" name="login" aria-label="Votre adresse email professionnelle"
-               placeholder="Votre adresse email professionnelle"
-               <% if (!locals.loginHint && !locals.forceEmail) { %>autofocus="on"<% } %>
-               <% if (locals.loginHint) { %> value="<%= locals.loginHint %>" <% } %>
-               <% if (locals.forceEmail) { %>disabled<% } %>>
+    <div class="form__group with-input-hint">
+        <label for="password">Mot de passe</label>
+        <input class="form-control" required type="password" id="password" name="password" aria-label="Mot de passe" autofocus="on" minlength="10">
+        <small class="card__meta"><i>Choisissez au moins 10 caractères</i></small>
     </div>
 
     <div class="form__group with-input-hint">
-        <input class="form-control" required type="password" name="password" aria-label="Votre nouveau mot de passe*"
-               placeholder="Votre nouveau mot de passe*" <% if (locals.loginHint || locals.forceEmail) { %>autofocus="on"<% } %>>
-        <small class="card__meta"><i>*10 caractères minimum</i></small>
+        <label for="confirm_password">Confirmez votre mot de passe</label>
+        <input class="form-control" required type="password" id="confirm_password" name="confirm_password" aria-label="Confirmez votre mot de passe">
     </div>
 
     <div class="form__group">
@@ -33,6 +30,4 @@
     </form>
 </div>
 
-<div class="container text-center">
-    <p>J’ai déjà un compte ? <a class="external-link" href="/users/sign-in">je me connecte</a></p>
-</div>
+<script src="/assets/confirm-password.js"></script>
