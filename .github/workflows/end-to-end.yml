@@ -39,13 +39,13 @@ jobs:
             ${{ runner.os }}-
       - run: npm ci
       - name: Install Cypress
-        run: npm install cypress
+        run: npm install cypress@9
       - name: Generate the JWKS file
         run: npm run generate-keystore
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          wait-on: http://localhost:3000/users/sign-in
+          wait-on: http://localhost:3000/users/start-sign-in
           build: npm run migrate up
           start: npm start
           install: false

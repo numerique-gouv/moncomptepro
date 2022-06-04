@@ -1,4 +1,3 @@
-import { parse as parseUrl } from 'url';
 import { isEmpty } from 'lodash';
 
 import notificationMessages from '../notificationMessages';
@@ -8,21 +7,26 @@ import {
   sendEmailAddressVerificationEmail,
   sendResetPasswordEmail,
   signup,
+  startLogin,
   updatePersonalInformations,
   verifyEmail,
 } from '../managers/user';
 import { getOrganizationsByUserId } from '../managers/organization';
 import { isUrlTrusted } from '../services/security';
 
+// redirect user to start sign in page if no email is available in session
+export const checkEmailInSessionMiddleware = async (req, res, next) => {
+  if (isEmpty(req.session.email)) {
+    return res.redirect(`/users/start-sign-in`);
+  }
+
+  return next();
+};
+
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (req, res, next) => {
   if (isEmpty(req.session.user) && req.method === 'GET') {
-    const redirectPath = `${parseUrl(req.url).pathname}${
-      parseUrl(req.url).search ? parseUrl(req.url).search : ''
-    }`;
-    return res.redirect(
-      `/users/sign-in?referer=${encodeURIComponent(redirectPath)}`
-    );
+    return res.redirect(`/users/start-sign-in`);
   }
 
   if (isEmpty(req.session.user)) {
@@ -78,11 +82,48 @@ export const issueSessionOrRedirectController = async (req, res, next) => {
     return res.redirect(`/interaction/${req.session.interactionId}/login`);
   }
 
-  if (req.body.referer && isUrlTrusted(req.body.referer)) {
-    return res.redirect(req.body.referer);
+  if (req.session.referer && isUrlTrusted(req.session.referer)) {
+    // copy string by value
+    const referer = `${req.session.referer}`;
+    // then delete referer value from session
+    req.session.referer = null;
+    return res.redirect(referer);
   }
 
   return res.redirect('https://datapass.api.gouv.fr');
+};
+
+export const getStartSignInController = async (req, res, next) => {
+  const notifications = notificationMessages[req.query.notification]
+    ? [notificationMessages[req.query.notification]]
+    : [];
+
+  const loginHint = req.query.login_hint || req.session.email;
+
+  return res.render('start-sign-in', {
+    notifications,
+    loginHint,
+    csrfToken: req.csrfToken(),
+  });
+};
+
+export const postStartSignInController = async (req, res, next) => {
+  try {
+    const { email, userExists } = await startLogin(req.body.login);
+    req.session.email = email;
+
+    return res.redirect(`/users/${userExists ? 'sign-in' : 'sign-up'}?`);
+  } catch (error) {
+    if (error.message === 'invalid_email') {
+      return res.redirect(
+        `/users/start-sign-in?notification=${error.message}&login_hint=${
+          req.body.login
+        }`
+      );
+    }
+
+    next(error);
+  }
 };
 
 export const getSignInController = async (req, res, next) => {
@@ -92,25 +133,19 @@ export const getSignInController = async (req, res, next) => {
 
   return res.render('sign-in', {
     notifications,
-    referer: req.query.referer,
     csrfToken: req.csrfToken(),
   });
 };
 
 export const postSignInMiddleware = async (req, res, next) => {
   try {
-    req.session.user = await login(req.body.login, req.body.password);
+    req.session.user = await login(req.session.email, req.body.password);
+    req.session.email = null;
 
     next();
   } catch (error) {
     if (error.message === 'invalid_credentials') {
-      const refererQueryParam = req.body.referer
-        ? `&referer=${encodeURIComponent(req.body.referer)}`
-        : '';
-
-      return res.redirect(
-        `/users/sign-in?notification=${error.message}${refererQueryParam}`
-      );
+      return res.redirect(`/users/sign-in?notification=${error.message}`);
     }
 
     next(error);
@@ -126,30 +161,23 @@ export const getSignUpController = async (req, res, next) => {
     notifications,
     csrfToken: req.csrfToken(),
     loginHint: req.query.login_hint,
-    forceEmail: req.query.login_hint && req.query.force_email,
   });
 };
 
 export const postSignUpController = async (req, res, next) => {
   try {
-    req.session.user = await signup(req.body.login, req.body.password);
+    req.session.user = await signup(req.session.email, req.body.password);
+    req.session.email = null;
 
     await sendEmailAddressVerificationEmail(req.session.user.email);
 
     next();
   } catch (error) {
-    if (
-      error.message === 'email_unavailable' ||
-      error.message === 'invalid_email'
-    ) {
-      return res.redirect(`/users/sign-up?notification=${error.message}&login_hint=${req.body.login}`);
+    if (error.message === 'email_unavailable') {
+      return res.redirect(`/users/start-sign-in?notification=${error.message}`);
     }
     if (error.message === 'weak_password') {
-      return res.redirect(
-        `/users/sign-up?notification=${error.message}&login_hint=${
-          req.body.login
-        }`
-      );
+      return res.redirect(`/users/sign-up?notification=${error.message}`);
     }
 
     next(error);
@@ -209,6 +237,7 @@ export const getResetPasswordController = async (req, res, next) => {
 
   return res.render('reset-password', {
     notifications,
+    loginHint: req.session.email,
     csrfToken: req.csrfToken(),
   });
 };
@@ -220,7 +249,7 @@ export const postResetPasswordController = async (req, res, next) => {
     await sendResetPasswordEmail(login);
 
     return res.redirect(
-      `/users/sign-in?notification=reset_password_email_sent`
+      `/users/start-sign-in?notification=reset_password_email_sent`
     );
   } catch (error) {
     next(error);
@@ -243,17 +272,11 @@ export const getChangePasswordController = async (req, res, next) => {
 
 export const postChangePasswordController = async (req, res, next) => {
   try {
-    const resetPasswordToken = req.body.reset_password_token;
+    await changePassword(req.body.reset_password_token, req.body.password);
 
-    if (req.body.password !== req.body.password_confirmation) {
-      return res.redirect(
-        `/users/change-password?reset_password_token=${resetPasswordToken}&notification=passwords_do_not_match`
-      );
-    }
-
-    await changePassword(resetPasswordToken, req.body.password);
-
-    return res.redirect(`/users/sign-in?notification=password_change_success`);
+    return res.redirect(
+      `/users/start-sign-in?notification=password_change_success`
+    );
   } catch (error) {
     if (error.message === 'invalid_token') {
       return res.redirect(

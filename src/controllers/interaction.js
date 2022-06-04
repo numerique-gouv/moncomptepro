@@ -12,12 +12,8 @@ export const interactionStartControllerFactory = provider => async (
 
     req.session.interactionId = interactionId;
 
-    if (prompt.name === 'create_account') {
-      return res.redirect(`/users/sign-up`);
-    }
-
-    if (prompt.name === 'login') {
-      return res.redirect(`/users/sign-in`);
+    if (['create_account', 'login'].includes(prompt.name)) {
+      return res.redirect(`/users/start-sign-in`);
     }
 
     if (prompt.name === 'consent') {
