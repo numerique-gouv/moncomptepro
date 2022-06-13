@@ -38,8 +38,8 @@ app.use(
       imgSrc: ["'self'", 'data:', 'stats.data.gouv.fr'],
       connectSrc: ["'self'", 'entreprise.data.gouv.fr', 'stats.data.gouv.fr'],
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
-      styleSrc: ["'self'", 'unpkg.com'],
-      fontSrc: ["'self'", 'data:', 'unpkg.com'],
+      styleSrc: ["'self'"],
+      fontSrc: ["'self'", 'data:'],
     },
   })
 );
