@@ -35,11 +35,11 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", 'stats.data.gouv.fr'],
+      imgSrc: ["'self'", 'data:', 'stats.data.gouv.fr'],
       connectSrc: ["'self'", 'entreprise.data.gouv.fr', 'stats.data.gouv.fr'],
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
       styleSrc: ["'self'", 'unpkg.com'],
-      fontSrc: ["'self'", 'unpkg.com'],
+      fontSrc: ["'self'", 'data:', 'unpkg.com'],
     },
   })
 );

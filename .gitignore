@@ -11,3 +11,7 @@ jwks.json
 
 cypress/screenshots
 cypress/videos
+
+/public/dsfr.min.css
+/public/fonts/
+/public/icons/

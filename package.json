@@ -9,7 +9,7 @@
     "lint": "prettier --write */*.js",
     "start": "node .",
     "start:dev": "node-dev .",
-    "build": "node-pg-migrate up && node scripts/generate-keys.js",
+    "build": "node-pg-migrate up && node scripts/generate-keys.js && bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons} public/'",
     "import": "node scripts/import-babel-wrapper.js",
     "migrate": "node-pg-migrate",
     "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@gouvfr/dsfr": "^1.5.1",
     "axios": "^0.21.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
