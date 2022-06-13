@@ -5,7 +5,8 @@ const notificationMessages = {
   },
   invalid_email: {
     type: 'error',
-    message: 'Adresse email invalide.',
+    title: 'Erreur',
+    description: 'Adresse email invalide.',
   },
   invalid_siret: {
     type: 'error',
