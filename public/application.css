@@ -1,0 +1,23 @@
+header {
+    grid-area: header;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #ffffff;
+    display: grid;
+    grid-template-rows: 117px auto 280px;
+    grid-template-columns: 100%;
+    grid-template-areas:
+    'header'
+    'main'
+    'footer';
+}

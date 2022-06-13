@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-<% include partials/head %>
+<% include partials/head.ejs %>
 <body>
-<div class="main">
-    <div class="text-center">
-        <img class="header-logo" src="/assets/logo_api.svg" alt="logo api.gouv.fr">
-        <%- body %>
-        <div class="container text-center legal">
-            <p>
-                <a class="external-link" href="https://datapass.api.gouv.fr/docs/cgu_datapass.pdf">Conditions d’utilisation</a> -
-                <a class="external-link" href="https://api.gouv.fr/contact">Contact</a> -
-                <a class="external-link" href="https://www.etalab.gouv.fr/">une réalisation de Etalab</a>
-            </p>
-        </div>
-    </div>
-</div>
+<% include partials/header.ejs %>
+<main>
+    <%- body %>
+</main>
+<% include partials/footer.ejs %>
 </body>
 </html>
