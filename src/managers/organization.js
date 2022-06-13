@@ -1,20 +1,19 @@
-import { isEmpty, some } from 'lodash';
 import axios from 'axios';
-
-import {
-  findBySiret,
-  findByUserId,
-  create,
-  addUser,
-  getUsers,
-} from '../repositories/organization';
-import { isSiretValid } from '../services/security';
-import { findById as findUserById } from '../repositories/user';
+import { isEmpty, some } from 'lodash';
 import { sendMail } from '../connectors/sendinblue';
 import {
   createBigOrganizationJoinModeration,
   createOrganizationJoinBlockModeration,
 } from '../repositories/moderation';
+import {
+  addUser,
+  create,
+  findBySiret,
+  findByUserId,
+  getUsers,
+} from '../repositories/organization';
+import { findById as findUserById } from '../repositories/user';
+import { isSiretValid } from '../services/security';
 
 export const joinOrganization = async (siret, user_id, is_external) => {
   // Ensure siret is valid

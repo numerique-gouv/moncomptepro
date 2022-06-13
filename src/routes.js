@@ -1,25 +1,26 @@
-import { urlencoded } from 'express';
 import csrf from 'csurf';
-
-import { rateLimiterMiddleware } from './services/rate-limiter';
-import {
-  ejsLayoutMiddlewareFactory,
-  renderWithEjsLayout,
-} from './services/renderer';
+import { urlencoded } from 'express';
 import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
 } from './controllers/interaction';
 import {
+  getJoinOrganizationController,
+  postJoinOrganizationMiddleware,
+} from './controllers/organisation';
+import {
+  checkEmailInSessionMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
+  getHelpController,
   getPersonalInformationsController,
   getResetPasswordController,
   getSignInController,
   getSignUpController,
+  getStartSignInController,
   getVerifyEmailController,
   issueSessionOrRedirectController,
   postChangePasswordController,
@@ -28,16 +29,14 @@ import {
   postSendEmailVerificationController,
   postSignInMiddleware,
   postSignUpController,
-  postVerifyEmailController,
-  getHelpController,
-  getStartSignInController,
   postStartSignInController,
-  checkEmailInSessionMiddleware,
+  postVerifyEmailController,
 } from './controllers/user';
+import { rateLimiterMiddleware } from './services/rate-limiter';
 import {
-  getJoinOrganizationController,
-  postJoinOrganizationMiddleware,
-} from './controllers/organisation';
+  ejsLayoutMiddlewareFactory,
+  renderWithEjsLayout,
+} from './services/renderer';
 
 module.exports = (app, provider) => {
   const csrfProtectionMiddleware = csrf();
