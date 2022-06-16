@@ -109,8 +109,8 @@ VALUES
     'dashboard.entreprise.api.gouv.fr',
     '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
     'oauth_api_gouv_client_secret',
-    '{"http://localhost:3000/auth/api_gouv/callback", "https://sandbox.dashboard.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
-    '{"http://localhost:3000", "https://sandbox.dashboard.entreprise.api.gouv.fr/"}',
+    '{"http://localhost:3000/auth/api_gouv/callback", "https://sandbox.dashboard.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
+    '{"http://localhost:3000", "https://sandbox.dashboard.entreprise.api.gouv.fr/", "https://sandbox1.entreprise.api.gouv.fr/", "https://sandbox2.entreprise.api.gouv.fr/"}',
     'openid email'
   )
 
