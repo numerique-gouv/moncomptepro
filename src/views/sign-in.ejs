@@ -7,14 +7,7 @@
                 </h4>
                 <div class="fr-card__desc">
                     <form action="/users/sign-in" method="post">
-
-                        <% if (locals.notifications) { %>
-                            <% notifications.forEach(({ type, message }) => { %>
-                                <div class="notification <%= type; %>">
-                                    <%= message; %>
-                                </div>
-                            <% }); %>
-                        <% } %>
+                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
@@ -26,17 +19,7 @@
                                    aria-label="Mot de passe" autofocus="on">
                         </div>
 
-                        <div class="card-button-container">
-                            <span>
-                                <a id="go-back-link"
-                                   class="fr-link fr-fi-arrow-left-line fr-link--icon-left">
-                                    retour
-                                </a>
-                            </span>
-                            <button class="fr-btn" type="submit">
-                                Connexion
-                            </button>
-                        </div>
+                        <%- include('partials/card-button-container.ejs', {label: 'Connexion'}) %>
                     </form>
                 </div>
             </div>
@@ -50,4 +33,3 @@
         </p>
     </div>
 </div>
-<script type="text/javascript" src="/assets/go-back.js"></script>

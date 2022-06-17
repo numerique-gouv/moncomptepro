@@ -7,15 +7,7 @@
                 </h4>
                 <div class="fr-card__desc">
                     <form action="/users/start-sign-in" method="post">
-
-                        <% if (locals.notifications) { %>
-                            <% notifications.forEach(({ type, title, description }) => { %>
-                                <div class="fr-alert fr-alert--<%= type; %>">
-                                    <p class="fr-alert__title"><%= title; %></p>
-                                    <p><%= description; %></p>
-                                </div>
-                            <% }); %>
-                        <% } %>
+                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 

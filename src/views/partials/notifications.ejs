@@ -1,0 +1,10 @@
+<% if (notifications) { %>
+    <% notifications.forEach(({ type, title, description }) => { %>
+        <div class="fr-alert fr-alert--<%= type; %>">
+            <% if (title) { %>
+                <p class="fr-alert__title"><%= title; %></p>
+            <% } %>
+            <p><%= description; %></p>
+        </div>
+    <% }); %>
+<% } %>
