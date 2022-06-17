@@ -22,6 +22,20 @@ body {
     'footer';
 }
 
+.page-container {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 20%;
+}
+
+@media all and (max-width: 768px) {
+    .page-container {
+        padding: 1.5rem 5%;
+    }
+}
+
 .card-container {
     display: flex;
     height: 100%;
@@ -30,6 +44,10 @@ body {
     padding: 1.5rem 0;
     flex-direction: column;
     gap: 1.5rem;
+}
+
+.card-container .fr-alert+.fr-alert {
+    margin-top: 0;
 }
 
 .card-container > * {
@@ -45,4 +63,12 @@ body {
 
 #go-back-link {
     cursor: pointer;
+}
+
+#email-badge-lowercase {
+    text-transform: lowercase;
+}
+
+#send-email-verification {
+    display: inline;
 }

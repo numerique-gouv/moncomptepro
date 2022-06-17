@@ -45,22 +45,16 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   },
   email_verification_sent: {
     type: 'success',
-    description: `Un nouveau code de confirmation vous a été envoyé.
-
-La réception de ce code peut prendre jusqu’à 15 minutes.
-Si vous n’avez rien reçu après ce délai, merci de vérifier votre boîte de SPAM.
-Merci également de contacter votre hébergeur de mail en lui rapportant que les mails en provenance de contact@api.gouv.fr (adresse IP : 212.146.242.6) ne sont pas reçu.
-
-Enfin, si vous avez essayé ces solutions et que vous ne recevez toujours pas le code, vous pouvez nous contacter à contact@api.gouv.fr`,
+    description: 'Un nouveau code de vérification vous a été envoyé.',
   },
   email_verified_already: {
     type: 'error',
-    description: `Votre compte a déjà été confirmé.`,
+    description: `Votre email a déjà été vérifié.`,
   },
   invalid_verify_email_code: {
     type: 'error',
     description:
-      'Le code de confirmation que vous avez utilisé est invalide ou expiré.',
+      'Le code de vérification que vous avez utilisé est invalide ou expiré.',
   },
   weak_password: {
     type: 'error',

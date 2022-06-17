@@ -1,6 +1,5 @@
 import { isEmpty } from 'lodash';
-
-import notificationMessages from '../notificationMessages';
+import { getOrganizationsByUserId } from '../managers/organization';
 import {
   changePassword,
   login,
@@ -11,7 +10,8 @@ import {
   updatePersonalInformations,
   verifyEmail,
 } from '../managers/user';
-import { getOrganizationsByUserId } from '../managers/organization';
+
+import notificationMessages from '../notificationMessages';
 import { isUrlTrusted } from '../services/security';
 
 // redirect user to start sign in page if no email is available in session
@@ -223,7 +223,9 @@ export const postSendEmailVerificationController = async (req, res, next) => {
     );
   } catch (error) {
     if (error.message === 'email_verified_already') {
-      return res.redirect(`/users/verify-email?notification=${error.message}`);
+      return res.redirect(
+        `/users/personal-information?notification=${error.message}`
+      );
     }
 
     next(error);
@@ -337,5 +339,9 @@ export const postPersonalInformationsController = async (req, res, next) => {
 };
 
 export const getHelpController = async (req, res, next) => {
-  return res.render('help', {});
+  const email = req.session.user && req.session.user.email;
+  return res.render('help', {
+    email,
+    csrfToken: email && req.csrfToken(),
+  });
 };
