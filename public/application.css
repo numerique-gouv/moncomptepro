@@ -72,3 +72,7 @@ body {
 #send-email-verification {
     display: inline;
 }
+
+.error-code {
+    white-space: pre-line;
+}
