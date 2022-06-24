@@ -46,7 +46,7 @@ body {
     gap: 1.5rem;
 }
 
-.card-container .fr-alert+.fr-alert {
+.card-container .fr-alert + .fr-alert {
     margin-top: 0;
 }
 
@@ -59,6 +59,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    gap: 1.5rem;
 }
 
 #go-back-link {
@@ -75,4 +76,8 @@ body {
 
 .error-code {
     white-space: pre-line;
+}
+
+.alert-description {
+    white-space: break-spaces;
 }

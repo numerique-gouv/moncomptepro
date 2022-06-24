@@ -13,13 +13,15 @@ const notificationMessages = {
   },
   invalid_token: {
     type: 'warning',
-    description:
-      'Le lien que vous avez utilisé est invalide ou expiré. Veuillez cliquer sur « Réinitialiser mon mot de passe » pour recevoir un nouveau lien',
+    description: `Le lien que vous avez utilisé est invalide ou expiré.
+
+Veuillez cliquer sur « Réinitialiser » pour recevoir un nouveau lien`,
   },
   password_change_success: {
     type: 'success',
-    description:
-      'Votre mot de passe a été mis à jour. Veuillez vous connecter avec votre nouveau mot de passe.',
+    description: `Votre mot de passe a été mis à jour.
+
+Veuillez vous connecter avec votre nouveau mot de passe.`,
   },
   reset_password_email_sent: {
     type: 'info',
@@ -30,7 +32,7 @@ const notificationMessages = {
     description: `Vous souhaitez rejoindre une organisation existante.
 
 Nous avons besoin de vérifier par nous-même que vous faites bien partie de cette organisation.
-Vous recevrez un email dès que nous aurons terminé (délai moyen : 5 jours ouvrés).
+Vous recevrez un email dès que nous aurons terminé (délai moyen : 1 jour ouvré).
 
 Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   },
@@ -41,7 +43,8 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
   email_unavailable: {
     type: 'warning',
     description: `Un compte existe déjà avec cet email.
-      Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ? ».`,
+
+Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ? ».`,
   },
   email_verification_sent: {
     type: 'success',
