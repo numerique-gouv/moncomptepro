@@ -1,30 +1,35 @@
-<div class="box-container">
-    <h3 class="section__title">Votre compte DataPass</h3>
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Votre compte DataPass
+                </h4>
+                <div class="fr-card__desc">
+                    <form action="/users/sign-in" method="post">
+                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
-    <form action="/users/sign-in" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-    <% if (locals.notifications) { %>
-        <% notifications.forEach(({type, message}) => { %>
-        <div class="notification <%= type %>">
-            <%= message %>
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="password">
+                                Mot de passe
+                            </label>
+                            <input class="fr-input" required type="password" id="password" name="password"
+                                   aria-label="Mot de passe" autofocus="on">
+                        </div>
+
+                        <%- include('partials/card-button-container.ejs', {label: 'Connexion', showGoBackButton: true}) %>
+                    </form>
+                </div>
+            </div>
         </div>
-        <% }) %>
-    <% } %>
-
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-    <div class="form__group with-input-hint">
-        <label for="password">Mot de passe</label>
-        <input class="form-control" required type="password" name="password" aria-label="Mot de passe" autofocus="on">
-        <small class="card__meta">
-            <i>
-                <a class="external-link" href="/users/reset-password">Mot de passe oublié ?</a>
-            </i>
-        </small>
     </div>
-
-    <div class="form__group">
-        <input type="submit" value="Connexion" class="button large wide">
+    <div class="fr-alert fr-alert--info">
+        <p>
+            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-left" href="/users/reset-password">
+                Mot de passe oublié ?
+            </a>
+        </p>
     </div>
-    </form>
 </div>

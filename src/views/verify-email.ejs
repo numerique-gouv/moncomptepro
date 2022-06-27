@@ -1,54 +1,50 @@
-<div class="box-container">
-    <h3 class="section__title">Confirmation de votre email</h3>
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Vérifier votre email
+                </h4>
+                <div class="fr-card__desc">
+                    <form id="verify-email" action="/users/verify-email" method="post">
+                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
-    <form id="verify-email" action="/users/verify-email" method="post">
-        <% if (locals.notifications) { %>
-        <% notifications.forEach(({type, message})=> { %>
-        <div class="notification multiline <%= type %>">
-            <%= message %>
+                        <p>
+                            Un code de vérification a été envoyé à
+                            <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                                <%= email; %>
+                            </span>.
+                        </p>
+
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
+
+
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="verify_email_token">
+                                Code de vérification à 10 chiffres
+                                <span class="fr-hint-text">
+                                    Copiez-collez ou saisissez le code reçu par email
+                                </span>
+                            </label>
+                            <input class="fr-input" required
+                                   pattern="[0-9]{10}" type="text" id="verify_email_token" size="10"
+                                   title="10 chiffres"
+                                   name="verify_email_token" autofocus
+                                   aria-label="Code de vérification à 10 chiffres">
+                        </div>
+
+                        <%- include('partials/card-button-container.ejs', {label: 'Vérifier', showGoBackButton: true}) %>
+                    </form>
+                </div>
+            </div>
         </div>
-        <% }) %>
-        <% } %>
-
-        <p>
-            Merci de saisir ci-dessous le code de confirmation à 10 chiffres que nous vous avons envoyé
-            à
-            <b>
-                <%= email %>
-            </b>.
-        </p>
-
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off" />
-
-
-        <div class="form__group">
-            <input class="form-control verify_email_token" required max="9999999999" min="0" type="number"
-                name="verify_email_token" autofocus aria-label="Code" placeholder="Code">
-        </div>
-
-        <div class="form__group">
-            <input type="submit" value="Confirmer mon email" class="button large">
-        </div>
-        <br>
-        <br>
-    </form>
-    <div class="container notification warning text-center">
-        <form id="send-email-verification" autocomplete="off" action="/users/send-email-verification" method="post">
-            <p>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-                Vous ne recevez pas le code ? <input type="submit" value="Recevoir un nouveau code"
-                    class="link-submit">.
-            </p>
-        </form>
-        <p>Toujours rien ? <a href="/users/help">Consultez notre page d'aide</a></p>
     </div>
-</div>
-
-<div class="container text-center">
-    <p>
-        <a class="external-link" href="https://datapass.api.gouv.fr">
-            Retour à l’accueil
-        </a>
-    </p>
+    <div class="fr-alert fr-alert--info">
+        <p>
+            J'ai attendu 15 minutes et je ne reçois pas de code de vérification
+        </p>
+        <p>
+            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-left" href="/users/help">Consulter l'aide</a>
+        </p>
+    </div>
 </div>

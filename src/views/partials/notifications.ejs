@@ -1,0 +1,12 @@
+<% if (notifications) { %>
+    <div class="fr-input-group">
+        <% notifications.forEach(({ type, title, description }) => { %>
+            <div class="fr-alert fr-alert--<%= type; %>">
+                <% if (title) { %>
+                    <p class="fr-alert__title"><%= title; %></p>
+                <% } %>
+                <p class="alert-description"><%= description; %></p>
+            </div>
+        <% }); %>
+    </div>
+<% } %>

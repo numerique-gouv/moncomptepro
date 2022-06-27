@@ -1,0 +1,14 @@
+<div class="card-button-container">
+    <span>
+        <% if (locals.showGoBackButton) { %>
+            <a id="go-back-link"
+               class="fr-link fr-fi-arrow-left-line fr-link--icon-left">
+                retour
+            </a>
+            <script type="text/javascript" src="/assets/go-back.js"></script>
+        <% } %>
+    </span>
+    <button class="fr-btn" type="submit">
+        <%= label; %>
+    </button>
+</div>

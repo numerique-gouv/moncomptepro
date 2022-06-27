@@ -1,29 +1,50 @@
-<div class="box-container">
-    <h3 class="section__title">Questions fréquentes</h3>
-    <br>
-    <div class="text-left">
-        <h5>Je ne reçois pas le code de confirmation</h5>
-        <div class="notification info">
-            <p>Vous êtes peut-être dans l'une de ces situations :</p>
+<div class="page-container">
+    <div>
+        <h3>Questions fréquentes</h3>
+        <div>
+            <h5>Vous ne recevez pas le code de vérification</h5>
+            <p>Vous êtes peut-être dans l’une de ces situations :</p>
             <ul>
-                <li>Le code de confirmation est arrivé dans vos courriers indésirables</li>
-                <li>Vous avez fait une erreur de saisie dans votre adresse email : vous pouvez recréer un compte avec la
-                    bonne adresse</li>
-                <li>Vous utiliser un outil de protection contre les spams (comme MailInBlack) qui vous empêche de
-                    recevoir
-                    l'email. Il faut donc autoriser la réception des emails provenant de
-                    <strong>contact@api.gouv.fr</strong>
+                <li>Vous avez fait une erreur de saisie dans votre adresse
+                    <% if (locals.email) { %>
+                        <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                            <%= email; %>
+                        </span>
+                    <% } else { %>
+                        email
+                    <% } %>
+                    <br>
+                    💡 <b><a class="fr-link" href="/users/start-sign-in">Recréez un compte avec la
+                            bonne adresse</a></b></li>
+                <br>
+                <li>Le code est arrivé dans vos courriers indésirables<br>
+                    💡 <b>Vérifiez vos spams</b></li>
+                <br>
+                <li>Votre organisation utilise une protection contre les spams (comme MailInBlack)<br>
+                    💡 <b>Contactez votre fournisseur de mail pour qu’il autorise les emails en provenance de
+                        contact@api.gouv.fr</b>
                 </li>
+                <br>
+                <% if (locals.csrfToken) { %>
+                    <li>Votre code a expiré ou vous avez perdu l’email qui contenait le code<br>
+                        💡 <b>
+                            <form id="send-email-verification" autocomplete="off"
+                                  action="/users/send-email-verification"
+                                  method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                                <input class="fr-link" type="submit"
+                                       value="Cliquez ici pour recevoir un nouveau code" />
+                            </form>
+                        </b>
+                    </li>
+                    <br>
+                <% } %>
             </ul>
-            <p>Vous n'êtes dans aucune de ces situations ? <a href="mailto:contact@api.gouv.fr?subject=Je%20ne%20re%C3%A7ois%20pas%20le%20code%20de%20confirmation">Ecrivez-nous</a>.</p>
+            <p>Vous n’êtes dans aucune de ces situations ? <a
+                        class="fr-link"
+                        href="mailto:contact@api.gouv.fr?subject=Je%20ne%20re%C3%A7ois%20pas%20le%20code%20de%20confirmation">Contactez-nous</a>.
+            </p>
         </div>
     </div>
-</div>
-
-<div class="container text-center">
-    <p>
-        <a class="external-link" href="https://datapass.api.gouv.fr">
-            Retour à l’accueil
-        </a>
-    </p>
 </div>

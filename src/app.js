@@ -1,21 +1,21 @@
-import fs from 'fs';
-import path from 'path';
-import helmet from 'helmet';
+import connectRedis from 'connect-redis';
 import express from 'express';
 import session from 'express-session';
-import Provider from 'oidc-provider';
-import connectRedis from 'connect-redis';
+import fs from 'fs';
+import helmet from 'helmet';
 import morgan from 'morgan';
+import Provider from 'oidc-provider';
+import path from 'path';
+import {
+  cookiesMaxAge,
+  cookiesSecrets,
+  provider as providerConfiguration,
+} from './configuration';
 
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import { getNewRedisClient } from './connectors/redis';
-import {
-  provider as providerConfiguration,
-  cookiesMaxAge,
-  cookiesSecrets,
-} from './configuration';
-import routes from './routes';
 import { getClients } from './repositories/oidc-client';
+import routes from './routes';
 
 const {
   PORT = 3000,
@@ -35,11 +35,11 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", 'stats.data.gouv.fr'],
+      imgSrc: ["'self'", 'data:', 'stats.data.gouv.fr'],
       connectSrc: ["'self'", 'entreprise.data.gouv.fr', 'stats.data.gouv.fr'],
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
-      styleSrc: ["'self'", 'unpkg.com'],
-      fontSrc: ["'self'", 'unpkg.com'],
+      styleSrc: ["'self'"],
+      fontSrc: ["'self'", 'data:'],
     },
   })
 );

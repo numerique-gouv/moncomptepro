@@ -1,26 +1,16 @@
-<div class="box-container">
-    <h3 class="section__title">Erreur</h3>
-
-    <% if (locals.notifications) { %>
-        <% notifications.forEach(({type, message}) => { %>
-            <div class="notification <%= type %>">
-                <%= message %>
-            </div>
-        <% }) %>
-    <% } %>
-
-    <p>
-        Une erreur est survenue. Le code de l’erreur est <i><%= error_code %> (<%= error_message %>)</i>.
-    </p>
-    <p>
-        Merci de réessayer ultérieurement.
-    </p>
-    <p>
-        Vous pouvez également nous signaler cette erreur par mail à
-        <a href="mailto:contact@api.gouv.fr?subject=Erreur%20sur%20auth.api.gouv.fr">contact@api.gouv.fr</a>.
-    </p>
-</div>
-
-<div class="container text-center">
-    <p><a class="external-link" href="https://datapass.api.gouv.fr">Retour à l’accueil</a></p>
+<div class="page-container">
+    <div class="fr-alert fr-alert--error">
+        <p class="fr-alert__title">Une erreur est survenue</p>
+        <pre class="error-code">
+            <b>Erreur <%= error_code %></b>
+            <%= error_message %>
+        </pre>
+        <p>
+            Merci de réessayer ultérieurement.
+        </p>
+        <p>
+            Vous pouvez également nous signaler cette erreur par mail à
+            <a href="mailto:contact@api.gouv.fr?subject=Erreur%20sur%20auth.api.gouv.fr">contact@api.gouv.fr</a>.
+        </p>
+    </div>
 </div>

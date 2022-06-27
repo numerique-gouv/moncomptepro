@@ -1,31 +1,31 @@
-<div class="box-container">
-    <h3 class="section__title">Votre compte DataPass</h3>
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Votre compte DataPass
+                </h4>
+                <div class="fr-card__desc">
+                    <form action="/users/start-sign-in" method="post">
+                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
-    <form action="/users/start-sign-in" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-    <% if (locals.notifications) { %>
-        <% notifications.forEach(({type, message}) => { %>
-        <div class="notification <%= type %>">
-            <%= message %>
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="login">Email
+                                <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
+                            </label>
+                            <input class="fr-input" required type="email" id="login" name="login"
+                                   <% if (!locals.loginHint) { %>autofocus="on"
+                            <% } else { %> value="<%= locals.loginHint; %>"
+                                    <% } %>
+                            >
+                        </div>
+
+                        <%- include('partials/card-button-container.ejs', {label: 'Connexion'}) %>
+                    </form>
+                </div>
+            </div>
         </div>
-        <% }) %>
-    <% } %>
-
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-    <div class="form__group with-input-hint">
-        <label for="login">Email</label>
-        <input class="form-control" required type="email" name="login" aria-label="Email"
-               <% if (!locals.loginHint) { %>autofocus="on"<% } else { %> value="<%= locals.loginHint %>" <% } %>
-        >
-        <small class="card__meta">
-            <i>
-                Celui que vous utilisez dans le cadre de votre travail
-            </i>
-        </small>
     </div>
-    <div class="form__group">
-        <input type="submit" value="Valider" class="button large wide">
-    </div>
-    </form>
 </div>
