@@ -46,10 +46,6 @@ Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
 
 Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ? ».`,
   },
-  email_verification_sent: {
-    type: 'success',
-    description: 'Un nouveau code de vérification vous a été envoyé.',
-  },
   email_verified_already: {
     type: 'error',
     description: `Votre email a déjà été vérifié.`,
