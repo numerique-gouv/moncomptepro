@@ -169,8 +169,6 @@ export const postSignUpController = async (req, res, next) => {
     req.session.user = await signup(req.session.email, req.body.password);
     req.session.email = null;
 
-    await sendEmailAddressVerificationEmail(req.session.user.email);
-
     next();
   } catch (error) {
     if (error.message === 'email_unavailable') {
@@ -185,15 +183,33 @@ export const postSignUpController = async (req, res, next) => {
 };
 
 export const getVerifyEmailController = async (req, res, next) => {
-  const notifications = notificationMessages[req.query.notification]
-    ? [notificationMessages[req.query.notification]]
-    : [];
+  try {
+    const notifications = notificationMessages[req.query.notification]
+      ? [notificationMessages[req.query.notification]]
+      : [];
 
-  return res.render('verify-email', {
-    notifications,
-    email: req.session.user.email,
-    csrfToken: req.csrfToken(),
-  });
+    const newCodeSent = req.query.new_code_sent;
+    const codeSent = await sendEmailAddressVerificationEmail({
+      email: req.session.user.email,
+      checkBeforeSend: true,
+    });
+
+    return res.render('verify-email', {
+      notifications,
+      email: req.session.user.email,
+      csrfToken: req.csrfToken(),
+      newCodeSent,
+      codeSent,
+    });
+  } catch (error) {
+    if (error.message === 'email_verified_already') {
+      return res.redirect(
+        `/users/personal-information?notification=${error.message}`
+      );
+    }
+
+    next(error);
+  }
 };
 
 export const postVerifyEmailController = async (req, res, next) => {
@@ -216,11 +232,12 @@ export const postVerifyEmailController = async (req, res, next) => {
 
 export const postSendEmailVerificationController = async (req, res, next) => {
   try {
-    await sendEmailAddressVerificationEmail(req.session.user.email);
+    await sendEmailAddressVerificationEmail({
+      email: req.session.user.email,
+      checkBeforeSend: false,
+    });
 
-    return res.redirect(
-      `/users/verify-email?notification=email_verification_sent`
-    );
+    return res.redirect(`/users/verify-email?new_code_sent=true`);
   } catch (error) {
     if (error.message === 'email_verified_already') {
       return res.redirect(

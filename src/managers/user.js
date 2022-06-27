@@ -1,4 +1,6 @@
 import { isEmpty, isString } from 'lodash';
+import { isEmailSafeToSendTransactional } from '../connectors/debounce';
+import { sendMail } from '../connectors/sendinblue';
 
 import {
   create,
@@ -16,8 +18,6 @@ import {
   isPhoneNumberValid,
   validatePassword,
 } from '../services/security';
-import { sendMail } from '../connectors/sendinblue';
-import { isEmailSafeToSendTransactional } from '../connectors/debounce';
 
 const { API_AUTH_HOST } = process.env;
 
@@ -90,7 +90,10 @@ export const signup = async (email, password) => {
   });
 };
 
-export const sendEmailAddressVerificationEmail = async email => {
+export const sendEmailAddressVerificationEmail = async ({
+  email,
+  checkBeforeSend,
+}) => {
   if (!isEmailValid(email)) {
     throw new Error('invalid_email');
   }
@@ -100,6 +103,16 @@ export const sendEmailAddressVerificationEmail = async email => {
 
   if (user.email_verified) {
     throw new Error('email_verified_already');
+  }
+
+  if (
+    checkBeforeSend &&
+    !isExpired(
+      user.verify_email_sent_at,
+      VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    )
+  ) {
+    return false;
   }
 
   const verify_email_token = await generatePinToken();

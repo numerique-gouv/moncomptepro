@@ -10,10 +10,12 @@
                         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
 
                         <p>
-                            Un code de vérification a été envoyé à
-                            <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
-                                <%= email; %>
-                            </span>.
+                            <% if (codeSent || newCodeSent) { %>
+                                Un <% if (newCodeSent) { %>nouveau <% } %>code de vérification a été envoyé à
+                                <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                                    <%= email; %>
+                                </span>.
+                            <% } %>
                         </p>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
