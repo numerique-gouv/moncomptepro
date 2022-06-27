@@ -50,7 +50,7 @@ describe('The signup flow', () => {
       // fill out the confirmation form and submit
       .then(code => {
         cy.get('[name="verify_email_token"]').type(code);
-        cy.get('[value="Confirmer mon email"]').click();
+        cy.get('[type="submit"]').click();
       });
 
     // Fill the user's personal information
