@@ -90,7 +90,7 @@ export const issueSessionOrRedirectController = async (req, res, next) => {
     return res.redirect(referer);
   }
 
-  return res.redirect('https://datapass.api.gouv.fr');
+  return res.redirect('/');
 };
 
 export const getStartSignInController = async (req, res, next) => {

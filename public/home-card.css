@@ -1,0 +1,50 @@
+.home_card_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    justify-content: flex-start;
+    align-content: stretch;
+}
+
+.home_card_container .home_card {
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 20em;
+}
+
+.home_card_container + .home_card_container {
+    margin-top: 1.5em;
+}
+
+.home_card {
+    background-color: var(--background-alt-blue-france);
+    border-radius: 2px;
+    padding: 1.5em;
+}
+
+.home_card_card_content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: space-between;
+    gap: 1.5rem;
+    height: calc(100% - 50px);
+}
+.home_card_card_content > * {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    justify-content: center;
+    min-width: 15rem;
+}
+
+.home_card_card_illustration > img {
+    max-width: 100%;
+}
+
+@media all and (max-width: 768px) {
+    .home_card_card_illustration {
+        display: none;
+    }
+}
