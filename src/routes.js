@@ -180,7 +180,12 @@ module.exports = (app, provider) => {
     issueSessionOrRedirectController
   );
 
-  app.get('/users/help', csrfProtectionMiddleware, getHelpController);
+  app.get(
+    '/help',
+    ejsLayoutMiddlewareFactory(app),
+    csrfProtectionMiddleware,
+    getHelpController
+  );
 
   app.use(async (err, req, res, next) => {
     console.error(err);
