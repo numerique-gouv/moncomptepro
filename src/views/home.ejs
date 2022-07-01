@@ -1,6 +1,6 @@
 <div class="page-container">
     <h3>Bienvenue sur votre Compte DataPass</h3>
-    <h4>Retrouvez ici vos différents accès :</h4>
+    <h4>Vos différents accès</h4>
     <div class="home_card_container">
         <div class="home_card">
             <h4>Continuer sur DataPass</h4>
@@ -61,5 +61,46 @@
             </div>
         </div>
     </div>
+    <% if (is_user_connected) { %>
+        <h4>Votre compte</h4>
+        <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/reset-password">Changement de mot de passe</a>
+                            </h4>
+                            <p class="fr-card__desc">Accéder à la modification de votre mot de passe</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/personal-information">Informations personnelles</a>
+                            </h4>
+                            <p class="fr-card__desc">Modifier vos informations personnelles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/join-organization">Nouvelle organisation</a>
+                            </h4>
+                            <p class="fr-card__desc">Rejoindre une nouvelle organisation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
 </div>
 <link rel="stylesheet" href="/assets/home-card.css">

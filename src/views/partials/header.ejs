@@ -18,6 +18,29 @@
                         <p class="fr-header__service-tagline">Authentification des organisations</p>
                     </div>
                 </div>
+
+                <div class="fr-header__tools">
+                    <div class="fr-header__tools-links">
+                        <ul class="fr-links-group">
+                            <% if (locals.header_display_account_button) { %>
+                                <% if (locals.header_user_label) { %>
+                                    <li>
+                                        <a
+                                                class="fr-link fr-fi-logout-box-r-line fr-btn--icon-left"
+                                                href="/oauth/logout"
+                                        >
+                                            <%= header_user_label   ; %>
+                                        </a>
+                                    </li>
+                                <% } else { %>
+                                    <li>
+                                        <a class="fr-link fr-fi-lock-line" href="/users/start-sign-in">Se connecter</a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

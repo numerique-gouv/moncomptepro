@@ -1,11 +1,7 @@
 import { isEmpty } from 'lodash';
 
 export const getHomeController = async (req, res, next) => {
-  if (isEmpty(req.session.user)) {
-    console.log('user not connected');
-  }
-
-  return res.render('home', {});
+  return res.render('home', { is_user_connected: !isEmpty(req.session.user) });
 };
 
 export const getHelpController = async (req, res, next) => {
