@@ -354,11 +354,3 @@ export const postPersonalInformationsController = async (req, res, next) => {
     next(error);
   }
 };
-
-export const getHelpController = async (req, res, next) => {
-  const email = req.session.user && req.session.user.email;
-  return res.render('help', {
-    email,
-    csrfToken: email && req.csrfToken(),
-  });
-};

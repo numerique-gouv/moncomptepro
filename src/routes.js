@@ -4,6 +4,7 @@ import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
 } from './controllers/interaction';
+import { getHelpController, getHomeController } from './controllers/main';
 import {
   getJoinOrganizationController,
   postJoinOrganizationMiddleware,
@@ -15,7 +16,6 @@ import {
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
-  getHelpController,
   getPersonalInformationsController,
   getResetPasswordController,
   getSignInController,
@@ -40,6 +40,15 @@ import {
 
 module.exports = (app, provider) => {
   const csrfProtectionMiddleware = csrf();
+
+  app.get('/', ejsLayoutMiddlewareFactory(app), getHomeController);
+
+  app.get(
+    '/help',
+    ejsLayoutMiddlewareFactory(app),
+    csrfProtectionMiddleware,
+    getHelpController
+  );
 
   // wrap template within layout except for welcome.ejs page
   const routeWithTemplateRegex = /^\/users\/.+$/;
@@ -178,13 +187,6 @@ module.exports = (app, provider) => {
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
-  );
-
-  app.get(
-    '/help',
-    ejsLayoutMiddlewareFactory(app),
-    csrfProtectionMiddleware,
-    getHelpController
   );
 
   app.use(async (err, req, res, next) => {
