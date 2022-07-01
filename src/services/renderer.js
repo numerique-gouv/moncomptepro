@@ -1,4 +1,5 @@
 import ejs from 'ejs';
+import { isEmpty } from 'lodash';
 import path from 'path';
 
 export const render = (absolutePath, params) => {
@@ -13,6 +14,30 @@ export const render = (absolutePath, params) => {
   });
 };
 
+const displayAccountButton = req => {
+  if (req.url.startsWith('/users')) {
+    // do not display label on connection flow
+    return false;
+  }
+  if (req.url.startsWith('/interaction')) {
+    // do not display label on oauth interaction
+    return false;
+  }
+  return true;
+};
+
+const getUserLabel = req => {
+  if (isEmpty(req.session.user)) {
+    //  do not display label when no session is found
+    return null;
+  }
+  if (!req.session.user.given_name || !req.session.user.family_name) {
+    //  display email when a name is missing
+    return req.session.user.email;
+  }
+  return `${req.session.user.given_name} ${req.session.user.family_name}`;
+};
+
 // this is a cheap layout implementation for ejs
 // it looks for the _layout file and inject the targeted template in the body variable
 export const ejsLayoutMiddlewareFactory = app => {
@@ -24,6 +49,8 @@ export const ejsLayoutMiddlewareFactory = app => {
         orig.call(res, '_layout', {
           ...locals,
           body: html,
+          header_user_label: getUserLabel(req),
+          header_display_account_button: displayAccountButton(req),
         });
       });
     };
