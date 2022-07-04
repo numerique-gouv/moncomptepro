@@ -1,6 +1,6 @@
-import path from 'path';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+import path from 'path';
 
 import { render } from '../services/renderer';
 
@@ -16,6 +16,7 @@ const templateToId = {
   'join-organization': 5,
   'verify-email': 6,
   'reset-password': 7,
+  'magic-link': 29,
   default: 21,
 };
 
@@ -35,7 +36,7 @@ export const sendMail = async ({
       name: 'L’équipe d’api.gouv.fr',
       email: 'contact@api.gouv.fr',
     },
-    to: to.map((e) => ({ email: e })),
+    to: to.map(e => ({ email: e })),
     subject,
     params,
     tags: [template],
@@ -57,7 +58,7 @@ export const sendMail = async ({
   }
 
   if (!isEmpty(cc)) {
-    data.cc = cc.map((e) => ({ email: e }));
+    data.cc = cc.map(e => ({ email: e }));
   }
 
   if (doNotSendMail) {
@@ -79,7 +80,9 @@ export const sendMail = async ({
     });
 
     console.log(
-      `${template} email sent to ${to} with message id ${response.data.messageId}`
+      `${template} email sent to ${to} with message id ${
+        response.data.messageId
+      }`
     );
   } catch (error) {
     console.error(error);

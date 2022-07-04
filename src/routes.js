@@ -16,9 +16,11 @@ import {
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
+  getMagicLinkSentController,
   getPersonalInformationsController,
   getResetPasswordController,
   getSignInController,
+  getSignInWithMagicLinkController,
   getSignUpController,
   getStartSignInController,
   getVerifyEmailController,
@@ -27,6 +29,7 @@ import {
   postPersonalInformationsController,
   postResetPasswordController,
   postSendEmailVerificationController,
+  postSendMagicLinkController,
   postSignInMiddleware,
   postSignUpController,
   postStartSignInController,
@@ -133,6 +136,23 @@ module.exports = (app, provider) => {
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     postSendEmailVerificationController
+  );
+  app.post(
+    '/users/send-magic-link',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkEmailInSessionMiddleware,
+    postSendMagicLinkController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+  app.get('/users/magic-link-sent', getMagicLinkSentController);
+  app.get(
+    '/users/sign-in-with-magic-link',
+    rateLimiterMiddleware,
+    getSignInWithMagicLinkController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
   );
   app.get(
     '/users/reset-password',

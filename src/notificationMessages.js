@@ -17,6 +17,10 @@ const notificationMessages = {
 
 Veuillez cliquer sur « Réinitialiser » pour recevoir un nouveau lien`,
   },
+  invalid_magic_link: {
+    type: 'warning',
+    description: 'Le lien que vous avez utilisé est invalide ou expiré.',
+  },
   password_change_success: {
     type: 'success',
     description: `Votre mot de passe a été mis à jour.
