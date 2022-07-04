@@ -119,7 +119,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     // Welcome the user when he join is first organization as he may now be able to connect
     await sendMail({
       to: [email],
-      subject: 'Votre compte api.gouv.fr a bien été créé',
+      subject: 'Votre compte DataPass a bien été créé',
       template: 'welcome',
       params: { given_name, family_name, email },
     });
