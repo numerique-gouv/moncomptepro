@@ -51,6 +51,11 @@ export const startLogin = async email => {
 
 export const login = async (email, password) => {
   const user = await findByEmail(email);
+  if (isEmpty(user)) {
+    // this is not a proper error name but this case should never happen
+    // we throw a clean error as a mesure of defensive programming
+    throw new Error('invalid_credentials');
+  }
 
   const isMatch = await validatePassword(password, user.encrypted_password);
 
