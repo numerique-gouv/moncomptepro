@@ -5,6 +5,7 @@ import { sendMail } from '../connectors/sendinblue';
 import {
   create,
   findByEmail,
+  findByMagicLinkToken,
   findByResetPasswordToken,
   findByVerifyEmailToken,
   update,
@@ -23,6 +24,7 @@ const { API_AUTH_HOST } = process.env;
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 180;
+const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
 
 const isExpired = (emittedDate, expirationDurationInMinutes) => {
   if (!(emittedDate instanceof Date)) {
@@ -84,14 +86,7 @@ export const signup = async (email, password) => {
 
   return await create({
     email,
-    email_verified: false,
-    verify_email_token: null,
-    verify_email_sent_at: null,
     encrypted_password: hashedPassword,
-    reset_password_token: null,
-    reset_password_sent_at: null,
-    sign_in_count: 0,
-    last_sign_in_at: null,
   });
 };
 
@@ -166,6 +161,67 @@ export const verifyEmail = async token => {
   });
 };
 
+export const sendSendMagicLinkEmail = async email => {
+  // these checks are redundant with start-sign-in check
+  if (!isEmailValid(email)) {
+    throw new Error('invalid_email');
+  }
+  const sanitizedEmail = email.toLowerCase().trim();
+  let user = await findByEmail(sanitizedEmail);
+
+  if (isEmpty(user)) {
+    user = await create({
+      email,
+    });
+  }
+
+  const magicLinkToken = await generateToken();
+
+  await update(user.id, {
+    magic_link_token: magicLinkToken,
+    magic_link_sent_at: new Date().toISOString(),
+  });
+
+  await sendMail({
+    to: [user.email],
+    subject: 'Connexion avec un lien magique',
+    template: 'magic-link',
+    params: {
+      magic_link: `${API_AUTH_HOST}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
+    },
+  });
+
+  return true;
+};
+
+export const loginWithMagicLink = async token => {
+  // check that token as not the default empty value as it will match all users
+  if (!token) {
+    throw new Error('invalid_magic_link');
+  }
+
+  const user = await findByMagicLinkToken(token);
+
+  if (isEmpty(user)) {
+    throw new Error('invalid_magic_link');
+  }
+
+  const isTokenExpired = isExpired(
+    user.magic_link_sent_at,
+    MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+  );
+
+  if (isTokenExpired) {
+    throw new Error('invalid_magic_link');
+  }
+
+  return await update(user.id, {
+    email_verified: true,
+    magic_link_token: null,
+    magic_link_sent_at: null,
+  });
+};
+
 export const sendResetPasswordEmail = async email => {
   if (!isEmailValid(email)) {
     throw new Error('invalid_email');
@@ -200,7 +256,7 @@ export const sendResetPasswordEmail = async email => {
 
 export const changePassword = async (token, password) => {
   // check that token as not the default empty value as it will match all users
-  if (!token || token === '') {
+  if (!token) {
     throw new Error('invalid_token');
   }
 

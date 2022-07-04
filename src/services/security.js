@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { parse as parseUrl } from 'url';
-import { nanoid, customAlphabet } from 'nanoid/async';
 import { isEmpty, isString } from 'lodash';
+import { customAlphabet, nanoid } from 'nanoid/async';
+import { parse as parseUrl } from 'url';
 
 const nanoidPin = customAlphabet('0123456789', 10);
 
@@ -19,6 +19,10 @@ export const hashPassword = async plainPassword => {
 };
 
 export const validatePassword = async (plainPassword, storedHash) => {
+  if (!plainPassword || !storedHash) {
+    return false;
+  }
+
   return await bcrypt.compare(plainPassword || '', storedHash);
 };
 
@@ -86,7 +90,7 @@ export const generatePinToken = async () => {
 };
 
 export const generateToken = async () => {
-  return await nanoid();
+  return await nanoid(64);
 };
 
 export const isSiretValid = siret => {

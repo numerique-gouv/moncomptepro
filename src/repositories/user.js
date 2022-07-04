@@ -34,6 +34,19 @@ export const findByVerifyEmailToken = async verify_email_token => {
   return result;
 };
 
+export const findByMagicLinkToken = async magic_link_token => {
+  const connection = getDatabaseConnection();
+
+  const {
+    rows: [result],
+  } = await connection.query(
+    'SELECT * FROM users WHERE magic_link_token = $1',
+    [magic_link_token]
+  );
+
+  return result;
+};
+
 export const findByResetPasswordToken = async reset_password_token => {
   const connection = getDatabaseConnection();
 
@@ -78,11 +91,21 @@ export const update = async (id, fieldsToUpdate) => {
   return result;
 };
 
-export const create = async user => {
+export const create = async ({ email, encrypted_password = null }) => {
   const connection = getDatabaseConnection();
 
   const userWithTimestamps = {
-    ...user,
+    email,
+    email_verified: false,
+    verify_email_token: null,
+    verify_email_sent_at: null,
+    encrypted_password,
+    magic_link_token: null,
+    magic_link_sent_at: null,
+    reset_password_token: null,
+    reset_password_sent_at: null,
+    sign_in_count: 0,
+    last_sign_in_at: null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };

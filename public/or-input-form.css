@@ -1,0 +1,22 @@
+.separator {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.separator span {
+    margin: 10px;
+}
+
+.separator:after,
+.separator:before {
+    background-color: var(--text-disabled-grey);
+    height: 1px;
+    width: 100%;
+    border-radius: 5px;
+    content: '';
+    display: block;
+}

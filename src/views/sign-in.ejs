@@ -15,21 +15,44 @@
                             <label class="fr-label" for="password">
                                 Mot de passe
                             </label>
-                            <input class="fr-input" required type="password" id="password" name="password"
-                                   aria-label="Mot de passe" autofocus="on">
+                            <input
+                                    class="fr-input" required type="password" id="password" name="password"
+                                    aria-label="Mot de passe" autofocus="on"
+                            >
                         </div>
 
                         <%- include('partials/card-button-container.ejs', {label: 'Connexion', showGoBackButton: true}) %>
+
+                        <br>
+                        <div class="card-button-container">
+                            <span></span>
+                            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-right" href="/users/reset-password">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
                     </form>
+                    <div class="separator">
+                        <span class="fr-badge fr-badge--info fr-badge--no-icon">ou</span>
+                    </div>
+                    <div>
+                        <div>
+                            Recevez un <b>lien magique</b> par e-mail et <b>connectez-vous instantanément</b>
+                        </div>
+                        <br>
+                        <div class="card-button-container">
+                            <div id="magic-link-icon-inline">
+                                <img src="/assets/magic-link.svg" alt="illustration magic link">
+                            </div>
+                            <form action="/users/send-magic-link" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                                <%- include('partials/card-button-container.ejs', {label: 'Connexion avec un lien magique'}) %>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="fr-alert fr-alert--info">
-        <p>
-            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-left" href="/users/reset-password">
-                Mot de passe oublié ?
-            </a>
-        </p>
-    </div>
 </div>
+<link rel="stylesheet" href="/assets/or-input-form.css">

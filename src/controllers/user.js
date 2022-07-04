@@ -3,8 +3,10 @@ import { getOrganizationsByUserId } from '../managers/organization';
 import {
   changePassword,
   login,
+  loginWithMagicLink,
   sendEmailAddressVerificationEmail,
   sendResetPasswordEmail,
+  sendSendMagicLinkEmail,
   signup,
   startLogin,
   updatePersonalInformations,
@@ -243,6 +245,40 @@ export const postSendEmailVerificationController = async (req, res, next) => {
       return res.redirect(
         `/users/personal-information?notification=${error.message}`
       );
+    }
+
+    next(error);
+  }
+};
+
+export const postSendMagicLinkController = async (req, res, next) => {
+  try {
+    await sendSendMagicLinkEmail(req.session.email);
+
+    return res.redirect(`/users/magic-link-sent`);
+  } catch (error) {
+    if (error.message === 'invalid_email') {
+      return res.redirect(`/users/start-sign-in?notification=${error.message}`);
+    }
+
+    next(error);
+  }
+};
+
+export const getMagicLinkSentController = async (req, res, next) => {
+  const email = req.session.email;
+  return res.render('magic-link-sent', { email });
+};
+
+export const getSignInWithMagicLinkController = async (req, res, next) => {
+  try {
+    req.session.user = await loginWithMagicLink(req.query.magic_link_token);
+    req.session.email = null;
+
+    next();
+  } catch (error) {
+    if (error.message === 'invalid_magic_link') {
+      return res.redirect(`/users/start-sign-in?notification=${error.message}`);
     }
 
     next(error);
