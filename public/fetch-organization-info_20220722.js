@@ -28,25 +28,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (xmlhttp.status === 200) {
           organizationInfoElement.style.display = "block";
           var response = JSON.parse(xmlhttp.response);
-          var nom = response.etablissement.unite_legale.nom;
-          var prenom_1 = response.etablissement.unite_legale.prenom_1;
-          var prenom_2 = response.etablissement.unite_legale.prenom_2;
-          var prenom_3 = response.etablissement.unite_legale.prenom_3;
-          var prenom_4 = response.etablissement.unite_legale.prenom_4;
-          var nom_prenom = (nom ? nom + "*" : "") +
-            (prenom_1 ? prenom_1 : "") +
-            (prenom_2 ? " " + prenom_2 : "") +
-            (prenom_3 ? " " + prenom_3 : "") +
-            (prenom_4 ? " " + prenom_4 : "");
-          var organizationLabel =
-            response.etablissement.unite_legale.denomination ||
-            response.etablissement.denomination_usuelle ||
-            nom_prenom;
-          organizationInfoElement.innerHTML = "Organisation : " + organizationLabel;
-          if (response.etablissement.statut_diffusion === "N") {
+          var organization_label = response.organizationInfo.organization_label
+          var statut_diffusion = response.organizationInfo.statut_diffusion
+          var etat_administratif = response.organizationInfo.etat_administratif
+
+          organizationInfoElement.innerHTML = 'Organisation : ' + organization_label;
+          if (statut_diffusion === "N") {
             organizationInfoElement.classList.add("fr-alert--error");
             organizationInfoElement.innerHTML += " (Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>)";
-          } else if (response.etablissement.etat_administratif === "A") {
+          } else if (etat_administratif === "A") {
             organizationInfoElement.classList.add("fr-alert--info");
           } else {
             organizationInfoElement.classList.add("fr-alert--error");
@@ -68,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     };
 
-    xmlhttp.open("GET", "https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/" + siret, true);
+    xmlhttp.open("GET", "/api/organization-info?siret=" + siret, true);
     xmlhttp.send();
   }
 
