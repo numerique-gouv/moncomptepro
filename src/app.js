@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
+import apiRoutes from './api-routes';
 import {
   cookiesMaxAge,
   cookiesSecrets,
@@ -72,11 +73,6 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(
-  '/assets',
-  express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
-); // 1 year in milliseconds
-
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
@@ -111,7 +107,13 @@ let server;
   });
   provider.proxy = true;
 
+  app.use(
+    '/assets',
+    express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
+  ); // 1 year in milliseconds
   routes(app, provider);
+  apiRoutes(app);
+
   app.use(provider.callback);
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);

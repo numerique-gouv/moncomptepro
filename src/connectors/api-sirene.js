@@ -16,6 +16,9 @@ export const getOrganizationInfo = async siret => {
       etat_administratif: etablissement.etat_administratif,
     };
   } catch (e) {
+    if ([403, 404].includes(e.response && e.response.status)) {
+      return {};
+    }
     throw e;
   }
 };
