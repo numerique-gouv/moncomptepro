@@ -44,6 +44,9 @@ import {
 
 module.exports = (app, provider) => {
   const csrfProtectionMiddleware = csrf();
+  app.get('/debug-sentry', (req, res) => {
+    throw new Error('My first Sentry error!');
+  });
 
   app.get('/', ejsLayoutMiddlewareFactory(app), getHomeController);
 
