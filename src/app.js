@@ -25,7 +25,7 @@ const {
   ISSUER = `${API_AUTH_HOST}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
   SECURE_COOKIES = 'true',
-  NODE_ENV,
+  SENTRY_DSN,
 } = process.env;
 const jwks = require(JWKS_PATH);
 const secureCookies = SECURE_COOKIES === 'true';
@@ -77,21 +77,22 @@ app.use(
   express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
 ); // 1 year in milliseconds
 
-Sentry.init({
-  enabled: NODE_ENV === 'production',
-  dsn: 'https://478b1bbda06c4d85a853826d40669df3@sentry.data.gouv.fr/21',
-  integrations: [
-    // enable HTTP calls tracing
-    new Sentry.Integrations.Http({ tracing: true }),
-    // enable Express.js middleware tracing
-    new Tracing.Integrations.Express({ app }),
-  ],
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Tracing.Integrations.Express({ app }),
+    ],
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+}
 
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
