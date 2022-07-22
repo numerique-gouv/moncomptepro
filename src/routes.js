@@ -42,7 +42,7 @@ import {
   renderWithEjsLayout,
 } from './services/renderer';
 
-module.exports = (app, provider) => {
+export default (app, provider) => {
   const csrfProtectionMiddleware = csrf();
 
   app.get('/', ejsLayoutMiddlewareFactory(app), getHomeController);

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { isEmpty, some } from 'lodash';
+import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
   createBigOrganizationJoinModeration,
@@ -22,26 +22,16 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   }
 
   const siretNoSpaces = siret.replace(/\s/g, '');
-  let nom_raison_sociale = null;
-  let tranche_effectifs = null;
+  let organizationInfo = {};
 
   try {
-    const {
-      data: { etablissement },
-    } = await axios({
-      method: 'get',
-      url: `https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/${siretNoSpaces}`,
-    });
+    organizationInfo = await getOrganizationInfo(siretNoSpaces);
 
-    const siretFromSireneApi = etablissement.siret;
-    nom_raison_sociale = etablissement.unite_legale.denomination;
-    tranche_effectifs = etablissement.tranche_effectifs;
-
-    if (siretFromSireneApi !== siretNoSpaces) {
+    if (organizationInfo.siret !== siretNoSpaces) {
       throw new Error('invalid response from sirene API');
     }
 
-    if (etablissement.etat_administratif !== 'A') {
+    if (organizationInfo.etat_administratif !== 'A') {
       // A : Actif;
       // see: https://www.sirene.fr/sirene/public/variable/etatAdministratifEtablissement
       throw new Error('organization is not active');
@@ -51,6 +41,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
     throw new Error('invalid_siret');
   }
+  const { nom_raison_sociale, tranche_effectifs } = organizationInfo;
 
   // Ensure user_id is valid
   const user = await findUserById(user_id);
@@ -116,7 +107,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   const userOrganizations = await getOrganizationsByUserId(user_id);
   if (userOrganizations.length === 1) {
-    // Welcome the user when he join is first organization as he may now be able to connect
+    // Welcome the user when he joins is first organization as he may now be able to connect
     await sendMail({
       to: [email],
       subject: 'Votre compte DataPass a bien été créé',
