@@ -1,11 +1,6 @@
-import { isEmpty } from 'lodash';
 import axios from 'axios';
 
-const apiKey =
-  process.env.DEBOUNCE_API_KEY && !isEmpty(process.env.DEBOUNCE_API_KEY)
-    ? process.env.DEBOUNCE_API_KEY
-    : null;
-
+const apiKey = process.env.DEBOUNCE_API_KEY;
 const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
 
 export const isEmailSafeToSendTransactional = async email => {
