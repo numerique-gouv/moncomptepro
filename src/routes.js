@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import csrf from 'csurf';
 import { urlencoded } from 'express';
 import {
@@ -208,6 +209,8 @@ module.exports = (app, provider) => {
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
+
+  app.use(Sentry.Handlers.errorHandler());
 
   app.use(async (err, req, res, next) => {
     console.error(err);

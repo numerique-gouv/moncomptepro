@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
 import connectRedis from 'connect-redis';
 import express from 'express';
 import session from 'express-session';
@@ -23,6 +25,7 @@ const {
   ISSUER = `${API_AUTH_HOST}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
   SECURE_COOKIES = 'true',
+  NODE_ENV,
 } = process.env;
 const jwks = require(JWKS_PATH);
 const secureCookies = SECURE_COOKIES === 'true';
@@ -73,6 +76,28 @@ app.use(
   '/assets',
   express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
 ); // 1 year in milliseconds
+
+Sentry.init({
+  enabled: NODE_ENV === 'production',
+  dsn: 'https://478b1bbda06c4d85a853826d40669df3@sentry.data.gouv.fr/21',
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+// RequestHandler creates a separate execution context using domains, so that every
+// transaction/span/breadcrumb is attached to its own Hub instance
+app.use(Sentry.Handlers.requestHandler());
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
 
 let server;
 
