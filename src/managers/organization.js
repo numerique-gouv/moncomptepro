@@ -82,8 +82,10 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   // Create organization if needed
   if (isEmpty(organization)) {
+    // TODO : add more info here
     organization = await create({
       siret: siretNoSpaces,
+      organizationInfo,
       authorized_email_domains: is_external ? [] : [emailDomain],
       external_authorized_email_domains: is_external ? [emailDomain] : [],
     });

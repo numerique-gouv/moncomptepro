@@ -48,8 +48,6 @@ export const getOrganizationInfo = async siret => {
     }
 
     const {
-      etatAdministratifUniteLegale,
-      statutDiffusionUniteLegale,
       categorieJuridiqueUniteLegale,
       denominationUniteLegale,
       sigleUniteLegale,
@@ -59,7 +57,7 @@ export const getOrganizationInfo = async siret => {
       trancheEffectifsUniteLegale,
     } = uniteLegale;
 
-    // get last periode to obtain most recent data
+    // get last period to obtain most recent data
     const {
       activitePrincipaleEtablissement,
       enseigne1Etablissement,
@@ -91,17 +89,17 @@ export const getOrganizationInfo = async siret => {
     return {
       siret: siretFromInseeApi,
       libelle: organizationLabel,
-      nomComplet: nomComplet,
+      nomComplet,
       enseigne,
       trancheEffectifs: trancheEffectifsEtablissement,
-      trancheEffectifsUniteLegale: trancheEffectifsUniteLegale,
+      trancheEffectifsUniteLegale,
       libelleTrancheEffectif: libelleFromCodeEffectif(
         trancheEffectifsEtablissement,
         anneeEffectifsEtablissement
       ),
-      etatAdministratif: etatAdministratifUniteLegale,
+      etatAdministratif: etatAdministratifEtablissement,
       estActive: etatAdministratifEtablissement === 'A',
-      statutDiffusion: statutDiffusionUniteLegale,
+      statutDiffusion: statutDiffusionEtablissement,
       estDiffusible: statutDiffusionEtablissement !== 'N',
       adresse: formatAdresseEtablissement(adresseEtablissement),
       codePostal: codePostalEtablissement,
