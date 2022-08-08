@@ -3,7 +3,10 @@ import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
 import { updateOrganizationInfo } from '../src/repositories/organization';
 
-const maxInseeCallRateInMs = 250;
+// ex: for public insee subscription the script can be run like so:
+// npm run update-organization-info 2000
+const rateInMsFromArgs = toInteger(process.argv[2]);
+const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 250;
 
 // from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
 const getDurationInMilliseconds = start => {
@@ -47,7 +50,7 @@ const humanReadableDuration = msDuration => {
 
     // 50ms is an estimated additional delay from insee API
     const estimatedExecutionTimeInMilliseconds =
-      (maxInseeCallRateInMs + 50) * toInteger(count);
+      Math.max(maxInseeCallRateInMs, 320) * toInteger(count);
     console.log('');
     console.log(
       '\x1b[33m',

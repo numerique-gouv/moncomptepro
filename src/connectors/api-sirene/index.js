@@ -8,6 +8,8 @@ import {
   libelleFromCodeNaf,
 } from './formatters';
 
+const { INSEE_CONSUMER_KEY, INSEE_CONSUMER_SECRET } = process.env;
+
 export const getOrganizationInfo = async siret => {
   try {
     const {
@@ -18,8 +20,8 @@ export const getOrganizationInfo = async siret => {
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         auth: {
-          username: 'bmT2_EWo8T1d6vtNkc8yeEAZAnga',
-          password: 'wzaMHfwKLnze1so1fO28TRJAjfYa',
+          username: INSEE_CONSUMER_KEY,
+          password: INSEE_CONSUMER_SECRET,
         },
       }
     );
