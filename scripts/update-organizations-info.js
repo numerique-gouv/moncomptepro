@@ -44,7 +44,7 @@ const humanReadableDuration = msDuration => {
       rows: [{ count }],
     } = await connection.query(
       `
-    SELECT COUNT(*) FROM organizations`,
+    SELECT COUNT(*) FROM organizations WHERE organization_info_fetched_at IS NULL`,
       []
     );
 
@@ -67,7 +67,9 @@ const humanReadableDuration = msDuration => {
       // 1. get a organization
       const { rows: results } = await connection.query(
         `
-SELECT id, siret FROM organizations ORDER BY id LIMIT 1 OFFSET $1`,
+SELECT id, siret
+FROM organizations WHERE organization_info_fetched_at IS NULL
+ORDER BY id LIMIT 1 OFFSET $1`,
         [i]
       );
       if (isEmpty(results)) {
