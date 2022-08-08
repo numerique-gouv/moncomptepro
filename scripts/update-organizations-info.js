@@ -1,4 +1,4 @@
-import { isEmpty, toInteger } from 'lodash';
+import { isDate, isEmpty, toInteger } from 'lodash';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
 import { updateOrganizationInfo } from '../src/repositories/organization';
@@ -67,15 +67,20 @@ const humanReadableDuration = msDuration => {
       // 1. get a organization
       const { rows: results } = await connection.query(
         `
-SELECT id, siret
-FROM organizations WHERE organization_info_fetched_at IS NULL
+SELECT id, siret, organization_info_fetched_at
+FROM organizations
 ORDER BY id LIMIT 1 OFFSET $1`,
         [i]
       );
       if (isEmpty(results)) {
         break;
       }
-      const [{ id, siret }] = results;
+      const [{ id, siret, organization_info_fetched_at }] = results;
+
+      if (isDate(organization_info_fetched_at)) {
+        i++;
+        continue;
+      }
 
       // 2. fetch organization info
       console.log(`${i}: fetching info for ${siret} (id: ${id})...`);
