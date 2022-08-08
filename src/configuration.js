@@ -34,7 +34,7 @@ export const provider = {
     long: { signed: true, secure: secureCookies, maxAge: cookiesMaxAge },
     // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
     // This parameter set the session duration on DataPass.
-    // On api-particulier-auth, it his the duration the session will remain open after the last activity.
+    // On api-particulier-auth, it is the duration the session will remain open after the last activity.
     // Also related to https://github.com/panva/node-oidc-provider/issues/382.
     short: { signed: true, secure: secureCookies, maxAge: 3 * 60 * 60 * 1000 }, // 3 hours in ms,
     keys: cookiesSecrets,

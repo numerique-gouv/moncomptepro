@@ -66,6 +66,8 @@ jobs:
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
           MAILJET_SECRET_KEY: ${{ secrets.MAILJET_SECRET_KEY }}
           SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+          INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
+          INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
           NODE_ENV: production
           CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
           DO_NOT_VALIDATE_MAIL: "True"

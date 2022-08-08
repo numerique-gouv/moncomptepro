@@ -31,7 +31,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       throw new Error('invalid response from sirene API');
     }
 
-    if (organizationInfo.etat_administratif !== 'A') {
+    if (!organizationInfo.estActive) {
       // A : Actif;
       // see: https://www.sirene.fr/sirene/public/variable/etatAdministratifEtablissement
       throw new Error('organization is not active');
@@ -41,7 +41,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
     throw new Error('invalid_siret');
   }
-  const { nom_raison_sociale, tranche_effectifs } = organizationInfo;
+  const { libelle, trancheEffectifs } = organizationInfo;
 
   // Ensure user_id is valid
   const user = await findUserById(user_id);
@@ -64,10 +64,10 @@ export const joinOrganization = async (siret, user_id, is_external) => {
     await sendMail({
       to: [email],
       cc: ['auth@api.gouv.fr'],
-      subject: `[api.gouv.fr] Demande pour rejoindre ${nom_raison_sociale}`,
+      subject: `[api.gouv.fr] Demande pour rejoindre ${libelle}`,
       template: 'unable-to-auto-join-organization-acknowledgment',
       params: {
-        nom_raison_sociale,
+        libelle,
       },
     });
 
@@ -82,8 +82,10 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   // Create organization if needed
   if (isEmpty(organization)) {
+    // TODO : add more info here
     organization = await create({
       siret: siretNoSpaces,
+      organizationInfo,
       authorized_email_domains: is_external ? [] : [emailDomain],
       external_authorized_email_domains: is_external ? [emailDomain] : [],
     });
@@ -126,7 +128,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
       subject: 'Votre organisation sur api.gouv.fr',
       template: 'join-organization',
-      params: { user_label, nom_raison_sociale, email, is_external },
+      params: { user_label, libelle, email, is_external },
     });
   }
 
@@ -139,7 +141,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
       params: {
         given_name,
         family_name,
-        nom_raison_sociale,
+        libelle,
         usersInOrganizationAlready,
       },
     });
@@ -149,7 +151,7 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   // see https://www.sirene.fr/sirene/public/variable/tefen
   if (
     ['21', '22', '31', '32', '41', '42', '51', '52', '53'].includes(
-      tranche_effectifs
+      trancheEffectifs
     )
   ) {
     await createBigOrganizationJoinModeration({

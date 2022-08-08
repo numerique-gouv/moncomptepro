@@ -28,19 +28,23 @@ document.addEventListener("DOMContentLoaded", function() {
         if (xmlhttp.status === 200) {
           organizationInfoElement.style.display = "block";
           var response = JSON.parse(xmlhttp.response);
-          var organization_label = response.organizationInfo.organization_label
-          var statut_diffusion = response.organizationInfo.statut_diffusion
-          var etat_administratif = response.organizationInfo.etat_administratif
+          var libelle = response.organizationInfo.libelle
+          var adresse = response.organizationInfo.adresse
+          var libelleActivitePrincipale = response.organizationInfo.libelleActivitePrincipale
+          var estDiffusible = response.organizationInfo.estDiffusible
+          var estActive = response.organizationInfo.estActive
 
-          organizationInfoElement.innerHTML = 'Organisation : ' + organization_label;
-          if (statut_diffusion === "N") {
+          organizationInfoElement.innerHTML = '<b>' + libelle + '</b></br>';
+          organizationInfoElement.innerHTML += adresse + "</br>";
+          organizationInfoElement.innerHTML += libelleActivitePrincipale + "</br>";
+          if (!estDiffusible) {
             organizationInfoElement.classList.add("fr-alert--error");
-            organizationInfoElement.innerHTML += " (Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>)";
-          } else if (etat_administratif === "A") {
+            organizationInfoElement.innerHTML += "(Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>)";
+          } else if (estActive) {
             organizationInfoElement.classList.add("fr-alert--info");
           } else {
             organizationInfoElement.classList.add("fr-alert--error");
-            organizationInfoElement.innerHTML += " (État administratif de l'établissement : fermé)";
+            organizationInfoElement.innerHTML += "(État administratif de l'établissement : fermé)";
           }
 
         } else if (xmlhttp.status === 404) {
