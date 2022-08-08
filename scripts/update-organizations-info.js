@@ -102,7 +102,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
         );
         console.error(`Error while fetching data for: ${siret}`);
         console.error(isEmpty(error.response) ? error : error.response.data);
-        console.log('');
+        console.error('');
       }
 
       // 3. update the organization
