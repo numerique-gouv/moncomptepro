@@ -11,6 +11,7 @@ import {
   findBySiret,
   findByUserId,
   getUsers,
+  updateOrganizationInfo,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import { isSiretValid } from '../services/security';
@@ -55,6 +56,14 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   const emailDomain = email.split('@').pop();
   let organization = await findBySiret(siretNoSpaces);
 
+  // Update organizationInfo
+  if (!isEmpty(organization)) {
+    organization = await updateOrganizationInfo({
+      id: organization.id,
+      organizationInfo,
+    });
+  }
+
   if (
     !isEmpty(organization) &&
     (is_external
@@ -82,7 +91,6 @@ export const joinOrganization = async (siret, user_id, is_external) => {
 
   // Create organization if needed
   if (isEmpty(organization)) {
-    // TODO : add more info here
     organization = await create({
       siret: siretNoSpaces,
       organizationInfo,
