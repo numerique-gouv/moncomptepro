@@ -8,7 +8,7 @@ Fédérateur d’identité personne morale utilisée sur :
 
 ## Détails techniques
 
-- documentation officielle open id connect, e particulier sur le flow « Authorization Code » : https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
+- documentation officielle open id connect, en particulier sur le flow « Authorization Code » : https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
 - paramètres de configuration de l’instance de staging : https://auth-staging.api.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://auth.api.gouv.fr/.well-known/openid-configuration
 - exemple des données retournées par l’endpoint GET /userinfo du serveur open id :
