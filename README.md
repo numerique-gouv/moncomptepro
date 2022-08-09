@@ -21,10 +21,12 @@ Fédérateur d’identité personne morale utilisée sur :
     [{
         "id": 16,
         "siret": "21630215800011",
+        "label": "Commune de les martres sur morge - Mairie",
         "is_external": "true"
     }, {
         "id": 17,
-        "siret": "21770138200012",
+        "siret": "83951732300011",
+        "label": "Red needles",
         "is_external": "false"
     }],
     "sub": 154,

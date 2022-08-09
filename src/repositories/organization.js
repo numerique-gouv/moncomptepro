@@ -5,7 +5,8 @@ export const findByUserId = async user_id => {
 
   const { rows: results } = await connection.query(
     `
-SELECT id, siret, users_organizations.is_external FROM organizations
+SELECT id, siret, users_organizations.is_external, cached_libelle as label
+FROM organizations
 INNER JOIN users_organizations ON users_organizations.organization_id = organizations.id
 WHERE users_organizations.user_id = $1`,
     [user_id]
