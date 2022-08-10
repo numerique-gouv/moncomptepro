@@ -13,7 +13,7 @@
     "import": "node scripts/import-babel-wrapper.js",
     "update-organization-info": "node scripts/update-organizations-info-babel-wrapper.js",
     "migrate": "node-pg-migrate",
-    "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql",
+    "load-fixtures": "psql postgresql://api-auth:api-auth@127.0.0.1:5432/api-auth -f scripts/fixtures.sql && npm run update-organization-info 2000",
     "generate-keystore": "node scripts/generate-keys.js",
     "test:lint": "prettier */*.js --list-different",
     "test": "mocha --require babel-polyfill --require babel-register"

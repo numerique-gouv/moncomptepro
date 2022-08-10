@@ -19,9 +19,9 @@ jobs:
       postgres:
         image: postgres:9.5
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: croute
-          POSTGRES_DB: auth-api
+          POSTGRES_USER: api-auth
+          POSTGRES_PASSWORD: api-auth
+          POSTGRES_DB: api-auth
         ports:
           - 5432:5432
     steps:
@@ -56,12 +56,12 @@ jobs:
         env:
           OIDC_PAIRWISE_IDENTIFIER_SALT: salt
           SESSION_COOKIE_SECRET: yolo
-          PGUSER: postgres
-          PGPASSWORD: croute
-          PGDATABASE: auth-api
+          PGUSER: api-auth
+          PGPASSWORD: api-auth
+          PGDATABASE: api-auth
           PGPORT: "5432"
           SECURE_COOKIES: "false"
-          DATABASE_URL: "postgres://postgres:croute@localhost:5432/auth-api"
+          DATABASE_URL: "postgres://api-auth:api-auth@localhost:5432/api-auth"
           DO_NOT_SEND_MAIL: "False"
           MAILJET_API_KEY: ${{ secrets.MAILJET_API_KEY }}
           MAILJET_SECRET_KEY: ${{ secrets.MAILJET_SECRET_KEY }}
