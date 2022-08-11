@@ -224,7 +224,7 @@ VALUES
    'datapass.api.gouv.fr',
    'nCDCeAfS0qpxr2kzps7nUClRGUZ1CgnzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZ8JwwqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
-   '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback", "https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback"}',
+   '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback", "https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback", "http://localhost:3001/users/auth/api_gouv/callback"}',
    '{"http://localhost:3000", "http://localhost:3001", "https://datapass-development.api.gouv.fr"}',
    'openid email profile organizations'),
   (2,
