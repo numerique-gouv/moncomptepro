@@ -47,7 +47,7 @@
     "node-pg-migrate": "^5.9.0",
     "oidc-provider": "^6.7.0",
     "pg": "^7.18.2",
-    "rate-limiter-flexible": "^0.21.2",
+    "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "^2.0.1"
   },
   "devDependencies": {
