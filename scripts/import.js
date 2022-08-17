@@ -1,6 +1,6 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
-import fs from 'fs';
 import csv from 'csv';
+import fs from 'fs';
 import { isEmpty, some } from 'lodash';
 import {
   addUser,
@@ -49,11 +49,7 @@ const USER_EMAIL = 'test@yopmail.com';
             });
           } else {
             console.log(
-              `\x1B[33mWarning: ${
-                data.siret
-              } already exist. Domain ${emailDomain} were not added to it. You may want to add it manually. Current authorized domains: ${
-                organization.authorized_email_domains
-              }.\x1B[0m`
+              `\x1B[33mWarning: ${data.siret} already exist. Domain ${emailDomain} were not added to it. You may want to add it manually. Current authorized domains: ${organization.authorized_email_domains}.\x1B[0m`
             );
           }
 
