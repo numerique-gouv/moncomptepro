@@ -8,8 +8,11 @@ import {
 import { getHelpController, getHomeController } from './controllers/main';
 import {
   getJoinOrganizationController,
+  getManageOrganizationsController,
+  getUserOrganizationController,
   postJoinOrganizationMiddleware,
-} from './controllers/organisation';
+  postQuitUserOrganizationController,
+} from './controllers/organization';
 import {
   checkEmailInSessionMiddleware,
   checkUserHasPersonalInformationsMiddleware,
@@ -208,6 +211,27 @@ export default (app, provider) => {
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
+  );
+
+  app.get(
+    '/users/manage-organizations',
+    csrfProtectionMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    getManageOrganizationsController
+  );
+
+  app.get(
+    '/users/organization/:id',
+    csrfProtectionMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    getUserOrganizationController
+  );
+
+  app.post(
+    '/users/quit-organization/:id',
+    csrfProtectionMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    postQuitUserOrganizationController
   );
 
   app.use(Sentry.Handlers.errorHandler());

@@ -6,58 +6,97 @@
                     Rejoindre une organisation
                 </h4>
                 <div class="fr-card__desc">
-                    <form action="/users/join-organization" method="post">
-                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                    <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                    <% if (!locals.disabled) { %>
+                    <form id="form-join-organization" action="/users/join-organization" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-                        <% if (!locals.disabled) { %>
+                        <div class="fr-input-group">
+                            <label class="fr-label" for="siret">
+                                SIRET de l’organisation que vous représentez
+                                <span class="fr-hint-text">
+                                    Il est composé de 14 chiffres
+                                </span>
+                            </label>
+                            <input
+                                    id="siret-selector"
+                                    class="fr-input"
+                                    required
+                                    type="text"
+                                    name="siret"
+                                    aria-label="Numéro SIRET"
+                                    autofocus="on"
+                                    pattern="^(\s*\d){14}$"
+                                    title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
+                                    <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
+                                    <% } %>
+                            >
+                        </div>
 
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-                            <div class="fr-input-group">
-                                <label class="fr-label" for="siret">
-                                    SIRET de l’organisation que vous représentez
-                                    <span class="fr-hint-text">
-                                        Il est composé de 14 chiffres
-                                    </span>
-                                </label>
-                                <input
-                                        id="siret-selector"
-                                        class="fr-input"
-                                        required
-                                        type="text"
-                                        name="siret"
-                                        aria-label="Numéro SIRET"
-                                        autofocus="on"
-                                        pattern="^(\s*\d){14}$"
-                                        title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
-                                        <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
-                                        <% } %>
-                                >
+                        <div class="fr-input-group">
+                            <div id="organization-info" hidden>
+                                <div id="submit-join-organization" class="fr-tile fr-enlarge-link fr-tile--horizontal">
+                                    <div class="fr-tile__body">
+                                        <h4 class="fr-tile__title">
+                                            <b><a id="organization-info-libelle" class="fr-tile__link" href></a></b>
+                                        </h4>
+                                        <p id="organization-info-adresse" class="fr-tile__desc"></p>
+                                        <p id="organization-info-activite-principale" class="fr-tile__desc"></p>
+                                    </div>
+                                </div>
+                                <br/>
                             </div>
-
-                            <div class="fr-input-group">
-                                <div id="organization-info" class="fr-alert"></div>
+                            <div id="organization-alert" hidden class="fr-alert fr-alert--error"></div>
+                            <div id="find-your-siret-here">
+                                <br/>
+                                <div class="fr-alert fr-alert--info">
+                                Retrouver un SIRET sur
+                                <a class="fr-link"
+                                   href="https://annuaire-entreprises.data.gouv.fr/?mtm_campaign=datapass"
+                                   target="_blank"
+                                   rel="noopener noreferrer">L’Annuaire des Entreprises</a>
+                                </div>
                             </div>
+                        </div>
 
-                            <input type="hidden" name="is_external" value="<%= isExternalHint %>" autocomplete="off">
+                        <input type="hidden" name="is_external" value="<%= isExternalHint %>" autocomplete="off">
 
-                            <%- include('partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
-                        <% } %>
+                        <%- include('partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
                     </form>
+
+                    <% if (organizationSuggestions.length > 0) { %>
+                    <div class="separator">
+                        <span class="fr-badge fr-badge--info fr-badge--no-icon">ou</span>
+                    </div>
+
+                    <p><span class="fr-label">Sélectionnez l’organisation que vous représentez</span></p>
+
+                    <div class="fr-grid-row fr-grid-row--gutters">
+                        <% organizationSuggestions.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }) => { %>
+                        <div class="fr-col-12">
+                            <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal">
+                                <div class="fr-tile__body">
+                                    <h4 class="fr-tile__title">
+                                        <a class="fr-tile__link" href><%= cached_libelle; %></a>
+                                    </h4>
+                                    <p class="fr-tile__desc"><%= cached_adresse; %></p>
+                                    <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
+                                </div>
+                            </div>
+                            <form id="form-join-organization-<%= id %>" hidden action="/users/join-organization" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+                                <input type="hidden" name="siret" value="<%= siret %>" autocomplete="off">
+                            </form>
+                        </div>
+                        <% }); %>
+                    </div>
+                    <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
-    <div class="fr-alert fr-alert--info">
-        <p>
-            Retrouver un SIRET sur
-            <a class="fr-link"
-               href="https://annuaire-entreprises.data.gouv.fr/?mtm_campaign=datapass"
-               target="_blank"
-               rel="noopener noreferrer">
-                L’Annuaire des Entreprises
-            </a>
-        </p>
-    </div>
 </div>
-<script src="/assets/fetch-organization-info_20220727.js"></script>
+<script src="/assets/fetch-organization-info_20220816.js"></script>
+<script src="/assets/submit-forms.js"></script>
+<link rel="stylesheet" href="/assets/or-input-form.css">

@@ -68,6 +68,14 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: 'error',
     description: 'Le format des informations personnelles est invalide.',
   },
+  organization_not_found: {
+    type: 'error',
+    description: 'Nous n’avons pas trouvé cette organisation.',
+  },
+  quit_organization_success: {
+    type: 'success',
+    description: 'Vous ne faites désormais plus partie de cette organisation.',
+  },
 };
 
 export default notificationMessages;
