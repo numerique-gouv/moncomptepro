@@ -75,17 +75,19 @@ VALUES
    'Jean',
    'Éditeur',
    '0123456789',
-   'Président des affaires, gères beaucoup de business'),
-  (10, 'user10@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User10', '0123456789', 'Sbire'),
-  (11, 'user11@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User11', '0123456789', 'Sbire'),
-  (12, 'user12@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User12', '0123456789', 'Sbire'),
-  (13, 'user13@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User13', '0123456789', 'Sbire'),
-  (14, 'user14@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User14', '0123456789', 'Sbire'),
-  (15, 'user15@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User15', '0123456789', 'Sbire'),
-  (16, 'user16@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User16', '0123456789', 'Sbire'),
-  (17, 'user17@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User17', '0123456789', 'Sbire'),
-  (18, 'user18@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User18', '0123456789', 'Sbire'),
-  (19, 'user19@yopmail.com', 'true', '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User19', '0123456789', 'Sbire')
+   'Président des affaires, gère beaucoup de business'),
+  -- password for the following user is 'password123'
+  (10, 'user10@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User10', '0123456789', 'Sbire'),
+  (11, 'user11@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User11', '0123456789', 'Sbire'),
+  (12, 'user12@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User12', '0123456789', 'Sbire'),
+  (13, 'user13@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User13', '0123456789', 'Sbire'),
+  (14, 'user14@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User14', '0123456789', 'Sbire'),
+  (15, 'user15@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User15', '0123456789', 'Sbire'),
+  (16, 'user16@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User16', '0123456789', 'Sbire'),
+  (17, 'user17@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User17', '0123456789', 'Sbire'),
+  (18, 'user18@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User18', '0123456789', 'Sbire'),
+  (19, 'user19@yopmail.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User19', '0123456789', 'Sbire'),
+  (20, 'wanajoin@beta.gouv.fr', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Wanajoin', '0123456789', 'Sbire')
 ON CONFLICT (id)
   DO UPDATE
   SET (email, email_verified, encrypted_password, created_at, updated_at, given_name, family_name, phone_number, job)
@@ -104,7 +106,7 @@ INSERT INTO organizations
   (id, siret, authorized_email_domains, created_at, updated_at)
 VALUES
   (1, '21920023500014', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (2, '13002526500013', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, '13002526500013', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (3, '21130055300016', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (4, '21690123100011', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (5, '21310555400017', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -205,16 +207,16 @@ VALUES
   (7, 39),
   (7, 40),
   (7, 41),
-  (10, 1),
-  (11, 1),
-  (12, 1),
-  (13, 1),
-  (14, 1),
-  (15, 1),
-  (16, 1),
-  (17, 1),
-  (18, 1),
-  (19, 1)
+  (10, 2),
+  (11, 2),
+  (12, 2),
+  (13, 2),
+  (14, 2),
+  (15, 2),
+  (16, 2),
+  (17, 2),
+  (18, 2),
+  (19, 2)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO oidc_clients
