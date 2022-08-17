@@ -51,7 +51,7 @@
     "tld-extract": "^2.0.1"
   },
   "devDependencies": {
-    "cypress-mailslurp": "^1.1.0",
+    "cypress-mailslurp": "^1.5.0",
     "mocha": "^7.2.0",
     "node-dev": "^7.0.0",
     "prettier": "^1.15.3"
