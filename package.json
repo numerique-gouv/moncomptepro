@@ -34,7 +34,7 @@
     "csurf": "^1.11.0",
     "csv": "^5.5.3",
     "dotenv": "^8.2.0",
-    "ejs": "^2.6.1",
+    "ejs": "^2.7.4",
     "email-providers": "^1.13.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
