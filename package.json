@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@gouvfr/dsfr": "^1.7.2",
-    "@sentry/node": "^7.7.0",
+    "@sentry/node": "^7.10.0",
     "@sentry/tracing": "^7.7.0",
     "axios": "^0.27.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
