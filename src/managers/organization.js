@@ -8,15 +8,58 @@ import {
 import {
   addUser,
   create,
+  deleteUserOrganisation,
+  findByEmailDomain,
   findBySiret,
   findByUserId,
+  findPendingByUserId,
   getUsers,
   updateOrganizationInfo,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
+import { getEmailDomain, isPersonalEmail } from '../services/is-personal-email';
 import { isSiretValid } from '../services/security';
 
-export const joinOrganization = async (siret, user_id, is_external) => {
+export const getOrganizationsByUserId = findByUserId;
+
+export const getUserOrganizations = async ({ user_id }) => {
+  const userOrganizations = await findByUserId(user_id);
+  const pendingUserOrganizations = await findPendingByUserId(user_id);
+
+  return { userOrganizations, pendingUserOrganizations };
+};
+
+export const getUserOrganization = async ({ user_id, organization_id }) => {
+  const userOrganizations = await findByUserId(user_id);
+
+  const organization = userOrganizations.find(
+    ({ id }) => id === parseInt(organization_id)
+  );
+
+  if (isEmpty(organization)) {
+    throw new Error('organization_not_found');
+  }
+
+  return organization;
+};
+
+export const getOrganizationSuggestions = async ({ user_id, email }) => {
+  if (isPersonalEmail(email)) {
+    return [];
+  }
+
+  const domain = getEmailDomain(email);
+
+  const organizationsSuggestions = await findByEmailDomain(domain);
+  const userOrganizations = await findByUserId(user_id);
+  const userOrganizationsIds = userOrganizations.map(({ id }) => id);
+
+  return organizationsSuggestions.filter(
+    ({ id }) => !userOrganizationsIds.includes(id)
+  );
+};
+
+export const joinOrganization = async ({ siret, user_id, is_external }) => {
   // Ensure siret is valid
   if (!isSiretValid(siret)) {
     throw new Error('invalid_siret');
@@ -172,4 +215,8 @@ export const joinOrganization = async (siret, user_id, is_external) => {
   return true;
 };
 
-export const getOrganizationsByUserId = findByUserId;
+export const quitOrganization = async ({ user_id, organization_id }) => {
+  await deleteUserOrganisation({ user_id, organization_id });
+
+  return null;
+};

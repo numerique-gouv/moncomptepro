@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
-import { findById as findUserById } from '../repositories/user';
 import { findByUserId as getUsersOrganizations } from '../repositories/organization';
+import { findById as findUserById } from '../repositories/user';
 
 export const findAccount = async (ctx, sub, token) => {
   const user = await findUserById(sub);
@@ -42,7 +42,14 @@ export const findAccount = async (ctx, sub, token) => {
         family_name,
         phone_number,
         job,
-        organizations,
+        organizations: organizations.map(
+          ({ id, siret, is_external, cached_libelle: label }) => ({
+            id,
+            siret,
+            is_external,
+            label,
+          })
+        ),
       };
     },
   };

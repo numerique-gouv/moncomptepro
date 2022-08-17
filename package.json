@@ -35,6 +35,7 @@
     "csv": "^5.3.2",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
+    "email-providers": "^1.13.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "helmet": "^3.21.1",
@@ -46,7 +47,8 @@
     "node-pg-migrate": "^5.9.0",
     "oidc-provider": "^6.7.0",
     "pg": "^7.7.1",
-    "rate-limiter-flexible": "^0.21.2"
+    "rate-limiter-flexible": "^0.21.2",
+    "tld-extract": "^2.0.1"
   },
   "devDependencies": {
     "cypress-mailslurp": "^1.1.0",

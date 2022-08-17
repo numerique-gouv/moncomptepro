@@ -5,10 +5,31 @@ export const findByUserId = async user_id => {
 
   const { rows: results } = await connection.query(
     `
-SELECT id, siret, users_organizations.is_external, cached_libelle as label
-FROM organizations
-INNER JOIN users_organizations ON users_organizations.organization_id = organizations.id
-WHERE users_organizations.user_id = $1`,
+SELECT o.*, uo.is_external
+FROM organizations o
+INNER JOIN users_organizations uo ON uo.organization_id = o.id
+WHERE uo.user_id = $1
+ORDER BY uo.created_at`,
+    [user_id]
+  );
+
+  return results;
+};
+
+export const findPendingByUserId = async user_id => {
+  const connection = getDatabaseConnection();
+
+  const { rows: results } = await connection.query(
+    `
+SELECT o.id, o.siret, o.cached_libelle, o.cached_adresse, o.cached_libelle_activite_principale
+FROM moderations m
+INNER JOIN organizations o on o.id = m.organization_id
+INNER JOIN users u on u.id = m.user_id
+WHERE u.id = $1
+AND m.type = 'organization_join_block'
+AND m.moderated_at IS NULL
+ORDER BY m.created_at
+`,
     [user_id]
   );
 
@@ -25,6 +46,22 @@ export const findBySiret = async siret => {
   ]);
 
   return result;
+};
+
+export const findByEmailDomain = async email_domain => {
+  const connection = getDatabaseConnection();
+
+  const { rows: results } = await connection.query(
+    `
+SELECT o.id, o.siret, o.cached_libelle, o.cached_adresse, o.cached_libelle_activite_principale, count(*)
+FROM organizations o
+LEFT JOIN users_organizations uo ON uo.organization_id = o.id
+WHERE $1=ANY(authorized_email_domains)
+GROUP BY o.id HAVING count(*) >= 10 ORDER BY count(*) DESC`,
+    [email_domain]
+  );
+
+  return results;
 };
 
 export const create = async ({
@@ -234,4 +271,17 @@ WHERE uo.organization_id = $1`,
   );
 
   return results;
+};
+
+export const deleteUserOrganisation = async ({ user_id, organization_id }) => {
+  const connection = getDatabaseConnection();
+
+  const { rows: result } = await connection.query(
+    `
+DELETE FROM users_organizations
+WHERE user_id = $1 AND organization_id = $2`,
+    [user_id, organization_id]
+  );
+
+  return result;
 };
