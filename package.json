@@ -38,7 +38,7 @@
     "email-providers": "^1.13.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "helmet": "^3.21.1",
+    "helmet": "^3.23.3",
     "http-errors": "^1.7.1",
     "ioredis": "^4.3.0",
     "lodash": "^4.17.19",
