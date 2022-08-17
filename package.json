@@ -43,7 +43,7 @@
     "ioredis": "^4.28.5",
     "lodash": "^4.17.19",
     "morgan": "^1.10.0",
-    "nanoid": "^3.0.2",
+    "nanoid": "^3.3.4",
     "node-pg-migrate": "^5.9.0",
     "oidc-provider": "^6.7.0",
     "pg": "^7.7.1",
