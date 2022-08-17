@@ -1,5 +1,4 @@
 // src https://github.com/panva/node-oidc-provider-example/blob/d770e3387539d766d65a83cde52596b36f998a7d/01-oidc-configured/generate-keys.js
-require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const {
