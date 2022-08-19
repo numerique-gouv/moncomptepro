@@ -61,6 +61,7 @@ export const provider = {
     ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
   },
   postLogoutSuccessSource: async ctx => {
+    ctx.req.session.user = null;
     ctx.type = 'html';
     ctx.body = await renderWithEjsLayout('logout-success');
   },
