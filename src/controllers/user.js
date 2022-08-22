@@ -99,10 +99,19 @@ export const checkUserSignInRequirementsMiddleware = async (req, res, next) => {
   }
 };
 
-export const issueSessionOrRedirectController = async (req, res, next) => {
+export const issueSessionOrRedirectControllerFactory = provider => async (
+  req,
+  res,
+  next
+) => {
   try {
     if (req.session.interactionId) {
       return res.redirect(`/interaction/${req.session.interactionId}/login`);
+    } else {
+      await provider.setProviderSession(req, res, {
+        account: req.session.user.id.toString(),
+        remember: true,
+      });
     }
 
     if (req.session.referer && isUrlTrusted(req.session.referer)) {

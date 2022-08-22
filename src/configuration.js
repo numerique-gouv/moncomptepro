@@ -55,6 +55,7 @@ export const provider = {
   formats: { AccessToken: 'jwt' },
   interactions: { policy: interactions },
   logoutSource: async (ctx, form) => {
+    ctx.req.session.user = null;
     const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
 
     ctx.type = 'html';

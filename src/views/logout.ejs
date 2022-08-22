@@ -12,13 +12,6 @@
                     <div class="card-button-container">
                         <form action="/oauth/logout/confirm" method="post">
                             <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
-                            <button type="submit" class="fr-btn fr-btn--secondary">
-                                Non, je reste connecté
-                            </button>
-                        </form>
-
-                        <form action="/oauth/logout/confirm" method="post">
-                            <input type="hidden" name="xsrf" value="<%= xsrfToken %>" autocomplete="off">
                             <input type="hidden" name="logout" value="non-empty-value">
                             <button type="submit" class="fr-btn">
                                 Oui, déconnectez moi
@@ -30,3 +23,4 @@
         </div>
     </div>
 </div>
+<script src="/assets/autosubmit-form.js"></script>
