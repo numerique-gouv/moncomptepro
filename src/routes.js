@@ -28,7 +28,7 @@ import {
   getSignUpController,
   getStartSignInController,
   getVerifyEmailController,
-  issueSessionOrRedirectController,
+  issueSessionOrRedirectControllerFactory,
   postChangePasswordController,
   postPersonalInformationsController,
   postResetPasswordController,
@@ -101,7 +101,7 @@ export default (app, provider) => {
     checkEmailInSessionMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
   app.get(
     '/users/sign-up',
@@ -116,7 +116,7 @@ export default (app, provider) => {
     checkEmailInSessionMiddleware,
     postSignUpController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
 
   app.get(
@@ -132,7 +132,7 @@ export default (app, provider) => {
     checkUserIsConnectedMiddleware,
     postVerifyEmailController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
   app.post(
     '/users/send-email-verification',
@@ -148,7 +148,7 @@ export default (app, provider) => {
     checkEmailInSessionMiddleware,
     postSendMagicLinkController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
   app.get('/users/magic-link-sent', getMagicLinkSentController);
   app.get(
@@ -156,7 +156,7 @@ export default (app, provider) => {
     rateLimiterMiddleware,
     getSignInWithMagicLinkController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
   app.get(
     '/users/reset-password',
@@ -194,7 +194,7 @@ export default (app, provider) => {
     checkUserIsVerifiedMiddleware,
     postPersonalInformationsController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
 
   app.get(
@@ -210,7 +210,7 @@ export default (app, provider) => {
     checkUserHasPersonalInformationsMiddleware,
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectControllerFactory(provider)
   );
 
   app.get(

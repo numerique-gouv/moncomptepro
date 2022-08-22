@@ -35,8 +35,8 @@ const RedisStore = connectRedis(session);
 const app = express();
 
 app.use(helmet());
-app.use(
-  helmet.contentSecurityPolicy({
+app.use((req, res, next) => {
+  const cspConfig = {
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", 'data:', 'stats.data.gouv.fr'],
@@ -45,8 +45,13 @@ app.use(
       styleSrc: ["'self'"],
       fontSrc: ["'self'", 'data:'],
     },
-  })
-);
+  };
+
+  if (req.url.startsWith('/oauth/authorize/')) {
+    cspConfig.directives.scriptSrc.push("'unsafe-inline'");
+  }
+  helmet.contentSecurityPolicy(cspConfig)(req, res, next);
+});
 
 const logger = morgan('combined', {
   stream: fs.createWriteStream(
