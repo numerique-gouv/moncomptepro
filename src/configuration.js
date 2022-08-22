@@ -33,7 +33,7 @@ export const provider = {
   features: {
     devInteractions: { enabled: false },
     rpInitiatedLogout: {
-      enabled: false,
+      enabled: true,
       logoutSource: async (ctx, form) => {
         ctx.req.session.user = null;
         const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
@@ -42,8 +42,7 @@ export const provider = {
         ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
       },
       postLogoutSuccessSource: async ctx => {
-        ctx.type = 'html';
-        ctx.body = await renderWithEjsLayout('logout-success');
+        ctx.redirect('/?notification=logout_success');
       },
     },
     encryption: { enabled: true },
