@@ -1,5 +1,3 @@
-import { interactionPolicy } from 'oidc-provider';
-
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
@@ -8,19 +6,6 @@ const { SESSION_COOKIE_SECRET, SECURE_COOKIES = 'true' } = process.env;
 const secureCookies = SECURE_COOKIES === 'true';
 export const cookiesSecrets = [SESSION_COOKIE_SECRET];
 export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
-
-// Create a new prompt type allows applications to ask for a login or a create account interface
-// copied from https://github.com/panva/node-oidc-provider/blob/v6.7.0/example/support/configuration.js#L3-L13
-const { Prompt, base: policy } = interactionPolicy;
-// copies the default policy, already has login and consent prompt policies
-const interactions = policy();
-// create a requestable prompt with no implicit checks
-const selectAccount = new Prompt({
-  name: 'create_account',
-  requestable: true,
-});
-// add to index 0, order goes create_account > login > consent
-interactions.add(selectAccount, 0);
 
 export const provider = {
   acrValues: ['urn:mace:incommon:iap:bronze'],
@@ -47,24 +32,58 @@ export const provider = {
   },
   features: {
     devInteractions: { enabled: false },
-    frontchannelLogout: { enabled: true },
+    rpInitiatedLogout: {
+      enabled: true,
+      logoutSource: async (ctx, form) => {
+        ctx.req.session.user = null;
+        const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+
+        ctx.type = 'html';
+        ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
+      },
+      postLogoutSuccessSource: async ctx => {
+        ctx.redirect('/?notification=logout_success');
+      },
+    },
     encryption: { enabled: true },
     introspection: { enabled: true },
   },
   findAccount,
-  formats: { AccessToken: 'jwt' },
-  interactions: { policy: interactions },
-  logoutSource: async (ctx, form) => {
-    ctx.req.session.user = null;
-    const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+  loadExistingGrant: async ctx => {
+    const grantId =
+      (ctx.oidc.result &&
+        ctx.oidc.result.consent &&
+        ctx.oidc.result.consent.grantId) ||
+      ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
-    ctx.type = 'html';
-    ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
+    if (grantId) {
+      // keep grant expiry aligned with session expiry
+      // to prevent consent prompt being requested when grant expires
+      const grant = await ctx.oidc.provider.Grant.find(grantId);
+
+      // this aligns the Grant ttl with that of the current session
+      // if the same Grant is used for multiple sessions, or is set
+      // to never expire, you probably do not want this in your code
+      if (ctx.oidc.account && grant.exp < ctx.oidc.session.exp) {
+        grant.exp = ctx.oidc.session.exp;
+
+        await grant.save();
+      }
+
+      return grant;
+    } else {
+      const grant = new ctx.oidc.provider.Grant({
+        clientId: ctx.oidc.client.clientId,
+        accountId: ctx.oidc.session.accountId,
+      });
+
+      grant.addOIDCScope(ctx.oidc.params.scope);
+      await grant.save();
+
+      return grant;
+    }
   },
-  postLogoutSuccessSource: async ctx => {
-    ctx.type = 'html';
-    ctx.body = await renderWithEjsLayout('logout-success');
-  },
+  pkce: { required: (ctx, client) => false },
   routes: {
     authorization: '/oauth/authorize',
     token: '/oauth/token',
@@ -85,7 +104,10 @@ export const provider = {
   subjectTypes: ['public'],
   ttl: {
     // note that session is limited by short term cookie duration
-    AccessToken: 3 * 60 * 60, // 3 hours in second
-    IdToken: 3 * 60 * 60, // 3 hours in second
+    AccessToken: 3 * 60 * 60, // 3 hours in seconds
+    Grant: 3 * 60 * 60, // 3 hours in seconds
+    IdToken: 1 * 60 * 60, // 1 hour in seconds
+    Interaction: 1 * 60 * 60, // 1 hour in seconds
+    Session: 14 * 24 * 60 * 60, // 14 days in seconds
   },
 };

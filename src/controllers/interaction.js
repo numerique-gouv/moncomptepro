@@ -7,23 +7,18 @@ export const interactionStartControllerFactory = provider => async (
 ) => {
   try {
     const { uid: interactionId, prompt } = await provider.interactionDetails(
-      req
+      req,
+      res
     );
 
     req.session.interactionId = interactionId;
 
-    if (['create_account', 'login'].includes(prompt.name)) {
-      return res.redirect(`/users/start-sign-in`);
-    }
-
-    if (prompt.name === 'consent') {
-      // Consent to share the user's data is implicitly given.
-      // If consent is required, we redirect the user to the end of the login process
-      // There, his consent will be accepted by default.
+    if (prompt.name === 'login') {
       if (!isEmpty(req.session.user)) {
         return res.redirect(`/interaction/${interactionId}/login`);
       }
-      return res.redirect(`/users/sign-in`);
+
+      return res.redirect(`/users/start-sign-in`);
     }
 
     return res.status(500).render('error', {
@@ -49,7 +44,7 @@ export const interactionEndControllerFactory = provider => async (
   try {
     const result = {
       login: {
-        account: req.session.user.id,
+        accountId: req.session.user.id.toString(),
         acr: 'urn:mace:incommon:iap:bronze',
         amr: ['pwd'],
         ts: Math.floor(Date.now() / 1000),
@@ -59,13 +54,6 @@ export const interactionEndControllerFactory = provider => async (
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Session_cookies
         remember: true,
       },
-      // We assume all oidc_clients can access the user data without asking for his consent.
-      // So, we do not prompt the user for his consent, and we hard code the consent to all result here.
-      consent: {
-        rejectedScopes: [],
-        rejectedClaims: [],
-      },
-      create_account: {},
     };
 
     req.session.interactionId = null;
@@ -75,7 +63,7 @@ export const interactionEndControllerFactory = provider => async (
     if (error instanceof SessionNotFound) {
       // we may have took to long to provide a session to the user since he has been redirected
       // we fail silently
-      return res.redirect('https://datapass.api.gouv.fr');
+      return res.redirect('/');
     }
 
     next(error);

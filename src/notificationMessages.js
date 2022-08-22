@@ -76,6 +76,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: 'success',
     description: 'Vous ne faites désormais plus partie de cette organisation.',
   },
+  logout_success: {
+    type: 'info',
+    description: 'Vous êtes maintenant déconnecté.',
+  },
 };
 
 export default notificationMessages;
