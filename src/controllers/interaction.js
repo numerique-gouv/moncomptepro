@@ -12,7 +12,7 @@ export const interactionStartControllerFactory = provider => async (
 
     req.session.interactionId = interactionId;
 
-    if (['create_account', 'login'].includes(prompt.name)) {
+    if (prompt.name === 'login') {
       return res.redirect(`/users/start-sign-in`);
     }
 
@@ -65,7 +65,6 @@ export const interactionEndControllerFactory = provider => async (
         rejectedScopes: [],
         rejectedClaims: [],
       },
-      create_account: {},
     };
 
     req.session.interactionId = null;
