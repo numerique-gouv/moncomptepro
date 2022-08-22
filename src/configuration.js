@@ -32,23 +32,59 @@ export const provider = {
   },
   features: {
     devInteractions: { enabled: false },
-    frontchannelLogout: { enabled: true },
+    rpInitiatedLogout: {
+      enabled: false,
+      logoutSource: async (ctx, form) => {
+        ctx.req.session.user = null;
+        const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+
+        ctx.type = 'html';
+        ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
+      },
+      postLogoutSuccessSource: async ctx => {
+        ctx.type = 'html';
+        ctx.body = await renderWithEjsLayout('logout-success');
+      },
+    },
     encryption: { enabled: true },
     introspection: { enabled: true },
   },
   findAccount,
-  formats: { AccessToken: 'jwt' },
-  logoutSource: async (ctx, form) => {
-    ctx.req.session.user = null;
-    const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+  loadExistingGrant: async ctx => {
+    const grantId =
+      (ctx.oidc.result &&
+        ctx.oidc.result.consent &&
+        ctx.oidc.result.consent.grantId) ||
+      ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
-    ctx.type = 'html';
-    ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
+    if (grantId) {
+      // keep grant expiry aligned with session expiry
+      // to prevent consent prompt being requested when grant expires
+      const grant = await ctx.oidc.provider.Grant.find(grantId);
+
+      // this aligns the Grant ttl with that of the current session
+      // if the same Grant is used for multiple sessions, or is set
+      // to never expire, you probably do not want this in your code
+      if (ctx.oidc.account && grant.exp < ctx.oidc.session.exp) {
+        grant.exp = ctx.oidc.session.exp;
+
+        await grant.save();
+      }
+
+      return grant;
+    } else {
+      const grant = new ctx.oidc.provider.Grant({
+        clientId: ctx.oidc.client.clientId,
+        accountId: ctx.oidc.session.accountId,
+      });
+
+      grant.addOIDCScope(ctx.oidc.params.scope);
+      await grant.save();
+
+      return grant;
+    }
   },
-  postLogoutSuccessSource: async ctx => {
-    ctx.type = 'html';
-    ctx.body = await renderWithEjsLayout('logout-success');
-  },
+  pkce: { required: (ctx, client) => false },
   routes: {
     authorization: '/oauth/authorize',
     token: '/oauth/token',
@@ -69,7 +105,10 @@ export const provider = {
   subjectTypes: ['public'],
   ttl: {
     // note that session is limited by short term cookie duration
-    AccessToken: 3 * 60 * 60, // 3 hours in second
-    IdToken: 3 * 60 * 60, // 3 hours in second
+    AccessToken: 3 * 60 * 60, // 3 hours in seconds
+    Grant: 3 * 60 * 60, // 3 hours in seconds
+    IdToken: 1 * 60 * 60, // 1 hour in seconds
+    Interaction: 1 * 60 * 60, // 1 hour in seconds
+    Session: 14 * 24 * 60 * 60, // 14 days in seconds
   },
 };

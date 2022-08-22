@@ -99,19 +99,10 @@ export const checkUserSignInRequirementsMiddleware = async (req, res, next) => {
   }
 };
 
-export const issueSessionOrRedirectControllerFactory = provider => async (
-  req,
-  res,
-  next
-) => {
+export const issueSessionOrRedirectController = async (req, res, next) => {
   try {
     if (req.session.interactionId) {
       return res.redirect(`/interaction/${req.session.interactionId}/login`);
-    } else {
-      await provider.setProviderSession(req, res, {
-        account: req.session.user.id.toString(),
-        remember: true,
-      });
     }
 
     if (req.session.referer && isUrlTrusted(req.session.referer)) {
@@ -155,9 +146,7 @@ export const postStartSignInController = async (req, res, next) => {
   } catch (error) {
     if (error.message === 'invalid_email') {
       return res.redirect(
-        `/users/start-sign-in?notification=${error.message}&login_hint=${
-          req.body.login
-        }`
+        `/users/start-sign-in?notification=${error.message}&login_hint=${req.body.login}`
       );
     }
 
@@ -400,9 +389,7 @@ export const postChangePasswordController = async (req, res, next) => {
       const resetPasswordToken = req.body.reset_password_token;
 
       return res.redirect(
-        `/users/change-password?reset_password_token=${resetPasswordToken}&notification=${
-          error.message
-        }`
+        `/users/change-password?reset_password_token=${resetPasswordToken}&notification=${error.message}`
       );
     }
 

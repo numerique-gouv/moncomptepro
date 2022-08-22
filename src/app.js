@@ -47,9 +47,9 @@ app.use((req, res, next) => {
     },
   };
 
-  if (req.url.startsWith('/oauth/authorize/')) {
-    cspConfig.directives.scriptSrc.push("'unsafe-inline'");
-  }
+  // if (req.url.startsWith('/oauth/authorize/')) {
+  //   cspConfig.directives.scriptSrc.push("'unsafe-inline'");
+  // }
   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
 });
 
@@ -119,7 +119,7 @@ let server;
   routes(app, provider);
   apiRoutes(app);
 
-  app.use(provider.callback);
+  app.use(provider.callback());
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);
   });
