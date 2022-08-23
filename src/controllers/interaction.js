@@ -21,10 +21,7 @@ export const interactionStartControllerFactory = provider => async (
       return res.redirect(`/users/start-sign-in`);
     }
 
-    return res.status(500).render('error', {
-      error_code: 'unknown_interaction_name',
-      error_message: prompt.name,
-    });
+    return next(new Error(`unknown_interaction_name ${prompt.name}`));
   } catch (error) {
     return next(error);
   }
