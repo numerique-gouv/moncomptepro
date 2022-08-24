@@ -6,10 +6,11 @@ export const interactionStartControllerFactory = provider => async (
   next
 ) => {
   try {
-    const { uid: interactionId, prompt } = await provider.interactionDetails(
-      req,
-      res
-    );
+    const {
+      uid: interactionId,
+      params: { login_hint },
+      prompt,
+    } = await provider.interactionDetails(req, res);
 
     req.session.interactionId = interactionId;
 
@@ -18,7 +19,9 @@ export const interactionStartControllerFactory = provider => async (
         return res.redirect(`/interaction/${interactionId}/login`);
       }
 
-      return res.redirect(`/users/start-sign-in`);
+      return res.redirect(
+        `/users/start-sign-in${login_hint ? `?login_hint=${login_hint}` : ''}`
+      );
     }
 
     return next(new Error(`unknown_interaction_name ${prompt.name}`));
