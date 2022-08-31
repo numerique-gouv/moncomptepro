@@ -14,7 +14,7 @@ export const interactionStartControllerFactory = provider => async (
 
     req.session.interactionId = interactionId;
 
-    if (prompt.name === 'login') {
+    if (prompt.name === 'login' || prompt.name === 'consent') {
       if (!isEmpty(req.session.user)) {
         return res.redirect(`/interaction/${interactionId}/login`);
       }
