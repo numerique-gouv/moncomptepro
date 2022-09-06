@@ -5,7 +5,7 @@ import {
   joinOrganization,
   quitOrganization,
 } from '../managers/organization';
-import notificationMessages from '../notificationMessages';
+import notificationMessages from '../notification-messages';
 
 export const getJoinOrganizationController = async (req, res, next) => {
   try {
@@ -45,25 +45,19 @@ export const postJoinOrganizationMiddleware = async (req, res, next) => {
   } catch (error) {
     if (error.message === 'unable_to_auto_join_organization') {
       return res.redirect(
-        `/users/join-organization?notification=${error.message}&siret_hint=${
-          req.body.siret
-        }`
+        `/users/join-organization?notification=${error.message}&siret_hint=${req.body.siret}`
       );
     }
 
     if (error.message === 'invalid_siret') {
       return res.redirect(
-        `/users/join-organization?notification=${error.message}&siret_hint=${
-          req.body.siret
-        }`
+        `/users/join-organization?notification=${error.message}&siret_hint=${req.body.siret}`
       );
     }
 
     if (error.message === 'user_in_organization_already') {
       return res.redirect(
-        `/users/join-organization?notification=${error.message}&siret_hint=${
-          req.body.siret
-        }`
+        `/users/join-organization?notification=${error.message}&siret_hint=${req.body.siret}`
       );
     }
 
