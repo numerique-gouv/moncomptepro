@@ -131,6 +131,15 @@ let server;
   app.use('/api', apiRouter());
   app.use('/oauth', oidcProvider.callback());
 
+  oidcProvider.app.on('error', (err, ctx) => {
+    Sentry.withScope(scope => {
+      scope.addEventProcessor(event => {
+        return Sentry.addRequestDataToEvent(event, ctx.request);
+      });
+      Sentry.captureException(err);
+    });
+  });
+
   app.use(Sentry.Handlers.errorHandler());
 
   app.use(async (err, req, res, next) => {
