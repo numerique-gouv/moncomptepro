@@ -9,27 +9,23 @@ import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
 import apiRoutes from './api-routes';
-import {
-  cookiesMaxAge,
-  cookiesSecrets,
-  provider as providerConfiguration,
-} from './configuration';
+import { providerConfiguration } from './configuration';
 
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import { getNewRedisClient } from './connectors/redis';
 import { getClients } from './repositories/oidc-client';
 import routes from './routes';
 
+export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
+
 const {
   PORT = 3000,
   API_AUTH_HOST = `http://localhost:${PORT}`,
-  ISSUER = `${API_AUTH_HOST}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
-  SECURE_COOKIES = 'true',
+  SESSION_COOKIE_SECRET,
   SENTRY_DSN,
 } = process.env;
 const jwks = require(JWKS_PATH);
-const secureCookies = SECURE_COOKIES === 'true';
 const RedisStore = connectRedis(session);
 
 const app = express();
@@ -68,10 +64,10 @@ app.use(
     store: new RedisStore({
       client: getNewRedisClient(),
     }),
-    secret: cookiesSecrets,
+    secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: cookiesMaxAge, secure: secureCookies },
+    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: true },
   })
 );
 
@@ -104,7 +100,7 @@ app.use(Sentry.Handlers.tracingHandler());
 let server;
 
 (async () => {
-  const provider = new Provider(ISSUER, {
+  const provider = new Provider(`${API_AUTH_HOST}`, {
     clients: await getClients(),
     adapter,
     jwks,
@@ -114,12 +110,13 @@ let server;
 
   app.use(
     '/assets',
-    express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
-  ); // 1 year in milliseconds
+    express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
+  ); // 1 week in milliseconds
+
   routes(app, provider);
   apiRoutes(app);
-
   app.use(provider.callback());
+
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);
   });

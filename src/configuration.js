@@ -1,13 +1,10 @@
+import { sessionMaxAgeInSeconds } from './app';
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
-const { SESSION_COOKIE_SECRET, SECURE_COOKIES = 'true' } = process.env;
+const { SESSION_COOKIE_SECRET } = process.env;
 
-const secureCookies = SECURE_COOKIES === 'true';
-export const cookiesSecrets = [SESSION_COOKIE_SECRET];
-export const cookiesMaxAge = 1 * 24 * 60 * 60 * 1000; // 1 day in ms
-
-export const provider = {
+export const providerConfiguration = {
   acrValues: ['urn:mace:incommon:iap:bronze'],
   cookies: {
     names: {
@@ -16,13 +13,9 @@ export const provider = {
       resume: 'api_gouv_interaction_resume',
       state: 'api_gouv_state',
     },
-    long: { signed: true, secure: secureCookies, maxAge: cookiesMaxAge },
-    // triple the default value of short.maxAge as interaction may include a password forgot process which can be longer than 10 minutes
-    // This parameter set the session duration on DataPass.
-    // On api-particulier-auth, it is the duration the session will remain open after the last activity.
-    // Also related to https://github.com/panva/node-oidc-provider/issues/382.
-    short: { signed: true, secure: secureCookies, maxAge: 3 * 60 * 60 * 1000 }, // 3 hours in ms,
-    keys: cookiesSecrets,
+    long: { signed: true, secure: true },
+    short: { signed: true, secure: true },
+    keys: [SESSION_COOKIE_SECRET],
   },
   claims: {
     amr: null,
@@ -103,11 +96,13 @@ export const provider = {
   scopes: ['openid', 'email', 'profile', 'organizations'],
   subjectTypes: ['public'],
   ttl: {
-    // note that session is limited by short term cookie duration
-    AccessToken: 3 * 60 * 60, // 3 hours in seconds
-    Grant: 3 * 60 * 60, // 3 hours in seconds
+    // AccessToken, IdToken and Interaction ttl are set to default value to remove warning in console
+    AccessToken: 1 * 60 * 60, // 1 hour in seconds
     IdToken: 1 * 60 * 60, // 1 hour in seconds
     Interaction: 1 * 60 * 60, // 1 hour in seconds
-    Session: 14 * 24 * 60 * 60, // 14 days in seconds
+    // Grant and Session ttl should be the same
+    // see loadExistingGrant for more info
+    Grant: sessionMaxAgeInSeconds,
+    Session: sessionMaxAgeInSeconds,
   },
 };
