@@ -25,8 +25,10 @@ const {
   API_AUTH_HOST = `http://localhost:${PORT}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
   SESSION_COOKIE_SECRET,
+  SECURE_COOKIES = 'true',
   SENTRY_DSN,
 } = process.env;
+const useSecureCookies = SECURE_COOKIES === 'true';
 const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
 
@@ -66,7 +68,7 @@ app.use(
     secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: true },
+    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: useSecureCookies },
   })
 );
 
@@ -106,6 +108,7 @@ let server;
     ...oidcProviderConfiguration({
       sessionMaxAgeInSeconds,
       SESSION_COOKIE_SECRET,
+      useSecureCookies,
     }),
   });
   oidcProvider.proxy = true;

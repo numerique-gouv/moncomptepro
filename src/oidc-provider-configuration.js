@@ -4,6 +4,7 @@ import { renderWithEjsLayout } from './services/renderer';
 export const oidcProviderConfiguration = ({
   sessionMaxAgeInSeconds,
   SESSION_COOKIE_SECRET,
+  useSecureCookies,
 }) => ({
   acrValues: ['urn:mace:incommon:iap:bronze'],
   cookies: {
@@ -13,8 +14,8 @@ export const oidcProviderConfiguration = ({
       resume: 'api_gouv_interaction_resume',
       state: 'api_gouv_state',
     },
-    long: { signed: true, secure: true },
-    short: { signed: true, secure: true },
+    long: { signed: true, secure: useSecureCookies },
+    short: { signed: true, secure: useSecureCookies },
     keys: [SESSION_COOKIE_SECRET],
   },
   claims: {
