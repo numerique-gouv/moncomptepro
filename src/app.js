@@ -8,28 +8,28 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
-import apiRoutes from './api-routes';
-import {
-  cookiesMaxAge,
-  cookiesSecrets,
-  provider as providerConfiguration,
-} from './configuration';
-
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import { getNewRedisClient } from './connectors/redis';
+import { oidcProviderConfiguration } from './oidc-provider-configuration';
 import { getClients } from './repositories/oidc-client';
-import routes from './routes';
+import { apiRouter } from './routers/api';
+import { interactionRouter } from './routers/interaction';
+import { mainRouter } from './routers/main';
+import { userRouter } from './routers/user';
+import { ejsLayoutMiddlewareFactory } from './services/renderer';
+
+export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
 const {
   PORT = 3000,
   API_AUTH_HOST = `http://localhost:${PORT}`,
-  ISSUER = `${API_AUTH_HOST}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
+  SESSION_COOKIE_SECRET,
   SECURE_COOKIES = 'true',
   SENTRY_DSN,
 } = process.env;
+const useSecureCookies = SECURE_COOKIES === 'true';
 const jwks = require(JWKS_PATH);
-const secureCookies = SECURE_COOKIES === 'true';
 const RedisStore = connectRedis(session);
 
 const app = express();
@@ -47,9 +47,6 @@ app.use((req, res, next) => {
     },
   };
 
-  // if (req.url.startsWith('/oauth/authorize/')) {
-  //   cspConfig.directives.scriptSrc.push("'unsafe-inline'");
-  // }
   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
 });
 
@@ -68,10 +65,10 @@ app.use(
     store: new RedisStore({
       client: getNewRedisClient(),
     }),
-    secret: cookiesSecrets,
+    secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: cookiesMaxAge, secure: secureCookies },
+    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: useSecureCookies },
   })
 );
 
@@ -104,22 +101,66 @@ app.use(Sentry.Handlers.tracingHandler());
 let server;
 
 (async () => {
-  const provider = new Provider(ISSUER, {
+  const oidcProvider = new Provider(`${API_AUTH_HOST}`, {
     clients: await getClients(),
     adapter,
     jwks,
-    ...providerConfiguration,
+    ...oidcProviderConfiguration({
+      sessionMaxAgeInSeconds,
+      SESSION_COOKIE_SECRET,
+      useSecureCookies,
+    }),
   });
-  provider.proxy = true;
+  oidcProvider.proxy = true;
 
   app.use(
     '/assets',
-    express.static('public', { maxAge: 365 * 24 * 60 * 60 * 1000 })
-  ); // 1 year in milliseconds
-  routes(app, provider);
-  apiRoutes(app);
+    express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
+  ); // 1 week in milliseconds
+  app.get('/favicon.ico', function(req, res, next) {
+    return res.sendFile('favicons/favicon.ico', {
+      root: 'public',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+  });
 
-  app.use(provider.callback());
+  app.use('/', mainRouter(app));
+  app.use(
+    '/interaction',
+    ejsLayoutMiddlewareFactory(app),
+    interactionRouter(oidcProvider)
+  );
+  app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
+  app.use('/api', apiRouter());
+
+  app.use(function(req, res, next) {
+    if (req.url === '/.well-known/openid-configuration') {
+      req.url = '/oauth/.well-known/openid-configuration';
+    }
+    next();
+  });
+  app.use('/oauth', oidcProvider.callback());
+
+  oidcProvider.app.on('error', (err, ctx) => {
+    Sentry.withScope(scope => {
+      scope.addEventProcessor(event => {
+        return Sentry.addRequestDataToEvent(event, ctx.request);
+      });
+      Sentry.captureException(err);
+    });
+  });
+
+  app.use(Sentry.Handlers.errorHandler());
+
+  app.use(async (err, req, res, next) => {
+    console.error(err);
+
+    return res.status(err.statusCode || 500).render('error', {
+      error_code: err.statusCode || err,
+      error_message: err.message,
+    });
+  });
+
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);
   });

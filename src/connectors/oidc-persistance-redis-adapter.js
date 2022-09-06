@@ -1,12 +1,25 @@
-// source https://github.com/panva/node-oidc-provider/blob/ae8a4589c582b96f4e9ca0432307da15792ac29d/example/adapters/redis.js
+// source https://github.com/panva/node-oidc-provider/blob/6fbcd71b08b8b8f381a97a82809de42c75904c6b/example/adapters/redis.js
+import { isEmpty } from 'lodash';
 import { getNewRedisClient } from './redis';
-const { isEmpty } = require('lodash');
 
 const client = getNewRedisClient({
   keyPrefix: 'oidc:',
 });
 
-const consumable = new Set(['AuthorizationCode', 'RefreshToken', 'DeviceCode']);
+const grantable = new Set([
+  'AccessToken',
+  'AuthorizationCode',
+  'RefreshToken',
+  'DeviceCode',
+  'BackchannelAuthenticationRequest',
+]);
+
+const consumable = new Set([
+  'AuthorizationCode',
+  'RefreshToken',
+  'DeviceCode',
+  'BackchannelAuthenticationRequest',
+]);
 
 function grantKeyFor(id) {
   return `grant:${id}`;
@@ -38,10 +51,10 @@ class RedisAdapter {
       multi.expire(key, expiresIn);
     }
 
-    if (payload.grantId) {
+    if (grantable.has(this.name) && payload.grantId) {
       const grantKey = grantKeyFor(payload.grantId);
       multi.rpush(grantKey, key);
-      // if you’re seeing grant key lists growing out of acceptable proportions consider using LTRIM
+      // if you're seeing grant key lists growing out of acceptable proportions consider using LTRIM
       // here to trim the list to an appropriate length
       const ttl = await client.ttl(grantKey);
       if (expiresIn > ttl) {

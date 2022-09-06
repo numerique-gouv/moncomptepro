@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import notificationMessages from '../notificationMessages';
+import notificationMessages from '../notification-messages';
 
 export const getHomeController = async (req, res, next) => {
   const notifications = notificationMessages[req.query.notification]

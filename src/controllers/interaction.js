@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 
-export const interactionStartControllerFactory = provider => async (
+export const interactionStartControllerFactory = oidcProvider => async (
   req,
   res,
   next
@@ -10,11 +10,11 @@ export const interactionStartControllerFactory = provider => async (
       uid: interactionId,
       params: { login_hint },
       prompt,
-    } = await provider.interactionDetails(req, res);
+    } = await oidcProvider.interactionDetails(req, res);
 
     req.session.interactionId = interactionId;
 
-    if (prompt.name === 'login' || prompt.name === 'consent') {
+    if (prompt.name === 'login') {
       if (!isEmpty(req.session.user)) {
         return res.redirect(`/interaction/${interactionId}/login`);
       }
@@ -30,7 +30,7 @@ export const interactionStartControllerFactory = provider => async (
   }
 };
 
-export const interactionEndControllerFactory = provider => async (
+export const interactionEndControllerFactory = oidcProvider => async (
   req,
   res,
   next
@@ -39,7 +39,7 @@ export const interactionEndControllerFactory = provider => async (
     constructor: {
       errors: { SessionNotFound },
     },
-  } = provider;
+  } = oidcProvider;
 
   try {
     const result = {
@@ -58,7 +58,7 @@ export const interactionEndControllerFactory = provider => async (
 
     req.session.interactionId = null;
 
-    await provider.interactionFinished(req, res, result);
+    await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {
     if (error instanceof SessionNotFound) {
       // we may have took to long to provide a session to the user since he has been redirected

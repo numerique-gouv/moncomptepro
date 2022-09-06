@@ -13,7 +13,7 @@ import {
   verifyEmail,
 } from '../managers/user';
 
-import notificationMessages from '../notificationMessages';
+import notificationMessages from '../notification-messages';
 import { isUrlTrusted } from '../services/security';
 
 // redirect user to start sign in page if no email is available in session

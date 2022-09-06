@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import { isEmpty } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
-import notificationMessages from '../notificationMessages';
+import notificationMessages from '../notification-messages';
 import { isSiretValid } from '../services/security';
 
 export const getOrganizationInfoController = async (req, res, next) => {

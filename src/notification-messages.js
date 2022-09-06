@@ -35,7 +35,7 @@ Veuillez vous connecter avec votre nouveau mot de passe.`,
     type: 'info',
     description: `Vous souhaitez rejoindre une organisation existante.
 
-Nous avons besoin de vérifier par nous-même que vous faites bien partie de cette organisation.
+Nous avons besoin de vérifier manuellement que vous faites bien partie de cette organisation.
 Vous recevrez un email dès que nous aurons terminé (délai moyen : 1 jour ouvré).
 
 Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
