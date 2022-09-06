@@ -103,7 +103,10 @@ let server;
     clients: await getClients(),
     adapter,
     jwks,
-    ...oidcProviderConfiguration,
+    ...oidcProviderConfiguration({
+      sessionMaxAgeInSeconds,
+      SESSION_COOKIE_SECRET,
+    }),
   });
   oidcProvider.proxy = true;
 

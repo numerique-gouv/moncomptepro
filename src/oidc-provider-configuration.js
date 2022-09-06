@@ -1,10 +1,10 @@
-import { sessionMaxAgeInSeconds } from './app';
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 
-const { SESSION_COOKIE_SECRET } = process.env;
-
-export const oidcProviderConfiguration = {
+export const oidcProviderConfiguration = ({
+  sessionMaxAgeInSeconds,
+  SESSION_COOKIE_SECRET,
+}) => ({
   acrValues: ['urn:mace:incommon:iap:bronze'],
   cookies: {
     names: {
@@ -107,4 +107,4 @@ export const oidcProviderConfiguration = {
     Grant: sessionMaxAgeInSeconds,
     Session: sessionMaxAgeInSeconds,
   },
-};
+});
