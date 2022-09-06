@@ -8,9 +8,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
-import { providerConfiguration } from './configuration';
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import { getNewRedisClient } from './connectors/redis';
+import { oidcProviderConfiguration } from './oidc-provider-configuration';
 import { getClients } from './repositories/oidc-client';
 import { apiRouter } from './routers/api';
 import { interactionRouter } from './routers/interaction';
@@ -103,7 +103,7 @@ let server;
     clients: await getClients(),
     adapter,
     jwks,
-    ...providerConfiguration,
+    ...oidcProviderConfiguration,
   });
   oidcProvider.proxy = true;
 

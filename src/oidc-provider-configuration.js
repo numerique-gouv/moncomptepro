@@ -4,7 +4,7 @@ import { renderWithEjsLayout } from './services/renderer';
 
 const { SESSION_COOKIE_SECRET } = process.env;
 
-export const providerConfiguration = {
+export const oidcProviderConfiguration = {
   acrValues: ['urn:mace:incommon:iap:bronze'],
   cookies: {
     names: {
