@@ -111,6 +111,12 @@ let server;
     '/assets',
     express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
   ); // 1 week in milliseconds
+  app.get('/favicon.ico', function(req, res, next) {
+    return res.sendFile('favicons/favicon.ico', {
+      root: 'public',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+  });
 
   app.use('/', mainRouter(app));
   app.use(
@@ -120,7 +126,7 @@ let server;
   );
   app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
   app.use('/api', apiRouter());
-  app.use(oidcProvider.callback());
+  app.use('/oauth', oidcProvider.callback());
 
   app.use(Sentry.Handlers.errorHandler());
 

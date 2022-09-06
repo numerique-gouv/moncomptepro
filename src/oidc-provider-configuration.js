@@ -80,11 +80,11 @@ export const oidcProviderConfiguration = {
   },
   pkce: { required: (ctx, client) => false },
   routes: {
-    authorization: '/oauth/authorize',
-    token: '/oauth/token',
-    userinfo: '/oauth/userinfo',
-    end_session: '/oauth/logout',
-    introspection: '/oauth/token/introspection',
+    authorization: '/authorize',
+    token: '/token',
+    userinfo: '/userinfo',
+    end_session: '/logout',
+    introspection: '/token/introspection',
   },
   renderError: async (ctx, { error, error_description }, err) => {
     console.error(err);
