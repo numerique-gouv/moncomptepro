@@ -43,9 +43,6 @@ app.use((req, res, next) => {
     },
   };
 
-  // if (req.url.startsWith('/oauth/authorize/')) {
-  //   cspConfig.directives.scriptSrc.push("'unsafe-inline'");
-  // }
   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
 });
 

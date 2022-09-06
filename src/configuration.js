@@ -43,6 +43,8 @@ export const providerConfiguration = {
   },
   findAccount,
   loadExistingGrant: async ctx => {
+    // we want to skip the consent
+    // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
     const grantId =
       (ctx.oidc.result &&
         ctx.oidc.result.consent &&
