@@ -8,13 +8,15 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
-import apiRoutes from './api-routes';
 import { providerConfiguration } from './configuration';
-
 import adapter from './connectors/oidc-persistance-redis-adapter';
 import { getNewRedisClient } from './connectors/redis';
 import { getClients } from './repositories/oidc-client';
-import routes from './routes';
+import { apiRouter } from './routers/api';
+import { interactionRouter } from './routers/interaction';
+import { mainRouter } from './routers/main';
+import { userRouter } from './routers/user';
+import { ejsLayoutMiddlewareFactory } from './services/renderer';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -97,22 +99,39 @@ app.use(Sentry.Handlers.tracingHandler());
 let server;
 
 (async () => {
-  const provider = new Provider(`${API_AUTH_HOST}`, {
+  const oidcProvider = new Provider(`${API_AUTH_HOST}`, {
     clients: await getClients(),
     adapter,
     jwks,
     ...providerConfiguration,
   });
-  provider.proxy = true;
+  oidcProvider.proxy = true;
 
   app.use(
     '/assets',
     express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
   ); // 1 week in milliseconds
 
-  routes(app, provider);
-  apiRoutes(app);
-  app.use(provider.callback());
+  app.use('/', mainRouter(app));
+  app.use(
+    '/interaction',
+    ejsLayoutMiddlewareFactory(app),
+    interactionRouter(oidcProvider)
+  );
+  app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
+  app.use('/api', apiRouter());
+  app.use(oidcProvider.callback());
+
+  app.use(Sentry.Handlers.errorHandler());
+
+  app.use(async (err, req, res, next) => {
+    console.error(err);
+
+    return res.status(err.statusCode || 500).render('error', {
+      error_code: err.statusCode || err,
+      error_message: err.message,
+    });
+  });
 
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);

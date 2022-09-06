@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getOrganizationInfoController } from './controllers/api';
-import { rateLimiterMiddleware } from './services/rate-limiter';
+import { getOrganizationInfoController } from '../controllers/api';
+import { rateLimiterMiddleware } from '../services/rate-limiter';
 
-export default app => {
+export const apiRouter = () => {
   const apiRouter = Router();
 
   apiRouter.get(
@@ -21,5 +21,7 @@ export default app => {
       .json({ message: err.message || err.statusMessage });
   });
 
-  app.use('/api', apiRouter);
+  return apiRouter;
 };
+
+export default apiRouter;
