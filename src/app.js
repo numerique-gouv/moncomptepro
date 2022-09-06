@@ -132,6 +132,13 @@ let server;
   );
   app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
   app.use('/api', apiRouter());
+
+  app.use(function(req, res, next) {
+    if (req.url === '/.well-known/openid-configuration') {
+      req.url = '/oauth/.well-known/openid-configuration';
+    }
+    next();
+  });
   app.use('/oauth', oidcProvider.callback());
 
   oidcProvider.app.on('error', (err, ctx) => {
