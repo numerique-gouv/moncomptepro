@@ -87,15 +87,6 @@ export const oidcProviderConfiguration = ({
     end_session: '/logout',
     introspection: '/token/introspection',
   },
-  renderError: async (ctx, { error, error_description }, err) => {
-    console.error(err);
-
-    ctx.type = 'html';
-    ctx.body = await renderWithEjsLayout('error', {
-      error_code: err.statusCode || err,
-      error_message: `${error}: ${error_description}`,
-    });
-  },
   scopes: ['openid', 'email', 'profile', 'organizations'],
   subjectTypes: ['public'],
   ttl: {

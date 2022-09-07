@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/node';
-import * as Tracing from '@sentry/tracing';
 import connectRedis from 'connect-redis';
 import express from 'express';
 import session from 'express-session';
@@ -16,7 +15,10 @@ import { apiRouter } from './routers/api';
 import { interactionRouter } from './routers/interaction';
 import { mainRouter } from './routers/main';
 import { userRouter } from './routers/user';
-import { ejsLayoutMiddlewareFactory } from './services/renderer';
+import {
+  ejsLayoutMiddlewareFactory,
+  renderWithEjsLayout,
+} from './services/renderer';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -33,6 +35,15 @@ const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
 
 const app = express();
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+  });
+}
+
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
 
 app.use(helmet());
 app.use((req, res, next) => {
@@ -75,29 +86,6 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    integrations: [
-      // enable HTTP calls tracing
-      new Sentry.Integrations.Http({ tracing: true }),
-      // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({ app }),
-    ],
-
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-  });
-}
-
-// RequestHandler creates a separate execution context using domains, so that every
-// transaction/span/breadcrumb is attached to its own Hub instance
-app.use(Sentry.Handlers.requestHandler());
-// TracingHandler creates a trace for every incoming request
-app.use(Sentry.Handlers.tracingHandler());
-
 let server;
 
 (async () => {
@@ -105,6 +93,21 @@ let server;
     clients: await getClients(),
     adapter,
     jwks,
+    renderError: async (ctx, { error, error_description }, err) => {
+      console.error(err);
+      Sentry.withScope(scope => {
+        scope.addEventProcessor(event => {
+          return Sentry.addRequestDataToEvent(event, ctx.request);
+        });
+        Sentry.captureException(err);
+      });
+
+      ctx.type = 'html';
+      ctx.body = await renderWithEjsLayout('error', {
+        error_code: err.statusCode || err,
+        error_message: `${error}: ${error_description}`,
+      });
+    },
     ...oidcProviderConfiguration({
       sessionMaxAgeInSeconds,
       SESSION_COOKIE_SECRET,
@@ -141,15 +144,7 @@ let server;
   });
   app.use('/oauth', oidcProvider.callback());
 
-  oidcProvider.app.on('error', (err, ctx) => {
-    Sentry.withScope(scope => {
-      scope.addEventProcessor(event => {
-        return Sentry.addRequestDataToEvent(event, ctx.request);
-      });
-      Sentry.captureException(err);
-    });
-  });
-
+  // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler());
 
   app.use(async (err, req, res, next) => {
