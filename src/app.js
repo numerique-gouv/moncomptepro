@@ -15,7 +15,10 @@ import { apiRouter } from './routers/api';
 import { interactionRouter } from './routers/interaction';
 import { mainRouter } from './routers/main';
 import { userRouter } from './routers/user';
-import { ejsLayoutMiddlewareFactory } from './services/renderer';
+import {
+  ejsLayoutMiddlewareFactory,
+  renderWithEjsLayout,
+} from './services/renderer';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -90,6 +93,21 @@ let server;
     clients: await getClients(),
     adapter,
     jwks,
+    renderError: async (ctx, { error, error_description }, err) => {
+      console.error(err);
+      Sentry.withScope(scope => {
+        scope.addEventProcessor(event => {
+          return Sentry.addRequestDataToEvent(event, ctx.request);
+        });
+        Sentry.captureException(err);
+      });
+
+      ctx.type = 'html';
+      ctx.body = await renderWithEjsLayout('error', {
+        error_code: err.statusCode || err,
+        error_message: `${error}: ${error_description}`,
+      });
+    },
     ...oidcProviderConfiguration({
       sessionMaxAgeInSeconds,
       SESSION_COOKIE_SECRET,
@@ -125,15 +143,6 @@ let server;
     next();
   });
   app.use('/oauth', oidcProvider.callback());
-
-  oidcProvider.app.on('error', (err, ctx) => {
-    Sentry.withScope(scope => {
-      scope.addEventProcessor(event => {
-        return Sentry.addRequestDataToEvent(event, ctx.request);
-      });
-      Sentry.captureException(err);
-    });
-  });
 
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler());
