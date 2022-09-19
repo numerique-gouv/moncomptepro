@@ -108,10 +108,19 @@ let server;
         error_message: `${error}: ${error_description}`,
       });
     },
+    cookies: {
+      names: {
+        session: 'api_gouv_session',
+        interaction: 'api_gouv_interaction',
+        resume: 'api_gouv_interaction_resume',
+        state: 'api_gouv_state',
+      },
+      long: { overwrite: true, signed: true, secure: useSecureCookies },
+      short: { overwrite: true, signed: true, secure: useSecureCookies },
+      keys: [SESSION_COOKIE_SECRET],
+    },
     ...oidcProviderConfiguration({
-      sessionMaxAgeInSeconds,
-      SESSION_COOKIE_SECRET,
-      useSecureCookies,
+      sessionTtlInSeconds: sessionMaxAgeInSeconds,
     }),
   });
   oidcProvider.proxy = true;

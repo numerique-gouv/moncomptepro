@@ -1,23 +1,13 @@
 import { findAccount } from './connectors/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
+import epochTime from './services/epoch-time';
 
 export const oidcProviderConfiguration = ({
-  sessionMaxAgeInSeconds,
-  SESSION_COOKIE_SECRET,
-  useSecureCookies,
+  sessionTtlInSeconds = 14 * 24 * 60 * 60,
+  shortTokenTtlInSeconds = 10 * 60,
+  tokenTtlInSeconds = 60 * 60,
 }) => ({
   acrValues: ['urn:mace:incommon:iap:bronze'],
-  cookies: {
-    names: {
-      session: 'api_gouv_session',
-      interaction: 'api_gouv_interaction',
-      resume: 'api_gouv_interaction_resume',
-      state: 'api_gouv_state',
-    },
-    long: { signed: true, secure: useSecureCookies },
-    short: { signed: true, secure: useSecureCookies },
-    keys: [SESSION_COOKIE_SECRET],
-  },
   claims: {
     amr: null,
     email: ['email', 'email_verified'],
@@ -61,7 +51,7 @@ export const oidcProviderConfiguration = ({
       // if the same Grant is used for multiple sessions, or is set
       // to never expire, you probably do not want this in your code
       if (ctx.oidc.account && grant.exp < ctx.oidc.session.exp) {
-        grant.exp = ctx.oidc.session.exp;
+        grant.exp = epochTime() + sessionTtlInSeconds;
 
         await grant.save();
       }
