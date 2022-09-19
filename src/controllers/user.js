@@ -142,7 +142,7 @@ export const postStartSignInController = async (req, res, next) => {
     const { email, userExists } = await startLogin(req.body.login);
     req.session.email = email;
 
-    return res.redirect(`/users/${userExists ? 'sign-in' : 'sign-up'}?`);
+    return res.redirect(`/users/${userExists ? 'sign-in' : 'sign-up'}`);
   } catch (error) {
     if (error.message === 'invalid_email') {
       return res.redirect(
