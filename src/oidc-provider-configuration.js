@@ -80,13 +80,15 @@ export const oidcProviderConfiguration = ({
   scopes: ['openid', 'email', 'profile', 'organizations'],
   subjectTypes: ['public'],
   ttl: {
-    // AccessToken, IdToken and Interaction ttl are set to default value to remove warning in console
-    AccessToken: 1 * 60 * 60, // 1 hour in seconds
-    IdToken: 1 * 60 * 60, // 1 hour in seconds
-    Interaction: 1 * 60 * 60, // 1 hour in seconds
+    // Set ttl to default value to remove warning in console
+    AccessToken: tokenTtlInSeconds,
+    AuthorizationCode: shortTokenTtlInSeconds,
+    IdToken: tokenTtlInSeconds,
+    Interaction: tokenTtlInSeconds,
     // Grant and Session ttl should be the same
     // see loadExistingGrant for more info
-    Grant: sessionMaxAgeInSeconds,
-    Session: sessionMaxAgeInSeconds,
+    Grant: sessionTtlInSeconds,
+    RefreshToken: sessionTtlInSeconds,
+    Session: sessionTtlInSeconds,
   },
 });
