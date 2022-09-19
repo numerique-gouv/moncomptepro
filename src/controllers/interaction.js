@@ -47,12 +47,10 @@ export const interactionEndControllerFactory = oidcProvider => async (
         accountId: req.session.user.id.toString(),
         acr: 'urn:mace:incommon:iap:bronze',
         amr: ['pwd'],
-        ts: Math.floor(Date.now() / 1000),
         // Set the session cookie as persistent (vs transient) to limit the session duration to
         // the duration specified in oidc provider long cookie maxAge configuration.
         // Transient cookies can result in non expiring session as mentioned in
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Session_cookies
-        remember: true,
       },
     };
 
