@@ -33,6 +33,10 @@ export const checkEmailInSessionMiddleware = async (req, res, next) => {
 export const checkUserIsConnectedMiddleware = async (req, res, next) => {
   try {
     if (isEmpty(req.session.user) && req.method === 'GET') {
+      if (isUrlTrusted(req.originalUrl)) {
+        req.session.referer = req.originalUrl;
+      }
+
       return res.redirect(`/users/start-sign-in`);
     }
 
