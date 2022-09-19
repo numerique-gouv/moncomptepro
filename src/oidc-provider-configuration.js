@@ -54,7 +54,7 @@ export const oidcProviderConfiguration = ({
       // this aligns the Grant ttl with that of the current session
       // if the same Grant is used for multiple sessions, or is set
       // to never expire, you probably do not want this in your code
-      if (ctx.oidc.account && grant.exp < ctx.oidc.session.exp) {
+      if (ctx.oidc.account) {
         grant.exp = epochTime() + sessionTtlInSeconds;
 
         await grant.save();
