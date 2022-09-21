@@ -6,6 +6,17 @@
                     Rejoindre une organisation
                 </h4>
                 <div class="fr-card__desc">
+                    <div class="fr-alert fr-alert--error">
+                        <h3 class="fr-alert__title">Service momentanément indisponible</h3>
+                        <p>
+                            Suite à une maintenance chez nos partenaires de l’INSEE, il est
+                            aujourd’hui impossible de rejoindre une organisation. Le service
+                            sera progressivement rétabli dans la journée du jeudi 22 septembre
+                            pour un retour à la normale au vendredi 23 septembre. Veuillez nous
+                            excuser pour la gêne occasionnée.
+                        </p>
+                    </div>
+                    <br/>
                     <%- include('partials/notifications.ejs', {notifications: notifications}) %>
                     <% if (!locals.disabled) { %>
                     <form id="form-join-organization" action="/users/join-organization" method="post">
