@@ -1,6 +1,7 @@
+import { toPairs } from 'lodash';
 import { findAccount } from './connectors/oidc-account-adapter';
-import { renderWithEjsLayout } from './services/renderer';
 import epochTime from './services/epoch-time';
+import { renderWithEjsLayout } from './services/renderer';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -40,27 +41,23 @@ export const oidcProviderConfiguration = ({
   loadExistingGrant: async ctx => {
     // we want to skip the consent
     // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
-    const grantId =
-      (ctx.oidc.result &&
-        ctx.oidc.result.consent &&
-        ctx.oidc.result.consent.grantId) ||
-      ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
-    if (grantId) {
-      // keep grant expiry aligned with session expiry
-      // to prevent consent prompt being requested when grant expires
-      const grant = await ctx.oidc.provider.Grant.find(grantId);
-
-      // this aligns the Grant ttl with that of the current session
-      // if the same Grant is used for multiple sessions, or is set
-      // to never expire, you probably do not want this in your code
-      if (ctx.oidc.account) {
+    // keep grant expiry aligned with session expiry
+    // to prevent consent prompt being requested when grant expires
+    await Promise.all(
+      toPairs(ctx.oidc.session.authorizations).map(async ([, { grantId }]) => {
+        const grant = await ctx.oidc.provider.Grant.find(grantId);
+        // this aligns the Grant ttl with that of the current session
+        // if the same Grant is used for multiple sessions, or is set
+        // to never expire, you probably do not want this in your code
         grant.exp = epochTime() + sessionTtlInSeconds;
-
         await grant.save();
-      }
+      })
+    );
 
-      return grant;
+    const grantId = ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
+    if (grantId) {
+      return await ctx.oidc.provider.Grant.find(grantId);
     } else {
       const grant = new ctx.oidc.provider.Grant({
         clientId: ctx.oidc.client.clientId,
