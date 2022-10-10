@@ -50,7 +50,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           wait-on: http://localhost:3000/users/start-sign-in
-          build: npm run migrate up
+          build: npm run build
           start: npm start
           install: false
         env:
