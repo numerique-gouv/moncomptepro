@@ -335,7 +335,8 @@ export const getResetPasswordController = async (req, res, next) => {
 
     return res.render('reset-password', {
       notifications,
-      loginHint: req.session.email,
+      loginHint:
+        req.session.email || (req.session.user && req.session.user.email),
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
