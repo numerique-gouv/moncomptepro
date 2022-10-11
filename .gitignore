@@ -16,3 +16,6 @@ cypress/videos
 /public/fonts/
 /public/icons/
 /public/utility/
+
+/build/*
+!/build/.keep
