@@ -6,32 +6,27 @@ import { isSiretValid } from '../services/security';
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 
-const schema = z.object({
-  query: z.object({
-    siret: z
-      .string({
-        required_error: notificationMessages['invalid_siret'].description,
-      })
-      .refine(isSiretValid, {
-        message: notificationMessages['invalid_siret'].description,
-      })
-      .transform(val => val.replace(/\s/g, '')),
-  }),
-});
-
 export const getOrganizationInfoController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const schema = z.object({
+      query: z.object({
+        siret: z
+          .string()
+          .refine(isSiretValid)
+          .transform(val => val.replace(/\s/g, '')),
+      }),
+    });
+
     const parsedRequest = await schema.parseAsync({
-      body: req.body,
       query: req.query,
-      params: req.params,
     });
 
     const siret = parsedRequest.query.siret;
+
     const organizationInfo = await getOrganizationInfo(siret);
 
     if (isEmpty(organizationInfo)) {
@@ -43,7 +38,7 @@ export const getOrganizationInfoController = async (
     if (e instanceof ZodError) {
       return next(
         new createError.BadRequest(
-          e.errors.map(({ message }) => message).join(' ')
+          notificationMessages['invalid_siret'].description
         )
       );
     }
