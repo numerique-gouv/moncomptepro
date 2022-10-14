@@ -3,12 +3,17 @@ import { isEmpty } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import notificationMessages from '../notification-messages';
 import { isSiretValid } from '../services/security';
+import { Request, Response, NextFunction } from 'express';
 
-export const getOrganizationInfoController = async (req, res, next) => {
+export const getOrganizationInfoController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!isSiretValid(req.query.siret)) {
       return next(
-        createError.BadRequest(
+        new createError.BadRequest(
           notificationMessages['invalid_siret'].description
         )
       );
@@ -19,7 +24,7 @@ export const getOrganizationInfoController = async (req, res, next) => {
     const organizationInfo = await getOrganizationInfo(siretNoSpaces);
 
     if (isEmpty(organizationInfo)) {
-      return next(createError.NotFound());
+      return next(new createError.NotFound());
     }
 
     return res.json({ organizationInfo });
