@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "engines": {
-    "node": ">=12.9.1"
+    "node": ">=16.17.1"
   },
   "scripts": {
     "lint": "prettier --write */*.js",
