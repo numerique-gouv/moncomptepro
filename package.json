@@ -47,7 +47,7 @@
     "nanoid": "^3.3.4",
     "node-pg-migrate": "^5.9.0",
     "oidc-provider": "^7.11.5",
-    "pg": "^7.18.2",
+    "pg": "^8.8.0",
     "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "^2.0.1",
     "ts-node": "^10.9.1",
