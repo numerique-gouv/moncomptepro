@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "engines": {
-    "node": ">=12.9.1"
+    "node": ">=16.17.1"
   },
   "scripts": {
     "lint": "prettier --write */*.js",
@@ -16,7 +16,7 @@
     "load-fixtures": "psql -d api-auth -f scripts/fixtures.sql && npm run update-organization-info 2000",
     "generate-keystore": "ts-node scripts/generate-keys.js",
     "test:lint": "prettier */*.js --list-different",
-    "test": "mocha --require babel-polyfill --require babel-register",
+    "test": "mocha --require ts-node/register",
     "watch-js": "tsc --watch",
     "watch-node": "nodemon --watch build --ext js,ejs --quiet build/index.js",
     "watch-ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/"
@@ -47,7 +47,7 @@
     "nanoid": "^3.3.4",
     "node-pg-migrate": "^5.9.0",
     "oidc-provider": "^7.11.5",
-    "pg": "^7.18.2",
+    "pg": "^8.8.0",
     "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "^2.0.1",
     "ts-node": "^10.9.1",
