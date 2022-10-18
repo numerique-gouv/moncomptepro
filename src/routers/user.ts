@@ -35,7 +35,7 @@ import {
 } from '../controllers/user';
 import { rateLimiterMiddleware } from '../services/rate-limiter';
 
-export const userRouter = app => {
+export const userRouter = () => {
   const userRouter = Router();
   const csrfProtectionMiddleware = csrf();
 
