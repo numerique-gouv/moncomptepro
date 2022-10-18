@@ -1,9 +1,12 @@
 import * as Sentry from '@sentry/node';
+// @ts-ignore
 import connectRedis from 'connect-redis';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import fs from 'fs';
+// @ts-ignore
 import helmet from 'helmet';
+import { Server } from 'http';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
@@ -19,6 +22,7 @@ import {
   ejsLayoutMiddlewareFactory,
   renderWithEjsLayout,
 } from './services/renderer';
+import { HttpError } from 'http-errors';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -26,7 +30,7 @@ const {
   PORT = 3000,
   API_AUTH_HOST = `http://localhost:${PORT}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
-  SESSION_COOKIE_SECRET,
+  SESSION_COOKIE_SECRET = '',
   SECURE_COOKIES = 'true',
   SENTRY_DSN,
 } = process.env;
@@ -72,6 +76,7 @@ app.use(logger);
 app.set('trust proxy', 1);
 
 app.use(
+  // @ts-ignore
   session({
     store: new RedisStore({
       client: getNewRedisClient(),
@@ -86,13 +91,15 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-let server;
+let server: Server;
 
 (async () => {
+  // @ts-ignore
   const oidcProvider = new Provider(`${API_AUTH_HOST}`, {
     clients: await getClients(),
     adapter,
     jwks,
+    // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
       console.error(err);
       Sentry.withScope(scope => {
@@ -145,7 +152,7 @@ let server;
   app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
   app.use('/api', apiRouter());
 
-  app.use(function(req, res, next) {
+  app.use((req, res, next) => {
     if (req.url === '/.well-known/openid-configuration') {
       req.url = '/oauth/.well-known/openid-configuration';
     }
@@ -156,7 +163,7 @@ let server;
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler());
 
-  app.use(async (err, req, res, next) => {
+  app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
 
     return res.status(err.statusCode || 500).render('error', {
