@@ -268,13 +268,6 @@ export const updatePersonalInformations = async (
   userId,
   { given_name, family_name, phone_number, job }
 ) => {
-  if (!isString(given_name) || !isString(family_name) || !isString(job)) {
-    throw new Error('invalid_personal_informations');
-  }
-  if (!isPhoneNumberValid(phone_number)) {
-    throw new Error('invalid_personal_informations');
-  }
-
   return await update(userId, {
     given_name,
     family_name,

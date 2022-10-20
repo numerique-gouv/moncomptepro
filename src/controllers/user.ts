@@ -239,7 +239,7 @@ export const postSignInMiddleware = async (
   try {
     const schema = z.object({
       body: z.object({
-        password: z.string(),
+        password: z.string().min(1),
       }),
     });
 
@@ -301,7 +301,7 @@ export const postSignUpController = async (
   try {
     const schema = z.object({
       body: z.object({
-        password: z.string(),
+        password: z.string().min(1),
       }),
     });
 
@@ -381,7 +381,7 @@ export const postVerifyEmailController = async (
   try {
     const schema = z.object({
       body: z.object({
-        verify_email_token: z.string(),
+        verify_email_token: z.string().min(1),
       }),
     });
 
@@ -470,7 +470,7 @@ export const getSignInWithMagicLinkController = async (
   try {
     const schema = z.object({
       query: z.object({
-        magic_link_token: z.string(),
+        magic_link_token: z.string().min(1),
       }),
     });
 
@@ -555,7 +555,7 @@ export const getChangePasswordController = async (
   try {
     const schema = z.object({
       query: z.object({
-        reset_password_token: z.string(),
+        reset_password_token: z.string().min(1),
       }),
     });
 
@@ -583,8 +583,8 @@ export const postChangePasswordController = async (
   try {
     const schema = z.object({
       body: z.object({
-        reset_password_token: z.string(),
-        password: z.string(),
+        reset_password_token: z.string().min(1),
+        password: z.string().min(1),
       }),
     });
 
@@ -649,10 +649,10 @@ export const postPersonalInformationsController = async (
   try {
     const schema = z.object({
       body: z.object({
-        given_name: z.string(),
-        family_name: z.string(),
-        phone_number: z.string(),
-        job: z.string(),
+        given_name: z.string().min(1),
+        family_name: z.string().min(1),
+        phone_number: z.string().min(1),
+        job: z.string().min(1),
       }),
     });
 

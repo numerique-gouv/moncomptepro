@@ -13,7 +13,11 @@ export const emailSchema = () =>
     .refine(isEmailValid)
     .transform(val => val.toLowerCase().trim());
 
-export const idSchema = () => z.string().refine(val => val.match(/^\d*$/));
+export const idSchema = () =>
+  z
+    .string()
+    .min(1)
+    .refine(val => val.match(/^\d*$/));
 
 export const optionalBooleanSchema = () =>
   z
