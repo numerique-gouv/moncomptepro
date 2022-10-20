@@ -21,11 +21,11 @@ export const getOrganizationInfoController = async (
       }),
     });
 
-    const parsedRequest = await schema.parseAsync({
+    const {
+      query: { siret },
+    } = await schema.parseAsync({
       query: req.query,
     });
-
-    const siret = parsedRequest.query.siret;
 
     const organizationInfo = await getOrganizationInfo(siret);
 

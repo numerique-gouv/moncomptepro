@@ -23,6 +23,7 @@ import {
   renderWithEjsLayout,
 } from './services/renderer';
 import { HttpError } from 'http-errors';
+import { ZodError } from 'zod';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -163,14 +164,28 @@ let server: Server;
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler());
 
-  app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
+  app.use(
+    (
+      err: HttpError | ZodError,
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) => {
+      console.error(err);
 
-    return res.status(err.statusCode || 500).render('error', {
-      error_code: err.statusCode || err,
-      error_message: err.message,
-    });
-  });
+      if (err instanceof ZodError) {
+        return res.status(400).render('error', {
+          error_code: 400,
+          error_message: err.message,
+        });
+      }
+
+      return res.status(err.statusCode || 500).render('error', {
+        error_code: err.statusCode || err,
+        error_message: err.message,
+      });
+    }
+  );
 
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);

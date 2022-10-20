@@ -37,18 +37,13 @@ const isExpired = (emittedDate, expirationDurationInMinutes) => {
 };
 
 export const startLogin = async email => {
-  if (!isEmailValid(email)) {
+  const userExists = !isEmpty(await findByEmail(email));
+
+  if (!userExists && !(await isEmailSafeToSendTransactional(email))) {
     throw new Error('invalid_email');
   }
 
-  const sanitizedEmail = email.toLowerCase().trim();
-  const userExists = !isEmpty(await findByEmail(sanitizedEmail));
-
-  if (!userExists && !(await isEmailSafeToSendTransactional(sanitizedEmail))) {
-    throw new Error('invalid_email');
-  }
-
-  return { email: sanitizedEmail, userExists };
+  return { email, userExists };
 };
 
 export const login = async (email, password) => {
@@ -94,12 +89,7 @@ export const sendEmailAddressVerificationEmail = async ({
   email,
   checkBeforeSend,
 }) => {
-  if (!isEmailValid(email)) {
-    throw new Error('invalid_email');
-  }
-
-  const sanitizedEmail = email.toLowerCase().trim();
-  const user = await findByEmail(sanitizedEmail);
+  const user = await findByEmail(email);
 
   if (user.email_verified) {
     throw new Error('email_verified_already');
@@ -135,10 +125,6 @@ export const sendEmailAddressVerificationEmail = async ({
 };
 
 export const verifyEmail = async token => {
-  if (!token || token === '') {
-    throw new Error('invalid_token');
-  }
-
   const user = await findByVerifyEmailToken(token);
 
   if (isEmpty(user)) {
@@ -162,12 +148,7 @@ export const verifyEmail = async token => {
 };
 
 export const sendSendMagicLinkEmail = async email => {
-  // these checks are redundant with start-sign-in check
-  if (!isEmailValid(email)) {
-    throw new Error('invalid_email');
-  }
-  const sanitizedEmail = email.toLowerCase().trim();
-  let user = await findByEmail(sanitizedEmail);
+  let user = await findByEmail(email);
 
   if (isEmpty(user)) {
     user = await create({
@@ -223,12 +204,7 @@ export const loginWithMagicLink = async token => {
 };
 
 export const sendResetPasswordEmail = async email => {
-  if (!isEmailValid(email)) {
-    throw new Error('invalid_email');
-  }
-
-  const sanitizedEmail = email.toLowerCase().trim();
-  const user = await findByEmail(sanitizedEmail);
+  const user = await findByEmail(email);
 
   if (isEmpty(user)) {
     // failing silently as we do not want to give info on whether the user exists or not
