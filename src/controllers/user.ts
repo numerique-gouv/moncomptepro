@@ -13,31 +13,15 @@ import {
   verifyEmail,
 } from '../managers/user';
 
-import notificationMessages from '../notification-messages';
-import { isEmailValid, isUrlTrusted } from '../services/security';
+import { isUrlTrusted } from '../services/security';
 import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
-
-const getNotificationsFromRequest = async (req: Request) => {
-  const schema = z.object({
-    query: z.object({
-      notification: z.string().optional(),
-    }),
-  });
-
-  const {
-    query: { notification },
-  } = await schema.parseAsync({
-    query: req.query,
-  });
-
-  return notification && notificationMessages[notification]
-    ? [notificationMessages[notification]]
-    : [];
-};
-
-const hasErrorFromField = (err: ZodError, fieldName: string) =>
-  !!err.issues.find(({ path }) => path.includes(fieldName));
+import getNotificationsFromRequest from '../services/get-notifications-from-request';
+import {
+  emailSchema,
+  optionalBooleanSchema,
+} from '../services/custom-zod-schemas';
+import hasErrorFromField from '../services/has-error-from-field';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -174,10 +158,7 @@ export const getStartSignInController = async (
   try {
     const schema = z.object({
       query: z.object({
-        login_hint: z
-          .string()
-          .refine(isEmailValid)
-          .optional(),
+        login_hint: emailSchema().optional(),
       }),
     });
 
@@ -207,10 +188,7 @@ export const postStartSignInController = async (
   try {
     const schema = z.object({
       body: z.object({
-        login: z
-          .string()
-          .refine(isEmailValid)
-          .transform(val => val.toLowerCase().trim()),
+        login: emailSchema(),
       }),
     });
 
@@ -295,10 +273,7 @@ export const getSignUpController = async (
   try {
     const schema = z.object({
       query: z.object({
-        login_hint: z
-          .string()
-          .refine(isEmailValid)
-          .optional(),
+        login_hint: emailSchema().optional(),
       }),
     });
 
@@ -365,7 +340,7 @@ export const getVerifyEmailController = async (
   try {
     const schema = z.object({
       query: z.object({
-        new_code_sent: z.string(),
+        new_code_sent: optionalBooleanSchema(),
       }),
     });
 
@@ -375,7 +350,7 @@ export const getVerifyEmailController = async (
       query: req.query,
     });
 
-    const codeSent = await sendEmailAddressVerificationEmail({
+    const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email: req.session.user.email,
       checkBeforeSend: true,
     });
@@ -548,10 +523,7 @@ export const postResetPasswordController = async (
   try {
     const schema = z.object({
       body: z.object({
-        login: z
-          .string()
-          .refine(isEmailValid)
-          .transform(val => val.toLowerCase().trim()),
+        login: emailSchema(),
       }),
     });
 
