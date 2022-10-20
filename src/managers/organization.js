@@ -18,7 +18,6 @@ import {
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import { getEmailDomain, isPersonalEmail } from '../services/is-personal-email';
-import { isSiretValid } from '../services/security';
 
 export const getOrganizationsByUserId = findByUserId;
 
@@ -60,18 +59,12 @@ export const getOrganizationSuggestions = async ({ user_id, email }) => {
 };
 
 export const joinOrganization = async ({ siret, user_id, is_external }) => {
-  // Ensure siret is valid
-  if (!isSiretValid(siret)) {
-    throw new Error('invalid_siret');
-  }
-
-  const siretNoSpaces = siret.replace(/\s/g, '');
   let organizationInfo = {};
 
   try {
-    organizationInfo = await getOrganizationInfo(siretNoSpaces);
+    organizationInfo = await getOrganizationInfo(siret);
 
-    if (organizationInfo.siret !== siretNoSpaces) {
+    if (organizationInfo.siret !== siret) {
       throw new Error('invalid response from sirene API');
     }
 
@@ -97,7 +90,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   // Ensure user can join organization automatically
   const { email, given_name, family_name } = user;
   const emailDomain = email.split('@').pop();
-  let organization = await findBySiret(siretNoSpaces);
+  let organization = await findBySiret(siret);
 
   // Update organizationInfo
   if (!isEmpty(organization)) {
@@ -135,7 +128,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   // Create organization if needed
   if (isEmpty(organization)) {
     organization = await create({
-      siret: siretNoSpaces,
+      siret,
       organizationInfo,
       authorized_email_domains: is_external ? [] : [emailDomain],
       external_authorized_email_domains: is_external ? [emailDomain] : [],

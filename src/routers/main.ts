@@ -1,9 +1,9 @@
 import csrf from 'csurf';
-import { Router } from 'express';
+import { Express, Router } from 'express';
 import { getHelpController, getHomeController } from '../controllers/main';
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
 
-export const mainRouter = app => {
+export const mainRouter = (app: Express) => {
   const csrfProtectionMiddleware = csrf();
   const mainRouter = Router();
 

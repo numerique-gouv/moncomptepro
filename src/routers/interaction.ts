@@ -5,7 +5,7 @@ import {
 } from '../controllers/interaction';
 import { checkUserSignInRequirementsMiddleware } from '../controllers/user';
 
-export const interactionRouter = oidcProvider => {
+export const interactionRouter = (oidcProvider: any) => {
   const interactionRouter = Router();
 
   interactionRouter.use((req, res, next) => {

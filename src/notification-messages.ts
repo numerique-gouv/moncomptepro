@@ -1,4 +1,11 @@
-const notificationMessages = {
+interface NotificationMessages {
+  [key: string]: {
+    type: string;
+    description: string;
+  };
+}
+
+const notificationMessages: NotificationMessages = {
   invalid_credentials: {
     type: 'error',
     description: 'Mot de passe incorrect.',

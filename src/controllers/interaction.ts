@@ -1,9 +1,10 @@
 import { isEmpty } from 'lodash';
+import { NextFunction, Request, Response } from 'express';
 
-export const interactionStartControllerFactory = oidcProvider => async (
-  req,
-  res,
-  next
+export const interactionStartControllerFactory = (oidcProvider: any) => async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const {
@@ -30,10 +31,10 @@ export const interactionStartControllerFactory = oidcProvider => async (
   }
 };
 
-export const interactionEndControllerFactory = oidcProvider => async (
-  req,
-  res,
-  next
+export const interactionEndControllerFactory = (oidcProvider: any) => async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   const {
     constructor: {
@@ -50,7 +51,7 @@ export const interactionEndControllerFactory = oidcProvider => async (
       },
     };
 
-    req.session.interactionId = null;
+    req.session.interactionId = undefined;
 
     await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {

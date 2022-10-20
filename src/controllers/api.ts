@@ -2,9 +2,9 @@ import createError from 'http-errors';
 import { isEmpty } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import notificationMessages from '../notification-messages';
-import { isSiretValid } from '../services/security';
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
+import { siretSchema } from '../services/custom-zod-schemas';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -14,18 +14,15 @@ export const getOrganizationInfoController = async (
   try {
     const schema = z.object({
       query: z.object({
-        siret: z
-          .string()
-          .refine(isSiretValid)
-          .transform(val => val.replace(/\s/g, '')),
+        siret: siretSchema(),
       }),
     });
 
-    const parsedRequest = await schema.parseAsync({
+    const {
+      query: { siret },
+    } = await schema.parseAsync({
       query: req.query,
     });
-
-    const siret = parsedRequest.query.siret;
 
     const organizationInfo = await getOrganizationInfo(siret);
 
