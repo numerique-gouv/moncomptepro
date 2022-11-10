@@ -1,6 +1,6 @@
-# Comptes DataPass
+# MonComptePro
 
-Fédérateur d’identité personne morale utilisée sur :
+Nous identifions les utilisateurs professionnels du privé ou du public sur les plateformes suivantes :
 - DataPass : http://datapass.api.gouv.fr
 - L’API Manager API Particulier : https://mon.portail.api.gouv.fr/
 - L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/

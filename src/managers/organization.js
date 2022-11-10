@@ -109,7 +109,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     await sendMail({
       to: [email],
       cc: ['auth@api.gouv.fr'],
-      subject: `[api.gouv.fr] Demande pour rejoindre ${libelle}`,
+      subject: `[MonComptePro] Demande pour rejoindre ${libelle}`,
       template: 'unable-to-auto-join-organization-acknowledgment',
       params: {
         libelle,
@@ -156,7 +156,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     // Welcome the user when he joins is first organization as he may now be able to connect
     await sendMail({
       to: [email],
-      subject: 'Votre compte DataPass a bien été créé',
+      subject: 'Votre compte MonComptePro a bien été créé',
       template: 'welcome',
       params: { given_name, family_name, email },
     });
@@ -170,7 +170,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   if (usersInOrganizationAlreadyWithoutExternal.length > 0) {
     await sendMail({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
-      subject: 'Votre organisation sur api.gouv.fr',
+      subject: 'Votre organisation sur MonComptePro',
       template: 'join-organization',
       params: { user_label, libelle, email, is_external },
     });
@@ -180,7 +180,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   if (!is_external && usersInOrganizationAlready.length > 0) {
     await sendMail({
       to: [email],
-      subject: 'Votre organisation sur api.gouv.fr',
+      subject: 'Votre organisation sur MonComptePro',
       template: 'organization-welcome',
       params: {
         given_name,

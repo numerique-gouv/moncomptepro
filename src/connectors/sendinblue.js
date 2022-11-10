@@ -29,11 +29,11 @@ export const sendMail = async ({
 }) => {
   const data = {
     sender: {
-      name: 'L’équipe d’api.gouv.fr',
+      name: 'L’équipe MonComptePro',
       email: 'contact@api.gouv.fr',
     },
     replyTo: {
-      name: 'L’équipe d’api.gouv.fr',
+      name: 'L’équipe MonComptePro',
       email: 'contact@api.gouv.fr',
     },
     to: to.map(e => ({ email: e })),
