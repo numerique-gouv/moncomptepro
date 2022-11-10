@@ -114,7 +114,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
   await sendMail({
     to: [user.email],
-    subject: `Code de confirmation api.gouv.fr : ${verify_email_token}`,
+    subject: `Code de confirmation MonComptePro : ${verify_email_token}`,
     template: 'verify-email',
     params: {
       verify_email_token,
