@@ -1,4 +1,4 @@
-import { isEmpty, isString } from 'lodash';
+import { isEmpty } from 'lodash';
 import { isEmailSafeToSendTransactional } from '../connectors/debounce';
 import { sendMail } from '../connectors/sendinblue';
 
@@ -14,9 +14,7 @@ import {
   generatePinToken,
   generateToken,
   hashPassword,
-  isEmailValid,
   isPasswordSecure,
-  isPhoneNumberValid,
   validatePassword,
 } from '../services/security';
 
