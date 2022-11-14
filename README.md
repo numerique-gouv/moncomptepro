@@ -12,7 +12,7 @@ Pour tester le parcours de connexion complet, vous pouvez tester la connexion Mo
 qui intègre le bouton de connexion.
 Pour cela nous mettons à votre disposition une plateforme de démonstration appelée « staging ».
 
-Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/.
+Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/api-entreprise.
 
 Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à
 aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe
