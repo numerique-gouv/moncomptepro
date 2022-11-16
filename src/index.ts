@@ -29,7 +29,7 @@ export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
 const {
   PORT = 3000,
-  API_AUTH_HOST = `http://localhost:${PORT}`,
+  MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
   JWKS_PATH = '/opt/apps/api-auth/jwks.json',
   SESSION_COOKIE_SECRET = '',
   SECURE_COOKIES = 'true',
@@ -96,7 +96,7 @@ let server: Server;
 
 (async () => {
   // @ts-ignore
-  const oidcProvider = new Provider(`${API_AUTH_HOST}`, {
+  const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
     clients: await getClients(),
     adapter,
     jwks,

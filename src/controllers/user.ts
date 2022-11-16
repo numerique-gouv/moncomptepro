@@ -437,7 +437,7 @@ export const postSendMagicLinkController = async (
   next: NextFunction
 ) => {
   try {
-    await sendSendMagicLinkEmail(req.session.email);
+    await sendSendMagicLinkEmail(req.session.email, req.get('origin'));
 
     return res.redirect(`/users/magic-link-sent`);
   } catch (error) {
@@ -533,7 +533,7 @@ export const postResetPasswordController = async (
       body: req.body,
     });
 
-    await sendResetPasswordEmail(login);
+    await sendResetPasswordEmail(login, req.get('origin'));
 
     return res.redirect(
       '/users/start-sign-in?notification=reset_password_email_sent'
