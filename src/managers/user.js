@@ -18,7 +18,7 @@ import {
   validatePassword,
 } from '../services/security';
 
-const { API_AUTH_HOST } = process.env;
+const { MONCOMPTEPRO_HOST } = process.env;
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
@@ -145,7 +145,7 @@ export const verifyEmail = async token => {
   });
 };
 
-export const sendSendMagicLinkEmail = async email => {
+export const sendSendMagicLinkEmail = async (email, host) => {
   let user = await findByEmail(email);
 
   if (isEmpty(user)) {
@@ -166,7 +166,7 @@ export const sendSendMagicLinkEmail = async email => {
     subject: 'Connexion avec un lien magique',
     template: 'magic-link',
     params: {
-      magic_link: `${API_AUTH_HOST}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
+      magic_link: `${host}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
     },
   });
 
@@ -201,7 +201,7 @@ export const loginWithMagicLink = async token => {
   });
 };
 
-export const sendResetPasswordEmail = async email => {
+export const sendResetPasswordEmail = async (email, host) => {
   const user = await findByEmail(email);
 
   if (isEmpty(user)) {
@@ -221,7 +221,7 @@ export const sendResetPasswordEmail = async email => {
     subject: 'Instructions pour la réinitialisation du mot de passe',
     template: 'reset-password',
     params: {
-      reset_password_link: `${API_AUTH_HOST}/users/change-password?reset_password_token=${resetPasswordToken}`,
+      reset_password_link: `${host}/users/change-password?reset_password_token=${resetPasswordToken}`,
     },
   });
 
