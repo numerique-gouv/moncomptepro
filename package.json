@@ -16,7 +16,7 @@
     "load-fixtures": "psql -d api-auth -f scripts/fixtures.sql && npm run update-organization-info 2000",
     "generate-keystore": "ts-node scripts/generate-keys.js",
     "test:lint": "prettier */*.js --list-different",
-    "test": "mocha --require ts-node/register",
+    "test": "ts-mocha -p tsconfig.json test/*.ts test/*.js",
     "watch-js": "tsc --watch",
     "watch-node": "nodemon --watch build --ext js,ejs --quiet build/index.js",
     "watch-ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/"
@@ -61,11 +61,15 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@sinonjs/fake-timers": "^10.0.0",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.0",
+    "@types/sinonjs__fake-timers": "^8.1.2",
     "concurrently": "^7.4.0",
     "copy-and-watch": "^0.1.6",
     "cypress-mailslurp": "^1.5.0",
-    "mocha": "^7.2.0",
     "nodemon": "^2.0.20",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "ts-mocha": "^10.0.0"
   }
 }

@@ -10,6 +10,7 @@ import {
   findByVerifyEmailToken,
   update,
 } from '../repositories/user';
+import { isExpired } from '../services/is-expired';
 import {
   generatePinToken,
   generateToken,
@@ -18,21 +19,11 @@ import {
   validatePassword,
 } from '../services/security';
 
-const { MONCOMPTEPRO_HOST } = process.env;
-
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
-
-const isExpired = (emittedDate, expirationDurationInMinutes) => {
-  if (!(emittedDate instanceof Date)) {
-    return true;
-  }
-
-  const nowDate = new Date();
-
-  return nowDate - emittedDate > expirationDurationInMinutes * 60e3;
-};
+const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
+  3 * 30 * 24 * 60;
 
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
@@ -140,9 +131,28 @@ export const verifyEmail = async token => {
 
   return await update(user.id, {
     email_verified: true,
+    email_verified_at: new Date().toISOString(),
     verify_email_token: null,
     verify_email_sent_at: null,
   });
+};
+
+export const updateEmailAddressVerificationStatus = async email => {
+  const user = await findByEmail(email);
+
+  if (
+    user.email_verified &&
+    isExpired(
+      user.email_verified_at,
+      MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+    )
+  ) {
+    return await update(user.id, {
+      email_verified: false,
+    });
+  }
+
+  return user;
 };
 
 export const sendSendMagicLinkEmail = async (email, host) => {
@@ -196,6 +206,7 @@ export const loginWithMagicLink = async token => {
 
   return await update(user.id, {
     email_verified: true,
+    email_verified_at: new Date().toISOString(),
     magic_link_token: null,
     magic_link_sent_at: null,
   });

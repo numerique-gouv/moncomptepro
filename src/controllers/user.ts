@@ -9,6 +9,7 @@ import {
   sendSendMagicLinkEmail,
   signup,
   startLogin,
+  updateEmailAddressVerificationStatus,
   updatePersonalInformations,
   verifyEmail,
 } from '../managers/user';
@@ -71,7 +72,11 @@ export const checkUserIsVerifiedMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    return checkUserIsConnectedMiddleware(req, res, () => {
+    return checkUserIsConnectedMiddleware(req, res, async () => {
+      req.session.user = await updateEmailAddressVerificationStatus(
+        req.session.user!.email
+      );
+
       if (!req.session.user!.email_verified) {
         return res.redirect(`/users/verify-email`);
       }
