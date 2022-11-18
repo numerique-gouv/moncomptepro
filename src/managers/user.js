@@ -7,7 +7,6 @@ import {
   findByEmail,
   findByMagicLinkToken,
   findByResetPasswordToken,
-  findByVerifyEmailToken,
   update,
 } from '../repositories/user';
 import { isExpired } from '../services/is-expired';
@@ -113,10 +112,10 @@ export const sendEmailAddressVerificationEmail = async ({
   return true;
 };
 
-export const verifyEmail = async token => {
-  const user = await findByVerifyEmailToken(token);
+export const verifyEmail = async (email, token) => {
+  const user = await findByEmail(email);
 
-  if (isEmpty(user)) {
+  if (user.verify_email_token !== token) {
     throw new Error('invalid_token');
   }
 
