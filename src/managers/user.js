@@ -10,6 +10,7 @@ import {
   findByVerifyEmailToken,
   update,
 } from '../repositories/user';
+import { isExpired } from '../services/is-expired';
 import {
   generatePinToken,
   generateToken,
@@ -18,21 +19,9 @@ import {
   validatePassword,
 } from '../services/security';
 
-const { MONCOMPTEPRO_HOST } = process.env;
-
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
-
-const isExpired = (emittedDate, expirationDurationInMinutes) => {
-  if (!(emittedDate instanceof Date)) {
-    return true;
-  }
-
-  const nowDate = new Date();
-
-  return nowDate - emittedDate > expirationDurationInMinutes * 60e3;
-};
 
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
