@@ -396,7 +396,10 @@ export const postVerifyEmailController = async (
       body: req.body,
     });
 
-    req.session.user = await verifyEmail(verify_email_token);
+    req.session.user = await verifyEmail(
+      req.session.user.email,
+      verify_email_token
+    );
 
     next();
   } catch (error) {

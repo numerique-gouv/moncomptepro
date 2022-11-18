@@ -21,19 +21,6 @@ export const findByEmail = async email => {
   return result;
 };
 
-export const findByVerifyEmailToken = async verify_email_token => {
-  const connection = getDatabaseConnection();
-
-  const {
-    rows: [result],
-  } = await connection.query(
-    'SELECT * FROM users WHERE verify_email_token = $1',
-    [verify_email_token]
-  );
-
-  return result;
-};
-
 export const findByMagicLinkToken = async magic_link_token => {
   const connection = getDatabaseConnection();
 
