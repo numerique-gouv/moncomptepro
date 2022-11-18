@@ -45,7 +45,7 @@ Veuillez vous connecter avec votre nouveau mot de passe.`,
 Nous avons besoin de vérifier manuellement que vous faites bien partie de cette organisation.
 Vous recevrez un email dès que nous aurons terminé (délai moyen : 1 jour ouvré).
 
-Si vous avez la moindre question, écrivez-nous à contact@api.gouv.fr`,
+Si vous avez la moindre question, écrivez-nous à contact@moncomptepro.beta.gouv.fr`,
   },
   user_in_organization_already: {
     type: 'error',
