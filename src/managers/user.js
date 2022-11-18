@@ -22,6 +22,8 @@ import {
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
+const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
+  3 * 30 * 24 * 60;
 
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
@@ -133,6 +135,24 @@ export const verifyEmail = async token => {
     verify_email_token: null,
     verify_email_sent_at: null,
   });
+};
+
+export const updateEmailAddressVerificationStatus = async email => {
+  const user = await findByEmail(email);
+
+  if (
+    user.email_verified &&
+    isExpired(
+      user.email_verified_at,
+      MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+    )
+  ) {
+    return await update(user.id, {
+      email_verified: false,
+    });
+  }
+
+  return user;
 };
 
 export const sendSendMagicLinkEmail = async (email, host) => {
