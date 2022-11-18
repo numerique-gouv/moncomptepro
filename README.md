@@ -32,8 +32,8 @@ Vous pouvez également utiliser les comptes de tests suivants :
 ## Détails techniques
 
 - documentation officielle open id connect, en particulier sur le flow « Authorization Code » : https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
-- paramètres de configuration de l’instance de staging : https://auth-staging.api.gouv.fr/.well-known/openid-configuration
-- paramètres de configuration de l’instance de production : https://auth.api.gouv.fr/.well-known/openid-configuration
+- paramètres de configuration de l’instance de staging : https://app-staging.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
+- paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - exemple des données retournées par l’endpoint GET /userinfo du serveur open id :
 
 ```
