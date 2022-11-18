@@ -64,21 +64,3 @@ Vous pouvez également utiliser les comptes de tests suivants :
 Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
 
 Les instructions d’installation se trouvent ici (lien privé, disponible uniquement à l'équipe interne) : https://gitlab.com/etalab/api.gouv.fr/moncomptepro-infrastructure
-
-## Migrations
-
-Migration are managed by [node-pg-migrate](https://www.npmjs.com/package/node-pg-migrate).
-
-To create a migration run:
-
-```
-npm run migrate create "add names to user"
-```
-
-To run the migration run:
-
-```
-npm run migrate up
-```
-
-More info available at [https://github.com/salsita/node-pg-migrate](https://github.com/salsita/node-pg-migrate).
