@@ -108,7 +108,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   ) {
     await sendMail({
       to: [email],
-      cc: ['auth@api.gouv.fr'],
+      cc: ['moncomptepro@beta.gouv.fr'],
       subject: `[MonComptePro] Demande pour rejoindre ${libelle}`,
       template: 'unable-to-auto-join-organization-acknowledgment',
       params: {

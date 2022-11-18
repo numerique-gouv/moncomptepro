@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
           organizationAlertElement.innerHTML =
             "Erreur inconnue lors de la récupération des informations de cet établissement. " +
             "Merci de réessayer ultérieurement. " +
-            "Vous pouvez également nous signaler cette erreur par mail à contact@api.gouv.fr.";
+            "Vous pouvez également nous signaler cette erreur par mail à contact@moncomptepro.beta.gouv.fr.";
         }
       }
     };

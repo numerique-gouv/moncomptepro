@@ -30,11 +30,11 @@ export const sendMail = async ({
   const data = {
     sender: {
       name: 'L’équipe MonComptePro',
-      email: 'contact@api.gouv.fr',
+      email: 'moncomptepro@beta.gouv.fr',
     },
     replyTo: {
       name: 'L’équipe MonComptePro',
-      email: 'contact@api.gouv.fr',
+      email: 'moncomptepro@beta.gouv.fr',
     },
     to: to.map(e => ({ email: e })),
     subject,
@@ -80,9 +80,7 @@ export const sendMail = async ({
     });
 
     console.log(
-      `${template} email sent to ${to} with message id ${
-        response.data.messageId
-      }`
+      `${template} email sent to ${to} with message id ${response.data.messageId}`
     );
   } catch (error) {
     console.error(error);
