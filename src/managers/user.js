@@ -140,6 +140,7 @@ export const verifyEmail = async token => {
 
   return await update(user.id, {
     email_verified: true,
+    email_verified_at: new Date().toISOString(),
     verify_email_token: null,
     verify_email_sent_at: null,
   });
@@ -196,6 +197,7 @@ export const loginWithMagicLink = async token => {
 
   return await update(user.id, {
     email_verified: true,
+    email_verified_at: new Date().toISOString(),
     magic_link_token: null,
     magic_link_sent_at: null,
   });
