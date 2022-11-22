@@ -12,6 +12,7 @@ const { INSEE_CONSUMER_KEY, INSEE_CONSUMER_SECRET } = process.env;
 
 export const getOrganizationInfo = async siret => {
   try {
+    console.log('GET ORGANIZATION INFO CALLED');
     const {
       data: { access_token },
     } = await axios.post(
@@ -25,6 +26,7 @@ export const getOrganizationInfo = async siret => {
         },
       }
     );
+    console.log('GET ORGANIZATION INFO ACCESS TOKEN');
 
     const {
       data: { etablissement },
@@ -34,6 +36,7 @@ export const getOrganizationInfo = async siret => {
         headers: { Authorization: `Bearer ${access_token}` },
       }
     );
+    console.log('GET ORGANIZATION INFO ETABLISSEMENT');
 
     const {
       siret: siretFromInseeApi,
