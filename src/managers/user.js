@@ -146,12 +146,14 @@ export const updateEmailAddressVerificationStatus = async email => {
       MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
     )
   ) {
-    return await update(user.id, {
+    const updatedUser = await update(user.id, {
       email_verified: false,
     });
+
+    return { user: updatedUser, needs_email_verification_renewal: true };
   }
 
-  return user;
+  return { user, needs_email_verification_renewal: false };
 };
 
 export const sendSendMagicLinkEmail = async (email, host) => {

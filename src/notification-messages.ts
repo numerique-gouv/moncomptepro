@@ -66,6 +66,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       'Le code de vérification que vous avez utilisé est invalide ou expiré.',
   },
+  email_verification_renewal: {
+    type: 'info',
+    description:
+      'Pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement. Merci de renseigner le code reçu par mail.',
+  },
   weak_password: {
     type: 'error',
     description:

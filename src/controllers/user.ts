@@ -73,12 +73,19 @@ export const checkUserIsVerifiedMiddleware = async (
 ) => {
   try {
     return checkUserIsConnectedMiddleware(req, res, async () => {
-      req.session.user = await updateEmailAddressVerificationStatus(
-        req.session.user!.email
-      );
+      const {
+        user,
+        needs_email_verification_renewal,
+      } = await updateEmailAddressVerificationStatus(req.session.user!.email);
+
+      req.session.user = user;
 
       if (!req.session.user!.email_verified) {
-        return res.redirect(`/users/verify-email`);
+        const notification_param = needs_email_verification_renewal
+          ? '?notification=email_verification_renewal'
+          : '';
+
+        return res.redirect(`/users/verify-email${notification_param}`);
       }
 
       return next();
