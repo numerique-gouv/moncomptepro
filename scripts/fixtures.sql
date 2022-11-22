@@ -229,19 +229,12 @@ VALUES
    '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback", "https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback", "http://localhost:3001/users/auth/api_gouv/callback"}',
    '{"http://localhost:3000", "http://localhost:3001", "https://datapass-development.api.gouv.fr"}',
    'openid email profile organizations'),
-  (2,
-   'api-particulier-auth',
-   'dc1328d666cefc1f0ca9b14d6cde82d03f24a64ed9a0aeb861ccc200aba505f9',
-   'e82cd22f5941761e05cec47010254f39f1315ccd06c0bf8bf7527255d5d88412',
-   '{"https://particulier-development.api.gouv.fr/admin/oauth-callback"}',
-   '{}',
-   'openid email'),
   (3,
-   'dashboard.entreprise.api.gouv.fr',
+   'entreprise.api.gouv.fr',
    '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
    'oauth_api_gouv_client_secret',
-    '{"http://particulier.api.localtest.me:5000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:5000/auth/api_gouv/callback", "http://localhost:5000/auth/api_gouv/callback", "http://particulier.api.localtest.me:3000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:3000/auth/api_gouv/callback", "http://localhost:3000/auth/api_gouv/callback", "https://sandbox.dashboard.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
-    '{"http://particulier.api.localtest.me:5000", "http://entreprise.api.localtest.me:5000", "http://localhost:5000", "http://particulier.api.localtest.me:3000", "http://entreprise.api.localtest.me:3000", "http://localhost:3000", "https://sandbox.dashboard.entreprise.api.gouv.fr/", "https://sandbox1.entreprise.api.gouv.fr/", "https://sandbox2.entreprise.api.gouv.fr/"}',
+    '{"http://particulier.api.localtest.me:5000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:5000/auth/api_gouv/callback", "http://localhost:5000/auth/api_gouv/callback", "http://particulier.api.localtest.me:3000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:3000/auth/api_gouv/callback", "http://localhost:3000/auth/api_gouv/callback", "https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
+    '{"http://particulier.api.localtest.me:5000", "http://entreprise.api.localtest.me:5000", "http://localhost:5000", "http://particulier.api.localtest.me:3000", "http://entreprise.api.localtest.me:3000", "http://localhost:3000", "https://sandbox.entreprise.api.gouv.fr/", "https://sandbox1.entreprise.api.gouv.fr/", "https://sandbox2.entreprise.api.gouv.fr/", "https://staging.entreprise.api.gouv.fr/", "https://staging1.entreprise.api.gouv.fr/", "https://staging2.entreprise.api.gouv.fr/"}',
    'openid email')
 ON CONFLICT (id)
   DO UPDATE
