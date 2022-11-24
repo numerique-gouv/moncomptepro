@@ -170,7 +170,10 @@ export const getStartSignInController = async (
   try {
     const schema = z.object({
       query: z.object({
-        login_hint: emailSchema().optional(),
+        login_hint: z
+          .string()
+          .min(1)
+          .optional(),
       }),
     });
 
