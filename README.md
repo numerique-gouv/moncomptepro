@@ -5,6 +5,7 @@ Nous identifions les utilisateurs professionnels du privé ou du public sur les 
 - L’API Manager API Particulier : https://mon.portail.api.gouv.fr/
 - L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/
 - HubEE : https://hubee.numerique.gouv.fr/
+- catalogue.data.gouv : https://catalogue.data.gouv.fr/
 
 ## Tester le parcours
 
@@ -29,12 +30,16 @@ Vous pouvez également utiliser les comptes de tests suivants :
 
 À noter que les emails reçus sur les adresses en yopmail.com sont accessibles sur : http://yopmail.com/.
 
-## Détails techniques
+## Installer le bouton de connexion MonComptePro sur votre service en ligne
 
-- documentation officielle open id connect, en particulier sur le flow « Authorization Code » : https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
-- paramètres de configuration de l’instance de staging : https://app-staging.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
+### Spécifications techniques
+
+La connexion MonComptePro est basée sur le standard [OpenID Connect](https://openid.net/connect/) également utilisé par FranceConnect. Pour mettre en place la connexion MonComptePro, il vous faut donc installer sur votre service en ligne un module de connexion compatible OpenID Connect ou utiliser un des « clients » compatibles OpenID Connect. Vous trouverez une liste des clients compatibles sur le site openid.net : https://openid.net/developers/certified/
+
+Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
+- paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
-- exemple des données retournées par l’endpoint GET /userinfo du serveur open id :
+- exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID :
 
 ```
 {
@@ -59,8 +64,32 @@ Vous pouvez également utiliser les comptes de tests suivants :
 
 > NB : `is_external` vaut `true` lorsque l’utilisateur est externe à l’organisation (ex : prestataire, sous-traitant, mandataire, etc.)
 
-## Installation
+### Spécifications visuelles
+
+Concernant l’intégration visuelle du bouton, vous pouvez suivre les instructions du Système de Design de l’État sur le bouton FranceConnect : [https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect).
+
+Veuillez apporter les modifications suivantes :
+
+- Remplacer « FranceConnect » par « MonComptePro » (sans espaces)
+- Remplacer le label du lien par « Qu’est-ce que MonComptePro ? »
+- Faire pointer le lien vers [https://moncomptepro.beta.gouv.fr/](https://moncomptepro.beta.gouv.fr/)
+
+### Installation en environnement de test
+
+Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout. Pour permettre la connexion avec MonComptePro, il faut enregistrer dans notre base de données les informations suivantes :
+
+- la ou les URL de redirection : élément nécessaire au bon déroulement de la cinématique OpenId Connect
+- client id & client secret : nous vous fournirons le couple client id & client secret de production, vous pouvez définir vous-même le couple à utiliser dans l'environnement de test.
+- optionnellement, une ou plusieurs URL de redirection post logout : pour permettre à vos usagers de se déconnecter de votre plateforme.
+
+Vous pouvez nous soumettre l'ensemble de ces informations par mail à contact@moncomptepro.beta.gouv.fr ou directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/betagouv/moncomptepro/blob/master/scripts/fixtures.sql#L232-L238
+
+### Installation en environnement de production
+
+Une fois la connexion MonComptePro fonctionnelle en environnement de test, nous vous fournirons les secrets de production par voie sécurisée afin de déployer le bouton sur votre service en ligne en production.
+
+## Contribuer à MonComptePro
 
 Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
 
-Les instructions d’installation se trouvent ici (lien privé, disponible uniquement à l'équipe interne) : https://gitlab.com/etalab/api.gouv.fr/moncomptepro-infrastructure
+Les instructions d’installation se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://gitlab.com/etalab/api.gouv.fr/moncomptepro-infrastructure
