@@ -8,11 +8,6 @@ import {
   postQuitUserOrganizationController,
 } from '../controllers/organization';
 import {
-  checkEmailInSessionMiddleware,
-  checkUserHasPersonalInformationsMiddleware,
-  checkUserIsConnectedMiddleware,
-  checkUserIsVerifiedMiddleware,
-  checkUserSignInRequirementsMiddleware,
   getChangePasswordController,
   getMagicLinkSentController,
   getPersonalInformationsController,
@@ -34,6 +29,13 @@ import {
   postVerifyEmailController,
 } from '../controllers/user';
 import { rateLimiterMiddleware } from '../services/rate-limiter';
+import {
+  checkEmailInSessionMiddleware,
+  checkUserHasPersonalInformationsMiddleware,
+  checkUserIsConnectedMiddleware,
+  checkUserIsVerifiedMiddleware,
+  checkUserSignInRequirementsMiddleware,
+} from '../middlewares/user';
 
 export const userRouter = () => {
   const userRouter = Router();

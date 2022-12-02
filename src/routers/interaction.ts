@@ -3,7 +3,7 @@ import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
 } from '../controllers/interaction';
-import { checkUserSignInRequirementsMiddleware } from '../controllers/user';
+import { checkUserSignInRequirementsMiddleware } from '../middlewares/user';
 
 export const interactionRouter = (oidcProvider: any) => {
   const interactionRouter = Router();
