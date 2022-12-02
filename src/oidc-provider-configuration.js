@@ -31,7 +31,7 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // We nullify the express session here too to make sure user is logged out from express.
         ctx.req.session.user = null;
-        ctx.redirect('/?notification=logout_success');
+        ctx.redirect('/users/start-sign-in/?notification=logout_success');
       },
     },
     encryption: { enabled: true },
