@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function() {
       if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
         if (xmlhttp.status === 200) {
           var response = JSON.parse(xmlhttp.response);
-          var libelle = response.organizationInfo.libelle
-          var adresse = response.organizationInfo.adresse
-          var libelleActivitePrincipale = response.organizationInfo.libelleActivitePrincipale
-          var estDiffusible = response.organizationInfo.estDiffusible
-          var estActive = response.organizationInfo.estActive
+          var libelle = response.organizationInfo.libelle;
+          var adresse = response.organizationInfo.adresse;
+          var libelleActivitePrincipale = response.organizationInfo.libelleActivitePrincipale;
+          var estDiffusible = response.organizationInfo.estDiffusible;
+          var estActive = response.organizationInfo.estActive;
           if (!estDiffusible) {
             organizationAlertElement.style.display = "block";
             organizationAlertElement.innerHTML = "Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>";
