@@ -1,101 +1,131 @@
-<div class="page-container">
-    <%- include('partials/notifications.ejs', {notifications: notifications}) %>
-    <h3>Bienvenue sur MonComptePro</h3>
-    <h4>Vos différents accès</h4>
-    <div class="home_card_container">
-        <div class="home_card">
-            <h4>Continuer sur DataPass</h4>
-            <div class="home_card_card_content">
-                <div class="home_card_card_illustration">
-                    <img src="/assets/apartment-rent-rafiki.svg" alt="remise des clés d'un appartement">
-                </div>
-                <div>
-                    DataPass, c’est le service qui vous permet de profiter facilement d’habilitations conformes entre
-                    administrations et d’accéder à des données et services en accès restreint.
-                </div>
-                <div>
-                    <a class="fr-btn fr-btn--lg" href="https://datapass.api.gouv.fr">Aller sur DataPass</a>
-                </div>
-            </div>
-        </div>
+<div class="dashboard-container">
+    <div class="dashboard-head">
+        <h1>MonComptePro</h1>
     </div>
-    <div class="home_card_container">
-        <div class="home_card">
-            <div>
-                <h4>API Particulier</h4>
-            </div>
-            <div class="home_card_card_content">
-                <div>Bouquet de données proposé pour simplifier les démarches administratives</div>
-                <div>
-                    <a class="fr-btn fr-btn--lg" href="https://mon.portail.api.gouv.fr/">
-                        Aller sur API Particulier
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="home_card">
-            <h4>API Entreprise</h4>
-            <div class="home_card_card_content">
-                <div>
-                    Permet aux entités administratives d’accéder aux données et aux documents administratifs des
-                    entreprises et des associations, afin de simplifier leurs démarches
-                </div>
-                <div>
-                    <a class="fr-btn fr-btn--lg" href="https://dashboard.entreprise.api.gouv.fr/">
-                        Aller sur API Entreprise
-                    </a>
-                </div>
+    <nav class="fr-sidemenu" aria-label="Menu latéral">
+        <div class="fr-sidemenu__inner">
+            <button class="fr-sidemenu__btn" hidden aria-controls="fr-sidemenu-wrapper" aria-expanded="false">
+                Menu
+            </button>
+            <div class="fr-collapse" id="fr-sidemenu-wrapper">
+                <ul class="fr-sidemenu__list">
+                    <li class="fr-sidemenu__item fr-sidemenu__item--active">
+                        <a class="fr-sidemenu__link" href="/" aria-current="page">Vos accès</a>
+                    </li>
+                    <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" href="/users/personal-information">Vos informations
+                            personnelles</a>
+                    </li>
+                    <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" href="/users/manage-organizations">Votre organisation</a>
+                    </li>
+                    <li class="fr-sidemenu__item">
+                        <a class="fr-sidemenu__link" href="/users/reset-password">Votre mot de passe</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="home_card">
-            <h4>HubEE</h4>
-            <div class="home_card_card_content">
-                <div>
-                    Portail du Hub d’Échange de l’État au sein duquel vous allez pouvoir accéder aux démarches
-                    transmises par les usagers
-                </div>
-                <div>
-                    <a class="fr-btn fr-btn--lg" href="https://hubee.numerique.gouv.fr/">
-                        Aller sur HubEE
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h4>Votre compte</h4>
-    <div class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-12 fr-col-md-4">
-            <div class="fr-card fr-enlarge-link fr-card--lg">
-                <div class="fr-card__body">
-                    <div class="fr-card__content">
-                        <h4 class="fr-card__title">
-                            <a href="/users/reset-password">Changement de mot de passe</a>
-                        </h4>
-                        <p class="fr-card__desc">Accéder à la modification de votre mot de passe</p>
+    </nav>
+    <div class="dashboard-content">
+        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+        <h2>Vos accès</h2>
+        <p>MonComptePro vous permet d’accéder à :</p>
+        <div class="home_card_container">
+            <div class="home_card">
+                <h4>Continuer sur DataPass</h4>
+                <div class="home_card_card_content">
+                    <div class="home_card_card_illustration">
+                        <img src="/assets/apartment-rent-rafiki.svg" alt="remise des clés d'un appartement">
+                    </div>
+                    <div>
+                        DataPass, c’est le service qui vous permet de profiter facilement d’habilitations conformes
+                        entre
+                        administrations et d’accéder à des données et services en accès restreint.
+                    </div>
+                    <div>
+                        <a class="fr-btn fr-btn--lg" href="https://datapass.api.gouv.fr">Aller sur DataPass</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="fr-col-12 fr-col-md-4">
-            <div class="fr-card fr-enlarge-link fr-card--lg">
-                <div class="fr-card__body">
-                    <div class="fr-card__content">
-                        <h4 class="fr-card__title">
-                            <a href="/users/personal-information">Informations personnelles</a>
-                        </h4>
-                        <p class="fr-card__desc">Modifier vos informations personnelles</p>
+        <div class="home_card_container">
+            <div class="home_card">
+                <div>
+                    <h4>API Particulier</h4>
+                </div>
+                <div class="home_card_card_content">
+                    <div>Bouquet de données proposé pour simplifier les démarches administratives</div>
+                    <div>
+                        <a class="fr-btn fr-btn--lg" href="https://mon.portail.api.gouv.fr/">
+                            Aller sur API Particulier
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="home_card">
+                <h4>API Entreprise</h4>
+                <div class="home_card_card_content">
+                    <div>
+                        Permet aux entités administratives d’accéder aux données et aux documents administratifs des
+                        entreprises et des associations, afin de simplifier leurs démarches
+                    </div>
+                    <div>
+                        <a class="fr-btn fr-btn--lg" href="https://dashboard.entreprise.api.gouv.fr/">
+                            Aller sur API Entreprise
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="home_card">
+                <h4>HubEE</h4>
+                <div class="home_card_card_content">
+                    <div>
+                        Portail du Hub d’Échange de l’État au sein duquel vous allez pouvoir accéder aux démarches
+                        transmises par les usagers
+                    </div>
+                    <div>
+                        <a class="fr-btn fr-btn--lg" href="https://hubee.numerique.gouv.fr/">
+                            Aller sur HubEE
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="fr-col-12 fr-col-md-4">
-            <div class="fr-card fr-enlarge-link fr-card--lg">
-                <div class="fr-card__body">
-                    <div class="fr-card__content">
-                        <h4 class="fr-card__title">
-                            <a href="/users/manage-organizations">Mon organisation</a>
-                        </h4>
-                        <p class="fr-card__desc">Gérer la ou les organisations que je représente</p>
+        <h4>Votre compte</h4>
+        <div class="fr-grid-row fr-grid-row--gutters">
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/reset-password">Changement de mot de passe</a>
+                            </h4>
+                            <p class="fr-card__desc">Accéder à la modification de votre mot de passe</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/personal-information">Informations personnelles</a>
+                            </h4>
+                            <p class="fr-card__desc">Modifier vos informations personnelles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fr-col-12 fr-col-md-4">
+                <div class="fr-card fr-enlarge-link fr-card--lg">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h4 class="fr-card__title">
+                                <a href="/users/manage-organizations">Mon organisation</a>
+                            </h4>
+                            <p class="fr-card__desc">Gérer la ou les organisations que je représente</p>
+                        </div>
                     </div>
                 </div>
             </div>
