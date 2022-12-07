@@ -66,13 +66,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 ### Spécifications visuelles
 
-Concernant l’intégration visuelle du bouton, vous pouvez suivre les instructions du Système de Design de l’État sur le bouton FranceConnect : [https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect).
-
-Veuillez apporter les modifications suivantes :
-
-- Remplacer « FranceConnect » par « MonComptePro » (sans espaces)
-- Remplacer le label du lien par « Qu’est-ce que MonComptePro ? »
-- Faire pointer le lien vers [https://moncomptepro.beta.gouv.fr/](https://moncomptepro.beta.gouv.fr/)
+À venir prochainement.
 
 ### Installation en environnement de test
 
