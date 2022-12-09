@@ -5,6 +5,7 @@ import {
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
+  getResetPasswordController,
   postPersonalInformationsController,
 } from '../controllers/main';
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
@@ -53,6 +54,14 @@ export const mainRouter = (app: Express) => {
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
     getManageOrganizationsController
+  );
+
+  mainRouter.get(
+    '/reset-password',
+    ejsLayoutMiddlewareFactory(app),
+    csrfProtectionMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    getResetPasswordController
   );
 
   mainRouter.get(

@@ -124,6 +124,22 @@ export const getManageOrganizationsController = async (
   }
 };
 
+export const getResetPasswordController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.render('reset-password', {
+      notifications: await getNotificationsFromRequest(req),
+      loginHint: req.session.user.email,
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getHelpController = async (
   req: Request,
   res: Response,
