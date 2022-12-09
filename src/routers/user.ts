@@ -2,7 +2,6 @@ import csrf from 'csurf';
 import { Router, urlencoded } from 'express';
 import {
   getJoinOrganizationController,
-  getManageOrganizationsController,
   getUserOrganizationController,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
@@ -184,13 +183,6 @@ export const userRouter = () => {
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
-  );
-
-  userRouter.get(
-    '/manage-organizations',
-    csrfProtectionMiddleware,
-    checkUserHasPersonalInformationsMiddleware,
-    getManageOrganizationsController
   );
 
   userRouter.get(

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
+import { getUserOrganizations } from '../managers/organization';
 
 export const getHomeController = async (
   req: Request,
@@ -35,6 +36,27 @@ export const getHomeController = async (
       },
     ],
   });
+};
+
+export const getManageOrganizationsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const {
+      userOrganizations,
+      pendingUserOrganizations,
+    } = await getUserOrganizations({ user_id: req.session.user.id });
+
+    return res.render('manage-organizations', {
+      notifications: await getNotificationsFromRequest(req),
+      userOrganizations,
+      pendingUserOrganizations,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getHelpController = async (

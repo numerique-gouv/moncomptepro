@@ -68,7 +68,7 @@ export const getStartSignInController = async (
 
     const loginHint = login_hint || req.session.email;
 
-    return res.render('start-sign-in', {
+    return res.render('user/start-sign-in', {
       notifications: await getNotificationsFromRequest(req),
       loginHint,
       csrfToken: req.csrfToken(),
@@ -120,7 +120,7 @@ export const getSignInController = async (
   next: NextFunction
 ) => {
   try {
-    return res.render('sign-in', {
+    return res.render('user/sign-in', {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
     });
@@ -181,7 +181,7 @@ export const getSignUpController = async (
       query: req.query,
     });
 
-    return res.render('sign-up', {
+    return res.render('user/sign-up', {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
       loginHint: login_hint,
@@ -253,7 +253,7 @@ export const getVerifyEmailController = async (
       checkBeforeSend: true,
     });
 
-    return res.render('verify-email', {
+    return res.render('user/verify-email', {
       notifications: await getNotificationsFromRequest(req),
       email: req.session.user.email,
       csrfToken: req.csrfToken(),
@@ -357,7 +357,7 @@ export const getMagicLinkSentController = async (
 ) => {
   try {
     const email = req.session.email;
-    return res.render('magic-link-sent', { email });
+    return res.render('user/magic-link-sent', { email });
   } catch (error) {
     next(error);
   }
@@ -405,7 +405,7 @@ export const getResetPasswordController = async (
   next: NextFunction
 ) => {
   try {
-    return res.render('reset-password', {
+    return res.render('user/reset-password', {
       notifications: await getNotificationsFromRequest(req),
       loginHint:
         req.session.email || (req.session.user && req.session.user.email),
@@ -466,7 +466,7 @@ export const getChangePasswordController = async (
       query: req.query,
     });
 
-    return res.render('change-password', {
+    return res.render('user/change-password', {
       resetPasswordToken: reset_password_token,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
@@ -529,7 +529,7 @@ export const getPersonalInformationsController = async (
   next: NextFunction
 ) => {
   try {
-    return res.render('personal-information', {
+    return res.render('user/personal-information', {
       given_name: req.session.user.given_name,
       family_name: req.session.user.family_name,
       phone_number: req.session.user.phone_number,
@@ -542,26 +542,32 @@ export const getPersonalInformationsController = async (
   }
 };
 
+export const getParamsForPostPersonalInformationsController = async (
+  req: Request
+) => {
+  const schema = z.object({
+    body: z.object({
+      given_name: z.string().min(1),
+      family_name: z.string().min(1),
+      phone_number: z.string().min(1),
+      job: z.string().min(1),
+    }),
+  });
+
+  return await schema.parseAsync({
+    body: req.body,
+  });
+};
+
 export const postPersonalInformationsController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const schema = z.object({
-      body: z.object({
-        given_name: z.string().min(1),
-        family_name: z.string().min(1),
-        phone_number: z.string().min(1),
-        job: z.string().min(1),
-      }),
-    });
-
     const {
       body: { given_name, family_name, phone_number, job },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    } = await getParamsForPostPersonalInformationsController(req);
 
     req.session.user = await updatePersonalInformations(req.session.user.id, {
       given_name,

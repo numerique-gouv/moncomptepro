@@ -8,7 +8,7 @@
                 <div class="fr-card__desc">
                     <form action="/users/personal-information" method="post">
 
-                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
@@ -58,7 +58,7 @@
                             >
                         </div>
 
-                        <%- include('partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
                     </form>
                 </div>
             </div>
