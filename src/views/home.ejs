@@ -2,43 +2,14 @@
     <div class="dashboard-head">
         <h1>MonComptePro</h1>
     </div>
-    <nav class="fr-sidemenu" aria-label="Menu latéral">
-        <div class="fr-sidemenu__inner">
-            <button
-                    id="fr-sidemenu-btn"
-                    class="fr-sidemenu__btn"
-                    hidden
-                    aria-controls="fr-sidemenu-wrapper"
-                    aria-expanded="false"
-            >
-                Menu
-            </button>
-            <div class="fr-collapse" id="fr-sidemenu-wrapper">
-                <ul class="fr-sidemenu__list">
-                    <li class="fr-sidemenu__item fr-sidemenu__item--active">
-                        <a class="fr-sidemenu__link" href="/" aria-current="page">Vos accès</a>
-                    </li>
-                    <li class="fr-sidemenu__item">
-                        <a class="fr-sidemenu__link" href="/users/personal-information">Vos informations
-                            personnelles</a>
-                    </li>
-                    <li class="fr-sidemenu__item">
-                        <a class="fr-sidemenu__link" href="/users/manage-organizations">Votre organisation</a>
-                    </li>
-                    <li class="fr-sidemenu__item">
-                        <a class="fr-sidemenu__link" href="/users/reset-password">Votre mot de passe</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <%- include('partials/sidemenu.ejs', {activeLink: 'home'}) %>
     <div class="dashboard-content">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Vos accès</h2>
         <p>MonComptePro vous permet d’accéder à :</p>
         <div class="fr-grid-row fr-grid-row--gutters">
             <% oidc_clients.forEach(({ name, url, description }) => { %>
-                <div class="fr-col-12 fr-col-lg-6">
+                <div class="fr-col-12 fr-col-lg-6 fr-col-xl-5">
                     <div class="fr-card fr-enlarge-link fr-card--lg">
                         <div class="fr-card__body">
                             <div class="fr-card__content">
@@ -59,4 +30,3 @@
         </div>
     </div>
 </div>
-<script src="/assets/collapse-sidemenu.js"></script>
