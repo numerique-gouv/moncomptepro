@@ -65,6 +65,6 @@ describe('The signup flow', () => {
     cy.get('[type="submit"]').click();
 
     // Check DataPass redirection
-    cy.contains('Bienvenue sur MonComptePro');
+    cy.contains('Vos accès');
   });
 });

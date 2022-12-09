@@ -7,7 +7,7 @@
                 </h4>
                 <div class="fr-card__desc">
                     <form id="verify-email" action="/users/verify-email" method="post">
-                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
 
                         <p>
                             <% if (codeSent || newCodeSent) { %>
@@ -35,7 +35,7 @@
                                    aria-label="Code de vérification à 10 chiffres">
                         </div>
 
-                        <%- include('partials/card-button-container.ejs', {label: 'Vérifier', showGoBackButton: true}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Vérifier', showGoBackButton: true}) %>
                     </form>
                 </div>
             </div>

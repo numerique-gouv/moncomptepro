@@ -6,7 +6,7 @@
                     Rejoindre une organisation
                 </h4>
                 <div class="fr-card__desc">
-                    <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                    <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
                     <% if (!locals.disabled) { %>
                     <form id="form-join-organization" action="/users/join-organization" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
@@ -61,7 +61,7 @@
 
                         <input type="hidden" name="is_external" value="<%= isExternalHint %>" autocomplete="off">
 
-                        <%- include('partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
                     </form>
 
                     <% if (organizationSuggestions.length > 0) { %>

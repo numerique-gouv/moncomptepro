@@ -42,7 +42,7 @@ export const getJoinOrganizationController = async (
       email,
     });
 
-    return res.render('join-organization', {
+    return res.render('user/join-organization', {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
       siretHint: siret_hint,
@@ -113,27 +113,6 @@ export const postJoinOrganizationMiddleware = async (
   }
 };
 
-export const getManageOrganizationsController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const {
-      userOrganizations,
-      pendingUserOrganizations,
-    } = await getUserOrganizations({ user_id: req.session.user.id });
-
-    return res.render('manage-organizations', {
-      notifications: await getNotificationsFromRequest(req),
-      userOrganizations,
-      pendingUserOrganizations,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const getUserOrganizationController = async (
   req: Request,
   res: Response,
@@ -157,7 +136,7 @@ export const getUserOrganizationController = async (
       organization_id,
     });
 
-    return res.render('user-organization', {
+    return res.render('user/user-organization', {
       notifications: await getNotificationsFromRequest(req),
       organization,
       csrfToken: req.csrfToken(),

@@ -7,7 +7,7 @@
                 </h4>
                 <div class="fr-card__desc">
                     <form action="/users/sign-up" method="post">
-                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+                        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
@@ -26,7 +26,7 @@
                                    name="confirm_password" aria-label="Confirmez votre mot de passe">
                         </div>
 
-                        <%- include('partials/card-button-container.ejs', {label: 'Créer mon compte', showGoBackButton: true}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Créer mon compte', showGoBackButton: true}) %>
                     </form>
                     <div class="separator">
                         <span class="fr-badge fr-badge--info fr-badge--no-icon">ou</span>
@@ -43,7 +43,7 @@
                             <form action="/users/send-magic-link" method="post">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                                <%- include('partials/card-button-container.ejs', {label: 'Obtenir un lien magique'}) %>
+                                <%- include('../partials/card-button-container.ejs', {label: 'Obtenir un lien magique'}) %>
                             </form>
                         </div>
                     </div>

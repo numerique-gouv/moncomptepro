@@ -1,0 +1,49 @@
+<nav class="fr-sidemenu" aria-label="Menu latéral">
+    <div class="fr-sidemenu__inner">
+        <button
+                id="fr-sidemenu-btn"
+                class="fr-sidemenu__btn"
+                hidden
+                aria-controls="fr-sidemenu-wrapper"
+                aria-expanded="false"
+        >
+            Menu
+        </button>
+        <div class="fr-collapse" id="fr-sidemenu-wrapper">
+            <ul class="fr-sidemenu__list">
+                <li class="fr-sidemenu__item <% if (activeLink === "home") { %>fr-sidemenu__item--active<% } %>">
+                    <a
+                            class="fr-sidemenu__link" href="/"
+                            <% if (activeLink === "home") { %>aria-current="page"
+                            <% } %>
+                    >Vos accès</a>
+                </li>
+                <li class="fr-sidemenu__item <% if (activeLink === "personal-information") { %>fr-sidemenu__item--active<% } %>">
+                    <a
+                            class="fr-sidemenu__link"
+                            href="/personal-information"
+                            <% if (activeLink === "personal-information") { %>aria-current="page"
+                            <% } %>
+                    >
+                        Vos informations personnelles
+                    </a>
+                </li>
+                <li class="fr-sidemenu__item <% if (activeLink === "manage-organizations") { %>fr-sidemenu__item--active<% } %>">
+                    <a
+                            class="fr-sidemenu__link" href="/manage-organizations"
+                            <% if (activeLink === "manage-organizations") { %>aria-current="page"
+                            <% } %>
+                    >Votre organisation</a>
+                </li>
+                <li class="fr-sidemenu__item <% if (activeLink === "reset-password") { %>fr-sidemenu__item--active<% } %>">
+                    <a
+                            class="fr-sidemenu__link" href="/reset-password"
+                            <% if (activeLink === "reset-password") { %>aria-current="page"
+                            <% } %>
+                    >Votre mot de passe</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="/assets/collapse-sidemenu.js"></script>

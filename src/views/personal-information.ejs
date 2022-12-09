@@ -1,67 +1,69 @@
-<div class="card-container">
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h4 class="fr-card__title">
-                    Renseigner votre identité
-                </h4>
-                <div class="fr-card__desc">
-                    <form action="/users/personal-information" method="post">
+<div class="dashboard-container">
+    <div class="dashboard-head">
+        <h1>MonComptePro</h1>
+    </div>
+    <%- include('partials/sidemenu.ejs', {activeLink: 'personal-information'}) %>
+    <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+        <h2>
+            Renseigner votre identité
+        </h2>
+        <form action="/personal-information" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
-
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="family_name">
-                                Nom
-                            </label>
-                            <input class="fr-input" required type="text" name="family_name"
-                                   aria-label="Nom" autofocus="on"
-                            <% if (family_name) { %> value="<%= family_name %>"
-                                    <% } %>
-                            >
-                        </div>
-
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="given_name">
-                                Prénom
-                            </label>
-                            <input class="fr-input" required type="text" name="given_name"
-                                   aria-label="Prénom"
-                            <% if (given_name) { %> value="<%= given_name %>"
-                                    <% } %>
-                            >
-                        </div>
-
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="phone_number">
-                                Téléphone professionnel
-                            </label>
-                            <input class="fr-input" required type="tel" name="phone_number"
-                                   aria-label="Téléphone professionnel"
-                                   pattern="\+?(?:[0-9][ -]?){6,14}[0-9]"
-                                   title="un numéro de téléphone doit être écrit en chiffres, avec ou sans extension internationale (ex: France +33)"
-                            <% if (phone_number) { %> value="<%= phone_number %>"
-                                    <% } %>
-                            >
-                        </div>
-
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="job">
-                                Votre fonction au sein de l’organisation que vous représentez
-                            </label>
-                            <input class="fr-input" required type="text" name="job"
-                                   aria-label="Fonction"
-                            <% if (job) { %> value="<%= job %>"
-                                    <% } %>
-                            >
-                        </div>
-
-                        <%- include('partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
-                    </form>
-                </div>
+            <div class="fr-input-group">
+                <label class="fr-label" for="family_name">
+                    Nom
+                </label>
+                <input
+                        class="fr-input" required type="text" name="family_name"
+                        aria-label="Nom" autofocus="on"
+                <% if (family_name) { %> value="<%= family_name; %>"
+                        <% } %>
+                >
             </div>
-        </div>
+
+            <div class="fr-input-group">
+                <label class="fr-label" for="given_name">
+                    Prénom
+                </label>
+                <input
+                        class="fr-input" required type="text" name="given_name"
+                        aria-label="Prénom"
+                <% if (given_name) { %> value="<%= given_name; %>"
+                        <% } %>
+                >
+            </div>
+
+            <div class="fr-input-group">
+                <label class="fr-label" for="phone_number">
+                    Téléphone professionnel
+                </label>
+                <input
+                        class="fr-input" required type="tel" name="phone_number"
+                        aria-label="Téléphone professionnel"
+                        pattern="\+?(?:[0-9][ -]?){6,14}[0-9]"
+                        title="un numéro de téléphone doit être écrit en chiffres, avec ou sans extension internationale (ex: France +33)"
+                <% if (phone_number) { %> value="<%= phone_number; %>"
+                        <% } %>
+                >
+            </div>
+
+            <div class="fr-input-group">
+                <label class="fr-label" for="job">
+                    Votre fonction au sein de l’organisation que vous représentez
+                </label>
+                <input
+                        class="fr-input" required type="text" name="job"
+                        aria-label="Fonction"
+                <% if (job) { %> value="<%= job; %>"
+                        <% } %>
+                >
+            </div>
+
+            <button class="fr-btn fr-btn--secondary" type="submit">
+                Mettre à jour
+            </button>
+        </form>
     </div>
 </div>
