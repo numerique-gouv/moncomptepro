@@ -31,6 +31,23 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.get(
+    '/personal-information',
+    ejsLayoutMiddlewareFactory(app),
+    csrfProtectionMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    getPersonalInformationsController
+  );
+
+  mainRouter.post(
+    '/personal-information',
+    ejsLayoutMiddlewareFactory(app),
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    postPersonalInformationsController
+  );
+
+  mainRouter.get(
     '/manage-organizations',
     ejsLayoutMiddlewareFactory(app),
     csrfProtectionMiddleware,

@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
+import { z, ZodError } from 'zod';
+import { updatePersonalInformations } from '../managers/user';
+import { getParamsForPostPersonalInformationsController } from './user';
 import { getUserOrganizations } from '../managers/organization';
+import notificationMessages from '../notification-messages';
 
 export const getHomeController = async (
   req: Request,
@@ -36,6 +40,67 @@ export const getHomeController = async (
       },
     ],
   });
+};
+
+export const getPersonalInformationsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.render('personal-information', {
+      given_name: req.session.user.given_name,
+      family_name: req.session.user.family_name,
+      phone_number: req.session.user.phone_number,
+      job: req.session.user.job,
+      notifications: await getNotificationsFromRequest(req),
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postPersonalInformationsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const {
+      body: { given_name, family_name, phone_number, job },
+    } = await getParamsForPostPersonalInformationsController(req);
+
+    req.session.user = await updatePersonalInformations(req.session.user.id, {
+      given_name,
+      family_name,
+      phone_number,
+      job,
+    });
+
+    return res.render('personal-information', {
+      given_name: req.session.user.given_name,
+      family_name: req.session.user.family_name,
+      phone_number: req.session.user.phone_number,
+      job: req.session.user.job,
+      notifications: [
+        notificationMessages['personal_information_update_success'],
+      ],
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    if (
+      (error instanceof Error &&
+        error.message === 'invalid_personal_informations') ||
+      error instanceof ZodError
+    ) {
+      return res.redirect(
+        `/personal-information?notification=invalid_personal_informations`
+      );
+    }
+
+    next(error);
+  }
 };
 
 export const getManageOrganizationsController = async (

@@ -92,6 +92,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: 'info',
     description: 'Vous êtes maintenant déconnecté.',
   },
+  personal_information_update_success: {
+    type: 'success',
+    description: 'Vos informations ont été mises à jour',
+  },
 };
 
 export default notificationMessages;

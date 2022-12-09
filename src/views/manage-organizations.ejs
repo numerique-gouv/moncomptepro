@@ -3,7 +3,7 @@
         <h1>MonComptePro</h1>
     </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'manage-organizations'}) %>
-    <div class="dashboard-content">
+    <div class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Vos organisations de rattachement</h2>
         <div class="fr-grid-row fr-grid-row--gutters">
@@ -15,7 +15,7 @@
                                                   cached_adresse,
                                                   cached_libelle_activite_principale
                                               }) => { %>
-                    <div class="fr-col-12 fr-col-lg-8 fr-col-xl-7">
+                    <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
                                 <h4 class="fr-tile__title">
