@@ -52,7 +52,9 @@ export const checkUserIsVerifiedMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    return checkUserIsConnectedMiddleware(req, res, async () => {
+    return checkUserIsConnectedMiddleware(req, res, async error => {
+      if (error) return next(error);
+
       const {
         user,
         needs_email_verification_renewal,
@@ -81,7 +83,9 @@ export const checkUserHasPersonalInformationsMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    return checkUserIsVerifiedMiddleware(req, res, async () => {
+    return checkUserIsVerifiedMiddleware(req, res, async error => {
+      if (error) return next(error);
+
       const { given_name, family_name, phone_number, job } = req.session.user!;
       if (
         isEmpty(given_name) ||
@@ -106,7 +110,9 @@ export const checkUserSignInRequirementsMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    return checkUserHasPersonalInformationsMiddleware(req, res, async () => {
+    return checkUserHasPersonalInformationsMiddleware(req, res, async error => {
+      if (error) return next(error);
+
       if (isEmpty(await getOrganizationsByUserId(req.session.user!.id))) {
         return res.redirect('/users/join-organization');
       }
