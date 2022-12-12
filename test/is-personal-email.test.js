@@ -26,6 +26,7 @@ describe('isPersonalEmail', () => {
   const professionalEmailAddresses = [
     'user@beta.gouv.fr',
     'collectivite@paris.fr',
+    'nom.prenom@notaires.fr',
   ];
 
   professionalEmailAddresses.forEach(professionalEmailAddress => {
