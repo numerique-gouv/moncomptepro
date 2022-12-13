@@ -43,7 +43,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 ```json
 {
-    "email": "user@monentreprise.com",
+    "email": "user@red-needles-sarl.com",
     "email_verified": true,
     "organizations":
     [{
@@ -54,11 +54,10 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
     }, {
         "id": 17,
         "siret": "83951732300011",
-        "label": "Red needles",
+        "label": "Red needles SARL",
         "is_external": "false"
     }],
-    "sub": 154,
-    "updated_at": "2020-07-23T15:34:06.637Z"
+    "sub": 154
 }
 ```
 
