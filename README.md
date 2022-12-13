@@ -65,7 +65,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 ### Spécifications visuelles
 
-À venir prochainement.
+À venir vendredi 16 décembre 2022.
 
 ### Installation en environnement de test
 
