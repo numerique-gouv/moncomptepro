@@ -41,7 +41,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID :
 
-```
+```json
 {
     "email": "user@monentreprise.com",
     "email_verified": true,
