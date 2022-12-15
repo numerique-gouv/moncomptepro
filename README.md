@@ -1,23 +1,25 @@
-# MonComptePro
+# 🔑 MonComptePro
 
-Nous identifions les utilisateurs professionnels du privé ou du public sur les plateformes suivantes :
+![](https://i.imgur.com/0y7YKEk.png)
+
+> MonComptePro identifie les personnes professionnelles du privé ou du public.
+
+Plus concrètement, c'est une solution de connexion basée sur le standard OpenID Connect qui permet d'identifier un SIRET à une adresse email professionnelle. 
+
+Actuellement, nous identifions les utilisateurs professionnels du privé ou du public sur les plateformes suivantes :
 - DataPass : http://datapass.api.gouv.fr
 - L’API Manager API Particulier : https://mon.portail.api.gouv.fr/
 - L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/
 - HubEE : https://hubee.numerique.gouv.fr/
 - catalogue.data.gouv : https://catalogue.data.gouv.fr/
 
-## Tester le parcours
+## 🗺️ Tester le parcours
 
-Pour tester le parcours de connexion complet, vous pouvez tester la connexion MonComptePro depuis le service DataPass
-qui intègre le bouton de connexion.
-Pour cela nous mettons à votre disposition une plateforme de démonstration appelée « staging ».
+Pour tester le parcours de connexion complet, vous pouvez tester la connexion MonComptePro depuis le service DataPass qui intègre le bouton de connexion. Pour cela nous mettons à votre disposition une plateforme de démonstration appelée « staging ».
 
 Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/api-entreprise.
 
-Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à
-aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe
-quel numéro SIRET et en utilisant des emails jetables yopmail.
+Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables yopmail.
 
 Vous pouvez également utiliser les comptes de tests suivants :
 
@@ -30,7 +32,7 @@ Vous pouvez également utiliser les comptes de tests suivants :
 
 À noter que les emails reçus sur les adresses en yopmail.com sont accessibles sur : http://yopmail.com/.
 
-## Installer le bouton de connexion MonComptePro sur votre service en ligne
+## 🖱️ Installer le bouton de connexion MonComptePro sur votre service en ligne
 
 ### Spécifications techniques
 
@@ -39,7 +41,7 @@ La connexion MonComptePro est basée sur le standard [OpenID Connect](https://op
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
-- exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID :
+- exemple des données retournées par l’endpoint `GET /userinfo` du serveur OpenID :
 
 ```json
 {
@@ -81,7 +83,7 @@ Vous pouvez nous soumettre l'ensemble de ces informations par mail à contact@mo
 
 Une fois la connexion MonComptePro fonctionnelle en environnement de test, nous vous fournirons les secrets de production par voie sécurisée afin de déployer le bouton sur votre service en ligne en production.
 
-## Contribuer à MonComptePro
+## 👋 Contribuer à MonComptePro
 
 Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
 
