@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import { NextFunction, Request, Response } from 'express';
+import { incrementConnectionCount } from '../managers/user_oidc_client';
 
 export const interactionStartControllerFactory = (oidcProvider: any) => async (
   req: Request,
@@ -52,6 +53,13 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
     };
 
     req.session.interactionId = undefined;
+
+    const {
+      params: { client_id },
+    } = await oidcProvider.interactionDetails(req, res);
+
+    // We do not wait this operation to end. We also do not care if it fails.
+    await incrementConnectionCount(req.session.user.id, client_id);
 
     await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {
