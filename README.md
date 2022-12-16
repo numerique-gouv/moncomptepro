@@ -65,7 +65,11 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 ### Spécifications visuelles
 
-Concernant l’intégration visuelle du bouton, 2 options s’offrent à vous.
+Voici à quoi ressemble le bouton MonComptePro :
+
+![](/assets/button-moncomptepro.svg)
+
+Pour intègrer ce bouton sur votre service, 2 options s’offrent à vous.
 
 #### Vous utilisez le [Système de Design de l’État (DSFR)](https://www.systeme-de-design.gouv.fr/)
 
