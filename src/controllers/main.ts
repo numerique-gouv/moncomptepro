@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { updatePersonalInformations } from '../managers/user';
 import { getParamsForPostPersonalInformationsController } from './user';
 import { getUserOrganizations } from '../managers/organization';

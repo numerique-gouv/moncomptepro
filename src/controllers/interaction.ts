@@ -58,7 +58,6 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
       params: { client_id },
     } = await oidcProvider.interactionDetails(req, res);
 
-    // We do not wait this operation to end. We also do not care if it fails.
     await incrementConnectionCount(req.session.user.id, client_id);
 
     await oidcProvider.interactionFinished(req, res, result);
