@@ -1,14 +1,15 @@
 import {
-  getByUserIdOrderedByCount,
-  upsertAndIncrementCount,
+  findByClientId,
+  getByUserIdOrderedByConnectionCount,
+  OidcClient,
+  upsertAndIncrementConnectionCount,
   UserOidcClient,
-} from '../repositories/user_oidc_client';
-import { findByClientId } from '../repositories/oidc-client';
+} from '../repositories/oidc-client';
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number
-): Promise<UserOidcClient[]> => {
-  return await getByUserIdOrderedByCount(user_id);
+): Promise<OidcClient[]> => {
+  return await getByUserIdOrderedByConnectionCount(user_id);
 };
 
 export const incrementConnectionCount = async (
@@ -22,7 +23,7 @@ export const incrementConnectionCount = async (
     return null;
   }
 
-  const { connection_count } = await upsertAndIncrementCount(
+  const { connection_count } = await upsertAndIncrementConnectionCount(
     user_id,
     oidc_client.id
   );

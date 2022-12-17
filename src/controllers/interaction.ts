@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { NextFunction, Request, Response } from 'express';
-import { incrementConnectionCount } from '../managers/user_oidc_client';
+import { incrementConnectionCount } from '../managers/oidc-client';
 
 export const interactionStartControllerFactory = (oidcProvider: any) => async (
   req: Request,

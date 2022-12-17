@@ -5,40 +5,20 @@ import { updatePersonalInformations } from '../managers/user';
 import { getParamsForPostPersonalInformationsController } from './user';
 import { getUserOrganizations } from '../managers/organization';
 import notificationMessages from '../notification-messages';
+import { getClientsOrderedByConnectionCount } from '../managers/oidc-client';
 
 export const getHomeController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const oidc_clients = await getClientsOrderedByConnectionCount(
+    req.session.user.id
+  );
+
   return res.render('home', {
     notifications: await getNotificationsFromRequest(req),
-    oidc_clients: [
-      {
-        name: 'DataPass',
-        link: 'https://datapass.api.gouv.fr',
-        description:
-          'Centralisez vos demandes d’habilitations juridiques pour accéder aux données et services en accès restreint.',
-      },
-      {
-        name: 'API Particulier',
-        link: 'https://mon.portail.api.gouv.fr/',
-        description:
-          'Bouquet de données proposé pour simplifier les démarches administratives.',
-      },
-      {
-        name: 'API Entreprise',
-        link: 'https://dashboard.entreprise.api.gouv.fr',
-        description:
-          'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.',
-      },
-      {
-        name: 'HubEE',
-        link: 'https://hubee.numerique.gouv.fr/',
-        description:
-          'Portail du Hub d’Échange de l’État au sein duquel vous allez pouvoir accéder aux démarches transmises par les usagers',
-      },
-    ],
+    oidc_clients,
   });
 };
 
