@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import {
   formatAdresseEtablissement,
   formatEnseigne,
@@ -10,7 +10,9 @@ import {
 
 const { INSEE_CONSUMER_KEY, INSEE_CONSUMER_SECRET } = process.env;
 
-export const getOrganizationInfo = async siret => {
+export const getOrganizationInfo = async (
+  siret: string
+): Promise<OrganizationInfo | {}> => {
   try {
     const {
       data: { access_token },
@@ -20,8 +22,8 @@ export const getOrganizationInfo = async siret => {
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         auth: {
-          username: INSEE_CONSUMER_KEY,
-          password: INSEE_CONSUMER_SECRET,
+          username: INSEE_CONSUMER_KEY!,
+          password: INSEE_CONSUMER_SECRET!,
         },
       }
     );
@@ -115,7 +117,11 @@ export const getOrganizationInfo = async siret => {
       ),
     };
   } catch (e) {
-    if ([403, 404].includes(e.response && e.response.status)) {
+    if (
+      e instanceof AxiosError &&
+      e.response &&
+      [403, 404].includes(e.response.status)
+    ) {
       return {};
     }
     throw e;

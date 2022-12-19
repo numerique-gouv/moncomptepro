@@ -1,9 +1,7 @@
 import {
   findByClientId,
   getByUserIdOrderedByConnectionCount,
-  OidcClient,
   upsertAndIncrementConnectionCount,
-  UserOidcClient,
 } from '../repositories/oidc-client';
 
 export const getClientsOrderedByConnectionCount = async (

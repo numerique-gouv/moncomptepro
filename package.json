@@ -57,7 +57,7 @@
     "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "github:dartist21/node-tld#fix-tld-same-level-as-domain",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4",
+    "typescript": "^4.9.4",
     "zod": "^3.19.1"
   },
   "devDependencies": {
