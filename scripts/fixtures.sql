@@ -220,27 +220,31 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO oidc_clients
-  (id, name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope)
+  (id, client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri, client_description)
 VALUES
   (1,
-   'datapass.api.gouv.fr',
+   'DataPass',
    'nCDCeAfS0qpxr2kzps7nUClRGUZ1CgnzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZ8JwwqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
    '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback", "https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback", "http://localhost:3001/users/auth/api_gouv/callback"}',
    '{"http://localhost:3000", "http://localhost:3001", "https://datapass-development.api.gouv.fr"}',
-   'openid email profile organizations'),
+   'openid email profile organizations',
+   'https://datapass-development.api.gouv.fr',
+   'Centralisez vos demandes d’habilitations juridiques pour accéder aux données et services en accès restreint.'),
   (3,
-   'entreprise.api.gouv.fr',
+   'API Entreprise',
    '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
    'oauth_api_gouv_client_secret',
     '{"http://particulier.api.localtest.me:5000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:5000/auth/api_gouv/callback", "http://localhost:5000/auth/api_gouv/callback", "http://particulier.api.localtest.me:3000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:3000/auth/api_gouv/callback", "http://localhost:3000/auth/api_gouv/callback", "https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
     '{"http://particulier.api.localtest.me:5000", "http://entreprise.api.localtest.me:5000", "http://localhost:5000", "http://particulier.api.localtest.me:3000", "http://entreprise.api.localtest.me:3000", "http://localhost:3000", "https://sandbox.entreprise.api.gouv.fr/", "https://sandbox1.entreprise.api.gouv.fr/", "https://sandbox2.entreprise.api.gouv.fr/", "https://staging.entreprise.api.gouv.fr/", "https://staging1.entreprise.api.gouv.fr/", "https://staging2.entreprise.api.gouv.fr/"}',
-   'openid email')
+   'openid email',
+   'http://entreprise.api.localtest.me',
+   'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.')
 ON CONFLICT (id)
   DO UPDATE
-  SET (name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope)
-    = (EXCLUDED.name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris,
-       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope);
+  SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri, client_description)
+    = (EXCLUDED.client_name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris,
+       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description);
 
 SELECT setval(
     'oidc_clients_id_seq',
