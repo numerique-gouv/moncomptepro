@@ -69,7 +69,7 @@ SELECT
 FROM users_oidc_clients uoc
 INNER JOIN oidc_clients oc ON oc.id = uoc.oidc_client_id
 WHERE user_id = $1
-ORDER BY connection_count
+ORDER BY connection_count DESC
 `,
     [user_id]
   );
