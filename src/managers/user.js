@@ -269,6 +269,8 @@ export const changePassword = async (token, password) => {
 
   return await update(user.id, {
     encrypted_password: hashedPassword,
+    email_verified: true,
+    email_verified_at: new Date().toISOString(),
     reset_password_token: null,
     reset_password_sent_at: null,
   });
