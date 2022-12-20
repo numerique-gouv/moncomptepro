@@ -279,7 +279,10 @@ export const postVerifyEmailController = async (
   try {
     const schema = z.object({
       body: z.object({
-        verify_email_token: z.string().min(1),
+        verify_email_token: z
+          .string()
+          .min(1)
+          .transform(val => val.replace(/\s+/g, '')),
       }),
     });
 
