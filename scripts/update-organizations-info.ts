@@ -2,6 +2,7 @@ import { isDate, isEmpty, toInteger } from 'lodash';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
 import { updateOrganizationInfo } from '../src/repositories/organization';
+import { AxiosError } from 'axios';
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
@@ -9,7 +10,7 @@ const rateInMsFromArgs = toInteger(process.argv[2]);
 const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 250;
 
 // from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
-const getDurationInMilliseconds = start => {
+const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;
   const NS_TO_MS = 1e6;
   const diff = process.hrtime(start);
@@ -18,7 +19,7 @@ const getDurationInMilliseconds = start => {
 };
 
 // from https://stackoverflow.com/questions/19700283/how-to-convert-time-in-milliseconds-to-hours-min-sec-format-in-javascript
-const humanReadableDuration = msDuration => {
+const humanReadableDuration = (msDuration: number) => {
   const h = Math.floor(msDuration / 1000 / 60 / 60);
   const m = Math.floor((msDuration / 1000 / 60 / 60 - h) * 60);
   const s = Math.floor(((msDuration / 1000 / 60 / 60 - h) * 60 - m) * 60);
@@ -30,6 +31,12 @@ const humanReadableDuration = msDuration => {
 
   return `${hours}h ${minutes}m ${seconds}s`;
 };
+
+function isOrganizationInfo(
+  organizationInfo: OrganizationInfo | {}
+): organizationInfo is OrganizationInfo {
+  return !isEmpty(organizationInfo);
+}
 
 (async () => {
   console.log('Start updating organization info...');
@@ -84,13 +91,14 @@ ORDER BY id LIMIT 1 OFFSET $1`,
 
       // 2. fetch organization info
       console.log(`${i}: fetching info for ${siret} (id: ${id})...`);
-      let organizationInfo;
+      let organizationInfo = {};
       try {
         organizationInfo = await getOrganizationInfo(siret);
 
-        if (isEmpty(organizationInfo)) {
+        if (!isOrganizationInfo(organizationInfo)) {
           throw new Error('not found');
         }
+
         if (organizationInfo.siret !== siret) {
           throw new Error('invalid response from sirene API');
         }
@@ -101,12 +109,16 @@ ORDER BY id LIMIT 1 OFFSET $1`,
           '\x1b[0m'
         );
         console.error(`Error while fetching data for: ${siret}`);
-        console.error(isEmpty(error.response) ? error : error.response.data);
+        console.error(
+          error instanceof AxiosError && !isEmpty(error.response)
+            ? error.response.data
+            : error
+        );
         console.error('');
       }
 
       // 3. update the organization
-      if (!isEmpty(organizationInfo)) {
+      if (isOrganizationInfo(organizationInfo)) {
         console.log(`libelle: ${organizationInfo.libelle}`);
         await updateOrganizationInfo({ id, organizationInfo });
       }
