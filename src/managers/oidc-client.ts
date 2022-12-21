@@ -17,6 +17,9 @@ export const incrementConnectionCount = async (
   const oidc_client = await findByClientId(client_id);
 
   if (!oidc_client?.id) {
+    console.error(
+      `Unable to increment connection count. Client not found for id:${client_id}`
+    );
     // fails silently
     return null;
   }
