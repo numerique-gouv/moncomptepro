@@ -5,7 +5,7 @@ import { parse_host } from 'tld-extract';
 export const getEmailDomain = email => {
   const parts = email.split('@');
   const host = parts[parts.length - 1];
-  const { domain } = parse_host(host);
+  const { domain } = parse_host(host, { allowDotlessTLD: true });
 
   return domain;
 };
