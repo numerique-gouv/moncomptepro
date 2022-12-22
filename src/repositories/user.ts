@@ -1,4 +1,4 @@
-import _, { result } from 'lodash';
+import { chain } from 'lodash';
 import { getDatabaseConnection } from '../connectors/postgres';
 import { QueryResult } from 'pg';
 
@@ -148,14 +148,14 @@ export const update = async (id: number, fieldsToUpdate: User) => {
     updated_at: new Date().toISOString(),
   };
 
-  const paramsString = _(fieldsToUpdateWithTimestamps)
+  const paramsString = chain(fieldsToUpdateWithTimestamps)
     // { email: 'email@xy.z', encrypted_password: 'hash' }
     .toPairs()
     // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
     .map((value, index) => `${value[0]} = $${index + 2}`)
-    .value()
     // [ 'email = $2', 'encrypted_password = $3' ]
-    .join(', ');
+    .join(', ')
+    .value();
   // 'email = $2, encrypted_password = $3'
 
   const values = Object.values(fieldsToUpdateWithTimestamps);
@@ -198,13 +198,14 @@ export const create = async ({
   const paramsString = Object.keys(userWithTimestamps).join(', ');
   // 'email, encrypted_password'
 
-  const valuesString = _(userWithTimestamps)
+  const valuesString = chain(userWithTimestamps)
     // { email: 'email@xy.z', encrypted_password: 'hash' }
     .toPairs()
     // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
     .map((value, index) => `$${index + 1}`)
     // [ '$1', '$2' ]
-    .join(', ');
+    .join(', ')
+    .value();
   // '$1, $2'
 
   const values = Object.values(userWithTimestamps);
