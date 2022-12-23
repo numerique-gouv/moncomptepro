@@ -161,6 +161,11 @@ let server: Server;
   });
   app.use('/oauth', oidcProvider.callback());
 
+  app.use(async (req, res, next) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.status(404).send(await renderWithEjsLayout('not-found-error'));
+  });
+
   // The error handler must be before any other error middleware and after all controllers
   app.use(Sentry.Handlers.errorHandler());
 

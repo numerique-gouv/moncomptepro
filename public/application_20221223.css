@@ -169,3 +169,20 @@ body {
         margin: 1.5rem 0 0.5rem;
     }
 }
+
+.not-found-error {
+    gap: 0;
+}
+
+.not-found-error > img {
+    height: 18rem;
+}
+
+.not-found-error > h3 {
+    text-align: center;
+    max-width: 52rem;
+}
+
+.not-found-error > *:last-child {
+    margin-bottom: 8rem;
+}
