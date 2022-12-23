@@ -1,4 +1,7 @@
 <div class="card-container">
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
     <form action="/oauth/logout/confirm" method="post" hidden>
         <input type="hidden" name="xsrf" value="<%= xsrfToken; %>" autocomplete="off">
         <input type="hidden" name="logout" value="non-empty-value">
@@ -8,3 +11,4 @@
     </form>
 </div>
 <script src="/assets/autosubmit-form.js"></script>
+<link rel="stylesheet" href="/assets/loader.css">
