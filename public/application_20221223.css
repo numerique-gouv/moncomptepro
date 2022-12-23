@@ -150,3 +150,22 @@ body {
 #magic-link-icon-block > img {
     height: 46px;
 }
+
+.moncomptepro-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.moncomptepro-header > img {
+    height: 4.5rem;
+    margin: 2.5rem 0 1.5rem;
+}
+
+
+@media all and (max-width: 576px) {
+    .moncomptepro-header > img {
+        height: 3.5rem;
+        margin: 1.5rem 0 0.5rem;
+    }
+}
