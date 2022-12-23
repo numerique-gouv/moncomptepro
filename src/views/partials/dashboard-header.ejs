@@ -1,0 +1,29 @@
+<header role="banner" class="dashboard-header">
+    <div class="dashboard-header__container">
+        <div class="fr-header__brand-top">
+            <div class="fr-header__logo">
+                <p class="fr-logo">
+                    République
+                    <br>Française
+                </p>
+            </div>
+        </div>
+        <div class="dashboard-header__link">
+            <% if (locals.header_user_label) { %>
+                <a
+                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-fi-logout-box-r-line fr-btn--icon-left"
+                        href="/oauth/logout"
+                >
+                    <%= header_user_label; %>
+                </a>
+            <% } else { %>
+                <a
+                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-account-line fr-btn--icon-left"
+                        href="/users/start-sign-in"
+                >
+                    Se connecter
+                </a>
+            <% } %>
+        </div>
+    </div>
+</header>

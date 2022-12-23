@@ -19,7 +19,6 @@ describe('The signup flow', () => {
     cy.get('[type="submit"]').click();
 
     cy.get('[name="password"]').type(this.emailAddress);
-    cy.get('[name="confirm_password"]').type(this.emailAddress);
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to confirm their email

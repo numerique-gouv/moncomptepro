@@ -2,10 +2,14 @@
 <html lang="fr">
 <%- include('partials/head.ejs'); %>
 <body>
-<%- include('partials/header.ejs'); %>
-<main>
-    <%- body %>
-</main>
-<%- include('partials/footer.ejs'); %>
+    <% if (locals.use_dashboard_header) { %>
+        <%- include('partials/dashboard-header.ejs'); %>
+    <% } else { %>
+        <%- include('partials/header.ejs'); %>
+    <% } %>
+    <main>
+        <%- body; %>
+    </main>
+    <%- include('partials/footer.ejs'); %>
 </body>
 </html>

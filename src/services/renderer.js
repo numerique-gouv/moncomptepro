@@ -14,18 +14,6 @@ export const render = (absolutePath, params) => {
   });
 };
 
-const displayAccountButton = req => {
-  if (req.url.startsWith('/users')) {
-    // do not display label on connection flow
-    return false;
-  }
-  if (req.url.startsWith('/interaction')) {
-    // do not display label on oauth interaction
-    return false;
-  }
-  return true;
-};
-
 const getUserLabel = req => {
   if (isEmpty(req.session.user)) {
     //  do not display label when no session is found
@@ -40,7 +28,10 @@ const getUserLabel = req => {
 
 // this is a cheap layout implementation for ejs
 // it looks for the _layout file and inject the targeted template in the body variable
-export const ejsLayoutMiddlewareFactory = app => {
+export const ejsLayoutMiddlewareFactory = (
+  app,
+  use_dashboard_header = false
+) => {
   return (req, res, next) => {
     const orig = res.render;
     res.render = (view, locals) => {
@@ -50,7 +41,7 @@ export const ejsLayoutMiddlewareFactory = app => {
           ...locals,
           body: html,
           header_user_label: getUserLabel(req),
-          header_display_account_button: displayAccountButton(req),
+          use_dashboard_header,
         });
       });
     };
