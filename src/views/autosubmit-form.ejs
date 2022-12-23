@@ -1,13 +1,12 @@
 <div class="card-container">
     <div class="loader-container">
+        <div class="message"><%= actionLabel; %></div>
         <div class="loader"></div>
     </div>
-    <form action="/oauth/logout/confirm" method="post" hidden>
+    <form action="<%= actionPath; %>" method="post" hidden>
         <input type="hidden" name="xsrf" value="<%= xsrfToken; %>" autocomplete="off">
-        <input type="hidden" name="logout" value="non-empty-value">
-        <button type="submit" class="fr-btn">
-            Oui, déconnectez moi
-        </button>
+        <input type="hidden" name="<%= inputName; %>" value="<%= inputValue %>">
+        <button type="submit" class="fr-btn"></button>
     </form>
 </div>
 <script src="/assets/autosubmit-form.js"></script>
