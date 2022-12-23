@@ -1,3 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  document.forms[0].submit();
+  setTimeout(() => {
+    document.forms[0].submit();
+  }, 2000);
 }, false);

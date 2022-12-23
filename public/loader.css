@@ -16,6 +16,12 @@
     animation: spin 750ms linear infinite;
 }
 
+.loader-container > .message {
+    margin-bottom: 10px;
+    font-style: italic;
+    text-align: center;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
