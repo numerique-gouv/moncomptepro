@@ -384,6 +384,42 @@ export const getSignInWithMagicLinkController = async (
       query: req.query,
     });
 
+    return res.render('autosubmit-form', {
+      csrfToken: req.csrfToken(),
+      actionLabel: 'Connexion...',
+      actionPath: '/users/sign-in-with-magic-link',
+      inputName: 'magic_link_token',
+      inputValue: magic_link_token,
+    });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return res.redirect(
+        `/users/start-sign-in?notification=invalid_magic_link`
+      );
+    }
+
+    next(error);
+  }
+};
+
+export const postSignInWithMagicLinkController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      body: z.object({
+        magic_link_token: z.string().min(1),
+      }),
+    });
+
+    const {
+      body: { magic_link_token },
+    } = await schema.parseAsync({
+      body: req.body,
+    });
+
     req.session.user = await loginWithMagicLink(magic_link_token);
     req.session.email = undefined;
 
