@@ -1,4 +1,5 @@
 <div class="card-container">
+    <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
@@ -7,35 +8,49 @@
                 </h4>
                 <div class="fr-card__desc">
                     <form action="/users/sign-in" method="post">
-                        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="password">
+                        <div class="fr-input-group fr-password">
+                            <label class="fr-label" for="password-input">
                                 Mot de passe
                             </label>
-                            <input
-                                    class="fr-input" required type="password" id="password" name="password"
-                                    aria-label="Mot de passe" autofocus="on"
-                            >
-                        </div>
-                        <div class="fr-input-group">
-                            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-right" href="/users/reset-password">
-                                Mot de passe oublié ?
-                            </a>
+                            <div class="fr-input-wrap">
+                                <input
+                                        class="fr-password__input fr-input"
+                                        required
+                                        aria-required="true"
+                                        name="password"
+                                        autocomplete="current-password"
+                                        id="password-input"
+                                        type="password"
+                                        autofocus="on"
+                                >
+                            </div>
+                            <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
+                                <input
+                                        aria-label="Afficher le mot de passe"
+                                        id="password-show"
+                                        type="checkbox"
+                                >
+                                <label class="fr-password__checkbox fr-label" for="password-show">
+                                    Afficher
+                                </label>
+                            </div>
+                            <p>
+                                <a href="/users/reset-password" class="fr-link">Mot de passe oublié ?</a>
+                            </p>
                         </div>
                         <ul class="fr-btns-group">
                             <li>
                                 <button class="fr-btn" type="submit">
-                                    Se Connecter
+                                    Se connecter
                                 </button>
                             </li>
                         </ul>
                     </form>
-                    <div class="separator">
-                        <span class="fr-badge fr-badge--info fr-badge--no-icon">ou</span>
-                    </div>
+                    <br />
+                    <p class="fr-hr-or">ou</p>
                     <div>
                         <div>
                             <b>Connectez-vous sans mot de passe</b> en recevant <b>un lien par email.</b>
@@ -57,4 +72,4 @@
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="/assets/or-input-form.css">
+<script src="/assets/show-password.js"></script>
