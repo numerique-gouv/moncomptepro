@@ -226,23 +226,106 @@ VALUES
    'DataPass',
    'nCDCeAfS0qpxr2kzps7nUClRGUZ1CgnzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZ8JwwqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
-   '{"https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback", "https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback", "http://localhost:3001/users/auth/api_gouv/callback"}',
-   '{"http://localhost:3000", "http://localhost:3001", "https://datapass-development.api.gouv.fr"}',
+   ARRAY [
+     'https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback',
+     'http://localhost:3001/users/auth/api_gouv/callback'
+     ],
+   ARRAY [
+     'http://localhost:3000',
+     'http://localhost:3001',
+     'https://datapass-development.api.gouv.fr'
+     ],
    'openid email profile organizations',
    'https://datapass-development.api.gouv.fr',
    'Centralisez vos demandes d’habilitations juridiques pour accéder aux données et services en accès restreint.'),
+  (2,
+   'API Particulier',
+   '844e3bff46ebdac9beb18c6cf793dedfdb1776262911b3d927d24871f03e46b38756b5d015d1a693057328d8673408cccf48ef7c5a6e94fa5d101042663fb5b1',
+   '04dc1398e804f2d927f08c81f47d731e1b7dca10392e68b4cacbe574da1d73f3ce7587e658151e0f5a83efaa5f10fc4cdec2c71cc7be9549c035b2068643753e',
+   ARRAY [
+     'http://particulier.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://localhost:5000/auth/api_gouv/callback',
+     'http://particulier.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://localhost:3000/auth/api_gouv/callback',
+     'https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback'
+     ],
+   ARRAY [
+     'http://particulier.api.localtest.me:5000',
+     'http://entreprise.api.localtest.me:5000',
+     'http://localhost:5000',
+     'http://particulier.api.localtest.me:3000',
+     'http://entreprise.api.localtest.me:3000',
+     'http://localhost:3000',
+     'https://sandbox.entreprise.api.gouv.fr/',
+     'https://sandbox1.entreprise.api.gouv.fr/',
+     'https://sandbox2.entreprise.api.gouv.fr/',
+     'https://staging.entreprise.api.gouv.fr/',
+     'https://staging1.entreprise.api.gouv.fr/',
+     'https://staging2.entreprise.api.gouv.fr/'
+     ],
+   'openid email',
+   'http://entreprise.api.localtest.me',
+   'Bouquet de données proposé pour simplifier les démarches administratives.'),
   (3,
    'API Entreprise',
    '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
    'oauth_api_gouv_client_secret',
-    '{"http://particulier.api.localtest.me:5000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:5000/auth/api_gouv/callback", "http://localhost:5000/auth/api_gouv/callback", "http://particulier.api.localtest.me:3000/auth/api_gouv/callback", "http://entreprise.api.localtest.me:3000/auth/api_gouv/callback", "http://localhost:3000/auth/api_gouv/callback", "https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback", "https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback"}',
-    '{"http://particulier.api.localtest.me:5000", "http://entreprise.api.localtest.me:5000", "http://localhost:5000", "http://particulier.api.localtest.me:3000", "http://entreprise.api.localtest.me:3000", "http://localhost:3000", "https://sandbox.entreprise.api.gouv.fr/", "https://sandbox1.entreprise.api.gouv.fr/", "https://sandbox2.entreprise.api.gouv.fr/", "https://staging.entreprise.api.gouv.fr/", "https://staging1.entreprise.api.gouv.fr/", "https://staging2.entreprise.api.gouv.fr/"}',
+   ARRAY [
+     'http://particulier.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://localhost:5000/auth/api_gouv/callback',
+     'http://particulier.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://localhost:3000/auth/api_gouv/callback',
+     'https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback'
+     ],
+   ARRAY [
+     'http://particulier.api.localtest.me:5000',
+     'http://entreprise.api.localtest.me:5000',
+     'http://localhost:5000',
+     'http://particulier.api.localtest.me:3000',
+     'http://entreprise.api.localtest.me:3000',
+     'http://localhost:3000',
+     'https://sandbox.entreprise.api.gouv.fr/',
+     'https://sandbox1.entreprise.api.gouv.fr/',
+     'https://sandbox2.entreprise.api.gouv.fr/',
+     'https://staging.entreprise.api.gouv.fr/',
+     'https://staging1.entreprise.api.gouv.fr/',
+     'https://staging2.entreprise.api.gouv.fr/'
+     ],
    'openid email',
    'http://entreprise.api.localtest.me',
-   'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.')
+   'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.'),
+  (4,
+   'Grist - ANCT',
+   '333ba6a6fd9303ab727159eeed704bcbc2549e56cd294fdf58621f01b1856898d18c6b20dd2cec21d4dc06746453331328a1b2c1abe365a92bb2a2f3b9d68c69',
+   '031da300506ac31fac6feaf88575b94b886eae7a68c64327ee03e0fa635ae9ae28572e4de53bb435b3fce4f8ac8484334d71de48f3c9abed3709c730173e0fe0',
+   ARRAY [
+     'https://grist.dev.incubateur.anct.gouv.fr/_oauth'
+     ],
+   ARRAY [
+     'https://grist.dev.incubateur.anct.gouv.fr'
+     ],
+   'openid email',
+   'https://grist.dev.incubateur.anct.gouv.fr',
+   'Description (à completer)')
 ON CONFLICT (id)
   DO UPDATE
-  SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri, client_description)
+  SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
+       client_description)
     = (EXCLUDED.client_name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris,
        EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description);
 
