@@ -2,30 +2,22 @@ import { isEmpty } from 'lodash';
 import { findByUserId as getUsersOrganizations } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 
-export const findAccount = async (ctx, sub, token) => {
-  const user = await findUserById(sub);
+export const findAccount = async (ctx: any, sub: string, token: any) => {
+  const user = await findUserById(parseInt(sub, 10));
 
   if (isEmpty(user)) {
     return null;
   }
 
-  const organizations = await getUsersOrganizations(sub);
+  const organizations = await getUsersOrganizations(parseInt(sub, 10));
 
   return {
     accountId: sub,
-    async claims(use, scope, claims, rejected) {
+    async claims(use: any, scope: any, claims: any, rejected: any) {
       const {
         id,
         email,
         email_verified,
-        verify_email_token,
-        verify_email_sent_at,
-        encrypted_password,
-        reset_password_token,
-        reset_password_sent_at,
-        sign_in_count,
-        last_sign_in_at,
-        created_at,
         updated_at,
         given_name,
         family_name,

@@ -1,14 +1,13 @@
 <div class="card-container">
+    <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
                 <h4 class="fr-card__title">
-                    Votre identifiant
+                    S’inscrire ou se connecter
                 </h4>
                 <div class="fr-card__desc">
                     <form action="/users/start-sign-in" method="post">
-                        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
-
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
                         <div class="fr-input-group">
@@ -22,7 +21,7 @@
                             >
                         </div>
 
-                        <%- include('../partials/card-button-container.ejs', {label: 'Connexion'}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
                     </form>
                 </div>
             </div>

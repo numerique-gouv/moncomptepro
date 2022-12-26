@@ -19,7 +19,6 @@ describe('The signup flow', () => {
     cy.get('[type="submit"]').click();
 
     cy.get('[name="password"]').type(this.emailAddress);
-    cy.get('[name="confirm_password"]').type(this.emailAddress);
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to confirm their email
@@ -31,19 +30,11 @@ describe('The signup flow', () => {
       .then(mailslurp =>
         mailslurp.waitForLatestEmail(this.inboxId, 30000, true)
       )
-      // extract the confirmation code from the email body
+      // extract the confirmation code from the email subject
       .then(email => {
-        const sendinBlueMatches = /.*blank"><strong>(\d{10})<.*/.exec(
-          email.body
-        );
-        const mailjetMatches = /.*line-height:150%;text-align:center;color:#000091;">(\d{10})<.*/.exec(
-          email.body
-        );
-        if (sendinBlueMatches && sendinBlueMatches.length > 0) {
-          return sendinBlueMatches[1];
-        }
-        if (mailjetMatches && mailjetMatches.length > 0) {
-          return mailjetMatches[1];
+        const matches = /.*(\s*(\d\s*){10}).*/.exec(email.subject);
+        if (matches && matches.length > 0) {
+          return matches[1];
         }
         throw new Error('Could not find verification code in received email');
       })

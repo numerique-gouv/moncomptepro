@@ -21,10 +21,16 @@ export const oidcProviderConfiguration = ({
       enabled: true,
       logoutSource: async (ctx, form) => {
         ctx.req.session.user = null;
-        const xsrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+        const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
 
         ctx.type = 'html';
-        ctx.body = await renderWithEjsLayout('logout', { xsrfToken });
+        ctx.body = await renderWithEjsLayout('autosubmit-form', {
+          csrfToken,
+          actionLabel: 'Déconnexion...',
+          actionPath: '/oauth/logout/confirm',
+          inputName: 'logout',
+          inputValue: 'non-empty-value',
+        });
       },
       postLogoutSuccessSource: async ctx => {
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.

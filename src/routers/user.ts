@@ -23,6 +23,7 @@ import {
   postSendEmailVerificationController,
   postSendMagicLinkController,
   postSignInMiddleware,
+  postSignInWithMagicLinkController,
   postSignUpController,
   postStartSignInController,
   postVerifyEmailController,
@@ -125,8 +126,15 @@ export const userRouter = () => {
   userRouter.get('/magic-link-sent', getMagicLinkSentController);
   userRouter.get(
     '/sign-in-with-magic-link',
+    csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    getSignInWithMagicLinkController,
+    getSignInWithMagicLinkController
+  );
+  userRouter.post(
+    '/sign-in-with-magic-link',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    postSignInWithMagicLinkController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );

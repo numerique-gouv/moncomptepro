@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm:watch-js\" \"npm:watch-node\" \"npm:watch-ejs\"",
     "build": "tsc && node-pg-migrate up && node scripts/generate-keys.js && bash -c 'cp -r src/views build/views' && bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons,utility} public/'",
     "import": "ts-node scripts/import.js",
-    "update-organization-info": "ts-node scripts/update-organizations-info.js",
+    "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
     "migrate": "node-pg-migrate",
     "load-fixtures": "psql -d api-auth -f scripts/fixtures.sql && npm run update-organization-info 2000",
     "generate-keystore": "ts-node scripts/generate-keys.js",
@@ -23,7 +23,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@gouvfr/dsfr": "^1.7.2",
+    "@gouvfr/dsfr": "^1.8.5",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.11.0",
     "@sentry/tracing": "^7.11.0",
@@ -55,9 +55,9 @@
     "oidc-provider": "^7.11.5",
     "pg": "^8.8.0",
     "rate-limiter-flexible": "^0.21.3",
-    "tld-extract": "github:dartist21/node-tld#fix-tld-same-level-as-domain",
+    "tld-extract": "^2.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4",
+    "typescript": "^4.9.4",
     "zod": "^3.19.1"
   },
   "devDependencies": {

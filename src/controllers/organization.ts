@@ -147,7 +147,7 @@ export const getUserOrganizationController = async (
       error instanceof ZodError
     ) {
       return res.redirect(
-        `/users/manage-organizations?notification=organization_not_found`
+        `/manage-organizations?notification=organization_not_found`
       );
     }
 
@@ -179,7 +179,7 @@ export const postQuitUserOrganizationController = async (
     });
 
     return res.redirect(
-      `/users/manage-organizations?notification=quit_organization_success`
+      `/manage-organizations?notification=quit_organization_success`
     );
   } catch (error) {
     next(error);

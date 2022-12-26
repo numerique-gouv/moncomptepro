@@ -94,6 +94,10 @@ export const sendEmailAddressVerificationEmail = async ({
   }
 
   const verify_email_token = await generatePinToken();
+  const readable_verify_email_token = verify_email_token.replace(
+    /(.{3})/g,
+    '$1 '
+  );
 
   await update(user.id, {
     verify_email_token,
@@ -102,10 +106,10 @@ export const sendEmailAddressVerificationEmail = async ({
 
   await sendMail({
     to: [user.email],
-    subject: `Code de confirmation MonComptePro : ${verify_email_token}`,
+    subject: `Code de confirmation MonComptePro : ${readable_verify_email_token}`,
     template: 'verify-email',
     params: {
-      verify_email_token,
+      verify_email_token: readable_verify_email_token,
     },
   });
 
@@ -269,6 +273,8 @@ export const changePassword = async (token, password) => {
 
   return await update(user.id, {
     encrypted_password: hashedPassword,
+    email_verified: true,
+    email_verified_at: new Date().toISOString(),
     reset_password_token: null,
     reset_password_sent_at: null,
   });
