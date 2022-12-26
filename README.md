@@ -144,6 +144,17 @@ Vous pouvez nous soumettre l'ensemble de ces informations par mail à contact@mo
 
 Une fois la connexion MonComptePro fonctionnelle en environnement de test, nous vous fournirons les secrets de production par voie sécurisée afin de déployer le bouton sur votre service en ligne en production.
 
+## ✅ Installation de MonComptePro - récap
+
+Voici un récap de ce qu'il faut faire pour installer MonComptePro sur votre application.
+
+- [ ] J'ai trouvé mon client compatible OpenID (la liste est disponible sur le site openid.net : https://openid.net/developers/certified/)
+- [ ] J'ai paramétré la configuration en test (URL de rédirection, client ID & client secret)
+- [ ] J'ai branché en local, touroul
+- [ ] J'ai configuré les secrets de production en demandant à l'équipe MonComptePro pour déployer le service en ligne en production
+- [ ] Ça part en prod (point bonus si la mise en prod est un vendredi après-midi)
+
+
 ## Contribuer à MonComptePro
 
 Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
