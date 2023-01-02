@@ -2,6 +2,13 @@ import { isEmpty, some } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
+  InvalidSiretError,
+  OrganizationNotFoundError,
+  UnableToAutoJoinOrganizationError,
+  UserInOrganizationAlreadyError,
+  UserNotFoundError,
+} from '../errors';
+import {
   createBigOrganizationJoinModeration,
   createOrganizationJoinBlockModeration,
 } from '../repositories/moderation';
@@ -36,7 +43,7 @@ export const getUserOrganization = async ({ user_id, organization_id }) => {
   );
 
   if (isEmpty(organization)) {
-    throw new Error('organization_not_found');
+    throw new OrganizationNotFoundError();
   }
 
   return organization;
@@ -76,7 +83,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   } catch (error) {
     console.error(error);
 
-    throw new Error('invalid_siret');
+    throw new InvalidSiretError();
   }
   const { libelle, trancheEffectifs } = organizationInfo;
 
@@ -84,7 +91,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   const user = await findUserById(user_id);
 
   if (isEmpty(user)) {
-    throw new Error('user_not_found');
+    throw new UserNotFoundError();
   }
 
   // Ensure user can join organization automatically
@@ -122,7 +129,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
       as_external: is_external,
     });
 
-    throw new Error('unable_to_auto_join_organization');
+    throw new UnableToAutoJoinOrganizationError();
   }
 
   // Create organization if needed
@@ -141,7 +148,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     !isEmpty(organization) &&
     some(usersInOrganizationAlready, ['email', email])
   ) {
-    throw new Error('user_in_organization_already');
+    throw new UserInOrganizationAlreadyError();
   }
 
   // Link user to organization
