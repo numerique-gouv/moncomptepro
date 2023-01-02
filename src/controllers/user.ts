@@ -14,12 +14,15 @@ import {
 import { isUrlTrusted } from '../services/security';
 import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
-import getNotificationsFromRequest from '../services/get-notifications-from-request';
+import getNotificationsFromRequest, {
+  getNotificationLabelFromRequest,
+} from '../services/get-notifications-from-request';
 import {
   emailSchema,
   optionalBooleanSchema,
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
+import { InvalidEmailError } from '../errors';
 
 export const issueSessionOrRedirectController = async (
   req: Request,
@@ -57,19 +60,28 @@ export const getStartSignInController = async (
           .string()
           .min(1)
           .optional(),
+        did_you_mean: z
+          .string()
+          .min(1)
+          .optional(),
       }),
     });
 
     const {
-      query: { login_hint },
+      query: { login_hint, did_you_mean: didYouMean },
     } = await schema.parseAsync({
       query: req.query,
     });
 
     const loginHint = login_hint || req.session.email;
 
+    const hasEmailError =
+      (await getNotificationLabelFromRequest(req)) === 'invalid_email';
+
     return res.render('user/start-sign-in', {
-      notifications: await getNotificationsFromRequest(req),
+      notifications: !hasEmailError && (await getNotificationsFromRequest(req)),
+      hasEmailError,
+      didYouMean,
       loginHint,
       csrfToken: req.csrfToken(),
     });
@@ -101,10 +113,17 @@ export const postStartSignInController = async (
 
     return res.redirect(`/users/${userExists ? 'sign-in' : 'sign-up'}`);
   } catch (error) {
-    if (
-      (error instanceof Error && error.message === 'invalid_email') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof InvalidEmailError) {
+      const didYouMeanQueryParam = error?.didYouMean
+        ? `&did_you_mean=${error.didYouMean}`
+        : '';
+
+      return res.redirect(
+        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}${didYouMeanQueryParam}`
+      );
+    }
+
+    if (error instanceof ZodError) {
       return res.redirect(
         `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}`
       );

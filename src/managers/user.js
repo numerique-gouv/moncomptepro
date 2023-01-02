@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import { isEmailSafeToSendTransactional } from '../connectors/debounce';
 import { sendMail } from '../connectors/sendinblue';
+import { InvalidEmailError } from '../errors';
 
 import {
   create,
@@ -27,8 +28,13 @@ const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
 
-  if (!userExists && !(await isEmailSafeToSendTransactional(email))) {
-    throw new Error('invalid_email');
+  const {
+    isEmailSafeToSend,
+    didYouMean,
+  } = await isEmailSafeToSendTransactional(email);
+
+  if (!userExists && !isEmailSafeToSend) {
+    throw new InvalidEmailError(didYouMean);
   }
 
   return { email, userExists };

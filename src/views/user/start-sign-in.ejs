@@ -10,15 +10,29 @@
                     <form action="/users/start-sign-in" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                        <div class="fr-input-group">
+                        <div class="fr-input-group<% if (locals.hasEmailError) { %>  fr-input-group--error<% } %>">
                             <label class="fr-label" for="login">Email
                                 <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
                             </label>
-                            <input class="fr-input" required type="email" id="login" name="login"
-                                   <% if (!locals.loginHint) { %>autofocus="on"
-                            <% } else { %> value="<%= locals.loginHint; %>"
+                            <input
+                                    class="fr-input"
+                                    required type="email" id="login" name="login"
+                            <% if (!locals.loginHint) { %>
+                                    autofocus="on"
+                            <% } else { %>
+                                    value="<%= locals.loginHint; %>"
                                     <% } %>
                             >
+                            <% if (locals.hasEmailError) { %>
+                                <p class="fr-error-text">
+                                    Adresse email invalide.
+                                </p>
+                            <% } %>
+                            <% if (locals.didYouMean) { %>
+                                <p id="did-you-mean-message" class="fr-info-text">
+                                    Voulez-vous dire <%= locals.didYouMean %> ?
+                                </p>
+                            <% } %>
                         </div>
 
                         <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
