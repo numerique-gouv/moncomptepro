@@ -15,6 +15,7 @@
                                 <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
                             </label>
                             <input
+                                    id="did-you-mean-input"
                                     class="fr-input"
                                     required type="email" id="login" name="login"
                             <% if (!locals.loginHint) { %>
@@ -29,9 +30,13 @@
                                 </p>
                             <% } %>
                             <% if (locals.didYouMean) { %>
-                                <p id="did-you-mean-message" class="fr-info-text">
-                                    Voulez-vous dire <%= locals.didYouMean %> ?
+                                <p id="did-you-mean-element" class="fr-info-text">
+                                    <span>
+                                    Voulez-vous dire
+                                    <a id="did-you-mean-link" href="#"><%= locals.didYouMean %></a> ?
+                                    </span>
                                 </p>
+                                <script type="text/javascript" src="/assets/did-you-mean.js"></script>
                             <% } %>
                         </div>
 
