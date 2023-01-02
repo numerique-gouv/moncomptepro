@@ -55,6 +55,9 @@ describe('The signup flow', () => {
     cy.get('[name="siret"]').type('13002526500013');
     cy.get('[type="submit"]').click();
 
+    // Click on "continue" on the welcome page
+    cy.get('[type="submit"]').click();
+
     // Check DataPass redirection
     cy.contains('Vos accès');
   });

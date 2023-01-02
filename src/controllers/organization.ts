@@ -1,6 +1,7 @@
 import {
   getOrganizationSuggestions,
   getUserOrganization,
+  greetFirstOrganizationJoin,
   joinOrganization,
   quitOrganization,
 } from '../managers/organization';
@@ -84,6 +85,14 @@ export const postJoinOrganizationMiddleware = async (
       user_id: req.session.user.id,
       is_external,
     });
+
+    const shouldWelcomeUser = await greetFirstOrganizationJoin({
+      user_id: req.session.user.id,
+    });
+
+    if (shouldWelcomeUser) {
+      return res.redirect(`/users/welcome`);
+    }
 
     next();
   } catch (error) {

@@ -158,17 +158,6 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     is_external,
   });
 
-  const userOrganizations = await getOrganizationsByUserId(user_id);
-  if (userOrganizations.length === 1) {
-    // Welcome the user when he joins is first organization as he may now be able to connect
-    await sendMail({
-      to: [email],
-      subject: 'Votre compte MonComptePro a bien été créé',
-      template: 'welcome',
-      params: { given_name, family_name, email },
-    });
-  }
-
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
   const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
@@ -211,6 +200,26 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
       as_external: is_external,
     });
   }
+
+  return true;
+};
+
+export const greetFirstOrganizationJoin = async ({ user_id }) => {
+  const userOrganizations = await getOrganizationsByUserId(user_id);
+
+  if (userOrganizations.length !== 1) {
+    return false;
+  }
+
+  const { given_name, family_name, email } = await findUserById(user_id);
+
+  // Welcome the user when he joins is first organization as he may now be able to connect
+  await sendMail({
+    to: [email],
+    subject: 'Votre compte MonComptePro a bien été créé',
+    template: 'welcome',
+    params: { given_name, family_name, email },
+  });
 
   return true;
 };
