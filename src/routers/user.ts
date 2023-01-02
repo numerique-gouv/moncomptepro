@@ -16,6 +16,7 @@ import {
   getSignUpController,
   getStartSignInController,
   getVerifyEmailController,
+  getWelcomeController,
   issueSessionOrRedirectController,
   postChangePasswordController,
   postPersonalInformationsController,
@@ -189,6 +190,20 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkUserHasPersonalInformationsMiddleware,
     postJoinOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get(
+    '/welcome',
+    csrfProtectionMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    getWelcomeController
+  );
+  userRouter.post(
+    '/welcome',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
