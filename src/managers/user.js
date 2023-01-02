@@ -10,6 +10,7 @@ import {
   findByResetPasswordToken,
   update,
 } from '../repositories/user';
+import { getDidYouMeanSuggestion } from '../services/did-you-mean';
 import { isExpired } from '../services/is-expired';
 import {
   generatePinToken,
@@ -28,12 +29,15 @@ const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
 
-  const {
-    isEmailSafeToSend,
-    didYouMean,
-  } = await isEmailSafeToSendTransactional(email);
+  let { isEmailSafeToSend, didYouMean } = await isEmailSafeToSendTransactional(
+    email
+  );
 
   if (!userExists && !isEmailSafeToSend) {
+    if (!didYouMean) {
+      didYouMean = getDidYouMeanSuggestion(email);
+    }
+
     throw new InvalidEmailError(didYouMean);
   }
 
