@@ -1,7 +1,15 @@
 import { isEmpty } from 'lodash';
 import { isEmailSafeToSendTransactional } from '../connectors/debounce';
 import { sendMail } from '../connectors/sendinblue';
-import { InvalidEmailError } from '../errors';
+import {
+  EmailUnavailableError,
+  EmailVerifiedAlreadyError,
+  InvalidCredentialsError,
+  InvalidEmailError,
+  InvalidMagicLinkError,
+  InvalidTokenError,
+  WeakPasswordError,
+} from '../errors';
 
 import {
   create,
@@ -53,13 +61,13 @@ export const login = async (email, password) => {
   if (isEmpty(user)) {
     // this is not a proper error name but this case should never happen
     // we throw a clean error as a mesure of defensive programming
-    throw new Error('invalid_credentials');
+    throw new InvalidCredentialsError();
   }
 
   const isMatch = await validatePassword(password, user.encrypted_password);
 
   if (!isMatch) {
-    throw new Error('invalid_credentials');
+    throw new InvalidCredentialsError();
   }
 
   return await update(user.id, {
@@ -72,11 +80,11 @@ export const signup = async (email, password) => {
   const user = await findByEmail(email);
 
   if (!isEmpty(user)) {
-    throw new Error('email_unavailable');
+    throw new EmailUnavailableError();
   }
 
   if (!isPasswordSecure(password)) {
-    throw new Error('weak_password');
+    throw new WeakPasswordError();
   }
 
   const hashedPassword = await hashPassword(password);
@@ -94,7 +102,7 @@ export const sendEmailAddressVerificationEmail = async ({
   const user = await findByEmail(email);
 
   if (user.email_verified) {
-    throw new Error('email_verified_already');
+    throw new EmailVerifiedAlreadyError();
   }
 
   if (
@@ -134,7 +142,7 @@ export const verifyEmail = async (email, token) => {
   const user = await findByEmail(email);
 
   if (user.verify_email_token !== token) {
-    throw new Error('invalid_token');
+    throw new InvalidTokenError();
   }
 
   const isTokenExpired = isExpired(
@@ -143,7 +151,7 @@ export const verifyEmail = async (email, token) => {
   );
 
   if (isTokenExpired) {
-    throw new Error('invalid_token');
+    throw new InvalidTokenError();
   }
 
   return await update(user.id, {
@@ -205,13 +213,13 @@ export const sendSendMagicLinkEmail = async (email, host) => {
 export const loginWithMagicLink = async token => {
   // check that token as not the default empty value as it will match all users
   if (!token) {
-    throw new Error('invalid_magic_link');
+    throw new InvalidMagicLinkError();
   }
 
   const user = await findByMagicLinkToken(token);
 
   if (isEmpty(user)) {
-    throw new Error('invalid_magic_link');
+    throw new InvalidMagicLinkError();
   }
 
   const isTokenExpired = isExpired(
@@ -220,7 +228,7 @@ export const loginWithMagicLink = async token => {
   );
 
   if (isTokenExpired) {
-    throw new Error('invalid_magic_link');
+    throw new InvalidMagicLinkError();
   }
 
   return await update(user.id, {
@@ -261,13 +269,13 @@ export const sendResetPasswordEmail = async (email, host) => {
 export const changePassword = async (token, password) => {
   // check that token as not the default empty value as it will match all users
   if (!token) {
-    throw new Error('invalid_token');
+    throw new InvalidTokenError();
   }
 
   const user = await findByResetPasswordToken(token);
 
   if (isEmpty(user)) {
-    throw new Error('invalid_token');
+    throw new InvalidTokenError();
   }
 
   const isTokenExpired = isExpired(
@@ -276,11 +284,11 @@ export const changePassword = async (token, password) => {
   );
 
   if (isTokenExpired) {
-    throw new Error('invalid_token');
+    throw new InvalidTokenError();
   }
 
   if (!isPasswordSecure(password)) {
-    throw new Error('weak_password');
+    throw new WeakPasswordError();
   }
 
   const hashedPassword = await hashPassword(password);

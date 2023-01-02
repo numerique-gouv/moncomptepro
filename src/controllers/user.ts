@@ -22,7 +22,15 @@ import {
   optionalBooleanSchema,
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
-import { InvalidEmailError } from '../errors';
+import {
+  EmailUnavailableError,
+  EmailVerifiedAlreadyError,
+  InvalidCredentialsError,
+  InvalidEmailError,
+  InvalidMagicLinkError,
+  InvalidTokenError,
+  WeakPasswordError,
+} from '../errors';
 
 export const issueSessionOrRedirectController = async (
   req: Request,
@@ -171,10 +179,7 @@ export const postSignInMiddleware = async (
 
     next();
   } catch (error) {
-    if (
-      (error instanceof Error && error.message === 'invalid_credentials') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof InvalidCredentialsError || error instanceof ZodError) {
       return res.redirect(`/users/sign-in?notification=invalid_credentials`);
     }
 
@@ -233,12 +238,12 @@ export const postSignUpController = async (
 
     next();
   } catch (error) {
-    if (error instanceof Error && error.message === 'email_unavailable') {
+    if (error instanceof EmailUnavailableError) {
       return res.redirect(
         `/users/start-sign-in?notification=email_unavailable`
       );
     }
-    if (error instanceof Error && error.message === 'weak_password') {
+    if (error instanceof WeakPasswordError) {
       return res.redirect(`/users/sign-up?notification=weak_password`);
     }
     if (error instanceof ZodError) {
@@ -280,7 +285,7 @@ export const getVerifyEmailController = async (
       codeSent,
     });
   } catch (error) {
-    if (error instanceof Error && error.message === 'email_verified_already') {
+    if (error instanceof EmailVerifiedAlreadyError) {
       return res.redirect(
         `/users/personal-information?notification=email_verified_already`
       );
@@ -318,10 +323,7 @@ export const postVerifyEmailController = async (
 
     next();
   } catch (error) {
-    if (
-      (error instanceof Error && error.message === 'invalid_token') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof InvalidTokenError || error instanceof ZodError) {
       return res.redirect(
         `/users/verify-email?notification=invalid_verify_email_code`
       );
@@ -344,9 +346,9 @@ export const postSendEmailVerificationController = async (
 
     return res.redirect(`/users/verify-email?new_code_sent=true`);
   } catch (error) {
-    if (error instanceof Error && error.message === 'email_verified_already') {
+    if (error instanceof EmailVerifiedAlreadyError) {
       return res.redirect(
-        `/users/personal-information?notification=${error.message}`
+        `/users/personal-information?notification=email_verified_already`
       );
     }
 
@@ -364,7 +366,7 @@ export const postSendMagicLinkController = async (
 
     return res.redirect(`/users/magic-link-sent`);
   } catch (error) {
-    if (error instanceof Error && error.message === 'invalid_email') {
+    if (error instanceof InvalidEmailError) {
       return res.redirect(`/users/start-sign-in?notification=invalid_email`);
     }
 
@@ -444,10 +446,7 @@ export const postSignInWithMagicLinkController = async (
 
     next();
   } catch (error) {
-    if (
-      (error instanceof Error && error.message === 'invalid_magic_link') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof InvalidMagicLinkError || error instanceof ZodError) {
       return res.redirect(
         `/users/start-sign-in?notification=invalid_magic_link`
       );
@@ -560,14 +559,14 @@ export const postChangePasswordController = async (
     );
   } catch (error) {
     if (
-      (error instanceof Error && error.message === 'invalid_token') ||
+      error instanceof InvalidTokenError ||
       (error instanceof ZodError &&
         hasErrorFromField(error, 'reset_password_token'))
     ) {
       return res.redirect(`/users/reset-password?notification=invalid_token`);
     }
     if (
-      (error instanceof Error && error.message === 'weak_password') ||
+      error instanceof WeakPasswordError ||
       (error instanceof ZodError && hasErrorFromField(error, 'password'))
     ) {
       const resetPasswordToken = req.body.reset_password_token;
@@ -636,11 +635,7 @@ export const postPersonalInformationsController = async (
 
     next();
   } catch (error) {
-    if (
-      (error instanceof Error &&
-        error.message === 'invalid_personal_informations') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof ZodError) {
       return res.redirect(
         `/users/personal-information?notification=invalid_personal_informations`
       );

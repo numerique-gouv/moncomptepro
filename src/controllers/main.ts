@@ -69,11 +69,7 @@ export const postPersonalInformationsController = async (
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
-    if (
-      (error instanceof Error &&
-        error.message === 'invalid_personal_informations') ||
-      error instanceof ZodError
-    ) {
+    if (error instanceof ZodError) {
       return res.redirect(
         `/personal-information?notification=invalid_personal_informations`
       );
