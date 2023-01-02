@@ -29,11 +29,15 @@ const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
 export const startLogin = async email => {
   const userExists = !isEmpty(await findByEmail(email));
 
+  if (userExists) {
+    return { email, userExists: true };
+  }
+
   let { isEmailSafeToSend, didYouMean } = await isEmailSafeToSendTransactional(
     email
   );
 
-  if (!userExists && !isEmailSafeToSend) {
+  if (!isEmailSafeToSend) {
     if (!didYouMean) {
       didYouMean = getDidYouMeanSuggestion(email);
     }
@@ -41,7 +45,7 @@ export const startLogin = async email => {
     throw new InvalidEmailError(didYouMean);
   }
 
-  return { email, userExists };
+  return { email, userExists: false };
 };
 
 export const login = async (email, password) => {
