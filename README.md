@@ -2,7 +2,7 @@
 
 ![](https://i.imgur.com/8b8zljV.png)
 
-> MonComptePro identifie les personnes professionnelles du privé ou du public.
+> MonComptePro identifie les utilisateurs professionnels du privé ou du public.
 
 Plus concrètement, c'est une solution de connexion basée sur le standard OpenID Connect qui permet d'identifier un SIRET à une adresse email professionnelle.
 
