@@ -1,7 +1,7 @@
 import {
   getOrganizationSuggestions,
   getUserOrganization,
-  getUserOrganizations,
+  greetFirstOrganizationJoin,
   joinOrganization,
   quitOrganization,
 } from '../managers/organization';
@@ -14,6 +14,12 @@ import {
   siretSchema,
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
+import {
+  InvalidSiretError,
+  OrganizationNotFoundError,
+  UnableToAutoJoinOrganizationError,
+  UserInOrganizationAlreadyError,
+} from '../errors';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -80,19 +86,24 @@ export const postJoinOrganizationMiddleware = async (
       is_external,
     });
 
+    const shouldWelcomeUser = await greetFirstOrganizationJoin({
+      user_id: req.session.user.id,
+    });
+
+    if (shouldWelcomeUser) {
+      return res.redirect(`/users/welcome`);
+    }
+
     next();
   } catch (error) {
-    if (
-      error instanceof Error &&
-      error.message === 'unable_to_auto_join_organization'
-    ) {
+    if (error instanceof UnableToAutoJoinOrganizationError) {
       return res.redirect(
         `/users/join-organization?notification=unable_to_auto_join_organization&siret_hint=${req.body.siret}`
       );
     }
 
     if (
-      (error instanceof Error && error.message === 'invalid_siret') ||
+      error instanceof InvalidSiretError ||
       (error instanceof ZodError && hasErrorFromField(error, 'siret'))
     ) {
       return res.redirect(
@@ -100,10 +111,7 @@ export const postJoinOrganizationMiddleware = async (
       );
     }
 
-    if (
-      error instanceof Error &&
-      error.message === 'user_in_organization_already'
-    ) {
+    if (error instanceof UserInOrganizationAlreadyError) {
       return res.redirect(
         `/users/join-organization?notification=user_in_organization_already&siret_hint=${req.body.siret}`
       );
@@ -143,7 +151,7 @@ export const getUserOrganizationController = async (
     });
   } catch (error) {
     if (
-      (error instanceof Error && error.message === 'organization_not_found') ||
+      error instanceof OrganizationNotFoundError ||
       error instanceof ZodError
     ) {
       return res.redirect(

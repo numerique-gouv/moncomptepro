@@ -41,7 +41,8 @@ La connexion MonComptePro est basée sur le standard [OpenID Connect](https://op
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
-- exemple des données retournées par l’endpoint `GET /userinfo` du serveur OpenID :
+
+#### Exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID
 
 ```json
 {
