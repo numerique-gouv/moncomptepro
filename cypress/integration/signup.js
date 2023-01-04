@@ -32,7 +32,9 @@ describe('The signup flow', () => {
       )
       // extract the verification code from the email subject
       .then(email => {
-        const matches = /.*(\s*(\d\s*){10}).*/.exec(email.body);
+        const matches = /.*<strong>(\s*(?:\d\s*){10})<\/strong>.*/.exec(
+          email.body
+        );
         if (matches && matches.length > 0) {
           return matches[1];
         }
