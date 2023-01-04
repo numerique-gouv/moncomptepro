@@ -128,7 +128,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
   await sendMail({
     to: [user.email],
-    subject: `Code de confirmation MonComptePro : ${readable_verify_email_token}`,
+    subject: 'Vérification de votre adresse email',
     template: 'verify-email',
     params: {
       verify_email_token: readable_verify_email_token,
@@ -200,7 +200,7 @@ export const sendSendMagicLinkEmail = async (email, host) => {
 
   await sendMail({
     to: [user.email],
-    subject: 'Connexion avec un lien magique',
+    subject: 'Lien de connexion à MonComptePro',
     template: 'magic-link',
     params: {
       magic_link: `${host}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
