@@ -245,15 +245,25 @@ VALUES
    'oauth_api_gouv_client_secret_particulier',
    ARRAY [
      'http://particulier.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://particulier.api.localtest.me:3000/auth/api_gouv_particulier/callback',
      'http://particulier.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://particulier.api.localtest.me:5000/auth/api_gouv_particulier/callback',
      'http://localhost:3000/auth/api_gouv/callback',
+     'http://localhost:3000/auth/api_gouv_particulier/callback',
      'http://localhost:5000/auth/api_gouv/callback',
+     'http://localhost:3000/auth/api_gouv_particulier/callback',
      'https://sandbox.particulier.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
      'https://sandbox1.particulier.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox1.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
      'https://sandbox2.particulier.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox2.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
      'https://staging.particulier.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
      'https://staging1.particulier.api.gouv.fr/auth/api_gouv/callback',
-     'https://staging2.particulier.api.gouv.fr/auth/api_gouv/callback'
+     'https://staging1.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://staging2.particulier.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging2.particulier.api.gouv.fr/auth/api_gouv_particulier/callback'
      ],
    ARRAY [
      'http://particulier.api.localtest.me:3000',
@@ -276,15 +286,25 @@ VALUES
    'oauth_api_gouv_client_secret_entreprise',
    ARRAY [
      'http://entreprise.api.localtest.me:3000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:3000/auth/api_gouv_entreprise/callback',
      'http://entreprise.api.localtest.me:5000/auth/api_gouv/callback',
+     'http://entreprise.api.localtest.me:5000/auth/api_gouv_entreprise/callback',
      'http://localhost:3000/auth/api_gouv/callback',
+     'http://localhost:3000/auth/api_gouv_entreprise/callback',
      'http://localhost:5000/auth/api_gouv/callback',
+     'http://localhost:5000/auth/api_gouv_entreprise/callback',
      'https://sandbox.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
      'https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
      'https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
      'https://staging.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
      'https://staging1.entreprise.api.gouv.fr/auth/api_gouv/callback',
-     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback'
+     'https://staging1.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv/callback',
+     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback'
      ],
    ARRAY [
      'http://entreprise.api.localtest.me:3000',
