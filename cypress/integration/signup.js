@@ -21,24 +21,24 @@ describe('The signup flow', () => {
     cy.get('[name="password"]').type(this.emailAddress);
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
-    // Check that the website is waiting for the user to confirm their email
+    // Check that the website is waiting for the user to verify their email
     cy.get('#verify-email > p').contains(this.emailAddress);
 
-    // Confirm the email with the code received by email
+    // Verify the email with the code received by email
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then(mailslurp =>
         mailslurp.waitForLatestEmail(this.inboxId, 30000, true)
       )
-      // extract the confirmation code from the email subject
+      // extract the verification code from the email subject
       .then(email => {
-        const matches = /.*(\s*(\d\s*){10}).*/.exec(email.subject);
+        const matches = /.*(\s*(\d\s*){10}).*/.exec(email.body);
         if (matches && matches.length > 0) {
           return matches[1];
         }
         throw new Error('Could not find verification code in received email');
       })
-      // fill out the confirmation form and submit
+      // fill out the verification form and submit
       .then(code => {
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
