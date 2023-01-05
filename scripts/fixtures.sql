@@ -333,7 +333,7 @@ VALUES
      ],
    'openid email organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
-   'Description (à completer)')
+   'Saisir et manipuler collaborativement les données')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
