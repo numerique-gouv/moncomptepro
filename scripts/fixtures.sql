@@ -331,7 +331,7 @@ VALUES
    ARRAY [
      'https://grist.dev.incubateur.anct.gouv.fr'
      ],
-   'openid email',
+   'openid email organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
    'Description (à completer)')
 ON CONFLICT (id)
