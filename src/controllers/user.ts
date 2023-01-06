@@ -405,6 +405,21 @@ export const getSignInWithMagicLinkController = async (
       query: req.query,
     });
 
+    if (!req.session.email) {
+      // This is a robot protection mechanism.
+      // There is 2 known reasons for req.session.email to be undefined:
+      // 1. the user uses a different browser than the one he used to get the magic link
+      // 2. the link is clicked by a robot (ex: by Outlook "safe links")
+      // By disabling auto-submission here, we prevent robot from using the link
+      // without being too annoying for legitimate users that just wanted to use a different browser.
+      // Note that switching browser might not be a voluntary action from the user (ex: opening safari on macOS).
+      // This mechanism also provides the user with a way to step back.
+      return res.render('user/sign-in-with-magic-link', {
+        csrfToken: req.csrfToken(),
+        magicLinkToken: magic_link_token,
+      });
+    }
+
     return res.render('autosubmit-form', {
       csrfToken: req.csrfToken(),
       actionLabel: 'Connexion...',

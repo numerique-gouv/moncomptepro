@@ -1,0 +1,23 @@
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Lien de connexion
+                </h4>
+                <div class="fr-card__desc">
+                    <div id="magic-link-icon-block">
+                        <img src="/assets/magic-link.svg" alt="illustration magic link">
+                    </div>
+
+                    <form action="/users/sign-in-with-magic-link" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                        <input type="hidden" name="magic_link_token" value="<%= magicLinkToken %>">
+
+                        <%- include('../partials/card-button-container.ejs', {label: 'Se connecter'}) %>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
