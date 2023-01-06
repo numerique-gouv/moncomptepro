@@ -132,34 +132,38 @@ export const findByEmailDomain = async (email_domain: string) => {
   }: QueryResult<Organization & { count: number }> = await connection.query(
     `
 SELECT
-    o.id,
-    o.siret,
-    o.authorized_email_domains,
-    o.external_authorized_email_domains,
-    o.created_at,
-    o.updated_at,
-    o.cached_libelle,
-    o.cached_nom_complet,
-    o.cached_enseigne,
-    o.cached_tranche_effectifs,
-    o.cached_tranche_effectifs_unite_legale,
-    o.cached_libelle_tranche_effectif,
-    o.cached_etat_administratif,
-    o.cached_est_active,
-    o.cached_statut_diffusion,
-    o.cached_est_diffusible,
-    o.cached_adresse,
-    o.cached_code_postal,
-    o.cached_activite_principale,
-    o.cached_libelle_activite_principale,
-    o.cached_categorie_juridique,
-    o.cached_libelle_categorie_juridique,
-    o.organization_info_fetched_at,
-    count(*)
-FROM organizations o
-LEFT JOIN users_organizations uo ON uo.organization_id = o.id
-WHERE $1=ANY(authorized_email_domains)
-GROUP BY o.id HAVING count(*) >= 10 ORDER BY count(*) DESC`,
+    sub.id,
+    sub.siret,
+    sub.authorized_email_domains,
+    sub.external_authorized_email_domains,
+    sub.created_at,
+    sub.updated_at,
+    sub.cached_libelle,
+    sub.cached_nom_complet,
+    sub.cached_enseigne,
+    sub.cached_tranche_effectifs,
+    sub.cached_tranche_effectifs_unite_legale,
+    sub.cached_libelle_tranche_effectif,
+    sub.cached_etat_administratif,
+    sub.cached_est_active,
+    sub.cached_statut_diffusion,
+    sub.cached_est_diffusible,
+    sub.cached_adresse,
+    sub.cached_code_postal,
+    sub.cached_activite_principale,
+    sub.cached_libelle_activite_principale,
+    sub.cached_categorie_juridique,
+    sub.cached_libelle_categorie_juridique,
+    sub.organization_info_fetched_at,
+    sub.count
+FROM (SELECT o.*, substring(u.email from '@(.*)$') as domain, count(*)
+      FROM users_organizations uo
+               INNER JOIN organizations o on o.id = uo.organization_id
+               INNER JOIN users u on u.id = uo.user_id
+      GROUP BY o.id, substring(u.email from '@(.*)$')
+      HAVING count(*) >= 5
+      ORDER BY count(*) DESC) sub
+WHERE domain=$1`,
     [email_domain]
   );
 

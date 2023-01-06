@@ -26,6 +26,8 @@ import {
 import { findById as findUserById } from '../repositories/user';
 import { getEmailDomain, isPersonalEmail } from '../services/is-personal-email';
 
+const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
+
 export const getOrganizationsByUserId = findByUserId;
 
 export const getUserOrganizations = async ({ user_id }) => {
@@ -50,7 +52,7 @@ export const getUserOrganization = async ({ user_id, organization_id }) => {
 };
 
 export const getOrganizationSuggestions = async ({ user_id, email }) => {
-  if (isPersonalEmail(email)) {
+  if (!doNotValidateMail && isPersonalEmail(email)) {
     return [];
   }
 
