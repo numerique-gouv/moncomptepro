@@ -29,6 +29,7 @@ export const getPersonalInformationsController = async (
 ) => {
   try {
     return res.render('personal-information', {
+      email: req.session.user.email,
       given_name: req.session.user.given_name,
       family_name: req.session.user.family_name,
       phone_number: req.session.user.phone_number,
