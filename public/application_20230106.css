@@ -201,3 +201,14 @@ body {
 .not-found-error > *:last-child {
     margin-bottom: 8rem;
 }
+
+.title-with-anchor > a {
+    visibility: hidden;
+    transform: translateX(-28px);
+    margin-right: -40px;
+    background-color: transparent !important;
+}
+
+.title-with-anchor:hover > a {
+    visibility: visible;
+}
