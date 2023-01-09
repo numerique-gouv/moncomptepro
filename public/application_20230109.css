@@ -212,3 +212,17 @@ body {
 .title-with-anchor:hover > a {
     visibility: visible;
 }
+
+.moncomptepro-notice--email .fr-notice__body:before {
+    content: "";
+    background-image: url(/assets/060-at.svg);
+    background-color: inherit;
+}
+
+.fr-notice.moncomptepro-notice--email {
+    background-color: var(--background-contrast-info);
+}
+
+.moncomptepro-notice--email strong {
+    color: var(--text-default-info);
+}
