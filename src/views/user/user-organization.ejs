@@ -17,23 +17,6 @@
                         <b>Activité principale (NAF/APE) :</b> <%= organization.cached_libelle_activite_principale %><br/>
                         <b>Nature juridique :</b> <%= organization.cached_libelle_categorie_juridique %><br/>
                     </p>
-                    <p>
-                        Si vous ne travaillez plus pour cette organisation, vous pouvez quitter l’organisation.
-                    </p>
-                    <form action="/users/quit-organization/<%= organization.id %>" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-
-                        <div class="card-button-container">
-                            <span>
-                                <a class="fr-link fr-fi-arrow-left-line fr-link--icon-left" href="/manage-organizations">
-                                    retour
-                                </a>
-                            </span>
-                            <button class="fr-btn fr-btn--secondary" type="submit">
-                                Quitter l’organisation
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

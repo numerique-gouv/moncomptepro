@@ -3,7 +3,6 @@ import { Router, urlencoded } from 'express';
 import {
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
-  getUserOrganizationController,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from '../controllers/organization';
@@ -214,13 +213,6 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
-  );
-
-  userRouter.get(
-    '/organization/:id',
-    csrfProtectionMiddleware,
-    checkUserHasPersonalInformationsMiddleware,
-    getUserOrganizationController
   );
 
   userRouter.post(
