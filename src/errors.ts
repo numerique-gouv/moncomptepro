@@ -5,8 +5,6 @@ export class InvalidEmailError extends Error {
   }
 }
 
-export class OrganizationNotFoundError extends Error {}
-
 export class InvalidSiretError extends Error {}
 
 export class UserNotFoundError extends Error {}

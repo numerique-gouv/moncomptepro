@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
           var estActive = response.organizationInfo.estActive;
           if (!estDiffusible) {
             organizationAlertElement.style.display = "block";
-            organizationAlertElement.innerHTML = "Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>";
+            organizationAlertElement.innerHTML = "Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "?mtm_campaign=moncomptepro'>Plus d'info.</a>";
           } else if (estActive) {
             organizationInfoElement.style.display = "block";
             organizationInfoLibelleElement.innerHTML = libelle;

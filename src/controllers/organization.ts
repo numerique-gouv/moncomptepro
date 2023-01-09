@@ -1,7 +1,6 @@
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
-  getUserOrganization,
   greetFirstOrganizationJoin,
   joinOrganization,
   quitOrganization,
@@ -17,11 +16,9 @@ import {
 import hasErrorFromField from '../services/has-error-from-field';
 import {
   InvalidSiretError,
-  OrganizationNotFoundError,
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
-import { isEmpty } from 'lodash';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -144,48 +141,6 @@ export const postJoinOrganizationMiddleware = async (
     if (error instanceof UserInOrganizationAlreadyError) {
       return res.redirect(
         `/users/join-organization?notification=user_in_organization_already&siret_hint=${req.body.siret}`
-      );
-    }
-
-    next(error);
-  }
-};
-
-export const getUserOrganizationController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const schema = z.object({
-      params: z.object({
-        id: idSchema(),
-      }),
-    });
-
-    const {
-      params: { id: organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
-
-    const organization = await getUserOrganization({
-      user_id: req.session.user.id,
-      organization_id,
-    });
-
-    return res.render('user/user-organization', {
-      notifications: await getNotificationsFromRequest(req),
-      organization,
-      csrfToken: req.csrfToken(),
-    });
-  } catch (error) {
-    if (
-      error instanceof OrganizationNotFoundError ||
-      error instanceof ZodError
-    ) {
-      return res.redirect(
-        `/manage-organizations?notification=organization_not_found`
       );
     }
 

@@ -96,6 +96,7 @@ export const getManageOrganizationsController = async (
       notifications: await getNotificationsFromRequest(req),
       userOrganizations,
       pendingUserOrganizations,
+      csrfToken: req.csrfToken(),
     });
   } catch (error) {
     next(error);

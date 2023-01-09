@@ -19,13 +19,33 @@
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
                                 <h4 class="fr-tile__title">
-                                    <a
-                                            class="fr-tile__link"
-                                            href="/users/organization/<%= id; %>"
-                                    ><%= cached_libelle; %></a>
+                                    <%= cached_libelle; %>
                                 </h4>
                                 <p class="fr-tile__desc"><%= cached_adresse; %></p>
-                                <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
+                                <p class="fr-tile__desc">
+                                    Activité principale (NAF/APE) : <%= cached_libelle_activite_principale; %>
+                                </p>
+                                <br />
+                                <p><strong><small>
+                                    Si vous ne travaillez plus pour cette organisation, vous pouvez quitter l’organisation.
+                                </small></strong></p>
+                                <br />
+                                <div class="card-button-container">
+                                    <form action="/users/quit-organization/<%= id %>" method="post">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                            Quitter l’organisation
+                                        </button>
+                                    </form>
+                                    <a
+                                        class="fr-link fr-link--sm"
+                                        href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Détails sur l’Annuaire des Entreprises
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -49,6 +69,18 @@
                                 <p class="fr-card__detail fr-icon-time-line">
                                     Votre demande pour représenter cette organisation en cours de traitement
                                 </p>
+                                <br />
+                                <div class="card-button-container">
+                                    <span></span>
+                                    <a
+                                            class="fr-link fr-link--sm"
+                                            href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                    >
+                                        Détails sur l’Annuaire des Entreprises
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

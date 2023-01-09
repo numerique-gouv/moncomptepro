@@ -3,7 +3,6 @@ import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
   InvalidSiretError,
-  OrganizationNotFoundError,
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
@@ -35,20 +34,6 @@ export const getUserOrganizations = async ({ user_id }) => {
   const pendingUserOrganizations = await findPendingByUserId(user_id);
 
   return { userOrganizations, pendingUserOrganizations };
-};
-
-export const getUserOrganization = async ({ user_id, organization_id }) => {
-  const userOrganizations = await findByUserId(user_id);
-
-  const organization = userOrganizations.find(
-    ({ id }) => id === parseInt(organization_id)
-  );
-
-  if (isEmpty(organization)) {
-    throw new OrganizationNotFoundError();
-  }
-
-  return organization;
 };
 
 export const doSuggestOrganizations = async ({ user_id, email }) => {
