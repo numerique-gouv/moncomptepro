@@ -4,11 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
   var organizationInfoAdresseElement = document.getElementById("organization-info-adresse");
   var organizationInfoActivitePrincipaleElement = document.getElementById("organization-info-activite-principale");
   var organizationAlertElement = document.getElementById("organization-alert");
-  var findYourSiretHereElement = document.getElementById("find-your-siret-here");
   var siretSelectorElement = document.getElementById("siret-selector");
 
   function clearOrganizationInfo() {
-    findYourSiretHereElement.style.display = "block";
     organizationInfoElement.style.display = "none";
     organizationInfoLibelleElement.innerHTML = "";
     organizationInfoAdresseElement.innerHTML = "";
@@ -44,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
             organizationAlertElement.style.display = "block";
             organizationAlertElement.innerHTML = "Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "'>Plus d'info.</a>";
           } else if (estActive) {
-            findYourSiretHereElement.style.display = "none";
             organizationInfoElement.style.display = "block";
             organizationInfoLibelleElement.innerHTML = libelle;
             organizationInfoAdresseElement.innerHTML = adresse;
