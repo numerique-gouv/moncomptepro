@@ -8,6 +8,16 @@
         <h2>
             Vos informations personnelles
         </h2>
+        <div class="fr-notice moncomptepro-notice--email">
+            <div class="fr-container">
+                <div class="fr-notice__body">
+                    <p>
+                        L’email rattaché à votre compte est <strong><%= email; %></strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <br />
         <form action="/personal-information" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
@@ -64,10 +74,6 @@
             <button class="fr-btn fr-btn--secondary" type="submit">
                 Mettre à jour
             </button>
-
         </form>
-        <br />
-        <br />
-        <p>L’email rattaché à votre compte est : <%= email; %></p>
     </div>
 </div>
