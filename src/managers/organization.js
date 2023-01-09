@@ -51,6 +51,18 @@ export const getUserOrganization = async ({ user_id, organization_id }) => {
   return organization;
 };
 
+export const doSuggestOrganizations = async ({ user_id, email }) => {
+  if (!doNotValidateMail && isPersonalEmail(email)) {
+    return false;
+  }
+
+  const domain = getEmailDomain(email);
+  const organizationsSuggestions = await findByEmailDomain(domain);
+  const userOrganizations = await getOrganizationsByUserId(user_id);
+
+  return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
+};
+
 export const getOrganizationSuggestions = async ({ user_id, email }) => {
   if (!doNotValidateMail && isPersonalEmail(email)) {
     return [];

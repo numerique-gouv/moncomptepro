@@ -1,4 +1,5 @@
 import {
+  doSuggestOrganizations,
   getOrganizationSuggestions,
   getUserOrganization,
   greetFirstOrganizationJoin,
@@ -20,6 +21,7 @@ import {
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
+import { isEmpty } from 'lodash';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -32,33 +34,61 @@ export const getJoinOrganizationController = async (
         siret_hint: siretSchema().optional(),
         is_external_hint: optionalBooleanSchema(),
         notification: z.string().optional(),
+        do_not_propose_suggestions: optionalBooleanSchema(),
       }),
     });
 
     const {
-      query: { is_external_hint, notification, siret_hint },
+      query: {
+        is_external_hint,
+        notification,
+        siret_hint,
+        do_not_propose_suggestions,
+      },
     } = await schema.parseAsync({
       query: req.query,
     });
 
     const { id: user_id, email } = req.session.user;
 
-    const organizationSuggestions = await getOrganizationSuggestions({
-      user_id,
-      email,
-    });
+    if (
+      !siret_hint &&
+      !is_external_hint &&
+      !notification &&
+      !do_not_propose_suggestions &&
+      (await doSuggestOrganizations({ user_id, email }))
+    ) {
+      return res.redirect('/users/organization-suggestions');
+    }
 
     return res.render('user/join-organization', {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
       siretHint: siret_hint,
       isExternalHint: is_external_hint,
-      organizationSuggestions,
       disabled: notification === 'unable_to_auto_join_organization',
     });
   } catch (error) {
     next(error);
   }
+};
+
+export const getOrganizationSuggestionsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: user_id, email } = req.session.user;
+
+  const organizationSuggestions = await getOrganizationSuggestions({
+    user_id,
+    email,
+  });
+
+  return res.render('user/organization-suggestions', {
+    organizationSuggestions,
+    csrfToken: req.csrfToken(),
+  });
 };
 
 export const postJoinOrganizationMiddleware = async (
