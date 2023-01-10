@@ -31,6 +31,17 @@ Vous pouvez également utiliser les comptes de tests suivants :
 
 ## 🖱️ Installer le bouton de connexion MonComptePro sur votre service en ligne
 
+### Récap des étapes
+
+Voici un récap de ce qu'il faut faire pour installer MonComptePro sur votre application :
+
+- [ ] J'ai trouvé mon client compatible OpenID (la liste est disponible sur le site openid.net : https://openid.net/developers/certified/)
+- [ ] J'ai paramétré la configuration en test (URL de rédirection, client ID & client secret)
+- [ ] J'ai branché en test et ça marche bien
+- [ ] J'ai configuré les secrets de production en demandant à l'équipe MonComptePro pour déployer le service en ligne en production
+- [ ] Mise en production 🚀
+
+
 ### Spécifications techniques
 
 La connexion MonComptePro est basée sur le standard [OpenID Connect](https://openid.net/connect/) également utilisé par FranceConnect. Pour mettre en place la connexion MonComptePro, il vous faut donc installer sur votre service en ligne un module de connexion compatible OpenID Connect ou utiliser un des « clients » compatibles OpenID Connect. Vous trouverez une liste des clients compatibles sur le site openid.net : https://openid.net/developers/certified/
