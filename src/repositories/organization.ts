@@ -160,6 +160,7 @@ FROM (SELECT o.*, substring(u.email from '@(.*)$') as domain, count(*)
       FROM users_organizations uo
                INNER JOIN organizations o on o.id = uo.organization_id
                INNER JOIN users u on u.id = uo.user_id
+      WHERE o.cached_est_active = 'true'
       GROUP BY o.id, substring(u.email from '@(.*)$')
       HAVING count(*) >= 5
       ORDER BY count(*) DESC) sub
