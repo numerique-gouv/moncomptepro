@@ -63,7 +63,6 @@ export const getJoinOrganizationController = async (
       csrfToken: req.csrfToken(),
       siretHint: siret_hint,
       isExternalHint: is_external_hint,
-      disabled: notification === 'unable_to_auto_join_organization',
     });
   } catch (error) {
     next(error);
@@ -125,7 +124,7 @@ export const postJoinOrganizationMiddleware = async (
   } catch (error) {
     if (error instanceof UnableToAutoJoinOrganizationError) {
       return res.redirect(
-        `/users/join-organization?notification=unable_to_auto_join_organization&siret_hint=${req.body.siret}`
+        `/users/unable-to-auto-join-organization?libelle=${error.libelle}`
       );
     }
 
@@ -145,6 +144,32 @@ export const postJoinOrganizationMiddleware = async (
     }
 
     next(error);
+  }
+};
+
+export const getUnableToAutoJoinOrganizationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        libelle: z.string().min(1),
+      }),
+    });
+
+    const {
+      query: { libelle },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    return res.render('user/unable-to-auto-join-organization', {
+      libelle,
+    });
+  } catch (e) {
+    next(e);
   }
 };
 

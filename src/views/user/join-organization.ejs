@@ -7,7 +7,6 @@
                 </h4>
                 <div class="fr-card__desc">
                     <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
-                    <% if (!locals.disabled) { %>
                     <form id="form-join-organization" action="/users/join-organization" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
@@ -61,7 +60,6 @@
 
                         <%- include('../partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
                     </form>
-                    <% } %>
                 </div>
             </div>
         </div>

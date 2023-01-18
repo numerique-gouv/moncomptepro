@@ -3,6 +3,7 @@ import { Router, urlencoded } from 'express';
 import {
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
+  getUnableToAutoJoinOrganizationController,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from '../controllers/organization';
@@ -199,6 +200,11 @@ export const userRouter = () => {
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
+  );
+
+  userRouter.get(
+    '/unable-to-auto-join-organization',
+    getUnableToAutoJoinOrganizationController
   );
 
   userRouter.get(
