@@ -9,7 +9,12 @@ export class InvalidSiretError extends Error {}
 
 export class UserNotFoundError extends Error {}
 
-export class UnableToAutoJoinOrganizationError extends Error {}
+export class UnableToAutoJoinOrganizationError extends Error {
+  constructor(public libelle: string) {
+    super();
+    this.libelle = libelle;
+  }
+}
 
 export class UserInOrganizationAlreadyError extends Error {}
 

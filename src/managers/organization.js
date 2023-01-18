@@ -116,7 +116,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
       to: [email],
       cc: ['moncomptepro@beta.gouv.fr'],
       subject: `[MonComptePro] Demande pour rejoindre ${libelle}`,
-      template: 'unable-to-auto-join-organization-acknowledgment',
+      template: 'unable-to-auto-join-organization',
       params: {
         libelle,
       },
@@ -128,7 +128,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
       as_external: is_external,
     });
 
-    throw new UnableToAutoJoinOrganizationError();
+    throw new UnableToAutoJoinOrganizationError(organization.cached_libelle);
   }
 
   // Create organization if needed
