@@ -342,7 +342,7 @@ VALUES
      'http://localhost:3000/api/auth/mon-compte-pro/callback'
      ],
    ARRAY [
-     'http://localhost:3000/api/mon-compte-pro/logout'
+     'http://localhost:3000/api/auth/mon-compte-pro/logout'
      ],
    'openid email',
    'http://localhost:3000/connexion/agent-public',
