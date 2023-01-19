@@ -333,7 +333,20 @@ VALUES
      ],
    'openid email organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
-   'Saisir et manipuler collaborativement les données')
+   'Saisir et manipuler collaborativement les données'),
+  (5,
+   'Annuaire des Entreprises',
+   '333ba6a6fd9303ab727159eeed704bcbc2549e56cd294fdf58621f01b1856898d18c6b20dd2cec21d4dc06746453331328a1b2c1abe365a92bb2a2f3b9d68c69',
+   '031da300506ac31fac6feaf88575b94b886eae7a68c64327ee03e0fa635ae9ae28572e4de53bb435b3fce4f8ac8484334d71de48f3c9abed3709c730173e0fe0',
+   ARRAY [
+     'http://localhost:3000/api/auth/mon-compte-pro/callback'
+     ],
+   ARRAY [
+     'http://localhost:3000/api/mon-compte-pro/logout'
+     ],
+   'openid email',
+   'http://localhost:3000/connexion/agent-public',
+   'Accédez à l’espace agent public sur l’Annuaire des Entreprises.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,

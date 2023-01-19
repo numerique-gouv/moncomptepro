@@ -146,7 +146,7 @@ Vous pouvez utiliser l’intégration suivante :
 Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout. Pour permettre la connexion avec MonComptePro, il faut enregistrer dans notre base de données les informations suivantes :
 
 - la ou les URL de redirection : élément nécessaire au bon déroulement de la cinématique OpenId Connect
-- client id & client secret : nous vous fournirons le couple client id & client secret de production, vous pouvez définir vous-même le couple à utiliser dans l'environnement de test.
+- client id & client secret : contactez nous à moncomptepro@beta.gouv.fr pour obtenir votre couple client id & client secret.
 - optionnellement, une ou plusieurs URL de redirection post logout : pour permettre à vos usagers de se déconnecter de votre plateforme.
 
 Vous pouvez nous soumettre l'ensemble de ces informations par mail à contact@moncomptepro.beta.gouv.fr ou directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/betagouv/moncomptepro/blob/master/scripts/fixtures.sql#L232-L238
