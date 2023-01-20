@@ -2,6 +2,8 @@
 import { isFree } from 'is-disposable-email-domain';
 import { parse_host } from 'tld-extract';
 
+const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
+
 export const getEmailDomain = email => {
   const parts = email.split('@');
   const host = parts[parts.length - 1];
@@ -10,8 +12,8 @@ export const getEmailDomain = email => {
   return domain;
 };
 
-export const isPersonalEmail = email => {
+export const usesAFreeEmailProvider = email => {
   const domain = getEmailDomain(email);
 
-  return isFree(domain);
+  return !doNotValidateMail && isFree(domain);
 };

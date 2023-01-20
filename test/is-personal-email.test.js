@@ -1,8 +1,8 @@
 import assert from 'assert';
 import {
   getEmailDomain,
-  isPersonalEmail,
-} from '../src/services/is-personal-email';
+  usesAFreeEmailProvider,
+} from '../src/services/uses-a-free-email-provider';
 
 describe('getEmailDomain', () => {
   it('should return email domain', () => {
@@ -18,8 +18,8 @@ describe('isPersonalEmail', () => {
   ];
 
   personalEmailAddresses.forEach(personalEmailAddress => {
-    it('should return true for personal email address', () => {
-      assert.equal(isPersonalEmail(personalEmailAddress), true);
+    it('should return true for free email provider address', () => {
+      assert.equal(usesAFreeEmailProvider(personalEmailAddress), true);
     });
   });
 
@@ -30,8 +30,8 @@ describe('isPersonalEmail', () => {
   ];
 
   professionalEmailAddresses.forEach(professionalEmailAddress => {
-    it('should return false for professional email address', () => {
-      assert.equal(isPersonalEmail(professionalEmailAddress), false);
+    it('should return false for non free provider email address', () => {
+      assert.equal(usesAFreeEmailProvider(professionalEmailAddress), false);
     });
   });
 });

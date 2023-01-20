@@ -24,9 +24,10 @@ import {
   updateOrganizationInfo,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
-import { getEmailDomain, isPersonalEmail } from '../services/is-personal-email';
-
-const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
+import {
+  getEmailDomain,
+  usesAFreeEmailProvider,
+} from '../services/uses-a-free-email-provider';
 
 export const getOrganizationsByUserId = findByUserId;
 
@@ -38,7 +39,7 @@ export const getUserOrganizations = async ({ user_id }) => {
 };
 
 export const doSuggestOrganizations = async ({ user_id, email }) => {
-  if (!doNotValidateMail && isPersonalEmail(email)) {
+  if (usesAFreeEmailProvider(email)) {
     return false;
   }
 
@@ -50,7 +51,7 @@ export const doSuggestOrganizations = async ({ user_id, email }) => {
 };
 
 export const getOrganizationSuggestions = async ({ user_id, email }) => {
-  if (!doNotValidateMail && isPersonalEmail(email)) {
+  if (usesAFreeEmailProvider(email)) {
     return [];
   }
 
@@ -100,7 +101,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
 
   // Ensure user can join organization automatically
   const { email, given_name, family_name } = user;
-  const emailDomain = email.split('@').pop();
+  const emailDomain = getEmailDomain(email);
   let organization = await findBySiret(siret);
 
   // Update organizationInfo
