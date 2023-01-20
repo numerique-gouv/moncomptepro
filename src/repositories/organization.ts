@@ -45,7 +45,7 @@ ORDER BY uo.created_at`,
   return rows;
 };
 
-export const findPendingByUserId = async (user_id: string) => {
+export const findPendingByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Organization> = await connection.query(
@@ -384,7 +384,7 @@ export const getUsers = async (organization_id: number) => {
 
   const {
     rows,
-  }: QueryResult<User | { is_external: boolean }> = await connection.query(
+  }: QueryResult<User & { is_external: boolean }> = await connection.query(
     `
 SELECT
     u.id,

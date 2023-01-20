@@ -17,7 +17,8 @@ export const idSchema = () =>
   z
     .string()
     .min(1)
-    .refine(val => val.match(/^\d*$/));
+    .refine(val => val.match(/^\d*$/))
+    .transform(val => parseInt(val, 10));
 
 export const optionalBooleanSchema = () =>
   z

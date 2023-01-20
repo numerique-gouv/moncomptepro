@@ -2,6 +2,7 @@ import { isEmpty, some } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
+  InseeNotFoundError,
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
@@ -31,14 +32,27 @@ import {
 
 export const getOrganizationsByUserId = findByUserId;
 
-export const getUserOrganizations = async ({ user_id }) => {
+export const getUserOrganizations = async ({
+  user_id,
+}: {
+  user_id: number;
+}): Promise<{
+  userOrganizations: Organization[];
+  pendingUserOrganizations: Organization[];
+}> => {
   const userOrganizations = await findByUserId(user_id);
   const pendingUserOrganizations = await findPendingByUserId(user_id);
 
   return { userOrganizations, pendingUserOrganizations };
 };
 
-export const doSuggestOrganizations = async ({ user_id, email }) => {
+export const doSuggestOrganizations = async ({
+  user_id,
+  email,
+}: {
+  user_id: number;
+  email: string;
+}): Promise<boolean> => {
   if (usesAFreeEmailProvider(email)) {
     return false;
   }
@@ -50,7 +64,13 @@ export const doSuggestOrganizations = async ({ user_id, email }) => {
   return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
 };
 
-export const getOrganizationSuggestions = async ({ user_id, email }) => {
+export const getOrganizationSuggestions = async ({
+  user_id,
+  email,
+}: {
+  user_id: number;
+  email: string;
+}): Promise<Organization[]> => {
   if (usesAFreeEmailProvider(email)) {
     return [];
   }
@@ -66,15 +86,19 @@ export const getOrganizationSuggestions = async ({ user_id, email }) => {
   );
 };
 
-export const joinOrganization = async ({ siret, user_id, is_external }) => {
-  let organizationInfo = {};
+export const joinOrganization = async ({
+  siret,
+  user_id,
+  is_external,
+}: {
+  siret: string;
+  user_id: number;
+  is_external: boolean;
+}) => {
+  let organizationInfo: OrganizationInfo;
 
   try {
     organizationInfo = await getOrganizationInfo(siret);
-
-    if (organizationInfo.siret !== siret) {
-      throw new Error('invalid response from sirene API');
-    }
 
     if (!organizationInfo.estActive) {
       // A : Actif;
@@ -83,6 +107,10 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     }
   } catch (error) {
     console.error(error);
+
+    if (error instanceof InseeNotFoundError) {
+      throw new Error('invalid response from sirene API');
+    }
 
     if (error instanceof InseeTimeoutError) {
       throw error;
@@ -134,6 +162,7 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
       as_external: is_external,
     });
 
+    // @ts-ignore this might be fixed in a future refactor of this function
     throw new UnableToAutoJoinOrganizationError(organization.cached_libelle);
   }
 
@@ -209,14 +238,20 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
   return true;
 };
 
-export const greetFirstOrganizationJoin = async ({ user_id }) => {
+export const greetFirstOrganizationJoin = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
   const userOrganizations = await getOrganizationsByUserId(user_id);
 
   if (userOrganizations.length !== 1) {
     return false;
   }
 
-  const { given_name, family_name, email } = await findUserById(user_id);
+  const { given_name, family_name, email } = (await findUserById(
+    user_id
+  )) as User;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -229,7 +264,13 @@ export const greetFirstOrganizationJoin = async ({ user_id }) => {
   return true;
 };
 
-export const quitOrganization = async ({ user_id, organization_id }) => {
+export const quitOrganization = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
   await deleteUserOrganisation({ user_id, organization_id });
 
   return null;

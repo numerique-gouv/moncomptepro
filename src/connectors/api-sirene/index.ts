@@ -7,7 +7,7 @@ import {
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
 } from './formatters';
-import { InseeTimeoutError } from '../../errors';
+import { InseeNotFoundError, InseeTimeoutError } from '../../errors';
 
 const { INSEE_CONSUMER_KEY, INSEE_CONSUMER_SECRET } = process.env;
 // we wait just enough to avoid nginx default timeout of 60 seconds
@@ -15,7 +15,7 @@ const REQUEST_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds
 
 export const getOrganizationInfo = async (
   siret: string
-): Promise<OrganizationInfo | {}> => {
+): Promise<OrganizationInfo> => {
   try {
     const {
       data: { access_token },
@@ -53,7 +53,7 @@ export const getOrganizationInfo = async (
     } = etablissement;
 
     if (statutDiffusionEtablissement === 'N') {
-      return {};
+      throw new InseeNotFoundError();
     }
 
     const {
@@ -127,7 +127,7 @@ export const getOrganizationInfo = async (
       e.response &&
       [403, 404].includes(e.response.status)
     ) {
-      return {};
+      throw new InseeNotFoundError();
     }
 
     if (e instanceof AxiosError && e.code === 'ECONNABORTED') {

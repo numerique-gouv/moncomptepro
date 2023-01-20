@@ -46,7 +46,7 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
   try {
     const result = {
       login: {
-        accountId: req.session.user.id.toString(),
+        accountId: req.session.user!.id.toString(),
         acr: 'urn:mace:incommon:iap:bronze',
         amr: ['pwd'],
       },
@@ -58,7 +58,7 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
       params: { client_id },
     } = await oidcProvider.interactionDetails(req, res);
 
-    await incrementConnectionCount(req.session.user.id, client_id);
+    await incrementConnectionCount(req.session.user!.id, client_id);
 
     await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {

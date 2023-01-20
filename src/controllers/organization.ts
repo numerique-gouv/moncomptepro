@@ -47,7 +47,7 @@ export const getJoinOrganizationController = async (
       query: req.query,
     });
 
-    const { id: user_id, email } = req.session.user;
+    const { id: user_id, email } = req.session.user!;
 
     if (
       !siret_hint &&
@@ -75,7 +75,7 @@ export const getOrganizationSuggestionsController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: user_id, email } = req.session.user;
+  const { id: user_id, email } = req.session.user!;
 
   const organizationSuggestions = await getOrganizationSuggestions({
     user_id,
@@ -109,12 +109,12 @@ export const postJoinOrganizationMiddleware = async (
 
     await joinOrganization({
       siret,
-      user_id: req.session.user.id,
+      user_id: req.session.user!.id,
       is_external,
     });
 
     const shouldWelcomeUser = await greetFirstOrganizationJoin({
-      user_id: req.session.user.id,
+      user_id: req.session.user!.id,
     });
 
     if (shouldWelcomeUser) {
@@ -199,7 +199,7 @@ export const postQuitUserOrganizationController = async (
     });
 
     await quitOrganization({
-      user_id: req.session.user.id,
+      user_id: req.session.user!.id,
       organization_id,
     });
 

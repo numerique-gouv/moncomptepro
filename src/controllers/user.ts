@@ -273,13 +273,13 @@ export const getVerifyEmailController = async (
     });
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
-      email: req.session.user.email,
+      email: req.session.user!.email,
       checkBeforeSend: true,
     });
 
     return res.render('user/verify-email', {
       notifications: await getNotificationsFromRequest(req),
-      email: req.session.user.email,
+      email: req.session.user!.email,
       csrfToken: req.csrfToken(),
       newCodeSent: new_code_sent,
       codeSent,
@@ -317,7 +317,7 @@ export const postVerifyEmailController = async (
     });
 
     req.session.user = await verifyEmail(
-      req.session.user.email,
+      req.session.user!.email,
       verify_email_token
     );
 
@@ -340,7 +340,7 @@ export const postSendEmailVerificationController = async (
 ) => {
   try {
     await sendEmailAddressVerificationEmail({
-      email: req.session.user.email,
+      email: req.session.user!.email,
       checkBeforeSend: false,
     });
 
@@ -603,10 +603,10 @@ export const getPersonalInformationsController = async (
 ) => {
   try {
     return res.render('user/personal-information', {
-      given_name: req.session.user.given_name,
-      family_name: req.session.user.family_name,
-      phone_number: req.session.user.phone_number,
-      job: req.session.user.job,
+      given_name: req.session.user!.given_name,
+      family_name: req.session.user!.family_name,
+      phone_number: req.session.user!.phone_number,
+      job: req.session.user!.job,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
     });
@@ -642,7 +642,7 @@ export const postPersonalInformationsController = async (
       body: { given_name, family_name, phone_number, job },
     } = await getParamsForPostPersonalInformationsController(req);
 
-    req.session.user = await updatePersonalInformations(req.session.user.id, {
+    req.session.user = await updatePersonalInformations(req.session.user!.id, {
       given_name,
       family_name,
       phone_number,

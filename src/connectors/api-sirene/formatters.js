@@ -5,7 +5,7 @@ import { codesNaf } from './codes-naf';
 import { codesVoies } from './codes-voie';
 
 export const formatEnseigne = (...args) =>
-  capitalize(args.filter(e => !isEmpty(e)).join(' ')) || null;
+  capitalize(args.filter(e => !isEmpty(e)).join(' ')) || '';
 
 export const formatNomComplet = ({
   denominationUniteLegale,

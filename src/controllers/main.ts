@@ -13,7 +13,7 @@ export const getHomeController = async (
   next: NextFunction
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
-    req.session.user.id
+    req.session.user!.id
   );
 
   return res.render('home', {
@@ -29,11 +29,11 @@ export const getPersonalInformationsController = async (
 ) => {
   try {
     return res.render('personal-information', {
-      email: req.session.user.email,
-      given_name: req.session.user.given_name,
-      family_name: req.session.user.family_name,
-      phone_number: req.session.user.phone_number,
-      job: req.session.user.job,
+      email: req.session.user!.email,
+      given_name: req.session.user!.given_name,
+      family_name: req.session.user!.family_name,
+      phone_number: req.session.user!.phone_number,
+      job: req.session.user!.job,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
     });
@@ -52,7 +52,7 @@ export const postPersonalInformationsController = async (
       body: { given_name, family_name, phone_number, job },
     } = await getParamsForPostPersonalInformationsController(req);
 
-    req.session.user = await updatePersonalInformations(req.session.user.id, {
+    req.session.user = await updatePersonalInformations(req.session.user!.id, {
       given_name,
       family_name,
       phone_number,
@@ -60,11 +60,11 @@ export const postPersonalInformationsController = async (
     });
 
     return res.render('personal-information', {
-      email: req.session.user.email,
-      given_name: req.session.user.given_name,
-      family_name: req.session.user.family_name,
-      phone_number: req.session.user.phone_number,
-      job: req.session.user.job,
+      email: req.session.user!.email,
+      given_name: req.session.user!.given_name,
+      family_name: req.session.user!.family_name,
+      phone_number: req.session.user!.phone_number,
+      job: req.session.user!.job,
       notifications: [
         notificationMessages['personal_information_update_success'],
       ],
@@ -90,7 +90,7 @@ export const getManageOrganizationsController = async (
     const {
       userOrganizations,
       pendingUserOrganizations,
-    } = await getUserOrganizations({ user_id: req.session.user.id });
+    } = await getUserOrganizations({ user_id: req.session.user!.id });
 
     return res.render('manage-organizations', {
       notifications: await getNotificationsFromRequest(req),
@@ -111,7 +111,7 @@ export const getResetPasswordController = async (
   try {
     return res.render('reset-password', {
       notifications: await getNotificationsFromRequest(req),
-      loginHint: req.session.user.email,
+      loginHint: req.session.user!.email,
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
