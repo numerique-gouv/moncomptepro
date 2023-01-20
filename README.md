@@ -31,20 +31,33 @@ Vous pouvez également utiliser les comptes de tests suivants :
 
 ## 🖱️ Installer le bouton de connexion MonComptePro sur votre service en ligne
 
-### Récap des étapes
+### Les étapes de l’installation
 
-Voici un récap de ce qu'il faut faire pour installer MonComptePro sur votre application :
-
-- [ ] J'ai trouvé mon client compatible OpenID (la liste est disponible sur le site openid.net : https://openid.net/developers/certified/)
-- [ ] J'ai paramétré la configuration en test (URL de rédirection, client ID & client secret)
-- [ ] J'ai branché en test et ça marche bien
-- [ ] J'ai configuré les secrets de production en demandant à l'équipe MonComptePro pour déployer le service en ligne en production
+- [ ] Je me suis familiarisé avec la cinématique OpenId Connect : voir [Connaissances préalables](#connaissances-préalables)
+- [ ] J’ai récupéré mon `client_id` et mon `client_secret` auprès de l’équipe MonComptePro : envoyer la demande à [moncomptepro@beta.gouv.fr](mailto:moncomptepro@beta.gouv.fr?subject=%5BMonComptePro%5D%20Obtenir%20un%20couple%20client_id%20%2F%20client_secret&body=Bonjour%2C%0A%0AConform%C3%A9ment%20%C3%A0%20votre%20documentation%20github%2C%20j%27aimerai%20obtenir%20un%20couple%20client_id%2C%20client_secret%20pour%20int%C3%A9grer%20MonComptePro%20sur%20mon%20application.%0A%0ACordialement%2C) 
+- [ ] J’ai trouvé un client OpenID compatible avec ma pile technique : vous pouvez [consulter la liste officielle du site openid.net](https://openid.net/developers/certified/)
+- [ ] J’affiche un bouton MonComptePro conforme sur mon application en environment de développement : voir [Spécifications visuelles](#spécifications-visuelles) 
+- [ ] J’ai installé et paramétré mon client OpenID sur mon application en développement : voir [Spécifications techniques](#spécifications-techniques)
+- [ ] Pour passer l’erreur `invalid_redirect_uri`, j'ai fourni mon URL de redirection de test à [l’équipe MonComptePro](mailto:moncomptepro@beta.gouv.fr) (ex : http://localhost:3000/auth/callback, https://dev.example.com/api/oauth/connection)
+- [ ] Mon implémentation fonctionne
+- [ ] J’ai récupéré mon `client_id` et mon `client_secret` de production
 - [ ] Mise en production 🚀
+
+### Connaissances préalables
+
+La connexion MonComptePro est basée sur le standard [OpenID Connect](https://openid.net/connect/) également utilisé par FranceConnect.
+Ce standard peut être complexe à appréhender.
+Avant de vous lancer dans l’implémentation, nous vous recommandons donc d’avoir un aperçu de la cinématique OpenID Connect.
+
+Vous trouverez des ressources abondantes sur le sujet sur internet. Voici notre sélection :
+
+- [La cinématique complète expliquée en 3 minutes](https://www.youtube.com/watch?v=t18YB3xDfXI&t=482s) par Okta
+- [Un article qui rentre plus en détail](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc) rédigé par la même équipe
 
 
 ### Spécifications techniques
 
-La connexion MonComptePro est basée sur le standard [OpenID Connect](https://openid.net/connect/) également utilisé par FranceConnect. Pour mettre en place la connexion MonComptePro, il vous faut donc installer sur votre service en ligne un module de connexion compatible OpenID Connect ou utiliser un des « clients » compatibles OpenID Connect. Vous trouverez une liste des clients compatibles sur le site openid.net : https://openid.net/developers/certified/
+Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout.
 
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
@@ -141,19 +154,11 @@ Vous pouvez utiliser l’intégration suivante :
 - [exemple d’implémentation avec React et TypeScript](https://github.com/betagouv/datapass/tree/master/frontend/src/components/atoms/MonComptePro)
 - [exemple d’implementation en HTML + CSS](https://github.com/betagouv/moncomptepro-landing-page/blob/master/public/bouton.html) ainsi que [le rendu associé](https://moncomptepro.beta.gouv.fr/bouton)
 
-### Installation en environnement de test
+### Configuration de l’environnement de test
 
-Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout. Pour permettre la connexion avec MonComptePro, il faut enregistrer dans notre base de données les informations suivantes :
+Vous pouvez configurer votre client OpenId de test directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/betagouv/moncomptepro/blob/master/scripts/fixtures.sql#L225-L241
 
-- la ou les URL de redirection : élément nécessaire au bon déroulement de la cinématique OpenId Connect
-- client id & client secret : contactez nous à moncomptepro@beta.gouv.fr pour obtenir votre couple client id & client secret.
-- optionnellement, une ou plusieurs URL de redirection post logout : pour permettre à vos usagers de se déconnecter de votre plateforme.
-
-Vous pouvez nous soumettre l'ensemble de ces informations par mail à contact@moncomptepro.beta.gouv.fr ou directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/betagouv/moncomptepro/blob/master/scripts/fixtures.sql#L232-L238
-
-### Installation en environnement de production
-
-Une fois la connexion MonComptePro fonctionnelle en environnement de test, nous vous fournirons les secrets de production par voie sécurisée afin de déployer le bouton sur votre service en ligne en production.
+La nouvelle configuration sera déployée en environment de test dès que la pull request sera validée.
 
 ## 👋 Contribuer à MonComptePro
 
