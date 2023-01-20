@@ -2,6 +2,7 @@ import { isEmpty, some } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
+  InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
@@ -81,6 +82,10 @@ export const joinOrganization = async ({ siret, user_id, is_external }) => {
     }
   } catch (error) {
     console.error(error);
+
+    if (error instanceof InseeTimeoutError) {
+      throw error;
+    }
 
     throw new InvalidSiretError();
   }

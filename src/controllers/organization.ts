@@ -15,6 +15,7 @@ import {
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
 import {
+  InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
@@ -134,6 +135,12 @@ export const postJoinOrganizationMiddleware = async (
     ) {
       return res.redirect(
         `/users/join-organization?notification=invalid_siret&siret_hint=${req.body.siret}`
+      );
+    }
+
+    if (error instanceof InseeTimeoutError) {
+      return res.redirect(
+        `/users/join-organization?notification=insee_timeout&siret_hint=${req.body.siret}`
       );
     }
 

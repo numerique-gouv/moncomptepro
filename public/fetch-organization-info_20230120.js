@@ -50,10 +50,11 @@ document.addEventListener("DOMContentLoaded", function() {
             organizationAlertElement.style.display = "block";
             organizationAlertElement.innerHTML = "État administratif de l'établissement : fermé";
           }
-
         } else if (xmlhttp.status === 404) {
           organizationAlertElement.style.display = "block";
           organizationAlertElement.innerHTML = "Nous n'avons pas trouvé votre organisation.";
+        } else if (xmlhttp.status === 504) {
+          // silently fails
         } else {
           organizationAlertElement.style.display = "block";
           organizationAlertElement.innerHTML =
