@@ -34,7 +34,7 @@ Vous pouvez également utiliser les comptes de tests suivants :
 ### Les étapes de l’installation
 
 - [ ] Je me suis familiarisé avec la cinématique OpenId Connect : voir [Connaissances préalables](#connaissances-préalables)
-- [ ] J’ai récupéré mon `client_id` et mon `client_secret` auprès de l’équipe MonComptePro : envoyer la demande à [moncomptepro@beta.gouv.fr](mailto:moncomptepro@beta.gouv.fr?subject=%5BMonComptePro%5D%20Obtenir%20un%20couple%20client_id%20%2F%20client_secret&body=Bonjour%2C%0A%0AConform%C3%A9ment%20%C3%A0%20votre%20documentation%20github%2C%20j%27aimerai%20obtenir%20un%20couple%20client_id%2C%20client_secret%20pour%20int%C3%A9grer%20MonComptePro%20sur%20mon%20application.%0A%0ACordialement%2C) 
+- [ ] J’ai récupéré mon `client_id` et mon `client_secret` de test auprès de l’équipe MonComptePro : envoyer la demande à [moncomptepro@beta.gouv.fr](mailto:moncomptepro@beta.gouv.fr?subject=%5BMonComptePro%5D%20Obtenir%20un%20couple%20client_id%20%2F%20client_secret&body=Bonjour%2C%0A%0AConform%C3%A9ment%20%C3%A0%20votre%20documentation%20github%2C%20j%27aimerai%20obtenir%20un%20couple%20client_id%2C%20client_secret%20pour%20int%C3%A9grer%20MonComptePro%20sur%20mon%20application.%0A%0ACordialement%2C) 
 - [ ] J’ai trouvé un client OpenID compatible avec ma pile technique : vous pouvez [consulter la liste officielle du site openid.net](https://openid.net/developers/certified/)
 - [ ] J’affiche un bouton MonComptePro conforme sur mon application en environment de développement : voir [Spécifications visuelles](#spécifications-visuelles) 
 - [ ] J’ai installé et paramétré mon client OpenID sur mon application en développement : voir [Spécifications techniques](#spécifications-techniques)
