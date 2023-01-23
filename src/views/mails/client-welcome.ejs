@@ -1,0 +1,23 @@
+Bonjour <%= given_name %> <%= family_name %>,
+<br /><br />
+Vous avez rejoint <%= libelle %> <% if params.is_external %> en tant qu’externe<% endif %>sur MonComptePro.
+<br /><br />
+Voici la liste des personnes qui ont également la possibilité d’effectuer de démarches sur <a href="https://datapass.api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">DataPass</a> au nom de <%= libelle %> :
+<br /><br />
+<ul>
+    <% usersInOrganizationAlready.map(function({ given_name, family_name, is_external }) { %>
+        <li><%= given_name %> <%= (family_name || '').toUpperCase() %><% if(is_external) { %> (externe)<% } %></li>
+    <% }) %>
+</ul>
+<br /><br />
+
+Si vous pensez que cette liste contient des erreurs, 
+    <a href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Erreur%20-%20Mon%20organisation%20api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">
+        <u>
+            faites-le nous savoir en répondant à cet email.
+        </u>
+    </a>
+<br /><br />
+Cordialement,
+<br /><br />
+L’équipe MonComptePro
