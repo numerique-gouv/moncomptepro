@@ -45,7 +45,7 @@ ORDER BY uo.created_at`,
   return rows;
 };
 
-export const findPendingByUserId = async (user_id: string) => {
+export const findPendingByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Organization> = await connection.query(
@@ -86,42 +86,6 @@ ORDER BY m.created_at
   );
 
   return rows;
-};
-
-export const findBySiret = async (siret: string) => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<Organization> = await connection.query(
-    `
-SELECT
-  id,
-  siret,
-  authorized_email_domains,
-  external_authorized_email_domains,
-  created_at,
-  updated_at,
-  cached_libelle,
-  cached_nom_complet,
-  cached_enseigne,
-  cached_tranche_effectifs,
-  cached_tranche_effectifs_unite_legale,
-  cached_libelle_tranche_effectif,
-  cached_etat_administratif,
-  cached_est_active,
-  cached_statut_diffusion,
-  cached_est_diffusible,
-  cached_adresse,
-  cached_code_postal,
-  cached_activite_principale,
-  cached_libelle_activite_principale,
-  cached_categorie_juridique,
-  cached_libelle_categorie_juridique,
-  organization_info_fetched_at
-FROM organizations WHERE siret = $1`,
-    [siret]
-  );
-
-  return rows.shift();
 };
 
 export const findByEmailDomain = async (email_domain: string) => {
@@ -171,7 +135,7 @@ WHERE domain=$1`,
   return rows;
 };
 
-export const create = async ({
+export const upsert = async ({
   siret,
   organizationInfo: {
     libelle: cached_libelle,
@@ -191,13 +155,9 @@ export const create = async ({
     categorieJuridique: cached_categorie_juridique,
     libelleCategorieJuridique: cached_libelle_categorie_juridique,
   },
-  authorized_email_domains,
-  external_authorized_email_domains,
 }: {
   siret: string;
   organizationInfo: OrganizationInfo;
-  authorized_email_domains: string[];
-  external_authorized_email_domains: string[];
 }) => {
   const connection = getDatabaseConnection();
 
@@ -205,30 +165,72 @@ export const create = async ({
     `
 INSERT INTO organizations
     (
-     siret,
-     cached_libelle,
-     cached_nom_complet,
-     cached_enseigne,
-     cached_tranche_effectifs,
-     cached_tranche_effectifs_unite_legale,
-     cached_libelle_tranche_effectif,
-     cached_etat_administratif,
-     cached_est_active,
-     cached_statut_diffusion,
-     cached_est_diffusible,
-     cached_adresse,
-     cached_code_postal,
-     cached_activite_principale,
-     cached_libelle_activite_principale,
-     cached_categorie_juridique,
-     cached_libelle_categorie_juridique,
-     organization_info_fetched_at,
-     authorized_email_domains,
-     external_authorized_email_domains, 
-     updated_at,
-     created_at
-     )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
+        siret,
+        cached_libelle,
+        cached_nom_complet,
+        cached_enseigne,
+        cached_tranche_effectifs,
+        cached_tranche_effectifs_unite_legale,
+        cached_libelle_tranche_effectif,
+        cached_etat_administratif,
+        cached_est_active,
+        cached_statut_diffusion,
+        cached_est_diffusible,
+        cached_adresse,
+        cached_code_postal,
+        cached_activite_principale,
+        cached_libelle_activite_principale,
+        cached_categorie_juridique,
+        cached_libelle_categorie_juridique,
+        organization_info_fetched_at,
+        updated_at,
+        created_at
+    )
+VALUES
+  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+ON CONFLICT (siret)
+DO UPDATE
+    SET (
+        siret,
+        cached_libelle,
+        cached_nom_complet,
+        cached_enseigne,
+        cached_tranche_effectifs,
+        cached_tranche_effectifs_unite_legale,
+        cached_libelle_tranche_effectif,
+        cached_etat_administratif,
+        cached_est_active,
+        cached_statut_diffusion,
+        cached_est_diffusible,
+        cached_adresse,
+        cached_code_postal,
+        cached_activite_principale,
+        cached_libelle_activite_principale,
+        cached_categorie_juridique,
+        cached_libelle_categorie_juridique,
+        organization_info_fetched_at,
+        updated_at
+    ) = (
+        EXCLUDED.siret,
+        EXCLUDED.cached_libelle,
+        EXCLUDED.cached_nom_complet,
+        EXCLUDED.cached_enseigne,
+        EXCLUDED.cached_tranche_effectifs,
+        EXCLUDED.cached_tranche_effectifs_unite_legale,
+        EXCLUDED.cached_libelle_tranche_effectif,
+        EXCLUDED.cached_etat_administratif,
+        EXCLUDED.cached_est_active,
+        EXCLUDED.cached_statut_diffusion,
+        EXCLUDED.cached_est_diffusible,
+        EXCLUDED.cached_adresse,
+        EXCLUDED.cached_code_postal,
+        EXCLUDED.cached_activite_principale,
+        EXCLUDED.cached_libelle_activite_principale,
+        EXCLUDED.cached_categorie_juridique,
+        EXCLUDED.cached_libelle_categorie_juridique,
+        EXCLUDED.organization_info_fetched_at,
+        EXCLUDED.updated_at
+    )
 RETURNING *
 `,
     [
@@ -250,8 +252,6 @@ RETURNING *
       cached_categorie_juridique,
       cached_libelle_categorie_juridique,
       new Date().toISOString(),
-      authorized_email_domains,
-      external_authorized_email_domains,
       new Date().toISOString(),
       new Date().toISOString(),
     ]
@@ -260,29 +260,14 @@ RETURNING *
   return rows.shift()!;
 };
 
-export const updateOrganizationInfo = async ({
-  id,
-  organizationInfo: {
-    libelle: cached_libelle,
-    nomComplet: cached_nom_complet,
-    enseigne: cached_enseigne,
-    trancheEffectifs: cached_tranche_effectifs,
-    trancheEffectifsUniteLegale: cached_tranche_effectifs_unite_legale,
-    libelleTrancheEffectif: cached_libelle_tranche_effectif,
-    etatAdministratif: cached_etat_administratif,
-    estActive: cached_est_active,
-    statutDiffusion: cached_statut_diffusion,
-    estDiffusible: cached_est_diffusible,
-    adresse: cached_adresse,
-    codePostal: cached_code_postal,
-    activitePrincipale: cached_activite_principale,
-    libelleActivitePrincipale: cached_libelle_activite_principale,
-    categorieJuridique: cached_categorie_juridique,
-    libelleCategorieJuridique: cached_libelle_categorie_juridique,
-  },
+export const updateDomains = async ({
+  siret,
+  authorized_email_domains,
+  external_authorized_email_domains,
 }: {
-  id: number;
-  organizationInfo: OrganizationInfo;
+  siret: string;
+  authorized_email_domains: string[];
+  external_authorized_email_domains: string[];
 }) => {
   const connection = getDatabaseConnection();
 
@@ -291,49 +276,22 @@ export const updateOrganizationInfo = async ({
 UPDATE organizations
 SET
     (
-     cached_libelle,
-     cached_nom_complet,
-     cached_enseigne,
-     cached_tranche_effectifs,
-     cached_tranche_effectifs_unite_legale,
-     cached_libelle_tranche_effectif,
-     cached_etat_administratif,
-     cached_est_active,
-     cached_statut_diffusion,
-     cached_est_diffusible,
-     cached_adresse,
-     cached_code_postal,
-     cached_activite_principale,
-     cached_libelle_activite_principale,
-     cached_categorie_juridique,
-     cached_libelle_categorie_juridique,
-     organization_info_fetched_at
-     ) = ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
-WHERE id = $1 RETURNING *
+     authorized_email_domains,
+     external_authorized_email_domains,
+     updated_at
+     ) = ($2, $3, $4)
+WHERE siret = $1
+RETURNING *
 `,
     [
-      id,
-      cached_libelle,
-      cached_nom_complet,
-      cached_enseigne,
-      cached_tranche_effectifs,
-      cached_tranche_effectifs_unite_legale,
-      cached_libelle_tranche_effectif,
-      cached_etat_administratif,
-      cached_est_active,
-      cached_statut_diffusion,
-      cached_est_diffusible,
-      cached_adresse,
-      cached_code_postal,
-      cached_activite_principale,
-      cached_libelle_activite_principale,
-      cached_categorie_juridique,
-      cached_libelle_categorie_juridique,
+      siret,
+      authorized_email_domains,
+      external_authorized_email_domains,
       new Date().toISOString(),
     ]
   );
 
-  return rows.shift();
+  return rows.shift()!;
 };
 
 export const addUser = async ({
@@ -384,7 +342,7 @@ export const getUsers = async (organization_id: number) => {
 
   const {
     rows,
-  }: QueryResult<User | { is_external: boolean }> = await connection.query(
+  }: QueryResult<User & { is_external: boolean }> = await connection.query(
     `
 SELECT
     u.id,

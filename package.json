@@ -49,7 +49,7 @@
     "http-errors": "^1.8.1",
     "ioredis": "^4.28.5",
     "is-disposable-email-domain": "^1.0.7",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "nanoid": "^3.3.4",
     "node-pg-migrate": "^5.9.0",

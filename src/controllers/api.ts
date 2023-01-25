@@ -5,7 +5,7 @@ import notificationMessages from '../notification-messages';
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 import { siretSchema } from '../services/custom-zod-schemas';
-import { InseeTimeoutError } from '../errors';
+import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -27,12 +27,12 @@ export const getOrganizationInfoController = async (
 
     const organizationInfo = await getOrganizationInfo(siret);
 
-    if (isEmpty(organizationInfo)) {
+    return res.json({ organizationInfo });
+  } catch (e) {
+    if (e instanceof InseeNotFoundError) {
       return next(new NotFound());
     }
 
-    return res.json({ organizationInfo });
-  } catch (e) {
     if (e instanceof ZodError) {
       return next(
         new BadRequest(notificationMessages['invalid_siret'].description)

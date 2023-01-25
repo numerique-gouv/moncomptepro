@@ -5,6 +5,6 @@ declare module 'express-session' {
     email?: string;
     interactionId?: string;
     referer?: string;
-    user?: import('./user');
+    user?: User;
   }
 }
