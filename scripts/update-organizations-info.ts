@@ -120,7 +120,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
       // 3. update the organization
       if (isOrganizationInfo(organizationInfo)) {
         console.log(`libelle: ${organizationInfo.libelle}`);
-        await upsert({ id, organizationInfo });
+        await upsert({ siret, organizationInfo });
       }
 
       // 4. throttle the update
