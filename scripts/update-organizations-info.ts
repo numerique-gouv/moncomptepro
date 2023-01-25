@@ -1,7 +1,7 @@
 import { isDate, isEmpty, toInteger } from 'lodash';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
-import { updateOrganizationInfo } from '../src/repositories/organization';
+import { upsert } from '../src/repositories/organization';
 import { AxiosError } from 'axios';
 
 // ex: for public insee subscription the script can be run like so:
@@ -120,7 +120,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
       // 3. update the organization
       if (isOrganizationInfo(organizationInfo)) {
         console.log(`libelle: ${organizationInfo.libelle}`);
-        await updateOrganizationInfo({ id, organizationInfo });
+        await upsert({ id, organizationInfo });
       }
 
       // 4. throttle the update

@@ -15,6 +15,7 @@ import {
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
 import {
+  InseeNotActiveError,
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
@@ -29,7 +30,7 @@ export const getJoinOrganizationController = async (
   try {
     const schema = z.object({
       query: z.object({
-        siret_hint: siretSchema().optional(),
+        siret_hint: z.string().optional(),
         is_external_hint: optionalBooleanSchema(),
         notification: z.string().optional(),
         do_not_propose_suggestions: optionalBooleanSchema(),
@@ -131,6 +132,7 @@ export const postJoinOrganizationMiddleware = async (
 
     if (
       error instanceof InvalidSiretError ||
+      error instanceof InseeNotActiveError ||
       (error instanceof ZodError && hasErrorFromField(error, 'siret'))
     ) {
       return res.redirect(

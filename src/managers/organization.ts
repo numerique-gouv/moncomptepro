@@ -2,7 +2,7 @@ import { isEmpty, some } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
-  InseeNotFoundError,
+  InseeNotActiveError,
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
@@ -15,14 +15,13 @@ import {
 } from '../repositories/moderation';
 import {
   addUser,
-  create,
+  updateDomains,
   deleteUserOrganisation,
   findByEmailDomain,
-  findBySiret,
   findByUserId,
   findPendingByUserId,
   getUsers,
-  updateOrganizationInfo,
+  upsert,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
@@ -99,26 +98,24 @@ export const joinOrganization = async ({
 
   try {
     organizationInfo = await getOrganizationInfo(siret);
-
-    if (!organizationInfo.estActive) {
-      // A : Actif;
-      // see: https://www.sirene.fr/sirene/public/variable/etatAdministratifEtablissement
-      throw new Error('organization is not active');
-    }
   } catch (error) {
-    console.error(error);
-
-    if (error instanceof InseeNotFoundError) {
-      throw new Error('invalid response from sirene API');
-    }
-
     if (error instanceof InseeTimeoutError) {
       throw error;
     }
 
     throw new InvalidSiretError();
   }
-  const { libelle, trancheEffectifs } = organizationInfo;
+
+  // Update organizationInfo
+  let organization = await upsert({
+    siret,
+    organizationInfo,
+  });
+
+  // Ensure Organization is active
+  if (!organization.cached_est_active) {
+    throw new InseeNotActiveError();
+  }
 
   // Ensure user_id is valid
   const user = await findUserById(user_id);
@@ -127,32 +124,44 @@ export const joinOrganization = async ({
     throw new UserNotFoundError();
   }
 
-  // Ensure user can join organization automatically
-  const { email, given_name, family_name } = user;
-  const emailDomain = getEmailDomain(email);
-  let organization = await findBySiret(siret);
-
-  // Update organizationInfo
-  if (!isEmpty(organization)) {
-    organization = await updateOrganizationInfo({
-      id: organization.id,
-      organizationInfo,
-    });
+  // Ensure user is not in organization already
+  const usersInOrganizationAlready = await getUsers(organization.id);
+  if (some(usersInOrganizationAlready, ['email', user.email])) {
+    throw new UserInOrganizationAlreadyError();
   }
 
+  const {
+    cached_libelle,
+    authorized_email_domains,
+    external_authorized_email_domains,
+  } = organization;
+  const { email } = user;
+  const emailDomain = getEmailDomain(email);
+
+  // Set emailDomain if user is the first organization member
   if (
-    !isEmpty(organization) &&
-    (is_external
-      ? !organization.external_authorized_email_domains.includes(emailDomain)
-      : !organization.authorized_email_domains.includes(emailDomain))
+    isEmpty(authorized_email_domains) &&
+    isEmpty(external_authorized_email_domains)
+  ) {
+    organization = await updateDomains({
+      siret,
+      authorized_email_domains: is_external ? [] : [emailDomain],
+      external_authorized_email_domains: is_external ? [emailDomain] : [],
+    });
+  } else if (
+    // Ensure user can join organization automatically
+    is_external
+      ? !external_authorized_email_domains.includes(emailDomain)
+      : !authorized_email_domains.includes(emailDomain)
   ) {
     await sendMail({
       to: [email],
       cc: ['moncomptepro@beta.gouv.fr'],
-      subject: `[MonComptePro] Demande pour rejoindre ${libelle}`,
+      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle ||
+        siret}`,
       template: 'unable-to-auto-join-organization',
       params: {
-        libelle,
+        libelle: cached_libelle || siret,
       },
     });
 
@@ -162,27 +171,7 @@ export const joinOrganization = async ({
       as_external: is_external,
     });
 
-    // @ts-ignore this might be fixed in a future refactor of this function
-    throw new UnableToAutoJoinOrganizationError(organization.cached_libelle);
-  }
-
-  // Create organization if needed
-  if (isEmpty(organization)) {
-    organization = await create({
-      siret,
-      organizationInfo,
-      authorized_email_domains: is_external ? [] : [emailDomain],
-      external_authorized_email_domains: is_external ? [emailDomain] : [],
-    });
-  }
-
-  // Ensure user is not in organization already
-  const usersInOrganizationAlready = await getUsers(organization.id);
-  if (
-    !isEmpty(organization) &&
-    some(usersInOrganizationAlready, ['email', email])
-  ) {
-    throw new UserInOrganizationAlreadyError();
+    throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
   }
 
   // Link user to organization
@@ -192,6 +181,7 @@ export const joinOrganization = async ({
     is_external,
   });
 
+  const { given_name, family_name } = user;
   const user_label =
     !given_name && !family_name ? email : `${given_name} ${family_name}`;
   const usersInOrganizationAlreadyWithoutExternal = usersInOrganizationAlready.filter(
@@ -202,7 +192,7 @@ export const joinOrganization = async ({
       to: usersInOrganizationAlreadyWithoutExternal.map(({ email }) => email),
       subject: 'Votre organisation sur MonComptePro',
       template: 'join-organization',
-      params: { user_label, libelle, email, is_external },
+      params: { user_label, libelle: cached_libelle, email, is_external },
     });
   }
 
@@ -215,7 +205,7 @@ export const joinOrganization = async ({
       params: {
         given_name,
         family_name,
-        libelle,
+        libelle: cached_libelle,
         usersInOrganizationAlready,
       },
     });
@@ -224,8 +214,9 @@ export const joinOrganization = async ({
   // Notify administrators if someone joined an organization with more than 50 employees
   // see https://www.sirene.fr/sirene/public/variable/tefen
   if (
+    organization.cached_tranche_effectifs &&
     ['21', '22', '31', '32', '41', '42', '51', '52', '53'].includes(
-      trancheEffectifs
+      organization.cached_tranche_effectifs
     )
   ) {
     await createBigOrganizationJoinModeration({
@@ -234,8 +225,6 @@ export const joinOrganization = async ({
       as_external: is_external,
     });
   }
-
-  return true;
 };
 
 export const greetFirstOrganizationJoin = async ({
