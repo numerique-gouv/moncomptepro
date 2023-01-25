@@ -346,7 +346,20 @@ VALUES
      ],
    'openid email',
    'http://localhost:3000/connexion/agent-public',
-   'Accédez à l’espace agent public sur l’Annuaire des Entreprises.')
+   'Accédez à l’espace agent public sur l’Annuaire des Entreprises.'),
+  (6,
+   'Keycloak test - CD12',
+   'RWh9+Hyv1SGrUdt8+nKey8K6RbPn9GkXqitpTHKRKChSmfICA5fl9YIhKrUtkPtlfPl4oNhfsg56B4DH+/jsoaHwFjC+UKbWKwxgzjPWuzh4AG2er173fVq/U2TGxaXU',
+   'lmB72ac+JKZPUmg3+vlo9dPMkCRnFRyz+NE+lslJFX07V4JObFZ0H/vXnXB5Jzu1s96KLU5FmirsfqsKLeVukHBO6Vmy6dfcwKfjMGgWTBD6ik01KUcFq2f3bx5nO6yj',
+   ARRAY [
+     'https://keycloak.lab.aveyron.fr/realms/MCP/broker/oidc/endpoint'
+     ],
+   ARRAY [
+     'https://keycloak.lab.aveyron.fr'
+     ],
+   'openid email organizations',
+   'https://keycloak.lab.aveyron.fr',
+   'Authentifie les partenaires du Département de l’Aveyron')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
