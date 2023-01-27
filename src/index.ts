@@ -50,7 +50,13 @@ if (SENTRY_DSN) {
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
 
-app.use(helmet());
+app.use(
+  helmet({
+    hsts: false,
+    frameguard: false,
+  })
+);
+
 app.use((req, res, next) => {
   const cspConfig = {
     directives: {
