@@ -5,21 +5,38 @@ import {
 } from '../src/services/uses-a-free-email-provider';
 
 describe('getEmailDomain', () => {
-  it('should return email domain', () => {
-    assert.equal(getEmailDomain('user@beta.gouv.fr'), 'beta.gouv.fr');
+  const data = [
+    {
+      email: 'user@beta.gouv.fr',
+      domain: 'beta.gouv.fr',
+    },
+    {
+      email: 'user@notaires.fr',
+      domain: 'notaires.fr',
+    },
+    {
+      email: 'user@subdomain.domain.org',
+      domain: 'subdomain.domain.org',
+    },
+  ];
+
+  data.forEach(({ email, domain }) => {
+    it('should return email domain', () => {
+      assert.equal(getEmailDomain(email), domain);
+    });
   });
 });
 
-describe('isPersonalEmail', () => {
-  const personalEmailAddresses = [
+describe('usesAFreeEmailProvider', () => {
+  const emailAddressesThatUsesFreeEmailProviders = [
     'user@gmail.com',
     'collectivite@wanadoo.fr',
     'collectivite@orange.fr',
   ];
 
-  personalEmailAddresses.forEach(personalEmailAddress => {
+  emailAddressesThatUsesFreeEmailProviders.forEach(email => {
     it('should return true for free email provider address', () => {
-      assert.equal(usesAFreeEmailProvider(personalEmailAddress), true);
+      assert.equal(usesAFreeEmailProvider(email), true);
     });
   });
 

@@ -7,9 +7,9 @@ const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
 export const getEmailDomain = email => {
   const parts = email.split('@');
   const host = parts[parts.length - 1];
-  const { domain } = parse_host(host, { allowDotlessTLD: true });
+  const { sub, domain } = parse_host(host, { allowDotlessTLD: true });
 
-  return domain;
+  return [sub, domain].filter(e => !!e).join('.');
 };
 
 export const usesAFreeEmailProvider = email => {
