@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       JWKS_PATH: "/tmp/jwks.json"
     services:
@@ -17,7 +17,7 @@ jobs:
         ports:
           - 6379:6379
       postgres:
-        image: postgres:9.5
+        image: postgres:12.12
         env:
           POSTGRES_USER: api-auth
           POSTGRES_PASSWORD: api-auth
@@ -25,12 +25,12 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
@@ -43,11 +43,11 @@ jobs:
             ${{ runner.os }}-
       - run: npm ci
       - name: Install Cypress
-        run: npm install cypress@9
+        run: npm install cypress@12
       - name: Generate the JWKS file
         run: npm run generate-keystore
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           wait-on: http://localhost:3000/users/start-sign-in
           build: npm run build
@@ -72,12 +72,12 @@ jobs:
           CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
           DO_NOT_VALIDATE_MAIL: "True"
       # Store tests runs in case of failure
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-videos
