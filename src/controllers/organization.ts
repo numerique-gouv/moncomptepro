@@ -31,19 +31,13 @@ export const getJoinOrganizationController = async (
     const schema = z.object({
       query: z.object({
         siret_hint: z.string().optional(),
-        is_external_hint: optionalBooleanSchema(),
         notification: z.string().optional(),
         do_not_propose_suggestions: optionalBooleanSchema(),
       }),
     });
 
     const {
-      query: {
-        is_external_hint,
-        notification,
-        siret_hint,
-        do_not_propose_suggestions,
-      },
+      query: { notification, siret_hint, do_not_propose_suggestions },
     } = await schema.parseAsync({
       query: req.query,
     });
@@ -52,7 +46,6 @@ export const getJoinOrganizationController = async (
 
     if (
       !siret_hint &&
-      !is_external_hint &&
       !notification &&
       !do_not_propose_suggestions &&
       (await doSuggestOrganizations({ user_id, email }))
@@ -64,7 +57,6 @@ export const getJoinOrganizationController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
       siretHint: siret_hint,
-      isExternalHint: is_external_hint,
     });
   } catch (error) {
     next(error);
@@ -98,12 +90,11 @@ export const postJoinOrganizationMiddleware = async (
     const schema = z.object({
       body: z.object({
         siret: siretSchema(),
-        is_external: optionalBooleanSchema(),
       }),
     });
 
     const {
-      body: { is_external, siret },
+      body: { siret },
     } = await schema.parseAsync({
       body: req.body,
     });
@@ -111,14 +102,13 @@ export const postJoinOrganizationMiddleware = async (
     await joinOrganization({
       siret,
       user_id: req.session.user!.id,
-      is_external,
     });
 
-    const shouldWelcomeUser = await greetFirstOrganizationJoin({
+    const { greetEmailSent } = await greetFirstOrganizationJoin({
       user_id: req.session.user!.id,
     });
 
-    if (shouldWelcomeUser) {
+    if (greetEmailSent) {
       return res.redirect(`/users/welcome`);
     }
 

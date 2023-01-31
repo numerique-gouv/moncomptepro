@@ -4,12 +4,13 @@ interface Organization {
   authorized_email_domains: string[];
   external_authorized_email_domains: string[];
   verified_email_domains: string[];
+  external_verified_email_domains: string[];
   created_at: Date;
   updated_at: Date;
   cached_libelle: string | null;
   cached_nom_complet: string | null;
   cached_enseigne: string | null;
-  cached_tranche_effectifs: string | null;
+  cached_tranche_effectifs: TrancheEffectifs;
   cached_tranche_effectifs_unite_legale: string | null;
   cached_libelle_tranche_effectif: string | null;
   cached_etat_administratif: string | null;
