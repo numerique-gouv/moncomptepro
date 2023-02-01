@@ -355,11 +355,12 @@ VALUES
    'lmB72ac+JKZPUmg3+vlo9dPMkCRnFRyz+NE+lslJFX07V4JObFZ0H/vXnXB5Jzu1s96KLU5FmirsfqsKLeVukHBO6Vmy6dfcwKfjMGgWTBD6ik01KUcFq2f3bx5nO6yj',
    ARRAY [
      'https://keycloak.lab.aveyron.fr/realms/MCP/broker/oidc/endpoint'
+     'https://keycloak.lab.aveyron.fr/realms/MCP/broker/moncomptepro/endpoint'
      ],
    ARRAY [
      'https://keycloak.lab.aveyron.fr'
      ],
-   'openid email organizations',
+   'openid email profile organizations',
    'https://keycloak.lab.aveyron.fr',
    'Authentifie les partenaires du Département de l’Aveyron')
 ON CONFLICT (id)
