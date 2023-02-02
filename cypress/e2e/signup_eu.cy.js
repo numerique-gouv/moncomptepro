@@ -55,6 +55,11 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.get('[name="job"]').type('Chargé de relation usager');
     cy.get('[type="submit"]').click();
 
+    // Skip organization suggestion
+    cy.get('a.fr-btn.fr-btn--secondary')
+      .contains('Je veux rejoindre une autre organisation')
+      .click();
+
     // Fill the user's organization information
     cy.get('[name="siret"]').type('49871959000107');
     cy.get('[type="submit"]').click();
