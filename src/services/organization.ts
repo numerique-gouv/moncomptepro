@@ -5,7 +5,7 @@
  * this fonction.
  */
 export const isEntrepriseUnipersonnelle = ({
-  cached_categorie_juridique,
+  cached_libelle_categorie_juridique,
   cached_tranche_effectifs,
 }: Organization): boolean => {
   // check that the organization has the right catégorie juridique
@@ -13,7 +13,7 @@ export const isEntrepriseUnipersonnelle = ({
     'Entrepreneur individuel',
     'Société à responsabilité limitée (sans autre indication)',
     'SAS, société par actions simplifiée',
-  ].includes(cached_categorie_juridique || '');
+  ].includes(cached_libelle_categorie_juridique || '');
 
   // check that the organization has the right tranche effectifs
   const tra_eff_ok = ['NN', '00', null].includes(cached_tranche_effectifs);
