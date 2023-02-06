@@ -379,7 +379,7 @@ VALUES
      ],
    'openid email',
    'https://tous-a-bord.gouv.fr',
-   "Vérifie l'élégibilité de bénéficaires d'aides au transport")
+   'Vérifie l’élégibilité de bénéficaires d’aides au transport')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
