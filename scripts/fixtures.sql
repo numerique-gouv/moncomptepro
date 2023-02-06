@@ -362,7 +362,20 @@ VALUES
      ],
    'openid email profile organizations',
    'https://keycloak.lab.aveyron.fr',
-   'Authentifie les partenaires du Département de l’Aveyron')
+   'Authentifie les partenaires du Département de l’Aveyron'),
+  (6,
+   'Tous à Bord',
+   'nCDCeAfS0qpxr2kzps7fDQSD323DRanzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
+   'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZFL4SqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
+   ARRAY [
+     'http://localhost:8000/redirect/artois-mobilites',
+     'https://tous-a-bord.gouv.fr/redirect/artois-mobilites',
+     'https://tous-a-bord-staging.gouv.fr/redirect/artois-mobilites'
+     ],
+   ARRAY [],
+   'openid email',
+   'https://tous-a-bord.gouv.fr',
+   "Vérifie l'élégibilité de bénéficaires d'aides au transport")
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
