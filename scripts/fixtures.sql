@@ -372,7 +372,11 @@ VALUES
      'https://tous-a-bord.gouv.fr/redirect/artois-mobilites',
      'https://tous-a-bord-staging.gouv.fr/redirect/artois-mobilites'
      ],
-   ARRAY [],
+   ARRAY [
+     'http://localhost:8000/oauth/logout',
+     'https://tous-a-bord.gouv.fr/oauth/logout',
+     'https://tous-a-bord-staging.gouv.fr/oauth/logout'
+     ],
    'openid email',
    'https://tous-a-bord.gouv.fr',
    "Vérifie l'élégibilité de bénéficaires d'aides au transport")
