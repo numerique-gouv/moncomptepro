@@ -368,11 +368,13 @@ VALUES
    'nCDCeAfS0qpxr2kzps7fDQSD323DRanzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZFL4SqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
    ARRAY [
-     'http://localhost:8000/oidc/callback',
-     'https://tous-a-bord.gouv.fr/oidc/callback',
-     'https://tous-a-bord-staging.gouv.fr/oidc/callback'
+     'http://127.0.0.1:8000/oidc/callback/',
+     'http://localhost:8000/oidc/callback/',
+     'https://tous-a-bord.gouv.fr/oidc/callback/',
+     'https://tous-a-bord-staging.gouv.fr/oidc/callback/'
      ],
    ARRAY [
+     'http://127.0.0.1:8000/oidc/logout',
      'http://localhost:8000/oidc/logout',
      'https://tous-a-bord.gouv.fr/oidc/logout',
      'https://tous-a-bord-staging.gouv.fr/oidc/logout'
