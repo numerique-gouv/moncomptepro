@@ -368,18 +368,18 @@ VALUES
    'nCDCeAfS0qpxr2kzps7fDQSD323DRanzNQ2JqIZKDPUHrQoqzAuVI7I0dh41dHJHyrkvHzvjUFwoooB71VbkmGykjAba2UcxJBhJL4RUO3niaqyWV7zma8KsS4CGsbIa',
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZFL4SqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
    ARRAY [
-     'http://localhost:8000/redirect/artois-mobilites',
-     'https://tous-a-bord.gouv.fr/redirect/artois-mobilites',
-     'https://tous-a-bord-staging.gouv.fr/redirect/artois-mobilites'
+     'http://localhost:8000/oidc/callback',
+     'https://tous-a-bord.gouv.fr/oidc/callback',
+     'https://tous-a-bord-staging.gouv.fr/oidc/callback'
      ],
    ARRAY [
-     'http://localhost:8000/oauth/logout',
-     'https://tous-a-bord.gouv.fr/oauth/logout',
-     'https://tous-a-bord-staging.gouv.fr/oauth/logout'
+     'http://localhost:8000/oidc/logout',
+     'https://tous-a-bord.gouv.fr/oidc/logout',
+     'https://tous-a-bord-staging.gouv.fr/oidc/logout'
      ],
    'openid email',
    'https://tous-a-bord.gouv.fr',
-   'Vérifie l’élégibilité de bénéficaires d’aides au transport')
+   'Vérifie l’éligibilité de bénéficaires d’aides au transport')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
