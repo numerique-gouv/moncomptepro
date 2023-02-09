@@ -370,14 +370,14 @@ VALUES
    ARRAY [
      'http://127.0.0.1:8000/oidc/callback/',
      'http://localhost:8000/oidc/callback/',
-     'https://tous-a-bord.gouv.fr/oidc/callback/',
-     'https://tous-a-bord-staging.gouv.fr/oidc/callback/'
+     'https://tous-a-bord.beta.gouv.fr/oidc/callback/',
+     'https://tous-a-bord-staging.beta.gouv.fr/oidc/callback/'
      ],
    ARRAY [
      'http://127.0.0.1:8000/oidc/logout',
      'http://localhost:8000/oidc/logout',
-     'https://tous-a-bord.gouv.fr/oidc/logout',
-     'https://tous-a-bord-staging.gouv.fr/oidc/logout'
+     'https://tous-a-bord.beta.gouv.fr/oidc/logout',
+     'https://tous-a-bord-staging.beta.gouv.fr/oidc/logout'
      ],
    'openid email',
    'https://tous-a-bord.gouv.fr',
