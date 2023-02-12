@@ -52,7 +52,7 @@
     "morgan": "^1.10.0",
     "nanoid": "^3.3.4",
     "node-pg-migrate": "^5.9.0",
-    "oidc-provider": "^7.11.5",
+    "oidc-provider": "^8.1.0",
     "pg": "^8.8.0",
     "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "^2.1.0",
