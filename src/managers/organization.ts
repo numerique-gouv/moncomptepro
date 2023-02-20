@@ -130,7 +130,7 @@ export const joinOrganization = async ({
     cached_libelle,
     authorized_email_domains,
     verified_email_domains,
-    external_verified_email_domains,
+    external_authorized_email_domains,
   } = organization;
   const { email } = user;
   const domain = getEmailDomain(email);
@@ -150,7 +150,7 @@ export const joinOrganization = async ({
       user_id,
       verification_type: 'verified_email_domain',
     });
-  } else if (external_verified_email_domains.includes(domain)) {
+  } else if (external_authorized_email_domains.includes(domain)) {
     await addUser({
       organization_id,
       user_id,
