@@ -27,6 +27,8 @@ import {
 } from '../services/uses-a-free-email-provider';
 import { isEntrepriseUnipersonnelle } from '../services/organization';
 
+const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
+
 export const getOrganizationsByUserId = findByUserId;
 
 export const getUserOrganizations = async ({
@@ -168,7 +170,7 @@ export const joinOrganization = async ({
   } else {
     await sendMail({
       to: [email],
-      cc: ['moncomptepro@beta.gouv.fr'],
+      cc: [SUPPORT_EMAIL_ADDRESS],
       subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle ||
         siret}`,
       template: 'unable-to-auto-join-organization',
