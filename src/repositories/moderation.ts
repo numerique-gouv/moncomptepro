@@ -1,16 +1,16 @@
 import { getDatabaseConnection } from '../connectors/postgres';
 import { QueryResult } from 'pg';
 
-const createModeration = async ({
+export const createModeration = async ({
   user_id,
   organization_id,
   type,
-  as_external,
+  as_external = false,
 }: {
   user_id: number;
   organization_id: number;
-  type: string;
-  as_external: boolean;
+  type: 'organization_join_block' | 'non_verified_domain';
+  as_external?: boolean;
 }) => {
   const connection = getDatabaseConnection();
 
@@ -24,35 +24,3 @@ RETURNING *;`,
 
   return rows.shift()!;
 };
-
-export const createOrganizationJoinBlockModeration = async ({
-  user_id,
-  organization_id,
-  as_external,
-}: {
-  user_id: number;
-  organization_id: number;
-  as_external: boolean;
-}) =>
-  await createModeration({
-    user_id,
-    organization_id,
-    type: 'organization_join_block',
-    as_external,
-  });
-
-export const createBigOrganizationJoinModeration = async ({
-  user_id,
-  organization_id,
-  as_external,
-}: {
-  user_id: number;
-  organization_id: number;
-  as_external: boolean;
-}) =>
-  await createModeration({
-    user_id,
-    organization_id,
-    type: 'big_organization_join',
-    as_external,
-  });

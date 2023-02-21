@@ -294,15 +294,43 @@ RETURNING *
   return rows.shift()!;
 };
 
+export const addAuthorizedDomain = async ({
+  siret,
+  domain,
+}: {
+  siret: string;
+  domain: string;
+}) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<Organization> = await connection.query(
+    `
+UPDATE organizations
+SET authorized_email_domains = array_append(authorized_email_domains, $2)
+  , updated_at               = $3
+WHERE siret = $1
+RETURNING *
+    `,
+    [siret, domain, new Date().toISOString()]
+  );
+
+  return rows.shift()!;
+};
+
 export const addUser = async ({
   organization_id,
   user_id,
-  is_external,
+  is_external = false,
+  verification_type,
 }: {
   organization_id: number;
   user_id: number;
-  is_external: boolean;
-}) => {
+  is_external?: boolean;
+  verification_type?:
+    | 'verified_email_domain'
+    | 'official_contact_email'
+    | 'code_send_to_organization';
+}): Promise<boolean> => {
   const connection = getDatabaseConnection();
 
   try {
@@ -311,18 +339,19 @@ export const addUser = async ({
     await connection.query(
       `
 INSERT INTO users_organizations
-    (
-     user_id,
+    (user_id,
      organization_id,
      is_external,
+     verification_type,
      updated_at,
-     created_at
-     )
-VALUES ($1, $2, $3, $4, $5)`,
+     created_at)
+VALUES
+    ($1, $2, $3, $4, $5, $6)`,
       [
         user_id,
         organization_id,
         is_external,
+        verification_type,
         new Date().toISOString(),
         new Date().toISOString(),
       ]

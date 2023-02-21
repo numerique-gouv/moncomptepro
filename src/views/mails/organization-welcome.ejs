@@ -6,7 +6,7 @@ Nous tenions à vous informer que les personnes suivantes ont également la poss
 <a href="https://datapass.api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">DataPass</a> :
 <br /><br />
 <ul>
-    <% usersInOrganizationAlready.map(function({ given_name, family_name, is_external }) { %>
+    <% otherUsers.map(function({ given_name, family_name, is_external }) { %>
         <li><%= given_name %> <%= (family_name || '').toUpperCase() %><% if(is_external) { %> (externe)<% } %></li>
     <% }) %>
 </ul>

@@ -1,0 +1,54 @@
+# Run cypress localy
+
+In the MonComptePro virtual machine, set up the test database:
+
+```bash
+sudo su - postgres
+psql -c 'DROP DATABASE IF EXISTS "api-auth-test";'
+psql -c ' CREATE DATABASE "api-auth-test" WITH OWNER "api-auth";'
+exit
+sudo su - api-auth
+cd /opt/apps/api-auth/current
+export $(cat /etc/api-auth.conf | xargs)
+export DATABASE_URL=postgres://api-auth:api-auth@localhost:5432/api-auth-test
+export PGDATABASE=api-auth-test
+npm run load-ci-fixtures
+exit
+```
+
+In the MonComptePro virtual machine, run the app on the test database:
+
+```bash
+sudo systemctl stop api-auth
+sudo su - api-auth
+cd /opt/apps/api-auth/current
+export $(cat /etc/api-auth.conf | xargs)
+export PGDATABASE=api-auth-test DO_NOT_SEND_MAIL=False
+export SENDINBLUE_API_KEY="xxx"
+npm run build
+npm run start
+```
+
+On your host, install cypress:
+
+```bash
+npm -g install cypress@12
+npm -g install cypress-mailslurp@1
+```
+
+On your host, run the tests
+
+```bash
+export CYPRESS_MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
+cypress open
+```
+
+reset user table
+
+```bash
+sudo su - api-auth
+cd /opt/apps/api-auth/current
+export $(cat /etc/api-auth.conf | xargs)
+psql -d api-auth-test -c 'DELETE FROM users;' && psql -d api-auth-test -f scripts/fixtures.sql
+exit
+```

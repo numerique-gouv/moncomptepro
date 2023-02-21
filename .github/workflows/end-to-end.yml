@@ -7,11 +7,24 @@ on:
       - "!master"
 
 env:
-  PG_USER: api-auth
-  PG_PASSWORD: api-auth
-  PG_DATABASE: api-auth-test
-  PG_PORT: 5432
-  MCP_HOST: http://localhost:3000
+  ACCESS_LOG_PATH:
+  PGUSER: api-auth
+  PGPASSWORD: api-auth
+  PGDATABASE: api-auth-test
+  PGPORT: 5432
+  SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+  MONCOMPTEPRO_HOST: http://localhost:3000
+  DO_NOT_SEND_MAIL: "False"
+  DO_NOT_VALIDATE_MAIL: "True"
+  DO_NOT_RATE_LIMIT: "True"
+  SESSION_COOKIE_SECRET: secret
+  DEBOUNCE_API_KEY:
+  SENTRY_DSN:
+  INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
+  INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
+  CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+  SECURE_COOKIES: "false"
+  SUPPORT_EMAIL_ADDRESS: "moncomptepro@yopmail.com"
 
 jobs:
   test:
@@ -26,9 +39,9 @@ jobs:
       postgres:
         image: postgres:12.12
         env:
-          POSTGRES_USER: ${{ env.PG_USER }}
-          POSTGRES_PASSWORD: ${{ env.PG_PASSWORD }}
-          POSTGRES_DB: ${{ env.PG_DATABASE }}
+          POSTGRES_USER: ${{ env.PGUSER }}
+          POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
+          POSTGRES_DB: ${{ env.PGDATABASE }}
         ports:
           - 5432:5432
     steps:
@@ -49,34 +62,21 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm ci
-      - name: Install Cypress
-        run: npm install cypress@12
+      - run: npm run load-ci-fixtures
+        env:
+          DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}
+      - run: npm install cypress@12
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          wait-on: ${{ env.MCP_HOST }}/users/start-sign-in
+          wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
           build: npm run build
           start: npm start
           install: false
         env:
           NODE_ENV: production
-          ACCESS_LOG_PATH:
-          PGUSER: ${{ env.PG_USER }}
-          PGPASSWORD: ${{ env.PG_PASSWORD }}
-          PGDATABASE: ${{ env.PG_DATABASE }}
-          PGPORT: ${{ env.PG_PORT }}
-          DATABASE_URL: postgres://${{ env.PG_USER }}:${{ env.PG_PASSWORD }}@127.0.0.1:${{ env.PG_PORT }}/${{ env.PG_DATABASE }}
-          SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
-          MONCOMPTEPRO_HOST: ${{ env.MCP_HOST }}
-          DO_NOT_SEND_MAIL: "False"
-          DO_NOT_VALIDATE_MAIL: "True"
-          SESSION_COOKIE_SECRET: secret
-          DEBOUNCE_API_KEY:
-          SENTRY_DSN:
-          INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
-          INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
-          CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
-          SECURE_COOKIES: "false"
+          DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}
+          CYPRESS_MONCOMPTEPRO_HOST: ${{ env.MONCOMPTEPRO_HOST }}
       # Store tests runs in case of failure
       - uses: actions/upload-artifact@v3
         if: failure()

@@ -1,24 +1,37 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { isEmpty } from 'lodash';
 import path from 'path';
 
 import { render } from '../services/renderer';
 
-const apiKey =
-  process.env.SENDINBLUE_API_KEY && !isEmpty(process.env.SENDINBLUE_API_KEY)
-    ? process.env.SENDINBLUE_API_KEY
-    : null;
+const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
 
 const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
 
-// active templates are listed at https://app-smtp.sendinblue.com/templates
-const templateToId = {
+type RemoteTemplateSlug =
+  | 'join-organization'
+  | 'verify-email'
+  | 'reset-password'
+  | 'magic-link';
+type LocalTemplateSlug =
+  | 'organization-welcome'
+  | 'unable-to-auto-join-organization'
+  | 'welcome';
+
+// active templates id are listed at https://app-smtp.sendinblue.com/templates
+const remoteTemplateSlugToSendinblueTemplateId: {
+  [k in RemoteTemplateSlug]: number;
+} = {
   'join-organization': 5,
   'verify-email': 6,
   'reset-password': 7,
   'magic-link': 29,
-  default: 21,
 };
+const defaultTemplateId = 21;
+const hasRemoteTemplate = (
+  template: RemoteTemplateSlug | LocalTemplateSlug
+): template is RemoteTemplateSlug =>
+  remoteTemplateSlugToSendinblueTemplateId.hasOwnProperty(template);
 
 export const sendMail = async ({
   to = [],
@@ -26,6 +39,12 @@ export const sendMail = async ({
   subject,
   template,
   params,
+}: {
+  to: string[];
+  cc?: string[];
+  subject: string;
+  template: RemoteTemplateSlug | LocalTemplateSlug;
+  params: any;
 }) => {
   const data = {
     sender: {
@@ -43,12 +62,13 @@ export const sendMail = async ({
     headers: {
       charset: 'iso-8859-1',
     },
+    templateId: 0,
   };
 
-  if (templateToId[template]) {
-    data.templateId = templateToId[template];
+  if (hasRemoteTemplate(template)) {
+    data.templateId = remoteTemplateSlugToSendinblueTemplateId[template];
   } else {
-    data.templateId = templateToId['default'];
+    data.templateId = defaultTemplateId;
     data.params = {
       text_content: await render(
         path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
@@ -58,6 +78,7 @@ export const sendMail = async ({
   }
 
   if (!isEmpty(cc)) {
+    // @ts-ignore
     data.cc = cc.map(e => ({ email: e }));
   }
 
@@ -68,7 +89,7 @@ export const sendMail = async ({
   }
 
   try {
-    const response = await axios({
+    const response: AxiosResponse<{ messageId: string }> = await axios({
       method: 'post',
       url: `https://api.sendinblue.com/v3/smtp/email`,
       headers: {

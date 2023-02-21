@@ -9,7 +9,7 @@ interface Organization {
   cached_libelle: string | null;
   cached_nom_complet: string | null;
   cached_enseigne: string | null;
-  cached_tranche_effectifs: string | null;
+  cached_tranche_effectifs: TrancheEffectifs;
   cached_tranche_effectifs_unite_legale: string | null;
   cached_libelle_tranche_effectif: string | null;
   cached_etat_administratif: string | null;

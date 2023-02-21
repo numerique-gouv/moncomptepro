@@ -1,7 +1,8 @@
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import createError from 'http-errors';
-
 import { getNewRedisClient } from '../connectors/redis';
+
+const doNotRateLimit = process.env.DO_NOT_RATE_LIMIT === 'True';
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -16,7 +17,9 @@ const rateLimiter = new RateLimiterRedis({
 
 export const rateLimiterMiddleware = async (req, res, next) => {
   try {
-    await rateLimiter.consume(req.ip);
+    if (!doNotRateLimit) {
+      await rateLimiter.consume(req.ip);
+    }
     next();
   } catch (e) {
     next(new createError.TooManyRequests());
