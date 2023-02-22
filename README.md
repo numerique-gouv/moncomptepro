@@ -47,7 +47,7 @@ Vous pouvez également utiliser les comptes de tests suivants :
 - [ ] J’ai installé et paramétré mon client OpenID sur mon application en développement : voir [Spécifications techniques](#spécifications-techniques)
 - [ ] Pour passer l’erreur `invalid_redirect_uri`, j'ai fourni mon URL de redirection de test à [l’équipe MonComptePro](mailto:moncomptepro@beta.gouv.fr) (ex : http://localhost:3000/auth/callback, https://dev.example.com/api/oauth/connection)
 - [ ] Mon implémentation fonctionne
-- [ ] J’ai récupéré mon `client_id` et mon `client_secret` de production en demandant à l'équipe MonComptePro de me le donner de manière sécurisée
+- [ ] J’ai récupéré mon `client_id` et mon `client_secret` de production en demandant à l'équipe MonComptePro de me les remettre de manière sécurisée
 - [ ] Mise en production 🚀
 
 ### Connaissances préalables
