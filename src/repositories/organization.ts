@@ -1,6 +1,43 @@
 import { getDatabaseConnection } from '../connectors/postgres';
 import { QueryResult } from 'pg';
 
+export const findById = async (id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<Organization> = await connection.query(
+    `
+SELECT
+    id,
+    siret,
+    authorized_email_domains,
+    external_authorized_email_domains,
+    created_at,
+    updated_at,
+    cached_libelle,
+    cached_nom_complet,
+    cached_enseigne,
+    cached_tranche_effectifs,
+    cached_tranche_effectifs_unite_legale,
+    cached_libelle_tranche_effectif,
+    cached_etat_administratif,
+    cached_est_active,
+    cached_statut_diffusion,
+    cached_est_diffusible,
+    cached_adresse,
+    cached_code_postal,
+    cached_activite_principale,
+    cached_libelle_activite_principale,
+    cached_categorie_juridique,
+    cached_libelle_categorie_juridique,
+    organization_info_fetched_at
+FROM organizations
+WHERE id = $1`,
+    [id]
+  );
+
+  return rows.shift();
+};
+
 export const findByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
@@ -88,7 +125,44 @@ ORDER BY m.created_at
   return rows;
 };
 
-export const findByEmailDomain = async (email_domain: string) => {
+export const findByVerifiedEmailDomain = async (email_domain: string) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<Organization> = await connection.query(
+    `
+SELECT id,
+    siret,
+    authorized_email_domains,
+    external_authorized_email_domains,
+    created_at,
+    updated_at,
+    cached_libelle,
+    cached_nom_complet,
+    cached_enseigne,
+    cached_tranche_effectifs,
+    cached_tranche_effectifs_unite_legale,
+    cached_libelle_tranche_effectif,
+    cached_etat_administratif,
+    cached_est_active,
+    cached_statut_diffusion,
+    cached_est_diffusible,
+    cached_adresse,
+    cached_code_postal,
+    cached_activite_principale,
+    cached_libelle_activite_principale,
+    cached_categorie_juridique,
+    cached_libelle_categorie_juridique,
+    organization_info_fetched_at
+FROM organizations
+WHERE cached_est_active = 'true'
+  AND $1 = ANY (verified_email_domains)`,
+    [email_domain]
+  );
+
+  return rows;
+};
+
+export const findByMostUsedEmailDomain = async (email_domain: string) => {
   const connection = getDatabaseConnection();
 
   const {
@@ -260,40 +334,6 @@ RETURNING *
   return rows.shift()!;
 };
 
-export const updateDomains = async ({
-  siret,
-  authorized_email_domains,
-  external_authorized_email_domains,
-}: {
-  siret: string;
-  authorized_email_domains: string[];
-  external_authorized_email_domains: string[];
-}) => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<Organization> = await connection.query(
-    `
-UPDATE organizations
-SET
-    (
-     authorized_email_domains,
-     external_authorized_email_domains,
-     updated_at
-     ) = ($2, $3, $4)
-WHERE siret = $1
-RETURNING *
-`,
-    [
-      siret,
-      authorized_email_domains,
-      external_authorized_email_domains,
-      new Date().toISOString(),
-    ]
-  );
-
-  return rows.shift()!;
-};
-
 export const addAuthorizedDomain = async ({
   siret,
   domain,
@@ -317,7 +357,7 @@ RETURNING *
   return rows.shift()!;
 };
 
-export const addUser = async ({
+export const linkUserToOrganization = async ({
   organization_id,
   user_id,
   is_external = false,
@@ -330,14 +370,11 @@ export const addUser = async ({
     | 'verified_email_domain'
     | 'official_contact_email'
     | 'code_send_to_organization';
-}): Promise<boolean> => {
+}): Promise<UserOrganizationLink> => {
   const connection = getDatabaseConnection();
 
-  try {
-    await connection.query('BEGIN');
-
-    await connection.query(
-      `
+  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
+    `
 INSERT INTO users_organizations
     (user_id,
      organization_id,
@@ -346,24 +383,19 @@ INSERT INTO users_organizations
      updated_at,
      created_at)
 VALUES
-    ($1, $2, $3, $4, $5, $6)`,
-      [
-        user_id,
-        organization_id,
-        is_external,
-        verification_type,
-        new Date().toISOString(),
-        new Date().toISOString(),
-      ]
-    );
+    ($1, $2, $3, $4, $5, $6)
+RETURNING *`,
+    [
+      user_id,
+      organization_id,
+      is_external,
+      verification_type,
+      new Date().toISOString(),
+      new Date().toISOString(),
+    ]
+  );
 
-    await connection.query('COMMIT');
-
-    return true;
-  } catch (e) {
-    await connection.query('ROLLBACK');
-    throw e;
-  }
+  return rows.shift()!;
 };
 
 export const getUsers = async (organization_id: number) => {

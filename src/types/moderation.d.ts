@@ -5,6 +5,5 @@ interface Moderation {
   type: string;
   created_at: Date;
   moderated_at: Date;
-  as_external: boolean;
   comment: string | null;
 }

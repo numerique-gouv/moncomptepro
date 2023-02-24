@@ -3,6 +3,7 @@ import {
   getOrganizationSuggestions,
   greetFirstOrganizationJoin,
   joinOrganization,
+  notifyOrganizationJoin,
   quitOrganization,
 } from '../managers/organization';
 import { NextFunction, Request, Response } from 'express';
@@ -99,10 +100,12 @@ export const postJoinOrganizationMiddleware = async (
       body: req.body,
     });
 
-    await joinOrganization({
+    const userOrganizationLink = await joinOrganization({
       siret,
       user_id: req.session.user!.id,
     });
+
+    await notifyOrganizationJoin(userOrganizationLink);
 
     const { greetEmailSent } = await greetFirstOrganizationJoin({
       user_id: req.session.user!.id,

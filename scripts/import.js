@@ -3,7 +3,7 @@ import csv from 'csv';
 import fs from 'fs';
 import { isEmpty, some } from 'lodash';
 import {
-  addUser,
+  linkUserToOrganization,
   create,
   findBySiret,
   getUsers,
@@ -66,7 +66,7 @@ const USER_EMAIL = 'test@yopmail.com';
               )}...`
             );
             // Link user to organization
-            await addUser({
+            await linkUserToOrganization({
               organization_id: organization.id,
               user_id: user.id,
             });

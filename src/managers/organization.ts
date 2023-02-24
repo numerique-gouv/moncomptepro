@@ -1,24 +1,27 @@
-import { isEmpty, some } from 'lodash';
+import { isEmpty, some, uniqBy } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
   InseeNotActiveError,
   InseeTimeoutError,
   InvalidSiretError,
+  NotFoundError,
   UnableToAutoJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
 } from '../errors';
 import { createModeration } from '../repositories/moderation';
 import {
-  addUser,
+  linkUserToOrganization,
   deleteUserOrganisation,
-  findByEmailDomain,
+  findById as findOrganizationById,
+  findByMostUsedEmailDomain,
   findByUserId,
   findPendingByUserId,
   getUsers,
   upsert,
   addAuthorizedDomain,
+  findByVerifiedEmailDomain,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
@@ -57,8 +60,14 @@ export const doSuggestOrganizations = async ({
   }
 
   const domain = getEmailDomain(email);
-  const organizationsSuggestions = await findByEmailDomain(domain);
-  const userOrganizations = await getOrganizationsByUserId(user_id);
+  const organizationsSuggestions = uniqBy(
+    [
+      ...(await findByVerifiedEmailDomain(domain)),
+      ...(await findByMostUsedEmailDomain(domain)),
+    ],
+    'id'
+  );
+  const userOrganizations = await findByUserId(user_id);
 
   return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
 };
@@ -76,7 +85,13 @@ export const getOrganizationSuggestions = async ({
 
   const domain = getEmailDomain(email);
 
-  const organizationsSuggestions = await findByEmailDomain(domain);
+  const organizationsSuggestions = uniqBy(
+    [
+      ...(await findByVerifiedEmailDomain(domain)),
+      ...(await findByMostUsedEmailDomain(domain)),
+    ],
+    'id'
+  );
   const userOrganizations = await findByUserId(user_id);
   const userOrganizationsIds = userOrganizations.map(({ id }) => id);
 
@@ -91,7 +106,7 @@ export const joinOrganization = async ({
 }: {
   siret: string;
   user_id: number;
-}) => {
+}): Promise<UserOrganizationLink> => {
   // Update organizationInfo
   let organizationInfo: OrganizationInfo;
   try {
@@ -136,64 +151,82 @@ export const joinOrganization = async ({
   const domain = getEmailDomain(email);
 
   if (isEntrepriseUnipersonnelle(organization)) {
-    await addUser({
-      organization_id,
-      user_id,
-    });
-
     if (!usesAFreeEmailProvider(email)) {
       await addAuthorizedDomain({ siret, domain });
     }
-  } else if (verified_email_domains.includes(domain)) {
-    await addUser({
+
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+    });
+  }
+
+  if (verified_email_domains.includes(domain)) {
+    return await linkUserToOrganization({
       organization_id,
       user_id,
       verification_type: 'verified_email_domain',
     });
-  } else if (external_authorized_email_domains.includes(domain)) {
-    await addUser({
+  }
+
+  if (external_authorized_email_domains.includes(domain)) {
+    return await linkUserToOrganization({
       organization_id,
       user_id,
       is_external: true,
       verification_type: 'verified_email_domain',
     });
-  } else if (authorized_email_domains.includes(domain)) {
-    await addUser({
-      organization_id,
-      user_id,
-    });
+  }
+
+  if (authorized_email_domains.includes(domain)) {
     await createModeration({
       user_id,
       organization_id,
       type: 'non_verified_domain',
     });
-  } else {
-    await sendMail({
-      to: [email],
-      cc: [SUPPORT_EMAIL_ADDRESS],
-      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle ||
-        siret}`,
-      template: 'unable-to-auto-join-organization',
-      params: {
-        libelle: cached_libelle || siret,
-      },
-    });
-    await createModeration({
-      user_id,
+    return await linkUserToOrganization({
       organization_id,
-      type: 'organization_join_block',
+      user_id,
     });
-    throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
   }
 
-  // Email existing user in the organization
-  const usersInOrganization = await getUsers(organization.id);
+  await createModeration({
+    user_id,
+    organization_id,
+    type: 'organization_join_block',
+  });
+  await sendMail({
+    to: [email],
+    cc: [SUPPORT_EMAIL_ADDRESS],
+    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    template: 'unable-to-auto-join-organization',
+    params: {
+      libelle: cached_libelle || siret,
+    },
+  });
+  throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
+};
+
+export const forceJoinOrganization = linkUserToOrganization;
+
+export const notifyOrganizationJoin = async ({
+  organization_id,
+  user_id,
+  is_external,
+}: UserOrganizationLink) => {
+  const user = await findUserById(user_id);
+  const organization = await findOrganizationById(organization_id);
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+  const { email, given_name, family_name } = user;
+  const { cached_libelle } = organization;
+
+  // Email organization members of the organization
+  const usersInOrganization = await getUsers(organization_id);
   const otherInternalUsers = usersInOrganization.filter(
     ({ email: e, is_external }) => e !== email && !is_external
   );
-  const is_external = usersInOrganization.find(({ email: e }) => e === email)!
-    .is_external;
-  const { given_name, family_name } = user;
   if (otherInternalUsers.length > 0) {
     const user_label =
       !given_name && !family_name ? email : `${given_name} ${family_name}`;
@@ -205,7 +238,7 @@ export const joinOrganization = async ({
     });
   }
 
-  // Inform internal users of members already in the organization
+  // Email organization members list to the user (if he is an internal member)
   const otherUsers = usersInOrganization.filter(({ email: e }) => e !== email);
   if (!is_external && otherUsers.length > 0) {
     await sendMail({
