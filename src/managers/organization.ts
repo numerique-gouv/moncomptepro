@@ -207,6 +207,8 @@ export const joinOrganization = async ({
   throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
 };
 
+export const forceJoinOrganization = linkUserToOrganization;
+
 export const notifyOrganizationJoin = async ({
   organization_id,
   user_id,

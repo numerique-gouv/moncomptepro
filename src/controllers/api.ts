@@ -1,11 +1,18 @@
 import { BadRequest, GatewayTimeout, NotFound } from 'http-errors';
-import { isEmpty } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import notificationMessages from '../notification-messages';
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
-import { siretSchema } from '../services/custom-zod-schemas';
+import {
+  idSchema,
+  optionalBooleanSchema,
+  siretSchema,
+} from '../services/custom-zod-schemas';
 import { InseeNotFoundError, InseeTimeoutError } from '../errors';
+import {
+  forceJoinOrganization,
+  notifyOrganizationJoin,
+} from '../managers/organization';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -43,6 +50,45 @@ export const getOrganizationInfoController = async (
       return next(
         new GatewayTimeout(notificationMessages['insee_timeout'].description)
       );
+    }
+
+    next(e);
+  }
+};
+
+export const postForceJoinOrganizationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        organization_id: idSchema(),
+        user_id: idSchema(),
+        is_external: optionalBooleanSchema(),
+      }),
+    });
+
+    const {
+      query: { organization_id, user_id, is_external },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    const userOrganizationLink = await forceJoinOrganization({
+      organization_id,
+      user_id,
+      is_external,
+    });
+
+    await notifyOrganizationJoin(userOrganizationLink);
+
+    return res.json({});
+  } catch (e) {
+    console.log(e, 'e');
+    if (e instanceof ZodError) {
+      return next(new BadRequest());
     }
 
     next(e);
