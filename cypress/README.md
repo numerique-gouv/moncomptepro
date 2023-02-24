@@ -39,6 +39,7 @@ npm -g install cypress-mailslurp@1
 On your host, run the tests
 
 ```bash
+export CYPRESS_MAILSLURP_API_KEY=xxx
 export CYPRESS_MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
 cypress open
 ```
