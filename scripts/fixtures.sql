@@ -381,7 +381,7 @@ VALUES
      ],
    'openid email',
    'https://tous-a-bord.gouv.fr',
-   'Vérifie l’éligibilité de bénéficaires d’aides au transport'),
+   'Vérifie l’éligibilité de bénéficiaires d’aides au transport'),
   (8,
     'BaseProjectSIDDEE',
     'test_baseproject_SIDDEE',
@@ -394,7 +394,7 @@ VALUES
     ],
     'openid email',
     'http://10.59.128.114:8001/',
-    "Depôt de demandes auprès du service IDDEE de la DREAL HdF")
+    'Dépôt de demandes auprès du service IDDEE de la DREAL HdF')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
