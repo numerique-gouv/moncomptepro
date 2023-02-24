@@ -88,7 +88,44 @@ ORDER BY m.created_at
   return rows;
 };
 
-export const findByEmailDomain = async (email_domain: string) => {
+export const findByVerifiedEmailDomain = async (email_domain: string) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<Organization> = await connection.query(
+    `
+SELECT id,
+    siret,
+    authorized_email_domains,
+    external_authorized_email_domains,
+    created_at,
+    updated_at,
+    cached_libelle,
+    cached_nom_complet,
+    cached_enseigne,
+    cached_tranche_effectifs,
+    cached_tranche_effectifs_unite_legale,
+    cached_libelle_tranche_effectif,
+    cached_etat_administratif,
+    cached_est_active,
+    cached_statut_diffusion,
+    cached_est_diffusible,
+    cached_adresse,
+    cached_code_postal,
+    cached_activite_principale,
+    cached_libelle_activite_principale,
+    cached_categorie_juridique,
+    cached_libelle_categorie_juridique,
+    organization_info_fetched_at
+FROM organizations
+WHERE cached_est_active = 'true'
+  AND $1 = ANY (verified_email_domains)`,
+    [email_domain]
+  );
+
+  return rows;
+};
+
+export const findByMostUsedEmailDomain = async (email_domain: string) => {
   const connection = getDatabaseConnection();
 
   const {

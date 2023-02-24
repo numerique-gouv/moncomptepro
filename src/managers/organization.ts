@@ -1,4 +1,4 @@
-import { isEmpty, some } from 'lodash';
+import { isEmpty, some, uniqBy } from 'lodash';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import { sendMail } from '../connectors/sendinblue';
 import {
@@ -13,12 +13,13 @@ import { createModeration } from '../repositories/moderation';
 import {
   addUser,
   deleteUserOrganisation,
-  findByEmailDomain,
+  findByMostUsedEmailDomain,
   findByUserId,
   findPendingByUserId,
   getUsers,
   upsert,
   addAuthorizedDomain,
+  findByVerifiedEmailDomain,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
@@ -57,8 +58,14 @@ export const doSuggestOrganizations = async ({
   }
 
   const domain = getEmailDomain(email);
-  const organizationsSuggestions = await findByEmailDomain(domain);
-  const userOrganizations = await getOrganizationsByUserId(user_id);
+  const organizationsSuggestions = uniqBy(
+    [
+      ...(await findByVerifiedEmailDomain(domain)),
+      ...(await findByMostUsedEmailDomain(domain)),
+    ],
+    'id'
+  );
+  const userOrganizations = await findByUserId(user_id);
 
   return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
 };
@@ -76,7 +83,13 @@ export const getOrganizationSuggestions = async ({
 
   const domain = getEmailDomain(email);
 
-  const organizationsSuggestions = await findByEmailDomain(domain);
+  const organizationsSuggestions = uniqBy(
+    [
+      ...(await findByVerifiedEmailDomain(domain)),
+      ...(await findByMostUsedEmailDomain(domain)),
+    ],
+    'id'
+  );
   const userOrganizations = await findByUserId(user_id);
   const userOrganizationsIds = userOrganizations.map(({ id }) => id);
 

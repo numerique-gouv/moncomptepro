@@ -41,12 +41,14 @@ SELECT setval(
   );
 
 INSERT INTO organizations
-  (id, siret, verified_email_domains, created_at, updated_at)
+  (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
 VALUES
-  -- COMMUNE DE CLAMART
-  (1, '21920023500014', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- COMMUNE DE CLAMART - Mairie
+  (1, '21920023500014', '{"mailslurp.com"}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- COMMUNE DE CLAMART - Service assainissement
+  (2, '21920023500394', '{}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- DIRECTION INTERMINISTERIELLE DU NUMERIQUE (DINUM)
-  (2, '13002526500013', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (3, '13002526500013', '{"beta.gouv.fr"}', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 
 ON CONFLICT (id)
   DO UPDATE
@@ -68,7 +70,12 @@ VALUES
   (4, 1),
   (5, 1),
   (6, 1),
-  (7, 1)
+  (7, 1),
+  (3, 2),
+  (4, 2),
+  (5, 2),
+  (6, 2),
+  (7, 2)
 ON CONFLICT DO NOTHING;
 
 SELECT setval(
