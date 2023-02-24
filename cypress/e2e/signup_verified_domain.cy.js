@@ -43,6 +43,25 @@ describe('join organizations', () => {
       .then(email => {
         expect(email.subject).to.equal('Votre organisation sur MonComptePro');
       });
+
+    cy.mailslurp()
+      // use inbox id and a timeout of 30 seconds
+      .then(mailslurp =>
+        mailslurp.waitForLatestEmail(
+          '34c5063f-81c0-4d09-9d0b-a7502f844cdf',
+          30000,
+          true
+        )
+      )
+      // assert reception of notification email
+      .then(email => {
+        expect(email.body).to.contain(
+          'Votre organisation<strong>&nbsp;Commune de clamart - Mairie </strong>utilise MonComptePro.'
+        );
+        expect(email.body).to.contain(
+          'Nous tenions à vous informer que <strong>Jean User2</strong>&nbsp;(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com) vient de rejoindre cette organisation.'
+        );
+      });
   });
 
   it('join another organisation', function() {
