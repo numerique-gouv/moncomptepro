@@ -387,7 +387,8 @@ VALUES
     'test_baseproject_SIDDEE',
     'test_baseproject_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
     ARRAY [
-      'http://10.59.128.114:8001/'
+      'http://10.59.128.114:8001/auth/cb/',
+      'http://10.59.128.114:8001/oidc/auth/cb/'
     ],
     ARRAY [
       'http://10.59.128.114:8001/'
