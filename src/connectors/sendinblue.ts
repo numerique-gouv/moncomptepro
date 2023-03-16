@@ -16,7 +16,8 @@ type RemoteTemplateSlug =
 type LocalTemplateSlug =
   | 'organization-welcome'
   | 'unable-to-auto-join-organization'
-  | 'welcome';
+  | 'welcome'
+  | 'moderation-processed';
 
 // active templates id are listed at https://app-smtp.sendinblue.com/templates
 const remoteTemplateSlugToSendinblueTemplateId: {

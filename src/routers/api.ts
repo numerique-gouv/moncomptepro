@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import {
   getOrganizationInfoController,
   postForceJoinOrganizationController,
+  postSendModerationProcessedEmail,
 } from '../controllers/api';
 import { rateLimiterMiddleware } from '../services/rate-limiter';
 import { HttpError } from 'http-errors';
@@ -29,6 +30,11 @@ export const apiRouter = () => {
   apiAdminRouter.post(
     '/join-organization',
     postForceJoinOrganizationController
+  );
+
+  apiAdminRouter.post(
+    '/send-moderation-processed-email',
+    postSendModerationProcessedEmail
   );
 
   apiRouter.use('/admin', apiAdminRouter);
