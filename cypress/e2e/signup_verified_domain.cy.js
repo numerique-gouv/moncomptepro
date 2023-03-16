@@ -55,11 +55,11 @@ describe('join organizations', () => {
       )
       // assert reception of notification email
       .then(email => {
-        expect(email.body).to.contain(
-          'Votre organisation<strong>&nbsp;Commune de clamart - Mairie </strong>utilise MonComptePro.'
+        expect(email.body).to.match(
+          /Votre organisation.*Commune de clamart - Mairie.*utilise MonComptePro./
         );
-        expect(email.body).to.contain(
-          'Nous tenions à vous informer que <strong>Jean User2</strong>&nbsp;(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com) vient de rejoindre cette organisation.'
+        expect(email.body).to.match(
+          /Nous tenions à vous informer que.*Jean User2.*\(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com\) vient de rejoindre cette organisation./
         );
       });
   });

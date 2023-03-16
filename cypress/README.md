@@ -1,4 +1,4 @@
-# Run cypress localy
+# Run cypress locally
 
 In the MonComptePro virtual machine, set up the test database:
 
