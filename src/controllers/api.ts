@@ -13,6 +13,7 @@ import {
   forceJoinOrganization,
   notifyOrganizationJoin,
 } from '../managers/organization';
+import { sendModerationProcessedEmail } from '../managers/moderation';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -83,6 +84,38 @@ export const postForceJoinOrganizationController = async (
     });
 
     await notifyOrganizationJoin(userOrganizationLink);
+
+    return res.json({});
+  } catch (e) {
+    console.log(e, 'e');
+    if (e instanceof ZodError) {
+      return next(new BadRequest());
+    }
+
+    next(e);
+  }
+};
+
+export const postSendModerationProcessedEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        organization_id: idSchema(),
+        user_id: idSchema(),
+      }),
+    });
+
+    const {
+      query: { organization_id, user_id },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    await sendModerationProcessedEmail({ organization_id, user_id });
 
     return res.json({});
   } catch (e) {
