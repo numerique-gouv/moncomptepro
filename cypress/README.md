@@ -23,6 +23,7 @@ sudo systemctl stop api-auth
 sudo su - api-auth
 cd /opt/apps/api-auth/current
 export $(cat /etc/api-auth.conf | xargs)
+export DO_NOT_RATE_LIMIT=True
 export PGDATABASE=api-auth-test DO_NOT_SEND_MAIL=False
 export SENDINBLUE_API_KEY="xxx"
 npm run build
