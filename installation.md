@@ -1,0 +1,109 @@
+# Installation locale de MonComptePro
+
+Cette liste d'instruction a été testée sur Ubuntu 20.
+
+## Configuration des bases de données
+
+### Installation de Postgres
+
+```shell
+sudo apt update
+sudo apt install postgresql
+```
+
+### Création de la base Postgres
+
+```shell
+sudo -u postgres psql
+create database moncomptepro;
+create user moncomptepro with encrypted password 'moncomptepro';
+grant all privileges on database moncomptepro to moncomptepro;
+```
+
+### Installation de Redis
+
+```shell
+sudo apt install redis
+```
+
+## Installation de l'application
+
+### Installation de nodeJS avec NVM
+
+```shell
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+```
+
+Suivre les instructions en console puis :
+
+```shell
+nvm install 16
+```
+
+### Build du projet
+
+Cloner le projet :
+
+```shell
+git clone https://github.com/betagouv/moncomptepro.git
+cd moncomptepro
+```
+
+Création du fichier de configuration.
+
+Attention, il faut remplacer les identifiants de l'INSEE par vos propres identifiants. Plus d'info : https://api.gouv.fr/les-api/sirene_v3.
+Attention, il faut remplacer la variable JWKS_PATH par un chemin valide.
+
+```shell
+cat <<EOT >> moncomptepro.conf
+NODE_ENV=production
+PGUSER=moncomptepro
+PGPASSWORD=moncomptepro
+PGDATABASE=moncomptepro
+PGPORT=5432
+DATABASE_URL=postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
+SENDINBLUE_API_KEY=
+MONCOMPTEPRO_HOST=http://localhost:3000
+JWKS_PATH=/absolute/path/to/moncomptepro/folder/jwks.json
+DO_NOT_SEND_MAIL=True
+DO_NOT_VALIDATE_MAIL=True
+SESSION_COOKIE_SECRET=moncompteprosecret
+SENTRY_DSN=
+SECURE_COOKIES="false"
+INSEE_CONSUMER_KEY=yourownkey
+INSEE_CONSUMER_SECRET=yourownsecret
+EOT
+```
+
+Chargement des variables d'environnements :
+
+```shell
+export $(cat moncomptepro.conf | xargs)
+```
+
+Installation des dépendances :
+```shell
+npm i --dev
+```
+
+Migration de la base de donnée et chargement de données de tests :
+
+```shell
+npm run migrate up
+psql -h 127.0.0.1 -v ON_ERROR_STOP=1 -d moncomptepro -f scripts/fixtures.sql
+npm run update-organization-info 2000
+```
+
+Lancement du projet en mode interactif :
+
+```shell
+npm run dev
+```
+
+## Tester l'application
+
+L'application est maintenant disponible sur http://localhost:3000.
+
+Pour se connecter, utiliser l'adresse mail user@yopmail.com et le mot de passe "user@yopmail.com".
+
+Les mails ne sont pas envoyés mais imprimés en console.

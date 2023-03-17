@@ -168,6 +168,8 @@ La nouvelle configuration sera déployée en environment de test dès que la pul
 
 ## 👋 Contribuer à MonComptePro
 
-Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
+Pour contribuer à MonComptePro vous pouvez installer l'application localement.
 
-Les instructions d’installation se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://gitlab.com/etalab/api.gouv.fr/moncomptepro-infrastructure
+Les instructions se trouvent sur [la page de doc dédiée](./installation.md)
+
+Les instructions d’installation complètes incluant l'infrastructure se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://github.com/betagouv/moncomptepro-infrastructure
