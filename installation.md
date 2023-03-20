@@ -11,19 +11,46 @@ sudo apt update
 sudo apt install postgresql
 ```
 
+Sur Mac :
+
+```
+brew up
+brew install postgresql
+```
+
 ### Création de la base Postgres
 
+Lancer l'invite de commande PostgreSQL :
 ```shell
 sudo -u postgres psql
+```
+
+Sur mac : 
+
+```shell
+psql
+```
+
+Puis dans l'invite de commandes postgresql : 
+
+```sql
 create database moncomptepro;
 create user moncomptepro with encrypted password 'moncomptepro';
 grant all privileges on database moncomptepro to moncomptepro;
 ```
 
+Quitter l'invite de commandes avec ctrl-D.
+
 ### Installation de Redis
 
 ```shell
 sudo apt install redis
+```
+
+Sur mac : 
+
+```
+brew install redis
 ```
 
 ## Installation de l'application
