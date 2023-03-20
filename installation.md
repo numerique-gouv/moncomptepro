@@ -11,19 +11,47 @@ sudo apt update
 sudo apt install postgresql
 ```
 
+Sur Mac :
+
+```
+brew up
+brew install postgresql
+```
+
 ### Création de la base Postgres
 
+Lancer l'invite de commande PostgreSQL :
 ```shell
 sudo -u postgres psql
-create database moncomptepro;
+```
+
+Sur mac : 
+
+```shell
+psql
+```
+
+Puis dans l'invite de commandes postgresql : 
+
+```sql
 create user moncomptepro with encrypted password 'moncomptepro';
+create database moncomptepro owner moncomptepro;
 grant all privileges on database moncomptepro to moncomptepro;
 ```
+
+Quitter l'invite de commandes avec ctrl-D.
 
 ### Installation de Redis
 
 ```shell
 sudo apt install redis
+```
+
+Sur mac : 
+
+```
+brew install redis
+brew services start redis # pour lancer le serveur redis automatiquement au démarrage
 ```
 
 ## Installation de l'application
@@ -32,6 +60,12 @@ sudo apt install redis
 
 ```shell
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+```
+
+Sur Mac :
+
+```
+brew install nvm
 ```
 
 Suivre les instructions en console puis :
@@ -51,8 +85,9 @@ cd moncomptepro
 
 Création du fichier de configuration.
 
-Attention, il faut remplacer les identifiants de l'INSEE par vos propres identifiants. Plus d'info : https://api.gouv.fr/les-api/sirene_v3.
-Attention, il faut remplacer la variable JWKS_PATH par un chemin valide.
+Attention, il faut remplacer les identifiants de l'INSEE par vos propres identifiants. Pour créer un compte : https://api.gouv.fr/les-api/sirene_v3.
+
+Attention, il faut remplacer la variable JWKS_PATH par un chemin valide. Remplacez la partie `/absolute/path/to/moncomptepro/folder/` par le chemin réel sur votre poste.
 
 ```shell
 cat <<EOT >> moncomptepro.conf
