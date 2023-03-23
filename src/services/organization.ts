@@ -20,3 +20,13 @@ export const isEntrepriseUnipersonnelle = ({
 
   return cat_jur_ok && tra_eff_ok;
 };
+
+export const isCollectiviteTerritoriale = ({
+  cached_libelle_categorie_juridique,
+}: Organization): boolean => {
+  return [
+    'Commune et commune nouvelle',
+    'Communauté de communes',
+    'Commune associée et commune déléguée',
+  ].includes(cached_libelle_categorie_juridique || '');
+};

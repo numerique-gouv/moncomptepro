@@ -102,6 +102,7 @@ MONCOMPTEPRO_HOST=http://localhost:3000
 JWKS_PATH=/absolute/path/to/moncomptepro/folder/jwks.json
 DO_NOT_SEND_MAIL=True
 DO_NOT_VALIDATE_MAIL=True
+DO_NOT_USE_ANNUAIRE_EMAILS=True
 SESSION_COOKIE_SECRET=moncompteprosecret
 SENTRY_DSN=
 SECURE_COOKIES="false"

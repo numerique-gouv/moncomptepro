@@ -18,6 +18,7 @@ interface Organization {
   cached_est_diffusible: string | null;
   cached_adresse: string | null;
   cached_code_postal: string | null;
+  cached_code_officiel_geographique: string | null;
   cached_activite_principale: string | null;
   cached_libelle_activite_principale: string | null;
   cached_categorie_juridique: string | null;
