@@ -37,3 +37,11 @@ export class EmailVerifiedAlreadyError extends Error {}
 export class InvalidTokenError extends Error {}
 
 export class InvalidMagicLinkError extends Error {}
+
+export class ApiAnnuaireNotFoundError extends Error {}
+
+export class ApiAnnuaireTooManyResultsError extends Error {}
+
+export class ApiAnnuaireInvalidEmailError extends Error {}
+
+export class ApiAnnuaireTimeoutError extends Error {}

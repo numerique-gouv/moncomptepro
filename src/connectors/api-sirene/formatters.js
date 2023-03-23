@@ -52,19 +52,19 @@ const libelleFromTypeVoie = codeVoie => {
 };
 
 export const formatAdresseEtablissement = ({
-  complementAdresseEtablissement = '',
-  numeroVoieEtablissement = '',
-  indiceRepetitionEtablissement = '',
-  typeVoieEtablissement = '',
-  libelleVoieEtablissement = '',
-  distributionSpecialeEtablissement = '',
-  codePostalEtablissement = '',
-  libelleCommuneEtablissement = '',
-  codeCedexEtablissement = '',
-  libelleCedexEtablissement = '',
-  libelleCommuneEtrangerEtablissement = '',
-  codePaysEtrangerEtablissement = '',
-  libellePaysEtrangerEtablissement = '',
+  complementAdresseEtablissement,
+  numeroVoieEtablissement,
+  indiceRepetitionEtablissement,
+  typeVoieEtablissement,
+  libelleVoieEtablissement,
+  distributionSpecialeEtablissement,
+  codePostalEtablissement,
+  libelleCommuneEtablissement,
+  codeCedexEtablissement,
+  libelleCedexEtablissement,
+  libelleCommuneEtrangerEtablissement,
+  codePaysEtrangerEtablissement,
+  libellePaysEtrangerEtablissement,
 }) => {
   if (
     !complementAdresseEtablissement &&

@@ -24,6 +24,7 @@ sudo su - api-auth
 cd /opt/apps/api-auth/current
 export $(cat /etc/api-auth.conf | xargs)
 export DO_NOT_RATE_LIMIT=True
+export DO_NOT_USE_ANNUAIRE_EMAILS=True TEST_CONTACT_EMAIL=34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com
 export PGDATABASE=api-auth-test DO_NOT_SEND_MAIL=False
 export SENDINBLUE_API_KEY="xxx"
 npm run build

@@ -22,13 +22,19 @@ import {
   upsert,
   addAuthorizedDomain,
   findByVerifiedEmailDomain,
+  addVerifiedDomain,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
   usesAFreeEmailProvider,
 } from '../services/uses-a-free-email-provider';
-import { isEntrepriseUnipersonnelle } from '../services/organization';
+import {
+  isCollectiviteTerritoriale,
+  isEntrepriseUnipersonnelle,
+} from '../services/organization';
+import { getContactEmail } from '../connectors/api-annuaire';
+import * as Sentry from '@sentry/node';
 
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
@@ -188,6 +194,29 @@ export const joinOrganization = async ({
       organization_id,
       user_id,
     });
+  }
+
+  if (isCollectiviteTerritoriale(organization)) {
+    try {
+      const contactEmail = await getContactEmail(
+        organization.cached_code_officiel_geographique
+      );
+
+      if (email === contactEmail) {
+        if (!usesAFreeEmailProvider(email)) {
+          await addVerifiedDomain({ siret, domain });
+        }
+
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: 'official_contact_email',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      Sentry.captureException(err);
+    }
   }
 
   await createModeration({

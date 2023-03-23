@@ -25,6 +25,7 @@ SELECT
     cached_est_diffusible,
     cached_adresse,
     cached_code_postal,
+    cached_code_officiel_geographique,
     cached_activite_principale,
     cached_libelle_activite_principale,
     cached_categorie_juridique,
@@ -66,6 +67,7 @@ SELECT
     o.cached_est_diffusible,
     o.cached_adresse,
     o.cached_code_postal,
+    o.cached_code_officiel_geographique,
     o.cached_activite_principale,
     o.cached_libelle_activite_principale,
     o.cached_categorie_juridique,
@@ -106,6 +108,7 @@ SELECT
     o.cached_est_diffusible,
     o.cached_adresse,
     o.cached_code_postal,
+    o.cached_code_officiel_geographique,
     o.cached_activite_principale,
     o.cached_libelle_activite_principale,
     o.cached_categorie_juridique,
@@ -148,6 +151,7 @@ SELECT id,
     cached_est_diffusible,
     cached_adresse,
     cached_code_postal,
+    cached_code_officiel_geographique,
     cached_activite_principale,
     cached_libelle_activite_principale,
     cached_categorie_juridique,
@@ -188,6 +192,7 @@ SELECT
     sub.cached_est_diffusible,
     sub.cached_adresse,
     sub.cached_code_postal,
+    sub.cached_code_officiel_geographique,
     sub.cached_activite_principale,
     sub.cached_libelle_activite_principale,
     sub.cached_categorie_juridique,
@@ -224,6 +229,7 @@ export const upsert = async ({
     estDiffusible: cached_est_diffusible,
     adresse: cached_adresse,
     codePostal: cached_code_postal,
+    codeOfficielGeographique: cached_code_officiel_geographique,
     activitePrincipale: cached_activite_principale,
     libelleActivitePrincipale: cached_libelle_activite_principale,
     categorieJuridique: cached_categorie_juridique,
@@ -252,6 +258,7 @@ INSERT INTO organizations
         cached_est_diffusible,
         cached_adresse,
         cached_code_postal,
+        cached_code_officiel_geographique,
         cached_activite_principale,
         cached_libelle_activite_principale,
         cached_categorie_juridique,
@@ -261,7 +268,7 @@ INSERT INTO organizations
         created_at
     )
 VALUES
-  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
 ON CONFLICT (siret)
 DO UPDATE
     SET (
@@ -278,6 +285,7 @@ DO UPDATE
         cached_est_diffusible,
         cached_adresse,
         cached_code_postal,
+        cached_code_officiel_geographique,
         cached_activite_principale,
         cached_libelle_activite_principale,
         cached_categorie_juridique,
@@ -298,6 +306,7 @@ DO UPDATE
         EXCLUDED.cached_est_diffusible,
         EXCLUDED.cached_adresse,
         EXCLUDED.cached_code_postal,
+        EXCLUDED.cached_code_officiel_geographique,
         EXCLUDED.cached_activite_principale,
         EXCLUDED.cached_libelle_activite_principale,
         EXCLUDED.cached_categorie_juridique,
@@ -321,6 +330,7 @@ RETURNING *
       cached_est_diffusible,
       cached_adresse,
       cached_code_postal,
+      cached_code_officiel_geographique,
       cached_activite_principale,
       cached_libelle_activite_principale,
       cached_categorie_juridique,
@@ -334,19 +344,21 @@ RETURNING *
   return rows.shift()!;
 };
 
-export const addAuthorizedDomain = async ({
+const addDomain = async ({
   siret,
   domain,
+  listName,
 }: {
   siret: string;
   domain: string;
+  listName: 'verified_email_domains' | 'authorized_email_domains';
 }) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Organization> = await connection.query(
     `
 UPDATE organizations
-SET authorized_email_domains = array_append(authorized_email_domains, $2)
+SET ${listName} = array_append(${listName}, $2)
   , updated_at               = $3
 WHERE siret = $1
 RETURNING *
@@ -355,6 +367,29 @@ RETURNING *
   );
 
   return rows.shift()!;
+};
+
+export const addAuthorizedDomain = async ({
+  siret,
+  domain,
+}: {
+  siret: string;
+  domain: string;
+}) => {
+  return await addDomain({
+    siret,
+    domain,
+    listName: 'authorized_email_domains',
+  });
+};
+export const addVerifiedDomain = async ({
+  siret,
+  domain,
+}: {
+  siret: string;
+  domain: string;
+}) => {
+  return await addDomain({ siret, domain, listName: 'verified_email_domains' });
 };
 
 export const linkUserToOrganization = async ({

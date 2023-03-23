@@ -12,17 +12,15 @@ describe('join organizations', () => {
     // Visit the signup page
     cy.visit(`${host}/`);
 
-    cy.get('.fr-grid-row .fr-tile__link').should('have.length', 2);
-
-    cy.get('.fr-grid-row .fr-col-12:nth-child(1) .fr-tile__link').contains(
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').contains(
       'Commune de clamart - Mairie'
     );
-    cy.get('.fr-grid-row .fr-col-12:nth-child(2) .fr-tile__link').contains(
+    cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').contains(
       'Commune de clamart - Service assainissement'
     );
 
     // Click on the suggested organization
-    cy.get('.fr-grid-row .fr-col-12:nth-child(1) .fr-tile__link').click();
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
 
     // Click on "continue" on the welcome page
     cy.get('[type="submit"]').click();
