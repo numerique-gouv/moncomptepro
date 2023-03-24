@@ -190,7 +190,7 @@ export const getOrganizationInfo = async (
       uniteLegale,
     } = etablissement;
 
-    if (statutDiffusionEtablissement === 'N') {
+    if (statutDiffusionEtablissement !== 'O') {
       throw new InseeNotFoundError();
     }
 
