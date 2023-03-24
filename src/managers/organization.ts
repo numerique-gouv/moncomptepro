@@ -197,25 +197,26 @@ export const joinOrganization = async ({
   }
 
   if (isCollectiviteTerritoriale(organization)) {
+    let contactEmail;
     try {
-      const contactEmail = await getContactEmail(
+      contactEmail = await getContactEmail(
         organization.cached_code_officiel_geographique
       );
-
-      if (email === contactEmail) {
-        if (!usesAFreeEmailProvider(email)) {
-          await addVerifiedDomain({ siret, domain });
-        }
-
-        return await linkUserToOrganization({
-          organization_id,
-          user_id,
-          verification_type: 'official_contact_email',
-        });
-      }
     } catch (err) {
       console.error(err);
       Sentry.captureException(err);
+    }
+
+    if (contactEmail === email) {
+      if (!usesAFreeEmailProvider(email)) {
+        await addVerifiedDomain({ siret, domain });
+      }
+
+      return await linkUserToOrganization({
+        organization_id,
+        user_id,
+        verification_type: 'official_contact_email',
+      });
     }
   }
 
