@@ -22,7 +22,7 @@ type ApiInseeResponse = {
     // ex: '21740056300011'
     siret: string;
     // ex: 'O'
-    statutDiffusionEtablissement: string;
+    statutDiffusionEtablissement: 'O' | 'P' | 'N';
     // ex: '1983-03-01'
     dateCreationEtablissement: string;
     // ex: '32'
@@ -40,7 +40,7 @@ type ApiInseeResponse = {
       // ex: 'A'
       etatAdministratifUniteLegale: string;
       // ex: 'O'
-      statutDiffusionUniteLegale: string;
+      statutDiffusionUniteLegale: 'O' | 'P' | 'N';
       // ex: '1982-01-01'
       dateCreationUniteLegale: string;
       // ex: '7210'
@@ -250,7 +250,7 @@ export const getOrganizationInfo = async (
       etatAdministratif: etatAdministratifEtablissement,
       estActive: etatAdministratifEtablissement === 'A',
       statutDiffusion: statutDiffusionEtablissement,
-      estDiffusible: statutDiffusionEtablissement !== 'N',
+      estDiffusible: statutDiffusionEtablissement === 'O',
       adresse: formatAdresseEtablissement(adresseEtablissement),
       codePostal: codePostalEtablissement,
       codeOfficielGeographique: codeCommuneEtablissement,
