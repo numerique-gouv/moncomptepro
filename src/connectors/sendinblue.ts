@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { isEmpty } from 'lodash';
 import path from 'path';
 
 import { render } from '../services/renderer';
+import { SendInBlueApiError } from '../errors';
 
 const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
 
@@ -106,6 +107,9 @@ export const sendMail = async ({
     );
   } catch (error) {
     console.error(error);
+    if (error instanceof AxiosError) {
+      throw new SendInBlueApiError(error);
+    }
 
     throw new Error('Error from SendInBlue API');
   }
