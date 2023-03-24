@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 export class InvalidEmailError extends Error {
   constructor(public didYouMean: string) {
     super();
@@ -45,3 +47,14 @@ export class ApiAnnuaireTooManyResultsError extends Error {}
 export class ApiAnnuaireInvalidEmailError extends Error {}
 
 export class ApiAnnuaireTimeoutError extends Error {}
+
+export class SendInBlueApiError extends Error {
+  constructor(error: AxiosError<{ message: string; code: string }>) {
+    if (error.response?.data?.code && error.response?.data?.message) {
+      super(error.response?.data?.message);
+      this.name = `SendInBlueApiError ${error.response?.data?.code}`;
+    } else {
+      super();
+    }
+  }
+}
