@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { isEmpty } from 'lodash';
+import { chain, isEmpty } from 'lodash';
 import path from 'path';
 
 import { render } from '../services/renderer';
@@ -57,7 +57,11 @@ export const sendMail = async ({
       name: 'L’équipe MonComptePro',
       email: 'moncomptepro@beta.gouv.fr',
     },
-    to: to.map(e => ({ email: e })),
+    // Sendinblue allow a maximum of 99 recipients
+    to: chain(to)
+      .sampleSize(99)
+      .map(e => ({ email: e }))
+      .value(),
     subject,
     params,
     tags: [template],
