@@ -30,3 +30,17 @@ export const isCollectiviteTerritoriale = ({
     'Commune associée et commune déléguée',
   ].includes(cached_libelle_categorie_juridique || '');
 };
+
+// inspired from https://github.com/etalab/annuaire-entreprises-search-infra/blob/c86bdb34ff6359de3a740ae2f1fa49133ddea362/data_enrichment.py#L104
+export const isServicePublic = ({
+  cached_categorie_juridique,
+  siret,
+}: Organization): boolean => {
+  const cat_jur_ok = ['3210', '3110', '4', '71', '72', '73', '74'].some(e =>
+    cached_categorie_juridique?.startsWith(e)
+  );
+
+  const siret_ok = ['1', '2'].some(e => siret?.startsWith(e));
+
+  return cat_jur_ok || siret_ok;
+};
