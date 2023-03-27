@@ -234,7 +234,7 @@ export const joinOrganization = async ({
       libelle: cached_libelle || siret,
     },
   });
-  throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
+  throw new UnableToAutoJoinOrganizationError();
 };
 
 export const forceJoinOrganization = linkUserToOrganization;

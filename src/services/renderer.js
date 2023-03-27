@@ -34,7 +34,7 @@ export const ejsLayoutMiddlewareFactory = (
 ) => {
   return (req, res, next) => {
     const orig = res.render;
-    res.render = (view, locals) => {
+    res.render = (view, locals = {}) => {
       app.render(view, locals, (err, html) => {
         if (err) throw err;
         orig.call(res, '_layout', {

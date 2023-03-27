@@ -19,12 +19,7 @@ export class UserNotFoundError extends Error {}
 
 export class NotFoundError extends Error {}
 
-export class UnableToAutoJoinOrganizationError extends Error {
-  constructor(public libelle: string) {
-    super();
-    this.libelle = libelle;
-  }
-}
+export class UnableToAutoJoinOrganizationError extends Error {}
 
 export class UserInOrganizationAlreadyError extends Error {}
 
