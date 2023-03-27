@@ -40,7 +40,7 @@ export const isServicePublic = ({
     cached_categorie_juridique?.startsWith(e)
   );
 
-  const siret_ok = ['1', '2'].some(e => siret.startsWith(e));
+  const siret_ok = ['1', '2'].some(e => siret?.startsWith(e));
 
   return cat_jur_ok || siret_ok;
 };

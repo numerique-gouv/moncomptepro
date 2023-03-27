@@ -31,6 +31,10 @@ const entreprise_unipersonnelle_org_info: Organization = {
 };
 
 describe('isEntrepriseUnipersonnelle', () => {
+  it('should return false for bad call', () => {
+    assert.equal(isEntrepriseUnipersonnelle({}), false);
+  });
+
   it('should return true for unipersonnelle organization', () => {
     assert.equal(
       isEntrepriseUnipersonnelle(entreprise_unipersonnelle_org_info),
@@ -68,6 +72,10 @@ const dinum_org_info: Organization = {
 };
 
 describe('isCollectiviteTerritoriale', () => {
+  it('should return false for bad call', () => {
+    assert.equal(isCollectiviteTerritoriale({}), false);
+  });
+
   it('should return true for collectivite territoriale', () => {
     assert.equal(isCollectiviteTerritoriale(lamalou_org_info), true);
   });
@@ -78,6 +86,10 @@ describe('isCollectiviteTerritoriale', () => {
 });
 
 describe('isServicePublic', () => {
+  it('should return false for bad call', () => {
+    assert.equal(isServicePublic({}), false);
+  });
+
   it('should return true for collectivite territoriale', () => {
     assert.equal(isServicePublic(lamalou_org_info), true);
   });
