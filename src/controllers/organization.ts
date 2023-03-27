@@ -20,6 +20,7 @@ import {
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
+  UserAlreadyAskToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
 
@@ -117,7 +118,10 @@ export const postJoinOrganizationMiddleware = async (
 
     next();
   } catch (error) {
-    if (error instanceof UnableToAutoJoinOrganizationError) {
+    if (
+      error instanceof UnableToAutoJoinOrganizationError ||
+      error instanceof UserAlreadyAskToJoinOrganizationError
+    ) {
       return res.redirect(`/users/unable-to-auto-join-organization`);
     }
 

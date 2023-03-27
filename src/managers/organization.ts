@@ -7,6 +7,7 @@ import {
   InvalidSiretError,
   NotFoundError,
   UnableToAutoJoinOrganizationError,
+  UserAlreadyAskToJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
 } from '../errors';
@@ -140,10 +141,14 @@ export const joinOrganization = async ({
     throw new UserNotFoundError();
   }
 
-  // Ensure user is not in organization already
-  const usersInOrganizationAlready = await getUsers(organization.id);
-  if (some(usersInOrganizationAlready, ['email', user.email])) {
+  const usersOrganizations = await findByUserId(user_id);
+  if (some(usersOrganizations, ['id', organization.id])) {
     throw new UserInOrganizationAlreadyError();
+  }
+
+  const pendingUsersOrganizations = await findPendingByUserId(user_id);
+  if (some(pendingUsersOrganizations, ['id', organization.id])) {
+    throw new UserAlreadyAskToJoinOrganizationError();
   }
 
   const {

@@ -23,6 +23,8 @@ export class UnableToAutoJoinOrganizationError extends Error {}
 
 export class UserInOrganizationAlreadyError extends Error {}
 
+export class UserAlreadyAskToJoinOrganizationError extends Error {}
+
 export class InvalidCredentialsError extends Error {}
 
 export class EmailUnavailableError extends Error {}
