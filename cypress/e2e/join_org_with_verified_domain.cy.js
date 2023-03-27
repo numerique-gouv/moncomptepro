@@ -70,7 +70,7 @@ describe('join organizations', () => {
 
     // Check DataPass redirection
     cy.contains(
-      'Bonne nouvelle, l’organisation Commune de chamonix mont blanc - Mairie chamonix - argentiere utilise déjà MonComptePro !'
+      'Notre équipe est en train de vous rattacher à cette organisation.'
     );
   });
 });
