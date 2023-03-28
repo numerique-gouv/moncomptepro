@@ -80,12 +80,16 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
         "id": 16,
         "siret": "21630215800011",
         "label": "Commune de les martres sur morge - Mairie",
-        "is_external": "true"
+        "is_external": true,
+        "is_collectivite_territoriale": true,
+        "is_service_public": true
     }, {
         "id": 17,
         "siret": "83951732300011",
         "label": "Red needles SARL",
-        "is_external": "false"
+        "is_external": false,
+        "is_collectivite_territoriale": false,
+        "is_service_public": false
     }],
     "sub": 154
 }
