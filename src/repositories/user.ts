@@ -174,9 +174,11 @@ export const update = async (id: number, fieldsToUpdate: User) => {
 export const create = async ({
   email,
   encrypted_password = null,
+  last_sign_in_at,
 }: {
   email: string;
   encrypted_password: string | null;
+  last_sign_in_at: Date;
 }) => {
   const connection = getDatabaseConnection();
 
@@ -191,7 +193,7 @@ export const create = async ({
     reset_password_token: null,
     reset_password_sent_at: null,
     sign_in_count: 0,
-    last_sign_in_at: null,
+    last_sign_in_at,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };

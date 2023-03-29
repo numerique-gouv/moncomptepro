@@ -92,6 +92,7 @@ export const signup = async (email, password) => {
   return await create({
     email,
     encrypted_password: hashedPassword,
+    last_sign_in_at: new Date().toISOString(),
   });
 };
 
@@ -236,6 +237,7 @@ export const loginWithMagicLink = async token => {
     email_verified_at: new Date().toISOString(),
     magic_link_token: null,
     magic_link_sent_at: null,
+    last_sign_in_at: new Date().toISOString(),
   });
 };
 
