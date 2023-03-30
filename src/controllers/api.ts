@@ -11,6 +11,7 @@ import {
 import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 import {
   forceJoinOrganization,
+  markDomainAsVerified,
   notifyOrganizationJoin,
 } from '../managers/organization';
 import { sendModerationProcessedEmail } from '../managers/moderation';
@@ -81,13 +82,14 @@ export const postForceJoinOrganizationController = async (
       organization_id,
       user_id,
       is_external,
+      verification_type: null,
     });
 
     await notifyOrganizationJoin(userOrganizationLink);
 
     return res.json({});
   } catch (e) {
-    console.log(e, 'e');
+    console.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }
@@ -119,7 +121,39 @@ export const postSendModerationProcessedEmail = async (
 
     return res.json({});
   } catch (e) {
-    console.log(e, 'e');
+    console.error(e);
+    if (e instanceof ZodError) {
+      return next(new BadRequest());
+    }
+
+    next(e);
+  }
+};
+
+export const postMarkDomainAsVerified = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        organization_id: idSchema(),
+        domain: z.string().min(1),
+      }),
+    });
+
+    const {
+      query: { organization_id, domain },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    await markDomainAsVerified({ organization_id, domain });
+
+    return res.json({});
+  } catch (e) {
+    console.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }

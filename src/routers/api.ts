@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import {
   getOrganizationInfoController,
   postForceJoinOrganizationController,
+  postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
 } from '../controllers/api';
 import { rateLimiterMiddleware } from '../services/rate-limiter';
@@ -36,6 +37,8 @@ export const apiRouter = () => {
     '/send-moderation-processed-email',
     postSendModerationProcessedEmail
   );
+
+  apiAdminRouter.post('/mark-domain-as-verified', postMarkDomainAsVerified);
 
   apiRouter.use('/admin', apiAdminRouter);
 
