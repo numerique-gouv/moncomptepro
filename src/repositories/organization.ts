@@ -449,10 +449,12 @@ export const setVerificationType = async ({
   const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
     `
 UPDATE users_organizations
-SET verification_type = $3
+SET
+    verification_type = $3,
+    updated_at = $4
 WHERE organization_id = $1 AND user_id = $2
 `,
-    [organization_id, user_id, verification_type]
+    [organization_id, user_id, verification_type, new Date().toISOString()]
   );
 
   return rows.shift()!;
