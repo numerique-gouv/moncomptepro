@@ -16,7 +16,7 @@ Pour tester le parcours de connexion complet, vous pouvez tester la connexion Mo
 
 Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/api-entreprise.
 
-Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables yopmail.
+Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables `yopmail.com`.
 
 Vous pouvez également utiliser les comptes de tests suivants :
 
@@ -64,6 +64,8 @@ Vous trouverez des ressources abondantes sur le sujet sur internet. Voici notre 
 ### Spécifications techniques
 
 Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout.
+
+Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations, dont une [collectivité territoriale](https://annuaire-entreprises.data.gouv.fr/entreprise/commune-de-clamart-219200235).
 
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
