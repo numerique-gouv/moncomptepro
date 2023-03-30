@@ -24,6 +24,7 @@ import {
   addAuthorizedDomain,
   findByVerifiedEmailDomain,
   addVerifiedDomain,
+  setVerificationType,
 } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
@@ -36,6 +37,7 @@ import {
 } from '../services/organization';
 import { getContactEmail } from '../connectors/api-annuaire';
 import * as Sentry from '@sentry/node';
+import user from '../routers/user';
 
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
@@ -169,6 +171,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
+      verification_type: null,
     });
   }
 
@@ -198,6 +201,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
+      verification_type: null,
     });
   }
 
@@ -324,4 +328,48 @@ export const quitOrganization = async ({
   await deleteUserOrganisation({ user_id, organization_id });
 
   return null;
+};
+
+export const markDomainAsVerified = async ({
+  organization_id,
+  domain,
+}: {
+  organization_id: number;
+  domain: string;
+}) => {
+  const organization = await findOrganizationById(organization_id);
+  if (isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  const {
+    siret,
+    verified_email_domains,
+    authorized_email_domains,
+  } = organization;
+
+  if (!verified_email_domains.includes(domain)) {
+    await addVerifiedDomain({ siret, domain });
+  }
+
+  if (!authorized_email_domains.includes(domain)) {
+    await addAuthorizedDomain({ siret, domain });
+  }
+
+  const usersInOrganization = await getUsers(organization_id);
+
+  await Promise.all(
+    usersInOrganization.map(async ({ id, email, verification_type }) => {
+      const userDomain = getEmailDomain(email);
+      if (userDomain === domain && isEmpty(verification_type)) {
+        return await setVerificationType({
+          organization_id,
+          user_id: id,
+          verification_type: 'verified_email_domain',
+        });
+      }
+
+      return null;
+    })
+  );
 };

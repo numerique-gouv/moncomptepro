@@ -9,6 +9,7 @@ export const findById = async (id: number) => {
 SELECT
     id,
     siret,
+    verified_email_domains,
     authorized_email_domains,
     external_authorized_email_domains,
     created_at,
@@ -51,6 +52,7 @@ export const findByUserId = async (user_id: number) => {
 SELECT
     o.id,
     o.siret,
+    o.verified_email_domains,
     o.authorized_email_domains,
     o.external_authorized_email_domains,
     o.created_at,
@@ -92,6 +94,7 @@ export const findPendingByUserId = async (user_id: number) => {
 SELECT
     o.id,
     o.siret,
+    o.verified_email_domains,
     o.authorized_email_domains,
     o.external_authorized_email_domains,
     o.created_at,
@@ -135,6 +138,7 @@ export const findByVerifiedEmailDomain = async (email_domain: string) => {
     `
 SELECT id,
     siret,
+    verified_email_domains,
     authorized_email_domains,
     external_authorized_email_domains,
     created_at,
@@ -176,6 +180,7 @@ export const findByMostUsedEmailDomain = async (email_domain: string) => {
 SELECT
     sub.id,
     sub.siret,
+    sub.verified_email_domains,
     sub.authorized_email_domains,
     sub.external_authorized_email_domains,
     sub.created_at,
@@ -401,10 +406,7 @@ export const linkUserToOrganization = async ({
   organization_id: number;
   user_id: number;
   is_external?: boolean;
-  verification_type?:
-    | 'verified_email_domain'
-    | 'official_contact_email'
-    | 'code_send_to_organization';
+  verification_type: UserOrganizationLink['verification_type'];
 }): Promise<UserOrganizationLink> => {
   const connection = getDatabaseConnection();
 
@@ -433,12 +435,38 @@ RETURNING *`,
   return rows.shift()!;
 };
 
+export const setVerificationType = async ({
+  organization_id,
+  user_id,
+  verification_type,
+}: {
+  organization_id: number;
+  user_id: number;
+  verification_type: UserOrganizationLink['verification_type'];
+}): Promise<UserOrganizationLink> => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
+    `
+UPDATE users_organizations
+SET verification_type = $3
+WHERE organization_id = $1 AND user_id = $2
+`,
+    [organization_id, user_id, verification_type]
+  );
+
+  return rows.shift()!;
+};
+
 export const getUsers = async (organization_id: number) => {
   const connection = getDatabaseConnection();
 
   const {
     rows,
-  }: QueryResult<User & { is_external: boolean }> = await connection.query(
+  }: QueryResult<User & {
+    is_external: boolean;
+    verification_type: UserOrganizationLink['verification_type'];
+  }> = await connection.query(
     `
 SELECT
     u.id,
@@ -461,7 +489,8 @@ SELECT
     u.magic_link_token,
     u.magic_link_sent_at,
     u.email_verified_at,
-    uo.is_external
+    uo.is_external,
+    uo.verification_type
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,

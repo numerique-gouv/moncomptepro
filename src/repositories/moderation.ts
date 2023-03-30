@@ -8,7 +8,7 @@ export const createModeration = async ({
 }: {
   user_id: number;
   organization_id: number;
-  type: 'organization_join_block' | 'non_verified_domain';
+  type: Moderation['type'];
 }) => {
   const connection = getDatabaseConnection();
 
