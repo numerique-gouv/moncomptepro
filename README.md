@@ -65,7 +65,7 @@ Vous trouverez des ressources abondantes sur le sujet sur internet. Voici notre 
 
 Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout.
 
-Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations, dont une collectivité territoriale.
+Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations, dont une [collectivité territoriale](https://annuaire-entreprises.data.gouv.fr/entreprise/commune-de-clamart-219200235).
 
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
