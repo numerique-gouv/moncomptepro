@@ -94,13 +94,7 @@ DO UPDATE
     = (users_oidc_clients.connection_count + 1, $5)
 RETURNING *;
 `,
-    [
-      user_id,
-      oidc_client_id,
-      1,
-      new Date().toISOString(),
-      new Date().toISOString(),
-    ]
+    [user_id, oidc_client_id, 1, new Date(), new Date()]
   );
 
   return rows.shift()!;

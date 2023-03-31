@@ -1,6 +1,7 @@
 import { findById as findUserById } from '../repositories/user';
 import { sendMail } from '../connectors/sendinblue';
-import { findById as findOrganizationById } from '../repositories/organization';
+
+import { findById as findOrganizationById } from '../repositories/organization/getters';
 
 export const sendModerationProcessedEmail = async ({
   organization_id,

@@ -8,6 +8,7 @@ import {
 
 describe('isEmailValid', () => {
   it('should return false for undefined value', () => {
+    // @ts-ignore
     assert.equal(isEmailValid(undefined), false);
   });
 
@@ -72,6 +73,7 @@ describe('isEmailValid', () => {
 
 describe('isSiretValid', () => {
   it('should return false for undefined value', () => {
+    // @ts-ignore
     assert.equal(isSiretValid(undefined), false);
   });
 
@@ -102,9 +104,11 @@ describe('isSiretValid', () => {
 
 describe('isUrlTrusted', () => {
   it('should not trust null url', () => {
+    // @ts-ignore
     assert.equal(isUrlTrusted(null), false);
   });
   it('should not trust no string url', () => {
+    // @ts-ignore
     assert.equal(isUrlTrusted(['api.gouv.fr']), false);
   });
   it('should not trust empty url', () => {

@@ -19,9 +19,10 @@ export const oidcProviderConfiguration = ({
     devInteractions: { enabled: false },
     rpInitiatedLogout: {
       enabled: true,
+      // @ts-ignore
       logoutSource: async (ctx, form) => {
         ctx.req.session.user = null;
-        const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)[1];
+        const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
         ctx.type = 'html';
         ctx.body = await renderWithEjsLayout('autosubmit-form', {
@@ -32,6 +33,7 @@ export const oidcProviderConfiguration = ({
           inputValue: 'non-empty-value',
         });
       },
+      // @ts-ignore
       postLogoutSuccessSource: async ctx => {
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
@@ -44,6 +46,7 @@ export const oidcProviderConfiguration = ({
     introspection: { enabled: true },
   },
   findAccount,
+  // @ts-ignore
   loadExistingGrant: async ctx => {
     // we want to skip the consent
     // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
@@ -51,6 +54,7 @@ export const oidcProviderConfiguration = ({
     // keep grant expiry aligned with session expiry
     // to prevent consent prompt being requested when grant expires
     await Promise.all(
+      // @ts-ignore
       toPairs(ctx.oidc.session.authorizations).map(async ([, { grantId }]) => {
         const grant = await ctx.oidc.provider.Grant.find(grantId);
         // this aligns the Grant ttl with that of the current session
@@ -76,7 +80,7 @@ export const oidcProviderConfiguration = ({
       return grant;
     }
   },
-  pkce: { required: (ctx, client) => false },
+  pkce: { required: () => false },
   routes: {
     authorization: '/authorize',
     token: '/token',
