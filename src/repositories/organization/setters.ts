@@ -122,9 +122,9 @@ RETURNING *
       cached_libelle_activite_principale,
       cached_categorie_juridique,
       cached_libelle_categorie_juridique,
-      new Date().toISOString(),
-      new Date().toISOString(),
-      new Date().toISOString(),
+      new Date(),
+      new Date(),
+      new Date(),
     ]
   );
 
@@ -149,7 +149,7 @@ SET ${listName} = array_append(${listName}, $2)
 WHERE siret = $1
 RETURNING *
     `,
-    [siret, domain, new Date().toISOString()]
+    [siret, domain, new Date()]
   );
 
   return rows.shift()!;
@@ -206,8 +206,8 @@ RETURNING *`,
       organization_id,
       is_external,
       verification_type,
-      new Date().toISOString(),
-      new Date().toISOString(),
+      new Date(),
+      new Date(),
     ]
   );
 
@@ -232,7 +232,7 @@ SET
     updated_at = $4
 WHERE organization_id = $1 AND user_id = $2
 `,
-    [organization_id, user_id, verification_type, new Date().toISOString()]
+    [organization_id, user_id, verification_type, new Date()]
   );
 
   return rows.shift()!;
