@@ -4,7 +4,7 @@ import { parse_host } from 'tld-extract';
 
 const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
 
-export const getEmailDomain = email => {
+export const getEmailDomain = (email: string) => {
   const parts = email.split('@');
   const host = parts[parts.length - 1];
   const { sub, domain } = parse_host(host, { allowDotlessTLD: true });
@@ -12,7 +12,7 @@ export const getEmailDomain = email => {
   return [sub, domain].filter(e => !!e).join('.');
 };
 
-export const usesAFreeEmailProvider = email => {
+export const usesAFreeEmailProvider = (email: string) => {
   const domain = getEmailDomain(email);
 
   return !doNotValidateMail && isFree(domain);

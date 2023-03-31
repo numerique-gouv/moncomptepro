@@ -8,6 +8,7 @@ import {
   InvalidEmailError,
   InvalidMagicLinkError,
   InvalidTokenError,
+  UserNotFoundError,
   WeakPasswordError,
 } from '../errors';
 
@@ -34,7 +35,9 @@ const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
 const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
   3 * 30 * 24 * 60;
 
-export const startLogin = async email => {
+export const startLogin = async (
+  email: string
+): Promise<{ email: string; userExists: boolean }> => {
   const userExists = !isEmpty(await findByEmail(email));
 
   if (userExists) {
@@ -56,7 +59,7 @@ export const startLogin = async email => {
   return { email, userExists: false };
 };
 
-export const login = async (email, password) => {
+export const login = async (email: string, password: string): Promise<User> => {
   const user = await findByEmail(email);
   if (isEmpty(user)) {
     // this is not a proper error name but this case should never happen
@@ -72,11 +75,14 @@ export const login = async (email, password) => {
 
   return await update(user.id, {
     sign_in_count: user.sign_in_count + 1,
-    last_sign_in_at: new Date().toISOString(),
+    last_sign_in_at: new Date(),
   });
 };
 
-export const signup = async (email, password) => {
+export const signup = async (
+  email: string,
+  password: string
+): Promise<User> => {
   const user = await findByEmail(email);
 
   if (!isEmpty(user)) {
@@ -92,15 +98,22 @@ export const signup = async (email, password) => {
   return await create({
     email,
     encrypted_password: hashedPassword,
-    last_sign_in_at: new Date().toISOString(),
+    last_sign_in_at: new Date(),
   });
 };
 
 export const sendEmailAddressVerificationEmail = async ({
   email,
   checkBeforeSend,
-}) => {
+}: {
+  email: string;
+  checkBeforeSend: boolean;
+}): Promise<boolean> => {
   const user = await findByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
 
   if (user.email_verified) {
     throw new EmailVerifiedAlreadyError();
@@ -124,7 +137,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
   await update(user.id, {
     verify_email_token,
-    verify_email_sent_at: new Date().toISOString(),
+    verify_email_sent_at: new Date(),
   });
 
   await sendMail({
@@ -139,8 +152,15 @@ export const sendEmailAddressVerificationEmail = async ({
   return true;
 };
 
-export const verifyEmail = async (email, token) => {
+export const verifyEmail = async (
+  email: string,
+  token: string
+): Promise<User> => {
   const user = await findByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
 
   if (user.verify_email_token !== token) {
     throw new InvalidTokenError();
@@ -157,14 +177,20 @@ export const verifyEmail = async (email, token) => {
 
   return await update(user.id, {
     email_verified: true,
-    email_verified_at: new Date().toISOString(),
+    email_verified_at: new Date(),
     verify_email_token: null,
     verify_email_sent_at: null,
   });
 };
 
-export const updateEmailAddressVerificationStatus = async email => {
+export const updateEmailAddressVerificationStatus = async (
+  email: string
+): Promise<{ user: User; needs_email_verification_renewal: boolean }> => {
   const user = await findByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
 
   if (
     user.email_verified &&
@@ -183,12 +209,16 @@ export const updateEmailAddressVerificationStatus = async email => {
   return { user, needs_email_verification_renewal: false };
 };
 
-export const sendSendMagicLinkEmail = async (email, host) => {
+export const sendSendMagicLinkEmail = async (
+  email: string,
+  host: string
+): Promise<boolean> => {
   let user = await findByEmail(email);
 
   if (isEmpty(user)) {
     user = await create({
       email,
+      last_sign_in_at: new Date(),
     });
   }
 
@@ -196,7 +226,7 @@ export const sendSendMagicLinkEmail = async (email, host) => {
 
   await update(user.id, {
     magic_link_token: magicLinkToken,
-    magic_link_sent_at: new Date().toISOString(),
+    magic_link_sent_at: new Date(),
   });
 
   await sendMail({
@@ -211,7 +241,7 @@ export const sendSendMagicLinkEmail = async (email, host) => {
   return true;
 };
 
-export const loginWithMagicLink = async token => {
+export const loginWithMagicLink = async (token: string): Promise<User> => {
   // check that token as not the default empty value as it will match all users
   if (!token) {
     throw new InvalidMagicLinkError();
@@ -234,14 +264,17 @@ export const loginWithMagicLink = async token => {
 
   return await update(user.id, {
     email_verified: true,
-    email_verified_at: new Date().toISOString(),
+    email_verified_at: new Date(),
     magic_link_token: null,
     magic_link_sent_at: null,
-    last_sign_in_at: new Date().toISOString(),
+    last_sign_in_at: new Date(),
   });
 };
 
-export const sendResetPasswordEmail = async (email, host) => {
+export const sendResetPasswordEmail = async (
+  email: string,
+  host: string
+): Promise<boolean> => {
   const user = await findByEmail(email);
 
   if (isEmpty(user)) {
@@ -253,7 +286,7 @@ export const sendResetPasswordEmail = async (email, host) => {
 
   await update(user.id, {
     reset_password_token: resetPasswordToken,
-    reset_password_sent_at: new Date().toISOString(),
+    reset_password_sent_at: new Date(),
   });
 
   await sendMail({
@@ -268,7 +301,10 @@ export const sendResetPasswordEmail = async (email, host) => {
   return true;
 };
 
-export const changePassword = async (token, password) => {
+export const changePassword = async (
+  token: string,
+  password: string
+): Promise<User> => {
   // check that token as not the default empty value as it will match all users
   if (!token) {
     throw new InvalidTokenError();
@@ -298,16 +334,21 @@ export const changePassword = async (token, password) => {
   return await update(user.id, {
     encrypted_password: hashedPassword,
     email_verified: true,
-    email_verified_at: new Date().toISOString(),
+    email_verified_at: new Date(),
     reset_password_token: null,
     reset_password_sent_at: null,
   });
 };
 
 export const updatePersonalInformations = async (
-  userId,
-  { given_name, family_name, phone_number, job }
-) => {
+  userId: number,
+  {
+    given_name,
+    family_name,
+    phone_number,
+    job,
+  }: Pick<User, 'given_name' | 'family_name' | 'phone_number' | 'job'>
+): Promise<User> => {
   return await update(userId, {
     given_name,
     family_name,

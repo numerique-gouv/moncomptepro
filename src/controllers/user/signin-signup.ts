@@ -130,7 +130,7 @@ export const postSignInMiddleware = async (
       body: req.body,
     });
 
-    req.session.user = await login(req.session.email, password);
+    req.session.user = await login(req.session.email!, password);
     req.session.email = undefined;
 
     next();
@@ -189,7 +189,7 @@ export const postSignUpController = async (
       body: req.body,
     });
 
-    req.session.user = await signup(req.session.email, password);
+    req.session.user = await signup(req.session.email!, password);
     req.session.email = undefined;
 
     next();

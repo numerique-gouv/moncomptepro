@@ -41,7 +41,10 @@ export const postResetPasswordController = async (
       body: req.body,
     });
 
-    await sendResetPasswordEmail(login, req.get('origin'));
+    await sendResetPasswordEmail(
+      login,
+      req.get('origin') || 'https://app.moncomptepro.beta.gouv.fr'
+    );
 
     return res.redirect(
       '/users/start-sign-in?notification=reset_password_email_sent'

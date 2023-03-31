@@ -12,7 +12,10 @@ export const postSendMagicLinkController = async (
   next: NextFunction
 ) => {
   try {
-    await sendSendMagicLinkEmail(req.session.email, req.get('origin'));
+    await sendSendMagicLinkEmail(
+      req.session.email!,
+      req.get('origin') || 'https://app.moncomptepro.beta.gouv.fr'
+    );
 
     return res.redirect(`/users/magic-link-sent`);
   } catch (error) {
