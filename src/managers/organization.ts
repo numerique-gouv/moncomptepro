@@ -12,20 +12,6 @@ import {
   UserNotFoundError,
 } from '../errors';
 import { createModeration } from '../repositories/moderation';
-import {
-  linkUserToOrganization,
-  deleteUserOrganisation,
-  findById as findOrganizationById,
-  findByMostUsedEmailDomain,
-  findByUserId,
-  findPendingByUserId,
-  getUsers,
-  upsert,
-  addAuthorizedDomain,
-  findByVerifiedEmailDomain,
-  addVerifiedDomain,
-  setVerificationType,
-} from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
@@ -38,6 +24,22 @@ import {
 import { getContactEmail } from '../connectors/api-annuaire';
 import * as Sentry from '@sentry/node';
 import user from '../routers/user';
+import {
+  findById as findOrganizationById,
+  findByMostUsedEmailDomain,
+  findByUserId,
+  findByVerifiedEmailDomain,
+  findPendingByUserId,
+  getUsers,
+} from '../repositories/organization/getters';
+import {
+  addAuthorizedDomain,
+  addVerifiedDomain,
+  deleteUserOrganization,
+  linkUserToOrganization,
+  setVerificationType,
+  upsert,
+} from '../repositories/organization/setters';
 
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
@@ -325,7 +327,7 @@ export const quitOrganization = async ({
   user_id: number;
   organization_id: number;
 }) => {
-  await deleteUserOrganisation({ user_id, organization_id });
+  await deleteUserOrganization({ user_id, organization_id });
 
   return null;
 };

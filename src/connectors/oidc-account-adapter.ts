@@ -1,10 +1,10 @@
 import { isEmpty } from 'lodash';
-import { findByUserId as getUsersOrganizations } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
   isCollectiviteTerritoriale,
   isServicePublic,
 } from '../services/organization';
+import { findByUserId as getUsersOrganizations } from '../repositories/organization/getters';
 
 export const findAccount = async (ctx: any, sub: string, token: any) => {
   const user = await findUserById(parseInt(sub, 10));

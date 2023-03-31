@@ -1,8 +1,8 @@
 import { isDate, isEmpty, toInteger } from 'lodash';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
-import { upsert } from '../src/repositories/organization';
 import { AxiosError } from 'axios';
+import { upsert } from '../src/repositories/organization/setters';
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
