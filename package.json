@@ -55,7 +55,7 @@
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "nanoid": "^3.3.6",
-    "node-pg-migrate": "^5.9.0",
+    "node-pg-migrate": "^6.2.2",
     "oidc-provider": "^7.11.5",
     "pg": "^8.10.0",
     "rate-limiter-flexible": "^0.21.3",
