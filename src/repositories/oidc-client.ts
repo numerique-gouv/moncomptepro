@@ -66,10 +66,19 @@ SELECT
     oc.post_logout_redirect_uris,
     oc.scope,
     oc.client_uri
-FROM users_oidc_clients uoc
+FROM (
+    SELECT
+        user_id,
+        oidc_client_id,
+        COUNT(*) as connection_count,
+        MIN(created_at) as created_at,
+        MAX(updated_at) as updated_at
+    FROM users_oidc_clients
+    WHERE user_id = $1
+    GROUP BY user_id, oidc_client_id
+) uoc
 INNER JOIN oidc_clients oc ON oc.id = uoc.oidc_client_id
-WHERE user_id = $1
-ORDER BY connection_count DESC
+ORDER BY uoc.connection_count DESC, updated_at DESC
 `,
     [user_id]
   );
@@ -86,15 +95,11 @@ export const upsertAndIncrementConnectionCount = async (
   const { rows }: QueryResult<UserOidcClient> = await connection.query(
     `
 INSERT INTO users_oidc_clients
-  (user_id, oidc_client_id, connection_count, created_at, updated_at)
-VALUES ($1, $2, $3, $4, $5)
-ON CONFLICT ON CONSTRAINT users_oidc_clients_pkey
-DO UPDATE
-  SET (connection_count, updated_at)
-    = (users_oidc_clients.connection_count + 1, $5)
+  (user_id, oidc_client_id, created_at, updated_at)
+VALUES ($1, $2, $3, $4)
 RETURNING *;
 `,
-    [user_id, oidc_client_id, 1, new Date(), new Date()]
+    [user_id, oidc_client_id, new Date(), new Date()]
   );
 
   return rows.shift()!;
