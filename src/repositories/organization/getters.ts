@@ -117,8 +117,7 @@ SELECT
     o.organization_info_fetched_at
 FROM moderations m
 INNER JOIN organizations o on o.id = m.organization_id
-INNER JOIN users u on u.id = m.user_id
-WHERE u.id = $1
+WHERE m.user_id = $1
 AND m.type = 'organization_join_block'
 AND m.moderated_at IS NULL
 ORDER BY m.created_at
