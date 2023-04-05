@@ -412,7 +412,22 @@ VALUES
     ],
     'openid email',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
-    'Accès à l’interface d’administration de l’annuaire pour les agents des communes')
+    'Accès à l’interface d’administration de l’annuaire pour les agents des communes'),
+  (10,
+    'data.gouv.fr',
+    '277aa530830cac03a81a5670ec13d8677291658aa0b3138c733697c9915f4a2593d5faa968143f29e893aafb8a1ffba9593c52d46db13a27cf4d3fc3485ada90',
+    'e25aa11f53f13a58e8c1fe022ddc0e07e240ec0c603f78535bf5ffd470c387be2e2edc348d6923fd718b989da08a40f241543d8c1e01bbaf88ad0ec84ed9140f',
+    ARRAY [
+      'http://dev.local:7000/api/1/mcp/',
+      'https://dev.data.gouv.fr/api/1/mcp/'
+    ],
+    ARRAY [
+      'http://dev.local:7000/',
+      'https://dev.data.gouv.fr/'
+      ],
+   'openid email profile',
+    'https://dev.data.gouv.fr/',
+    'Plateforme ouverte des données publiques françaises.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
