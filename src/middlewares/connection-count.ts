@@ -1,6 +1,6 @@
 import { KoaContextWithOIDC } from 'oidc-provider';
 import { NextFunction } from 'express';
-import { incrementConnectionCount } from '../managers/oidc-client';
+import { recordNewConnection } from '../managers/oidc-client';
 import * as Sentry from '@sentry/node';
 
 // this is not an express middleware but an oidc-provider middleware as described here:
@@ -35,7 +35,7 @@ export const connectionCountMiddleware = async (
     // This happens when hitting the resume route.
     try {
       if (ctx.oidc.session?.accountId && ctx.oidc.client?.clientId) {
-        await incrementConnectionCount(
+        await recordNewConnection(
           parseInt(ctx.oidc.session?.accountId, 10),
           ctx.oidc.client?.clientId
         );
