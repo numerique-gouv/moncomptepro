@@ -10,12 +10,12 @@ const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
 const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
 
 type RemoteTemplateSlug =
-  | 'join-organization'
+  | 'join-oidc-client'
   | 'verify-email'
   | 'reset-password'
   | 'magic-link';
 type LocalTemplateSlug =
-  | 'organization-welcome'
+  | 'oidc-client-welcome'
   | 'unable-to-auto-join-organization'
   | 'welcome'
   | 'moderation-processed';
@@ -24,7 +24,7 @@ type LocalTemplateSlug =
 const remoteTemplateSlugToSendinblueTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
-  'join-organization': 5,
+  'join-oidc-client': 46,
   'verify-email': 6,
   'reset-password': 7,
   'magic-link': 29,

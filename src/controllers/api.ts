@@ -12,7 +12,6 @@ import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 import {
   forceJoinOrganization,
   markDomainAsVerified,
-  notifyOrganizationJoin,
 } from '../managers/organization';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 
@@ -78,14 +77,12 @@ export const postForceJoinOrganizationController = async (
       query: req.query,
     });
 
-    const userOrganizationLink = await forceJoinOrganization({
+    await forceJoinOrganization({
       organization_id,
       user_id,
       is_external,
       verification_type: null,
     });
-
-    await notifyOrganizationJoin(userOrganizationLink);
 
     return res.json({});
   } catch (e) {

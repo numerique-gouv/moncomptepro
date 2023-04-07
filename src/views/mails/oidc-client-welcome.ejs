@@ -1,9 +1,8 @@
 Bonjour <%= given_name %> <%= family_name %>,
 <br /><br />
-Votre organisation <%= libelle %> utilise déjà MonComptePro.
+Vous avez rejoint <%= libelle %> sur MonComptePro.
 <br /><br />
-Nous tenions à vous informer que les personnes suivantes ont également la possibilité d’effectuer de nouvelles demandes d’habilitation pour <%= libelle %> sur
-<a href="https://datapass.api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">DataPass</a> :
+Voici la liste des personnes qui ont également la possibilité de <%= client_user_can_description %> :
 <br /><br />
 <ul>
     <% otherUsers.map(function({ given_name, family_name, is_external }) { %>
@@ -11,13 +10,13 @@ Nous tenions à vous informer que les personnes suivantes ont également la poss
     <% }) %>
 </ul>
 <br /><br />
-<strong>
+
+Si vous pensez que cette liste contient des erreurs,
     <a href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Erreur%20-%20Mon%20organisation%20api.gouv.fr" style="text-decoration: underline; color: rgb(0, 0, 145);">
         <u>
-            Si vous pensez qu’il s’agit d’une erreur, faites-le nous savoir en répondant à cet email.
+            faites-le nous savoir en répondant à cet email.
         </u>
     </a>
-</strong>
 <br /><br />
 Cordialement,
 <br /><br />

@@ -23,6 +23,32 @@ FROM oidc_clients
   return rows;
 };
 
+export const findById = async (id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<OidcClient> = await connection.query(
+    `
+SELECT
+    id,
+    client_description,
+    created_at,
+    updated_at,
+    client_name,
+    client_id,
+    client_secret,
+    redirect_uris,
+    post_logout_redirect_uris,
+    scope,
+    client_uri
+FROM oidc_clients
+WHERE id = $1
+`,
+    [id]
+  );
+
+  return rows.shift();
+};
+
 export const findByClientId = async (client_id: string) => {
   const connection = getDatabaseConnection();
 
@@ -103,4 +129,20 @@ RETURNING user_id, oidc_client_id, created_at, updated_at, id;
   );
 
   return rows.shift()!;
+};
+
+export const getConnectionCount = async (
+  user_id: number,
+  oidc_client_id: number
+) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<{ count: string }> = await connection.query(
+    `
+SELECT COUNT(*) FROM users_oidc_clients
+WHERE user_id = $1 AND oidc_client_id = $2`,
+    [user_id, oidc_client_id]
+  );
+
+  return parseInt(rows.shift()!.count, 10);
 };

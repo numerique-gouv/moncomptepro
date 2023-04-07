@@ -249,46 +249,54 @@ export const joinOrganization = async ({
 
 export const forceJoinOrganization = linkUserToOrganization;
 
-export const notifyOrganizationJoin = async ({
-  organization_id,
-  user_id,
-  is_external,
-}: UserOrganizationLink) => {
-  const user = await findUserById(user_id);
-  const organization = await findOrganizationById(organization_id);
-  if (isEmpty(user) || isEmpty(organization)) {
-    throw new NotFoundError();
-  }
-  const { email, given_name, family_name } = user;
-  const { cached_libelle } = organization;
-
+export const notifyOrganizationMemberForFirstConnection = async (
+  {
+    id: organization_id,
+    cached_libelle,
+    is_external,
+  }: Organization & { is_external: boolean },
+  { email, given_name, family_name }: User,
+  { client_name, client_user_can_description }: OidcClient
+) => {
   // Email organization members of the organization
   const usersInOrganization = await getUsers(organization_id);
   const otherInternalUsers = usersInOrganization.filter(
     ({ email: e, is_external }) => e !== email && !is_external
   );
+  // TODO we should only consider otherInternalUsers that already connected to this oidc_client
   if (otherInternalUsers.length > 0) {
     const user_label =
       !given_name && !family_name ? email : `${given_name} ${family_name}`;
+    const user_can_description = client_user_can_description
+      ? client_user_can_description
+      : `effectuer des démarches sur « ${client_name} » au nom de votre organisation`;
     await sendMail({
       to: otherInternalUsers.map(({ email }) => email),
       subject: 'Votre organisation sur MonComptePro',
-      template: 'join-organization',
-      params: { user_label, libelle: cached_libelle, email, is_external },
+      template: 'join-oidc-client',
+      params: {
+        user_label,
+        libelle: cached_libelle,
+        email,
+        is_external,
+        user_can_description,
+      },
     });
   }
 
   // Email organization members list to the user (if he is an internal member)
   const otherUsers = usersInOrganization.filter(({ email: e }) => e !== email);
+  // TODO we should only consider otherUsers that already connected to this oidc_client
   if (!is_external && otherUsers.length > 0) {
     await sendMail({
       to: [email],
       subject: 'Votre organisation sur MonComptePro',
-      template: 'organization-welcome',
+      template: 'oidc-client-welcome',
       params: {
         given_name,
         family_name,
         libelle: cached_libelle,
+        client_user_can_description,
         otherUsers,
       },
     });
