@@ -24,6 +24,7 @@ import {
 } from './services/renderer';
 import { HttpError } from 'http-errors';
 import { ZodError } from 'zod';
+import { connectionCountMiddleware } from './middlewares/connection-count';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -138,6 +139,7 @@ let server: Server;
     }),
   });
   oidcProvider.proxy = true;
+  oidcProvider.use(connectionCountMiddleware);
 
   app.use(
     '/assets',
