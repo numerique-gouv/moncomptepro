@@ -143,3 +143,31 @@ L'application est maintenant disponible sur http://localhost:3000.
 Pour se connecter, utiliser l'adresse mail user@yopmail.com et le mot de passe "user@yopmail.com".
 
 Les mails ne sont pas envoyés mais imprimés en console.
+
+## Tester la connexion avec un client de test
+
+Vous pouvez utiliser le client de test suivant : https://hub.docker.com/r/beryju/oidc-test-client
+
+Ce conteneur est instantiable via `docker`.
+
+Vous pouvez utiliser la configuration `docker-compose` suivante :
+
+```yaml
+# docker-compose.yaml
+version: '3.5'
+
+services:
+  oidc-test-client:
+    image: ghcr.io/beryju/oidc-test-client
+    ports:
+      - 9009:9009
+    environment:
+      OIDC_CLIENT_ID: test-id
+      OIDC_CLIENT_SECRET: test-secret
+      OIDC_PROVIDER: https://app-development.moncomptepro.beta.gouv.fr
+      OIDC_SCOPES: openid,email,organizations
+      OIDC_DO_REFRESH: "false"
+      OIDC_DO_INTROSPECTION: "false"
+```
+
+Vous pouvez lancer le conteneur avec `docker-compose up` dans le dossier du fichier `docker-compose.yaml`.

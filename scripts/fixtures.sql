@@ -429,7 +429,18 @@ VALUES
       ],
    'openid email profile',
     'https://dev.data.gouv.fr/',
-    'Plateforme ouverte des données publiques françaises.')
+    'Plateforme ouverte des données publiques françaises.'),
+  (11,
+   'Oidc Test Client',
+   'test-id',
+   'test-secret',
+   ARRAY [
+     'http://localhost:9009/auth/callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email organizations',
+   'http://localhost:9009/',
+   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
