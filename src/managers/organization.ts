@@ -295,6 +295,11 @@ export const notifyOrganizationJoin = async ({
   }
 };
 
+/**
+ * This function send a welcome email if user is in one organization only.
+ * As a consequence, the first organization should be joined before calling it.
+ * @param user_id
+ */
 export const greetFirstOrganizationJoin = async ({
   user_id,
 }: {
