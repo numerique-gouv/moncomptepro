@@ -23,7 +23,6 @@ import {
 } from '../services/organization';
 import { getContactEmail } from '../connectors/api-annuaire';
 import * as Sentry from '@sentry/node';
-import user from '../routers/user';
 import {
   findById as findOrganizationById,
   findByMostUsedEmailDomain,
