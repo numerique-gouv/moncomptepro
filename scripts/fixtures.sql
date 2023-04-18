@@ -440,7 +440,20 @@ VALUES
    ARRAY []::varchar[],
    'openid email organizations',
    'http://localhost:9009/',
-   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.')
+   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.'),
+  (7,
+   'Ma Cantine dev local',
+   '7j0HTA411LSa1n4lO54gv6uMEWCey4RYwjnSQyUWcMQ7QM6SACLs8A1UTu4G0K831j4AqaZ3ZOHO98Agn5DGgjHx3J2n5F1YYEFZDmchqSv9ww1LLwXRMLJ7grT5Hl2D',
+   'Jp0E7zVcoM7q1K74t372pU3aRk6uO5thM56A05mQHTXXVqCiDoTU9Bjru46DGvg4p4z3fwvQC5aXzgh7To14QskO35c92nw363tSEQHHlhfOVG16n7ZqSJ2FOattrYnD',
+   ARRAY [
+     'http://127.0.0.1:8000/signin-oidc'
+     ],
+   ARRAY [
+     'http://127.0.0.1:8000/signout-callback-oidc'
+     ],
+   'openid email',
+   'http://127.0.0.1:8000/',
+   'Mieux manger de la crèche à l’EHPAD')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
