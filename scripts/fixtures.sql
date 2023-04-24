@@ -451,7 +451,7 @@ VALUES
    ARRAY [
      'http://127.0.0.1:8000/signout-callback-oidc'
      ],
-   'openid email organizations',
+   'openid email profile organizations',
    'http://127.0.0.1:8000/',
    'Mieux manger de la crèche à l’EHPAD')
 ON CONFLICT (id)
