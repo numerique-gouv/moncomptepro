@@ -82,7 +82,6 @@ export const postForceJoinOrganizationController = async (
       organization_id,
       user_id,
       is_external,
-      verification_type: null,
     });
 
     await notifyOrganizationJoin(userOrganizationLink);
