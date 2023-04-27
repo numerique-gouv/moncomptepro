@@ -247,7 +247,40 @@ export const joinOrganization = async ({
   throw new UnableToAutoJoinOrganizationError();
 };
 
-export const forceJoinOrganization = linkUserToOrganization;
+export const forceJoinOrganization = async ({
+  organization_id,
+  user_id,
+  is_external = false,
+}: {
+  organization_id: number;
+  user_id: number;
+  is_external?: boolean;
+}) => {
+  const user = await findUserById(user_id);
+  const organization = await findOrganizationById(organization_id);
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+  const { email } = user;
+  const {
+    verified_email_domains,
+    external_authorized_email_domains,
+  } = organization;
+
+  const domain = getEmailDomain(email);
+  const verification_type =
+    verified_email_domains.includes(domain) ||
+    external_authorized_email_domains.includes(domain)
+      ? 'verified_email_domain'
+      : null;
+
+  return await linkUserToOrganization({
+    organization_id,
+    user_id,
+    is_external,
+    verification_type,
+  });
+};
 
 export const notifyOrganizationJoin = async ({
   organization_id,
