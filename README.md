@@ -93,7 +93,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
         "is_collectivite_territoriale": false,
         "is_service_public": false
     }],
-    "sub": 154
+    "sub": "154"
 }
 ```
 
