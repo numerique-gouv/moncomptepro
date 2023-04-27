@@ -423,7 +423,7 @@ VALUES
       'http://dev.local:7000/api/2/mcp/',
       'https://dev.data.gouv.fr/api/1/mcp/',
       'https://dev.data.gouv.fr/api/2/mcp/',
-      'https://dev.data.gouv.fr/fr/mcp/auth',
+      'https://dev.data.gouv.fr/fr/mcp/auth'
     ],
     ARRAY [
       'http://dev.local:7000/',
