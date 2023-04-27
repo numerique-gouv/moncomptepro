@@ -7,7 +7,10 @@ import {
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from '../controllers/organization';
-import { rateLimiterMiddleware } from '../services/rate-limiter';
+import {
+  loginRateLimiterMiddleware,
+  rateLimiterMiddleware,
+} from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
   checkUserHasPersonalInformationsMiddleware,
@@ -82,6 +85,7 @@ export const userRouter = () => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
+    loginRateLimiterMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController

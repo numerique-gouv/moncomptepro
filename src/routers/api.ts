@@ -5,7 +5,10 @@ import {
   postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
 } from '../controllers/api';
-import { rateLimiterMiddleware } from '../services/rate-limiter';
+import {
+  apiRateLimiterMiddleware,
+  rateLimiterMiddleware,
+} from '../middlewares/rate-limiter';
 import { HttpError } from 'http-errors';
 import expressBasicAuth from 'express-basic-auth';
 
@@ -17,12 +20,16 @@ const {
 export const apiRouter = () => {
   const apiRouter = Router();
 
-  apiRouter.get('/organization-info', getOrganizationInfoController);
+  apiRouter.get(
+    '/organization-info',
+    apiRateLimiterMiddleware,
+    getOrganizationInfoController
+  );
 
   const apiAdminRouter = Router();
 
   apiAdminRouter.use(
-    rateLimiterMiddleware,
+    apiRateLimiterMiddleware,
     expressBasicAuth({
       users: { [API_AUTH_USERNAME]: API_AUTH_PASSWORD },
     })
