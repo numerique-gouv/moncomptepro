@@ -148,7 +148,11 @@ export const postMarkDomainAsVerified = async (
       query: req.query,
     });
 
-    await markDomainAsVerified({ organization_id, domain });
+    await markDomainAsVerified({
+      organization_id,
+      domain,
+      verification_type: 'verified_email_domain',
+    });
 
     return res.json({});
   } catch (e) {

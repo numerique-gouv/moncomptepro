@@ -15,6 +15,7 @@ import { createModeration } from '../repositories/moderation';
 import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
+  isAFreeEmailProvider,
   usesAFreeEmailProvider,
 } from '../services/uses-a-free-email-provider';
 import {
@@ -39,6 +40,7 @@ import {
   setVerificationType,
   upsert,
 } from '../repositories/organization/setters';
+import { isEmailValid } from '../services/security';
 
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
@@ -217,16 +219,32 @@ export const joinOrganization = async ({
       Sentry.captureException(err);
     }
 
-    if (contactEmail === email) {
-      if (!usesAFreeEmailProvider(email)) {
-        await addVerifiedDomain({ siret, domain });
+    if (isEmailValid(contactEmail)) {
+      const contactDomain = getEmailDomain(contactEmail);
+
+      if (!isAFreeEmailProvider(contactDomain)) {
+        await markDomainAsVerified({
+          organization_id,
+          domain: contactDomain,
+          verification_type: 'official_contact_domain',
+        });
       }
 
-      return await linkUserToOrganization({
-        organization_id,
-        user_id,
-        verification_type: 'official_contact_email',
-      });
+      if (contactEmail === email) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: 'official_contact_email',
+        });
+      }
+
+      if (!isAFreeEmailProvider(contactDomain) && contactDomain === domain) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: 'official_contact_domain',
+        });
+      }
     }
   }
 
@@ -372,9 +390,11 @@ export const quitOrganization = async ({
 export const markDomainAsVerified = async ({
   organization_id,
   domain,
+  verification_type,
 }: {
   organization_id: number;
   domain: string;
+  verification_type: UserOrganizationLink['verification_type'];
 }) => {
   const organization = await findOrganizationById(organization_id);
   if (isEmpty(organization)) {
@@ -398,17 +418,19 @@ export const markDomainAsVerified = async ({
   const usersInOrganization = await getUsers(organization_id);
 
   await Promise.all(
-    usersInOrganization.map(async ({ id, email, verification_type }) => {
-      const userDomain = getEmailDomain(email);
-      if (userDomain === domain && isEmpty(verification_type)) {
-        return await setVerificationType({
-          organization_id,
-          user_id: id,
-          verification_type: 'verified_email_domain',
-        });
-      }
+    usersInOrganization.map(
+      async ({ id, email, verification_type: current_verification_type }) => {
+        const userDomain = getEmailDomain(email);
+        if (userDomain === domain && isEmpty(current_verification_type)) {
+          return await setVerificationType({
+            organization_id,
+            user_id: id,
+            verification_type,
+          });
+        }
 
-      return null;
-    })
+        return null;
+      }
+    )
   );
 };

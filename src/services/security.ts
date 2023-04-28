@@ -39,7 +39,7 @@ export const isPasswordSecure = (plainPassword: string) => {
  * specifications of this function can be found at
  * https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html#email-address-validation
  */
-export const isEmailValid = (email: string) => {
+export const isEmailValid = (email: unknown): email is string => {
   if (!isString(email) || isEmpty(email)) {
     return false;
   }

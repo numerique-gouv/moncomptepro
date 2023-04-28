@@ -25,7 +25,7 @@ describe('join organizations', () => {
     // Click on "continue" on the welcome page
     cy.get('[type="submit"]').click();
 
-    // Check DataPass redirection
+    // Check redirection to home page
     cy.contains('Votre compte est créé');
 
     cy.mailslurp()
@@ -65,10 +65,10 @@ describe('join organizations', () => {
   it('join another organisation', function() {
     // Visit the join organization page
     cy.visit(`${host}/users/join-organization`);
-    cy.get('[name="siret"]').type('21740056300011');
+    cy.get('[name="siret"]').type('13002526500013');
     cy.get('[type="submit"]').click();
 
-    // Check DataPass redirection
+    // Check redirection to moderation block page
     cy.contains(
       'Notre équipe est en train de vous rattacher à cette organisation.'
     );
