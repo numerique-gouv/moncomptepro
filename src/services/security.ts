@@ -76,8 +76,10 @@ export const isEmailValid = (email: unknown): email is string => {
   return true;
 };
 
-export const isPhoneNumberValid = (phoneNumber: string) => {
-  if (!isString(phoneNumber)) {
+export const isPhoneNumberValid = (
+  phoneNumber: unknown
+): phoneNumber is string => {
+  if (!isString(phoneNumber) || isEmpty(phoneNumber)) {
     return false;
   }
 
@@ -96,7 +98,7 @@ export const generateToken = async () => {
   return await nanoid(64);
 };
 
-export const isSiretValid = (siret: string) => {
+export const isSiretValid = (siret: unknown): siret is string => {
   if (!isString(siret) || isEmpty(siret)) {
     return false;
   }
@@ -106,7 +108,7 @@ export const isSiretValid = (siret: string) => {
   return !!siretNoSpaces.match(/^\d{14}$/);
 };
 
-export const isUrlTrusted = (url: string) => {
+export const isUrlTrusted = (url: unknown): url is string => {
   if (!isString(url) || isEmpty(url)) {
     return false;
   }
