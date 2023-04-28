@@ -67,7 +67,7 @@ describe('Signup into new entreprise unipersonnelle', () => {
     // Click on "continue" on the welcome page
     cy.get('[type="submit"]').click();
 
-    // Check DataPass redirection
+    // Check redirection to home page
     cy.contains('Votre compte est créé');
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds

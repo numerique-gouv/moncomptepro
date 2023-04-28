@@ -7,6 +7,7 @@ interface UserOrganizationLink {
   verification_type:
     | 'verified_email_domain'
     | 'official_contact_email'
+    | 'official_contact_domain'
     | 'code_send_to_organization'
     | null;
 }

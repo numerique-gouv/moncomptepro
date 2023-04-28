@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import { z, ZodError } from 'zod';
 import { updatePersonalInformations } from '../../managers/user';
+import { isEmailValid, isPhoneNumberValid } from '../../services/security';
 
 export const getPersonalInformationsController = async (
   req: Request,
@@ -28,7 +29,7 @@ export const getParamsForPostPersonalInformationsController = async (
     body: z.object({
       given_name: z.string().min(1),
       family_name: z.string().min(1),
-      phone_number: z.string().min(1),
+      phone_number: z.string().refine(isPhoneNumberValid),
       job: z.string().min(1),
     }),
   });
