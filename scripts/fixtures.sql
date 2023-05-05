@@ -401,14 +401,14 @@ VALUES
     'tdi1iyp2stw4w1ipl9hgye9qvfm9tbgi4cxu574rkwufkocux620r4c09tpm3apsav1rg7ex5j79w2vfsnrl1v4ewlkxrm45wtt9g8x3arsco1u86xeh9j4enus14vsi',
     'pqnu9wbs0h5pkbqeni2bx55mnvgxzta3d9wmu2h6yyxmf7303b5eapi4o4plue10bcj9n1iyoilbz07b2iokr4dcw3jsqitb7lc88n9cuxn9p9v0cqstfxgu82d392vn',
     ARRAY [
-      'http://127.0.0.1:1337/oidc/callback/',
-      'http://localhost:1337/oidc/callback/',
-      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/oidc/callback/'
+      'http://127.0.0.1:1337/api/oidc/callback/',
+      'http://localhost:1337/api/oidc/callback/',
+      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/callback/',
     ],
     ARRAY [
-      'http://127.0.0.1:1337/oidc/logout',
-      'http://localhost:1337/oidc/logout',
-      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/oidc/logout'
+      'http://127.0.0.1:1337/api/oidc/logout',
+      'http://localhost:1337/api/oidc/logout',
+      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout',
     ],
     'openid email',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
