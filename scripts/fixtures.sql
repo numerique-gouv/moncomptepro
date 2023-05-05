@@ -387,7 +387,8 @@ VALUES
     'test_baseproject_SIDDEE',
     'test_baseproject_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
     ARRAY [
-      'http://10.59.128.114:8001/'
+      'http://10.59.128.114:8001/auth/cb/',
+      'http://10.59.128.114:8001/oidc/auth/cb/'
     ],
     ARRAY [
       'http://10.59.128.114:8001/'
@@ -396,7 +397,7 @@ VALUES
     'http://10.59.128.114:8001/',
     'Dépôt de demandes auprès du service IDDEE de la DREAL HdF'),
   (9,
-    'Annuaire des collectivites',
+    'Annuaire des collectivités',
     'tdi1iyp2stw4w1ipl9hgye9qvfm9tbgi4cxu574rkwufkocux620r4c09tpm3apsav1rg7ex5j79w2vfsnrl1v4ewlkxrm45wtt9g8x3arsco1u86xeh9j4enus14vsi',
     'pqnu9wbs0h5pkbqeni2bx55mnvgxzta3d9wmu2h6yyxmf7303b5eapi4o4plue10bcj9n1iyoilbz07b2iokr4dcw3jsqitb7lc88n9cuxn9p9v0cqstfxgu82d392vn',
     ARRAY [
@@ -411,7 +412,50 @@ VALUES
     ],
     'openid email',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
-    'Accès à l’interface d’administration de l’annuaire pour les agents des communes')
+    'Accès à l’interface d’administration de l’annuaire pour les agents des communes'),
+  (10,
+    'data.gouv.fr',
+    '277aa530830cac03a81a5670ec13d8677291658aa0b3138c733697c9915f4a2593d5faa968143f29e893aafb8a1ffba9593c52d46db13a27cf4d3fc3485ada90',
+    'e25aa11f53f13a58e8c1fe022ddc0e07e240ec0c603f78535bf5ffd470c387be2e2edc348d6923fd718b989da08a40f241543d8c1e01bbaf88ad0ec84ed9140f',
+    ARRAY [
+      'http://dev.local:7000/fr/mcp/auth',
+      'http://dev.local:7000/api/1/mcp/',
+      'http://dev.local:7000/api/2/mcp/',
+      'https://dev.data.gouv.fr/api/1/mcp/',
+      'https://dev.data.gouv.fr/api/2/mcp/',
+      'https://dev.data.gouv.fr/fr/mcp/auth'
+    ],
+    ARRAY [
+      'http://dev.local:7000/',
+      'https://dev.data.gouv.fr/'
+      ],
+   'openid email profile',
+    'https://dev.data.gouv.fr/',
+    'Plateforme ouverte des données publiques françaises.'),
+  (11,
+   'Oidc Test Client',
+   'test-id',
+   'test-secret',
+   ARRAY [
+     'http://localhost:9009/auth/callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email organizations',
+   'http://localhost:9009/',
+   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.'),
+  (12,
+   'Ma Cantine dev local',
+   '7j0HTA411LSa1n4lO54gv6uMEWCey4RYwjnSQyUWcMQ7QM6SACLs8A1UTu4G0K831j4AqaZ3ZOHO98Agn5DGgjHx3J2n5F1YYEFZDmchqSv9ww1LLwXRMLJ7grT5Hl2D',
+   'Jp0E7zVcoM7q1K74t372pU3aRk6uO5thM56A05mQHTXXVqCiDoTU9Bjru46DGvg4p4z3fwvQC5aXzgh7To14QskO35c92nw363tSEQHHlhfOVG16n7ZqSJ2FOattrYnD',
+   ARRAY [
+     'http://127.0.0.1:8000/signin-oidc'
+     ],
+   ARRAY [
+     'http://127.0.0.1:8000/signout-callback-oidc'
+     ],
+   'openid email profile organizations',
+   'http://127.0.0.1:8000/',
+   'Mieux manger de la crèche à l’EHPAD')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,

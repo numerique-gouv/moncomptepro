@@ -1,9 +1,9 @@
 interface Organization {
   id: number;
   siret: string;
+  verified_email_domains: string[];
   authorized_email_domains: string[];
   external_authorized_email_domains: string[];
-  verified_email_domains: string[];
   created_at: Date;
   updated_at: Date;
   cached_libelle: string | null;
@@ -18,6 +18,7 @@ interface Organization {
   cached_est_diffusible: string | null;
   cached_adresse: string | null;
   cached_code_postal: string | null;
+  cached_code_officiel_geographique: string | null;
   cached_activite_principale: string | null;
   cached_libelle_activite_principale: string | null;
   cached_categorie_juridique: string | null;

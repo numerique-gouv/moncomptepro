@@ -11,8 +11,10 @@ import {
 import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 import {
   forceJoinOrganization,
+  markDomainAsVerified,
   notifyOrganizationJoin,
 } from '../managers/organization';
+import { sendModerationProcessedEmail } from '../managers/moderation';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -86,7 +88,75 @@ export const postForceJoinOrganizationController = async (
 
     return res.json({});
   } catch (e) {
-    console.log(e, 'e');
+    console.error(e);
+    if (e instanceof ZodError) {
+      return next(new BadRequest());
+    }
+
+    next(e);
+  }
+};
+
+export const postSendModerationProcessedEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        organization_id: idSchema(),
+        user_id: idSchema(),
+      }),
+    });
+
+    const {
+      query: { organization_id, user_id },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    await sendModerationProcessedEmail({ organization_id, user_id });
+
+    return res.json({});
+  } catch (e) {
+    console.error(e);
+    if (e instanceof ZodError) {
+      return next(new BadRequest());
+    }
+
+    next(e);
+  }
+};
+
+export const postMarkDomainAsVerified = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const schema = z.object({
+      query: z.object({
+        organization_id: idSchema(),
+        domain: z.string().min(1),
+      }),
+    });
+
+    const {
+      query: { organization_id, domain },
+    } = await schema.parseAsync({
+      query: req.query,
+    });
+
+    await markDomainAsVerified({
+      organization_id,
+      domain,
+      verification_type: 'verified_email_domain',
+    });
+
+    return res.json({});
+  } catch (e) {
+    console.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }

@@ -1,4 +1,4 @@
-import { getDatabaseConnection } from '../connectors/postgres';
+import { getDatabaseConnection } from '../../connectors/postgres';
 import { QueryResult } from 'pg';
 
 export const findById = async (id: number) => {
@@ -9,6 +9,7 @@ export const findById = async (id: number) => {
 SELECT
     id,
     siret,
+    verified_email_domains,
     authorized_email_domains,
     external_authorized_email_domains,
     created_at,
@@ -25,6 +26,7 @@ SELECT
     cached_est_diffusible,
     cached_adresse,
     cached_code_postal,
+    cached_code_officiel_geographique,
     cached_activite_principale,
     cached_libelle_activite_principale,
     cached_categorie_juridique,
@@ -37,7 +39,6 @@ WHERE id = $1`,
 
   return rows.shift();
 };
-
 export const findByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
@@ -50,6 +51,7 @@ export const findByUserId = async (user_id: number) => {
 SELECT
     o.id,
     o.siret,
+    o.verified_email_domains,
     o.authorized_email_domains,
     o.external_authorized_email_domains,
     o.created_at,
@@ -66,6 +68,7 @@ SELECT
     o.cached_est_diffusible,
     o.cached_adresse,
     o.cached_code_postal,
+    o.cached_code_officiel_geographique,
     o.cached_activite_principale,
     o.cached_libelle_activite_principale,
     o.cached_categorie_juridique,
@@ -81,7 +84,6 @@ ORDER BY uo.created_at`,
 
   return rows;
 };
-
 export const findPendingByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
@@ -90,6 +92,7 @@ export const findPendingByUserId = async (user_id: number) => {
 SELECT
     o.id,
     o.siret,
+    o.verified_email_domains,
     o.authorized_email_domains,
     o.external_authorized_email_domains,
     o.created_at,
@@ -106,6 +109,7 @@ SELECT
     o.cached_est_diffusible,
     o.cached_adresse,
     o.cached_code_postal,
+    o.cached_code_officiel_geographique,
     o.cached_activite_principale,
     o.cached_libelle_activite_principale,
     o.cached_categorie_juridique,
@@ -113,8 +117,7 @@ SELECT
     o.organization_info_fetched_at
 FROM moderations m
 INNER JOIN organizations o on o.id = m.organization_id
-INNER JOIN users u on u.id = m.user_id
-WHERE u.id = $1
+WHERE m.user_id = $1
 AND m.type = 'organization_join_block'
 AND m.moderated_at IS NULL
 ORDER BY m.created_at
@@ -124,7 +127,6 @@ ORDER BY m.created_at
 
   return rows;
 };
-
 export const findByVerifiedEmailDomain = async (email_domain: string) => {
   const connection = getDatabaseConnection();
 
@@ -132,6 +134,7 @@ export const findByVerifiedEmailDomain = async (email_domain: string) => {
     `
 SELECT id,
     siret,
+    verified_email_domains,
     authorized_email_domains,
     external_authorized_email_domains,
     created_at,
@@ -148,6 +151,7 @@ SELECT id,
     cached_est_diffusible,
     cached_adresse,
     cached_code_postal,
+    cached_code_officiel_geographique,
     cached_activite_principale,
     cached_libelle_activite_principale,
     cached_categorie_juridique,
@@ -161,7 +165,6 @@ WHERE cached_est_active = 'true'
 
   return rows;
 };
-
 export const findByMostUsedEmailDomain = async (email_domain: string) => {
   const connection = getDatabaseConnection();
 
@@ -172,6 +175,7 @@ export const findByMostUsedEmailDomain = async (email_domain: string) => {
 SELECT
     sub.id,
     sub.siret,
+    sub.verified_email_domains,
     sub.authorized_email_domains,
     sub.external_authorized_email_domains,
     sub.created_at,
@@ -188,6 +192,7 @@ SELECT
     sub.cached_est_diffusible,
     sub.cached_adresse,
     sub.cached_code_postal,
+    sub.cached_code_officiel_geographique,
     sub.cached_activite_principale,
     sub.cached_libelle_activite_principale,
     sub.cached_categorie_juridique,
@@ -208,202 +213,15 @@ WHERE domain=$1`,
 
   return rows;
 };
-
-export const upsert = async ({
-  siret,
-  organizationInfo: {
-    libelle: cached_libelle,
-    nomComplet: cached_nom_complet,
-    enseigne: cached_enseigne,
-    trancheEffectifs: cached_tranche_effectifs,
-    trancheEffectifsUniteLegale: cached_tranche_effectifs_unite_legale,
-    libelleTrancheEffectif: cached_libelle_tranche_effectif,
-    etatAdministratif: cached_etat_administratif,
-    estActive: cached_est_active,
-    statutDiffusion: cached_statut_diffusion,
-    estDiffusible: cached_est_diffusible,
-    adresse: cached_adresse,
-    codePostal: cached_code_postal,
-    activitePrincipale: cached_activite_principale,
-    libelleActivitePrincipale: cached_libelle_activite_principale,
-    categorieJuridique: cached_categorie_juridique,
-    libelleCategorieJuridique: cached_libelle_categorie_juridique,
-  },
-}: {
-  siret: string;
-  organizationInfo: OrganizationInfo;
-}) => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<Organization> = await connection.query(
-    `
-INSERT INTO organizations
-    (
-        siret,
-        cached_libelle,
-        cached_nom_complet,
-        cached_enseigne,
-        cached_tranche_effectifs,
-        cached_tranche_effectifs_unite_legale,
-        cached_libelle_tranche_effectif,
-        cached_etat_administratif,
-        cached_est_active,
-        cached_statut_diffusion,
-        cached_est_diffusible,
-        cached_adresse,
-        cached_code_postal,
-        cached_activite_principale,
-        cached_libelle_activite_principale,
-        cached_categorie_juridique,
-        cached_libelle_categorie_juridique,
-        organization_info_fetched_at,
-        updated_at,
-        created_at
-    )
-VALUES
-  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
-ON CONFLICT (siret)
-DO UPDATE
-    SET (
-        siret,
-        cached_libelle,
-        cached_nom_complet,
-        cached_enseigne,
-        cached_tranche_effectifs,
-        cached_tranche_effectifs_unite_legale,
-        cached_libelle_tranche_effectif,
-        cached_etat_administratif,
-        cached_est_active,
-        cached_statut_diffusion,
-        cached_est_diffusible,
-        cached_adresse,
-        cached_code_postal,
-        cached_activite_principale,
-        cached_libelle_activite_principale,
-        cached_categorie_juridique,
-        cached_libelle_categorie_juridique,
-        organization_info_fetched_at,
-        updated_at
-    ) = (
-        EXCLUDED.siret,
-        EXCLUDED.cached_libelle,
-        EXCLUDED.cached_nom_complet,
-        EXCLUDED.cached_enseigne,
-        EXCLUDED.cached_tranche_effectifs,
-        EXCLUDED.cached_tranche_effectifs_unite_legale,
-        EXCLUDED.cached_libelle_tranche_effectif,
-        EXCLUDED.cached_etat_administratif,
-        EXCLUDED.cached_est_active,
-        EXCLUDED.cached_statut_diffusion,
-        EXCLUDED.cached_est_diffusible,
-        EXCLUDED.cached_adresse,
-        EXCLUDED.cached_code_postal,
-        EXCLUDED.cached_activite_principale,
-        EXCLUDED.cached_libelle_activite_principale,
-        EXCLUDED.cached_categorie_juridique,
-        EXCLUDED.cached_libelle_categorie_juridique,
-        EXCLUDED.organization_info_fetched_at,
-        EXCLUDED.updated_at
-    )
-RETURNING *
-`,
-    [
-      siret,
-      cached_libelle,
-      cached_nom_complet,
-      cached_enseigne,
-      cached_tranche_effectifs,
-      cached_tranche_effectifs_unite_legale,
-      cached_libelle_tranche_effectif,
-      cached_etat_administratif,
-      cached_est_active,
-      cached_statut_diffusion,
-      cached_est_diffusible,
-      cached_adresse,
-      cached_code_postal,
-      cached_activite_principale,
-      cached_libelle_activite_principale,
-      cached_categorie_juridique,
-      cached_libelle_categorie_juridique,
-      new Date().toISOString(),
-      new Date().toISOString(),
-      new Date().toISOString(),
-    ]
-  );
-
-  return rows.shift()!;
-};
-
-export const addAuthorizedDomain = async ({
-  siret,
-  domain,
-}: {
-  siret: string;
-  domain: string;
-}) => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<Organization> = await connection.query(
-    `
-UPDATE organizations
-SET authorized_email_domains = array_append(authorized_email_domains, $2)
-  , updated_at               = $3
-WHERE siret = $1
-RETURNING *
-    `,
-    [siret, domain, new Date().toISOString()]
-  );
-
-  return rows.shift()!;
-};
-
-export const linkUserToOrganization = async ({
-  organization_id,
-  user_id,
-  is_external = false,
-  verification_type,
-}: {
-  organization_id: number;
-  user_id: number;
-  is_external?: boolean;
-  verification_type?:
-    | 'verified_email_domain'
-    | 'official_contact_email'
-    | 'code_send_to_organization';
-}): Promise<UserOrganizationLink> => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
-    `
-INSERT INTO users_organizations
-    (user_id,
-     organization_id,
-     is_external,
-     verification_type,
-     updated_at,
-     created_at)
-VALUES
-    ($1, $2, $3, $4, $5, $6)
-RETURNING *`,
-    [
-      user_id,
-      organization_id,
-      is_external,
-      verification_type,
-      new Date().toISOString(),
-      new Date().toISOString(),
-    ]
-  );
-
-  return rows.shift()!;
-};
-
 export const getUsers = async (organization_id: number) => {
   const connection = getDatabaseConnection();
 
   const {
     rows,
-  }: QueryResult<User & { is_external: boolean }> = await connection.query(
+  }: QueryResult<User & {
+    is_external: boolean;
+    verification_type: UserOrganizationLink['verification_type'];
+  }> = await connection.query(
     `
 SELECT
     u.id,
@@ -426,7 +244,8 @@ SELECT
     u.magic_link_token,
     u.magic_link_sent_at,
     u.email_verified_at,
-    uo.is_external
+    uo.is_external,
+    uo.verification_type
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,
@@ -434,23 +253,4 @@ WHERE uo.organization_id = $1`,
   );
 
   return rows;
-};
-
-export const deleteUserOrganisation = async ({
-  user_id,
-  organization_id,
-}: {
-  user_id: number;
-  organization_id: number;
-}) => {
-  const connection = getDatabaseConnection();
-
-  const { rowCount } = await connection.query(
-    `
-DELETE FROM users_organizations
-WHERE user_id = $1 AND organization_id = $2`,
-    [user_id, organization_id]
-  );
-
-  return rowCount > 0;
 };

@@ -1,8 +1,10 @@
 import {
   findByClientId,
   getByUserIdOrderedByConnectionCount,
-  upsertAndIncrementConnectionCount,
+  addConnection,
 } from '../repositories/oidc-client';
+import { isEmpty } from 'lodash';
+import { NotFoundError } from '../errors';
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number
@@ -10,24 +12,15 @@ export const getClientsOrderedByConnectionCount = async (
   return await getByUserIdOrderedByConnectionCount(user_id);
 };
 
-export const incrementConnectionCount = async (
+export const recordNewConnection = async (
   user_id: number,
   client_id: string
-): Promise<number | null> => {
+): Promise<Connection> => {
   const oidc_client = await findByClientId(client_id);
 
-  if (!oidc_client?.id) {
-    console.error(
-      `Unable to increment connection count. Client not found for id:${client_id}`
-    );
-    // fails silently
-    return null;
+  if (isEmpty(oidc_client)) {
+    throw new NotFoundError();
   }
 
-  const { connection_count } = await upsertAndIncrementConnectionCount(
-    user_id,
-    oidc_client.id
-  );
-
-  return connection_count;
+  return await addConnection(user_id, oidc_client.id);
 };

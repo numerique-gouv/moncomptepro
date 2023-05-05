@@ -20,6 +20,7 @@ import {
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
+  UserAlreadyAskToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
 
@@ -117,10 +118,11 @@ export const postJoinOrganizationMiddleware = async (
 
     next();
   } catch (error) {
-    if (error instanceof UnableToAutoJoinOrganizationError) {
-      return res.redirect(
-        `/users/unable-to-auto-join-organization?libelle=${error.libelle}`
-      );
+    if (
+      error instanceof UnableToAutoJoinOrganizationError ||
+      error instanceof UserAlreadyAskToJoinOrganizationError
+    ) {
+      return res.redirect(`/users/unable-to-auto-join-organization`);
     }
 
     if (
@@ -155,21 +157,7 @@ export const getUnableToAutoJoinOrganizationController = async (
   next: NextFunction
 ) => {
   try {
-    const schema = z.object({
-      query: z.object({
-        libelle: z.string().min(1),
-      }),
-    });
-
-    const {
-      query: { libelle },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
-
-    return res.render('user/unable-to-auto-join-organization', {
-      libelle,
-    });
+    return res.render('user/unable-to-auto-join-organization');
   } catch (e) {
     next(e);
   }

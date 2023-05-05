@@ -10,7 +10,7 @@ import {
 } from '../controllers/main';
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
 import { checkUserSignInRequirementsMiddleware } from '../middlewares/user';
-import { rateLimiterMiddleware } from '../services/rate-limiter';
+import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();

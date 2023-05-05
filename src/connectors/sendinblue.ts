@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
-import { isEmpty } from 'lodash';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { chain, isEmpty } from 'lodash';
 import path from 'path';
 
 import { render } from '../services/renderer';
+import { SendInBlueApiError } from '../errors';
 
 const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
 
@@ -16,7 +17,8 @@ type RemoteTemplateSlug =
 type LocalTemplateSlug =
   | 'organization-welcome'
   | 'unable-to-auto-join-organization'
-  | 'welcome';
+  | 'welcome'
+  | 'moderation-processed';
 
 // active templates id are listed at https://app-smtp.sendinblue.com/templates
 const remoteTemplateSlugToSendinblueTemplateId: {
@@ -55,7 +57,11 @@ export const sendMail = async ({
       name: 'L’équipe MonComptePro',
       email: 'moncomptepro@beta.gouv.fr',
     },
-    to: to.map(e => ({ email: e })),
+    // Sendinblue allow a maximum of 99 recipients
+    to: chain(to)
+      .sampleSize(99)
+      .map(e => ({ email: e }))
+      .value(),
     subject,
     params,
     tags: [template],
@@ -105,6 +111,9 @@ export const sendMail = async ({
     );
   } catch (error) {
     console.error(error);
+    if (error instanceof AxiosError) {
+      throw new SendInBlueApiError(error);
+    }
 
     throw new Error('Error from SendInBlue API');
   }

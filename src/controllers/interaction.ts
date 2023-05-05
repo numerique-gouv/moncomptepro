@@ -1,6 +1,5 @@
 import { isEmpty } from 'lodash';
 import { NextFunction, Request, Response } from 'express';
-import { incrementConnectionCount } from '../managers/oidc-client';
 
 export const interactionStartControllerFactory = (oidcProvider: any) => async (
   req: Request,
@@ -53,12 +52,6 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
     };
 
     req.session.interactionId = undefined;
-
-    const {
-      params: { client_id },
-    } = await oidcProvider.interactionDetails(req, res);
-
-    await incrementConnectionCount(req.session.user!.id, client_id);
 
     await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {

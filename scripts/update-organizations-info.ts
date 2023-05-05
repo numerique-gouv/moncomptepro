@@ -1,8 +1,9 @@
 import { isDate, isEmpty, toInteger } from 'lodash';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
 import { getDatabaseConnection } from '../src/connectors/postgres';
-import { upsert } from '../src/repositories/organization';
 import { AxiosError } from 'axios';
+import { upsert } from '../src/repositories/organization/setters';
+import { Pool } from 'pg';
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
@@ -40,7 +41,7 @@ function isOrganizationInfo(
 
 (async () => {
   console.log('Start updating organization info...');
-  let connection;
+  let connection: Pool;
   let i = 0;
 
   try {
@@ -142,7 +143,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
     console.log('');
     console.log('\x1b[32m', 'Update completed!', '\x1b[0m');
   } catch (e) {
-    await connection.end();
+    await connection!.end();
     console.log('');
     console.log('\x1b[31m', 'Update aborted!', '\x1b[0m');
     console.error(

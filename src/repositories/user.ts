@@ -140,12 +140,12 @@ FROM users WHERE reset_password_token = $1
   return rows.shift();
 };
 
-export const update = async (id: number, fieldsToUpdate: User) => {
+export const update = async (id: number, fieldsToUpdate: Partial<User>) => {
   const connection = getDatabaseConnection();
 
   const fieldsToUpdateWithTimestamps = {
     ...fieldsToUpdate,
-    updated_at: new Date().toISOString(),
+    updated_at: new Date(),
   };
 
   const paramsString = chain(fieldsToUpdateWithTimestamps)
@@ -168,15 +168,17 @@ export const update = async (id: number, fieldsToUpdate: User) => {
     [id, ...values]
   );
 
-  return rows.shift();
+  return rows.shift()!;
 };
 
 export const create = async ({
   email,
   encrypted_password = null,
+  last_sign_in_at,
 }: {
   email: string;
-  encrypted_password: string | null;
+  encrypted_password?: string | null;
+  last_sign_in_at: Date;
 }) => {
   const connection = getDatabaseConnection();
 
@@ -191,9 +193,9 @@ export const create = async ({
     reset_password_token: null,
     reset_password_sent_at: null,
     sign_in_count: 0,
-    last_sign_in_at: null,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    last_sign_in_at,
+    created_at: new Date(),
+    updated_at: new Date(),
   };
   const paramsString = Object.keys(userWithTimestamps).join(', ');
   // 'email, encrypted_password'

@@ -8,29 +8,9 @@ import {
   postQuitUserOrganizationController,
 } from '../controllers/organization';
 import {
-  getChangePasswordController,
-  getMagicLinkSentController,
-  getPersonalInformationsController,
-  getResetPasswordController,
-  getSignInController,
-  getSignInWithMagicLinkController,
-  getSignUpController,
-  getStartSignInController,
-  getVerifyEmailController,
-  getWelcomeController,
-  issueSessionOrRedirectController,
-  postChangePasswordController,
-  postPersonalInformationsController,
-  postResetPasswordController,
-  postSendEmailVerificationController,
-  postSendMagicLinkController,
-  postSignInMiddleware,
-  postSignInWithMagicLinkController,
-  postSignUpController,
-  postStartSignInController,
-  postVerifyEmailController,
-} from '../controllers/user';
-import { rateLimiterMiddleware } from '../services/rate-limiter';
+  loginRateLimiterMiddleware,
+  rateLimiterMiddleware,
+} from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
   checkUserHasPersonalInformationsMiddleware,
@@ -38,6 +18,37 @@ import {
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
 } from '../middlewares/user';
+import {
+  getSignInController,
+  getSignUpController,
+  getStartSignInController,
+  postSignInMiddleware,
+  postSignUpController,
+  postStartSignInController,
+} from '../controllers/user/signin-signup';
+import {
+  getVerifyEmailController,
+  postSendEmailVerificationController,
+  postVerifyEmailController,
+} from '../controllers/user/verify-email';
+import {
+  getMagicLinkSentController,
+  getSignInWithMagicLinkController,
+  postSendMagicLinkController,
+  postSignInWithMagicLinkController,
+} from '../controllers/user/magic-link';
+import {
+  getChangePasswordController,
+  getResetPasswordController,
+  postChangePasswordController,
+  postResetPasswordController,
+} from '../controllers/user/update-password';
+import {
+  getPersonalInformationsController,
+  postPersonalInformationsController,
+} from '../controllers/user/update-personal-informations';
+import { getWelcomeController } from '../controllers/user/welcome';
+import { issueSessionOrRedirectController } from '../controllers/user/issue-session-or-redirect';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -74,6 +85,7 @@ export const userRouter = () => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
+    loginRateLimiterMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController

@@ -1,10 +1,11 @@
 import ejs from 'ejs';
 import { isEmpty } from 'lodash';
 import path from 'path';
+import { Application, NextFunction, Request, Response } from 'express';
 
-export const render = (absolutePath, params) => {
+export const render = (absolutePath: string, params: any) => {
   return new Promise((resolve, reject) => {
-    ejs.renderFile(absolutePath, params, null, (err, str) => {
+    ejs.renderFile(absolutePath, params, {}, (err, str) => {
       if (err) {
         return reject(err);
       }
@@ -14,7 +15,7 @@ export const render = (absolutePath, params) => {
   });
 };
 
-const getUserLabel = req => {
+const getUserLabel = (req: Request) => {
   if (isEmpty(req.session.user)) {
     //  do not display label when no session is found
     return null;
@@ -29,16 +30,17 @@ const getUserLabel = req => {
 // this is a cheap layout implementation for ejs
 // it looks for the _layout file and inject the targeted template in the body variable
 export const ejsLayoutMiddlewareFactory = (
-  app,
-  use_dashboard_header = false
+  app: Application,
+  use_dashboard_header: boolean = false
 ) => {
-  return (req, res, next) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const orig = res.render;
-    res.render = (view, locals) => {
-      app.render(view, locals, (err, html) => {
+    res.render = (view, locals = {}) => {
+      app.render(view, locals, (err: Error, html: string) => {
         if (err) throw err;
         orig.call(res, '_layout', {
           ...locals,
+          // @ts-ignore
           body: html,
           header_user_label: getUserLabel(req),
           use_dashboard_header,
@@ -49,7 +51,10 @@ export const ejsLayoutMiddlewareFactory = (
   };
 };
 
-export const renderWithEjsLayout = async (templateName, params = {}) => {
+export const renderWithEjsLayout = async (
+  templateName: string,
+  params = {}
+) => {
   const bodyHtml = await render(
     path.resolve(`${__dirname}/../views/${templateName}.ejs`),
     params

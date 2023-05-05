@@ -1,6 +1,10 @@
 import { isEmpty } from 'lodash';
-import { findByUserId as getUsersOrganizations } from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
+import {
+  isCollectiviteTerritoriale,
+  isServicePublic,
+} from '../services/organization';
+import { findByUserId as getUsersOrganizations } from '../repositories/organization/getters';
 
 export const findAccount = async (ctx: any, sub: string, token: any) => {
   const user = await findUserById(parseInt(sub, 10));
@@ -34,14 +38,25 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         family_name,
         phone_number,
         job,
-        organizations: organizations.map(
-          ({ id, siret, is_external, cached_libelle: label }) => ({
+        organizations: organizations.map(organization => {
+          const {
+            id,
+            siret,
+            is_external,
+            cached_libelle: label,
+          } = organization;
+
+          return {
             id,
             siret,
             is_external,
             label,
-          })
-        ),
+            is_collectivite_territoriale: isCollectiviteTerritoriale(
+              organization
+            ),
+            is_service_public: isServicePublic(organization),
+          };
+        }),
       };
     },
   };

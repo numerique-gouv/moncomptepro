@@ -6,9 +6,9 @@ import { parse as parseUrl } from 'url';
 const nanoidPin = customAlphabet('0123456789', 10);
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
-export const hashPassword = async plainPassword => {
+export const hashPassword = async (plainPassword: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(plainPassword, 10, function(err, hash) {
+    bcrypt.hash(plainPassword, 10, function(err: Error, hash: string) {
       if (err) {
         return reject(err);
       }
@@ -18,7 +18,10 @@ export const hashPassword = async plainPassword => {
   });
 };
 
-export const validatePassword = async (plainPassword, storedHash) => {
+export const validatePassword = async (
+  plainPassword: string,
+  storedHash: string | null
+) => {
   if (!plainPassword || !storedHash) {
     return false;
   }
@@ -28,7 +31,7 @@ export const validatePassword = async (plainPassword, storedHash) => {
 
 // TODO use https://www.npmjs.com/package/owasp-password-strength-test instead
 // TODO call https://haveibeenpwned.com/Passwords
-export const isPasswordSecure = plainPassword => {
+export const isPasswordSecure = (plainPassword: string) => {
   return plainPassword && plainPassword.length >= 10;
 };
 
@@ -36,7 +39,7 @@ export const isPasswordSecure = plainPassword => {
  * specifications of this function can be found at
  * https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html#email-address-validation
  */
-export const isEmailValid = email => {
+export const isEmailValid = (email: unknown): email is string => {
   if (!isString(email) || isEmpty(email)) {
     return false;
   }
@@ -44,7 +47,7 @@ export const isEmailValid = email => {
   const parts = email.split('@').filter(part => part);
 
   // The email address contains two parts, separated with an @ symbol.
-  // => these parts are non empty strings
+  // => these parts are non-empty strings
   // => there are two and only two parts
   if (parts.length !== 2) {
     return false;
@@ -73,8 +76,10 @@ export const isEmailValid = email => {
   return true;
 };
 
-export const isPhoneNumberValid = phoneNumber => {
-  if (!isString(phoneNumber)) {
+export const isPhoneNumberValid = (
+  phoneNumber: unknown
+): phoneNumber is string => {
+  if (!isString(phoneNumber) || isEmpty(phoneNumber)) {
     return false;
   }
 
@@ -93,7 +98,7 @@ export const generateToken = async () => {
   return await nanoid(64);
 };
 
-export const isSiretValid = siret => {
+export const isSiretValid = (siret: unknown): siret is string => {
   if (!isString(siret) || isEmpty(siret)) {
     return false;
   }
@@ -103,7 +108,7 @@ export const isSiretValid = siret => {
   return !!siretNoSpaces.match(/^\d{14}$/);
 };
 
-export const isUrlTrusted = url => {
+export const isUrlTrusted = (url: unknown): url is string => {
   if (!isString(url) || isEmpty(url)) {
     return false;
   }
@@ -112,5 +117,5 @@ export const isUrlTrusted = url => {
 
   return !!parsedUrl.hostname
     ? parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
-    : parsedUrl.pathname.match(/^(\/[a-zA-Z-_0-9]*)+$/) !== null;
+    : parsedUrl.pathname?.match(/^(\/[a-zA-Z-_0-9]*)+$/) !== null;
 };

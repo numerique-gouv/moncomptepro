@@ -7,28 +7,40 @@ import {
   InvalidSiretError,
   NotFoundError,
   UnableToAutoJoinOrganizationError,
+  UserAlreadyAskToJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
 } from '../errors';
 import { createModeration } from '../repositories/moderation';
-import {
-  linkUserToOrganization,
-  deleteUserOrganisation,
-  findById as findOrganizationById,
-  findByMostUsedEmailDomain,
-  findByUserId,
-  findPendingByUserId,
-  getUsers,
-  upsert,
-  addAuthorizedDomain,
-  findByVerifiedEmailDomain,
-} from '../repositories/organization';
 import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
+  isAFreeEmailProvider,
   usesAFreeEmailProvider,
 } from '../services/uses-a-free-email-provider';
-import { isEntrepriseUnipersonnelle } from '../services/organization';
+import {
+  isCollectiviteTerritoriale,
+  isEntrepriseUnipersonnelle,
+} from '../services/organization';
+import { getContactEmail } from '../connectors/api-annuaire';
+import * as Sentry from '@sentry/node';
+import {
+  findById as findOrganizationById,
+  findByMostUsedEmailDomain,
+  findByUserId,
+  findByVerifiedEmailDomain,
+  findPendingByUserId,
+  getUsers,
+} from '../repositories/organization/getters';
+import {
+  addAuthorizedDomain,
+  addVerifiedDomain,
+  deleteUserOrganization,
+  linkUserToOrganization,
+  setVerificationType,
+  upsert,
+} from '../repositories/organization/setters';
+import { isEmailValid } from '../services/security';
 
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
@@ -134,10 +146,14 @@ export const joinOrganization = async ({
     throw new UserNotFoundError();
   }
 
-  // Ensure user is not in organization already
-  const usersInOrganizationAlready = await getUsers(organization.id);
-  if (some(usersInOrganizationAlready, ['email', user.email])) {
+  const usersOrganizations = await findByUserId(user_id);
+  if (some(usersOrganizations, ['id', organization.id])) {
     throw new UserInOrganizationAlreadyError();
+  }
+
+  const pendingUsersOrganizations = await findPendingByUserId(user_id);
+  if (some(pendingUsersOrganizations, ['id', organization.id])) {
+    throw new UserAlreadyAskToJoinOrganizationError();
   }
 
   const {
@@ -158,6 +174,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
+      verification_type: null,
     });
   }
 
@@ -187,7 +204,48 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
+      verification_type: null,
     });
+  }
+
+  if (isCollectiviteTerritoriale(organization)) {
+    let contactEmail;
+    try {
+      contactEmail = await getContactEmail(
+        organization.cached_code_officiel_geographique
+      );
+    } catch (err) {
+      console.error(err);
+      Sentry.captureException(err);
+    }
+
+    if (isEmailValid(contactEmail)) {
+      const contactDomain = getEmailDomain(contactEmail);
+
+      if (!isAFreeEmailProvider(contactDomain)) {
+        await markDomainAsVerified({
+          organization_id,
+          domain: contactDomain,
+          verification_type: 'official_contact_domain',
+        });
+      }
+
+      if (contactEmail === email) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: 'official_contact_email',
+        });
+      }
+
+      if (!isAFreeEmailProvider(contactDomain) && contactDomain === domain) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: 'official_contact_domain',
+        });
+      }
+    }
   }
 
   await createModeration({
@@ -204,10 +262,43 @@ export const joinOrganization = async ({
       libelle: cached_libelle || siret,
     },
   });
-  throw new UnableToAutoJoinOrganizationError(cached_libelle || siret);
+  throw new UnableToAutoJoinOrganizationError();
 };
 
-export const forceJoinOrganization = linkUserToOrganization;
+export const forceJoinOrganization = async ({
+  organization_id,
+  user_id,
+  is_external = false,
+}: {
+  organization_id: number;
+  user_id: number;
+  is_external?: boolean;
+}) => {
+  const user = await findUserById(user_id);
+  const organization = await findOrganizationById(organization_id);
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+  const { email } = user;
+  const {
+    verified_email_domains,
+    external_authorized_email_domains,
+  } = organization;
+
+  const domain = getEmailDomain(email);
+  const verification_type =
+    verified_email_domains.includes(domain) ||
+    external_authorized_email_domains.includes(domain)
+      ? 'verified_email_domain'
+      : null;
+
+  return await linkUserToOrganization({
+    organization_id,
+    user_id,
+    is_external,
+    verification_type,
+  });
+};
 
 export const notifyOrganizationJoin = async ({
   organization_id,
@@ -255,6 +346,11 @@ export const notifyOrganizationJoin = async ({
   }
 };
 
+/**
+ * This function send a welcome email if user is in one organization only.
+ * As a consequence, the first organization should be joined before calling it.
+ * @param user_id
+ */
 export const greetFirstOrganizationJoin = async ({
   user_id,
 }: {
@@ -286,7 +382,55 @@ export const quitOrganization = async ({
   user_id: number;
   organization_id: number;
 }) => {
-  await deleteUserOrganisation({ user_id, organization_id });
+  await deleteUserOrganization({ user_id, organization_id });
 
   return null;
+};
+
+export const markDomainAsVerified = async ({
+  organization_id,
+  domain,
+  verification_type,
+}: {
+  organization_id: number;
+  domain: string;
+  verification_type: UserOrganizationLink['verification_type'];
+}) => {
+  const organization = await findOrganizationById(organization_id);
+  if (isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  const {
+    siret,
+    verified_email_domains,
+    authorized_email_domains,
+  } = organization;
+
+  if (!verified_email_domains.includes(domain)) {
+    await addVerifiedDomain({ siret, domain });
+  }
+
+  if (!authorized_email_domains.includes(domain)) {
+    await addAuthorizedDomain({ siret, domain });
+  }
+
+  const usersInOrganization = await getUsers(organization_id);
+
+  await Promise.all(
+    usersInOrganization.map(
+      async ({ id, email, verification_type: current_verification_type }) => {
+        const userDomain = getEmailDomain(email);
+        if (userDomain === domain && isEmpty(current_verification_type)) {
+          return await setVerificationType({
+            organization_id,
+            user_id: id,
+            verification_type,
+          });
+        }
+
+        return null;
+      }
+    )
+  );
 };

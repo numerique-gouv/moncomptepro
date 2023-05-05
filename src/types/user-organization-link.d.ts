@@ -4,5 +4,10 @@ interface UserOrganizationLink {
   is_external: boolean;
   created_at: Date;
   updated_at: Date;
-  verification_type: string;
+  verification_type:
+    | 'verified_email_domain'
+    | 'official_contact_email'
+    | 'official_contact_domain'
+    | 'code_send_to_organization'
+    | null;
 }

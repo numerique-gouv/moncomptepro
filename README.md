@@ -16,7 +16,7 @@ Pour tester le parcours de connexion complet, vous pouvez tester la connexion Mo
 
 Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/api-entreprise.
 
-Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables yopmail.
+Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables `yopmail.com`.
 
 Vous pouvez également utiliser les comptes de tests suivants :
 
@@ -65,6 +65,8 @@ Vous trouverez des ressources abondantes sur le sujet sur internet. Voici notre 
 
 Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout.
 
+Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations, dont une [collectivité territoriale](https://annuaire-entreprises.data.gouv.fr/entreprise/commune-de-clamart-219200235).
+
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
@@ -80,14 +82,18 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
         "id": 16,
         "siret": "21630215800011",
         "label": "Commune de les martres sur morge - Mairie",
-        "is_external": "true"
+        "is_external": true,
+        "is_collectivite_territoriale": true,
+        "is_service_public": true
     }, {
         "id": 17,
         "siret": "83951732300011",
         "label": "Red needles SARL",
-        "is_external": "false"
+        "is_external": false,
+        "is_collectivite_territoriale": false,
+        "is_service_public": false
     }],
-    "sub": 154
+    "sub": "154"
 }
 ```
 
@@ -168,6 +174,8 @@ La nouvelle configuration sera déployée en environment de test dès que la pul
 
 ## 👋 Contribuer à MonComptePro
 
-Nous ne fournissons pas encore de documentation d'installation pour les contributions externes.
+Pour contribuer à MonComptePro vous pouvez installer l'application localement.
 
-Les instructions d’installation se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://gitlab.com/etalab/api.gouv.fr/moncomptepro-infrastructure
+Les instructions se trouvent sur [la page de doc dédiée](./installation.md)
+
+Les instructions d’installation complètes incluant l'infrastructure se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://github.com/betagouv/moncomptepro-infrastructure

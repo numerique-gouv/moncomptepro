@@ -12,22 +12,20 @@ describe('join organizations', () => {
     // Visit the signup page
     cy.visit(`${host}/`);
 
-    cy.get('.fr-grid-row .fr-tile__link').should('have.length', 2);
-
-    cy.get('.fr-grid-row .fr-col-12:nth-child(1) .fr-tile__link').contains(
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').contains(
       'Commune de clamart - Mairie'
     );
-    cy.get('.fr-grid-row .fr-col-12:nth-child(2) .fr-tile__link').contains(
+    cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').contains(
       'Commune de clamart - Service assainissement'
     );
 
     // Click on the suggested organization
-    cy.get('.fr-grid-row .fr-col-12:nth-child(1) .fr-tile__link').click();
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
 
     // Click on "continue" on the welcome page
     cy.get('[type="submit"]').click();
 
-    // Check DataPass redirection
+    // Check redirection to home page
     cy.contains('Votre compte est créé');
 
     cy.mailslurp()
@@ -55,11 +53,11 @@ describe('join organizations', () => {
       )
       // assert reception of notification email
       .then(email => {
-        expect(email.body).to.contain(
-          'Votre organisation<strong>&nbsp;Commune de clamart - Mairie </strong>utilise MonComptePro.'
+        expect(email.body).to.match(
+          /Votre organisation.*Commune de clamart - Mairie.*utilise MonComptePro./
         );
-        expect(email.body).to.contain(
-          'Nous tenions à vous informer que <strong>Jean User2</strong>&nbsp;(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com) vient de rejoindre cette organisation.'
+        expect(email.body).to.match(
+          /Nous tenions à vous informer que.*Jean User2.*\(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com\) vient de rejoindre cette organisation./
         );
       });
   });
@@ -67,12 +65,12 @@ describe('join organizations', () => {
   it('join another organisation', function() {
     // Visit the join organization page
     cy.visit(`${host}/users/join-organization`);
-    cy.get('[name="siret"]').type('21740056300011');
+    cy.get('[name="siret"]').type('13002526500013');
     cy.get('[type="submit"]').click();
 
-    // Check DataPass redirection
+    // Check redirection to moderation block page
     cy.contains(
-      'Bonne nouvelle, l’organisation Commune de chamonix mont blanc - Mairie chamonix - argentiere utilise déjà MonComptePro !'
+      'Notre équipe est en train de vous rattacher à cette organisation.'
     );
   });
 });
