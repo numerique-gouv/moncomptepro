@@ -410,7 +410,7 @@ VALUES
       'http://localhost:1337/api/oidc/logout',
       'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout'
     ],
-    'openid email',
+    'openid email profile organizations',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
     'Accès à l’interface d’administration de l’annuaire pour les agents des communes'),
   (10,
