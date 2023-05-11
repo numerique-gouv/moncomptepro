@@ -419,11 +419,8 @@ VALUES
     'e25aa11f53f13a58e8c1fe022ddc0e07e240ec0c603f78535bf5ffd470c387be2e2edc348d6923fd718b989da08a40f241543d8c1e01bbaf88ad0ec84ed9140f',
     ARRAY [
       'http://dev.local:7000/fr/mcp/auth',
-      'http://dev.local:7000/api/1/mcp/',
-      'http://dev.local:7000/api/2/mcp/',
-      'https://dev.data.gouv.fr/api/1/mcp/',
-      'https://dev.data.gouv.fr/api/2/mcp/',
-      'https://dev.data.gouv.fr/fr/mcp/auth'
+      'https://dev.data.gouv.fr/fr/mcp/auth',
+      'https://demo.data.gouv.fr/fr/mcp/auth'
     ],
     ARRAY [
       'http://dev.local:7000/',
