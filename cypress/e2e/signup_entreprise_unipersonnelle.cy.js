@@ -30,7 +30,7 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then(mailslurp =>
-        mailslurp.waitForLatestEmail(this.inboxId, 30000, true)
+        mailslurp.waitForLatestEmail(this.inboxId, 60000, true)
       )
       // extract the verification code from the email subject
       .then(email => {
@@ -72,7 +72,7 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then(mailslurp =>
-        mailslurp.waitForLatestEmail(this.inboxId, 30000, true)
+        mailslurp.waitForLatestEmail(this.inboxId, 60000, true)
       )
       // assert reception of confirmation email
       .then(email => {

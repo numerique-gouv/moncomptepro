@@ -178,36 +178,6 @@ export const joinOrganization = async ({
     });
   }
 
-  if (verified_email_domains.includes(domain)) {
-    return await linkUserToOrganization({
-      organization_id,
-      user_id,
-      verification_type: 'verified_email_domain',
-    });
-  }
-
-  if (external_authorized_email_domains.includes(domain)) {
-    return await linkUserToOrganization({
-      organization_id,
-      user_id,
-      is_external: true,
-      verification_type: 'verified_email_domain',
-    });
-  }
-
-  if (authorized_email_domains.includes(domain)) {
-    await createModeration({
-      user_id,
-      organization_id,
-      type: 'non_verified_domain',
-    });
-    return await linkUserToOrganization({
-      organization_id,
-      user_id,
-      verification_type: null,
-    });
-  }
-
   if (isCollectiviteTerritoriale(organization)) {
     let contactEmail;
     try {
@@ -246,6 +216,36 @@ export const joinOrganization = async ({
         });
       }
     }
+  }
+
+  if (verified_email_domains.includes(domain)) {
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+      verification_type: 'verified_email_domain',
+    });
+  }
+
+  if (external_authorized_email_domains.includes(domain)) {
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+      is_external: true,
+      verification_type: 'verified_email_domain',
+    });
+  }
+
+  if (authorized_email_domains.includes(domain)) {
+    await createModeration({
+      user_id,
+      organization_id,
+      type: 'non_verified_domain',
+    });
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+      verification_type: null,
+    });
   }
 
   await createModeration({
