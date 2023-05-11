@@ -1,6 +1,18 @@
 const host = Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
 
 describe('join organizations', () => {
+  before(() => {
+    cy.mailslurp().then(mailslurp =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: '07b88769-a5fc-4f8b-a4b3-fcab28d32f94',
+      })
+    );
+    cy.mailslurp().then(mailslurp =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: '34c5063f-81c0-4d09-9d0b-a7502f844cdf',
+      })
+    );
+  });
   beforeEach(() => {
     cy.login(
       '07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com',
@@ -33,7 +45,7 @@ describe('join organizations', () => {
       .then(mailslurp =>
         mailslurp.waitForLatestEmail(
           '34c5063f-81c0-4d09-9d0b-a7502f844cdf',
-          30000,
+          60000,
           true
         )
       )
@@ -47,7 +59,7 @@ describe('join organizations', () => {
       .then(mailslurp =>
         mailslurp.waitForLatestEmail(
           '34c5063f-81c0-4d09-9d0b-a7502f844cdf',
-          30000,
+          60000,
           true
         )
       )
