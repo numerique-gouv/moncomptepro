@@ -31,8 +31,6 @@ env:
 jobs:
   test:
     runs-on: ubuntu-20.04
-    env:
-      JWKS_PATH: "/tmp/jwks.json"
     services:
       redis:
         image: redis

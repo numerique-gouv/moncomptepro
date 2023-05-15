@@ -87,8 +87,6 @@ Création du fichier de configuration.
 
 Attention, il faut remplacer les identifiants de l'INSEE par vos propres identifiants. Pour créer un compte : https://api.gouv.fr/les-api/sirene_v3.
 
-Attention, il faut remplacer la variable JWKS_PATH par un chemin valide. Remplacez la partie `/absolute/path/to/moncomptepro/folder/` par le chemin réel sur votre poste.
-
 ```shell
 cat <<EOT >> moncomptepro.conf
 NODE_ENV=production
@@ -99,7 +97,6 @@ PGPORT=5432
 DATABASE_URL=postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
 SENDINBLUE_API_KEY=
 MONCOMPTEPRO_HOST=http://localhost:3000
-JWKS_PATH=/absolute/path/to/moncomptepro/folder/jwks.json
 DO_NOT_SEND_MAIL=True
 DO_NOT_VALIDATE_MAIL=True
 DO_NOT_USE_ANNUAIRE_EMAILS=True
@@ -125,7 +122,7 @@ npm i --dev
 Migration de la base de donnée et chargement de données de tests :
 
 ```shell
-npm run migrate up
+npm run build
 psql -h 127.0.0.1 -v ON_ERROR_STOP=1 -d moncomptepro -f scripts/fixtures.sql
 npm run update-organization-info 2000
 ```

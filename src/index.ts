@@ -31,7 +31,7 @@ export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
-  JWKS_PATH = '/opt/apps/api-auth/jwks.json',
+  JWKS_PATH = `${__dirname}/../jwks.json`,
   SESSION_COOKIE_SECRET = '',
   SECURE_COOKIES = 'true',
   SENTRY_DSN,
