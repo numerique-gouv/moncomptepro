@@ -2,14 +2,7 @@ import { Pool } from 'pg';
 
 let pool: Pool | null = null;
 
-const {
-  PGUSER: user,
-  PGPASSWORD: password,
-  PGDATABASE: database,
-  PGPORT: port,
-} = process.env;
-
-const connectionString = `postgres://${user}:${password}@127.0.0.1:${port}/${database}`;
+const { DATABASE_URL: connectionString } = process.env;
 
 export const getDatabaseConnection = () => {
   if (pool) {
@@ -19,15 +12,11 @@ export const getDatabaseConnection = () => {
   pool = new Pool({ connectionString });
 
   pool.on('connect', client => {
-    console.log(
-      `Connected to database : postgres://${user}@127.0.0.1:${port}/${database}`
-    );
+    console.log(`Connected to database : ${connectionString}`);
   });
 
   pool.on('remove', client => {
-    console.log(
-      `Disconnected from database : postgres://${user}@127.0.0.1:${port}/${database}`
-    );
+    console.log(`Disconnected from database : ${connectionString}`);
   });
 
   pool.on('error', (error, client) => {
