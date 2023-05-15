@@ -18,7 +18,7 @@ VALUES
    '0123456789',
    'International knowledge practice leader'),
   -- password for the following users is 'password123'
-  (2, '07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User2', '0123456789', 'Sbire'),
+  (2, 'c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User2', '0123456789', 'Sbire'),
   (3, '34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User3', '0123456789', 'Sbire'),
   (4, '761a72f6-d051-4df5-a733-62e207c4989b@mailslurp.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User4', '0123456789', 'Sbire'),
   (5, 'be040966-0142-421b-8041-5a3543a79a8a@mailslurp.com', 'true', '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User5', '0123456789', 'Sbire'),

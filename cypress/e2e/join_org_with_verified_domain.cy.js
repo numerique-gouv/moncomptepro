@@ -4,7 +4,7 @@ describe('join organizations', () => {
   before(() => {
     cy.mailslurp().then(mailslurp =>
       mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: '07b88769-a5fc-4f8b-a4b3-fcab28d32f94',
+        inboxId: 'c6c64542-5601-43e0-b320-b20da72f6edc',
       })
     );
     cy.mailslurp().then(mailslurp =>
@@ -15,7 +15,7 @@ describe('join organizations', () => {
   });
   beforeEach(() => {
     cy.login(
-      '07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com',
+      'c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com',
       'password123'
     );
   });
@@ -69,7 +69,7 @@ describe('join organizations', () => {
           /Votre organisation.*Commune de clamart - Mairie.*utilise MonComptePro./
         );
         expect(email.body).to.match(
-          /Nous tenions à vous informer que.*Jean User2.*\(07b88769-a5fc-4f8b-a4b3-fcab28d32f94@mailslurp.com\) vient de rejoindre cette organisation./
+          /Nous tenions à vous informer que.*Jean User2.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com\) vient de rejoindre cette organisation./
         );
       });
   });
