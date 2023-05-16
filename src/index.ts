@@ -35,6 +35,7 @@ const {
   SESSION_COOKIE_SECRET = '',
   SECURE_COOKIES = 'true',
   SENTRY_DSN,
+  ACCESS_LOG_PATH,
 } = process.env;
 const useSecureCookies = SECURE_COOKIES === 'true';
 const jwks = require(JWKS_PATH);
@@ -73,12 +74,18 @@ app.use((req, res, next) => {
   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
 });
 
-const logger = morgan('combined', {
-  stream: fs.createWriteStream(
-    process.env.ACCESS_LOG_PATH || './api-auth.log',
-    { flags: 'a' }
-  ),
-});
+let morganOption = {};
+
+if (ACCESS_LOG_PATH) {
+  morganOption = {
+    stream: fs.createWriteStream(
+      process.env.ACCESS_LOG_PATH || './api-auth.log',
+      { flags: 'a' }
+    ),
+  };
+}
+
+const logger = morgan('combined', morganOption);
 app.use(logger);
 
 app.set('trust proxy', 1);
