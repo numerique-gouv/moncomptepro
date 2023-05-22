@@ -5,6 +5,7 @@ import {
 } from '../../managers/user';
 import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
 import { z, ZodError } from 'zod';
+import { isEmpty } from 'lodash';
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -116,8 +117,13 @@ export const postSignInWithMagicLinkController = async (
     next();
   } catch (error) {
     if (error instanceof InvalidMagicLinkError || error instanceof ZodError) {
+      if (isEmpty(req.session.email)) {
+        return res.redirect(
+          `/users/start-sign-in?notification=invalid_magic_link`
+        );
+      }
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_magic_link`
+        `/users/start-sign-in?notification=invalid_magic_link_with_reinit`
       );
     }
 
