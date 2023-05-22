@@ -123,10 +123,25 @@ export const postSignInWithMagicLinkController = async (
         );
       }
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_magic_link_with_reinit`
+        `/users/send-magic-link-again`
       );
     }
 
     next(error);
   }
 };
+
+export const getSendMagicLinkAgainController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.email;
+    return res.render('user/send-magic-link-again', { 
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    next(error);
+  }
+}

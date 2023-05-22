@@ -35,12 +35,6 @@ Veuillez cliquer sur « Réinitialiser » pour recevoir un nouveau lien`,
 
     Pour recevoir un nouveau lien, entrez votre adresse e-mail ci-dessous.`,
   },
-  invalid_magic_link_with_reinit: {
-    type: 'warning',
-    description: `Le lien que vous avez utilisé est invalide ou expiré.
-
-Cliquez sur le bouton « Envoyer le lien » pour obtenir un nouveau lien.`,
-  },
   password_change_success: {
     type: 'success',
     description: `Votre mot de passe a été mis à jour.

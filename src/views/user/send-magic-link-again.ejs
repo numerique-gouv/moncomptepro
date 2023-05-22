@@ -1,0 +1,30 @@
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Accéder au compte
+                </h4>
+                <div class="fr-card__desc">
+                    <div>
+                        <div class="fr-alert fr-alert--warning">
+                            <p class="fr-alert__title">Lien expiré</p>
+                            <p class="alert-description">Le lien est invalide ou expiré.</p>
+                        </div>
+                        <br>
+                        <div class="card-button-container">
+                            <div id="magic-link-icon-inline">
+                                <img src="/assets/magic-link.svg" alt="">
+                            </div>
+                            <form action="/users/send-magic-link" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                                <%- include('../partials/card-button-container.ejs', {label: 'Renvoyer le lien'}) %>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

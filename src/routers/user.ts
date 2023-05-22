@@ -36,6 +36,7 @@ import {
   getSignInWithMagicLinkController,
   postSendMagicLinkController,
   postSignInWithMagicLinkController,
+  getSendMagicLinkAgainController,
 } from '../controllers/user/magic-link';
 import {
   getChangePasswordController,
@@ -152,6 +153,12 @@ export const userRouter = () => {
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
+  userRouter.get(
+    '/send-magic-link-again',
+    csrfProtectionMiddleware,
+    checkEmailInSessionMiddleware,
+    getSendMagicLinkAgainController
+  )
   userRouter.get(
     '/reset-password',
     csrfProtectionMiddleware,
