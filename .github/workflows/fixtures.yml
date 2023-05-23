@@ -11,6 +11,7 @@ env:
   PGUSER: api-auth
   PGPASSWORD: api-auth
   PGDATABASE: api-auth
+  PGHOST: 127.0.0.1
   PGPORT: 5432
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}

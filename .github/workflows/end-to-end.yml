@@ -11,6 +11,7 @@ env:
   PGUSER: api-auth
   PGPASSWORD: api-auth
   PGDATABASE: api-auth-test
+  PGHOST: 127.0.0.1
   PGPORT: 5432
   SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
   MONCOMPTEPRO_HOST: http://localhost:3000
