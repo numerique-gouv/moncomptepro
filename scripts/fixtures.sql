@@ -462,14 +462,14 @@ VALUES
    'df292260603d69893ee7f732ac407cb014f658027616cb443401d411e53497790fedc72902ee9f9c4201c05cba9c0bbb97460e1f88351f68bff49df7c2b8ac39',
    '341b0d730ea54254d3a9a323f3adf3f431b3fe30c02bd2c62b32ccd8f6b2e9bb197eed03a2ff5e5e2be69d88ea1c60d6571cff37c488966f2f3c634c746ce2c2',
    ARRAY [
-     'http://localhost:3000/api/auth/moncomptepro',
-     'http://localhost:3000/apiv2/auth/moncomptepro',
-     'http://localhost/api/auth/moncomptepro',
-     'http://localhost/apiv2/auth/moncomptepro',
-     'https://egapro-preprod.dev.fabrique.social.gouv.fr/api/auth/moncomptepro',
-     'https://egapro-preprod.dev.fabrique.social.gouv.fr/apiv2/auth/moncomptepro',
-     'https://egapro-master.dev.fabrique.social.gouv.fr/api/auth/moncomptepro',
-     'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/moncomptepro'
+     'http://localhost:3000/api/auth/callback/moncomptepro',
+     'http://localhost:3000/apiv2/auth/callback/moncomptepro',
+     'http://localhost/api/auth/callback/moncomptepro',
+     'http://localhost/apiv2/auth/callback/moncomptepro',
+     'https://egapro-preprod.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
+     'https://egapro-preprod.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
+     'https://egapro-master.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
+     'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro'
      ],
    ARRAY [
      'http://localhost:3000',
