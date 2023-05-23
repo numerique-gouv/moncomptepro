@@ -456,7 +456,30 @@ VALUES
      ],
    'openid email profile organizations',
    'https://ma-cantine-staging.cleverapps.io/',
-   'Mieux manger de la crèche à l’EHPAD.')
+   'Mieux manger de la crèche à l’EHPAD.'),
+  (13,
+   'Egapro',
+   'df292260603d69893ee7f732ac407cb014f658027616cb443401d411e53497790fedc72902ee9f9c4201c05cba9c0bbb97460e1f88351f68bff49df7c2b8ac39',
+   '341b0d730ea54254d3a9a323f3adf3f431b3fe30c02bd2c62b32ccd8f6b2e9bb197eed03a2ff5e5e2be69d88ea1c60d6571cff37c488966f2f3c634c746ce2c2',
+   ARRAY [
+     'http://localhost:3000/api/auth/moncomptepro',
+     'http://localhost:3000/apiv2/auth/moncomptepro',
+     'http://localhost/api/auth/moncomptepro',
+     'http://localhost/apiv2/auth/moncomptepro',
+     'https://egapro-preprod.dev.fabrique.social.gouv.fr/api/auth/moncomptepro',
+     'https://egapro-preprod.dev.fabrique.social.gouv.fr/apiv2/auth/moncomptepro',
+     'https://egapro-master.dev.fabrique.social.gouv.fr/api/auth/moncomptepro',
+     'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/moncomptepro'
+     ],
+   ARRAY [
+     'http://localhost:3000',
+     'http://localhost',
+     'https://egapro-preprod.dev.fabrique.social.gouv.fr',
+     'https://egapro-master.dev.fabrique.social.gouv.fr'
+     ],
+   'openid email profile organizations',
+   'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
+   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
