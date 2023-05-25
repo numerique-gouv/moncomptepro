@@ -387,6 +387,7 @@ VALUES
     'test_baseproject_SIDDEE',
     'test_baseproject_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
     ARRAY [
+      'http://10.59.128.114:8001/oidc/callback/',
       'http://10.59.128.114:8001/auth/cb/',
       'http://10.59.128.114:8001/oidc/auth/cb/'
     ],
@@ -492,7 +493,22 @@ VALUES
      ],
    'openid email organizations',
    'https://grist.incubateur.net',
-   'Saisir et manipuler collaborativement les données.')
+   'Saisir et manipuler collaborativement les données.'),
+   (15,
+    'MiCoSIDDEE',
+    'test_mico_SIDDEE',
+    'test_mico_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
+    ARRAY [
+      'http://10.59.128.114:8004/oidc/callback/',
+      'http://10.59.128.114:8004/auth/cb/',
+      'http://10.59.128.114:8004/oidc/auth/cb/'
+    ],
+    ARRAY [
+      'http://10.59.128.114:8004/'
+    ],
+    'openid email organizations',
+    'http://10.59.128.114:8004/',
+    "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF"),
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
