@@ -333,7 +333,7 @@ VALUES
      ],
    'openid email organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
-   'Saisir et manipuler collaborativement les données'),
+   'Saisir et manipuler collaborativement les données.'),
   (5,
    'Annuaire des Entreprises',
    '233ba6a6fd9303ab727159eeed704bcbc2549e56cd294fdf58621f01b1856898d18c6b20dd2cec21d4dc06746453331328a1b2c1abe365a92bb2a2f3b9d68c69',
@@ -479,7 +479,7 @@ VALUES
      ],
    'openid email profile organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
-   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.')
+   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.'),
    (14,
    'Grist - incubateur.net',
    '322f62e78e966e61847e9a5c2db28746accc5da435fe0d152c666061c18f9e63b4714368b9c7fbb7df93e0446c06b3d232cc27a3867e0254d19eadc1653a4f8d',
@@ -492,7 +492,7 @@ VALUES
      ],
    'openid email organizations',
    'https://grist.incubateur.net',
-   'Saisir et manipuler collaborativement les données'),
+   'Saisir et manipuler collaborativement les données.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
