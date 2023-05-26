@@ -479,20 +479,7 @@ VALUES
      ],
    'openid email profile organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
-   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.'),
-   (14,
-   'Grist - incubateur.net',
-   '322f62e78e966e61847e9a5c2db28746accc5da435fe0d152c666061c18f9e63b4714368b9c7fbb7df93e0446c06b3d232cc27a3867e0254d19eadc1653a4f8d',
-   'd6a9daf4b23c99f4f3cd3fc45fe6c8aad8a4dcee647cd8e674698daf3d42b73a6b8b1ad39a046ee51d659833a113df84a15eb8ff0f60cd856e01ab24f9376098',
-   ARRAY [
-     'https://grist.incubateur.net/_oauth'
-     ],
-   ARRAY [
-     'https://grist.incubateur.net'
-     ],
-   'openid email organizations',
-   'https://grist.incubateur.net',
-   'Saisir et manipuler collaborativement les données.')
+   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
