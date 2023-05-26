@@ -76,7 +76,8 @@ SELECT
     uo.is_external,
     uo.verification_type,
     uo.authentication_by_peers_type,
-    uo.has_been_greeted
+    uo.has_been_greeted,
+    uo.sponsor_id
 FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
@@ -247,7 +248,8 @@ SELECT
     uo.is_external,
     uo.verification_type,
     uo.authentication_by_peers_type,
-    uo.has_been_greeted
+    uo.has_been_greeted,
+    uo.sponsor_id
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,
@@ -255,4 +257,30 @@ WHERE uo.organization_id = $1`,
   );
 
   return rows;
+};
+
+export const getUserOrganizationLink = async (
+  organization_id: number,
+  user_id: number
+) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
+    `
+SELECT
+  user_id,
+  organization_id,
+  is_external,
+  created_at,
+  updated_at,
+  verification_type,
+  authentication_by_peers_type,
+  has_been_greeted,
+  sponsor_id
+FROM users_organizations
+WHERE organization_id = $1 AND user_id = $2`,
+    [organization_id, user_id]
+  );
+
+  return rows.shift();
 };

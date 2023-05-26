@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
+import { getSponsorLabel } from '../../managers/organization';
 
 export const getWelcomeController = async (
   req: Request,
@@ -20,8 +21,14 @@ export const getWelcomeController = async (
       params: req.params,
     });
 
+    const sponsor_label = await getSponsorLabel({
+      user_id: req.session.user!.id,
+      organization_id,
+    });
+
     return res.render('user/welcome', {
       csrfToken: req.csrfToken(),
+      sponsor_label,
     });
   } catch (error) {
     next(error);

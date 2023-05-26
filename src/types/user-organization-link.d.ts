@@ -11,6 +11,7 @@ interface UserOrganizationLinkAttributes {
     | 'sponsored_by_member'
     | null;
   has_been_greeted: boolean;
+  sponsor_id: number | null;
 }
 
 interface UserOrganizationLink extends UserOrganizationLinkAttributes {

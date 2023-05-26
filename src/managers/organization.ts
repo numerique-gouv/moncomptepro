@@ -31,6 +31,7 @@ import {
   findByUserId,
   findByVerifiedEmailDomain,
   findPendingByUserId,
+  getUserOrganizationLink,
   getUsers,
 } from '../repositories/organization/getters';
 import {
@@ -480,7 +481,38 @@ export const chooseSponsor = async ({
 
   return await updateUserOrganizationLink(organization_id, user_id, {
     authentication_by_peers_type: 'sponsored_by_member',
+    sponsor_id,
   });
+};
+
+export const getSponsorLabel = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const link = await getUserOrganizationLink(organization_id, user_id);
+
+  if (isEmpty(link)) {
+    return null;
+  }
+
+  const { sponsor_id } = link;
+
+  if (!sponsor_id) {
+    return null;
+  }
+
+  const sponsor = await findUserById(sponsor_id);
+
+  if (isEmpty(sponsor)) {
+    return null;
+  }
+
+  const { given_name, family_name } = sponsor;
+
+  return `${given_name} ${family_name}`;
 };
 
 export const quitOrganization = async ({
