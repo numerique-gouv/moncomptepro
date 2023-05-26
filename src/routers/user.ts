@@ -52,8 +52,11 @@ import { getWelcomeController } from '../controllers/user/welcome';
 import { issueSessionOrRedirectController } from '../controllers/user/issue-session-or-redirect';
 import {
   getChooseSponsorController,
+  getNoSponsorFoundController,
   getSponsorValidationController,
+  getUnableToFindSponsorController,
   postChooseSponsorController,
+  postNoSponsorFoundController,
 } from '../controllers/user/choose-sponsor';
 
 export const userRouter = () => {
@@ -235,6 +238,7 @@ export const userRouter = () => {
   userRouter.post(
     '/choose-sponsor/:id',
     csrfProtectionMiddleware,
+    rateLimiterMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
     postChooseSponsorController,
     checkUserSignInRequirementsMiddleware,
@@ -242,6 +246,23 @@ export const userRouter = () => {
   );
 
   userRouter.get('/sponsor-validation', getSponsorValidationController);
+
+  userRouter.get(
+    '/no-sponsor-found',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getNoSponsorFoundController
+  );
+
+  userRouter.post(
+    '/no-sponsor-found',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postNoSponsorFoundController
+  );
+
+  userRouter.get('/unable-to-find-sponsor', getUnableToFindSponsorController);
 
   userRouter.get(
     '/welcome/:id',

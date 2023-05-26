@@ -103,3 +103,43 @@ export const getSponsorValidationController = async (
     next(error);
   }
 };
+
+export const getNoSponsorFoundController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.render('user/no-sponsor-found', {
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postNoSponsorFoundController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // TODO send mail
+    // TODO create moderation
+    return res.redirect('/users/unable-to-find-sponsor');
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUnableToFindSponsorController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.render('user/unable-to-find-sponsor');
+  } catch (e) {
+    next(e);
+  }
+};

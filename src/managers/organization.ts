@@ -421,6 +421,8 @@ export const getSponsorOptions = async ({
     throw new NotFoundError();
   }
 
+  // TODO check that external user do not see member information
+
   const sponsorOptions: {
     id: number;
     label: string;
