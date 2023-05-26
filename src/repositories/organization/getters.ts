@@ -75,7 +75,8 @@ SELECT
     o.organization_info_fetched_at,
     uo.is_external,
     uo.verification_type,
-    uo.authentication_by_peers_type
+    uo.authentication_by_peers_type,
+    uo.has_been_greeted
 FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
@@ -245,7 +246,8 @@ SELECT
     u.email_verified_at,
     uo.is_external,
     uo.verification_type,
-    uo.authentication_by_peers_type
+    uo.authentication_by_peers_type,
+    uo.has_been_greeted
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,

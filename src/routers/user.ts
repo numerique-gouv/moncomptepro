@@ -14,7 +14,6 @@ import {
 import {
   checkEmailInSessionMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
-  checkUserHasBeenAuthenticatedByPeersMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
@@ -245,7 +244,7 @@ export const userRouter = () => {
   userRouter.get('/sponsor-validation', getSponsorValidationController);
 
   userRouter.get(
-    '/welcome',
+    '/welcome/:id',
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
     getWelcomeController

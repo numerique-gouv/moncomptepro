@@ -19,5 +19,4 @@ interface User {
   magic_link_token: string | null;
   magic_link_sent_at: Date | null;
   email_verified_at: Date | null;
-  has_been_greeted_for_first_organization_join: boolean;
 }

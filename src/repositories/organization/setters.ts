@@ -1,5 +1,6 @@
 import { getDatabaseConnection } from '../../connectors/postgres';
 import { QueryResult } from 'pg';
+import { hashToPostgresParams } from '../../services/hash-to-postgres-params';
 
 export const upsert = async ({
   siret,
@@ -217,50 +218,28 @@ RETURNING *`,
   return rows.shift()!;
 };
 
-export const setVerificationType = async ({
-  organization_id,
-  user_id,
-  verification_type,
-}: {
-  organization_id: number;
-  user_id: number;
-  verification_type: UserOrganizationLink['verification_type'];
-}): Promise<UserOrganizationLink> => {
+export const updateUserOrganizationLink = async (
+  organization_id: number,
+  user_id: number,
+  fieldsToUpdate: Partial<UserOrganizationLinkAttributes>
+) => {
   const connection = getDatabaseConnection();
 
-  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
-    `
-UPDATE users_organizations
-SET
-    verification_type = $3,
-    updated_at = $4
-WHERE organization_id = $1 AND user_id = $2
-`,
-    [organization_id, user_id, verification_type, new Date()]
+  const fieldsToUpdateWithTimestamps = {
+    ...fieldsToUpdate,
+    updated_at: new Date(),
+  };
+
+  const { paramsString, valuesString, values } = hashToPostgresParams<User>(
+    fieldsToUpdateWithTimestamps
   );
 
-  return rows.shift()!;
-};
-
-export const setAuthenticationByPeersType = async ({
-  organization_id,
-  user_id,
-  authentication_by_peers_type,
-}: {
-  organization_id: number;
-  user_id: number;
-  authentication_by_peers_type: UserOrganizationLink['authentication_by_peers_type'];
-}) => {
-  const connection = getDatabaseConnection();
-
   const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
     `
-UPDATE users_organizations
-SET
-    authentication_by_peers_type = $3,
-    updated_at = $4
-WHERE organization_id = $1 AND user_id = $2`,
-    [organization_id, user_id, authentication_by_peers_type, new Date()]
+UPDATE users_organizations SET ${paramsString} = ${valuesString}
+WHERE organization_id = $${values.length + 1}
+AND user_id = $${values.length + 2} RETURNING *`,
+    [...values, organization_id, user_id]
   );
 
   return rows.shift()!;

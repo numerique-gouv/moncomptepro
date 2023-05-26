@@ -10,6 +10,7 @@ interface UserOrganizationLinkAttributes {
     | 'all_members_notified'
     | 'sponsored_by_member'
     | null;
+  has_been_greeted: boolean;
 }
 
 interface UserOrganizationLink extends UserOrganizationLinkAttributes {

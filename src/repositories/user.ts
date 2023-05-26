@@ -1,6 +1,6 @@
-import { chain } from 'lodash';
 import { getDatabaseConnection } from '../connectors/postgres';
 import { QueryResult } from 'pg';
+import { hashToPostgresParams } from '../services/hash-to-postgres-params';
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();
@@ -27,8 +27,7 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at,
-  has_been_greeted_for_first_organization_join
+  email_verified_at
 FROM users WHERE id = $1
 `,
     [id]
@@ -62,8 +61,7 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at,
-  has_been_greeted_for_first_organization_join
+  email_verified_at
 FROM users WHERE email = $1
 `,
     [email]
@@ -97,8 +95,7 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at,
-  has_been_greeted_for_first_organization_join
+  email_verified_at
 FROM users WHERE magic_link_token = $1
 `,
     [magic_link_token]
@@ -134,8 +131,7 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at,
-  has_been_greeted_for_first_organization_join
+  email_verified_at
 FROM users WHERE reset_password_token = $1
 `,
     [reset_password_token]
@@ -152,24 +148,16 @@ export const update = async (id: number, fieldsToUpdate: Partial<User>) => {
     updated_at: new Date(),
   };
 
-  const paramsString = chain(fieldsToUpdateWithTimestamps)
-    // { email: 'email@xy.z', encrypted_password: 'hash' }
-    .toPairs()
-    // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
-    .map((value, index) => `${value[0]} = $${index + 2}`)
-    // [ 'email = $2', 'encrypted_password = $3' ]
-    .join(', ')
-    .value();
-  // 'email = $2, encrypted_password = $3'
-
-  const values = Object.values(fieldsToUpdateWithTimestamps);
-  // [ 'email@xy.z', 'hash' ]
+  const { paramsString, valuesString, values } = hashToPostgresParams<User>(
+    fieldsToUpdateWithTimestamps
+  );
 
   const {
     rows,
   }: QueryResult<User> = await connection.query(
-    `UPDATE users SET ${paramsString} WHERE id = $1 RETURNING *`,
-    [id, ...values]
+    `UPDATE users SET ${paramsString} = ${valuesString} WHERE id = $${values.length +
+      1} RETURNING *`,
+    [...values, id]
   );
 
   return rows.shift()!;
@@ -201,24 +189,13 @@ export const create = async ({
     created_at: new Date(),
     updated_at: new Date(),
   };
-  const paramsString = Object.keys(userWithTimestamps).join(', ');
-  // 'email, encrypted_password'
 
-  const valuesString = chain(userWithTimestamps)
-    // { email: 'email@xy.z', encrypted_password: 'hash' }
-    .toPairs()
-    // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
-    .map((value, index) => `$${index + 1}`)
-    // [ '$1', '$2' ]
-    .join(', ')
-    .value();
-  // '$1, $2'
-
-  const values = Object.values(userWithTimestamps);
-  // [ 'email@xy.z', 'hash' ]
+  const { paramsString, valuesString, values } = hashToPostgresParams<User>(
+    userWithTimestamps
+  );
 
   const { rows }: QueryResult<User> = await connection.query(
-    `INSERT INTO users (${paramsString}) VALUES (${valuesString}) RETURNING *;`,
+    `INSERT INTO users ${paramsString} VALUES ${valuesString} RETURNING *;`,
     values
   );
 

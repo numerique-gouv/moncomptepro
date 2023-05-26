@@ -12,10 +12,7 @@ import {
   UserNotFoundError,
 } from '../errors';
 import { createModeration } from '../repositories/moderation';
-import {
-  findById as findUserById,
-  update as updateUser,
-} from '../repositories/user';
+import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
   isAFreeEmailProvider,
@@ -41,8 +38,7 @@ import {
   addVerifiedDomain,
   deleteUserOrganization,
   linkUserToOrganization,
-  setAuthenticationByPeersType,
-  setVerificationType,
+  updateUserOrganizationLink,
   upsert,
 } from '../repositories/organization/setters';
 import { isEmailValid } from '../services/security';
@@ -372,28 +368,29 @@ const notifyAllMembers = async ({
     });
   }
 
-  return await setAuthenticationByPeersType({
-    organization_id,
-    user_id,
+  return await updateUserOrganizationLink(organization_id, user_id, {
     authentication_by_peers_type: 'all_members_notified',
   });
 };
 
-export const greetFirstOrganizationJoin = async ({
+export const greetForJoiningOrganization = async ({
   user_id,
 }: {
   user_id: number;
-}): Promise<{ greetEmailSent: boolean }> => {
-  const {
-    given_name,
-    family_name,
-    email,
-    has_been_greeted_for_first_organization_join,
-  } = (await findUserById(user_id))!;
+}): Promise<{ greetEmailSentFor: number | null }> => {
+  const userOrganisations = await getOrganizationsByUserId(user_id);
 
-  if (has_been_greeted_for_first_organization_join) {
-    return { greetEmailSent: false };
+  const organizationThatNeedsGreetings = userOrganisations.find(
+    ({ has_been_greeted }) => !has_been_greeted
+  );
+
+  const { given_name, family_name, email } = (await findUserById(user_id))!;
+
+  if (isEmpty(organizationThatNeedsGreetings)) {
+    return { greetEmailSentFor: null };
   }
+
+  const { id: organization_id } = organizationThatNeedsGreetings;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -403,11 +400,11 @@ export const greetFirstOrganizationJoin = async ({
     params: { given_name, family_name, email },
   });
 
-  await updateUser(user_id, {
-    has_been_greeted_for_first_organization_join: true,
+  await updateUserOrganizationLink(organization_id, user_id, {
+    has_been_greeted: true,
   });
 
-  return { greetEmailSent: true };
+  return { greetEmailSentFor: organization_id };
 };
 
 export const getSponsorOptions = async ({
@@ -481,9 +478,7 @@ export const chooseSponsor = async ({
     },
   });
 
-  return await setAuthenticationByPeersType({
-    organization_id,
-    user_id,
+  return await updateUserOrganizationLink(organization_id, user_id, {
     authentication_by_peers_type: 'sponsored_by_member',
   });
 };
@@ -535,9 +530,7 @@ export const markDomainAsVerified = async ({
       async ({ id, email, verification_type: current_verification_type }) => {
         const userDomain = getEmailDomain(email);
         if (userDomain === domain && isEmpty(current_verification_type)) {
-          return await setVerificationType({
-            organization_id,
-            user_id: id,
+          return await updateUserOrganizationLink(organization_id, id, {
             verification_type,
           });
         }

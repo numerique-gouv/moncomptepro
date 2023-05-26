@@ -1,9 +1,9 @@
-import e, { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
 import {
   getOrganizationsByUserId,
-  greetFirstOrganizationJoin,
+  greetForJoiningOrganization,
 } from '../managers/organization';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
 import { isEligibleToSponsorship } from '../services/organization';
@@ -180,12 +180,12 @@ export const checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware = async (
       async error => {
         if (error) return next(error);
 
-        const { greetEmailSent } = await greetFirstOrganizationJoin({
+        const { greetEmailSentFor } = await greetForJoiningOrganization({
           user_id: req.session.user!.id,
         });
 
-        if (greetEmailSent) {
-          return res.redirect(`/users/welcome`);
+        if (greetEmailSentFor) {
+          return res.redirect(`/users/welcome/${greetEmailSentFor}`);
         }
 
         return next();
