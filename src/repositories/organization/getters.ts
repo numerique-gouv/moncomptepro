@@ -44,9 +44,8 @@ export const findByUserId = async (user_id: number) => {
 
   const {
     rows,
-  }: QueryResult<Organization & {
-    is_external: boolean;
-  }> = await connection.query(
+  }: QueryResult<Organization &
+    UserOrganizationLinkAttributes> = await connection.query(
     `
 SELECT
     o.id,
@@ -74,7 +73,9 @@ SELECT
     o.cached_categorie_juridique,
     o.cached_libelle_categorie_juridique,
     o.organization_info_fetched_at,
-    uo.is_external
+    uo.is_external,
+    uo.verification_type,
+    uo.authentication_by_peers_type
 FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
@@ -218,10 +219,8 @@ export const getUsers = async (organization_id: number) => {
 
   const {
     rows,
-  }: QueryResult<User & {
-    is_external: boolean;
-    verification_type: UserOrganizationLink['verification_type'];
-  }> = await connection.query(
+  }: QueryResult<User &
+    UserOrganizationLinkAttributes> = await connection.query(
     `
 SELECT
     u.id,
@@ -245,7 +244,8 @@ SELECT
     u.magic_link_sent_at,
     u.email_verified_at,
     uo.is_external,
-    uo.verification_type
+    uo.verification_type,
+    uo.authentication_by_peers_type
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,

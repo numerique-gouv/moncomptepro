@@ -154,6 +154,7 @@ RETURNING *
 
   return rows.shift()!;
 };
+
 export const addAuthorizedDomain = async ({
   siret,
   domain,
@@ -167,6 +168,7 @@ export const addAuthorizedDomain = async ({
     listName: 'authorized_email_domains',
   });
 };
+
 export const addVerifiedDomain = async ({
   siret,
   domain,
@@ -176,6 +178,7 @@ export const addVerifiedDomain = async ({
 }) => {
   return await addDomain({ siret, domain, listName: 'verified_email_domains' });
 };
+
 export const linkUserToOrganization = async ({
   organization_id,
   user_id,
@@ -213,6 +216,7 @@ RETURNING *`,
 
   return rows.shift()!;
 };
+
 export const setVerificationType = async ({
   organization_id,
   user_id,
@@ -237,6 +241,31 @@ WHERE organization_id = $1 AND user_id = $2
 
   return rows.shift()!;
 };
+
+export const setAuthenticationByPeersType = async ({
+  organization_id,
+  user_id,
+  authentication_by_peers_type,
+}: {
+  organization_id: number;
+  user_id: number;
+  authentication_by_peers_type: UserOrganizationLink['authentication_by_peers_type'];
+}) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
+    `
+UPDATE users_organizations
+SET
+    authentication_by_peers_type = $3,
+    updated_at = $4
+WHERE organization_id = $1 AND user_id = $2`,
+    [organization_id, user_id, authentication_by_peers_type, new Date()]
+  );
+
+  return rows.shift()!;
+};
+
 export const deleteUserOrganization = async ({
   user_id,
   organization_id,

@@ -12,7 +12,10 @@ import {
   UserNotFoundError,
 } from '../errors';
 import { createModeration } from '../repositories/moderation';
-import { findById as findUserById } from '../repositories/user';
+import {
+  findById as findUserById,
+  update as updateUser,
+} from '../repositories/user';
 import {
   getEmailDomain,
   isAFreeEmailProvider,
@@ -20,6 +23,7 @@ import {
 } from '../services/uses-a-free-email-provider';
 import {
   isCollectiviteTerritoriale,
+  isEligibleToSponsorship,
   isEntrepriseUnipersonnelle,
 } from '../services/organization';
 import { getContactEmail } from '../connectors/api-annuaire';
@@ -37,6 +41,7 @@ import {
   addVerifiedDomain,
   deleteUserOrganization,
   linkUserToOrganization,
+  setAuthenticationByPeersType,
   setVerificationType,
   upsert,
 } from '../repositories/organization/setters';
@@ -45,6 +50,7 @@ import { isEmailValid } from '../services/security';
 const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
 
 export const getOrganizationsByUserId = findByUserId;
+export const getOrganizationById = findOrganizationById;
 
 export const getUserOrganizations = async ({
   user_id,
@@ -300,18 +306,39 @@ export const forceJoinOrganization = async ({
   });
 };
 
-export const notifyOrganizationJoin = async ({
+export const authenticateByPeers = async ({
   organization_id,
   user_id,
   is_external,
-}: UserOrganizationLink) => {
+}: UserOrganizationLink): Promise<{ hasBeenAuthenticated: boolean }> => {
   const user = await findUserById(user_id);
   const organization = await findOrganizationById(organization_id);
   if (isEmpty(user) || isEmpty(organization)) {
     throw new NotFoundError();
   }
-  const { email, given_name, family_name } = user;
-  const { cached_libelle } = organization;
+
+  if (isEligibleToSponsorship(organization)) {
+    return { hasBeenAuthenticated: false };
+  }
+
+  await notifyAllMembers({ organization, user, is_external });
+
+  return { hasBeenAuthenticated: true };
+};
+
+// implicit convention : as we do not verify the existence nor the freshness of
+// organization and user, we do not export this fonction.
+const notifyAllMembers = async ({
+  organization,
+  user,
+  is_external,
+}: {
+  organization: Organization;
+  user: User;
+  is_external: boolean;
+}) => {
+  const { email, given_name, family_name, id: user_id } = user;
+  const { cached_libelle, id: organization_id } = organization;
 
   // Email organization members of the organization
   const usersInOrganization = await getUsers(organization_id);
@@ -344,25 +371,29 @@ export const notifyOrganizationJoin = async ({
       },
     });
   }
+
+  return await setAuthenticationByPeersType({
+    organization_id,
+    user_id,
+    authentication_by_peers_type: 'all_members_notified',
+  });
 };
 
-/**
- * This function send a welcome email if user is in one organization only.
- * As a consequence, the first organization should be joined before calling it.
- * @param user_id
- */
 export const greetFirstOrganizationJoin = async ({
   user_id,
 }: {
   user_id: number;
 }): Promise<{ greetEmailSent: boolean }> => {
-  const userOrganizations = await getOrganizationsByUserId(user_id);
+  const {
+    given_name,
+    family_name,
+    email,
+    has_been_greeted_for_first_organization_join,
+  } = (await findUserById(user_id))!;
 
-  if (userOrganizations.length !== 1) {
+  if (has_been_greeted_for_first_organization_join) {
     return { greetEmailSent: false };
   }
-
-  const { given_name, family_name, email } = (await findUserById(user_id))!;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -372,7 +403,89 @@ export const greetFirstOrganizationJoin = async ({
     params: { given_name, family_name, email },
   });
 
+  await updateUser(user_id, {
+    has_been_greeted_for_first_organization_join: true,
+  });
+
   return { greetEmailSent: true };
+};
+
+export const getSponsorOptions = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const organizationUsers = await getUsers(organization_id);
+
+  if (!some(organizationUsers, ['id', user_id])) {
+    throw new NotFoundError();
+  }
+
+  const sponsorOptions: {
+    id: number;
+    label: string;
+  }[] = organizationUsers
+    .filter(
+      ({ is_external, authentication_by_peers_type }) =>
+        !is_external && !!authentication_by_peers_type
+    )
+    .map(({ id, given_name, family_name, job }) => ({
+      id,
+      label: `${given_name} ${family_name} - ${job}`,
+    }))
+    .sort(({ label: aLabel }, { label: bLabel }) => (aLabel < bLabel ? 1 : -1));
+
+  return sponsorOptions;
+};
+
+export const chooseSponsor = async ({
+  user_id,
+  organization_id,
+  sponsor_id,
+}: {
+  user_id: number;
+  organization_id: number;
+  sponsor_id: number;
+}) => {
+  const organizationUsers = await getUsers(organization_id);
+  const organization = await findOrganizationById(organization_id);
+
+  const user = organizationUsers.find(({ id }) => id === user_id);
+  const sponsor = organizationUsers.find(({ id }) => id === sponsor_id);
+
+  // The sponsor and the user should be in the organization already
+  if (isEmpty(user) || isEmpty(sponsor) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  // The sponsor must be an authenticated internal member.
+  if (!sponsor.authentication_by_peers_type || sponsor.is_external) {
+    throw new NotFoundError();
+  }
+
+  // Note that the user may already be authenticated by his peers.
+  await sendMail({
+    to: [sponsor.email],
+    subject: 'Nouveau membre dans votre organisation MonComptePro',
+    template: 'choose-sponsor',
+    params: {
+      given_name: user.given_name,
+      family_name: user.family_name,
+      email: user.email,
+      libelle: organization.cached_libelle,
+      user_id,
+      organization_id,
+      sponsor_id,
+    },
+  });
+
+  return await setAuthenticationByPeersType({
+    organization_id,
+    user_id,
+    authentication_by_peers_type: 'sponsored_by_member',
+  });
 };
 
 export const quitOrganization = async ({

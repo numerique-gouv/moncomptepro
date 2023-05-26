@@ -12,7 +12,7 @@ import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 import {
   forceJoinOrganization,
   markDomainAsVerified,
-  notifyOrganizationJoin,
+  authenticateByPeers,
 } from '../managers/organization';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 
@@ -84,7 +84,7 @@ export const postForceJoinOrganizationController = async (
       is_external,
     });
 
-    await notifyOrganizationJoin(userOrganizationLink);
+    await authenticateByPeers(userOrganizationLink);
 
     return res.json({});
   } catch (e) {

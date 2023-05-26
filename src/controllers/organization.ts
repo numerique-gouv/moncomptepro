@@ -1,9 +1,8 @@
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
-  greetFirstOrganizationJoin,
   joinOrganization,
-  notifyOrganizationJoin,
+  authenticateByPeers,
   quitOrganization,
 } from '../managers/organization';
 import { NextFunction, Request, Response } from 'express';
@@ -106,15 +105,7 @@ export const postJoinOrganizationMiddleware = async (
       user_id: req.session.user!.id,
     });
 
-    await notifyOrganizationJoin(userOrganizationLink);
-
-    const { greetEmailSent } = await greetFirstOrganizationJoin({
-      user_id: req.session.user!.id,
-    });
-
-    if (greetEmailSent) {
-      return res.redirect(`/users/welcome`);
-    }
+    await authenticateByPeers(userOrganizationLink);
 
     next();
   } catch (error) {

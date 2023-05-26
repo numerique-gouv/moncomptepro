@@ -13,6 +13,8 @@ import {
 } from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
+  checkUserHasAtLeastOneOrganizationMiddleware,
+  checkUserHasBeenAuthenticatedByPeersMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
@@ -49,6 +51,11 @@ import {
 } from '../controllers/user/update-personal-informations';
 import { getWelcomeController } from '../controllers/user/welcome';
 import { issueSessionOrRedirectController } from '../controllers/user/issue-session-or-redirect';
+import {
+  getChooseSponsorController,
+  getSponsorValidationController,
+  postChooseSponsorController,
+} from '../controllers/user/choose-sponsor';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -218,6 +225,24 @@ export const userRouter = () => {
     '/unable-to-auto-join-organization',
     getUnableToAutoJoinOrganizationController
   );
+
+  userRouter.get(
+    '/choose-sponsor/:id',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getChooseSponsorController
+  );
+
+  userRouter.post(
+    '/choose-sponsor/:id',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postChooseSponsorController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get('/sponsor-validation', getSponsorValidationController);
 
   userRouter.get(
     '/welcome',

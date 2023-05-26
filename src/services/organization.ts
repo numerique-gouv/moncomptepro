@@ -44,3 +44,15 @@ export const isServicePublic = ({
 
   return cat_jur_ok || siret_ok;
 };
+
+const {
+  BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP = '13002526500013',
+} = process.env;
+
+const betaTestingOrganizationsForSponsorship = BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP.split(
+  ','
+);
+
+export const isEligibleToSponsorship = ({ siret }: Organization): boolean =>
+  // TODO replace this test with organization.memberCount > 50
+  betaTestingOrganizationsForSponsorship.includes(siret);

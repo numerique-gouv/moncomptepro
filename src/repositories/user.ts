@@ -27,7 +27,8 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at
+  email_verified_at,
+  has_been_greeted_for_first_organization_join
 FROM users WHERE id = $1
 `,
     [id]
@@ -61,7 +62,8 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at
+  email_verified_at,
+  has_been_greeted_for_first_organization_join
 FROM users WHERE email = $1
 `,
     [email]
@@ -95,7 +97,8 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at
+  email_verified_at,
+  has_been_greeted_for_first_organization_join
 FROM users WHERE magic_link_token = $1
 `,
     [magic_link_token]
@@ -131,7 +134,8 @@ SELECT
   job,
   magic_link_token,
   magic_link_sent_at,
-  email_verified_at
+  email_verified_at,
+  has_been_greeted_for_first_organization_join
 FROM users WHERE reset_password_token = $1
 `,
     [reset_password_token]
