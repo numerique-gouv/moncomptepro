@@ -3,13 +3,12 @@
         <div class="fr-card__body">
             <div class="fr-card__content">
                 <h4 class="fr-card__title">
-                    Choisir un parrain
+                    Sélectionner un parrain
                 </h4>
                 <div class="fr-card__desc">
                     <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
                     <p>
-                        Sélectionnez un parrain parmi les membres de votre organisation.
-                        Cette personne sera informée que vous rejoignez l’organisation <%= libelle %>.
+                        Cette personne sera informée que vous rejoignez l’organisation <%= libelle %> sur MonComptePro.
                     </p>
                     <form id="form-join-organization" action="/users/choose-sponsor/<%= organization_id %>" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
