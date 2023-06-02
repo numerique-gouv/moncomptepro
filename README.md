@@ -105,7 +105,7 @@ Voici à quoi ressemble le bouton MonComptePro :
 
 ![](/assets/button-moncomptepro.svg)
 
-Pour intègrer ce bouton sur votre service, 2 options s’offrent à vous.
+Pour intègrer ce bouton sur votre service, 3 options s’offrent à vous.
 
 #### Vous utilisez le [Système de Design de l’État (DSFR)](https://www.systeme-de-design.gouv.fr/)
 
@@ -157,6 +157,16 @@ Vous pouvez utiliser l’intégration suivante :
     </p>
 </div>
 ```
+
+#### Vous utilisez [React](https://react.dev/) et le [Système de Design de l’État (DSFR)](https://www.systeme-de-design.gouv.fr/)
+
+Avec la librairie [react-dsfr](https://github.com/codegouvfr/react-dsfr/blob/main/README.fr.md), vous pouvez implémenter le bouton plus simplement :
+
+```jsx
+<MonCompteProButton url="#" />
+```
+
+La documentation détaillée ce trouve ici : https://react-dsfr-components.etalab.studio/?path=/docs/components-moncompteprobutton--default
 
 #### Ressources
 
