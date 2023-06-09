@@ -156,7 +156,7 @@ export const getSponsorOptions = async ({
       id,
       label: `${given_name} ${family_name} - ${job}`,
     }))
-    .sort(({ label: aLabel }, { label: bLabel }) => (aLabel < bLabel ? 1 : -1));
+    .sort(({ label: aLabel }, { label: bLabel }) => (aLabel < bLabel ? -1 : 1));
 
   return sponsorOptions;
 };

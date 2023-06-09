@@ -1,0 +1,15 @@
+.choices {
+  margin-top: 0.5rem;
+}
+
+.choices__list {
+  z-index: 2 !important;
+}
+
+.choices[data-type*=select-one]:after {
+  display: none !important;
+}
+
+.choices__list--single {
+  padding: unset !important;
+}
