@@ -353,7 +353,8 @@ export const notifyAllMembers = async ({
   // Email organization members of the organization
   const usersInOrganization = await getUsers(organization_id);
   const otherInternalUsers = usersInOrganization.filter(
-    ({ email: e, is_external }) => e !== email && !is_external
+    ({ email: e, is_external, authentication_by_peers_type }) =>
+      e !== email && !is_external && !!authentication_by_peers_type
   );
   if (otherInternalUsers.length > 0) {
     const user_label =
