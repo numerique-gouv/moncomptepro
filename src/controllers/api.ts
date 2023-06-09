@@ -9,12 +9,10 @@ import {
   siretSchema,
 } from '../services/custom-zod-schemas';
 import { InseeNotFoundError, InseeTimeoutError } from '../errors';
-import {
-  forceJoinOrganization,
-  markDomainAsVerified,
-  notifyAllMembers,
-} from '../managers/organization';
 import { sendModerationProcessedEmail } from '../managers/moderation';
+import { markDomainAsVerified } from '../managers/organization/main';
+import { forceJoinOrganization } from '../managers/organization/join';
+import { notifyAllMembers } from '../managers/organization/authentication-by-peers';
 
 export const getOrganizationInfoController = async (
   req: Request,

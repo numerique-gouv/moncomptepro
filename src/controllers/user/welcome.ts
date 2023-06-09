@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
-import { getSponsorLabel } from '../../managers/organization';
+
+import { getSponsorLabel } from '../../managers/organization/authentication-by-peers';
 
 export const getWelcomeController = async (
   req: Request,

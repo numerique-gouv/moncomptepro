@@ -1,10 +1,3 @@
-import {
-  authenticateByPeers,
-  doSuggestOrganizations,
-  getOrganizationSuggestions,
-  joinOrganization,
-  quitOrganization,
-} from '../managers/organization';
 import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
 import { z, ZodError } from 'zod';
@@ -22,6 +15,13 @@ import {
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
+import { quitOrganization } from '../managers/organization/main';
+import {
+  doSuggestOrganizations,
+  getOrganizationSuggestions,
+  joinOrganization,
+} from '../managers/organization/join';
+import { authenticateByPeers } from '../managers/organization/authentication-by-peers';
 
 export const getJoinOrganizationController = async (
   req: Request,

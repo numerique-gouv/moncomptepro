@@ -3,17 +3,17 @@ import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import {
-  askForSponsorship,
-  chooseSponsor,
-  getOrganizationById,
-  getOrganizationLabel,
-  getSponsorOptions,
-} from '../../managers/organization';
-import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
 } from '../../errors';
 import { NotFound } from 'http-errors';
+import { getOrganizationById } from '../../managers/organization/main';
+import {
+  askForSponsorship,
+  chooseSponsor,
+  getOrganizationLabel,
+  getSponsorOptions,
+} from '../../managers/organization/authentication-by-peers';
 
 export const getChooseSponsorController = async (
   req: Request,

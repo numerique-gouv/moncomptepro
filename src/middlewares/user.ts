@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
-import {
-  getOrganizationsByUserId,
-  greetForJoiningOrganization,
-} from '../managers/organization';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
 import { isEligibleToSponsorship } from '../services/organization';
 import { NotImplemented } from 'http-errors';
+import { getOrganizationsByUserId } from '../managers/organization/main';
+import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
