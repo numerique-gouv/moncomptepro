@@ -107,6 +107,7 @@ export const checkUserHasPersonalInformationsMiddleware = async (
     next(error);
   }
 };
+
 export const checkUserHasAtLeastOneOrganizationMiddleware = async (
   req: Request,
   res: Response,

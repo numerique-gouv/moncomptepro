@@ -1,7 +1,7 @@
 import { BadRequest, GatewayTimeout, NotFound } from 'http-errors';
 import { getOrganizationInfo } from '../connectors/api-sirene';
 import notificationMessages from '../notification-messages';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
 import {
   idSchema,
@@ -12,7 +12,7 @@ import { InseeNotFoundError, InseeTimeoutError } from '../errors';
 import {
   forceJoinOrganization,
   markDomainAsVerified,
-  authenticateByPeers,
+  notifyAllMembers,
 } from '../managers/organization';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 
@@ -84,7 +84,7 @@ export const postForceJoinOrganizationController = async (
       is_external,
     });
 
-    await authenticateByPeers(userOrganizationLink);
+    await notifyAllMembers(userOrganizationLink);
 
     return res.json({});
   } catch (e) {

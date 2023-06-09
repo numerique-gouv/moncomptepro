@@ -7,11 +7,15 @@ import {
   InvalidSiretError,
   NotFoundError,
   UnableToAutoJoinOrganizationError,
-  UserAlreadyAskToJoinOrganizationError,
+  UserAlreadyAskedForSponsorshipError,
+  UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
 } from '../errors';
-import { createModeration } from '../repositories/moderation';
+import {
+  createModeration,
+  findPendingModeration,
+} from '../repositories/moderation';
 import { findById as findUserById } from '../repositories/user';
 import {
   getEmailDomain,
@@ -154,9 +158,13 @@ export const joinOrganization = async ({
     throw new UserInOrganizationAlreadyError();
   }
 
-  const pendingUsersOrganizations = await findPendingByUserId(user_id);
-  if (some(pendingUsersOrganizations, ['id', organization.id])) {
-    throw new UserAlreadyAskToJoinOrganizationError();
+  const pendingModeration = await findPendingModeration({
+    user_id,
+    organization_id: organization.id,
+    type: 'organization_join_block',
+  });
+  if (!isEmpty(pendingModeration)) {
+    throw new UserAlreadyAskedToJoinOrganizationError();
   }
 
   const {
@@ -303,13 +311,15 @@ export const forceJoinOrganization = async ({
   });
 };
 
-export const authenticateByPeers = async ({
-  organization_id,
-  user_id,
-  is_external,
-}: UserOrganizationLink): Promise<{ hasBeenAuthenticated: boolean }> => {
-  const user = await findUserById(user_id);
+export const authenticateByPeers = async (
+  link: UserOrganizationLink
+): Promise<{ hasBeenAuthenticated: boolean }> => {
+  const { organization_id, user_id, is_external } = link;
+  const organizationUsers = await getUsers(organization_id);
+  const user = organizationUsers.find(({ id }) => id === user_id);
   const organization = await findOrganizationById(organization_id);
+
+  // The user should be in the organization already
   if (isEmpty(user) || isEmpty(organization)) {
     throw new NotFoundError();
   }
@@ -318,24 +328,27 @@ export const authenticateByPeers = async ({
     return { hasBeenAuthenticated: false };
   }
 
-  await notifyAllMembers({ organization, user, is_external });
+  await notifyAllMembers(link);
 
   return { hasBeenAuthenticated: true };
 };
 
-// implicit convention : as we do not verify the existence nor the freshness of
-// organization and user, we do not export this fonction.
-const notifyAllMembers = async ({
-  organization,
-  user,
+export const notifyAllMembers = async ({
+  organization_id,
+  user_id,
   is_external,
-}: {
-  organization: Organization;
-  user: User;
-  is_external: boolean;
-}) => {
-  const { email, given_name, family_name, id: user_id } = user;
-  const { cached_libelle, id: organization_id } = organization;
+}: UserOrganizationLink) => {
+  const organizationUsers = await getUsers(organization_id);
+  const user = organizationUsers.find(({ id }) => id === user_id);
+  const organization = await findOrganizationById(organization_id);
+
+  // The user should be in the organization already
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  const { email, given_name, family_name } = user;
+  const { cached_libelle } = organization;
 
   // Email organization members of the organization
   const usersInOrganization = await getUsers(organization_id);
@@ -416,13 +429,14 @@ export const getSponsorOptions = async ({
   organization_id: number;
 }) => {
   const organizationUsers = await getUsers(organization_id);
+  const user = organizationUsers.find(({ id }) => id === user_id);
 
-  if (!some(organizationUsers, ['id', user_id])) {
+  // The user should be in the organization already
+  if (isEmpty(user)) {
     throw new NotFoundError();
   }
 
-  // TODO check that external user do not see member information
-
+  // Note that external user will have access to name and job of internal members
   const sponsorOptions: {
     id: number;
     label: string;
@@ -515,6 +529,72 @@ export const getSponsorLabel = async ({
   const { given_name, family_name } = sponsor;
 
   return `${given_name} ${family_name}`;
+};
+
+export const getOrganizationLabel = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const organizationUsers = await getUsers(organization_id);
+  const organization = await findOrganizationById(organization_id);
+
+  const user = organizationUsers.find(({ id }) => id === user_id);
+
+  // The user should be in the organization already
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  return organization.cached_libelle;
+};
+
+export const askForSponsorship = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const organizationUsers = await getUsers(organization_id);
+  const organization = await findOrganizationById(organization_id);
+
+  const user = organizationUsers.find(({ id }) => id === user_id);
+
+  // The user should be in the organization already
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  const pendingModeration = await findPendingModeration({
+    user_id,
+    organization_id,
+    type: 'ask_for_sponsorship',
+  });
+  if (!isEmpty(pendingModeration)) {
+    throw new UserAlreadyAskedForSponsorshipError(organization_id);
+  }
+
+  await createModeration({
+    user_id,
+    organization_id,
+    type: 'ask_for_sponsorship',
+  });
+  const { email, given_name, family_name } = user;
+  const { cached_libelle, siret } = organization;
+  await sendMail({
+    to: [email],
+    cc: [SUPPORT_EMAIL_ADDRESS],
+    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    template: 'unable-to-find-sponsor',
+    params: {
+      given_name,
+      family_name,
+      libelle: cached_libelle || siret,
+    },
+  });
 };
 
 export const quitOrganization = async ({

@@ -11,12 +11,12 @@ export const getWelcomeController = async (
   try {
     const schema = z.object({
       params: z.object({
-        id: idSchema(),
+        organization_id: idSchema(),
       }),
     });
 
     const {
-      params: { id: organization_id },
+      params: { organization_id },
     } = await schema.parseAsync({
       params: req.params,
     });

@@ -22,7 +22,7 @@
                                 Trouver un parrain
                             </button>
                         </span>
-                        <form action="/users/no-sponsor-found" method="post">
+                        <form action="/users/no-sponsor-found/<%= organization_id %>" method="post">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
                             <button class="fr-btn fr-btn--secondary" type="submit">

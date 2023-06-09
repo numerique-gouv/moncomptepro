@@ -3,11 +3,16 @@ import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import {
+  askForSponsorship,
   chooseSponsor,
   getOrganizationById,
+  getOrganizationLabel,
   getSponsorOptions,
 } from '../../managers/organization';
-import { NotFoundError } from '../../errors';
+import {
+  NotFoundError,
+  UserAlreadyAskedForSponsorshipError,
+} from '../../errors';
 import { NotFound } from 'http-errors';
 
 export const getChooseSponsorController = async (
@@ -18,12 +23,12 @@ export const getChooseSponsorController = async (
   try {
     const schema = z.object({
       params: z.object({
-        id: idSchema(),
+        organization_id: idSchema(),
       }),
     });
 
     const {
-      params: { id: organization_id },
+      params: { organization_id },
     } = await schema.parseAsync({
       params: req.params,
     });
@@ -61,7 +66,7 @@ export const postChooseSponsorController = async (
   try {
     const schema = z.object({
       params: z.object({
-        id: idSchema(),
+        organization_id: idSchema(),
       }),
       body: z.object({
         sponsor_id: idSchema(),
@@ -69,7 +74,7 @@ export const postChooseSponsorController = async (
     });
 
     const {
-      params: { id: organization_id },
+      params: { organization_id },
       body: { sponsor_id },
     } = await schema.parseAsync({
       params: req.params,
@@ -110,10 +115,33 @@ export const getNoSponsorFoundController = async (
   next: NextFunction
 ) => {
   try {
+    const schema = z.object({
+      params: z.object({
+        organization_id: idSchema(),
+      }),
+    });
+
+    const {
+      params: { organization_id },
+    } = await schema.parseAsync({
+      params: req.params,
+    });
+
+    // we call this fonction only to ensure user is in organization
+    await getOrganizationLabel({
+      user_id: req.session.user!.id,
+      organization_id,
+    });
+
     return res.render('user/no-sponsor-found', {
       csrfToken: req.csrfToken(),
+      organization_id,
     });
   } catch (error) {
+    if (error instanceof NotFoundError) {
+      next(new NotFound());
+    }
+
     next(error);
   }
 };
@@ -124,10 +152,35 @@ export const postNoSponsorFoundController = async (
   next: NextFunction
 ) => {
   try {
-    // TODO send mail
-    // TODO create moderation
-    return res.redirect('/users/unable-to-find-sponsor');
+    const schema = z.object({
+      params: z.object({
+        organization_id: idSchema(),
+      }),
+    });
+
+    const {
+      params: { organization_id },
+    } = await schema.parseAsync({
+      params: req.params,
+    });
+
+    await askForSponsorship({
+      user_id: req.session.user!.id,
+      organization_id,
+    });
+
+    return res.redirect(`/users/unable-to-find-sponsor/${organization_id}`);
   } catch (error) {
+    if (error instanceof NotFoundError) {
+      next(new NotFound());
+    }
+
+    if (error instanceof UserAlreadyAskedForSponsorshipError) {
+      return res.redirect(
+        `/users/unable-to-find-sponsor/${error.organization_id}`
+      );
+    }
+
     next(error);
   }
 };
@@ -138,8 +191,31 @@ export const getUnableToFindSponsorController = async (
   next: NextFunction
 ) => {
   try {
-    return res.render('user/unable-to-find-sponsor');
-  } catch (e) {
-    next(e);
+    const schema = z.object({
+      params: z.object({
+        organization_id: idSchema(),
+      }),
+    });
+
+    const {
+      params: { organization_id },
+    } = await schema.parseAsync({
+      params: req.params,
+    });
+
+    const libelle = await getOrganizationLabel({
+      user_id: req.session.user!.id,
+      organization_id,
+    });
+
+    return res.render('user/unable-to-find-sponsor', {
+      libelle,
+    });
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      next(new NotFound());
+    }
+
+    next(error);
   }
 };

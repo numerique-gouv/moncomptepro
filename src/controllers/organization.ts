@@ -1,8 +1,8 @@
 import {
+  authenticateByPeers,
   doSuggestOrganizations,
   getOrganizationSuggestions,
   joinOrganization,
-  authenticateByPeers,
   quitOrganization,
 } from '../managers/organization';
 import { NextFunction, Request, Response } from 'express';
@@ -19,7 +19,7 @@ import {
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
-  UserAlreadyAskToJoinOrganizationError,
+  UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
 
@@ -111,7 +111,7 @@ export const postJoinOrganizationMiddleware = async (
   } catch (error) {
     if (
       error instanceof UnableToAutoJoinOrganizationError ||
-      error instanceof UserAlreadyAskToJoinOrganizationError
+      error instanceof UserAlreadyAskedToJoinOrganizationError
     ) {
       return res.redirect(`/users/unable-to-auto-join-organization`);
     }
