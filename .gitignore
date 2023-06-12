@@ -18,6 +18,8 @@ cypress/videos
 /public/fonts/
 /public/icons/
 /public/utility/
+/public/choices.min.css
+/public/choices.min.js
 
 /build/*
 !/build/.keep

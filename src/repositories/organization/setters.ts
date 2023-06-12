@@ -1,5 +1,6 @@
 import { getDatabaseConnection } from '../../connectors/postgres';
 import { QueryResult } from 'pg';
+import { hashToPostgresParams } from '../../services/hash-to-postgres-params';
 
 export const upsert = async ({
   siret,
@@ -154,6 +155,7 @@ RETURNING *
 
   return rows.shift()!;
 };
+
 export const addAuthorizedDomain = async ({
   siret,
   domain,
@@ -167,6 +169,7 @@ export const addAuthorizedDomain = async ({
     listName: 'authorized_email_domains',
   });
 };
+
 export const addVerifiedDomain = async ({
   siret,
   domain,
@@ -176,6 +179,7 @@ export const addVerifiedDomain = async ({
 }) => {
   return await addDomain({ siret, domain, listName: 'verified_email_domains' });
 };
+
 export const linkUserToOrganization = async ({
   organization_id,
   user_id,
@@ -213,30 +217,34 @@ RETURNING *`,
 
   return rows.shift()!;
 };
-export const setVerificationType = async ({
-  organization_id,
-  user_id,
-  verification_type,
-}: {
-  organization_id: number;
-  user_id: number;
-  verification_type: UserOrganizationLink['verification_type'];
-}): Promise<UserOrganizationLink> => {
+
+export const updateUserOrganizationLink = async (
+  organization_id: number,
+  user_id: number,
+  fieldsToUpdate: Partial<UserOrganizationLinkAttributes>
+) => {
   const connection = getDatabaseConnection();
+
+  const fieldsToUpdateWithTimestamps = {
+    ...fieldsToUpdate,
+    updated_at: new Date(),
+  };
+
+  const { paramsString, valuesString, values } = hashToPostgresParams<User>(
+    fieldsToUpdateWithTimestamps
+  );
 
   const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
     `
-UPDATE users_organizations
-SET
-    verification_type = $3,
-    updated_at = $4
-WHERE organization_id = $1 AND user_id = $2
-`,
-    [organization_id, user_id, verification_type, new Date()]
+UPDATE users_organizations SET ${paramsString} = ${valuesString}
+WHERE organization_id = $${values.length + 1}
+AND user_id = $${values.length + 2} RETURNING *`,
+    [...values, organization_id, user_id]
   );
 
   return rows.shift()!;
 };
+
 export const deleteUserOrganization = async ({
   user_id,
   organization_id,

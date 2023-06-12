@@ -1,0 +1,38 @@
+<div class="card-container">
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Vérifier votre profil
+                </h4>
+                <div class="fr-card__desc">
+                    <p>
+                        Le système de parrainage vous permet de rejoindre
+                        directement l’organisation.
+                    </p>
+                    <p>
+                        Avez-vous vérifié qu’aucun de vos collègues ne se cache
+                        dans notre liste de membre ?
+                    </p>
+
+                    <div class="card-button-container">
+                        <span>
+                            <button id="go-back-link"
+                               class="fr-btn fr-fi-arrow-left-line fr-btn--icon-left">
+                                Trouver un parrain
+                            </button>
+                        </span>
+                        <form action="/users/no-sponsor-found/<%= organization_id %>" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+
+                            <button class="fr-btn fr-btn--secondary" type="submit">
+                                Personne ne peut me parrainer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/assets/go-back.js"></script>

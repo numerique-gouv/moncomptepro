@@ -13,6 +13,7 @@ import {
 } from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
+  checkUserHasAtLeastOneOrganizationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
@@ -49,6 +50,14 @@ import {
 } from '../controllers/user/update-personal-informations';
 import { getWelcomeController } from '../controllers/user/welcome';
 import { issueSessionOrRedirectController } from '../controllers/user/issue-session-or-redirect';
+import {
+  getChooseSponsorController,
+  getNoSponsorFoundController,
+  getSponsorValidationController,
+  getUnableToFindSponsorController,
+  postChooseSponsorController,
+  postNoSponsorFoundController,
+} from '../controllers/user/choose-sponsor';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -220,7 +229,47 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    '/welcome',
+    '/choose-sponsor/:organization_id',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getChooseSponsorController
+  );
+
+  userRouter.post(
+    '/choose-sponsor/:organization_id',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postChooseSponsorController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get('/sponsor-validation', getSponsorValidationController);
+
+  userRouter.get(
+    '/no-sponsor-found/:organization_id',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getNoSponsorFoundController
+  );
+
+  userRouter.post(
+    '/no-sponsor-found/:organization_id',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postNoSponsorFoundController
+  );
+
+  userRouter.get(
+    '/unable-to-find-sponsor/:organization_id',
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getUnableToFindSponsorController
+  );
+
+  userRouter.get(
+    '/welcome/:organization_id',
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
     getWelcomeController

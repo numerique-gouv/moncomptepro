@@ -1,11 +1,3 @@
-import {
-  doSuggestOrganizations,
-  getOrganizationSuggestions,
-  greetFirstOrganizationJoin,
-  joinOrganization,
-  notifyOrganizationJoin,
-  quitOrganization,
-} from '../managers/organization';
 import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
 import { z, ZodError } from 'zod';
@@ -20,9 +12,16 @@ import {
   InseeTimeoutError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
-  UserAlreadyAskToJoinOrganizationError,
+  UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
+import { quitOrganization } from '../managers/organization/main';
+import {
+  doSuggestOrganizations,
+  getOrganizationSuggestions,
+  joinOrganization,
+} from '../managers/organization/join';
+import { authenticateByPeers } from '../managers/organization/authentication-by-peers';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -106,21 +105,13 @@ export const postJoinOrganizationMiddleware = async (
       user_id: req.session.user!.id,
     });
 
-    await notifyOrganizationJoin(userOrganizationLink);
-
-    const { greetEmailSent } = await greetFirstOrganizationJoin({
-      user_id: req.session.user!.id,
-    });
-
-    if (greetEmailSent) {
-      return res.redirect(`/users/welcome`);
-    }
+    await authenticateByPeers(userOrganizationLink);
 
     next();
   } catch (error) {
     if (
       error instanceof UnableToAutoJoinOrganizationError ||
-      error instanceof UserAlreadyAskToJoinOrganizationError
+      error instanceof UserAlreadyAskedToJoinOrganizationError
     ) {
       return res.redirect(`/users/unable-to-auto-join-organization`);
     }

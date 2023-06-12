@@ -23,7 +23,14 @@ export class UnableToAutoJoinOrganizationError extends Error {}
 
 export class UserInOrganizationAlreadyError extends Error {}
 
-export class UserAlreadyAskToJoinOrganizationError extends Error {}
+export class UserAlreadyAskedToJoinOrganizationError extends Error {}
+
+export class UserAlreadyAskedForSponsorshipError extends Error {
+  constructor(public organization_id: number) {
+    super();
+    this.organization_id = organization_id;
+  }
+}
 
 export class InvalidCredentialsError extends Error {}
 

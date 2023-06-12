@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
-import { getOrganizationsByUserId } from '../managers/organization';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
+import { isEligibleToSponsorship } from '../services/organization';
+import { NotImplemented } from 'http-errors';
+import { getOrganizationsByUserId } from '../managers/organization/main';
+import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -103,8 +106,7 @@ export const checkUserHasPersonalInformationsMiddleware = async (
   }
 };
 
-// check that user go through all requirements before issuing a session
-export const checkUserSignInRequirementsMiddleware = async (
+export const checkUserHasAtLeastOneOrganizationMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -123,3 +125,75 @@ export const checkUserSignInRequirementsMiddleware = async (
     next(error);
   }
 };
+
+export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return checkUserHasAtLeastOneOrganizationMiddleware(
+      req,
+      res,
+      async error => {
+        if (error) return next(error);
+
+        const userOrganisations = await getOrganizationsByUserId(
+          req.session.user!.id
+        );
+
+        const organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
+          ({ authentication_by_peers_type }) => !authentication_by_peers_type
+        );
+
+        if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
+          if (
+            !isEligibleToSponsorship(organizationThatNeedsAuthenticationByPeers)
+          ) {
+            // this should never happen as all members are notified by default
+            return next(new NotImplemented());
+          }
+
+          return res.redirect(
+            `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`
+          );
+        }
+
+        return next();
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return checkUserHasBeenAuthenticatedByPeersMiddleware(
+      req,
+      res,
+      async error => {
+        if (error) return next(error);
+
+        const { greetEmailSentFor } = await greetForJoiningOrganization({
+          user_id: req.session.user!.id,
+        });
+
+        if (greetEmailSentFor) {
+          return res.redirect(`/users/welcome/${greetEmailSentFor}`);
+        }
+
+        return next();
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// check that user go through all requirements before issuing a session
+export const checkUserSignInRequirementsMiddleware = checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware;
