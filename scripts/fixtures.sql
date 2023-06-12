@@ -479,7 +479,20 @@ VALUES
      ],
    'openid email profile organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
-   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.')
+   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.'),
+  (14,
+   'stack_local',
+   'b6f7ff663b92f83002e1f6e55806dff017a2d39eae0bc04a39e44ff9d057cb1da0ac61c0c3b359e615133c6dc7beff455b15901965513d91c4eaeb39cfb7c3f3',
+   '65e0e118a568fc955bff3812bac89cee081a93bcb4d296038d6507830451233dc184f0b6833f4e56d53073f318777a26e92fd2730513439214fbec4f9e7b0035',
+   ARRAY [
+     'http://localhost:3000/api/auth/callback/mon-compte-pro'
+     ],
+   ARRAY [
+     'http://localhost:3000'
+     ],
+   'openid email profile organizations',
+   'http://localhost:3000',
+   'Stack - Local')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
