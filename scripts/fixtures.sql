@@ -489,7 +489,22 @@ VALUES
      ],
    'openid email profile organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
-   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.')
+   'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.'),
+  (14,
+   'uMap - ANCT',
+   'aiP2peephay1Ebu0VaZeNohqueeshaisee3wim5ageev8Chu3ohLiekeitataehoh3yohp8xuijeizamah9toS1aeW1cheif8obiubi6Phi3ahj0aeZ2ajaeko1uvon0',
+   'eeXiet0WiengeiWuyuRailee6nie3ohdiefe5hoo6rai2ohx5iphie3seexeighai5shoo3foo5Ahwae8zaixiog1Shei4eer2beez3okoop0Cohwei7Chahkaih5ahx',
+   ARRAY [
+     'https://umap.dev.incubateur.anct.gouv.fr/complete/moncomptepro/',
+     'http://localhost:8020/complete/moncomptepro/'
+     ],
+   ARRAY [
+     'https://umap.dev.incubateur.anct.gouv.fr',
+     'http://localhost:8020',
+     ],
+   'openid email profile organizations',
+   'https://umap.dev.incubateur.anct.gouv.fr',
+   'Créer des cartes en ligne facilement.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
