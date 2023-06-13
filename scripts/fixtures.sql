@@ -500,7 +500,7 @@ VALUES
      ],
    ARRAY [
      'https://umap.dev.incubateur.anct.gouv.fr',
-     'http://localhost:8020',
+     'http://localhost:8020'
      ],
    'openid email profile organizations',
    'https://umap.dev.incubateur.anct.gouv.fr',
