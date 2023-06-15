@@ -11,8 +11,10 @@ export const oidcProviderConfiguration = ({
   acrValues: ['eidas1'],
   claims: {
     amr: null,
+    // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
     email: ['email', 'email_verified'],
     profile: ['family_name', 'given_name', 'updated_at', 'phone_number', 'job'],
+    phone: ['phone_number'],
     organizations: ['organizations'],
   },
   features: {
