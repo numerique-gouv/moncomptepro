@@ -504,7 +504,20 @@ VALUES
      ],
    'openid email profile organizations',
    'https://umap.dev.incubateur.anct.gouv.fr',
-   'Créer des cartes en ligne facilement.')
+   'Créer des cartes en ligne facilement.'),
+  (15,
+   'AgentConnect',
+   '36112b36ddcbe735b406c69e59f87fc5a96eed87923e42777f76f705c3a55e1e7a98a38a6e500640d4ce366124dc0a537cfaa967b6ef51fa99b2ca8edb8bff66',
+   '85be6a293bfe2fa6ced0b246b83893a062635e577848bbbbb268da8ca0cc5844c2f5f2cbc8888891b4ac2b21a7599e47344c651a66d04f8cc34a454a5d0f1693',
+   ARRAY [
+     'https://fca.integ01.dev-agentconnect.fr/api/v2/oidc-callback/'
+   ],
+   ARRAY [
+     'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
+   ],
+   'openid email profile organizations',
+   'https://agentconnect.gouv.fr/',
+   'Dispositif d’identification des agents de la fonction publique.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
