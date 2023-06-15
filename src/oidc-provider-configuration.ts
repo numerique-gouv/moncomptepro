@@ -8,7 +8,7 @@ export const oidcProviderConfiguration = ({
   shortTokenTtlInSeconds = 10 * 60,
   tokenTtlInSeconds = 60 * 60,
 }) => ({
-  acrValues: ['urn:mace:incommon:iap:bronze'],
+  acrValues: ['eidas1'],
   claims: {
     amr: null,
     email: ['email', 'email_verified'],
