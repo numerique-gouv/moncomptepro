@@ -46,7 +46,7 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
     const result = {
       login: {
         accountId: req.session.user!.id.toString(),
-        acr: 'urn:mace:incommon:iap:bronze',
+        acr: 'eidas1',
         amr: ['pwd'],
       },
     };
