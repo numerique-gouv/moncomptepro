@@ -515,7 +515,7 @@ VALUES
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
    ],
-   'openid email profile organizations',
+   'openid email profile phone organizations',
    'https://agentconnect.gouv.fr/',
    'Dispositif d’identification des agents de la fonction publique.'),
   (16,
