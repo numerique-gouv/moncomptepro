@@ -403,12 +403,12 @@ VALUES
     ARRAY [
       'http://127.0.0.1:1337/api/oidc/callback/',
       'http://localhost:1337/api/oidc/callback/',
-      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/callback/',
+      'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/callback/',
     ],
     ARRAY [
       'http://127.0.0.1:1337/api/oidc/logout',
       'http://localhost:1337/api/oidc/logout',
-      'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout',
+      'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout',
     ],
     'openid email',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
