@@ -47,7 +47,6 @@ export const oidcProviderConfiguration = ({
     encryption: { enabled: true },
     introspection: { enabled: true },
     jwtUserinfo: { enabled: true },
-    jwtResponseModes: { enabled: true },
   },
   findAccount,
   // @ts-ignore
