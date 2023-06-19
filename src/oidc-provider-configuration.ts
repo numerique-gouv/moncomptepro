@@ -44,7 +44,7 @@ export const oidcProviderConfiguration = ({
         ctx.redirect('/users/start-sign-in/?notification=logout_success');
       },
     },
-    encryption: { enabled: true },
+    encryption: { enabled: false },
     introspection: { enabled: true },
     jwtUserinfo: { enabled: true },
   },
