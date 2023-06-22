@@ -494,7 +494,7 @@ VALUES
    'openid email organizations',
    'https://grist.incubateur.net',
    'Saisir et manipuler collaborativement les données.'),
-   (15,
+   (17,
     'MiCoSIDDEE',
     'test_mico_SIDDEE',
     'test_mico_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
@@ -509,6 +509,29 @@ VALUES
     'openid email job organizations',
     'http://10.59.128.114:8004/',
     "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF"),
+  (18,
+    'Tactick',
+    'test_Tactick',
+    'test_Tactickh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
+    ARRAY [
+      'https://preprod.tactick.e2.rie.gouv.fr/oidc/callback/',
+      'https://preprod.tactick.e2.rie.gouv.fr/auth/cb/',
+      'https://preprod.tactick.e2.rie.gouv.fr/oidc/auth/cb/',
+      'tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
+      'tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
+      'tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/',
+      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
+      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
+      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/'
+    ],
+    ARRAY [
+      'https://preprod.tactick.e2.rie.gouv.fr/',
+      'tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/',
+      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/'
+    ],
+    'openid email',
+    'https://preprod.tactick.e2.rie.gouv.fr/',
+    "Développement d'une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF"),
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
