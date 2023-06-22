@@ -66,10 +66,7 @@ describe('join organizations', () => {
       // assert reception of notification email
       .then(email => {
         expect(email.body).to.match(
-          /Votre organisation.*Commune de clamart - Mairie.*utilise MonComptePro./
-        );
-        expect(email.body).to.match(
-          /Nous tenions à vous informer que.*Jean User2.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com\) vient de rejoindre cette organisation./
+          /.*Jean User2.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com\) a rejoint votre organisation.*Commune de clamart - Mairie.*sur .*MonComptePro/
         );
       });
   });

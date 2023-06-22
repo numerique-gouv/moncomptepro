@@ -26,7 +26,7 @@ type LocalTemplateSlug =
 const remoteTemplateSlugToSendinblueTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
-  'join-organization': 5,
+  'join-organization': 61,
   'verify-email': 6,
   'reset-password': 7,
   'magic-link': 29,
