@@ -37,6 +37,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         given_name,
         family_name,
         phone_number,
+        phone_number_verified: false,
         job,
         organizations: organizations.map(organization => {
           const {
