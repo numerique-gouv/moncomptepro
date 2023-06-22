@@ -14,7 +14,7 @@ export const oidcProviderConfiguration = ({
     // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
     email: ['email', 'email_verified'],
     profile: ['family_name', 'given_name', 'updated_at', 'phone_number', 'job'],
-    phone: ['phone_number'],
+    phone: ['phone_number', 'phone_number_verified'],
     organizations: ['organizations'],
   },
   features: {
