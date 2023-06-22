@@ -546,7 +546,7 @@ VALUES
      ],
    'openid email profile organizations',
    'http://10.59.128.114:8004/',
-   'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF'),
+   'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF.'),
   (18,
    'Tactick',
    'test_Tactick',
@@ -569,7 +569,20 @@ VALUES
      ],
    'openid email',
    'https://preprod.tactick.e2.rie.gouv.fr/',
-   'Développement d’une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF')
+   'Développement d’une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF.'),
+  (19,
+   'Outline - Opérateur',
+   '3f9a230c90e72cf85aabd081d35e1567aedc6dac4d3be97b9514b2823c89544751a9901c78af22c2d0e5a4b75e35b893cdeb305cb217ae22984b47f610b4e14b',
+   '8495eb74887ac74eaf4f21e5c3b80831adcc142c56655bed7ca2ec5c60930d675b8c2c777e6ad0a51bb9ce70d4de32d534c377087f2842c5a8d128a41358fa63',
+   ARRAY [
+     'https://outline-operateur.osc-secnum-fr1.scalingo.io/auth/oidc.callback'
+     ],
+   ARRAY [
+     'https://outline-operateur.osc-secnum-fr1.scalingo.io/'
+     ],
+   'openid email profile',
+   'https://outline-operateur.osc-secnum-fr1.scalingo.io/',
+   'La base de connaissances de votre équipe.')
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
