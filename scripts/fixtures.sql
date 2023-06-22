@@ -506,7 +506,7 @@ VALUES
     ARRAY [
       'http://10.59.128.114:8004/'
     ],
-    'openid email organizations',
+    'openid email job organizations',
     'http://10.59.128.114:8004/',
     "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF"),
 ON CONFLICT (id)
