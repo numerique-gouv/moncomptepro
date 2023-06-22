@@ -246,7 +246,7 @@ VALUES
      'http://localhost:3001',
      'https://datapass-development.api.gouv.fr'
      ],
-   'openid email profile organizations',
+   'openid email profile phone organizations',
    'https://datapass-development.api.gouv.fr',
    'Centralisez vos demandes d’habilitations juridiques pour accéder aux données et services en accès restreint.'),
   (2,
@@ -465,7 +465,7 @@ VALUES
      'https://ma-cantine-staging.cleverapps.io/signout-callback-oidc',
      'https://ma-cantine-demo.cleverapps.io/signout-callback-oidc'
      ],
-   'openid email profile organizations',
+   'openid email profile phone organizations',
    'https://ma-cantine-staging.cleverapps.io/',
    'Mieux manger de la crèche à l’EHPAD.'),
   (13,
