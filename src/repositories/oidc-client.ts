@@ -17,7 +17,10 @@ SELECT
     post_logout_redirect_uris,
     scope,
     client_uri,
-    userinfo_signed_response_alg
+    userinfo_signed_response_alg,
+    id_token_signed_response_alg,
+    authorization_signed_response_alg,
+    introspection_signed_response_alg
 FROM oidc_clients
 `);
 
@@ -41,7 +44,10 @@ SELECT
     post_logout_redirect_uris,
     scope,
     client_uri,
-    userinfo_signed_response_alg
+    userinfo_signed_response_alg,
+    id_token_signed_response_alg,
+    authorization_signed_response_alg,
+    introspection_signed_response_alg
 FROM oidc_clients
 WHERE client_id = $1
 `,
@@ -68,7 +74,10 @@ SELECT
     oc.post_logout_redirect_uris,
     oc.scope,
     oc.client_uri,
-    oc.userinfo_signed_response_alg
+    oc.userinfo_signed_response_alg,
+    oc.id_token_signed_response_alg,
+    oc.authorization_signed_response_alg,
+    oc.introspection_signed_response_alg
 FROM (
     SELECT
         user_id,

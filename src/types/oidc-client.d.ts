@@ -13,4 +13,7 @@ interface OidcClient {
   scope: string;
   client_uri: string;
   userinfo_signed_response_alg: string | null;
+  id_token_signed_response_alg: string | null;
+  authorization_signed_response_alg: string | null;
+  introspection_signed_response_alg: string | null;
 }
