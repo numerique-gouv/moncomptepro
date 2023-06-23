@@ -221,7 +221,7 @@ RETURNING *`,
 export const updateUserOrganizationLink = async (
   organization_id: number,
   user_id: number,
-  fieldsToUpdate: Partial<UserOrganizationLinkAttributes>
+  fieldsToUpdate: Partial<BaseUserOrganizationLink>
 ) => {
   const connection = getDatabaseConnection();
 
