@@ -20,6 +20,9 @@ export const oidcProviderConfiguration = ({
   features: {
     claimsParameter: { enabled: true },
     devInteractions: { enabled: false },
+    encryption: { enabled: true },
+    introspection: { enabled: true },
+    jwtUserinfo: { enabled: true },
     rpInitiatedLogout: {
       enabled: true,
       // @ts-ignore
@@ -45,9 +48,6 @@ export const oidcProviderConfiguration = ({
         ctx.redirect('/users/start-sign-in/?notification=logout_success');
       },
     },
-    encryption: { enabled: true },
-    introspection: { enabled: true },
-    jwtUserinfo: { enabled: true },
   },
   findAccount,
   // @ts-ignore
