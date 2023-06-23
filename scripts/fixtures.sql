@@ -601,7 +601,7 @@ VALUES
    ARRAY [
      'https://outline-operateur.osc-secnum-fr1.scalingo.io/'
      ],
-   'openid email profile',
+   'openid profile email',
    'https://outline-operateur.osc-secnum-fr1.scalingo.io/',
    'La base de connaissances de votre équipe.',
    null, null, null, null)
