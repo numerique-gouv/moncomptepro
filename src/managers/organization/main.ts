@@ -72,10 +72,10 @@ export const markDomainAsVerified = async ({
 
   await Promise.all(
     usersInOrganization.map(
-      async ({ id, email, verification_type: current_verification_type }) => {
+      ({ id, email, verification_type: current_verification_type }) => {
         const userDomain = getEmailDomain(email);
         if (userDomain === domain && isEmpty(current_verification_type)) {
-          return await updateUserOrganizationLink(organization_id, id, {
+          return updateUserOrganizationLink(organization_id, id, {
             verification_type,
           });
         }

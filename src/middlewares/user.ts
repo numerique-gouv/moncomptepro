@@ -167,7 +167,7 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
   }
 };
 
-export const checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware = async (
+export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -196,4 +196,4 @@ export const checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware = async (
 };
 
 // check that user go through all requirements before issuing a session
-export const checkUserSignInRequirementsMiddleware = checkUserHasBeenGreetedForFirstOrganizationJoinMiddleware;
+export const checkUserSignInRequirementsMiddleware = checkUserHasBeenGreetedForJoiningOrganizationMiddleware;

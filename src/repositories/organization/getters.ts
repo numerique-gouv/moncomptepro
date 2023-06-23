@@ -45,7 +45,7 @@ export const findByUserId = async (user_id: number) => {
   const {
     rows,
   }: QueryResult<Organization &
-    UserOrganizationLinkAttributes> = await connection.query(
+    BaseUserOrganizationLink> = await connection.query(
     `
 SELECT
     o.id,
@@ -221,8 +221,7 @@ export const getUsers = async (organization_id: number) => {
 
   const {
     rows,
-  }: QueryResult<User &
-    UserOrganizationLinkAttributes> = await connection.query(
+  }: QueryResult<User & BaseUserOrganizationLink> = await connection.query(
     `
 SELECT
     u.id,

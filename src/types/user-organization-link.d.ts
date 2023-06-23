@@ -1,4 +1,4 @@
-interface UserOrganizationLinkAttributes {
+interface BaseUserOrganizationLink {
   is_external: boolean;
   verification_type:
     | 'verified_email_domain'
@@ -14,7 +14,7 @@ interface UserOrganizationLinkAttributes {
   sponsor_id: number | null;
 }
 
-interface UserOrganizationLink extends UserOrganizationLinkAttributes {
+interface UserOrganizationLink extends BaseUserOrganizationLink {
   user_id: number;
   organization_id: number;
   created_at: Date;
