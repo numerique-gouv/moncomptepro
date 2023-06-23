@@ -20,10 +20,15 @@ ALTER TABLE users
 ALTER COLUMN legacy_user SET NOT NULL`);
 
   await pgm.db.query(`
+UPDATE users_organizations
+SET has_been_greeted = FALSE
+WHERE has_been_greeted IS NULL`);
+
+  await pgm.db.query(`
 ALTER TABLE users_organizations
 ALTER COLUMN is_external SET NOT NULL,
-ALTER COLUMN has_been_greeted SET NOT NULL,
-ALTER COLUMN has_been_greeted SET DEFAULT FALSE`);
+ALTER COLUMN has_been_greeted SET DEFAULT FALSE,
+ALTER COLUMN has_been_greeted SET NOT NULL`);
 
   await pgm.db.query(`
 ALTER TABLE moderations
@@ -50,7 +55,8 @@ ALTER COLUMN legacy_user DROP NOT NULL`);
   await pgm.db.query(`
 ALTER TABLE users_organizations
 ALTER COLUMN is_external DROP NOT NULL,
-ALTER COLUMN has_been_greeted DROP NOT NULL`);
+ALTER COLUMN has_been_greeted DROP NOT NULL,
+ALTER COLUMN has_been_greeted DROP DEFAULT`);
 
   await pgm.db.query(`
 ALTER TABLE moderations
