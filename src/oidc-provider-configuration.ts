@@ -18,6 +18,7 @@ export const oidcProviderConfiguration = ({
     organizations: ['organizations'],
   },
   features: {
+    claimsParameter: { enabled: true },
     devInteractions: { enabled: false },
     rpInitiatedLogout: {
       enabled: true,
