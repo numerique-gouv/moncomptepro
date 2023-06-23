@@ -7,6 +7,6 @@ interface Moderation {
     | 'non_verified_domain'
     | 'ask_for_sponsorship';
   created_at: Date;
-  moderated_at: Date;
+  moderated_at: Date | null;
   comment: string | null;
 }
