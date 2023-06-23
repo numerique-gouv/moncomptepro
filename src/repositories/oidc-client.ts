@@ -16,7 +16,8 @@ SELECT
     redirect_uris,
     post_logout_redirect_uris,
     scope,
-    client_uri
+    client_uri,
+    userinfo_signed_response_alg
 FROM oidc_clients
 `);
 
@@ -39,7 +40,8 @@ SELECT
     redirect_uris,
     post_logout_redirect_uris,
     scope,
-    client_uri
+    client_uri,
+    userinfo_signed_response_alg
 FROM oidc_clients
 WHERE client_id = $1
 `,
@@ -65,7 +67,8 @@ SELECT
     oc.redirect_uris,
     oc.post_logout_redirect_uris,
     oc.scope,
-    oc.client_uri
+    oc.client_uri,
+    oc.userinfo_signed_response_alg
 FROM (
     SELECT
         user_id,

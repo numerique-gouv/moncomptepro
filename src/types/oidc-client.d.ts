@@ -12,4 +12,5 @@ interface OidcClient {
   post_logout_redirect_uris: string[];
   scope: string;
   client_uri: string;
+  userinfo_signed_response_alg: string | null;
 }
