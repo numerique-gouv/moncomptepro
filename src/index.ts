@@ -25,6 +25,7 @@ import {
 import { HttpError } from 'http-errors';
 import { ZodError } from 'zod';
 import { connectionCountMiddleware } from './middlewares/connection-count';
+import { isNull, omitBy } from 'lodash';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
@@ -109,9 +110,16 @@ app.set('view engine', 'ejs');
 let server: Server;
 
 (async () => {
+  const clients = await getClients();
+
+  // the oidc provider expect provided client attributes to be not null if provided
+  const clientsWithoutNullProperties = clients.map(client =>
+    omitBy(client, isNull)
+  );
+
   // @ts-ignore
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
-    clients: await getClients(),
+    clients: clientsWithoutNullProperties,
     adapter,
     jwks,
     // @ts-ignore
