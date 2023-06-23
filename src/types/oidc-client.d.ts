@@ -2,7 +2,7 @@
 // properties id, client_description, created_at, updated_at are non-standard properties
 interface OidcClient {
   id: number;
-  client_description: string;
+  client_description: string | null;
   created_at: Date;
   updated_at: Date;
   client_name: string;
@@ -11,7 +11,7 @@ interface OidcClient {
   redirect_uris: string[];
   post_logout_redirect_uris: string[];
   scope: string;
-  client_uri: string;
+  client_uri: string | null;
   userinfo_signed_response_alg: string | null;
   id_token_signed_response_alg: string | null;
   authorization_signed_response_alg: string | null;
