@@ -31,11 +31,13 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
 
       return {
         sub: id.toString(), // it is essential to always return a sub claim
+        uid: id.toString(), // for AgentConnect use only
         email,
         email_verified,
         updated_at,
         given_name,
         family_name,
+        usual_name: family_name, // for AgentConnect use only
         phone_number,
         phone_number_verified: false,
         job,
