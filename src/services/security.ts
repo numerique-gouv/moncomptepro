@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
-import { isEmpty, isString } from 'lodash';
+import { hasIn, isEmpty, isString } from 'lodash';
 import { customAlphabet, nanoid } from 'nanoid/async';
 import { parse as parseUrl } from 'url';
+import notificationMessages from '../notification-messages';
 
 const nanoidPin = customAlphabet('0123456789', 10);
 
@@ -118,4 +119,12 @@ export const isUrlTrusted = (url: unknown): url is string => {
   return !!parsedUrl.hostname
     ? parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
     : parsedUrl.pathname?.match(/^(\/[a-zA-Z-_0-9]*)+$/) !== null;
+};
+
+export const isNotificationLabelValid = (label: unknown): label is string => {
+  if (!isString(label) || isEmpty(label)) {
+    return false;
+  }
+
+  return hasIn(notificationMessages, label);
 };
