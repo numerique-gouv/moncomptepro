@@ -533,7 +533,7 @@ VALUES
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
    ],
-   'openid email profile phone organizations',
+   'openid uid given_name usual_name email phone',
    'https://agentconnect.gouv.fr/',
    'Dispositif d’identification des agents de la fonction publique.',
    'ES256', 'ES256', 'ES256', 'ES256'),
