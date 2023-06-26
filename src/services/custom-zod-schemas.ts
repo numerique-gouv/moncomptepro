@@ -1,4 +1,8 @@
-import { isEmailValid, isSiretValid } from './security';
+import {
+  isEmailValid,
+  isNotificationLabelValid,
+  isSiretValid,
+} from './security';
 import { z } from 'zod';
 
 export const siretSchema = () =>
@@ -25,3 +29,9 @@ export const optionalBooleanSchema = () =>
     .string()
     .optional()
     .transform(val => val === 'true');
+
+export const notificationLabelSchema = () =>
+  z
+    .string()
+    .refine(isNotificationLabelValid)
+    .optional();

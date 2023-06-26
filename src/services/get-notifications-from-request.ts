@@ -1,11 +1,12 @@
 import { Request } from 'express';
 import { z } from 'zod';
 import notificationMessages from '../notification-messages';
+import { notificationLabelSchema } from './custom-zod-schemas';
 
 export const getNotificationLabelFromRequest = async (req: Request) => {
   const schema = z.object({
     query: z.object({
-      notification: z.string().optional(),
+      notification: notificationLabelSchema(),
     }),
   });
 
