@@ -1,6 +1,8 @@
 import {
   isEmailValid,
+  isNameValid,
   isNotificationLabelValid,
+  isPhoneNumberValid,
   isSiretValid,
 } from './security';
 import { z } from 'zod';
@@ -16,6 +18,14 @@ export const emailSchema = () =>
     .string()
     .refine(isEmailValid)
     .transform(val => val.toLowerCase().trim());
+
+export const nameSchema = () =>
+  z
+    .string()
+    .min(1)
+    .refine(isNameValid);
+
+export const phoneNumberSchema = () => z.string().refine(isPhoneNumberValid);
 
 export const idSchema = () =>
   z

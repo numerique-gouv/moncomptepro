@@ -2,6 +2,7 @@ import assert from 'assert';
 
 import {
   isEmailValid,
+  isNameValid,
   isSiretValid,
   isUrlTrusted,
 } from '../src/services/security';
@@ -97,6 +98,20 @@ describe('isSiretValid', () => {
 
   it('should return true if it contains exactly 14 numbers with spaces', () => {
     assert.equal(isSiretValid('   123 456  789\n\r01234 \n'), true);
+  });
+});
+
+describe('isNameValid', () => {
+  it('should return false if an email is provided', () => {
+    assert.equal(isNameValid('jean@domaine.fr'), false);
+  });
+
+  it('should return true if a name is provided', () => {
+    assert.equal(isNameValid('Jean'), true);
+  });
+
+  it('should return true if a nom composé is provided', () => {
+    assert.equal(isNameValid('Jean-Jean'), true);
   });
 });
 
