@@ -2,7 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import { z, ZodError } from 'zod';
 import { updatePersonalInformations } from '../../managers/user';
-import { isEmailValid, isPhoneNumberValid } from '../../services/security';
+import {
+  nameSchema,
+  phoneNumberSchema,
+} from '../../services/custom-zod-schemas';
 
 export const getPersonalInformationsController = async (
   req: Request,
@@ -27,9 +30,9 @@ export const getParamsForPostPersonalInformationsController = async (
 ) => {
   const schema = z.object({
     body: z.object({
-      given_name: z.string().min(1),
-      family_name: z.string().min(1),
-      phone_number: z.string().refine(isPhoneNumberValid),
+      given_name: nameSchema(),
+      family_name: nameSchema(),
+      phone_number: phoneNumberSchema(),
       job: z.string().min(1),
     }),
   });

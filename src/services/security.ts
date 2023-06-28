@@ -91,6 +91,18 @@ export const isPhoneNumberValid = (
   return true;
 };
 
+export const isNameValid = (name: unknown): name is string => {
+  if (!isString(name) || isEmpty(name)) {
+    return false;
+  }
+
+  if (name.match(/[$&+,:;=?@#|'<>.^*()%!]/)) {
+    return false;
+  }
+
+  return true;
+};
+
 export const generatePinToken = async () => {
   return await nanoidPin();
 };
