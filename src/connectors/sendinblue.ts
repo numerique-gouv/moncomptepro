@@ -4,10 +4,7 @@ import path from 'path';
 
 import { render } from '../services/renderer';
 import { SendInBlueApiError } from '../errors';
-
-const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
-
-const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
+import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from '../env';
 
 type RemoteTemplateSlug =
   | 'join-organization'
@@ -93,7 +90,7 @@ export const sendMail = async ({
     data.cc = cc.map(e => ({ email: e }));
   }
 
-  if (doNotSendMail) {
+  if (DO_NOT_SEND_MAIL) {
     console.log(`${template} mail not send to ${to}:`);
     console.log(data);
     return;
@@ -104,7 +101,7 @@ export const sendMail = async ({
       method: 'post',
       url: `https://api.sendinblue.com/v3/smtp/email`,
       headers: {
-        'api-key': apiKey,
+        'api-key': SENDINBLUE_API_KEY,
         'content-type': 'application/json',
         accept: 'application/json',
       },

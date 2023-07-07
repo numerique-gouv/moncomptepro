@@ -1,3 +1,5 @@
+import { BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP } from '../env';
+
 /**
  * This fonction return approximate results. As the data tranche effectifs is
  * two years old. Consequently, an organization that growths quickly within the
@@ -44,10 +46,6 @@ export const isServicePublic = ({
 
   return cat_jur_ok || siret_ok;
 };
-
-const {
-  BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP = '13002526500013,13002603200016',
-} = process.env;
 
 const betaTestingOrganizationsForSponsorship = BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP.split(
   ','

@@ -1,9 +1,9 @@
 import { Pool } from 'pg';
+import { DATABASE_URL } from '../env';
 
 let pool: Pool | null = null;
 
-const { DATABASE_URL: connectionString } = process.env;
-const obfuscatedConnectionString = (connectionString || '').replace(
+const obfuscatedConnectionString = (DATABASE_URL || '').replace(
   /\/\/(.*)@/,
   '//****:****@'
 );
@@ -13,7 +13,7 @@ export const getDatabaseConnection = () => {
     return pool;
   }
 
-  pool = new Pool({ connectionString });
+  pool = new Pool({ connectionString: DATABASE_URL });
 
   pool.on('connect', client => {
     console.log(`Connected to database : ${obfuscatedConnectionString}`);

@@ -17,8 +17,7 @@ import {
   createModeration,
   findPendingModeration,
 } from '../../repositories/moderation';
-
-const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
+import { SUPPORT_EMAIL_ADDRESS } from '../../env';
 
 export const authenticateByPeers = async (
   link: UserOrganizationLink

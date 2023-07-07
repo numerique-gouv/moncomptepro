@@ -7,11 +7,11 @@ import {
   ApiAnnuaireTooManyResultsError,
 } from '../errors';
 import { isEmpty } from 'lodash';
-
-const doNotUseAnnuaireEmails =
-  process.env.DO_NOT_USE_ANNUAIRE_EMAILS === 'True';
-const { TEST_CONTACT_EMAIL = 'mairie@yopmail.com' } = process.env;
-const REQUEST_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds
+import {
+  DO_NOT_USE_ANNUAIRE_EMAILS,
+  HTTP_CLIENT_TIMEOUT,
+  TEST_CONTACT_EMAIL,
+} from '../env';
 
 // more info at https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
@@ -70,7 +70,7 @@ export const getContactEmail = async (
       headers: {
         accept: 'application/json',
       },
-      timeout: REQUEST_TIMEOUT,
+      timeout: HTTP_CLIENT_TIMEOUT,
     });
 
     features = data.features;
@@ -100,7 +100,7 @@ export const getContactEmail = async (
     throw new ApiAnnuaireInvalidEmailError();
   }
 
-  if (doNotUseAnnuaireEmails) {
+  if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(`A test email was used instead of ${email}.`);
     return TEST_CONTACT_EMAIL;
   }

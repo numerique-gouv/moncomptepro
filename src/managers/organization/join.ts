@@ -40,8 +40,7 @@ import * as Sentry from '@sentry/node';
 import { isEmailValid } from '../../services/security';
 import { markDomainAsVerified } from './main';
 import { sendMail } from '../../connectors/sendinblue';
-
-const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
+import { SUPPORT_EMAIL_ADDRESS } from '../../env';
 
 export const doSuggestOrganizations = async ({
   user_id,

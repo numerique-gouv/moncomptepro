@@ -26,19 +26,18 @@ import { HttpError } from 'http-errors';
 import { ZodError } from 'zod';
 import { connectionCountMiddleware } from './middlewares/connection-count';
 import { isNull, omitBy } from 'lodash';
+import {
+  ACCESS_LOG_PATH,
+  JWKS_PATH,
+  MONCOMPTEPRO_HOST,
+  PORT,
+  SECURE_COOKIES,
+  SENTRY_DSN,
+  SESSION_COOKIE_SECRET,
+} from './env';
 
 export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
-const {
-  PORT = 3000,
-  MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
-  JWKS_PATH = `${__dirname}/../jwks.json`,
-  SESSION_COOKIE_SECRET = '',
-  SECURE_COOKIES = 'true',
-  SENTRY_DSN,
-  ACCESS_LOG_PATH,
-} = process.env;
-const useSecureCookies = SECURE_COOKIES === 'true';
 const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
 
@@ -79,10 +78,7 @@ let morganOption = {};
 
 if (ACCESS_LOG_PATH) {
   morganOption = {
-    stream: fs.createWriteStream(
-      process.env.ACCESS_LOG_PATH || './api-auth.log',
-      { flags: 'a' }
-    ),
+    stream: fs.createWriteStream(ACCESS_LOG_PATH, { flags: 'a' }),
   };
 }
 
@@ -100,7 +96,7 @@ app.use(
     secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: useSecureCookies },
+    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: SECURE_COOKIES },
   })
 );
 
@@ -145,8 +141,8 @@ let server: Server;
         resume: 'api_gouv_interaction_resume',
         state: 'api_gouv_state',
       },
-      long: { overwrite: true, signed: true, secure: useSecureCookies },
-      short: { overwrite: true, signed: true, secure: useSecureCookies },
+      long: { overwrite: true, signed: true, secure: SECURE_COOKIES },
+      short: { overwrite: true, signed: true, secure: SECURE_COOKIES },
       keys: [SESSION_COOKIE_SECRET],
     },
     ...oidcProviderConfiguration({
