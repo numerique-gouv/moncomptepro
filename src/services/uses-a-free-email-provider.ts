@@ -1,10 +1,21 @@
 // heavily inspired from https://stackoverflow.com/questions/71232973/check-email-domain-type-personal-email-or-company-email#answer-72640757
 import { isFree } from 'is-disposable-email-domain';
 import { parse_host } from 'tld-extract';
-import { DO_NOT_VALIDATE_MAIL } from '../env';
+import {
+  CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE,
+  DO_NOT_VALIDATE_MAIL,
+} from '../env';
 
 export const isAFreeEmailProvider = (domain: string) => {
-  return !DO_NOT_VALIDATE_MAIL && isFree(domain);
+  if (CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE) {
+    return true;
+  }
+
+  if (DO_NOT_VALIDATE_MAIL) {
+    return false;
+  }
+
+  return isFree(domain);
 };
 
 export const getEmailDomain = (email: string) => {

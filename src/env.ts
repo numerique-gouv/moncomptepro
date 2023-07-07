@@ -19,6 +19,8 @@ export const {
 } = process.env;
 
 export const DO_NOT_VALIDATE_MAIL = process.env.DO_NOT_VALIDATE_MAIL === 'True';
+export const CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE =
+  process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE === 'True';
 export const DO_NOT_SEND_MAIL = process.env.DO_NOT_SEND_MAIL === 'True';
 export const SECURE_COOKIES = (process.env.SECURE_COOKIES || 'true') === 'true';
 export const DO_NOT_USE_ANNUAIRE_EMAILS =

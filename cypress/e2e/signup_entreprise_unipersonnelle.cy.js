@@ -1,4 +1,5 @@
-const host = Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
+const MONCOMPTEPRO_HOST =
+  Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
 
 describe('Signup into new entreprise unipersonnelle', () => {
   before(function() {
@@ -14,7 +15,7 @@ describe('Signup into new entreprise unipersonnelle', () => {
 
   it('creates a user', function() {
     // Visit the signup page
-    cy.visit(`${host}/users/start-sign-in`);
+    cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
 
     // Sign up with the previously created inbox
     cy.get('[name="login"]').type(this.emailAddress);
@@ -54,11 +55,6 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.get('[name="phone_number"]').type('0123456789');
     cy.get('[name="job"]').type('Chargé de relation usager');
     cy.get('[type="submit"]').click();
-
-    // Skip organization suggestion
-    cy.get('a.fr-btn.fr-btn--secondary')
-      .contains('Je veux rejoindre une autre organisation')
-      .click();
 
     // Fill the user's organization information
     cy.get('[name="siret"]').type('49871959000107');
