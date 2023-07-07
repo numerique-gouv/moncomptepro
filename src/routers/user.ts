@@ -14,6 +14,7 @@ import {
 import {
   checkEmailInSessionMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
+  checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
@@ -55,9 +56,13 @@ import {
   getNoSponsorFoundController,
   getSponsorValidationController,
   getUnableToFindSponsorController,
-  postChooseSponsorController,
+  postChooseSponsorMiddleware,
   postNoSponsorFoundController,
 } from '../controllers/user/choose-sponsor';
+import {
+  getOfficialContactEmailVerificationController,
+  postOfficialContactEmailVerificationMiddleware,
+} from '../controllers/user/official-contact-email-verification';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -229,9 +234,28 @@ export const userRouter = () => {
   );
 
   userRouter.get(
+    '/official-contact-email-verification/:organization_id',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getOfficialContactEmailVerificationController
+  );
+
+  userRouter.post(
+    '/official-contact-email-verification/:organization_id',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postOfficialContactEmailVerificationMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get(
     '/choose-sponsor/:organization_id',
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     getChooseSponsorController
   );
 
@@ -239,8 +263,8 @@ export const userRouter = () => {
     '/choose-sponsor/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
-    postChooseSponsorController,
+    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
+    postChooseSponsorMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
@@ -250,7 +274,7 @@ export const userRouter = () => {
   userRouter.get(
     '/no-sponsor-found/:organization_id',
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     getNoSponsorFoundController
   );
 
@@ -258,13 +282,13 @@ export const userRouter = () => {
     '/no-sponsor-found/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     postNoSponsorFoundController
   );
 
   userRouter.get(
     '/unable-to-find-sponsor/:organization_id',
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     getUnableToFindSponsorController
   );
 

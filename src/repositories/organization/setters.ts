@@ -185,11 +185,13 @@ export const linkUserToOrganization = async ({
   user_id,
   is_external = false,
   verification_type,
+  needs_official_contact_email_verification = false,
 }: {
   organization_id: number;
   user_id: number;
   is_external?: boolean;
   verification_type: UserOrganizationLink['verification_type'];
+  needs_official_contact_email_verification?: UserOrganizationLink['needs_official_contact_email_verification'];
 }): Promise<UserOrganizationLink> => {
   const connection = getDatabaseConnection();
 
@@ -200,16 +202,18 @@ INSERT INTO users_organizations
      organization_id,
      is_external,
      verification_type,
+     needs_official_contact_email_verification,
      updated_at,
      created_at)
 VALUES
-    ($1, $2, $3, $4, $5, $6)
+    ($1, $2, $3, $4, $5, $6, $7)
 RETURNING *`,
     [
       user_id,
       organization_id,
       is_external,
       verification_type,
+      needs_official_contact_email_verification,
       new Date(),
       new Date(),
     ]

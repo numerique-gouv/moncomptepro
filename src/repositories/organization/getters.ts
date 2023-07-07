@@ -77,7 +77,10 @@ SELECT
     uo.verification_type,
     uo.authentication_by_peers_type,
     uo.has_been_greeted,
-    uo.sponsor_id
+    uo.sponsor_id,
+    uo.needs_official_contact_email_verification,
+    uo.official_contact_email_verification_token,
+    uo.official_contact_email_verification_sent_at
 FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
@@ -248,7 +251,10 @@ SELECT
     uo.verification_type,
     uo.authentication_by_peers_type,
     uo.has_been_greeted,
-    uo.sponsor_id
+    uo.sponsor_id,
+    uo.needs_official_contact_email_verification,
+    uo.official_contact_email_verification_token,
+    uo.official_contact_email_verification_sent_at
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,
@@ -275,7 +281,10 @@ SELECT
   verification_type,
   authentication_by_peers_type,
   has_been_greeted,
-  sponsor_id
+  sponsor_id,
+  needs_official_contact_email_verification,
+  official_contact_email_verification_token,
+  official_contact_email_verification_sent_at
 FROM users_organizations
 WHERE organization_id = $1 AND user_id = $2`,
     [organization_id, user_id]

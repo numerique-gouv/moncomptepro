@@ -86,7 +86,17 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   },
   personal_information_update_success: {
     type: 'success',
-    description: 'Vos informations ont été mises à jour',
+    description: 'Vos informations ont été mises à jour.',
+  },
+  official_contact_email_verification_not_needed: {
+    type: 'error',
+    description:
+      'Votre appartenance à l’organisation n’a plus besoin d’être vérifiée.',
+  },
+  api_annuaire_error: {
+    type: 'error',
+    description:
+      'Les données Annuaire Service Public de l’organisation, nécessaires pour valider le rattachement, sont indisponibles pour le moment. Merci de réessayer ultérieurement.',
   },
 };
 

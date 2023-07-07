@@ -148,7 +148,7 @@ export const joinOrganization = async ({
     verified_email_domains,
     external_authorized_email_domains,
   } = organization;
-  const { email } = user;
+  const { email, given_name, family_name } = user;
   const domain = getEmailDomain(email);
 
   if (isEntrepriseUnipersonnelle(organization)) {
@@ -198,6 +198,15 @@ export const joinOrganization = async ({
           organization_id,
           user_id,
           verification_type: 'official_contact_domain',
+        });
+      }
+
+      if (isAFreeEmailProvider(contactDomain)) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: null,
+          needs_official_contact_email_verification: true,
         });
       }
     }

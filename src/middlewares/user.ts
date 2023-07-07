@@ -126,13 +126,48 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = async (
   }
 };
 
-export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
+export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     return checkUserHasAtLeastOneOrganizationMiddleware(
+      req,
+      res,
+      async error => {
+        if (error) return next(error);
+
+        const userOrganisations = await getOrganizationsByUserId(
+          req.session.user!.id
+        );
+
+        const organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
+          ({ needs_official_contact_email_verification }) =>
+            needs_official_contact_email_verification
+        );
+
+        if (!isEmpty(organizationThatNeedsOfficialContactEmailVerification)) {
+          return res.redirect(
+            `/users/official-contact-email-verification/${organizationThatNeedsOfficialContactEmailVerification.id}`
+          );
+        }
+
+        return next();
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
       req,
       res,
       async error => {

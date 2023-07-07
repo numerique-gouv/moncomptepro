@@ -14,7 +14,8 @@ type RemoteTemplateSlug =
   | 'verify-email'
   | 'reset-password'
   | 'magic-link'
-  | 'choose-sponsor';
+  | 'choose-sponsor'
+  | 'official-contact-email-verification';
 type LocalTemplateSlug =
   | 'organization-welcome'
   | 'unable-to-auto-join-organization'
@@ -31,6 +32,7 @@ const remoteTemplateSlugToSendinblueTemplateId: {
   'reset-password': 7,
   'magic-link': 29,
   'choose-sponsor': 56,
+  'official-contact-email-verification': 64,
 };
 const defaultTemplateId = 21;
 const hasRemoteTemplate = (
