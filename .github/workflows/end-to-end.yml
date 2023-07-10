@@ -35,7 +35,8 @@ jobs:
     strategy:
       matrix:
         e2e_test:
-          - join_collectivite_territoriale
+          - join_collectivite_territoriale_official_contact_domain
+          - join_collectivite_territoriale_official_contact_email
           - join_org_with_verified_domain
           - signup_entreprise_unipersonnelle
           - join_with_sponsorship
@@ -73,8 +74,14 @@ jobs:
       - run: npm ci
       - run: npm install cypress@12
       - run: npm run migrate up
-      - run: npm run load-ci-fixtures -- scripts/fixtures/${{ matrix.e2e_test }}.sql
+      - run: npm run load-ci-fixtures -- cypress/fixtures/${{ matrix.e2e_test }}.sql
       - run: npm run update-organization-info -- 2000
+      - name: Dotenv Action
+        uses: falti/dotenv-action@v1.0.4
+        with:
+          path: cypress/env/${{ matrix.e2e_test }}.conf
+          export-variables: true
+          keys-case: bypass
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -85,10 +92,6 @@ jobs:
           spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
         env:
           NODE_ENV: production
-          # TODO set only for join_collectivite_territoriale
-          TEST_CONTACT_EMAIL: "34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com"
-          # TODO for join_with_sponsorship only
-          BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP: "13002526500013"
       - run: npm run delete-database
       # Store tests runs in case of failure
       - uses: actions/upload-artifact@v3

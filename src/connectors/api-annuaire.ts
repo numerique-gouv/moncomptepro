@@ -101,7 +101,9 @@ export const getContactEmail = async (
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
-    console.log(`A test email was used instead of ${email}.`);
+    console.log(
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${email}.`
+    );
     return TEST_CONTACT_EMAIL;
   }
 
