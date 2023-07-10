@@ -70,9 +70,10 @@
     "@sinonjs/fake-timers": "^10.0.0",
     "@types/mocha": "^10.0.1",
     "@types/sinonjs__fake-timers": "^8.1.2",
+    "chai": "^4.3.7",
     "concurrently": "^7.6.0",
     "copy-and-watch": "^0.1.6",
-    "cypress-mailslurp": "^1.5.0",
+    "cypress-mailslurp": "^1.7.0",
     "nodemon": "^2.0.20",
     "prettier": "^1.19.1",
     "ts-mocha": "^10.0.0"
