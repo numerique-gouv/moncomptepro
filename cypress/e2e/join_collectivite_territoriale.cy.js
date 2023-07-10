@@ -5,19 +5,19 @@ describe('join organizations', () => {
   before(() => {
     cy.mailslurp().then(mailslurp =>
       mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: '34c5063f-81c0-4d09-9d0b-a7502f844cdf',
+        inboxId: '435f6a4d-df7d-4840-be7b-bc4851b64e91',
       })
     );
     cy.mailslurp().then(mailslurp =>
       mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: '761a72f6-d051-4df5-a733-62e207c4989b',
+        inboxId: '76450610-4dcc-4664-b9ab-1cea869b62b1',
       })
     );
   });
 
   it('join collectivité territoriale with official contact email', function() {
     cy.login(
-      '34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com',
+      '435f6a4d-df7d-4840-be7b-bc4851b64e91@mailslurp.com',
       'password123'
     );
 
@@ -30,7 +30,7 @@ describe('join organizations', () => {
 
   it('join collectivité territoriale with official contact domain', function() {
     cy.login(
-      '761a72f6-d051-4df5-a733-62e207c4989b@mailslurp.com',
+      '76450610-4dcc-4664-b9ab-1cea869b62b1@mailslurp.com',
       'password123'
     );
 
