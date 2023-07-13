@@ -7,13 +7,6 @@ sudo su - postgres
 psql -c 'DROP DATABASE IF EXISTS "api-auth-test";'
 psql -c ' CREATE DATABASE "api-auth-test" WITH OWNER "api-auth";'
 exit
-sudo su - api-auth
-cd /opt/apps/api-auth/current
-export $(cat /etc/api-auth.conf | xargs)
-export DATABASE_URL=postgres://api-auth:api-auth@localhost:5432/api-auth-test
-export PGDATABASE=api-auth-test
-npm run load-ci-fixtures
-exit
 ```
 
 In the MonComptePro virtual machine, run the app on the test database:
@@ -23,14 +16,26 @@ sudo systemctl stop api-auth
 sudo su - api-auth
 cd /opt/apps/api-auth/current
 export $(cat /etc/api-auth.conf | xargs)
+export PGDATABASE=api-auth-test
+export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
+export SENDINBLUE_API_KEY="xxx"
+export MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
+export DO_NOT_SEND_MAIL=False
+export DO_NOT_VALIDATE_MAIL=True
 export DO_NOT_RATE_LIMIT=True
 export DO_NOT_USE_ANNUAIRE_EMAILS=True
-export TEST_CONTACT_EMAIL=34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com
+export $(cat cypress/env/join_with_sponsorship.conf) && rm -rf build && npm run build && npm run start
+```
+
+In the MonComptePro virtual machine, load the fixtures in database:
+
+```bash
+sudo su - api-auth
+cd /opt/apps/api-auth/current
+export $(cat /etc/api-auth.conf | xargs)
+export PGDATABASE=api-auth-test
 export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
-export DO_NOT_SEND_MAIL=False
-export SENDINBLUE_API_KEY="xxx"
-npm run build
-npm run start
+npm run delete-database && npm run load-ci-fixtures cypress/fixtures/join_with_sponsorship.sql && npm run update-organization-info 2000
 ```
 
 On your host, install cypress:
@@ -46,14 +51,4 @@ On your host, run the tests
 export CYPRESS_MAILSLURP_API_KEY=xxx
 export CYPRESS_MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
 cypress open
-```
-
-reset user table
-
-```bash
-sudo su - api-auth
-cd /opt/apps/api-auth/current
-export $(cat /etc/api-auth.conf | xargs)
-psql -d api-auth-test -c 'DELETE FROM users;' && psql -d api-auth-test -f scripts/fixtures.sql
-exit
 ```

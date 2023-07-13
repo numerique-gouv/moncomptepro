@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-
-const apiKey = process.env.DEBOUNCE_API_KEY;
-const doNotValidateMail = process.env.DO_NOT_VALIDATE_MAIL === 'True';
-// we wait just enough to avoid nginx default timeout of 60 seconds
-const REQUEST_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds
+import {
+  DEBOUNCE_API_KEY,
+  DO_NOT_VALIDATE_MAIL,
+  HTTP_CLIENT_TIMEOUT,
+} from '../env';
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
 type DebounceResponse = {
@@ -43,7 +43,7 @@ type EmailDebounceInfo = {
 export const isEmailSafeToSendTransactional = async (
   email: string
 ): Promise<EmailDebounceInfo> => {
-  if (doNotValidateMail) {
+  if (DO_NOT_VALIDATE_MAIL) {
     console.log(`Email address "${email}" not verified.`);
 
     return { isEmailSafeToSend: true };
@@ -56,11 +56,11 @@ export const isEmailSafeToSendTransactional = async (
       },
     }: AxiosResponse<DebounceResponse> = await axios({
       method: 'get',
-      url: `https://api.debounce.io/v1/?email=${email}&api=${apiKey}`,
+      url: `https://api.debounce.io/v1/?email=${email}&api=${DEBOUNCE_API_KEY}`,
       headers: {
         accept: 'application/json',
       },
-      timeout: REQUEST_TIMEOUT,
+      timeout: HTTP_CLIENT_TIMEOUT,
     });
 
     console.log(

@@ -4,17 +4,15 @@ import path from 'path';
 
 import { render } from '../services/renderer';
 import { SendInBlueApiError } from '../errors';
-
-const { SENDINBLUE_API_KEY: apiKey = '' } = process.env;
-
-const doNotSendMail = process.env.DO_NOT_SEND_MAIL === 'True';
+import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from '../env';
 
 type RemoteTemplateSlug =
   | 'join-organization'
   | 'verify-email'
   | 'reset-password'
   | 'magic-link'
-  | 'choose-sponsor';
+  | 'choose-sponsor'
+  | 'official-contact-email-verification';
 type LocalTemplateSlug =
   | 'organization-welcome'
   | 'unable-to-auto-join-organization'
@@ -31,6 +29,7 @@ const remoteTemplateSlugToSendinblueTemplateId: {
   'reset-password': 7,
   'magic-link': 29,
   'choose-sponsor': 56,
+  'official-contact-email-verification': 64,
 };
 const defaultTemplateId = 21;
 const hasRemoteTemplate = (
@@ -91,7 +90,7 @@ export const sendMail = async ({
     data.cc = cc.map(e => ({ email: e }));
   }
 
-  if (doNotSendMail) {
+  if (DO_NOT_SEND_MAIL) {
     console.log(`${template} mail not send to ${to}:`);
     console.log(data);
     return;
@@ -102,7 +101,7 @@ export const sendMail = async ({
       method: 'post',
       url: `https://api.sendinblue.com/v3/smtp/email`,
       headers: {
-        'api-key': apiKey,
+        'api-key': SENDINBLUE_API_KEY,
         'content-type': 'application/json',
         accept: 'application/json',
       },

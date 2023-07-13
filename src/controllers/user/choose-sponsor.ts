@@ -58,7 +58,7 @@ export const getChooseSponsorController = async (
   }
 };
 
-export const postChooseSponsorController = async (
+export const postChooseSponsorMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction

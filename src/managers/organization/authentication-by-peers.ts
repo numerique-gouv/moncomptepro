@@ -17,8 +17,7 @@ import {
   createModeration,
   findPendingModeration,
 } from '../../repositories/moderation';
-
-const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
+import { SUPPORT_EMAIL_ADDRESS } from '../../env';
 
 export const authenticateByPeers = async (
   link: UserOrganizationLink
@@ -76,7 +75,10 @@ export const notifyAllMembers = async ({
   }
 
   // Email organization members list to the user (if he is an internal member)
-  const otherUsers = usersInOrganization.filter(({ email: e }) => e !== email);
+  const otherUsers = usersInOrganization.filter(
+    ({ email: e, authentication_by_peers_type }) =>
+      e !== email && !!authentication_by_peers_type
+  );
   if (!is_external && otherUsers.length > 0) {
     await sendMail({
       to: [email],
@@ -149,8 +151,8 @@ export const getSponsorOptions = async ({
     label: string;
   }[] = organizationUsers
     .filter(
-      ({ is_external, authentication_by_peers_type }) =>
-        !is_external && !!authentication_by_peers_type
+      ({ is_external, verification_type, authentication_by_peers_type }) =>
+        !is_external && !!verification_type && !!authentication_by_peers_type
     )
     .map(({ id, given_name, family_name, job }) => ({
       id,
@@ -181,7 +183,11 @@ export const chooseSponsor = async ({
   }
 
   // The sponsor must be an authenticated internal member.
-  if (!sponsor.authentication_by_peers_type || sponsor.is_external) {
+  if (
+    sponsor.is_external ||
+    !sponsor.verification_type ||
+    !sponsor.authentication_by_peers_type
+  ) {
     throw new NotFoundError();
   }
 

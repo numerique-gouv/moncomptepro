@@ -13,13 +13,14 @@ env:
   PGDATABASE: api-auth-test
   PGHOST: 127.0.0.1
   PGPORT: 5432
+  DATABASE_URL: postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
   SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
   MONCOMPTEPRO_HOST: http://localhost:3000
+  CYPRESS_MONCOMPTEPRO_HOST: http://localhost:3000
   DO_NOT_SEND_MAIL: "False"
   DO_NOT_VALIDATE_MAIL: "True"
   DO_NOT_RATE_LIMIT: "True"
   DO_NOT_USE_ANNUAIRE_EMAILS: "True"
-  TEST_CONTACT_EMAIL: "34c5063f-81c0-4d09-9d0b-a7502f844cdf@mailslurp.com"
   SESSION_COOKIE_SECRET: secret
   DEBOUNCE_API_KEY:
   SENTRY_DSN:
@@ -31,6 +32,15 @@ env:
 
 jobs:
   test:
+    strategy:
+      matrix:
+        e2e_test:
+          - join_collectivite_territoriale_official_contact_domain
+          - join_collectivite_territoriale_official_contact_email
+          - join_org_with_verified_domain
+          - signup_entreprise_unipersonnelle
+          - join_with_sponsorship
+          - join_with_code_sent_to_official_contact_email
     runs-on: ubuntu-20.04
     services:
       redis:
@@ -63,10 +73,16 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm ci
-      - run: npm run load-ci-fixtures
-        env:
-          DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}
       - run: npm install cypress@12
+      - run: npm run migrate up
+      - run: npm run load-ci-fixtures -- cypress/fixtures/${{ matrix.e2e_test }}.sql
+      - run: npm run update-organization-info -- 2000
+      - name: Dotenv Action
+        uses: falti/dotenv-action@v1.0.4
+        with:
+          path: cypress/env/${{ matrix.e2e_test }}.conf
+          export-variables: true
+          keys-case: bypass
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -74,10 +90,10 @@ jobs:
           build: npm run build
           start: npm start
           install: false
+          spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
         env:
           NODE_ENV: production
-          DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}
-          CYPRESS_MONCOMPTEPRO_HOST: ${{ env.MONCOMPTEPRO_HOST }}
+      - run: npm run delete-database
       # Store tests runs in case of failure
       - uses: actions/upload-artifact@v3
         if: failure()

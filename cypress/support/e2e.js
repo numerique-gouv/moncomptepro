@@ -16,12 +16,13 @@
 // Import commands.js using ES2015 syntax:
 import 'cypress-mailslurp';
 
-const host = Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
+const MONCOMPTEPRO_HOST =
+  Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
 
 Cypress.Commands.add('login', (email, password) => {
   cy.session([email, password], () => {
     // Visit the signup page
-    cy.visit(`${host}/users/start-sign-in`);
+    cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
 
     // Sign in with the existing inbox
     cy.get('[name="login"]').type(email);

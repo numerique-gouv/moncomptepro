@@ -49,13 +49,13 @@ export const checkUserIsConnectedMiddleware = async (
   }
 };
 
-export const checkUserIsVerifiedMiddleware = async (
+export const checkUserIsVerifiedMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    return checkUserIsConnectedMiddleware(req, res, async error => {
+) =>
+  checkUserIsConnectedMiddleware(req, res, async error => {
+    try {
       if (error) return next(error);
 
       const {
@@ -74,19 +74,18 @@ export const checkUserIsVerifiedMiddleware = async (
       }
 
       return next();
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+    } catch (error) {
+      next(error);
+    }
+  });
 
-export const checkUserHasPersonalInformationsMiddleware = async (
+export const checkUserHasPersonalInformationsMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    return checkUserIsVerifiedMiddleware(req, res, async error => {
+) =>
+  checkUserIsVerifiedMiddleware(req, res, async error => {
+    try {
       if (error) return next(error);
 
       const { given_name, family_name, phone_number, job } = req.session.user!;
@@ -100,19 +99,18 @@ export const checkUserHasPersonalInformationsMiddleware = async (
       }
 
       return next();
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+    } catch (error) {
+      next(error);
+    }
+  });
 
-export const checkUserHasAtLeastOneOrganizationMiddleware = async (
+export const checkUserHasAtLeastOneOrganizationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    return checkUserHasPersonalInformationsMiddleware(req, res, async error => {
+) =>
+  checkUserHasPersonalInformationsMiddleware(req, res, async error => {
+    try {
       if (error) return next(error);
 
       if (isEmpty(await getOrganizationsByUserId(req.session.user!.id))) {
@@ -120,22 +118,51 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = async (
       }
 
       return next();
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+    } catch (error) {
+      next(error);
+    }
+  });
 
-export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
+export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    return checkUserHasAtLeastOneOrganizationMiddleware(
-      req,
-      res,
-      async error => {
+) =>
+  checkUserHasAtLeastOneOrganizationMiddleware(req, res, async error => {
+    try {
+      if (error) return next(error);
+
+      const userOrganisations = await getOrganizationsByUserId(
+        req.session.user!.id
+      );
+
+      const organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
+        ({ needs_official_contact_email_verification }) =>
+          needs_official_contact_email_verification
+      );
+
+      if (!isEmpty(organizationThatNeedsOfficialContactEmailVerification)) {
+        return res.redirect(
+          `/users/official-contact-email-verification/${organizationThatNeedsOfficialContactEmailVerification.id}`
+        );
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>
+  checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
+    req,
+    res,
+    async error => {
+      try {
         if (error) return next(error);
 
         const userOrganisations = await getOrganizationsByUserId(
@@ -160,40 +187,34 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = async (
         }
 
         return next();
+      } catch (error) {
+        next(error);
       }
-    );
-  } catch (error) {
-    next(error);
-  }
-};
+    }
+  );
 
-export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = async (
+export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  try {
-    return checkUserHasBeenAuthenticatedByPeersMiddleware(
-      req,
-      res,
-      async error => {
-        if (error) return next(error);
+) =>
+  checkUserHasBeenAuthenticatedByPeersMiddleware(req, res, async error => {
+    try {
+      if (error) return next(error);
 
-        const { greetEmailSentFor } = await greetForJoiningOrganization({
-          user_id: req.session.user!.id,
-        });
+      const { greetEmailSentFor } = await greetForJoiningOrganization({
+        user_id: req.session.user!.id,
+      });
 
-        if (greetEmailSentFor) {
-          return res.redirect(`/users/welcome/${greetEmailSentFor}`);
-        }
-
-        return next();
+      if (greetEmailSentFor) {
+        return res.redirect(`/users/welcome/${greetEmailSentFor}`);
       }
-    );
-  } catch (error) {
-    next(error);
-  }
-};
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
 
 // check that user go through all requirements before issuing a session
 export const checkUserSignInRequirementsMiddleware = checkUserHasBeenGreetedForJoiningOrganizationMiddleware;

@@ -3,8 +3,7 @@ import { TooManyRequests } from 'http-errors';
 import { getNewRedisClient } from '../connectors/redis';
 import { NextFunction, Request, Response } from 'express';
 import * as Sentry from '@sentry/node';
-
-const doNotRateLimit = process.env.DO_NOT_RATE_LIMIT === 'True';
+import { DO_NOT_RATE_LIMIT } from '../env';
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -23,7 +22,7 @@ const rateLimiterMiddlewareFactory = (rateLimiter: RateLimiterRedis) => async (
   next: NextFunction
 ) => {
   try {
-    if (!doNotRateLimit) {
+    if (!DO_NOT_RATE_LIMIT) {
       await rateLimiter.consume(req.ip);
     }
     next();
@@ -58,7 +57,7 @@ export const loginRateLimiterMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    if (!doNotRateLimit) {
+    if (!DO_NOT_RATE_LIMIT) {
       if (!req.session.email) {
         // silently fail
         const err = new Error(

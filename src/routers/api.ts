@@ -5,17 +5,10 @@ import {
   postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
 } from '../controllers/api';
-import {
-  apiRateLimiterMiddleware,
-  rateLimiterMiddleware,
-} from '../middlewares/rate-limiter';
+import { apiRateLimiterMiddleware } from '../middlewares/rate-limiter';
 import { HttpError } from 'http-errors';
 import expressBasicAuth from 'express-basic-auth';
-
-const {
-  API_AUTH_USERNAME = 'admin',
-  API_AUTH_PASSWORD = 'admin',
-} = process.env;
+import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../env';
 
 export const apiRouter = () => {
   const apiRouter = Router();

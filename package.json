@@ -6,7 +6,7 @@
     "node": ">=16.17.1"
   },
   "scripts": {
-    "lint": "prettier --write */*.js",
+    "lint": "prettier --write */*.ts",
     "start": "node build/index.js",
     "dev": "concurrently \"npm:watch-js\" \"npm:watch-node\" \"npm:watch-ejs\"",
     "build": "tsc && node-pg-migrate up && ts-node scripts/generate-keys.js && bash -c 'cp -r src/views build/views' && bash -c 'cp node_modules/choices.js/public/assets/{scripts/choices.min.js,styles/choices.min.css} public/' && bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons,utility} public/'",
@@ -14,9 +14,10 @@
     "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
     "migrate": "node-pg-migrate",
     "load-fixtures": " node-pg-migrate up && psql -v ON_ERROR_STOP=1 -f scripts/fixtures.sql && npm run update-organization-info 2000",
-    "load-ci-fixtures": "node-pg-migrate up && psql -v ON_ERROR_STOP=1 -f scripts/ci-fixtures.sql && npm run update-organization-info 2000",
-    "test:lint": "prettier */*.js --list-different",
-    "test": "DO_NOT_VALIDATE_MAIL=False ts-mocha -p tsconfig.json test/*.ts test/*.js",
+    "delete-database": "psql -v ON_ERROR_STOP=1 -f scripts/delete_all.sql",
+    "load-ci-fixtures": "node-pg-migrate up && psql -v ON_ERROR_STOP=1 -f",
+    "test:lint": "prettier */*.ts --list-different",
+    "test": "DO_NOT_VALIDATE_MAIL=False ts-mocha -p tsconfig.json test/*.ts",
     "watch-js": "tsc --watch",
     "watch-node": "nodemon --watch build --ext js,ejs --quiet build/index.js",
     "watch-ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/"
@@ -69,9 +70,10 @@
     "@sinonjs/fake-timers": "^10.0.0",
     "@types/mocha": "^10.0.1",
     "@types/sinonjs__fake-timers": "^8.1.2",
+    "chai": "^4.3.7",
     "concurrently": "^7.6.0",
     "copy-and-watch": "^0.1.6",
-    "cypress-mailslurp": "^1.5.0",
+    "cypress-mailslurp": "^1.7.0",
     "nodemon": "^2.0.20",
     "prettier": "^1.19.1",
     "ts-mocha": "^10.0.0"

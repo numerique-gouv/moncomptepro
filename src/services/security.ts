@@ -1,10 +1,9 @@
-import bcrypt from 'bcryptjs';
-import { hasIn, isEmpty, isString } from 'lodash';
-import { customAlphabet, nanoid } from 'nanoid/async';
-import { parse as parseUrl } from 'url';
-import notificationMessages from '../notification-messages';
-
-const nanoidPin = customAlphabet('0123456789', 10);
+import bcrypt from "bcryptjs";
+import { hasIn, isEmpty, isString } from "lodash";
+import { customAlphabet, nanoid } from "nanoid/async";
+import { parse as parseUrl } from "url";
+import notificationMessages from "../notification-messages";
+import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -103,12 +102,25 @@ export const isNameValid = (name: unknown): name is string => {
   return true;
 };
 
+const nanoidPin = customAlphabet('0123456789', 10);
+
 export const generatePinToken = async () => {
   return await nanoidPin();
 };
 
 export const generateToken = async () => {
   return await nanoid(64);
+};
+
+type dice = '1' | '2' | '3' | '4' | '5' | '6';
+type fiveDices = `${dice}${dice}${dice}${dice}${dice}`
+const nanoidFiveDices = customAlphabet('123456', 5);
+
+export const generateDicewarePassword = async () => {
+  const firstFiveDices = await nanoidFiveDices() as fiveDices;
+  const secondFiveDices = await nanoidFiveDices() as fiveDices;
+
+  return `${dicewareWordlistFrAlt[firstFiveDices]}-${dicewareWordlistFrAlt[secondFiveDices]}`;
 };
 
 export const isSiretValid = (siret: unknown): siret is string => {

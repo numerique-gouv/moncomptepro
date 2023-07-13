@@ -8,10 +8,11 @@ import {
   libelleFromCodeNaf,
 } from './formatters';
 import { InseeNotFoundError, InseeTimeoutError } from '../../errors';
-
-const { INSEE_CONSUMER_KEY, INSEE_CONSUMER_SECRET } = process.env;
-// we wait just enough to avoid nginx default timeout of 60 seconds
-const REQUEST_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds
+import {
+  HTTP_CLIENT_TIMEOUT,
+  INSEE_CONSUMER_KEY,
+  INSEE_CONSUMER_SECRET,
+} from '../../env';
 
 type ApiInseeResponse = {
   etablissement: {
@@ -166,7 +167,7 @@ export const getOrganizationInfo = async (
           username: INSEE_CONSUMER_KEY!,
           password: INSEE_CONSUMER_SECRET!,
         },
-        timeout: REQUEST_TIMEOUT,
+        timeout: HTTP_CLIENT_TIMEOUT,
       }
     );
 
@@ -176,7 +177,7 @@ export const getOrganizationInfo = async (
       `https://api.insee.fr/entreprises/sirene/V3/siret/${siret}`,
       {
         headers: { Authorization: `Bearer ${access_token}` },
-        timeout: REQUEST_TIMEOUT,
+        timeout: HTTP_CLIENT_TIMEOUT,
       }
     );
 

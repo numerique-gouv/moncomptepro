@@ -1,13 +1,10 @@
 import RedisClient from 'ioredis';
-
-const {
-  REDIS_URL: connectionString = 'redis://:@127.0.0.1:6379',
-} = process.env;
+import { REDIS_URL } from '../env';
 
 export const getNewRedisClient = (params = {}) => {
-  const redisClient = new RedisClient(connectionString, params);
+  const redisClient = new RedisClient(REDIS_URL, params);
   redisClient.on('connect', () =>
-    console.log(`Connected to database : ${connectionString}`)
+    console.log(`Connected to database : ${REDIS_URL}`)
   );
 
   return redisClient;

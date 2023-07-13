@@ -43,6 +43,8 @@ export class InvalidTokenError extends Error {}
 
 export class InvalidMagicLinkError extends Error {}
 
+export class ApiAnnuaireError extends Error {}
+
 export class ApiAnnuaireNotFoundError extends Error {}
 
 export class ApiAnnuaireTooManyResultsError extends Error {}
@@ -61,3 +63,5 @@ export class SendInBlueApiError extends Error {
     }
   }
 }
+
+export class OfficialContactEmailVerificationNotNeededError extends Error {}

@@ -40,8 +40,7 @@ import * as Sentry from '@sentry/node';
 import { isEmailValid } from '../../services/security';
 import { markDomainAsVerified } from './main';
 import { sendMail } from '../../connectors/sendinblue';
-
-const { SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr' } = process.env;
+import { SUPPORT_EMAIL_ADDRESS } from '../../env';
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -148,7 +147,7 @@ export const joinOrganization = async ({
     verified_email_domains,
     external_authorized_email_domains,
   } = organization;
-  const { email } = user;
+  const { email, given_name, family_name } = user;
   const domain = getEmailDomain(email);
 
   if (isEntrepriseUnipersonnelle(organization)) {
@@ -198,6 +197,15 @@ export const joinOrganization = async ({
           organization_id,
           user_id,
           verification_type: 'official_contact_domain',
+        });
+      }
+
+      if (isAFreeEmailProvider(contactDomain)) {
+        return await linkUserToOrganization({
+          organization_id,
+          user_id,
+          verification_type: null,
+          needs_official_contact_email_verification: true,
         });
       }
     }
