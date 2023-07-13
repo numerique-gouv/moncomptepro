@@ -45,6 +45,11 @@ describe('join organizations', () => {
       .contains('Jean NotAuthenticated1 - Sbire')
       .should('not.exist');
 
+    // Member that has not been authenticated yet should not be seen
+    cy.get('.choices__list')
+      .contains('Jean NeedsOfficialContactEmailVerification1 - Sbire')
+      .should('not.exist');
+
     // Select second member
     cy.get('[name="search_terms"]').type('Sponsor2{enter}');
 

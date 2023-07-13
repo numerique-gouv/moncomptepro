@@ -24,7 +24,7 @@ export DO_NOT_SEND_MAIL=False
 export DO_NOT_VALIDATE_MAIL=True
 export DO_NOT_RATE_LIMIT=True
 export DO_NOT_USE_ANNUAIRE_EMAILS=True
-export $(cat cypress/env/join_collectivite_territoriale_official_contact_email.conf) && npm run build && npm run start
+export $(cat cypress/env/join_with_sponsorship.conf) && rm -rf build && npm run build && npm run start
 ```
 
 In the MonComptePro virtual machine, load the fixtures in database:
@@ -35,7 +35,7 @@ cd /opt/apps/api-auth/current
 export $(cat /etc/api-auth.conf | xargs)
 export PGDATABASE=api-auth-test
 export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
-npm run delete-database && npm run load-ci-fixtures cypress/fixtures/join_collectivite_territoriale_official_contact_email.sql && npm run update-organization-info 2000
+npm run delete-database && npm run load-ci-fixtures cypress/fixtures/join_with_sponsorship.sql && npm run update-organization-info 2000
 ```
 
 On your host, install cypress:

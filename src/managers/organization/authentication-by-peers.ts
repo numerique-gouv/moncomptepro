@@ -151,8 +151,8 @@ export const getSponsorOptions = async ({
     label: string;
   }[] = organizationUsers
     .filter(
-      ({ is_external, authentication_by_peers_type }) =>
-        !is_external && !!authentication_by_peers_type
+      ({ is_external, verification_type, authentication_by_peers_type }) =>
+        !is_external && !!verification_type && !!authentication_by_peers_type
     )
     .map(({ id, given_name, family_name, job }) => ({
       id,
@@ -183,7 +183,11 @@ export const chooseSponsor = async ({
   }
 
   // The sponsor must be an authenticated internal member.
-  if (!sponsor.authentication_by_peers_type || sponsor.is_external) {
+  if (
+    sponsor.is_external ||
+    !sponsor.verification_type ||
+    !sponsor.authentication_by_peers_type
+  ) {
     throw new NotFoundError();
   }
 
