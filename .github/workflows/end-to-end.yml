@@ -40,6 +40,7 @@ jobs:
           - join_org_with_verified_domain
           - signup_entreprise_unipersonnelle
           - join_with_sponsorship
+          - join_with_code_sent_to_official_contact_email
     runs-on: ubuntu-20.04
     services:
       redis:

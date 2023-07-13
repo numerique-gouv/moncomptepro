@@ -6,6 +6,7 @@ import {
   isSiretValid,
 } from './security';
 import { z } from 'zod';
+import { normalizeOfficialContactEmailVerificationToken } from './normalize-official-contact-email-verification-token';
 
 export const siretSchema = () =>
   z
@@ -45,3 +46,9 @@ export const notificationLabelSchema = () =>
     .string()
     .refine(isNotificationLabelValid)
     .optional();
+
+export const officialContactEmailVerificationTokenSchema = () =>
+  z
+    .string()
+    .min(1)
+    .transform(val => normalizeOfficialContactEmailVerificationToken(val));

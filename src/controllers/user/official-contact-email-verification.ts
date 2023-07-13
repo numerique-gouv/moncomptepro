@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
 import {
   idSchema,
+  officialContactEmailVerificationTokenSchema,
   optionalBooleanSchema,
 } from '../../services/custom-zod-schemas';
 import {
@@ -55,6 +56,7 @@ export const getOfficialContactEmailVerificationController = async (
       newCodeSent: new_code_sent,
       codeSent,
       libelle,
+      organization_id,
     });
   } catch (error) {
     if (error instanceof OfficialContactEmailVerificationNotNeededError) {
@@ -81,7 +83,7 @@ export const postOfficialContactEmailVerificationMiddleware = async (
   try {
     const schema = z.object({
       body: z.object({
-        official_contact_email_verification_token: z.string().min(1),
+        official_contact_email_verification_token: officialContactEmailVerificationTokenSchema(),
       }),
       params: z.object({
         organization_id: idSchema(),

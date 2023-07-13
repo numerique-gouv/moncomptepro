@@ -72,7 +72,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
 
   const official_contact_email_verification_token = await generateDicewarePassword();
 
-  await updateUserOrganizationLink(user_id, organization_id, {
+  await updateUserOrganizationLink(organization_id, user_id, {
     official_contact_email_verification_token,
     official_contact_email_verification_sent_at: new Date(),
   });
@@ -131,7 +131,7 @@ export const verifyOfficialContactEmailToken = async ({
     throw new InvalidTokenError();
   }
 
-  return await updateUserOrganizationLink(user_id, organization_id, {
+  return await updateUserOrganizationLink(organization_id, user_id, {
     needs_official_contact_email_verification: false,
     official_contact_email_verification_token: null,
     official_contact_email_verification_sent_at: null,

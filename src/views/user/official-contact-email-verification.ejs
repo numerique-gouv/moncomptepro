@@ -7,15 +7,13 @@
                     Vérifier votre email
                 </h4>
                 <div class="fr-card__desc">
-                    <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post">
+                    <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
                         <p>
-                            <% if (codeSent) { %>
-                                Pour vérifier votre appartenance à <%= libelle %>,
-                                nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre mairie :
-                                <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
-                                    <%= contactEmail; %>
-                                </span>.
-                            <% } %>
+                            Pour vérifier votre appartenance à l’organisation <%= libelle %>,
+                            nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre mairie :
+                            <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                                <%= contactEmail; %>
+                            </span>.
                         </p>
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
@@ -28,7 +26,8 @@
                             <input class="fr-input" required
                                    type="text" id="official_contact_email_verification_token"
                                    name="official_contact_email_verification_token"
-                                   aria-label="Code secret">
+                                   aria-label="Code secret"
+                                   autocomplete="off">
                         </div>
 
                         <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
