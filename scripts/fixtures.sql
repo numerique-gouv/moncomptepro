@@ -258,6 +258,16 @@ VALUES
    '844e3bff46ebdac9beb18c6cf793dedfdb1776262911b3d927d24871f03e46b38756b5d015d1a693057328d8673408cccf48ef7c5a6e94fa5d101042663fb5b1',
    'oauth_api_gouv_client_secret_particulier',
    ARRAY [
+     'http://particulier.api.localtest.me:3000/auth/api_gouv_particulier/callback',
+     'http://particulier.api.localtest.me:5000/auth/api_gouv_particulier/callback',
+     'https://sandbox.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://sandbox1.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://sandbox2.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://staging.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://staging1.particulier.api.gouv.fr/auth/api_gouv_particulier/callback',
+     'https://staging2.particulier.api.gouv.fr/auth/api_gouv_particulier/callback'
+     ],
+   ARRAY [
      'http://particulier.api.localtest.me:3000/compte/apres-deconnexion',
      'http://particulier.api.localtest.me:5000/compte/apres-deconnexion',
      'https://sandbox.particulier.api.gouv.fr/compte/apres-deconnexion',
@@ -267,17 +277,7 @@ VALUES
      'https://staging1.particulier.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.particulier.api.gouv.fr/compte/apres-deconnexion'
      ],
-   ARRAY [
-     'http://particulier.api.localtest.me:3000',
-     'http://particulier.api.localtest.me:5000',
-     'https://sandbox.particulier.api.gouv.fr/',
-     'https://sandbox1.particulier.api.gouv.fr/',
-     'https://sandbox2.particulier.api.gouv.fr/',
-     'https://staging.particulier.api.gouv.fr/',
-     'https://staging1.particulier.api.gouv.fr/',
-     'https://staging2.particulier.api.gouv.fr/'
-     ],
-   'openid email',
+  'openid email',
    'http://particulier.api.localtest.me',
    'Bouquet de données proposé pour simplifier les démarches administratives.',
    null, null, null, null),
@@ -285,6 +285,16 @@ VALUES
    'API Entreprise',
    '4442bfd8caac8e19ff202d33060edcd248592662d5a8098e28b706ba906fe9e0db95ad336c38248f42896db272990b8dfc969d8b8857101dabf9b2ffe7ec49b9',
    'oauth_api_gouv_client_secret_entreprise',
+   ARRAY [
+     'http://entreprise.api.localtest.me:3000/auth/api_gouv_entreprise/callback',
+     'http://entreprise.api.localtest.me:5000/auth/api_gouv_entreprise/callback',
+     'https://sandbox.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://sandbox1.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://sandbox2.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://staging.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://staging1.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback',
+     'https://staging2.entreprise.api.gouv.fr/auth/api_gouv_entreprise/callback'
+     ],
    ARRAY [
      'http://entreprise.api.localtest.me:3000/compte/apres-deconnexion',
      'http://entreprise.api.localtest.me:5000/compte/apres-deconnexion',
@@ -295,17 +305,7 @@ VALUES
      'https://staging1.entreprise.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.entreprise.api.gouv.fr/compte/apres-deconnexion'
      ],
-   ARRAY [
-     'http://entreprise.api.localtest.me:3000',
-     'http://entreprise.api.localtest.me:5000',
-     'https://sandbox.entreprise.api.gouv.fr/',
-     'https://sandbox1.entreprise.api.gouv.fr/',
-     'https://sandbox2.entreprise.api.gouv.fr/',
-     'https://staging.entreprise.api.gouv.fr/',
-     'https://staging1.entreprise.api.gouv.fr/',
-     'https://staging2.entreprise.api.gouv.fr/'
-     ],
-   'openid email',
+  'openid email',
    'http://entreprise.api.localtest.me',
    'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.',
    null, null, null, null),
