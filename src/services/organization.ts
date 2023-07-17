@@ -23,14 +23,20 @@ export const isEntrepriseUnipersonnelle = ({
   return cat_jur_ok && tra_eff_ok;
 };
 
-export const isCollectiviteTerritoriale = ({
-  cached_libelle_categorie_juridique,
-}: Organization): boolean => {
-  return [
+export const isCollectiviteTerritoriale = (
+  { cached_libelle_categorie_juridique }: Organization,
+  considerCommunauteDeCommunesAsCollectiviteTerritoriale = false
+): boolean => {
+  let cat_jur = [
     'Commune et commune nouvelle',
-    'Communauté de communes',
     'Commune associée et commune déléguée',
-  ].includes(cached_libelle_categorie_juridique || '');
+  ];
+
+  if (considerCommunauteDeCommunesAsCollectiviteTerritoriale) {
+    cat_jur.push('Communauté de communes');
+  }
+
+  return cat_jur.includes(cached_libelle_categorie_juridique || '');
 };
 
 // inspired from https://github.com/etalab/annuaire-entreprises-search-infra/blob/c86bdb34ff6359de3a740ae2f1fa49133ddea362/data_enrichment.py#L104
