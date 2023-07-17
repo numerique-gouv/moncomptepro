@@ -22,10 +22,9 @@ export const mainRouter = (app: Express) => {
     next();
   });
 
-  mainRouter.use(urlencoded({ extended: false }));
-
   mainRouter.get(
     '/',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserSignInRequirementsMiddleware,
     getHomeController
@@ -33,6 +32,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.get(
     '/personal-information',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
@@ -41,6 +41,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.post(
     '/personal-information',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
@@ -50,6 +51,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.get(
     '/manage-organizations',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
@@ -58,6 +60,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.get(
     '/reset-password',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
@@ -66,6 +69,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.get(
     '/help',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     getHelpController
