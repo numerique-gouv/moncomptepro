@@ -87,7 +87,7 @@ app.use(logger);
 
 app.set('trust proxy', 1);
 
-app.use(
+const sessionMiddleware =
   // @ts-ignore
   session({
     store: new RedisStore({
@@ -97,8 +97,15 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: SECURE_COOKIES },
-  })
-);
+  });
+
+// Prevent creation of sessions for API calls on /oauth or /api routes
+app.use((req, res, next) => {
+  if (req.headers.authorization) {
+    return next();
+  }
+  return sessionMiddleware(req, res, next);
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
