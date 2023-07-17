@@ -55,7 +55,8 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
             is_external,
             label,
             is_collectivite_territoriale: isCollectiviteTerritoriale(
-              organization
+              organization,
+              true
             ),
             is_service_public: isServicePublic(organization),
           };
