@@ -200,7 +200,7 @@ export const joinOrganization = async ({
         });
       }
 
-      if (isAFreeEmailProvider(contactDomain)) {
+      if (isAFreeEmailProvider(contactDomain) && isAFreeEmailProvider(domain)) {
         return await linkUserToOrganization({
           organization_id,
           user_id,
