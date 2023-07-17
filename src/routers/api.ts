@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router, urlencoded } from 'express';
 import {
   getOrganizationInfoController,
   postForceJoinOrganizationController,
@@ -12,6 +12,14 @@ import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../env';
 
 export const apiRouter = () => {
   const apiRouter = Router();
+
+  apiRouter.use((req, res, next) => {
+    res.set('Pragma', 'no-cache');
+    res.set('Cache-Control', 'no-cache, no-store');
+    next();
+  });
+
+  apiRouter.use(urlencoded({ extended: false }));
 
   apiRouter.get(
     '/organization-info',
