@@ -1,4 +1,4 @@
-import { findAccount } from './connectors/oidc-account-adapter';
+import { findAccount } from './services/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 import epochTime from './services/epoch-time';
 

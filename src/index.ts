@@ -10,7 +10,7 @@ import { Server } from 'http';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
-import adapter from './connectors/oidc-persistance-redis-adapter';
+import oidcProviderRepository from './repositories/redis/oidc-provider';
 import { getNewRedisClient } from './connectors/redis';
 import { oidcProviderConfiguration } from './oidc-provider-configuration';
 import { getClients } from './repositories/oidc-client';
@@ -123,7 +123,7 @@ let server: Server;
   // @ts-ignore
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
     clients: clientsWithoutNullProperties,
-    adapter,
+    adapter: oidcProviderRepository,
     jwks,
     // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
