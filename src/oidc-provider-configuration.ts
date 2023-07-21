@@ -14,7 +14,7 @@ export const oidcProviderConfiguration = ({
     // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
     openid: ['sub'],
     email: ['email', 'email_verified'],
-    profile: ['family_name', 'given_name', 'updated_at', 'phone_number', 'job'],
+    profile: ['family_name', 'given_name', 'updated_at', 'job'],
     phone: ['phone_number', 'phone_number_verified'],
     organizations: ['organizations'],
     // Additional scopes for AgentConnect use only
