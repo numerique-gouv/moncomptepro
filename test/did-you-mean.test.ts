@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import { getDidYouMeanSuggestion } from '../src/services/did-you-mean';
 
 describe('getDidYouMeanSuggestion', () => {

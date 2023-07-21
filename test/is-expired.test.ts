@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import { isExpired } from '../src/services/is-expired';
 import FakeTimers, { InstalledClock } from '@sinonjs/fake-timers';
 

@@ -1,9 +1,9 @@
+import { assert } from 'chai';
 import {
   isCollectiviteTerritoriale,
   isEntrepriseUnipersonnelle,
   isServicePublic,
 } from '../src/services/organization';
-import assert from 'assert';
 
 const association_org_info: Organization = {
   siret: '83511518900010',

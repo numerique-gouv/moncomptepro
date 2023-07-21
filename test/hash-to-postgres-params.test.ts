@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import { hashToPostgresParams } from '../src/services/hash-to-postgres-params';
 
 describe('hashToPostgresParams', () => {

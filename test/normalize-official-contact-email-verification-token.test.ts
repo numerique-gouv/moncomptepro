@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import { normalizeOfficialContactEmailVerificationToken } from '../src/services/normalize-official-contact-email-verification-token';
 
 describe('normalizeOfficialContactEmailVerificationToken', () => {
