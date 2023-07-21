@@ -6,7 +6,7 @@ import { isEligibleToSponsorship } from '../services/organization';
 import { NotImplemented } from 'http-errors';
 import { getOrganizationsByUserId } from '../managers/organization/main';
 import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
-import { setSelectedOrganizationId } from '../repositories/redis/selected-organization';
+import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -124,7 +124,7 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
     }
   });
 
-export const checkUserHasSelectedAnOrganization = (
+export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -133,16 +133,18 @@ export const checkUserHasSelectedAnOrganization = (
     try {
       if (error) return next(error);
 
-      const userOrganizations = await getOrganizationsByUserId(
+      const selectedOrganizationId = await getSelectedOrganizationId(
         req.session.user!.id
       );
 
-      await setSelectedOrganizationId(
-        req.session.user!.id,
-        userOrganizations[0].id
-      );
+      if (
+        req.session.mustReturnOneOrganizationInPayload &&
+        !selectedOrganizationId
+      ) {
+        return res.redirect('/users/select-organization');
+      }
 
-      next();
+      return next();
     } catch (error) {
       next(error);
     }
@@ -153,7 +155,7 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserHasSelectedAnOrganization(req, res, async error => {
+  checkUserHasSelectedAnOrganizationMiddleware(req, res, async error => {
     try {
       if (error) return next(error);
 

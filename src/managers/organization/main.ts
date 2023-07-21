@@ -13,6 +13,7 @@ import {
   updateUserOrganizationLink,
 } from '../../repositories/organization/setters';
 import { getEmailDomain } from '../../services/uses-a-free-email-provider';
+import { setSelectedOrganizationId } from '../../repositories/redis/selected-organization';
 
 export const getOrganizationsByUserId = findByUserId;
 export const getOrganizationById = findOrganizationById;
@@ -84,4 +85,23 @@ export const markDomainAsVerified = async ({
       }
     )
   );
+};
+
+export const selectOrganization = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const userOrganizations = await getOrganizationsByUserId(user_id);
+  const organization = userOrganizations.find(
+    ({ id }) => id === organization_id
+  );
+
+  if (isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  await setSelectedOrganizationId(user_id, organization_id);
 };

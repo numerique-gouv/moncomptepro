@@ -13,9 +13,10 @@ import {
 } from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
+  checkUserHasAtLeastOneOrganizationMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
-  checkUserHasSelectedAnOrganization,
+  checkUserHasSelectedAnOrganizationMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
@@ -63,6 +64,10 @@ import {
   getOfficialContactEmailVerificationController,
   postOfficialContactEmailVerificationMiddleware,
 } from '../controllers/user/official-contact-email-verification';
+import {
+  getSelectOrganizationController,
+  postSelectOrganizationMiddleware,
+} from '../controllers/user/select-organization';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -234,10 +239,27 @@ export const userRouter = () => {
   );
 
   userRouter.get(
+    '/select-organization',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getSelectOrganizationController
+  );
+
+  userRouter.post(
+    '/select-organization',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postSelectOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get(
     '/official-contact-email-verification/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasSelectedAnOrganization,
+    checkUserHasSelectedAnOrganizationMiddleware,
     getOfficialContactEmailVerificationController
   );
 
@@ -245,7 +267,7 @@ export const userRouter = () => {
     '/official-contact-email-verification/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasSelectedAnOrganization,
+    checkUserHasSelectedAnOrganizationMiddleware,
     postOfficialContactEmailVerificationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController

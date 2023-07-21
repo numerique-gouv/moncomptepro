@@ -227,3 +227,11 @@ body {
 .moncomptepro-notice--email strong {
     color: var(--text-default-info);
 }
+
+.fr-tile.moncomptepro-selectable-tile {
+    box-shadow: inset 0 0 0 1px var(--border-default-grey);;
+}
+
+.fr-tile.moncomptepro-selectable-tile.moncomptepro-selected-tile {
+    box-shadow: inset 0 0 0 1px var(--border-plain-blue-france);;
+}

@@ -15,7 +15,10 @@ import {
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
 } from '../errors';
-import { quitOrganization } from '../managers/organization/main';
+import {
+  quitOrganization,
+  selectOrganization,
+} from '../managers/organization/main';
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
@@ -106,6 +109,13 @@ export const postJoinOrganizationMiddleware = async (
     });
 
     await authenticateByPeers(userOrganizationLink);
+
+    if (req.session.mustReturnOneOrganizationInPayload) {
+      await selectOrganization({
+        user_id: req.session.user!.id,
+        organization_id: userOrganizationLink.organization_id,
+      });
+    }
 
     next();
   } catch (error) {
