@@ -6,6 +6,7 @@ import { isEligibleToSponsorship } from '../services/organization';
 import { NotImplemented } from 'http-errors';
 import { getOrganizationsByUserId } from '../managers/organization/main';
 import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
+import { setSelectedOrganizationId } from '../repositories/redis/selected-organization';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -123,12 +124,36 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
     }
   });
 
-export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
+export const checkUserHasSelectedAnOrganization = (
   req: Request,
   res: Response,
   next: NextFunction
 ) =>
   checkUserHasAtLeastOneOrganizationMiddleware(req, res, async error => {
+    try {
+      if (error) return next(error);
+
+      const userOrganizations = await getOrganizationsByUserId(
+        req.session.user!.id
+      );
+
+      await setSelectedOrganizationId(
+        req.session.user!.id,
+        userOrganizations[0].id
+      );
+
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>
+  checkUserHasSelectedAnOrganization(req, res, async error => {
     try {
       if (error) return next(error);
 

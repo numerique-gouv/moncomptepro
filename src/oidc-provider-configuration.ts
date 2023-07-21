@@ -15,11 +15,21 @@ export const oidcProviderConfiguration = ({
     email: ['email', 'email_verified'],
     profile: ['family_name', 'given_name', 'updated_at', 'job'],
     phone: ['phone_number', 'phone_number_verified'],
+    organization: [
+      'label',
+      'siret',
+      'is_collectivite_territoriale',
+      'is_external',
+      'is_service_public',
+    ],
+    // This scope will be deprecated
     organizations: ['organizations'],
     // Additional scopes for AgentConnect use only
     uid: ['uid'],
     given_name: ['given_name'],
     usual_name: ['usual_name'],
+    siret: ['siret'],
+    is_service_public: ['is_service_public'],
   },
   features: {
     claimsParameter: { enabled: true },
@@ -104,11 +114,15 @@ export const oidcProviderConfiguration = ({
     'openid',
     'email',
     'profile',
+    'organization',
+    // This scope will be deprecated
     'organizations',
     // Additional scopes for AgentConnect use only
     'uid',
     'given_name',
     'usual_name',
+    'siret',
+    'is_service_public',
   ],
   subjectTypes: ['public'],
   ttl: {

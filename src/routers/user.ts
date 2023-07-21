@@ -13,9 +13,9 @@ import {
 } from '../middlewares/rate-limiter';
 import {
   checkEmailInSessionMiddleware,
-  checkUserHasAtLeastOneOrganizationMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
+  checkUserHasSelectedAnOrganization,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
@@ -237,7 +237,7 @@ export const userRouter = () => {
     '/official-contact-email-verification/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasSelectedAnOrganization,
     getOfficialContactEmailVerificationController
   );
 
@@ -245,7 +245,7 @@ export const userRouter = () => {
     '/official-contact-email-verification/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasSelectedAnOrganization,
     postOfficialContactEmailVerificationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
