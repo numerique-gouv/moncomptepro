@@ -1,6 +1,7 @@
 import { findAccount } from './services/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 import epochTime from './services/epoch-time';
+import policy from './services/oidc-policy';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -64,6 +65,9 @@ export const oidcProviderConfiguration = ({
     },
   },
   findAccount,
+  interactions: {
+    policy,
+  },
   // @ts-ignore
   loadExistingGrant: async ctx => {
     // we want to skip the consent

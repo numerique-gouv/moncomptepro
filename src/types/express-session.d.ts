@@ -5,6 +5,7 @@ declare module 'express-session' {
     email?: string;
     interactionId?: string;
     mustReturnOneOrganizationInPayload?: boolean;
+    loginHint?: string;
     referer?: string;
     user?: User;
   }

@@ -4,6 +4,7 @@ import { isCollectiviteTerritoriale, isServicePublic } from './organization';
 import { findByUserId as getUsersOrganizations } from '../repositories/organization/getters';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
 import { mustReturnOneOrganizationInPayload } from './must-return-one-organization-in-payload';
+import * as Sentry from '@sentry/node';
 
 export const findAccount = async (ctx: any, sub: string, token: any) => {
   const user = await findUserById(parseInt(sub, 10));
@@ -44,7 +45,17 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         const selectedOrganizationId = await getSelectedOrganizationId(id);
 
         if (selectedOrganizationId === null) {
-          throw Error('selectedOrganization should be set');
+          const err = Error('selectedOrganizationId should be set');
+          // This Error will be silently swallowed by oidc-provider.
+          // We add additional logs to keep traces.
+          console.error(err);
+          Sentry.captureException(err);
+          // this will result in a 400 Bad Request
+          // Response: {
+          //    "error": "invalid_grant",
+          //    "error_description": "grant request is invalid"
+          // }
+          throw err;
         }
 
         const organization = organizations.find(
@@ -52,7 +63,11 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         );
 
         if (isEmpty(organization)) {
-          throw Error('organization should be set');
+          // see comments on above error management
+          const err = Error('organization should be set');
+          console.error(err);
+          Sentry.captureException(err);
+          throw err;
         }
 
         return {
