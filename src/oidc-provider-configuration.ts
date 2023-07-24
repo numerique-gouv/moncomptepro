@@ -1,7 +1,6 @@
-import { toPairs } from 'lodash';
 import { findAccount } from './connectors/oidc-account-adapter';
-import epochTime from './services/epoch-time';
 import { renderWithEjsLayout } from './services/renderer';
+import epochTime from './services/epoch-time';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -59,35 +58,39 @@ export const oidcProviderConfiguration = ({
   loadExistingGrant: async ctx => {
     // we want to skip the consent
     // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
+    // We updated the function to ensure it always return a grant.
+    // As a consequence, the consent prompt should never be requested afterward.
 
-    // keep grant expiry aligned with session expiry
-    // to prevent consent prompt being requested when grant expires
-    await Promise.all(
-      // @ts-ignore
-      toPairs(ctx.oidc.session.authorizations).map(async ([, { grantId }]) => {
-        const grant = await ctx.oidc.provider.Grant.find(grantId);
-        // this aligns the Grant ttl with that of the current session
-        // if the same Grant is used for multiple sessions, or is set
-        // to never expire, you probably do not want this in your code
+    // The grant id never comes from consent results so we simplified this line
+    const grantId = ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
+
+    let grant;
+
+    if (grantId) {
+      grant = await ctx.oidc.provider.Grant.find(grantId);
+      // if the grant has expired, grant can be undefined at this point.
+      if (grant) {
+        // keep grant expiry aligned with session expiry to prevent consent
+        // prompt being requested when grant is about to expires.
+        // The original code is overkill as session length is extended on every
+        // interaction.
         grant.exp = epochTime() + sessionTtlInSeconds;
         await grant.save();
-      })
-    );
+      }
+    }
 
-    const grantId = ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
-    if (grantId) {
-      return await ctx.oidc.provider.Grant.find(grantId);
-    } else {
-      const grant = new ctx.oidc.provider.Grant({
+    if (!grant) {
+      grant = new ctx.oidc.provider.Grant({
         clientId: ctx.oidc.client.clientId,
         accountId: ctx.oidc.session.accountId,
       });
-
-      grant.addOIDCScope(ctx.oidc.params.scope);
-      await grant.save();
-
-      return grant;
     }
+
+    // event existing grant should be updated, as requested scopes might
+    // be different
+    grant.addOIDCScope(ctx.oidc.params.scope);
+    await grant.save();
+    return grant;
   },
   pkce: { required: () => false },
   routes: {
