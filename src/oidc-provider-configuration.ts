@@ -1,6 +1,9 @@
-import { findAccount } from './connectors/oidc-account-adapter';
+import { findAccount } from './services/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 import epochTime from './services/epoch-time';
+import policy from './services/oidc-policy';
+import { deleteSelectedOrganizationId } from './repositories/redis/selected-organization';
+import { isEmpty } from 'lodash';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -15,11 +18,21 @@ export const oidcProviderConfiguration = ({
     email: ['email', 'email_verified'],
     profile: ['family_name', 'given_name', 'updated_at', 'job'],
     phone: ['phone_number', 'phone_number_verified'],
+    organization: [
+      'label',
+      'siret',
+      'is_collectivite_territoriale',
+      'is_external',
+      'is_service_public',
+    ],
+    // This scope will be deprecated
     organizations: ['organizations'],
     // Additional scopes for AgentConnect use only
     uid: ['uid'],
     given_name: ['given_name'],
     usual_name: ['usual_name'],
+    siret: ['siret'],
+    is_service_public: ['is_service_public'],
   },
   features: {
     claimsParameter: { enabled: true },
@@ -31,6 +44,9 @@ export const oidcProviderConfiguration = ({
       enabled: true,
       // @ts-ignore
       logoutSource: async (ctx, form) => {
+        if (!isEmpty(ctx.req.session.user)) {
+          await deleteSelectedOrganizationId(ctx.req.session.user.id);
+        }
         ctx.req.session.user = null;
         const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
@@ -48,12 +64,18 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // We nullify the express session here too to make sure user is logged out from express.
+        if (!isEmpty(ctx.req.session.user)) {
+          await deleteSelectedOrganizationId(ctx.req.session.user.id);
+        }
         ctx.req.session.user = null;
         ctx.redirect('/users/start-sign-in/?notification=logout_success');
       },
     },
   },
   findAccount,
+  interactions: {
+    policy,
+  },
   // @ts-ignore
   loadExistingGrant: async ctx => {
     // we want to skip the consent
@@ -93,6 +115,7 @@ export const oidcProviderConfiguration = ({
     return grant;
   },
   pkce: { required: () => false },
+  responseTypes: ['code'],
   routes: {
     authorization: '/authorize',
     token: '/token',
@@ -104,11 +127,15 @@ export const oidcProviderConfiguration = ({
     'openid',
     'email',
     'profile',
+    'organization',
+    // This scope will be deprecated
     'organizations',
     // Additional scopes for AgentConnect use only
     'uid',
     'given_name',
     'usual_name',
+    'siret',
+    'is_service_public',
   ],
   subjectTypes: ['public'],
   ttl: {

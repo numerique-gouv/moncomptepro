@@ -75,31 +75,18 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 ```json
 {
-  "email": "user@red-needles-sarl.com",
+  "sub": "154",
+  "email": "jean.valjean-mairie@wanadoo.fr",
   "email_verified": true,
   "family_name": "Valjean",
   "given_name": "Jean",
-  "job": "Senior costumer experience squad leader",
-  "organizations": [
-    {
-      "id": 16,
-      "is_collectivite_territoriale": true,
-      "is_external": true,
-      "is_service_public": true,
-      "label": "Commune de les martres sur morge - Mairie",
-      "siret": "21630215800011"
-    },
-    {
-      "id": 17,
-      "is_collectivite_territoriale": false,
-      "is_external": false,
-      "is_service_public": false,
-      "label": "Red needles SARL",
-      "siret": "83951732300011"
-    }
-  ],
-  "sub": "154",
-  "updated_at": "2023-06-15T16:17:05.958Z"
+  "job": "Secrétaire de mairie",
+  "updated_at": "2023-06-15T16:17:05.958Z",
+  "label": "Commune de les martres sur morge - Mairie",
+  "siret": "21630215800011",
+  "is_collectivite_territoriale": true,
+  "is_service_public": true,
+  "is_external": true
 }
 ```
 

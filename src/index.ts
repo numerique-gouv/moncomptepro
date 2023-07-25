@@ -10,7 +10,7 @@ import { Server } from 'http';
 import morgan from 'morgan';
 import Provider from 'oidc-provider';
 import path from 'path';
-import adapter from './connectors/oidc-persistance-redis-adapter';
+import oidcProviderRepository from './repositories/redis/oidc-provider';
 import { getNewRedisClient } from './connectors/redis';
 import { oidcProviderConfiguration } from './oidc-provider-configuration';
 import { getClients } from './repositories/oidc-client';
@@ -34,9 +34,8 @@ import {
   SECURE_COOKIES,
   SENTRY_DSN,
   SESSION_COOKIE_SECRET,
+  SESSION_MAX_AGE_IN_SECONDS,
 } from './env';
-
-export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
 const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
@@ -92,11 +91,15 @@ const sessionMiddleware =
   session({
     store: new RedisStore({
       client: getNewRedisClient(),
+      prefix: 'mcp:session:',
     }),
     secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: SECURE_COOKIES },
+    cookie: {
+      maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
+      secure: SECURE_COOKIES,
+    },
   });
 
 // Prevent creation of sessions for API calls on /oauth or /api routes
@@ -123,7 +126,7 @@ let server: Server;
   // @ts-ignore
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
     clients: clientsWithoutNullProperties,
-    adapter,
+    adapter: oidcProviderRepository,
     jwks,
     // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
@@ -143,17 +146,17 @@ let server: Server;
     },
     cookies: {
       names: {
-        session: 'api_gouv_session',
-        interaction: 'api_gouv_interaction',
-        resume: 'api_gouv_interaction_resume',
-        state: 'api_gouv_state',
+        session: 'moncomptepro_session',
+        interaction: 'moncomptepro_interaction',
+        resume: 'moncomptepro_interaction_resume',
+        state: 'moncomptepro_state',
       },
       long: { overwrite: true, signed: true, secure: SECURE_COOKIES },
       short: { overwrite: true, signed: true, secure: SECURE_COOKIES },
       keys: [SESSION_COOKIE_SECRET],
     },
     ...oidcProviderConfiguration({
-      sessionTtlInSeconds: sessionMaxAgeInSeconds,
+      sessionTtlInSeconds: SESSION_MAX_AGE_IN_SECONDS,
     }),
   });
   oidcProvider.proxy = true;

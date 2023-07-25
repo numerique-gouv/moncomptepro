@@ -6,6 +6,7 @@ import { isEligibleToSponsorship } from '../services/organization';
 import { NotImplemented } from 'http-errors';
 import { getOrganizationsByUserId } from '../managers/organization/main';
 import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
+import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -123,7 +124,7 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
     }
   });
 
-export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
+export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -132,14 +133,53 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
     try {
       if (error) return next(error);
 
+      const selectedOrganizationId = await getSelectedOrganizationId(
+        req.session.user!.id
+      );
+
+      if (
+        req.session.mustReturnOneOrganizationInPayload &&
+        !selectedOrganizationId
+      ) {
+        return res.redirect('/users/select-organization');
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>
+  checkUserHasSelectedAnOrganizationMiddleware(req, res, async error => {
+    try {
+      if (error) return next(error);
+
       const userOrganisations = await getOrganizationsByUserId(
         req.session.user!.id
       );
 
-      const organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
-        ({ needs_official_contact_email_verification }) =>
-          needs_official_contact_email_verification
-      );
+      let organizationThatNeedsOfficialContactEmailVerification;
+      if (req.session.mustReturnOneOrganizationInPayload) {
+        const selectedOrganizationId = await getSelectedOrganizationId(
+          req.session.user!.id
+        );
+
+        organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
+          ({ id, needs_official_contact_email_verification }) =>
+            needs_official_contact_email_verification &&
+            id === selectedOrganizationId
+        );
+      } else {
+        organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
+          ({ needs_official_contact_email_verification }) =>
+            needs_official_contact_email_verification
+        );
+      }
 
       if (!isEmpty(organizationThatNeedsOfficialContactEmailVerification)) {
         return res.redirect(
@@ -169,9 +209,21 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
           req.session.user!.id
         );
 
-        const organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
-          ({ authentication_by_peers_type }) => !authentication_by_peers_type
-        );
+        let organizationThatNeedsAuthenticationByPeers;
+        if (req.session.mustReturnOneOrganizationInPayload) {
+          const selectedOrganizationId = await getSelectedOrganizationId(
+            req.session.user!.id
+          );
+
+          organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
+            ({ id, authentication_by_peers_type }) =>
+              !authentication_by_peers_type && id === selectedOrganizationId
+          );
+        } else {
+          organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
+            ({ authentication_by_peers_type }) => !authentication_by_peers_type
+          );
+        }
 
         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
           if (
@@ -202,12 +254,35 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
     try {
       if (error) return next(error);
 
-      const { greetEmailSentFor } = await greetForJoiningOrganization({
-        user_id: req.session.user!.id,
-      });
+      const userOrganisations = await getOrganizationsByUserId(
+        req.session.user!.id
+      );
 
-      if (greetEmailSentFor) {
-        return res.redirect(`/users/welcome/${greetEmailSentFor}`);
+      let organizationThatNeedsGreetings;
+      if (req.session.mustReturnOneOrganizationInPayload) {
+        const selectedOrganizationId = await getSelectedOrganizationId(
+          req.session.user!.id
+        );
+
+        organizationThatNeedsGreetings = userOrganisations.find(
+          ({ id, has_been_greeted }) =>
+            !has_been_greeted && id === selectedOrganizationId
+        );
+      } else {
+        organizationThatNeedsGreetings = userOrganisations.find(
+          ({ id, has_been_greeted }) => !has_been_greeted
+        );
+      }
+
+      if (!isEmpty(organizationThatNeedsGreetings)) {
+        await greetForJoiningOrganization({
+          user_id: req.session.user!.id,
+          organization_id: organizationThatNeedsGreetings.id,
+        });
+
+        return res.redirect(
+          `/users/welcome/${organizationThatNeedsGreetings.id}`
+        );
       }
 
       return next();

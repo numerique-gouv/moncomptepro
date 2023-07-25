@@ -16,6 +16,7 @@ import {
   checkUserHasAtLeastOneOrganizationMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
+  checkUserHasSelectedAnOrganizationMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
@@ -63,6 +64,10 @@ import {
   getOfficialContactEmailVerificationController,
   postOfficialContactEmailVerificationMiddleware,
 } from '../controllers/user/official-contact-email-verification';
+import {
+  getSelectOrganizationController,
+  postSelectOrganizationMiddleware,
+} from '../controllers/user/select-organization';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -234,10 +239,27 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    '/official-contact-email-verification/:organization_id',
+    '/select-organization',
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getSelectOrganizationController
+  );
+
+  userRouter.post(
+    '/select-organization',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
+    postSelectOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+
+  userRouter.get(
+    '/official-contact-email-verification/:organization_id',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasSelectedAnOrganizationMiddleware,
     getOfficialContactEmailVerificationController
   );
 
@@ -245,7 +267,7 @@ export const userRouter = () => {
     '/official-contact-email-verification/:organization_id',
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserHasSelectedAnOrganizationMiddleware,
     postOfficialContactEmailVerificationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController

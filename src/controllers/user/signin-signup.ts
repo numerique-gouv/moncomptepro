@@ -20,10 +20,6 @@ export const getStartSignInController = async (
   try {
     const schema = z.object({
       query: z.object({
-        login_hint: z
-          .string()
-          .min(1)
-          .optional(),
         did_you_mean: z
           .string()
           .min(1)
@@ -32,12 +28,12 @@ export const getStartSignInController = async (
     });
 
     const {
-      query: { login_hint, did_you_mean: didYouMean },
+      query: { did_you_mean: didYouMean },
     } = await schema.parseAsync({
       query: req.query,
     });
 
-    const loginHint = login_hint || req.session.email;
+    const loginHint = req.session.loginHint || req.session.email;
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === 'invalid_email';

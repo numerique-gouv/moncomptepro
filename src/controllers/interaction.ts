@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash';
 import { NextFunction, Request, Response } from 'express';
+import { mustReturnOneOrganizationInPayload } from '../services/must-return-one-organization-in-payload';
 
 export const interactionStartControllerFactory = (oidcProvider: any) => async (
   req: Request,
@@ -9,20 +9,21 @@ export const interactionStartControllerFactory = (oidcProvider: any) => async (
   try {
     const {
       uid: interactionId,
-      params: { login_hint },
+      params: { login_hint, scope },
       prompt,
     } = await oidcProvider.interactionDetails(req, res);
 
     req.session.interactionId = interactionId;
+    req.session.mustReturnOneOrganizationInPayload = mustReturnOneOrganizationInPayload(
+      scope
+    );
 
-    if (prompt.name === 'login') {
-      if (!isEmpty(req.session.user)) {
-        return res.redirect(`/interaction/${interactionId}/login`);
-      }
+    if (login_hint) {
+      req.session.loginHint = login_hint;
+    }
 
-      return res.redirect(
-        `/users/start-sign-in${login_hint ? `?login_hint=${login_hint}` : ''}`
-      );
+    if (prompt.name === 'login' || prompt.name === 'select-organization') {
+      return res.redirect(`/interaction/${interactionId}/login`);
     }
 
     return next(new Error(`unknown_interaction_name ${prompt.name}`));
@@ -52,6 +53,8 @@ export const interactionEndControllerFactory = (oidcProvider: any) => async (
     };
 
     req.session.interactionId = undefined;
+    req.session.mustReturnOneOrganizationInPayload = undefined;
+    req.session.loginHint = undefined;
 
     await oidcProvider.interactionFinished(req, res, result);
   } catch (error) {

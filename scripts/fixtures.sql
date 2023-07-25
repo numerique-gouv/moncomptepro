@@ -249,7 +249,7 @@ VALUES
      'http://localhost:3001',
      'https://datapass-development.api.gouv.fr'
      ],
-   'openid email profile phone organizations',
+   'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
    'Centralisez vos demandes d’habilitations juridiques pour accéder aux données et services en accès restreint.',
    null, null, null, null),
@@ -319,7 +319,7 @@ VALUES
    ARRAY [
      'https://grist.dev.incubateur.anct.gouv.fr'
      ],
-   'openid email organizations',
+   'openid email organization organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
    'Saisir et manipuler collaborativement les données.',
    null, null, null, null),
@@ -335,7 +335,7 @@ VALUES
      'http://localhost:3000/api/auth/mon-compte-pro/logout-callback',
      'https://test.annuaire-entreprises.data.gouv.fr/api/auth/mon-compte-pro/logout-callback'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'http://localhost:3000/connexion/agent-public',
    'Accédez à l’espace agent public sur l’Annuaire des Entreprises.',
    null, null, null, null),
@@ -350,7 +350,7 @@ VALUES
    ARRAY [
      'https://keycloak.lab.aveyron.fr'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'https://keycloak.lab.aveyron.fr',
    'Authentifie les partenaires du Département de l’Aveyron',
    null, null, null, null),
@@ -404,7 +404,7 @@ VALUES
       'http://localhost:1337/api/oidc/logout',
       'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout'
     ],
-    'openid email profile organizations',
+    'openid email profile organization organizations',
     'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
     'Accès à l’interface d’administration de l’annuaire pour les agents des communes',
    null, null, null, null),
@@ -433,7 +433,7 @@ VALUES
      'http://localhost:9009/auth/callback'
      ],
    ARRAY []::varchar[],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'http://localhost:9009/',
    'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.',
    null, null, null, null),
@@ -451,7 +451,7 @@ VALUES
      'https://ma-cantine-staging.cleverapps.io/signout-callback-oidc',
      'https://ma-cantine-demo.cleverapps.io/signout-callback-oidc'
      ],
-   'openid email profile phone organizations',
+   'openid email profile phone organization organizations',
    'https://ma-cantine-staging.cleverapps.io/',
    'Mieux manger de la crèche à l’EHPAD.',
    null, null, null, null),
@@ -475,7 +475,7 @@ VALUES
      'https://egapro-preprod.dev.fabrique.social.gouv.fr',
      'https://egapro-master.dev.fabrique.social.gouv.fr'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
    'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.',
    null, null, null, null),
@@ -491,7 +491,7 @@ VALUES
      'https://umap.dev.incubateur.anct.gouv.fr',
      'http://localhost:8020'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'https://umap.dev.incubateur.anct.gouv.fr',
    'Créer des cartes en ligne facilement.',
    null, null, null, null),
@@ -505,7 +505,7 @@ VALUES
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
    ],
-   'openid uid given_name usual_name email phone',
+   'openid uid given_name usual_name email phone siret',
    'https://agentconnect.gouv.fr/',
    'Dispositif d’identification des agents de la fonction publique.',
    'ES256', 'ES256', 'ES256', 'ES256'),
@@ -519,7 +519,7 @@ VALUES
    ARRAY [
      'http://localhost:3000'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'http://localhost:3000',
    'Permettre une mise en ligne facile, rapide et respectant les critères de qualité de l’Incubateur des Territoires.',
    null, null, null, null),
@@ -535,7 +535,7 @@ VALUES
    ARRAY [
      'http://10.59.128.114:8004/'
      ],
-   'openid email profile organizations',
+   'openid email profile organization organizations',
    'http://10.59.128.114:8004/',
    'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF.',
    null, null, null, null),
