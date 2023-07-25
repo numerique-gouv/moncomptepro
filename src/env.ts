@@ -29,3 +29,6 @@ export const DO_NOT_RATE_LIMIT = process.env.DO_NOT_RATE_LIMIT === 'True';
 
 // we wait just enough to avoid nginx default timeout of 60 seconds
 export const HTTP_CLIENT_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds;
+export const SESSION_MAX_AGE_IN_SECONDS = process.env.SESSION_MAX_AGE_IN_SECONDS
+  ? parseInt(process.env.SESSION_MAX_AGE_IN_SECONDS, 10)
+  : 1 * 24 * 60 * 60; // 1 day in seconds

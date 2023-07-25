@@ -34,9 +34,8 @@ import {
   SECURE_COOKIES,
   SENTRY_DSN,
   SESSION_COOKIE_SECRET,
+  SESSION_MAX_AGE_IN_SECONDS,
 } from './env';
-
-export const sessionMaxAgeInSeconds = 1 * 24 * 60 * 60; // 1 day in seconds
 
 const jwks = require(JWKS_PATH);
 const RedisStore = connectRedis(session);
@@ -96,7 +95,10 @@ const sessionMiddleware =
     secret: [SESSION_COOKIE_SECRET],
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: sessionMaxAgeInSeconds * 1000, secure: SECURE_COOKIES },
+    cookie: {
+      maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
+      secure: SECURE_COOKIES,
+    },
   });
 
 // Prevent creation of sessions for API calls on /oauth or /api routes
@@ -153,7 +155,7 @@ let server: Server;
       keys: [SESSION_COOKIE_SECRET],
     },
     ...oidcProviderConfiguration({
-      sessionTtlInSeconds: sessionMaxAgeInSeconds,
+      sessionTtlInSeconds: SESSION_MAX_AGE_IN_SECONDS,
     }),
   });
   oidcProvider.proxy = true;

@@ -2,6 +2,8 @@ import { findAccount } from './services/oidc-account-adapter';
 import { renderWithEjsLayout } from './services/renderer';
 import epochTime from './services/epoch-time';
 import policy from './services/oidc-policy';
+import { deleteSelectedOrganizationId } from './repositories/redis/selected-organization';
+import { isEmpty } from 'lodash';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -42,6 +44,9 @@ export const oidcProviderConfiguration = ({
       enabled: true,
       // @ts-ignore
       logoutSource: async (ctx, form) => {
+        if (!isEmpty(ctx.req.session.user)) {
+          await deleteSelectedOrganizationId(ctx.req.session.user.id);
+        }
         ctx.req.session.user = null;
         const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
@@ -59,6 +64,9 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // We nullify the express session here too to make sure user is logged out from express.
+        if (!isEmpty(ctx.req.session.user)) {
+          await deleteSelectedOrganizationId(ctx.req.session.user.id);
+        }
         ctx.req.session.user = null;
         ctx.redirect('/users/start-sign-in/?notification=logout_success');
       },
