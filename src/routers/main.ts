@@ -9,7 +9,7 @@ import {
   postPersonalInformationsController,
 } from '../controllers/main';
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
-import { checkUserSignInRequirementsMiddleware } from '../middlewares/user';
+import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/user';
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
 
 export const mainRouter = (app: Express) => {
@@ -26,7 +26,7 @@ export const mainRouter = (app: Express) => {
     '/',
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserSignInRequirementsMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
     getHomeController
   );
 
@@ -35,7 +35,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserSignInRequirementsMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
     getPersonalInformationsController
   );
 
@@ -45,7 +45,7 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserSignInRequirementsMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
     postPersonalInformationsController
   );
 
@@ -54,7 +54,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserSignInRequirementsMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
     getManageOrganizationsController
   );
 
@@ -63,7 +63,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserSignInRequirementsMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
     getResetPasswordController
   );
 
