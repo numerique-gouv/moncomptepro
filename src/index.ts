@@ -91,6 +91,7 @@ const sessionMiddleware =
   session({
     store: new RedisStore({
       client: getNewRedisClient(),
+      prefix: 'mcp:session:',
     }),
     secret: [SESSION_COOKIE_SECRET],
     resave: false,
@@ -145,10 +146,10 @@ let server: Server;
     },
     cookies: {
       names: {
-        session: 'api_gouv_session',
-        interaction: 'api_gouv_interaction',
-        resume: 'api_gouv_interaction_resume',
-        state: 'api_gouv_state',
+        session: 'moncomptepro_session',
+        interaction: 'moncomptepro_interaction',
+        resume: 'moncomptepro_interaction_resume',
+        state: 'moncomptepro_state',
       },
       long: { overwrite: true, signed: true, secure: SECURE_COOKIES },
       short: { overwrite: true, signed: true, secure: SECURE_COOKIES },
