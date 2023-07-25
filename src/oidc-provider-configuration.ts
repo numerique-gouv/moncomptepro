@@ -115,6 +115,7 @@ export const oidcProviderConfiguration = ({
     return grant;
   },
   pkce: { required: () => false },
+  responseTypes: ['code'],
   routes: {
     authorization: '/authorize',
     token: '/token',
