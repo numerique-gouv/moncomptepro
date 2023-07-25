@@ -99,22 +99,21 @@ export const notifyAllMembers = async ({
 };
 export const greetForJoiningOrganization = async ({
   user_id,
+  organization_id,
 }: {
   user_id: number;
-}): Promise<{ greetEmailSentFor: number | null }> => {
+  organization_id: number;
+}) => {
   const userOrganisations = await getOrganizationsByUserId(user_id);
-
-  const organizationThatNeedsGreetings = userOrganisations.find(
-    ({ has_been_greeted }) => !has_been_greeted
+  const organization = userOrganisations.find(
+    ({ id }) => id === organization_id
   );
 
-  const { given_name, family_name, email } = (await findUserById(user_id))!;
-
-  if (isEmpty(organizationThatNeedsGreetings)) {
-    return { greetEmailSentFor: null };
+  if (isEmpty(organization)) {
+    throw new NotFoundError();
   }
 
-  const { id: organization_id } = organizationThatNeedsGreetings;
+  const { given_name, family_name, email } = (await findUserById(user_id))!;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -124,11 +123,9 @@ export const greetForJoiningOrganization = async ({
     params: { given_name, family_name, email },
   });
 
-  await updateUserOrganizationLink(organization_id, user_id, {
+  return await updateUserOrganizationLink(organization_id, user_id, {
     has_been_greeted: true,
   });
-
-  return { greetEmailSentFor: organization_id };
 };
 export const getSponsorOptions = async ({
   user_id,
