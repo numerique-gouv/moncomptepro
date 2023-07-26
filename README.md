@@ -70,6 +70,12 @@ Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations,
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
+- 
+À noter que les seuls périmètres de données (scope) ouverts aux services en lignes sont les suivants :
+- `openid` (données : sub)
+- `email` (données : email, email_verified)
+- `profile` (données : family_name, given_name, updated_at, job)
+- `organization` (données : label, siret, is_collectivite_territoriale, is_external, is_service_public)
 
 #### Exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID
 
