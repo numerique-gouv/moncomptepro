@@ -519,7 +519,7 @@ VALUES
    ARRAY [
      'http://localhost:3000'
      ],
-   'openid email profile organization organizations',
+   'openid email profile organization',
    'http://localhost:3000',
    'Permettre une mise en ligne facile, rapide et respectant les critères de qualité de l’Incubateur des Territoires.',
    null, null, null, null),
@@ -586,7 +586,7 @@ VALUES
      'https://dev.inclusion-numerique.anct.gouv.fr/api/auth/callback/moncomptepro'
      ],
    ARRAY []::varchar[],
-   'openid profile email',
+   'openid email profile organization',
    'https://dev.inclusion-numerique.anct.gouv.fr',
    'Œuvrer Ensemble pour un Numérique Inclusif.',
    null, null, null, null)
