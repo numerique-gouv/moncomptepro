@@ -576,6 +576,19 @@ VALUES
    'openid profile email',
    'https://outline-operateur.osc-secnum-fr1.scalingo.io/',
    'La base de connaissances de votre équipe.',
+   null, null, null, null),
+  (20,
+   'France Numerique Ensemble',
+   '1e6a98e5eb16c65db76c9261f792b19f71157ac427605121eb301c00798ecafbda1ff5cb20bdda0fcc7e6792197e580212d649fb4700b98725f8918d2938fbbd',
+   'e5431cbc7ad6936614ac5a5715d17f3ce5aeb8d3034561a9d425e1091c216239f0ee6f571d415d9c23d81d98b41fc0feaf1644dff96127f198b3193ecd72c875',
+   ARRAY [
+     'http://localhost:3000/api/auth/callback/moncomptepro',
+     'https://dev.inclusion-numerique.anct.gouv.fr/api/auth/callback/moncomptepro'
+     ],
+   ARRAY []::varchar[],
+   'openid profile email',
+   'https://dev.inclusion-numerique.anct.gouv.fr',
+   'Œuvrer Ensemble pour un Numérique Inclusif.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
