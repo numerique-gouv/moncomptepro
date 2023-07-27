@@ -335,7 +335,7 @@ VALUES
      'http://localhost:3000/api/auth/mon-compte-pro/logout-callback',
      'https://test.annuaire-entreprises.data.gouv.fr/api/auth/mon-compte-pro/logout-callback'
      ],
-   'openid email profile organization organizations',
+   'openid email profile organization',
    'http://localhost:3000/connexion/agent-public',
    'Accédez à l’espace agent public sur l’Annuaire des Entreprises.',
    null, null, null, null),
