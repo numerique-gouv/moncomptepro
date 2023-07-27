@@ -433,7 +433,7 @@ VALUES
      'http://localhost:9009/auth/callback'
      ],
    ARRAY []::varchar[],
-   'openid email profile organization organizations',
+   'openid email profile organization',
    'http://localhost:9009/',
    'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.',
    null, null, null, null),
