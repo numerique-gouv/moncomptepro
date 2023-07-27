@@ -491,7 +491,7 @@ VALUES
      'https://umap.dev.incubateur.anct.gouv.fr',
      'http://localhost:8020'
      ],
-   'openid email profile organization organizations',
+   'openid email profile organization',
    'https://umap.dev.incubateur.anct.gouv.fr',
    'Créer des cartes en ligne facilement.',
    null, null, null, null),
