@@ -119,7 +119,7 @@ let server: Server;
   const clients = await getClients();
 
   // the oidc provider expect provided client attributes to be not null if provided
-  const clientsWithoutNullProperties = clients.map(client =>
+  const clientsWithoutNullProperties = clients.map((client) =>
     omitBy(client, isNull)
   );
 
@@ -131,8 +131,8 @@ let server: Server;
     // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
       console.error(err);
-      Sentry.withScope(scope => {
-        scope.addEventProcessor(event => {
+      Sentry.withScope((scope) => {
+        scope.addEventProcessor((event) => {
           return Sentry.addRequestDataToEvent(event, ctx.request);
         });
         Sentry.captureException(err);
@@ -166,7 +166,7 @@ let server: Server;
     '/assets',
     express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
   ); // 1 week in milliseconds
-  app.get('/favicon.ico', function(req, res, next) {
+  app.get('/favicon.ico', function (req, res, next) {
     return res.sendFile('favicons/favicon.ico', {
       root: 'public',
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -224,7 +224,7 @@ let server: Server;
   server = app.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}`);
   });
-})().catch(err => {
+})().catch((err) => {
   if (server && server.listening) server.close();
   console.error(err);
   process.exit(1);

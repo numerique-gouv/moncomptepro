@@ -74,12 +74,12 @@
     "@types/sinonjs__fake-timers": "^8.1.2",
     "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.2.0",
     "copy-and-watch": "^0.1.6",
     "cypress-mailslurp": "^1.7.0",
     "nock": "^13.3.2",
-    "nodemon": "^2.0.20",
-    "prettier": "^1.19.1",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.0",
     "ts-mocha": "^10.0.0"
   }
 }

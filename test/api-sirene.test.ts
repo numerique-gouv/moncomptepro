@@ -11,14 +11,12 @@ const assert = chai.assert;
 
 describe('getOrganizationInfo', () => {
   beforeEach(() => {
-    nock('https://api.insee.fr')
-      .post('/token')
-      .reply(200, {
-        access_token: '08e42802-9ac9-3403-a2a9-b5be11ce446c',
-        scope: 'am_application_scope default',
-        token_type: 'Bearer',
-        expires_in: 521596,
-      });
+    nock('https://api.insee.fr').post('/token').reply(200, {
+      access_token: '08e42802-9ac9-3403-a2a9-b5be11ce446c',
+      scope: 'am_application_scope default',
+      token_type: 'Bearer',
+      expires_in: 521596,
+    });
   });
 
   it('should return valid payload for diffusible établissement', async () => {

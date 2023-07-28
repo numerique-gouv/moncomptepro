@@ -60,7 +60,7 @@ export const oidcProviderConfiguration = ({
         });
       },
       // @ts-ignore
-      postLogoutSuccessSource: async ctx => {
+      postLogoutSuccessSource: async (ctx) => {
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // We nullify the express session here too to make sure user is logged out from express.
@@ -77,7 +77,7 @@ export const oidcProviderConfiguration = ({
     policy,
   },
   // @ts-ignore
-  loadExistingGrant: async ctx => {
+  loadExistingGrant: async (ctx) => {
     // we want to skip the consent
     // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
     // We updated the function to ensure it always return a grant.

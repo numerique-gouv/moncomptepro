@@ -34,7 +34,7 @@ describe('usesAFreeEmailProvider', () => {
     'collectivite@orange.fr',
   ];
 
-  emailAddressesThatUsesFreeEmailProviders.forEach(email => {
+  emailAddressesThatUsesFreeEmailProviders.forEach((email) => {
     it('should return true for free email provider address', () => {
       assert.equal(usesAFreeEmailProvider(email), true);
     });
@@ -46,7 +46,7 @@ describe('usesAFreeEmailProvider', () => {
     'nom.prenom@notaires.fr',
   ];
 
-  professionalEmailAddresses.forEach(professionalEmailAddress => {
+  professionalEmailAddresses.forEach((professionalEmailAddress) => {
     it('should return false for non free provider email address', () => {
       assert.equal(usesAFreeEmailProvider(professionalEmailAddress), false);
     });
