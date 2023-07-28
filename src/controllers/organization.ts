@@ -24,7 +24,6 @@ import {
   getOrganizationSuggestions,
   joinOrganization,
 } from '../managers/organization/join';
-import { authenticateByPeers } from '../managers/organization/authentication-by-peers';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -107,8 +106,6 @@ export const postJoinOrganizationMiddleware = async (
       siret,
       user_id: req.session.user!.id,
     });
-
-    await authenticateByPeers(userOrganizationLink);
 
     if (req.session.mustReturnOneOrganizationInPayload) {
       await selectOrganization({

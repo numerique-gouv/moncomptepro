@@ -9,7 +9,6 @@ import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
 } from '../../errors';
-import { isEligibleToSponsorship } from '../../services/organization';
 import { sendMail } from '../../connectors/sendinblue';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
 import { getOrganizationsByUserId } from './main';
@@ -19,27 +18,6 @@ import {
 } from '../../repositories/moderation';
 import { SUPPORT_EMAIL_ADDRESS } from '../../env';
 
-export const authenticateByPeers = async (
-  link: UserOrganizationLink
-): Promise<{ hasBeenAuthenticated: boolean }> => {
-  const { organization_id, user_id, is_external } = link;
-  const organizationUsers = await getUsers(organization_id);
-  const user = organizationUsers.find(({ id }) => id === user_id);
-  const organization = await findOrganizationById(organization_id);
-
-  // The user should be in the organization already
-  if (isEmpty(user) || isEmpty(organization)) {
-    throw new NotFoundError();
-  }
-
-  if (isEligibleToSponsorship(organization)) {
-    return { hasBeenAuthenticated: false };
-  }
-
-  await notifyAllMembers(link);
-
-  return { hasBeenAuthenticated: true };
-};
 export const notifyAllMembers = async ({
   organization_id,
   user_id,
