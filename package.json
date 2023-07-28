@@ -24,7 +24,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@gouvfr/dsfr": "^1.8.5",
+    "@gouvfr/dsfr": "~1.8.5",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.60.1",
     "@sentry/tracing": "^7.60.1",
@@ -58,7 +58,7 @@
     "morgan": "^1.10.0",
     "nanoid": "^3.3.6",
     "node-pg-migrate": "^6.2.2",
-    "oidc-provider": "^7.11.5",
+    "oidc-provider": "^7.14.3",
     "pg": "^8.11.1",
     "rate-limiter-flexible": "^0.21.3",
     "tld-extract": "^2.1.0",
