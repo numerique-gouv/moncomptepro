@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 // @ts-ignore
-import connectRedis from 'connect-redis';
+import RedisStore from 'connect-redis';
 import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import fs from 'fs';
@@ -38,7 +38,6 @@ import {
 } from './env';
 
 const jwks = require(JWKS_PATH);
-const RedisStore = connectRedis(session);
 
 const app = express();
 
