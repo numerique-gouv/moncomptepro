@@ -14,11 +14,10 @@ export const formatNomComplet = ({
   nomUsageUniteLegale,
   sigleUniteLegale,
 }) => {
+  const formattedFirstName = formatFirstNames([prenomUsuelUniteLegale]);
+  const formattedName = formatNameFull(nomUniteLegale, nomUsageUniteLegale);
   return `${capitalize(denominationUniteLegale) ||
-    `${formatFirstNames([prenomUsuelUniteLegale])} ${formatNameFull(
-      nomUniteLegale,
-      nomUsageUniteLegale
-    )}` ||
+    [formattedFirstName, formattedName].filter(e => !!e).join(' ') ||
     'Nom inconnu'}${sigleUniteLegale ? ` (${sigleUniteLegale})` : ''}`;
 };
 

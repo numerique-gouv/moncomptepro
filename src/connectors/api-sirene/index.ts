@@ -13,6 +13,7 @@ import {
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,
 } from '../../env';
+import { cloneDeep, set } from 'lodash';
 
 type ApiInseeResponse = {
   etablissement: {
@@ -152,6 +153,95 @@ type ApiInseeResponse = {
   };
 };
 
+const hideNonDiffusibleData = (
+  etablissement: ApiInseeResponse['etablissement']
+): ApiInseeResponse['etablissement'] => {
+  const hiddenEtablissement = cloneDeep(etablissement);
+  set(hiddenEtablissement, 'uniteLegale.denominationUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.sigleUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle1UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle2UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle3UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.sexeUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.nomUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.nomUsageUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.prenom1UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.prenom2UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.prenom3UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.prenom4UniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.prenomUsuelUniteLegale', null);
+  set(hiddenEtablissement, 'uniteLegale.pseudonymeUniteLegale', null);
+  set(
+    hiddenEtablissement,
+    'adresseEtablissement.complementAdresseEtablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresseEtablissement.numeroVoieEtablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresseEtablissement.indiceRepetitionEtablissement',
+    null
+  );
+  set(hiddenEtablissement, 'adresseEtablissement.typeVoieEtablissement', null);
+  set(
+    hiddenEtablissement,
+    'adresseEtablissement.libelleVoieEtablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresse2Etablissement.complementAdresse2Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresse2Etablissement.numeroVoie2Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresse2Etablissement.indiceRepetition2Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresse2Etablissement.typeVoie2Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'adresse2Etablissement.libelleVoie2Etablissement',
+    null
+  );
+
+  set(
+    hiddenEtablissement,
+    'periodesEtablissement.0.enseigne1Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'periodesEtablissement.0.enseigne2Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'periodesEtablissement.0.enseigne3Etablissement',
+    null
+  );
+  set(
+    hiddenEtablissement,
+    'periodesEtablissement.0.denominationUsuelleEtablissement',
+    null
+  );
+
+  return hiddenEtablissement;
+};
+
 export const getOrganizationInfo = async (
   siret: string
 ): Promise<OrganizationInfo> => {
@@ -171,7 +261,7 @@ export const getOrganizationInfo = async (
       }
     );
 
-    const {
+    let {
       data: { etablissement },
     }: AxiosResponse<ApiInseeResponse> = await axios.get(
       `https://api.insee.fr/entreprises/sirene/V3/siret/${siret}`,
@@ -181,19 +271,24 @@ export const getOrganizationInfo = async (
       }
     );
 
+    const { statutDiffusionEtablissement } = etablissement;
+
+    if (statutDiffusionEtablissement === 'N') {
+      throw new InseeNotFoundError();
+    }
+
+    if (statutDiffusionEtablissement === 'P') {
+      etablissement = hideNonDiffusibleData(etablissement);
+    }
+
     const {
       siret: siretFromInseeApi,
       trancheEffectifsEtablissement,
       anneeEffectifsEtablissement,
       adresseEtablissement,
-      statutDiffusionEtablissement,
       periodesEtablissement,
       uniteLegale,
     } = etablissement;
-
-    if (statutDiffusionEtablissement !== 'O') {
-      throw new InseeNotFoundError();
-    }
 
     const {
       categorieJuridiqueUniteLegale,

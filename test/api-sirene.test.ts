@@ -47,14 +47,32 @@ describe('getOrganizationInfo', () => {
     });
   });
 
-  it('should throw for partially non diffusible établissement', async () => {
+  it('should show partial data for partially non diffusible établissement', async () => {
     nock('https://api.insee.fr')
       .get('/entreprises/sirene/V3/siret/94957325700019')
       .reply(200, partiallyNonDiffusible);
-    await assert.isRejected(
-      getOrganizationInfo('94957325700019'),
-      InseeNotFoundError
-    );
+
+    await assert.eventually.deepEqual(getOrganizationInfo('94957325700019'), {
+      siret: '94957325700019',
+      libelle: 'Nom inconnu',
+      nomComplet: 'Nom inconnu',
+      enseigne: '',
+      trancheEffectifs: null,
+      trancheEffectifsUniteLegale: null,
+      libelleTrancheEffectif: null,
+      etatAdministratif: 'A',
+      estActive: true,
+      statutDiffusion: 'P',
+      estDiffusible: false,
+      adresse: '06220 Vallauris',
+      codePostal: '06220',
+      codeOfficielGeographique: '06155',
+      activitePrincipale: '62.02A',
+      libelleActivitePrincipale:
+        '62.02A - Conseil en systèmes et logiciels informatiques',
+      categorieJuridique: '1000',
+      libelleCategorieJuridique: 'Entrepreneur individuel',
+    });
   });
 
   it('should throw for totally non diffusible établissement', async () => {

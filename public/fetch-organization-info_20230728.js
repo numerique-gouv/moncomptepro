@@ -36,12 +36,8 @@ document.addEventListener("DOMContentLoaded", function() {
           var libelle = response.organizationInfo.libelle;
           var adresse = response.organizationInfo.adresse;
           var libelleActivitePrincipale = response.organizationInfo.libelleActivitePrincipale;
-          var estDiffusible = response.organizationInfo.estDiffusible;
           var estActive = response.organizationInfo.estActive;
-          if (!estDiffusible) {
-            organizationAlertElement.style.display = "block";
-            organizationAlertElement.innerHTML = "Cet établissement est non-diffusible. Merci de le rendre diffusible pour pouvoir vous créer un compte. <a href='https://annuaire-entreprises.data.gouv.fr/etablissement/" + siret + "?mtm_campaign=moncomptepro'>Plus d'info.</a>";
-          } else if (estActive) {
+          if (estActive) {
             organizationInfoElement.style.display = "block";
             organizationInfoLibelleElement.innerHTML = libelle;
             organizationInfoAdresseElement.innerHTML = adresse;
