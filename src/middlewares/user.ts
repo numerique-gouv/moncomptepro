@@ -3,10 +3,13 @@ import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
 import { isEligibleToSponsorship } from '../services/organization';
-import { NotImplemented } from 'http-errors';
 import { getOrganizationsByUserId } from '../managers/organization/main';
-import { greetForJoiningOrganization } from '../managers/organization/authentication-by-peers';
+import {
+  greetForJoiningOrganization,
+  notifyAllMembers,
+} from '../managers/organization/authentication-by-peers';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
+import { getUserOrganizationLink } from '../repositories/organization/getters';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -227,15 +230,20 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
           if (
-            !isEligibleToSponsorship(organizationThatNeedsAuthenticationByPeers)
+            isEligibleToSponsorship(organizationThatNeedsAuthenticationByPeers)
           ) {
-            // this should never happen as all members are notified by default
-            return next(new NotImplemented());
+            return res.redirect(
+              `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`
+            );
           }
 
-          return res.redirect(
-            `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`
+          const link = await getUserOrganizationLink(
+            organizationThatNeedsAuthenticationByPeers.id,
+            req.session.user!.id
           );
+
+          // link exists because we get the organization id from getOrganizationsByUserId above
+          await notifyAllMembers(link!);
         }
 
         return next();

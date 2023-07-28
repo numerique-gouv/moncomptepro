@@ -95,7 +95,7 @@ describe('join organizations', () => {
       // assert reception of notification email
       .then(email => {
         expect(email.body).to.match(
-          /.*Jean Nouveau.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com\) a rejoint votre organisation.*Commune de clamart - Mairie.*sur .*MonComptePro/
+          /.*Jean Nouveau.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp\.com\) a rejoint votre organisation.*Commune de clamart - Mairie.*sur .*MonComptePro/
         );
       });
 
