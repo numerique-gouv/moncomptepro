@@ -63,7 +63,7 @@ describe('isEmailValid', () => {
     'Pelé@example.com', // Latin
   ];
 
-  validEmailAddresses.forEach(validEmailAddress => {
+  validEmailAddresses.forEach((validEmailAddress) => {
     it('should return true for valid email address', () => {
       assert.equal(isEmailValid(validEmailAddress), true);
     });

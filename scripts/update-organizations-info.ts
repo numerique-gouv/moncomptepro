@@ -133,7 +133,9 @@ ORDER BY id LIMIT 1 OFFSET $1`,
         maxInseeCallRateInMs - durationInMilliseconds,
         0
       );
-      await new Promise(resolve => setTimeout(resolve, waitTimeInMilliseconds));
+      await new Promise((resolve) =>
+        setTimeout(resolve, waitTimeInMilliseconds)
+      );
 
       // 5. increment index
       i++;

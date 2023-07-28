@@ -8,7 +8,7 @@ describe('normalizeOfficialContactEmailVerificationToken', () => {
     '  crème  brûlée     façon  grand-mère  ',
   ];
 
-  rawTokens.forEach(rawToken => {
+  rawTokens.forEach((rawToken) => {
     it('should return normalized token', () => {
       assert.equal(
         normalizeOfficialContactEmailVerificationToken(rawToken),
