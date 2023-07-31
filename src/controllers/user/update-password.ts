@@ -5,6 +5,7 @@ import { changePassword, sendResetPasswordEmail } from '../../managers/user';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import { InvalidTokenError, WeakPasswordError } from '../../errors';
 import hasErrorFromField from '../../services/has-error-from-field';
+import { MONCOMPTEPRO_HOST } from '../../env';
 
 export const getResetPasswordController = async (
   req: Request,
@@ -41,10 +42,7 @@ export const postResetPasswordController = async (
       body: req.body,
     });
 
-    await sendResetPasswordEmail(
-      login,
-      req.get('origin') || 'https://app.moncomptepro.beta.gouv.fr'
-    );
+    await sendResetPasswordEmail(login, MONCOMPTEPRO_HOST);
 
     return res.redirect(
       '/users/start-sign-in?notification=reset_password_email_sent'
