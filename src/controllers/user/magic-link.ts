@@ -5,6 +5,7 @@ import {
 } from '../../managers/user';
 import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
 import { z, ZodError } from 'zod';
+import { MONCOMPTEPRO_HOST } from '../../env';
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -12,10 +13,7 @@ export const postSendMagicLinkController = async (
   next: NextFunction
 ) => {
   try {
-    await sendSendMagicLinkEmail(
-      req.session.email!,
-      req.get('origin') || 'https://app.moncomptepro.beta.gouv.fr'
-    );
+    await sendSendMagicLinkEmail(req.session.email!, MONCOMPTEPRO_HOST);
 
     return res.redirect(`/users/magic-link-sent`);
   } catch (error) {
