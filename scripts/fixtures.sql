@@ -468,13 +468,16 @@ VALUES
      'https://egapro-preprod.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
      'https://egapro-preprod.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
      'https://egapro-master.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
-     'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro'
+     'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
+     'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
+     'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro'
      ],
    ARRAY [
      'http://localhost:3000',
      'http://localhost',
      'https://egapro-preprod.dev.fabrique.social.gouv.fr',
-     'https://egapro-master.dev.fabrique.social.gouv.fr'
+     'https://egapro-master.dev.fabrique.social.gouv.fr',
+     'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr'
      ],
    'openid email profile organization organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
