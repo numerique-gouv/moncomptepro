@@ -569,13 +569,13 @@ VALUES
    '3f9a230c90e72cf85aabd081d35e1567aedc6dac4d3be97b9514b2823c89544751a9901c78af22c2d0e5a4b75e35b893cdeb305cb217ae22984b47f610b4e14b',
    '8495eb74887ac74eaf4f21e5c3b80831adcc142c56655bed7ca2ec5c60930d675b8c2c777e6ad0a51bb9ce70d4de32d534c377087f2842c5a8d128a41358fa63',
    ARRAY [
-     'https://outline-operateur.osc-secnum-fr1.scalingo.io/auth/oidc.callback'
+     'https://documentation.beta.numerique.gouv.fr/auth/oidc.callback'
      ],
    ARRAY [
-     'https://outline-operateur.osc-secnum-fr1.scalingo.io/'
+     'https://documentation.beta.numerique.gouv.fr/'
      ],
    'openid profile email',
-   'https://outline-operateur.osc-secnum-fr1.scalingo.io/',
+   'https://documentation.beta.numerique.gouv.fr/',
    'La base de connaissances de votre équipe.',
    null, null, null, null),
   (20,
