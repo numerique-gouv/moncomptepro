@@ -66,6 +66,7 @@ app.use((req, res, next) => {
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
       styleSrc: ["'self'"],
       fontSrc: ["'self'", 'data:'],
+      formAction: ["'self'", '*'],
     },
   };
 
