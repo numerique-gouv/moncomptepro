@@ -529,12 +529,20 @@ VALUES
     'test_mico_SIDDEE',
     'test_mico_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
     ARRAY [
+      'http://127.0.0.1:8080/oidc/callback/',
+      'http://127.0.0.1:8080/auth/cb/',
+      'http://127.0.0.1:8080/oidc/auth/cb/',
       'http://localhost:8080/oidc/callback/',
       'http://localhost:8080/auth/cb/',
-      'http://localhost:8080/oidc/auth/cb/'
+      'http://localhost:8080/oidc/auth/cb/',
+      'http://10.59.128.114:8004/oidc/callback/',
+      'http://10.59.128.114:8004/auth/cb/',
+      'http://10.59.128.114:8004/oidc/auth/cb/',
     ],
     ARRAY [
-      'http://localhost:8080/'
+      'http://localhost:8080/',
+      'http://127.0.0.1:8080/',
+      'http://10.59.128.114:8004/',
     ],
     'openid email profile organizations',
     'http://10.59.128.114:8004/',
