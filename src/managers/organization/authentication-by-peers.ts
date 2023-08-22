@@ -169,7 +169,7 @@ export const chooseSponsor = async ({
   // Note that the user may already be authenticated by his peers.
   await sendMail({
     to: [sponsor.email],
-    subject: 'Nouveau membre dans votre organisation MonComptePro',
+    subject: 'Connaissez-vous ce nouveau membre ?',
     template: 'choose-sponsor',
     params: {
       given_name: user.given_name,
