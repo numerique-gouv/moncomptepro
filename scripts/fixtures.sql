@@ -277,7 +277,7 @@ VALUES
      'https://staging1.particulier.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.particulier.api.gouv.fr/compte/apres-deconnexion'
      ],
-  'openid email',
+  'openid email profile phone',
    'http://particulier.api.localtest.me',
    'Bouquet de données proposé pour simplifier les démarches administratives.',
    null, null, null, null),
@@ -305,7 +305,7 @@ VALUES
      'https://staging1.entreprise.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.entreprise.api.gouv.fr/compte/apres-deconnexion'
      ],
-  'openid email',
+  'openid email profile phone',
    'http://entreprise.api.localtest.me',
    'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.',
    null, null, null, null),
