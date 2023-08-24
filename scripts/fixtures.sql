@@ -544,16 +544,16 @@ VALUES
       'http://localhost:8080/oidc/auth/cb/',
       'http://10.59.128.114:8004/oidc/callback/',
       'http://10.59.128.114:8004/auth/cb/',
-      'http://10.59.128.114:8004/oidc/auth/cb/',
+      'http://10.59.128.114:8004/oidc/auth/cb/'
     ],
     ARRAY [
       'http://localhost:8080/',
       'http://127.0.0.1:8080/',
-      'http://10.59.128.114:8004/',
+      'http://10.59.128.114:8004/'
     ],
     'openid email profile organizations',
     'http://10.59.128.114:8004/',
-    "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF",
+    'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF',
    null, null, null, null),
   (18,
     'Tactick',
@@ -581,7 +581,7 @@ VALUES
     ],
     'openid email',
     'https://preprod.tactick.e2.rie.gouv.fr/',
-    "Développement d'une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF",
+    'Développement d’une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF',
    null, null, null, null),
   (19,
    'Outline - Opérateur',
