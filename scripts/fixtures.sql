@@ -596,7 +596,7 @@ VALUES
    '08ac16e3052bc26cdb32ea3e6eeebc1ce315b818bcd73d6109f9c0af6371d76d0d2b35935ee197b992a4ae3531a91bd7198ecd1cdde0ffa086b1f8f2f002580c',
    '8468c62546a58ec00cb9fef48d7baeb5a0ec5da5b3fab42fde0c77b9ef39abc4abb7a42fc1f439ba9e4758c291852b64828d2cb9869236e3f0ceca335cd76b4f',
    ARRAY [
-     'http://127.0.0.1:8000/oidc/callback/',
+     'http://127.0.0.1:8000/oidc/callback/'
      ],
    ARRAY [
      'http://127.0.0.1:8000/'
