@@ -569,13 +569,13 @@ VALUES
    '3f9a230c90e72cf85aabd081d35e1567aedc6dac4d3be97b9514b2823c89544751a9901c78af22c2d0e5a4b75e35b893cdeb305cb217ae22984b47f610b4e14b',
    '8495eb74887ac74eaf4f21e5c3b80831adcc142c56655bed7ca2ec5c60930d675b8c2c777e6ad0a51bb9ce70d4de32d534c377087f2842c5a8d128a41358fa63',
    ARRAY [
-     'https://documentation.beta.numerique.gouv.fr/auth/oidc.callback'
+     'https://outline-operateur-staging.osc-fr1.scalingo.io/auth/oidc.callback'
      ],
    ARRAY [
-     'https://documentation.beta.numerique.gouv.fr/'
+     'https://outline-operateur-staging.osc-fr1.scalingo.io/'
      ],
    'openid profile email',
-   'https://documentation.beta.numerique.gouv.fr/',
+   'https://outline-operateur-staging.osc-fr1.scalingo.io/',
    'La base de connaissances de votre équipe.',
    null, null, null, null),
   (20,
@@ -590,6 +590,20 @@ VALUES
    'openid email profile organization',
    'https://dev.inclusion-numerique.anct.gouv.fr',
    'Œuvrer Ensemble pour un Numérique Inclusif.',
+   null, null, null, null),
+  (21,
+   'SSO - Opérateur',
+   '08ac16e3052bc26cdb32ea3e6eeebc1ce315b818bcd73d6109f9c0af6371d76d0d2b35935ee197b992a4ae3531a91bd7198ecd1cdde0ffa086b1f8f2f002580c',
+   '8468c62546a58ec00cb9fef48d7baeb5a0ec5da5b3fab42fde0c77b9ef39abc4abb7a42fc1f439ba9e4758c291852b64828d2cb9869236e3f0ceca335cd76b4f',
+   ARRAY [
+     'http://127.0.0.1:8000/oidc/callback/',
+     ],
+   ARRAY [
+     'http://127.0.0.1:8000/'
+     ],
+   'openid profile email',
+   'http://127.0.0.1:8000/',
+   'Sso de la suite numérique.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
