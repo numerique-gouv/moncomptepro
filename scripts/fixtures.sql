@@ -623,6 +623,18 @@ VALUES
    'openid profile email',
    'http://127.0.0.1:8000/',
    'Sso de la suite numérique.',
+   null, null, null, null),
+  (22,
+   'Espace Partenaire',
+   '21fe1930f3865c3fa693fd32bf5959302fed7c60cb7acf57093164e17e294d4d02116fd8a389037703c567b7dab99e218f40d61f1bc08d7882c6adabe07a3d9e',
+   '92966278ff6bb30d2e74ff10d9e38ee1ab36c5b9ae901996d9ef4c97fb582d36a6bacefad29008423c79a0e42a83a865bd6a80691e17d815db63a0f21aa37230',
+   ARRAY [
+     'http://localhost:3000/api/auth/callback/moncomptepro'
+     ],
+   ARRAY []::varchar[],
+   'openid email',
+   'http://localhost:3000',
+   'Gestion des clients OpenId pour MonComptePro.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
