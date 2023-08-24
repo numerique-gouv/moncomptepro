@@ -97,8 +97,10 @@ VALUES
   (20, 'wanajoin@beta.gouv.fr', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Wanajoin', '0123456789', 'Sbire')
 ON CONFLICT (id)
   DO UPDATE
-  SET (email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name, phone_number, job)
-    = (EXCLUDED.email, EXCLUDED.email_verified, EXCLUDED.email_verified_at, EXCLUDED.encrypted_password, EXCLUDED.created_at,
+  SET (email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
+       phone_number, job)
+    = (EXCLUDED.email, EXCLUDED.email_verified, EXCLUDED.email_verified_at, EXCLUDED.encrypted_password,
+       EXCLUDED.created_at,
        EXCLUDED.updated_at, EXCLUDED.given_name, EXCLUDED.family_name, EXCLUDED.phone_number, EXCLUDED.job);
 
 SELECT setval(
@@ -277,7 +279,7 @@ VALUES
      'https://staging1.particulier.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.particulier.api.gouv.fr/compte/apres-deconnexion'
      ],
-  'openid email profile phone',
+   'openid email profile',
    'http://particulier.api.localtest.me',
    'Bouquet de données proposé pour simplifier les démarches administratives.',
    null, null, null, null),
@@ -305,7 +307,7 @@ VALUES
      'https://staging1.entreprise.api.gouv.fr/compte/apres-deconnexion',
      'https://staging2.entreprise.api.gouv.fr/compte/apres-deconnexion'
      ],
-  'openid email profile phone',
+   'openid email profile',
    'http://entreprise.api.localtest.me',
    'Permet aux entités administratives d’accéder aux données et aux documents administratifs des entreprises et des associations, afin de simplifier leurs démarches.',
    null, null, null, null),
@@ -376,55 +378,55 @@ VALUES
    'Vérifie l’éligibilité de bénéficiaires d’aides au transport',
    null, null, null, null),
   (8,
-    'BaseProjectSIDDEE',
-    'test_baseproject_SIDDEE',
-    'test_baseproject_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
-    ARRAY [
-      'http://10.59.128.114:8001/oidc/callback/',
-      'http://10.59.128.114:8001/auth/cb/',
-      'http://10.59.128.114:8001/oidc/auth/cb/'
-    ],
-    ARRAY [
-      'http://10.59.128.114:8001/'
-    ],
-    'openid email',
-    'http://10.59.128.114:8001/',
-    'Dépôt de demandes auprès du service IDDEE de la DREAL HdF',
+   'BaseProjectSIDDEE',
+   'test_baseproject_SIDDEE',
+   'test_baseproject_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
+   ARRAY [
+     'http://10.59.128.114:8001/oidc/callback/',
+     'http://10.59.128.114:8001/auth/cb/',
+     'http://10.59.128.114:8001/oidc/auth/cb/'
+     ],
+   ARRAY [
+     'http://10.59.128.114:8001/'
+     ],
+   'openid email',
+   'http://10.59.128.114:8001/',
+   'Dépôt de demandes auprès du service IDDEE de la DREAL HdF',
    null, null, null, null),
   (9,
-    'Annuaire des collectivités',
-    'tdi1iyp2stw4w1ipl9hgye9qvfm9tbgi4cxu574rkwufkocux620r4c09tpm3apsav1rg7ex5j79w2vfsnrl1v4ewlkxrm45wtt9g8x3arsco1u86xeh9j4enus14vsi',
-    'pqnu9wbs0h5pkbqeni2bx55mnvgxzta3d9wmu2h6yyxmf7303b5eapi4o4plue10bcj9n1iyoilbz07b2iokr4dcw3jsqitb7lc88n9cuxn9p9v0cqstfxgu82d392vn',
-    ARRAY [
-      'http://127.0.0.1:1337/api/oidc/callback/',
-      'http://localhost:1337/api/oidc/callback/',
-      'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/callback/'
-    ],
-    ARRAY [
-      'http://127.0.0.1:1337/api/oidc/logout',
-      'http://localhost:1337/api/oidc/logout',
-      'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout'
-    ],
-    'openid email profile organization organizations',
-    'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
-    'Accès à l’interface d’administration de l’annuaire pour les agents des communes',
+   'Annuaire des collectivités',
+   'tdi1iyp2stw4w1ipl9hgye9qvfm9tbgi4cxu574rkwufkocux620r4c09tpm3apsav1rg7ex5j79w2vfsnrl1v4ewlkxrm45wtt9g8x3arsco1u86xeh9j4enus14vsi',
+   'pqnu9wbs0h5pkbqeni2bx55mnvgxzta3d9wmu2h6yyxmf7303b5eapi4o4plue10bcj9n1iyoilbz07b2iokr4dcw3jsqitb7lc88n9cuxn9p9v0cqstfxgu82d392vn',
+   ARRAY [
+     'http://127.0.0.1:1337/api/oidc/callback/',
+     'http://localhost:1337/api/oidc/callback/',
+     'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/callback/'
+     ],
+   ARRAY [
+     'http://127.0.0.1:1337/api/oidc/logout',
+     'http://localhost:1337/api/oidc/logout',
+     'https://api.annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/api/oidc/logout'
+     ],
+   'openid email profile organization organizations',
+   'https://annuaire-des-collectivites.dev.incubateur.anct.gouv.fr/',
+   'Accès à l’interface d’administration de l’annuaire pour les agents des communes',
    null, null, null, null),
   (10,
-    'data.gouv.fr',
-    '277aa530830cac03a81a5670ec13d8677291658aa0b3138c733697c9915f4a2593d5faa968143f29e893aafb8a1ffba9593c52d46db13a27cf4d3fc3485ada90',
-    'e25aa11f53f13a58e8c1fe022ddc0e07e240ec0c603f78535bf5ffd470c387be2e2edc348d6923fd718b989da08a40f241543d8c1e01bbaf88ad0ec84ed9140f',
-    ARRAY [
-      'http://dev.local:7000/fr/mcp/auth',
-      'https://dev.data.gouv.fr/fr/mcp/auth',
-      'https://demo.data.gouv.fr/fr/mcp/auth'
-    ],
-    ARRAY [
-      'http://dev.local:7000/',
-      'https://dev.data.gouv.fr/'
-      ],
+   'data.gouv.fr',
+   '277aa530830cac03a81a5670ec13d8677291658aa0b3138c733697c9915f4a2593d5faa968143f29e893aafb8a1ffba9593c52d46db13a27cf4d3fc3485ada90',
+   'e25aa11f53f13a58e8c1fe022ddc0e07e240ec0c603f78535bf5ffd470c387be2e2edc348d6923fd718b989da08a40f241543d8c1e01bbaf88ad0ec84ed9140f',
+   ARRAY [
+     'http://dev.local:7000/fr/mcp/auth',
+     'https://dev.data.gouv.fr/fr/mcp/auth',
+     'https://demo.data.gouv.fr/fr/mcp/auth'
+     ],
+   ARRAY [
+     'http://dev.local:7000/',
+     'https://dev.data.gouv.fr/'
+     ],
    'openid email profile',
-    'https://dev.data.gouv.fr/',
-    'Plateforme ouverte des données publiques françaises.',
+   'https://dev.data.gouv.fr/',
+   'Plateforme ouverte des données publiques françaises.',
    null, null, null, null),
   (11,
    'Oidc Test Client',
@@ -509,10 +511,10 @@ VALUES
    '85be6a293bfe2fa6ced0b246b83893a062635e577848bbbbb268da8ca0cc5844c2f5f2cbc8888891b4ac2b21a7599e47344c651a66d04f8cc34a454a5d0f1693',
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/oidc-callback'
-   ],
+     ],
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
-   ],
+     ],
    'openid uid given_name usual_name email phone siret',
    'https://agentconnect.gouv.fr/',
    'Dispositif d’identification des agents de la fonction publique.',
@@ -532,56 +534,56 @@ VALUES
    'Permettre une mise en ligne facile, rapide et respectant les critères de qualité de l’Incubateur des Territoires.',
    null, null, null, null),
   (17,
-    'MiCoSIDDEE',
-    'test_mico_SIDDEE',
-    'test_mico_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
-    ARRAY [
-      'http://127.0.0.1:8080/oidc/callback/',
-      'http://127.0.0.1:8080/auth/cb/',
-      'http://127.0.0.1:8080/oidc/auth/cb/',
-      'http://localhost:8080/oidc/callback/',
-      'http://localhost:8080/auth/cb/',
-      'http://localhost:8080/oidc/auth/cb/',
-      'http://10.59.128.114:8004/oidc/callback/',
-      'http://10.59.128.114:8004/auth/cb/',
-      'http://10.59.128.114:8004/oidc/auth/cb/',
-    ],
-    ARRAY [
-      'http://localhost:8080/',
-      'http://127.0.0.1:8080/',
-      'http://10.59.128.114:8004/',
-    ],
-    'openid email profile organizations',
-    'http://10.59.128.114:8004/',
-    "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF",
+   'MiCoSIDDEE',
+   'test_mico_SIDDEE',
+   'test_mico_SIDDEEh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
+   ARRAY [
+     'http://127.0.0.1:8080/oidc/callback/',
+     'http://127.0.0.1:8080/auth/cb/',
+     'http://127.0.0.1:8080/oidc/auth/cb/',
+     'http://localhost:8080/oidc/callback/',
+     'http://localhost:8080/auth/cb/',
+     'http://localhost:8080/oidc/auth/cb/',
+     'http://10.59.128.114:8004/oidc/callback/',
+     'http://10.59.128.114:8004/auth/cb/',
+     'http://10.59.128.114:8004/oidc/auth/cb/'
+     ],
+   ARRAY [
+     'http://localhost:8080/',
+     'http://127.0.0.1:8080/',
+     'http://10.59.128.114:8004/'
+     ],
+   'openid email profile organizations',
+   'http://10.59.128.114:8004/',
+   'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF',
    null, null, null, null),
   (18,
-    'Tactick',
-    'test_Tactick',
-    'test_Tactickh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
-    ARRAY [
-      'http://preprod.tactick.e2.rie.gouv.fr/oidc/callback/',
-      'http://preprod.tactick.e2.rie.gouv.fr/auth/cb/',
-      'http://preprod.tactick.e2.rie.gouv.fr/oidc/auth/cb/',
-      'https://preprod.tactick.e2.rie.gouv.fr/oidc/callback/',
-      'https://preprod.tactick.e2.rie.gouv.fr/auth/cb/',
-      'https://preprod.tactick.e2.rie.gouv.fr/oidc/auth/cb/',
-      'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
-      'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
-      'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/',
-      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
-      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
-      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/'
-    ],
-    ARRAY [
-      'https://preprod.tactick.e2.rie.gouv.fr/',
-      'http://preprod.tactick.e2.rie.gouv.fr/',
-      'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/',
-      'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/'
-    ],
-    'openid email',
-    'https://preprod.tactick.e2.rie.gouv.fr/',
-    "Développement d'une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF",
+   'Tactick',
+   'test_Tactick',
+   'test_Tactickh#%!tbt#ux5)xr)e7z37%l(zu13w0cj0#2sxnx&6*wx$+zvl9n',
+   ARRAY [
+     'http://preprod.tactick.e2.rie.gouv.fr/oidc/callback/',
+     'http://preprod.tactick.e2.rie.gouv.fr/auth/cb/',
+     'http://preprod.tactick.e2.rie.gouv.fr/oidc/auth/cb/',
+     'https://preprod.tactick.e2.rie.gouv.fr/oidc/callback/',
+     'https://preprod.tactick.e2.rie.gouv.fr/auth/cb/',
+     'https://preprod.tactick.e2.rie.gouv.fr/oidc/auth/cb/',
+     'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
+     'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
+     'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/',
+     'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/callback/',
+     'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/auth/cb/',
+     'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/oidc/auth/cb/'
+     ],
+   ARRAY [
+     'https://preprod.tactick.e2.rie.gouv.fr/',
+     'http://preprod.tactick.e2.rie.gouv.fr/',
+     'http://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/',
+     'https://tactick-preprod-ihm-docker-rie.drealhdf-pre1.eco4.sihc.fr/'
+     ],
+   'openid email',
+   'https://preprod.tactick.e2.rie.gouv.fr/',
+   'Développement d’une application de dépôt de demandes à destination du SIDDEE de la DREAL HdF',
    null, null, null, null),
   (19,
    'Outline - Opérateur',
@@ -623,13 +625,28 @@ VALUES
    'openid profile email',
    'http://127.0.0.1:8000/',
    'Sso de la suite numérique.',
+   null, null, null, null),
+  (22,
+   'Espace Partenaire',
+   '21fe1930f3865c3fa693fd32bf5959302fed7c60cb7acf57093164e17e294d4d02116fd8a389037703c567b7dab99e218f40d61f1bc08d7882c6adabe07a3d9e',
+   '92966278ff6bb30d2e74ff10d9e38ee1ab36c5b9ae901996d9ef4c97fb582d36a6bacefad29008423c79a0e42a83a865bd6a80691e17d815db63a0f21aa37230',
+   ARRAY [
+     'http://localhost:3000/api/auth/callback/moncomptepro'
+     ],
+   ARRAY []::varchar[],
+   'openid email',
+   'http://localhost:3000',
+   'Gestion des clients OpenId pour MonComptePro.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
-       client_description)
+       client_description, userinfo_signed_response_alg, id_token_signed_response_alg,
+       authorization_signed_response_alg, introspection_signed_response_alg)
     = (EXCLUDED.client_name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris,
-       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description);
+       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description,
+       EXCLUDED.userinfo_signed_response_alg, EXCLUDED.id_token_signed_response_alg,
+       EXCLUDED.authorization_signed_response_alg, EXCLUDED.introspection_signed_response_alg);
 
 SELECT setval(
     'oidc_clients_id_seq',
