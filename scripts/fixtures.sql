@@ -627,9 +627,12 @@ VALUES
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
-       client_description)
+       client_description, userinfo_signed_response_alg, id_token_signed_response_alg,
+       authorization_signed_response_alg, introspection_signed_response_alg)
     = (EXCLUDED.client_name, EXCLUDED.client_id, EXCLUDED.client_secret, EXCLUDED.redirect_uris,
-       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description);
+       EXCLUDED.post_logout_redirect_uris, EXCLUDED.scope, EXCLUDED.client_uri, EXCLUDED.client_description,
+       EXCLUDED.userinfo_signed_response_alg, EXCLUDED.id_token_signed_response_alg,
+       EXCLUDED.authorization_signed_response_alg, EXCLUDED.introspection_signed_response_alg);
 
 SELECT setval(
     'oidc_clients_id_seq',
