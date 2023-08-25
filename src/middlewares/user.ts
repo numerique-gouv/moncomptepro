@@ -40,16 +40,21 @@ export const checkUserIsConnectedMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    if (!isWithinLoggedInSession(req) && req.method === 'GET') {
+    if (req.method === 'HEAD') {
+      // From express documentation:
+      // The app.get() function is automatically called for the HTTP HEAD method
+      // in addition to the GET method if app.head() was not called for the path
+      // before app.get().
+      // We return empty response and the headers are sent to the client.
+      return res.send();
+    }
+
+    if (!isWithinLoggedInSession(req)) {
       if (isUrlTrusted(req.originalUrl)) {
         req.session.referer = req.originalUrl;
       }
 
       return res.redirect(`/users/start-sign-in`);
-    }
-
-    if (!isWithinLoggedInSession(req)) {
-      return next(new Error('user must be logged in to perform this action'));
     }
 
     return next();
