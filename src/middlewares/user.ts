@@ -10,6 +10,11 @@ import {
 } from '../managers/organization/authentication-by-peers';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
 import { getUserOrganizationLink } from '../repositories/organization/getters';
+import {
+  getUserFromLoggedInSession,
+  isWithinLoggedInSession,
+  updateUserInLoggedInSession,
+} from '../managers/session';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -35,7 +40,7 @@ export const checkUserIsConnectedMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    if (isEmpty(req.session.user) && req.method === 'GET') {
+    if (!isWithinLoggedInSession(req) && req.method === 'GET') {
       if (isUrlTrusted(req.originalUrl)) {
         req.session.referer = req.originalUrl;
       }
@@ -43,7 +48,7 @@ export const checkUserIsConnectedMiddleware = async (
       return res.redirect(`/users/start-sign-in`);
     }
 
-    if (isEmpty(req.session.user)) {
+    if (!isWithinLoggedInSession(req)) {
       return next(new Error('user must be logged in to perform this action'));
     }
 
@@ -58,18 +63,18 @@ export const checkUserIsVerifiedMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserIsConnectedMiddleware(req, res, async error => {
+  checkUserIsConnectedMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
-      const {
-        user,
-        needs_email_verification_renewal,
-      } = await updateEmailAddressVerificationStatus(req.session.user!.email);
+      const { user, needs_email_verification_renewal } =
+        await updateEmailAddressVerificationStatus(
+          getUserFromLoggedInSession(req).email
+        );
 
-      req.session.user = user;
+      updateUserInLoggedInSession(req, user);
 
-      if (!req.session.user!.email_verified) {
+      if (!user.email_verified) {
         const notification_param = needs_email_verification_renewal
           ? '?notification=email_verification_renewal'
           : '';
@@ -88,11 +93,12 @@ export const checkUserHasPersonalInformationsMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserIsVerifiedMiddleware(req, res, async error => {
+  checkUserIsVerifiedMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
-      const { given_name, family_name, phone_number, job } = req.session.user!;
+      const { given_name, family_name, phone_number, job } =
+        getUserFromLoggedInSession(req);
       if (
         isEmpty(given_name) ||
         isEmpty(family_name) ||
@@ -113,11 +119,15 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserHasPersonalInformationsMiddleware(req, res, async error => {
+  checkUserHasPersonalInformationsMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
-      if (isEmpty(await getOrganizationsByUserId(req.session.user!.id))) {
+      if (
+        isEmpty(
+          await getOrganizationsByUserId(getUserFromLoggedInSession(req).id)
+        )
+      ) {
         return res.redirect('/users/join-organization');
       }
 
@@ -132,12 +142,12 @@ export const checkUserHasSelectedAnOrganizationMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserHasAtLeastOneOrganizationMiddleware(req, res, async error => {
+  checkUserHasAtLeastOneOrganizationMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const selectedOrganizationId = await getSelectedOrganizationId(
-        req.session.user!.id
+        getUserFromLoggedInSession(req).id
       );
 
       if (
@@ -158,30 +168,32 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserHasSelectedAnOrganizationMiddleware(req, res, async error => {
+  checkUserHasSelectedAnOrganizationMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const userOrganisations = await getOrganizationsByUserId(
-        req.session.user!.id
+        getUserFromLoggedInSession(req).id
       );
 
       let organizationThatNeedsOfficialContactEmailVerification;
       if (req.session.mustReturnOneOrganizationInPayload) {
         const selectedOrganizationId = await getSelectedOrganizationId(
-          req.session.user!.id
+          getUserFromLoggedInSession(req).id
         );
 
-        organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
-          ({ id, needs_official_contact_email_verification }) =>
-            needs_official_contact_email_verification &&
-            id === selectedOrganizationId
-        );
+        organizationThatNeedsOfficialContactEmailVerification =
+          userOrganisations.find(
+            ({ id, needs_official_contact_email_verification }) =>
+              needs_official_contact_email_verification &&
+              id === selectedOrganizationId
+          );
       } else {
-        organizationThatNeedsOfficialContactEmailVerification = userOrganisations.find(
-          ({ needs_official_contact_email_verification }) =>
-            needs_official_contact_email_verification
-        );
+        organizationThatNeedsOfficialContactEmailVerification =
+          userOrganisations.find(
+            ({ needs_official_contact_email_verification }) =>
+              needs_official_contact_email_verification
+          );
       }
 
       if (!isEmpty(organizationThatNeedsOfficialContactEmailVerification)) {
@@ -204,18 +216,18 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
     req,
     res,
-    async error => {
+    async (error) => {
       try {
         if (error) return next(error);
 
         const userOrganisations = await getOrganizationsByUserId(
-          req.session.user!.id
+          getUserFromLoggedInSession(req).id
         );
 
         let organizationThatNeedsAuthenticationByPeers;
         if (req.session.mustReturnOneOrganizationInPayload) {
           const selectedOrganizationId = await getSelectedOrganizationId(
-            req.session.user!.id
+            getUserFromLoggedInSession(req).id
           );
 
           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
@@ -239,7 +251,7 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
           const link = await getUserOrganizationLink(
             organizationThatNeedsAuthenticationByPeers.id,
-            req.session.user!.id
+            getUserFromLoggedInSession(req).id
           );
 
           // link exists because we get the organization id from getOrganizationsByUserId above
@@ -258,18 +270,18 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
   res: Response,
   next: NextFunction
 ) =>
-  checkUserHasBeenAuthenticatedByPeersMiddleware(req, res, async error => {
+  checkUserHasBeenAuthenticatedByPeersMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const userOrganisations = await getOrganizationsByUserId(
-        req.session.user!.id
+        getUserFromLoggedInSession(req).id
       );
 
       let organizationThatNeedsGreetings;
       if (req.session.mustReturnOneOrganizationInPayload) {
         const selectedOrganizationId = await getSelectedOrganizationId(
-          req.session.user!.id
+          getUserFromLoggedInSession(req).id
         );
 
         organizationThatNeedsGreetings = userOrganisations.find(
@@ -284,7 +296,7 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
 
       if (!isEmpty(organizationThatNeedsGreetings)) {
         await greetForJoiningOrganization({
-          user_id: req.session.user!.id,
+          user_id: getUserFromLoggedInSession(req).id,
           organization_id: organizationThatNeedsGreetings.id,
         });
 
@@ -300,4 +312,5 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
   });
 
 // check that user go through all requirements before issuing a session
-export const checkUserSignInRequirementsMiddleware = checkUserHasBeenGreetedForJoiningOrganizationMiddleware;
+export const checkUserSignInRequirementsMiddleware =
+  checkUserHasBeenGreetedForJoiningOrganizationMiddleware;

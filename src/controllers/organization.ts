@@ -24,6 +24,7 @@ import {
   getOrganizationSuggestions,
   joinOrganization,
 } from '../managers/organization/join';
+import { getUserFromLoggedInSession } from '../managers/session';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -45,7 +46,7 @@ export const getJoinOrganizationController = async (
       query: req.query,
     });
 
-    const { id: user_id, email } = req.session.user!;
+    const { id: user_id, email } = getUserFromLoggedInSession(req);
 
     if (
       !siret_hint &&
@@ -71,7 +72,7 @@ export const getOrganizationSuggestionsController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: user_id, email } = req.session.user!;
+  const { id: user_id, email } = getUserFromLoggedInSession(req);
 
   const organizationSuggestions = await getOrganizationSuggestions({
     user_id,
@@ -104,12 +105,12 @@ export const postJoinOrganizationMiddleware = async (
 
     const userOrganizationLink = await joinOrganization({
       siret,
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
     });
 
     if (req.session.mustReturnOneOrganizationInPayload) {
       await selectOrganization({
-        user_id: req.session.user!.id,
+        user_id: getUserFromLoggedInSession(req).id,
         organization_id: userOrganizationLink.organization_id,
       });
     }
@@ -180,7 +181,7 @@ export const postQuitUserOrganizationController = async (
     });
 
     await quitOrganization({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 

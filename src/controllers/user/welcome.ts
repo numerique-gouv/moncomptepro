@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
 
 import { getSponsorLabel } from '../../managers/organization/authentication-by-peers';
+import { getUserFromLoggedInSession } from '../../managers/session';
 
 export const getWelcomeController = async (
   req: Request,
@@ -23,7 +24,7 @@ export const getWelcomeController = async (
     });
 
     const sponsor_label = await getSponsorLabel({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 

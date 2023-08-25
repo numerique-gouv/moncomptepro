@@ -1,7 +1,10 @@
 import ejs from 'ejs';
-import { isEmpty } from 'lodash';
 import path from 'path';
 import { Application, NextFunction, Request, Response } from 'express';
+import {
+  getUserFromLoggedInSession,
+  isWithinLoggedInSession,
+} from '../managers/session';
 
 export const render = (absolutePath: string, params: any) => {
   return new Promise((resolve, reject) => {
@@ -16,15 +19,16 @@ export const render = (absolutePath: string, params: any) => {
 };
 
 const getUserLabel = (req: Request) => {
-  if (isEmpty(req.session.user)) {
+  if (!isWithinLoggedInSession(req)) {
     //  do not display label when no session is found
     return null;
   }
-  if (!req.session.user.given_name || !req.session.user.family_name) {
+  const user = getUserFromLoggedInSession(req);
+  if (!user.given_name || !user.family_name) {
     //  display email when a name is missing
-    return req.session.user.email;
+    return user.email;
   }
-  return `${req.session.user.given_name} ${req.session.user.family_name}`;
+  return `${user.given_name} ${user.family_name}`;
 };
 
 // this is a cheap layout implementation for ejs

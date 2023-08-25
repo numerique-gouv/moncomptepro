@@ -6,6 +6,7 @@ import {
 import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
 import { z, ZodError } from 'zod';
 import { MONCOMPTEPRO_HOST } from '../../env';
+import { createLoggedInSession } from '../../managers/session';
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -108,8 +109,8 @@ export const postSignInWithMagicLinkController = async (
       body: req.body,
     });
 
-    req.session.user = await loginWithMagicLink(magic_link_token);
-    req.session.email = undefined;
+    const user = await loginWithMagicLink(magic_link_token);
+    await createLoggedInSession(req, user);
 
     next();
   } catch (error) {

@@ -7,6 +7,10 @@ import {
 } from '../../managers/user';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
 import { EmailVerifiedAlreadyError, InvalidTokenError } from '../../errors';
+import {
+  getUserFromLoggedInSession,
+  updateUserInLoggedInSession,
+} from '../../managers/session';
 
 export const getVerifyEmailController = async (
   req: Request,
@@ -27,13 +31,13 @@ export const getVerifyEmailController = async (
     });
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
-      email: req.session.user!.email,
+      email: getUserFromLoggedInSession(req).email,
       checkBeforeSend: true,
     });
 
     return res.render('user/verify-email', {
       notifications: await getNotificationsFromRequest(req),
-      email: req.session.user!.email,
+      email: getUserFromLoggedInSession(req).email,
       csrfToken: req.csrfToken(),
       newCodeSent: new_code_sent,
       codeSent,
@@ -60,7 +64,7 @@ export const postVerifyEmailController = async (
         verify_email_token: z
           .string()
           .min(1)
-          .transform(val => val.replace(/\s+/g, '')),
+          .transform((val) => val.replace(/\s+/g, '')),
       }),
     });
 
@@ -70,10 +74,12 @@ export const postVerifyEmailController = async (
       body: req.body,
     });
 
-    req.session.user = await verifyEmail(
-      req.session.user!.email,
+    const updatedUser = await verifyEmail(
+      getUserFromLoggedInSession(req).email,
       verify_email_token
     );
+
+    await updateUserInLoggedInSession(req, updatedUser);
 
     next();
   } catch (error) {
@@ -94,7 +100,7 @@ export const postSendEmailVerificationController = async (
 ) => {
   try {
     await sendEmailAddressVerificationEmail({
-      email: req.session.user!.email,
+      email: getUserFromLoggedInSession(req).email,
       checkBeforeSend: false,
     });
 

@@ -6,6 +6,11 @@ import notificationMessages from '../notification-messages';
 import { getClientsOrderedByConnectionCount } from '../managers/oidc-client';
 import { getParamsForPostPersonalInformationsController } from './user/update-personal-informations';
 import { getUserOrganizations } from '../managers/organization/main';
+import {
+  getUserFromLoggedInSession,
+  isWithinLoggedInSession,
+  updateUserInLoggedInSession,
+} from '../managers/session';
 
 export const getHomeController = async (
   req: Request,
@@ -13,7 +18,7 @@ export const getHomeController = async (
   next: NextFunction
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
-    req.session.user!.id
+    getUserFromLoggedInSession(req).id
   );
 
   return res.render('home', {
@@ -28,12 +33,13 @@ export const getPersonalInformationsController = async (
   next: NextFunction
 ) => {
   try {
+    const user = getUserFromLoggedInSession(req);
     return res.render('personal-information', {
-      email: req.session.user!.email,
-      given_name: req.session.user!.given_name,
-      family_name: req.session.user!.family_name,
-      phone_number: req.session.user!.phone_number,
-      job: req.session.user!.job,
+      email: user.email,
+      given_name: user.given_name,
+      family_name: user.family_name,
+      phone_number: user.phone_number,
+      job: user.job,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
     });
@@ -52,19 +58,24 @@ export const postPersonalInformationsController = async (
       body: { given_name, family_name, phone_number, job },
     } = await getParamsForPostPersonalInformationsController(req);
 
-    req.session.user = await updatePersonalInformations(req.session.user!.id, {
-      given_name,
-      family_name,
-      phone_number,
-      job,
-    });
+    const updatedUser = await updatePersonalInformations(
+      getUserFromLoggedInSession(req).id,
+      {
+        given_name,
+        family_name,
+        phone_number,
+        job,
+      }
+    );
+
+    updateUserInLoggedInSession(req, updatedUser);
 
     return res.render('personal-information', {
-      email: req.session.user!.email,
-      given_name: req.session.user!.given_name,
-      family_name: req.session.user!.family_name,
-      phone_number: req.session.user!.phone_number,
-      job: req.session.user!.job,
+      email: updatedUser.email,
+      given_name: updatedUser.given_name,
+      family_name: updatedUser.family_name,
+      phone_number: updatedUser.phone_number,
+      job: updatedUser.job,
       notifications: [
         notificationMessages['personal_information_update_success'],
       ],
@@ -87,10 +98,10 @@ export const getManageOrganizationsController = async (
   next: NextFunction
 ) => {
   try {
-    const {
-      userOrganizations,
-      pendingUserOrganizations,
-    } = await getUserOrganizations({ user_id: req.session.user!.id });
+    const { userOrganizations, pendingUserOrganizations } =
+      await getUserOrganizations({
+        user_id: getUserFromLoggedInSession(req).id,
+      });
 
     return res.render('manage-organizations', {
       notifications: await getNotificationsFromRequest(req),
@@ -111,7 +122,7 @@ export const getResetPasswordController = async (
   try {
     return res.render('reset-password', {
       notifications: await getNotificationsFromRequest(req),
-      loginHint: req.session.user!.email,
+      loginHint: getUserFromLoggedInSession(req).email,
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
@@ -124,7 +135,9 @@ export const getHelpController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const email = req.session.user?.email;
+  const email = isWithinLoggedInSession(req)
+    ? getUserFromLoggedInSession(req).email
+    : null;
   return res.render('help', {
     email,
     csrfToken: email && req.csrfToken(),

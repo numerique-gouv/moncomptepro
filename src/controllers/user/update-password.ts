@@ -6,6 +6,10 @@ import getNotificationsFromRequest from '../../services/get-notifications-from-r
 import { InvalidTokenError, WeakPasswordError } from '../../errors';
 import hasErrorFromField from '../../services/has-error-from-field';
 import { MONCOMPTEPRO_HOST } from '../../env';
+import {
+  getUserFromLoggedInSession,
+  isWithinLoggedInSession,
+} from '../../managers/session';
 
 export const getResetPasswordController = async (
   req: Request,
@@ -16,7 +20,10 @@ export const getResetPasswordController = async (
     return res.render('user/reset-password', {
       notifications: await getNotificationsFromRequest(req),
       loginHint:
-        req.session.email || (req.session.user && req.session.user.email),
+        req.session.email ||
+        (isWithinLoggedInSession(req)
+          ? getUserFromLoggedInSession(req).email
+          : null),
       csrfToken: req.csrfToken(),
     });
   } catch (error) {
