@@ -15,6 +15,7 @@ import {
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
 } from '../../errors';
+import { getUserFromLoggedInSession } from '../../managers/session';
 
 export const getOfficialContactEmailVerificationController = async (
   req: Request,
@@ -39,15 +40,12 @@ export const getOfficialContactEmailVerificationController = async (
       params: req.params,
     });
 
-    const {
-      codeSent,
-      contactEmail,
-      libelle,
-    } = await sendOfficialContactEmailVerificationEmail({
-      user_id: req.session.user!.id,
-      organization_id,
-      checkBeforeSend: true,
-    });
+    const { codeSent, contactEmail, libelle } =
+      await sendOfficialContactEmailVerificationEmail({
+        user_id: getUserFromLoggedInSession(req).id,
+        organization_id,
+        checkBeforeSend: true,
+      });
 
     return res.render('user/official-contact-email-verification', {
       notifications: await getNotificationsFromRequest(req),
@@ -83,7 +81,8 @@ export const postOfficialContactEmailVerificationMiddleware = async (
   try {
     const schema = z.object({
       body: z.object({
-        official_contact_email_verification_token: officialContactEmailVerificationTokenSchema(),
+        official_contact_email_verification_token:
+          officialContactEmailVerificationTokenSchema(),
       }),
       params: z.object({
         organization_id: idSchema(),
@@ -99,7 +98,7 @@ export const postOfficialContactEmailVerificationMiddleware = async (
     });
 
     await verifyOfficialContactEmailToken({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
       token: official_contact_email_verification_token,
     });

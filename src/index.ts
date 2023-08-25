@@ -66,6 +66,9 @@ app.use((req, res, next) => {
       scriptSrc: ["'self'", 'stats.data.gouv.fr'],
       styleSrc: ["'self'"],
       fontSrc: ["'self'", 'data:'],
+      // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
+      // and seems not useful for open id provider redirection.
+      // We bypass this security for now.
       formAction: ["'self'", '*'],
     },
   };
@@ -93,13 +96,15 @@ const sessionMiddleware =
       client: getNewRedisClient(),
       prefix: 'mcp:session:',
     }),
-    secret: [SESSION_COOKIE_SECRET],
-    resave: false,
-    saveUninitialized: true,
     cookie: {
       maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
       secure: SECURE_COOKIES,
     },
+    secret: [SESSION_COOKIE_SECRET],
+    // future default
+    resave: false,
+    // future default
+    saveUninitialized: false,
   });
 
 // Prevent creation of sessions for API calls on /oauth or /api routes

@@ -6,6 +6,10 @@ import {
   nameSchema,
   phoneNumberSchema,
 } from '../../services/custom-zod-schemas';
+import {
+  getUserFromLoggedInSession,
+  updateUserInLoggedInSession,
+} from '../../managers/session';
 
 export const getPersonalInformationsController = async (
   req: Request,
@@ -13,11 +17,12 @@ export const getPersonalInformationsController = async (
   next: NextFunction
 ) => {
   try {
+    const user = getUserFromLoggedInSession(req);
     return res.render('user/personal-information', {
-      given_name: req.session.user!.given_name,
-      family_name: req.session.user!.family_name,
-      phone_number: req.session.user!.phone_number,
-      job: req.session.user!.job,
+      given_name: user.given_name,
+      family_name: user.family_name,
+      phone_number: user.phone_number,
+      job: user.job,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: req.csrfToken(),
     });
@@ -51,12 +56,17 @@ export const postPersonalInformationsController = async (
       body: { given_name, family_name, phone_number, job },
     } = await getParamsForPostPersonalInformationsController(req);
 
-    req.session.user = await updatePersonalInformations(req.session.user!.id, {
-      given_name,
-      family_name,
-      phone_number,
-      job,
-    });
+    const updatedUser = await updatePersonalInformations(
+      getUserFromLoggedInSession(req).id,
+      {
+        given_name,
+        family_name,
+        phone_number,
+        job,
+      }
+    );
+
+    updateUserInLoggedInSession(req, updatedUser);
 
     next();
   } catch (error) {

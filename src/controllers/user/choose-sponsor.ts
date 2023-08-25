@@ -14,6 +14,7 @@ import {
   getOrganizationLabel,
   getSponsorOptions,
 } from '../../managers/organization/authentication-by-peers';
+import { getUserFromLoggedInSession } from '../../managers/session';
 
 export const getChooseSponsorController = async (
   req: Request,
@@ -34,7 +35,7 @@ export const getChooseSponsorController = async (
     });
 
     const sponsorOptions = await getSponsorOptions({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 
@@ -82,7 +83,7 @@ export const postChooseSponsorMiddleware = async (
     });
 
     await chooseSponsor({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
       sponsor_id,
     });
@@ -129,7 +130,7 @@ export const getNoSponsorFoundController = async (
 
     // we call this fonction only to ensure user is in organization
     await getOrganizationLabel({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 
@@ -165,7 +166,7 @@ export const postNoSponsorFoundController = async (
     });
 
     await askForSponsorship({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 
@@ -204,7 +205,7 @@ export const getUnableToFindSponsorController = async (
     });
 
     const libelle = await getOrganizationLabel({
-      user_id: req.session.user!.id,
+      user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 

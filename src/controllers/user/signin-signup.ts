@@ -11,6 +11,7 @@ import {
   WeakPasswordError,
 } from '../../errors';
 import { emailSchema } from '../../services/custom-zod-schemas';
+import { createLoggedInSession } from '../../managers/session';
 
 export const getStartSignInController = async (
   req: Request,
@@ -20,10 +21,7 @@ export const getStartSignInController = async (
   try {
     const schema = z.object({
       query: z.object({
-        did_you_mean: z
-          .string()
-          .min(1)
-          .optional(),
+        did_you_mean: z.string().min(1).optional(),
       }),
     });
 
@@ -126,8 +124,8 @@ export const postSignInMiddleware = async (
       body: req.body,
     });
 
-    req.session.user = await login(req.session.email!, password);
-    req.session.email = undefined;
+    const user = await login(req.session.email!, password);
+    await createLoggedInSession(req, user);
 
     next();
   } catch (error) {
@@ -185,8 +183,8 @@ export const postSignUpController = async (
       body: req.body,
     });
 
-    req.session.user = await signup(req.session.email!, password);
-    req.session.email = undefined;
+    const user = await signup(req.session.email!, password);
+    await createLoggedInSession(req, user);
 
     next();
   } catch (error) {
