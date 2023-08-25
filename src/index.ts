@@ -96,6 +96,7 @@ const sessionMiddleware =
       client: getNewRedisClient(),
       prefix: 'mcp:session:',
     }),
+    name: 'session',
     cookie: {
       maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
       secure: SECURE_COOKIES,
@@ -152,13 +153,23 @@ let server: Server;
     },
     cookies: {
       names: {
-        session: 'moncomptepro_session',
-        interaction: 'moncomptepro_interaction',
-        resume: 'moncomptepro_interaction_resume',
-        state: 'moncomptepro_state',
+        session: 'oidc.session',
+        interaction: 'oidc.interaction',
+        resume: 'oidc.interaction_resume',
+        state: 'oidc.state',
       },
-      long: { overwrite: true, signed: true, secure: SECURE_COOKIES },
-      short: { overwrite: true, signed: true, secure: SECURE_COOKIES },
+      long: {
+        overwrite: true,
+        signed: true,
+        secure: SECURE_COOKIES,
+        sameSite: 'lax',
+      },
+      short: {
+        overwrite: true,
+        signed: true,
+        secure: SECURE_COOKIES,
+        sameSite: 'lax',
+      },
       keys: [SESSION_COOKIE_SECRET],
     },
     ...oidcProviderConfiguration({
