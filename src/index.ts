@@ -99,6 +99,7 @@ const sessionMiddleware =
     cookie: {
       maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
       secure: SECURE_COOKIES,
+      sameSite: 'lax',
     },
     secret: [SESSION_COOKIE_SECRET],
     // future default
