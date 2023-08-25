@@ -12,6 +12,7 @@ import {
 } from '../../errors';
 import { emailSchema } from '../../services/custom-zod-schemas';
 import { createLoggedInSession } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getStartSignInController = async (
   req: Request,
@@ -41,7 +42,7 @@ export const getStartSignInController = async (
       hasEmailError,
       didYouMean,
       loginHint,
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -99,7 +100,7 @@ export const getSignInController = async (
   try {
     return res.render('user/sign-in', {
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -157,7 +158,7 @@ export const getSignUpController = async (
 
     return res.render('user/sign-up', {
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       loginHint: login_hint,
     });
   } catch (error) {

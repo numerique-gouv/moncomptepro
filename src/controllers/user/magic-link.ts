@@ -7,6 +7,7 @@ import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
 import { z, ZodError } from 'zod';
 import { MONCOMPTEPRO_HOST } from '../../env';
 import { createLoggedInSession } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -68,13 +69,13 @@ export const getSignInWithMagicLinkController = async (
       // Note that switching browser might not be a voluntary action from the user (ex: opening safari on macOS).
       // This mechanism also provides the user with a way to step back.
       return res.render('user/sign-in-with-magic-link', {
-        csrfToken: req.csrfToken(),
+        csrfToken: csrfToken(req),
         magicLinkToken: magic_link_token,
       });
     }
 
     return res.render('autosubmit-form', {
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       actionLabel: 'Connexion...',
       actionPath: '/users/sign-in-with-magic-link',
       inputName: 'magic_link_token',

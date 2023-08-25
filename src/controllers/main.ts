@@ -11,6 +11,7 @@ import {
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
 } from '../managers/session';
+import { csrfToken } from '../services/csrf-protection';
 
 export const getHomeController = async (
   req: Request,
@@ -41,7 +42,7 @@ export const getPersonalInformationsController = async (
       phone_number: user.phone_number,
       job: user.job,
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -79,7 +80,7 @@ export const postPersonalInformationsController = async (
       notifications: [
         notificationMessages['personal_information_update_success'],
       ],
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -107,7 +108,7 @@ export const getManageOrganizationsController = async (
       notifications: await getNotificationsFromRequest(req),
       userOrganizations,
       pendingUserOrganizations,
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -123,7 +124,7 @@ export const getResetPasswordController = async (
     return res.render('reset-password', {
       notifications: await getNotificationsFromRequest(req),
       loginHint: getUserFromLoggedInSession(req).email,
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -140,6 +141,6 @@ export const getHelpController = async (
     : null;
   return res.render('help', {
     email,
-    csrfToken: email && req.csrfToken(),
+    csrfToken: email && csrfToken(req),
   });
 };

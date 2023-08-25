@@ -16,6 +16,7 @@ import {
   OfficialContactEmailVerificationNotNeededError,
 } from '../../errors';
 import { getUserFromLoggedInSession } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getOfficialContactEmailVerificationController = async (
   req: Request,
@@ -50,7 +51,7 @@ export const getOfficialContactEmailVerificationController = async (
     return res.render('user/official-contact-email-verification', {
       notifications: await getNotificationsFromRequest(req),
       contactEmail,
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
       libelle,

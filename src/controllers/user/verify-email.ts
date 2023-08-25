@@ -11,6 +11,7 @@ import {
   getUserFromLoggedInSession,
   updateUserInLoggedInSession,
 } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getVerifyEmailController = async (
   req: Request,
@@ -38,7 +39,7 @@ export const getVerifyEmailController = async (
     return res.render('user/verify-email', {
       notifications: await getNotificationsFromRequest(req),
       email: getUserFromLoggedInSession(req).email,
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
     });

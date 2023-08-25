@@ -10,6 +10,7 @@ import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
 } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getResetPasswordController = async (
   req: Request,
@@ -24,7 +25,7 @@ export const getResetPasswordController = async (
         (isWithinLoggedInSession(req)
           ? getUserFromLoggedInSession(req).email
           : null),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
@@ -84,7 +85,7 @@ export const getChangePasswordController = async (
     return res.render('user/change-password', {
       resetPasswordToken: reset_password_token,
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
