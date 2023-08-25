@@ -6,6 +6,7 @@ import {
 import { z } from 'zod';
 import { idSchema } from '../../services/custom-zod-schemas';
 import { getUserFromLoggedInSession } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getSelectOrganizationController = async (
   req: Request,
@@ -18,7 +19,7 @@ export const getSelectOrganizationController = async (
 
   return res.render('user/select-organization', {
     userOrganizations,
-    csrfToken: req.csrfToken(),
+    csrfToken: csrfToken(req),
   });
 };
 

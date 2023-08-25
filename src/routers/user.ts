@@ -1,4 +1,3 @@
-import csrf from 'csurf';
 import { Router, urlencoded } from 'express';
 import {
   getJoinOrganizationController,
@@ -68,10 +67,10 @@ import {
   getSelectOrganizationController,
   postSelectOrganizationMiddleware,
 } from '../controllers/user/select-organization';
+import { csrfProtectionMiddleware } from '../services/csrf-protection';
 
 export const userRouter = () => {
   const userRouter = Router();
-  const csrfProtectionMiddleware = csrf();
 
   userRouter.use((req, res, next) => {
     res.set('Pragma', 'no-cache');

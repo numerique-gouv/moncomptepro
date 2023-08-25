@@ -25,6 +25,7 @@ import {
   joinOrganization,
 } from '../managers/organization/join';
 import { getUserFromLoggedInSession } from '../managers/session';
+import { csrfToken } from '../services/csrf-protection';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -59,7 +60,7 @@ export const getJoinOrganizationController = async (
 
     return res.render('user/join-organization', {
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       siretHint: siret_hint,
     });
   } catch (error) {
@@ -81,7 +82,7 @@ export const getOrganizationSuggestionsController = async (
 
   return res.render('user/organization-suggestions', {
     organizationSuggestions,
-    csrfToken: req.csrfToken(),
+    csrfToken: csrfToken(req),
   });
 };
 

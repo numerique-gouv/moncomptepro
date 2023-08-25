@@ -1,4 +1,3 @@
-import csrf from 'csurf';
 import { Express, Router, urlencoded } from 'express';
 import {
   getHelpController,
@@ -11,10 +10,10 @@ import {
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
 import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/user';
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
+import { csrfProtectionMiddleware } from '../services/csrf-protection';
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
-  const csrfProtectionMiddleware = csrf();
 
   mainRouter.use((req, res, next) => {
     res.set('Pragma', 'no-cache');

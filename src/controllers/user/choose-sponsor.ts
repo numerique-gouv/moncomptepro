@@ -15,6 +15,7 @@ import {
   getSponsorOptions,
 } from '../../managers/organization/authentication-by-peers';
 import { getUserFromLoggedInSession } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getChooseSponsorController = async (
   req: Request,
@@ -45,7 +46,7 @@ export const getChooseSponsorController = async (
 
     return res.render('user/choose-sponsor', {
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       organization_id,
       sponsorOptions,
       libelle,
@@ -135,7 +136,7 @@ export const getNoSponsorFoundController = async (
     });
 
     return res.render('user/no-sponsor-found', {
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
       organization_id,
     });
   } catch (error) {

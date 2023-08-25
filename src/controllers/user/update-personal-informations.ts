@@ -10,6 +10,7 @@ import {
   getUserFromLoggedInSession,
   updateUserInLoggedInSession,
 } from '../../managers/session';
+import { csrfToken } from '../../services/csrf-protection';
 
 export const getPersonalInformationsController = async (
   req: Request,
@@ -24,7 +25,7 @@ export const getPersonalInformationsController = async (
       phone_number: user.phone_number,
       job: user.job,
       notifications: await getNotificationsFromRequest(req),
-      csrfToken: req.csrfToken(),
+      csrfToken: csrfToken(req),
     });
   } catch (error) {
     next(error);
