@@ -243,13 +243,18 @@ VALUES
    'Q8alcDUf9NwwfkPx4s3GPgac0FsZ6ZdZMIFvnbqabGuZ8JwwqyJy46MgOGuUgw43Hnzjzfzzt7B64937oCmtmmxqvY9ftQyXIhMxRzNn73UspWHKv9wv2HqtTD82LTxV',
    ARRAY [
      'https://back.datapass-development.api.gouv.fr/users/auth/api_gouv/callback',
-     'https://back.datapass-test.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.sandbox.datapass.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.sandbox1.datapass.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.sandbox2.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'http://localhost:3001/users/auth/api_gouv/callback'
      ],
    ARRAY [
      'http://localhost:3000',
      'http://localhost:3001',
-     'https://datapass-development.api.gouv.fr'
+     'https://datapass-development.api.gouv.fr',
+     'https://sandbox.datapass.api.gouv.fr',
+     'https://sandbox1.datapass.api.gouv.fr',
+     'https://sandbox2.datapass.api.gouv.fr'
      ],
    'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
