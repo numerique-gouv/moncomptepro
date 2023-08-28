@@ -3,7 +3,11 @@ import { z, ZodError } from 'zod';
 import { emailSchema } from '../../services/custom-zod-schemas';
 import { changePassword, sendResetPasswordEmail } from '../../managers/user';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
-import { InvalidTokenError, WeakPasswordError } from '../../errors';
+import {
+  InvalidTokenError,
+  LeakedPasswordError,
+  WeakPasswordError,
+} from '../../errors';
 import hasErrorFromField from '../../services/has-error-from-field';
 import { MONCOMPTEPRO_HOST } from '../../env';
 import {
@@ -132,6 +136,14 @@ export const postChangePasswordController = async (
 
       return res.redirect(
         `/users/change-password?reset_password_token=${resetPasswordToken}&notification=weak_password`
+      );
+    }
+
+    if (error instanceof LeakedPasswordError) {
+      const resetPasswordToken = req.body.reset_password_token;
+
+      return res.redirect(
+        `/users/change-password?reset_password_token=${resetPasswordToken}&notification=leaked_password`
       );
     }
 

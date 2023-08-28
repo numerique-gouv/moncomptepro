@@ -30,7 +30,6 @@ export const validatePassword = async (
   return await bcrypt.compare(plainPassword || '', storedHash);
 };
 
-// TODO call https://haveibeenpwned.com/Passwords
 export const isPasswordSecure = (plainPassword: string) => {
   const { strong } = owaspPasswordStrengthTest(plainPassword);
   return strong;

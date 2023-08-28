@@ -8,6 +8,7 @@ import {
   EmailUnavailableError,
   InvalidCredentialsError,
   InvalidEmailError,
+  LeakedPasswordError,
   WeakPasswordError,
 } from '../../errors';
 import { emailSchema } from '../../services/custom-zod-schemas';
@@ -196,6 +197,9 @@ export const postSignUpController = async (
     }
     if (error instanceof WeakPasswordError) {
       return res.redirect(`/users/sign-up?notification=weak_password`);
+    }
+    if (error instanceof LeakedPasswordError) {
+      return res.redirect(`/users/sign-up?notification=leaked_password`);
     }
     if (error instanceof ZodError) {
       return res.redirect(`/users/sign-up?notification=invalid_credentials`);
