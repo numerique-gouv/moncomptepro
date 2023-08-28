@@ -545,7 +545,7 @@ VALUES
       'http://10.59.128.114:8004/',
     ],
     'openid email profile organizations',
-    'http://10.59.128.114:8004/',
+    'http://127.0.0.1:8080/',
     "Développement d'une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF",
    null, null, null, null),
   (18,
