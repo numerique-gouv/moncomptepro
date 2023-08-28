@@ -1,14 +1,15 @@
-import bcrypt from "bcryptjs";
-import { hasIn, isEmpty, isString } from "lodash";
-import { customAlphabet, nanoid } from "nanoid/async";
-import { parse as parseUrl } from "url";
-import notificationMessages from "../notification-messages";
-import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
+import bcrypt from 'bcryptjs';
+import { hasIn, isEmpty, isString } from 'lodash';
+import { customAlphabet, nanoid } from 'nanoid/async';
+import { parse as parseUrl } from 'url';
+import notificationMessages from '../notification-messages';
+import dicewareWordlistFrAlt from './security/diceware-wordlist-fr-alt';
+import { owaspPasswordStrengthTest } from './owasp-password-strength-tester';
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(plainPassword, 10, function(err: Error, hash: string) {
+    bcrypt.hash(plainPassword, 10, function (err: Error, hash: string) {
       if (err) {
         return reject(err);
       }
@@ -29,10 +30,10 @@ export const validatePassword = async (
   return await bcrypt.compare(plainPassword || '', storedHash);
 };
 
-// TODO use https://www.npmjs.com/package/owasp-password-strength-test instead
 // TODO call https://haveibeenpwned.com/Passwords
 export const isPasswordSecure = (plainPassword: string) => {
-  return plainPassword && plainPassword.length >= 10;
+  const { strong } = owaspPasswordStrengthTest(plainPassword);
+  return strong;
 };
 
 /*
@@ -44,7 +45,7 @@ export const isEmailValid = (email: unknown): email is string => {
     return false;
   }
 
-  const parts = email.split('@').filter(part => part);
+  const parts = email.split('@').filter((part) => part);
 
   // The email address contains two parts, separated with an @ symbol.
   // => these parts are non-empty strings
@@ -113,12 +114,12 @@ export const generateToken = async () => {
 };
 
 type dice = '1' | '2' | '3' | '4' | '5' | '6';
-type fiveDices = `${dice}${dice}${dice}${dice}${dice}`
+type fiveDices = `${dice}${dice}${dice}${dice}${dice}`;
 const nanoidFiveDices = customAlphabet('123456', 5);
 
 export const generateDicewarePassword = async () => {
-  const firstFiveDices = await nanoidFiveDices() as fiveDices;
-  const secondFiveDices = await nanoidFiveDices() as fiveDices;
+  const firstFiveDices = (await nanoidFiveDices()) as fiveDices;
+  const secondFiveDices = (await nanoidFiveDices()) as fiveDices;
 
   return `${dicewareWordlistFrAlt[firstFiveDices]}-${dicewareWordlistFrAlt[secondFiveDices]}`;
 };

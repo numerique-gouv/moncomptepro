@@ -70,7 +70,7 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   weak_password: {
     type: 'error',
     description:
-      'Votre mot de passe est trop court. Merci de choisir un mot de passe d’au moins 10 caractères.',
+      'Votre mot de passe est trop faible. Merci de choisir un mot de passe qui complète les exigences affichées.',
   },
   invalid_personal_informations: {
     type: 'error',

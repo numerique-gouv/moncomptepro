@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  var password = document.getElementById("password");
+  var password = document.getElementById("password-input");
   var confirm_password = document.getElementById("confirm_password");
 
   function validatePassword() {
