@@ -8,6 +8,7 @@ import {
   InvalidEmailError,
   InvalidMagicLinkError,
   InvalidTokenError,
+  LeakedPasswordError,
   UserNotFoundError,
   WeakPasswordError,
 } from '../errors';
@@ -28,6 +29,7 @@ import {
   isPasswordSecure,
   validatePassword,
 } from '../services/security';
+import { hasPasswordBeenPwned } from '../connectors/pwnedpasswords';
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
@@ -91,6 +93,10 @@ export const signup = async (
 
   if (!isPasswordSecure(password)) {
     throw new WeakPasswordError();
+  }
+
+  if (await hasPasswordBeenPwned(password)) {
+    throw new LeakedPasswordError();
   }
 
   const hashedPassword = await hashPassword(password);
@@ -327,6 +333,10 @@ export const changePassword = async (
 
   if (!isPasswordSecure(password)) {
     throw new WeakPasswordError();
+  }
+
+  if (await hasPasswordBeenPwned(password)) {
+    throw new LeakedPasswordError();
   }
 
   const hashedPassword = await hashPassword(password);

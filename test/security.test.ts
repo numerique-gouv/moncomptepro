@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import {
   isEmailValid,
   isNameValid,
+  isPasswordSecure,
   isSiretValid,
   isUrlTrusted,
 } from '../src/services/security';
@@ -179,5 +180,23 @@ describe('isUrlTrusted', () => {
   });
   it('should trust absolute path on same domain', () => {
     assert.equal(isUrlTrusted('/users/join-organization'), true);
+  });
+});
+
+describe('isPasswordSecure', () => {
+  it('should return false for too short password', () => {
+    assert.equal(isPasswordSecure('password'), false);
+  });
+  it('should return false for password with only 2 types of character', () => {
+    assert.equal(isPasswordSecure('mon mot de passe'), false);
+  });
+  it('should return true for long enough password with 4 types of character', () => {
+    assert.equal(isPasswordSecure('Password123!'), true);
+  });
+  it('should return true for passphrase', () => {
+    assert.equal(
+      isPasswordSecure('agrafe correcte de la batterie du cheval'),
+      true
+    );
   });
 });
