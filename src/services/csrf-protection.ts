@@ -1,5 +1,6 @@
 import { csrfSync } from 'csrf-sync';
 import { NextFunction, Request, Response } from 'express';
+import * as Sentry from '@sentry/node';
 
 const { generateToken, invalidCsrfTokenError, isRequestValid, revokeToken } =
   csrfSync({
@@ -23,6 +24,7 @@ export const csrfProtectionMiddleware = (
   // Csrf token cannot be re-used
   revokeToken(req);
   if (!isCsrfValid) {
+    Sentry.captureException(invalidCsrfTokenError);
     return next(invalidCsrfTokenError);
   }
 
