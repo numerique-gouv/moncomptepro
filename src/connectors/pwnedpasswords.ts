@@ -34,7 +34,7 @@ export const hasPasswordBeenPwned = async (
 
     const parsedData = apiResponseParser(data);
 
-    return parsedData[hashTrailingChars] > 0;
+    return parsedData[hashTrailingChars] > 10;
   } catch (error) {
     console.error(error);
 
