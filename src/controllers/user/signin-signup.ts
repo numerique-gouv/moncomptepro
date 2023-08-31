@@ -15,6 +15,7 @@ import { emailSchema } from '../../services/custom-zod-schemas';
 import { createLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
 import * as Sentry from '@sentry/node';
+import { DISPLAY_TEST_ENV_WARNING } from '../../env';
 
 export const getStartSignInController = async (
   req: Request,
@@ -45,6 +46,7 @@ export const getStartSignInController = async (
       didYouMean,
       loginHint,
       csrfToken: csrfToken(req),
+      displayTestEnvWarning: DISPLAY_TEST_ENV_WARNING,
     });
   } catch (error) {
     next(error);
