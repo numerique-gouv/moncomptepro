@@ -11,15 +11,12 @@ import { ejsLayoutMiddlewareFactory } from '../services/renderer';
 import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/user';
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
 import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
+import nocache from 'nocache';
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
 
-  mainRouter.use((req, res, next) => {
-    res.set('Pragma', 'no-cache');
-    res.set('Cache-Control', 'no-cache, no-store');
-    next();
-  });
+  mainRouter.use(nocache());
 
   mainRouter.get(
     '/',

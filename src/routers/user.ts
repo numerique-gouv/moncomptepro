@@ -68,15 +68,12 @@ import {
   postSelectOrganizationMiddleware,
 } from '../controllers/user/select-organization';
 import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
+import nocache from 'nocache';
 
 export const userRouter = () => {
   const userRouter = Router();
 
-  userRouter.use((req, res, next) => {
-    res.set('Pragma', 'no-cache');
-    res.set('Cache-Control', 'no-cache, no-store');
-    next();
-  });
+  userRouter.use(nocache());
 
   userRouter.use(urlencoded({ extended: false }));
 
