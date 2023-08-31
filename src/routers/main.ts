@@ -10,7 +10,7 @@ import {
 import { ejsLayoutMiddlewareFactory } from '../services/renderer';
 import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/user';
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
-import { csrfProtectionMiddleware } from '../services/csrf-protection';
+import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();

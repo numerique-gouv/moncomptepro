@@ -11,7 +11,7 @@ import {
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
 } from '../managers/session';
-import { csrfToken } from '../services/csrf-protection';
+import { csrfToken } from '../middlewares/csrf-protection';
 
 export const getHomeController = async (
   req: Request,
