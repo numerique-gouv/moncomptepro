@@ -7,6 +7,17 @@
                     S’inscrire ou se connecter
                 </h4>
                 <div class="fr-card__desc">
+                    <% if(locals.displayTestEnvWarning) { %>
+                    <div class="fr-alert fr-alert--warning">
+                        <h3 class="fr-alert__title">Vous êtes sur une instance de test</h3>
+                        <p>
+                            Afin de limiter le risque de divulguer vos informations personnelles,
+                            merci de ne pas utiliser votre adresse email.
+                            Pour vos tests, utilisez des adresses <a target="_blank" rel="noopener noreferrer" href="https://yopmail.com/">yopmail</a>.
+                        </p>
+                    </div>
+                    <br>
+                    <% } %>
                     <form action="/users/start-sign-in" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 

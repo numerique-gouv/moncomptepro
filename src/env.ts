@@ -26,6 +26,8 @@ export const SECURE_COOKIES = (process.env.SECURE_COOKIES || 'true') === 'true';
 export const DO_NOT_USE_ANNUAIRE_EMAILS =
   process.env.DO_NOT_USE_ANNUAIRE_EMAILS === 'True';
 export const DO_NOT_RATE_LIMIT = process.env.DO_NOT_RATE_LIMIT === 'True';
+export const DISPLAY_TEST_ENV_WARNING =
+  process.env.DISPLAY_TEST_ENV_WARNING === 'True';
 
 // we wait just enough to avoid nginx default timeout of 60 seconds
 export const HTTP_CLIENT_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds;
