@@ -67,7 +67,7 @@ import {
   getSelectOrganizationController,
   postSelectOrganizationMiddleware,
 } from '../controllers/user/select-organization';
-import { csrfProtectionMiddleware } from '../services/csrf-protection';
+import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
 
 export const userRouter = () => {
   const userRouter = Router();

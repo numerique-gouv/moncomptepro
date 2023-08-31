@@ -14,7 +14,7 @@ import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
 } from '../../managers/session';
-import { csrfToken } from '../../services/csrf-protection';
+import { csrfToken } from '../../middlewares/csrf-protection';
 
 export const getResetPasswordController = async (
   req: Request,

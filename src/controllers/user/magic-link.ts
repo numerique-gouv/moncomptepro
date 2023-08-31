@@ -7,7 +7,7 @@ import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
 import { z, ZodError } from 'zod';
 import { MONCOMPTEPRO_HOST } from '../../env';
 import { createLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../services/csrf-protection';
+import { csrfToken } from '../../middlewares/csrf-protection';
 
 export const postSendMagicLinkController = async (
   req: Request,

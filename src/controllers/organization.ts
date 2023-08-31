@@ -25,7 +25,7 @@ import {
   joinOrganization,
 } from '../managers/organization/join';
 import { getUserFromLoggedInSession } from '../managers/session';
-import { csrfToken } from '../services/csrf-protection';
+import { csrfToken } from '../middlewares/csrf-protection';
 
 export const getJoinOrganizationController = async (
   req: Request,

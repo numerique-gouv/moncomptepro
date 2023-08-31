@@ -4,7 +4,7 @@ import { idSchema } from '../../services/custom-zod-schemas';
 
 import { getSponsorLabel } from '../../managers/organization/authentication-by-peers';
 import { getUserFromLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../services/csrf-protection';
+import { csrfToken } from '../../middlewares/csrf-protection';
 
 export const getWelcomeController = async (
   req: Request,
