@@ -24,8 +24,9 @@ export const csrfProtectionMiddleware = (
   // Csrf token cannot be re-used
   revokeToken(req);
   if (!isCsrfValid) {
-    Sentry.captureException(invalidCsrfTokenError);
-    return next(invalidCsrfTokenError);
+    const err = invalidCsrfTokenError;
+    Sentry.captureException(err);
+    return next(err);
   }
 
   next();

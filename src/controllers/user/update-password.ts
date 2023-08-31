@@ -15,6 +15,7 @@ import {
   isWithinLoggedInSession,
 } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
+import * as Sentry from '@sentry/node';
 
 export const getResetPasswordController = async (
   req: Request,
@@ -141,7 +142,7 @@ export const postChangePasswordController = async (
 
     if (error instanceof LeakedPasswordError) {
       const resetPasswordToken = req.body.reset_password_token;
-
+      Sentry.captureException(error);
       return res.redirect(
         `/users/change-password?reset_password_token=${resetPasswordToken}&notification=leaked_password`
       );

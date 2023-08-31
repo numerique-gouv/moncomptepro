@@ -14,6 +14,7 @@ import {
 import { emailSchema } from '../../services/custom-zod-schemas';
 import { createLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
+import * as Sentry from '@sentry/node';
 
 export const getStartSignInController = async (
   req: Request,
@@ -196,6 +197,7 @@ export const postSignUpController = async (
       );
     }
     if (error instanceof WeakPasswordError) {
+      Sentry.captureException(error);
       return res.redirect(`/users/sign-up?notification=weak_password`);
     }
     if (error instanceof LeakedPasswordError) {
