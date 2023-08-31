@@ -76,6 +76,10 @@ app.use((req, res, next) => {
   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
 });
 
+// Disable etag globally to avoid triggering invalid csrf token error
+// Note that express.static always sends weak ETags.
+app.set('etag', false);
+
 let morganOption = {};
 
 if (ACCESS_LOG_PATH) {
