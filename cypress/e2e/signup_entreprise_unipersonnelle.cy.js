@@ -2,18 +2,18 @@ const MONCOMPTEPRO_HOST =
   Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
 
 describe('Signup into new entreprise unipersonnelle', () => {
-  before(function() {
+  before(function () {
     return cy
       .mailslurp()
-      .then(mailslurp => mailslurp.createInbox())
-      .then(inbox => {
+      .then((mailslurp) => mailslurp.createInbox())
+      .then((inbox) => {
         // save inbox id and email address to this (make sure you use function and not arrow syntax)
         cy.wrap(inbox.id).as('inboxId');
         cy.wrap(inbox.emailAddress).as('emailAddress');
       });
   });
 
-  it('creates a user', function() {
+  it('creates a user', function () {
     // Visit the signup page
     cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
 
@@ -21,7 +21,9 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.get('[name="login"]').type(this.emailAddress);
     cy.get('[type="submit"]').click();
 
-    cy.get('[name="password"]').type(this.emailAddress);
+    cy.get('[name="password"]').type(
+      'This super secret password is hidden well!'
+    );
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
@@ -30,11 +32,11 @@ describe('Signup into new entreprise unipersonnelle', () => {
     // Verify the email with the code received by email
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
-      .then(mailslurp =>
+      .then((mailslurp) =>
         mailslurp.waitForLatestEmail(this.inboxId, 60000, true)
       )
       // extract the verification code from the email subject
-      .then(email => {
+      .then((email) => {
         const matches = /.*<strong>(\s*(?:\d\s*){10})<\/strong>.*/.exec(
           email.body
         );
@@ -44,7 +46,7 @@ describe('Signup into new entreprise unipersonnelle', () => {
         throw new Error('Could not find verification code in received email');
       })
       // fill out the verification form and submit
-      .then(code => {
+      .then((code) => {
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
       });
@@ -67,11 +69,11 @@ describe('Signup into new entreprise unipersonnelle', () => {
     cy.contains('Votre compte est créé');
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
-      .then(mailslurp =>
+      .then((mailslurp) =>
         mailslurp.waitForLatestEmail(this.inboxId, 60000, true)
       )
       // assert reception of confirmation email
-      .then(email => {
+      .then((email) => {
         // characters é can triggers this error:
         // AssertionError: expected 'Votre compte MonComptePro a bien Ã©tÃ© crÃ©Ã©' to equal 'Votre compte MonComptePro a bien été créé'
         // we use a regexp to get around this issue.
