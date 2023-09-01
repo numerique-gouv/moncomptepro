@@ -15,7 +15,6 @@ export const {
   SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr',
   API_AUTH_USERNAME = 'admin',
   API_AUTH_PASSWORD = 'admin',
-  BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP = '13002526500013,13002603200016',
 } = process.env;
 
 export const DO_NOT_VALIDATE_MAIL = process.env.DO_NOT_VALIDATE_MAIL === 'True';

@@ -1,4 +1,4 @@
-import { BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP } from '../env';
+import { getUsers } from '../repositories/organization/getters';
 
 /**
  * This fonction return approximate results. As the data tranche effectifs is
@@ -44,19 +44,23 @@ export const isServicePublic = ({
   cached_categorie_juridique,
   siret,
 }: Organization): boolean => {
-  const cat_jur_ok = ['3210', '3110', '4', '71', '72', '73', '74'].some(e =>
-    cached_categorie_juridique?.startsWith(e)
+  const cat_jur_ok = ['3210', '3110', '4', '71', '72', '73', '74'].some(
+    (e) => cached_categorie_juridique?.startsWith(e)
   );
 
-  const siret_ok = ['1', '2'].some(e => siret?.startsWith(e));
+  const siret_ok = ['1', '2'].some((e) => siret?.startsWith(e));
 
   return cat_jur_ok || siret_ok;
 };
 
-const betaTestingOrganizationsForSponsorship = BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP.split(
-  ','
-);
+export const isEligibleToSponsorship = async ({
+  id,
+}: Organization): Promise<boolean> => {
+  const usersInOrganization = await getUsers(id);
+  const internalUsers = usersInOrganization.filter(
+    ({ email: e, is_external, authentication_by_peers_type }) =>
+      !is_external && !!authentication_by_peers_type
+  );
 
-export const isEligibleToSponsorship = ({ siret }: Organization): boolean =>
-  // TODO replace this test with organization.memberCount > 50
-  betaTestingOrganizationsForSponsorship.includes(siret);
+  return internalUsers.length > 50;
+};
