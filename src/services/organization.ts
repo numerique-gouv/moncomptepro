@@ -18,7 +18,9 @@ export const isEntrepriseUnipersonnelle = ({
   ].includes(cached_libelle_categorie_juridique || '');
 
   // check that the organization has the right tranche effectifs
-  const tra_eff_ok = ['NN', '00', null].includes(cached_tranche_effectifs);
+  const tra_eff_ok = ['NN', '00', '01', null].includes(
+    cached_tranche_effectifs
+  );
 
   return cat_jur_ok && tra_eff_ok;
 };
