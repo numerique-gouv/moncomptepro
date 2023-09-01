@@ -1,5 +1,6 @@
 import { getDatabaseConnection } from '../../connectors/postgres';
 import { QueryResult } from 'pg';
+import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from '../../env';
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();
@@ -42,11 +43,9 @@ WHERE id = $1`,
 export const findByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
-  const {
-    rows,
-  }: QueryResult<Organization &
-    BaseUserOrganizationLink> = await connection.query(
-    `
+  const { rows }: QueryResult<Organization & BaseUserOrganizationLink> =
+    await connection.query(
+      `
 SELECT
     o.id,
     o.siret,
@@ -85,8 +84,8 @@ FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
 ORDER BY uo.created_at`,
-    [user_id]
-  );
+      [user_id]
+    );
 
   return rows;
 };
@@ -174,10 +173,9 @@ WHERE cached_est_active = 'true'
 export const findByMostUsedEmailDomain = async (email_domain: string) => {
   const connection = getDatabaseConnection();
 
-  const {
-    rows,
-  }: QueryResult<Organization & { count: number }> = await connection.query(
-    `
+  const { rows }: QueryResult<Organization & { count: number }> =
+    await connection.query(
+      `
 SELECT
     sub.id,
     sub.siret,
@@ -214,18 +212,17 @@ FROM (SELECT o.*, substring(u.email from '@(.*)$') as domain, count(*)
       HAVING count(*) >= 5
       ORDER BY count(*) DESC) sub
 WHERE domain=$1`,
-    [email_domain]
-  );
+      [email_domain]
+    );
 
   return rows;
 };
 export const getUsers = async (organization_id: number) => {
   const connection = getDatabaseConnection();
 
-  const {
-    rows,
-  }: QueryResult<User & BaseUserOrganizationLink> = await connection.query(
-    `
+  const { rows }: QueryResult<User & BaseUserOrganizationLink> =
+    await connection.query(
+      `
 SELECT
     u.id,
     u.email,
@@ -258,8 +255,66 @@ SELECT
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,
-    [organization_id]
-  );
+      [organization_id]
+    );
+
+  return rows;
+};
+/**
+ * Active users are user whom email as been verified within the last 3 months.
+ * @param organization_id
+ */
+export const getInternalActiveUsers = async (organization_id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<User & BaseUserOrganizationLink> =
+    await connection.query(
+      `
+SELECT
+    u.id,
+    u.email,
+    u.encrypted_password,
+    u.reset_password_token,
+    u.reset_password_sent_at,
+    u.sign_in_count,
+    u.last_sign_in_at,
+    u.created_at,
+    u.updated_at,
+    u.legacy_user,
+    u.email_verified,
+    u.verify_email_token,
+    u.verify_email_sent_at,
+    u.given_name,
+    u.family_name,
+    u.phone_number,
+    u.job,
+    u.magic_link_token,
+    u.magic_link_sent_at,
+    u.email_verified_at,
+    uo.is_external,
+    uo.verification_type,
+    uo.authentication_by_peers_type,
+    uo.has_been_greeted,
+    uo.sponsor_id,
+    uo.needs_official_contact_email_verification,
+    uo.official_contact_email_verification_token,
+    uo.official_contact_email_verification_sent_at
+FROM users u
+INNER JOIN users_organizations AS uo ON uo.user_id = u.id
+WHERE uo.organization_id = $1
+  AND uo.is_external = FALSE
+  AND uo.verification_type IS NOT NULL
+  AND uo.authentication_by_peers_type IS NOT NULL
+  AND u.email_verified_at >= $2`,
+      [
+        organization_id,
+        new Date(
+          new Date().getTime() -
+            MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES *
+              60e3
+        ),
+      ]
+    );
 
   return rows;
 };

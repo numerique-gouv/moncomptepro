@@ -1,4 +1,4 @@
-import { getUsers } from '../repositories/organization/getters';
+import { getInternalActiveUsers } from '../repositories/organization/getters';
 
 /**
  * This fonction return approximate results. As the data tranche effectifs is
@@ -56,11 +56,7 @@ export const isServicePublic = ({
 export const isEligibleToSponsorship = async ({
   id,
 }: Organization): Promise<boolean> => {
-  const usersInOrganization = await getUsers(id);
-  const internalUsers = usersInOrganization.filter(
-    ({ email: e, is_external, authentication_by_peers_type }) =>
-      !is_external && !!authentication_by_peers_type
-  );
+  const internalActiveUsers = await getInternalActiveUsers(id);
 
-  return internalUsers.length > 50;
+  return internalActiveUsers.length > 50;
 };
