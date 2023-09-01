@@ -1,5 +1,6 @@
 import {
   findById as findOrganizationById,
+  getInternalActiveUsers,
   getUserOrganizationLink,
   getUsers,
 } from '../../repositories/organization/getters';
@@ -36,10 +37,9 @@ export const notifyAllMembers = async ({
   const { cached_libelle } = organization;
 
   // Email organization members of the organization
-  const usersInOrganization = await getUsers(organization_id);
-  const otherInternalUsers = usersInOrganization.filter(
-    ({ email: e, is_external, authentication_by_peers_type }) =>
-      e !== email && !is_external && !!authentication_by_peers_type
+  const internalActiveUsers = await getInternalActiveUsers(organization_id);
+  const otherInternalUsers = internalActiveUsers.filter(
+    ({ email: e }) => e !== email
   );
   if (otherInternalUsers.length > 0) {
     const user_label =
@@ -53,6 +53,8 @@ export const notifyAllMembers = async ({
   }
 
   // Email organization members list to the user (if he is an internal member)
+  // Note that non-active users are also listed here.
+  const usersInOrganization = await getUsers(organization_id);
   const otherUsers = usersInOrganization.filter(
     ({ email: e, authentication_by_peers_type }) =>
       e !== email && !!authentication_by_peers_type
@@ -120,15 +122,12 @@ export const getSponsorOptions = async ({
     throw new NotFoundError();
   }
 
+  const internalActiveUsers = await getInternalActiveUsers(organization_id);
   // Note that external user will have access to name and job of internal members
   const sponsorOptions: {
     id: number;
     label: string;
-  }[] = organizationUsers
-    .filter(
-      ({ is_external, verification_type, authentication_by_peers_type }) =>
-        !is_external && !!verification_type && !!authentication_by_peers_type
-    )
+  }[] = internalActiveUsers
     .map(({ id, given_name, family_name, job }) => ({
       id,
       label: `${given_name} ${family_name} - ${job}`,
@@ -146,23 +145,17 @@ export const chooseSponsor = async ({
   organization_id: number;
   sponsor_id: number;
 }) => {
-  const organizationUsers = await getUsers(organization_id);
   const organization = await findOrganizationById(organization_id);
 
+  const organizationUsers = await getUsers(organization_id);
   const user = organizationUsers.find(({ id }) => id === user_id);
-  const sponsor = organizationUsers.find(({ id }) => id === sponsor_id);
 
-  // The sponsor and the user should be in the organization already
-  if (isEmpty(user) || isEmpty(sponsor) || isEmpty(organization)) {
-    throw new NotFoundError();
-  }
+  const internalActiveUsers = await getInternalActiveUsers(organization_id);
+  const sponsor = internalActiveUsers.find(({ id }) => id === sponsor_id);
 
+  // The user should be in the organization already
   // The sponsor must be an authenticated internal member.
-  if (
-    sponsor.is_external ||
-    !sponsor.verification_type ||
-    !sponsor.authentication_by_peers_type
-  ) {
+  if (isEmpty(user) || isEmpty(sponsor) || isEmpty(organization)) {
     throw new NotFoundError();
   }
 

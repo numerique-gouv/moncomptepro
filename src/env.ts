@@ -15,7 +15,6 @@ export const {
   SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr',
   API_AUTH_USERNAME = 'admin',
   API_AUTH_PASSWORD = 'admin',
-  BETA_TESTING_ORGANISATIONS_FOR_SPONSORSHIP = '13002526500013,13002603200016',
 } = process.env;
 
 export const DO_NOT_VALIDATE_MAIL = process.env.DO_NOT_VALIDATE_MAIL === 'True';
@@ -34,3 +33,8 @@ export const HTTP_CLIENT_TIMEOUT = 55 * 1000; // 55 seconds in milliseconds;
 export const SESSION_MAX_AGE_IN_SECONDS = process.env.SESSION_MAX_AGE_IN_SECONDS
   ? parseInt(process.env.SESSION_MAX_AGE_IN_SECONDS, 10)
   : 1 * 24 * 60 * 60; // 1 day in seconds
+export const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
+export const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
+export const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 10;
+export const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
+  3 * 30 * 24 * 60;

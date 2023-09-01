@@ -225,14 +225,14 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
       try {
         if (error) return next(error);
 
-        const userOrganisations = await getOrganizationsByUserId(
-          getUserFromLoggedInSession(req).id
-        );
+        const user_id = getUserFromLoggedInSession(req).id;
+
+        const userOrganisations = await getOrganizationsByUserId(user_id);
 
         let organizationThatNeedsAuthenticationByPeers;
         if (req.session.mustReturnOneOrganizationInPayload) {
           const selectedOrganizationId = await getSelectedOrganizationId(
-            getUserFromLoggedInSession(req).id
+            user_id
           );
 
           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
@@ -247,7 +247,9 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
           if (
-            isEligibleToSponsorship(organizationThatNeedsAuthenticationByPeers)
+            await isEligibleToSponsorship(
+              organizationThatNeedsAuthenticationByPeers
+            )
           ) {
             return res.redirect(
               `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`
@@ -256,7 +258,7 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
           const link = await getUserOrganizationLink(
             organizationThatNeedsAuthenticationByPeers.id,
-            getUserFromLoggedInSession(req).id
+            user_id
           );
 
           // link exists because we get the organization id from getOrganizationsByUserId above
