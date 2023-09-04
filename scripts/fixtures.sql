@@ -644,6 +644,18 @@ VALUES
    'openid email',
    'http://localhost:3000',
    'Gestion des clients OpenId pour MonComptePro.',
+   null, null, null, null),
+  (23,
+   'MonComptePro Test Client',
+   'client_id',
+   'client_secret',
+   ARRAY [
+     'http://localhost:3000/login-callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email profile organization',
+   'http://localhost:3000/',
+   'This is a minimal, nodeJS-based MonComptePro client, to be used for end-to-end testing.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE

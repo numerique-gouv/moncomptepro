@@ -15,8 +15,8 @@ env:
   PGPORT: 5432
   DATABASE_URL: postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
   SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
-  MONCOMPTEPRO_HOST: http://localhost:3000
-  CYPRESS_MONCOMPTEPRO_HOST: http://localhost:3000
+  MONCOMPTEPRO_HOST: http://172.18.0.1:3000
+  CYPRESS_MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   DO_NOT_SEND_MAIL: "False"
   DO_NOT_VALIDATE_MAIL: "True"
   DO_NOT_RATE_LIMIT: "True"
@@ -41,8 +41,19 @@ jobs:
           - signup_entreprise_unipersonnelle
           - join_with_sponsorship
           - join_with_code_sent_to_official_contact_email
+          - signin_from_standard_client
     runs-on: ubuntu-20.04
     services:
+      moncomptepro-test-client:
+        image: rdubigny/moncomptepro-test-client
+        ports:
+          - 4000:4000
+        env:
+          PORT: 4000
+          MCP_CLIENT_ID: client_id
+          MCP_CLIENT_SECRET: client_secret
+          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          MCP_SCOPES: openid,email,profile,organization
       redis:
         image: redis
         ports:
