@@ -44,6 +44,7 @@ jobs:
           - signin_from_standard_client
           - signin_from_agentconnect_client
           - signin_from_legacy_client
+          - signin_with_magic_link
     runs-on: ubuntu-20.04
     services:
       moncomptepro-standard-client:
