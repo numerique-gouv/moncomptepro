@@ -672,7 +672,7 @@ VALUES
    'openid email profile organization',
    'https://espace-demande.dev.incubateur.anct.gouv.fr',
    'Louer des espaces publics',
-   null, null, null, null),
+   null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
