@@ -656,6 +656,22 @@ VALUES
    'openid email profile organization',
    'http://localhost:3000/',
    'This is a minimal, nodeJS-based MonComptePro client, to be used for end-to-end testing.',
+   null, null, null, null),
+  (24,
+   'Espace sur Demande - ANCT',
+   'g9NDuOf8PAikAc4hWZzt2e3dbVxBxvZxkcZL4bHk85cfmqHot70VwhJtv9EzR7yD7MJ9LEpGAbCQdYZHO6BDd9Wn6Bx8SIwBZvaOmNmeVcU49aCZEvXjD718XeV3ihq1',
+   'bAOwASqfT7RQjmURcklebBrTY79xmFY9lmkAWrBW50sdcFCYVyyKizJ7wYIlJs8dayWXJcHjNS6waBDxNy1Lb7erGPlm7ocEfnGwjK7wnhshr5DXVSVmbh5K9BhvK6gN',
+   ARRAY [
+     'https://espace-demande.dev.incubateur.anct.gouv.fr/complete/moncomptepro/',
+     'http://localhost:3000/complete/moncomptepro/'
+     ],
+   ARRAY [
+     'https://espace-demande.dev.incubateur.anct.gouv.fr',
+     'http://localhost:3000'
+     ],
+   'openid email profile organization',
+   'https://espace-demande.dev.incubateur.anct.gouv.fr',
+   'Louer des espaces publics',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
