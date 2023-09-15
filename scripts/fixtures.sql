@@ -551,15 +551,19 @@ VALUES
      'http://localhost:8080/oidc/auth/cb/',
      'http://10.59.128.114:8004/oidc/callback/',
      'http://10.59.128.114:8004/auth/cb/',
-     'http://10.59.128.114:8004/oidc/auth/cb/'
+     'http://10.59.128.114:8004/oidc/auth/cb/',
+     'http://preprod.eaux-et-polluants.e2.rie.gouv.fr/oidc/callback/',
+     'https://preprod.eaux-et-polluants.e2.rie.gouv.fr/oidc/callback/'
      ],
    ARRAY [
      'http://localhost:8080/',
      'http://127.0.0.1:8080/',
-     'http://10.59.128.114:8004/'
+     'http://10.59.128.114:8004/',
+     'http://preprod.eaux-et-polluants.e2.rie.gouv.fr/',
+     'https://preprod.eaux-et-polluants.e2.rie.gouv.fr/'
      ],
    'openid email profile organizations',
-   'http://127.0.0.1:8080/',
+   'http://preprod.eaux-et-polluants.e2.rie.gouv.fr/',
    'Développement d’une application pour le futur pôle à compétence nationale du SIDDEE à la DREAL HdF',
    null, null, null, null),
   (18,
@@ -672,6 +676,22 @@ VALUES
    'openid email profile organization',
    'https://espace-demande.dev.incubateur.anct.gouv.fr',
    'Louer des espaces publics',
+   null, null, null, null),
+  (25,
+   'Outil d''évaluation budgétaire pour Strasbourg',
+   '6db31fa4f8994f207930d4af19a38f728490868ab3a16abebb86f255fda53a39a3b33cf46fdc7221efb1c531dea0ffd1e6c220f76a4a92bd87fd4092feabe5ac',
+   '65d45564c315eade7066c8d0f5292fe15e5658eb7dcfaad336b8da965b58e664f39e42f834773100bdf351e2bc2ef77a2a4d3b186e3134d7c2e6f952c5edbaf7',
+   ARRAY [
+     'http://127.0.0.1:8000/auth',
+     'https://plugin.palya.eu/auth'
+     ],
+   ARRAY [
+     'http://127.0.0.1:8000/',
+     'https://plugin.palya.eu/'
+     ],
+   'openid email profile organization',
+   'https://plugin.palya.eu/',
+   'Outil d’évaluation budgétaire pour Strasbourg',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
