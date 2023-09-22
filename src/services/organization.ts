@@ -62,3 +62,11 @@ export const isEligibleToSponsorship = async ({
 
   return internalActiveUsers.length > 50;
 };
+
+export const hasLessThanFiftyEmployees = ({
+  cached_tranche_effectifs,
+}: Organization): boolean => {
+  return [null, 'NN', '00', '01', '02', '03', '11', '12'].includes(
+    cached_tranche_effectifs
+  );
+};
