@@ -303,7 +303,6 @@ FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1
   AND uo.is_external = FALSE
-  AND uo.verification_type IS NOT NULL
   AND uo.authentication_by_peers_type IS NOT NULL
   AND u.email_verified_at >= $2`,
       [
