@@ -3,7 +3,7 @@ import { isFree } from 'is-disposable-email-domain';
 import { parse_host } from 'tld-extract';
 import {
   CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE,
-  DO_NOT_VALIDATE_MAIL,
+  CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE,
 } from '../env';
 
 export const isAFreeEmailProvider = (domain: string) => {
@@ -11,7 +11,7 @@ export const isAFreeEmailProvider = (domain: string) => {
     return true;
   }
 
-  if (DO_NOT_VALIDATE_MAIL) {
+  if (CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE) {
     return false;
   }
 
@@ -23,7 +23,7 @@ export const getEmailDomain = (email: string) => {
   const host = parts[parts.length - 1];
   const { sub, domain } = parse_host(host, { allowDotlessTLD: true });
 
-  return [sub, domain].filter(e => !!e).join('.');
+  return [sub, domain].filter((e) => !!e).join('.');
 };
 
 export const usesAFreeEmailProvider = (email: string) => {
