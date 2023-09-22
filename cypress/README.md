@@ -22,6 +22,7 @@ export SENDINBLUE_API_KEY="xxx"
 export MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
 export DO_NOT_SEND_MAIL=False
 export DO_NOT_VALIDATE_MAIL=True
+export CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=True
 export DO_NOT_RATE_LIMIT=True
 export DO_NOT_USE_ANNUAIRE_EMAILS=True
 export $(cat cypress/env/join_with_sponsorship.conf) && rm -rf build && npm run build && npm run start

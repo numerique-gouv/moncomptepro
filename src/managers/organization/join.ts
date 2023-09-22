@@ -32,6 +32,7 @@ import {
   findPendingModeration,
 } from '../../repositories/moderation';
 import {
+  hasLessThanFiftyEmployees,
   isCollectiviteTerritoriale,
   isEntrepriseUnipersonnelle,
 } from '../../services/organization';
@@ -200,7 +201,11 @@ export const joinOrganization = async ({
         });
       }
 
-      if (isAFreeEmailProvider(contactDomain) && isAFreeEmailProvider(domain)) {
+      if (
+        (isAFreeEmailProvider(contactDomain) ||
+          hasLessThanFiftyEmployees(organization)) &&
+        isAFreeEmailProvider(domain)
+      ) {
         return await linkUserToOrganization({
           organization_id,
           user_id,
@@ -272,10 +277,8 @@ export const forceJoinOrganization = async ({
     throw new NotFoundError();
   }
   const { email } = user;
-  const {
-    verified_email_domains,
-    external_authorized_email_domains,
-  } = organization;
+  const { verified_email_domains, external_authorized_email_domains } =
+    organization;
 
   const domain = getEmailDomain(email);
   const verification_type =
