@@ -13,14 +13,18 @@ export const getSelectOrganizationController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userOrganizations = await getOrganizationsByUserId(
-    getUserFromLoggedInSession(req).id
-  );
+  try {
+    const userOrganizations = await getOrganizationsByUserId(
+      getUserFromLoggedInSession(req).id
+    );
 
-  return res.render('user/select-organization', {
-    userOrganizations,
-    csrfToken: csrfToken(req),
-  });
+    return res.render('user/select-organization', {
+      userOrganizations,
+      csrfToken: csrfToken(req),
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const postSelectOrganizationMiddleware = async (
@@ -28,21 +32,25 @@ export const postSelectOrganizationMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const schema = z.object({
-    body: z.object({
-      organization_id: idSchema(),
-    }),
-  });
-  const {
-    body: { organization_id },
-  } = await schema.parseAsync({
-    body: req.body,
-  });
+  try {
+    const schema = z.object({
+      body: z.object({
+        organization_id: idSchema(),
+      }),
+    });
+    const {
+      body: { organization_id },
+    } = await schema.parseAsync({
+      body: req.body,
+    });
 
-  await selectOrganization({
-    user_id: getUserFromLoggedInSession(req).id,
-    organization_id,
-  });
+    await selectOrganization({
+      user_id: getUserFromLoggedInSession(req).id,
+      organization_id,
+    });
 
-  return next();
+    return next();
+  } catch (error) {
+    next(error);
+  }
 };
