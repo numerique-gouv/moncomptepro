@@ -14,12 +14,6 @@ describe('sign-in from agentconnect client', () => {
       .contains('Se connecter')
       .click();
 
-    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').contains(
-      'Commune de lamalou-les-bains - Mairie'
-    );
-
-    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
-
     cy.contains('unused1@yopmail.com');
     cy.contains('21340126800130');
   });
