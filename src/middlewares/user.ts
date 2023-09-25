@@ -3,7 +3,10 @@ import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
 import { isEligibleToSponsorship } from '../services/organization';
-import { getOrganizationsByUserId } from '../managers/organization/main';
+import {
+  getOrganizationsByUserId,
+  selectOrganization,
+} from '../managers/organization/main';
 import {
   greetForJoiningOrganization,
   notifyAllMembers,
@@ -159,7 +162,18 @@ export const checkUserHasSelectedAnOrganizationMiddleware = (
         req.session.mustReturnOneOrganizationInPayload &&
         !selectedOrganizationId
       ) {
-        return res.redirect('/users/select-organization');
+        const userOrganisations = await getOrganizationsByUserId(
+          getUserFromLoggedInSession(req).id
+        );
+
+        if (userOrganisations.length === 1) {
+          await selectOrganization({
+            user_id: getUserFromLoggedInSession(req).id,
+            organization_id: userOrganisations[0].id,
+          });
+        } else {
+          return res.redirect('/users/select-organization');
+        }
       }
 
       return next();
