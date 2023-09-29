@@ -4,7 +4,7 @@ import {
   getUserOrganizationLink,
   getUsers,
 } from '../../repositories/organization/getters';
-import { isEmpty } from 'lodash';
+import { isEmpty, sampleSize } from 'lodash';
 import { findById as findUserById } from '../../repositories/user';
 import {
   NotFoundError,
@@ -17,7 +17,7 @@ import {
   createModeration,
   findPendingModeration,
 } from '../../repositories/moderation';
-import { SUPPORT_EMAIL_ADDRESS } from '../../env';
+import { NOTIFY_ALL_MEMBER_LIMIT, SUPPORT_EMAIL_ADDRESS } from '../../env';
 
 export const notifyAllMembers = async ({
   organization_id,
@@ -44,8 +44,12 @@ export const notifyAllMembers = async ({
   if (otherInternalUsers.length > 0) {
     const user_label =
       !given_name && !family_name ? email : `${given_name} ${family_name}`;
+    const otherInternalUsersSample = sampleSize(
+      otherInternalUsers,
+      NOTIFY_ALL_MEMBER_LIMIT
+    );
     await sendMail({
-      to: otherInternalUsers.map(({ email }) => email),
+      to: otherInternalUsersSample.map(({ email }) => email),
       subject: 'Votre organisation sur MonComptePro',
       template: 'join-organization',
       params: { user_label, libelle: cached_libelle, email, is_external },
