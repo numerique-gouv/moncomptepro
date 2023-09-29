@@ -71,6 +71,19 @@ const dinum_org_info: Organization = {
   cached_libelle_categorie_juridique: "Service central d'un ministère",
 };
 
+const onf_org_info: Organization = {
+  siret: '66204311604119',
+  cached_tranche_effectifs: null,
+  cached_tranche_effectifs_unite_legale: '52',
+  cached_libelle_tranche_effectif: null,
+  cached_activite_principale: '02.40Z',
+  cached_libelle_activite_principale:
+    '02.40Z - Services de soutien à l’exploitation forestière',
+  cached_categorie_juridique: '4110',
+  cached_libelle_categorie_juridique:
+    "Établissement public national à caractère industriel ou commercial doté d'un comptable public",
+};
+
 describe('isCollectiviteTerritoriale', () => {
   it('should return false for bad call', () => {
     assert.equal(isCollectiviteTerritoriale({}), false);
@@ -104,5 +117,9 @@ describe('isServicePublic', () => {
 
   it('should return false for association', () => {
     assert.equal(isServicePublic(association_org_info), false);
+  });
+
+  it('should return false for établissement public à caractère industriel et commercial', () => {
+    assert.equal(isServicePublic(onf_org_info), true);
   });
 });

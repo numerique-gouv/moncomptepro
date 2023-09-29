@@ -1,4 +1,5 @@
 import { getInternalActiveUsers } from '../repositories/organization/getters';
+import { MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP } from '../env';
 
 /**
  * This fonction return approximate results. As the data tranche effectifs is
@@ -60,7 +61,9 @@ export const isEligibleToSponsorship = async ({
 }: Organization): Promise<boolean> => {
   const internalActiveUsers = await getInternalActiveUsers(id);
 
-  return internalActiveUsers.length > 50;
+  return (
+    internalActiveUsers.length > MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP
+  );
 };
 
 export const hasLessThanFiftyEmployees = ({
