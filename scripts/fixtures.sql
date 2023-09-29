@@ -690,7 +690,23 @@ VALUES
    'openid email profile organization',
    'https://plugin.palya.eu/',
    'Outil d’évaluation budgétaire pour Strasbourg',
-   null, null, null, null)
+   null, null, null, null),
+  (26,
+    'Catalogue d’indicateurs ANCT',
+    'f9fcf78152c2512b35df273a906d3392809b0c15bd032a07c38ddeceb37e40bd',
+    '4fe4f6fd38d9573137278fc4ba3ce898eeeb70c877e5d86a8f0cd7685e8082fe',
+    ARRAY [
+      'http://localhost:3000/api/auth/callback/mon-compte-pro',
+      'https:/catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr/api/auth/callback/mon-compte-pro'
+    ],
+    ARRAY [
+      'http://localhost:3000',
+      'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr'
+    ],
+    'openid email profile organizations',
+    'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr',
+    'Consultez les indicateurs clés de l’ANCT.',
+    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
