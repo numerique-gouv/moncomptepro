@@ -13,7 +13,7 @@ import {
 import { findById as findUserById } from '../../repositories/user';
 import {
   InseeNotActiveError,
-  InseeTimeoutError,
+  InseeUnexpectedError,
   InvalidSiretError,
   NotFoundError,
   UnableToAutoJoinOrganizationError,
@@ -105,7 +105,7 @@ export const joinOrganization = async ({
   try {
     organizationInfo = await getOrganizationInfo(siret);
   } catch (error) {
-    if (error instanceof InseeTimeoutError) {
+    if (error instanceof InseeUnexpectedError) {
       throw error;
     }
 

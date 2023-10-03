@@ -9,7 +9,7 @@ import {
 import hasErrorFromField from '../services/has-error-from-field';
 import {
   InseeNotActiveError,
-  InseeTimeoutError,
+  InseeUnexpectedError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
@@ -135,9 +135,9 @@ export const postJoinOrganizationMiddleware = async (
       );
     }
 
-    if (error instanceof InseeTimeoutError) {
+    if (error instanceof InseeUnexpectedError) {
       return res.redirect(
-        `/users/join-organization?notification=insee_timeout&siret_hint=${req.body.siret}`
+        `/users/join-organization?notification=insee_unexpected_error&siret_hint=${req.body.siret}`
       );
     }
 
