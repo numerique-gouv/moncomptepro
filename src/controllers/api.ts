@@ -8,7 +8,7 @@ import {
   optionalBooleanSchema,
   siretSchema,
 } from '../services/custom-zod-schemas';
-import { InseeNotFoundError, InseeTimeoutError } from '../errors';
+import { InseeNotFoundError, InseeUnexpectedError } from '../errors';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 import { markDomainAsVerified } from '../managers/organization/main';
 import { forceJoinOrganization } from '../managers/organization/join';
@@ -46,9 +46,11 @@ export const getOrganizationInfoController = async (
       );
     }
 
-    if (e instanceof InseeTimeoutError) {
+    if (e instanceof InseeUnexpectedError) {
       return next(
-        new GatewayTimeout(notificationMessages['insee_timeout'].description)
+        new GatewayTimeout(
+          notificationMessages['insee_unexpected_error'].description
+        )
       );
     }
 

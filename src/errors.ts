@@ -9,7 +9,7 @@ export class InvalidEmailError extends Error {
 
 export class InvalidSiretError extends Error {}
 
-export class InseeTimeoutError extends Error {}
+export class InseeUnexpectedError extends Error {}
 
 export class InseeNotFoundError extends Error {}
 

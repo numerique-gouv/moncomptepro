@@ -7,7 +7,7 @@ import {
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
 } from './formatters';
-import { InseeNotFoundError, InseeTimeoutError } from '../../errors';
+import { InseeNotFoundError, InseeUnexpectedError } from '../../errors';
 import {
   HTTP_CLIENT_TIMEOUT,
   INSEE_CONSUMER_KEY,
@@ -309,10 +309,8 @@ export const getOrganizationInfo = async (
       etatAdministratifEtablissement,
     } = periodesEtablissement[0];
 
-    const {
-      codePostalEtablissement,
-      codeCommuneEtablissement,
-    } = adresseEtablissement;
+    const { codePostalEtablissement, codeCommuneEtablissement } =
+      adresseEtablissement;
 
     const enseigne = formatEnseigne(
       enseigne1Etablissement,
@@ -368,8 +366,11 @@ export const getOrganizationInfo = async (
       throw new InseeNotFoundError();
     }
 
-    if (e instanceof AxiosError && e.code === 'ECONNABORTED') {
-      throw new InseeTimeoutError();
+    if (
+      e instanceof AxiosError &&
+      (e.code === 'ECONNABORTED' || e.code === 'ERR_BAD_RESPONSE')
+    ) {
+      throw new InseeUnexpectedError();
     }
 
     throw e;

@@ -18,7 +18,7 @@ const notificationMessages: NotificationMessages = {
     type: 'error',
     description: 'SIRET invalide.',
   },
-  insee_timeout: {
+  insee_unexpected_error: {
     type: 'error',
     description:
       'Les données INSEE de l’organisation, nécessaires pour valider le rattachement, sont indisponibles pour le moment. Merci de réessayer ultérieurement.',
