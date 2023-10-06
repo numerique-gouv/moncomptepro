@@ -12,8 +12,13 @@ import {
   findById as findOrganizationById,
   getUsers,
 } from '../../repositories/organization/getters';
-import { getContactEmail } from '../../connectors/api-annuaire-service-public';
+import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
+import {
+  isCollectiviteTerritoriale,
+  isEducationNationale,
+} from '../../services/organization';
+import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
 
 const OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 
@@ -48,14 +53,28 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     throw new OfficialContactEmailVerificationNotNeededError();
   }
 
-  const { cached_code_officiel_geographique, cached_libelle: libelle } =
-    organization;
+  const {
+    cached_code_officiel_geographique,
+    siret,
+    cached_libelle: libelle,
+  } = organization;
 
   let contactEmail;
   try {
-    contactEmail = await getContactEmail(cached_code_officiel_geographique);
+    if (isCollectiviteTerritoriale(organization)) {
+      contactEmail = await getAnnuaireServicePublicContactEmail(
+        cached_code_officiel_geographique
+      );
+    } else if (isEducationNationale(organization)) {
+      contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
+    }
   } catch (error) {
     throw new ApiAnnuaireError();
+  }
+
+  if (!contactEmail) {
+    // This should never happen
+    throw new NotFoundError();
   }
 
   if (

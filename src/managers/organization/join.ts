@@ -12,8 +12,8 @@ import {
 } from '../../repositories/organization/getters';
 import { findById as findUserById } from '../../repositories/user';
 import {
+  InseeConnectionError,
   InseeNotActiveError,
-  InseeUnexpectedError,
   InvalidSiretError,
   NotFoundError,
   UnableToAutoJoinOrganizationError,
@@ -34,14 +34,16 @@ import {
 import {
   hasLessThanFiftyEmployees,
   isCollectiviteTerritoriale,
+  isEducationNationale,
   isEntrepriseUnipersonnelle,
 } from '../../services/organization';
-import { getContactEmail } from '../../connectors/api-annuaire-service-public';
+import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
 import * as Sentry from '@sentry/node';
 import { isEmailValid } from '../../services/security';
 import { markDomainAsVerified } from './main';
 import { sendMail } from '../../connectors/sendinblue';
 import { SUPPORT_EMAIL_ADDRESS } from '../../env';
+import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -105,7 +107,7 @@ export const joinOrganization = async ({
   try {
     organizationInfo = await getOrganizationInfo(siret);
   } catch (error) {
-    if (error instanceof InseeUnexpectedError) {
+    if (error instanceof InseeConnectionError) {
       throw error;
     }
 
@@ -166,7 +168,7 @@ export const joinOrganization = async ({
   if (isCollectiviteTerritoriale(organization)) {
     let contactEmail;
     try {
-      contactEmail = await getContactEmail(
+      contactEmail = await getAnnuaireServicePublicContactEmail(
         organization.cached_code_officiel_geographique
       );
     } catch (err) {
@@ -213,6 +215,25 @@ export const joinOrganization = async ({
           needs_official_contact_email_verification: true,
         });
       }
+    }
+  }
+
+  if (isEducationNationale(organization)) {
+    let contactEmail;
+    try {
+      contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
+    } catch (err) {
+      console.log(err);
+      Sentry.captureException(err);
+    }
+
+    if (isEmailValid(contactEmail)) {
+      return await linkUserToOrganization({
+        organization_id,
+        user_id,
+        verification_type: null,
+        needs_official_contact_email_verification: true,
+      });
     }
   }
 

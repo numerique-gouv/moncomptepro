@@ -9,7 +9,7 @@ export class InvalidEmailError extends Error {
 
 export class InvalidSiretError extends Error {}
 
-export class InseeUnexpectedError extends Error {}
+export class InseeConnectionError extends Error {}
 
 export class InseeNotFoundError extends Error {}
 
@@ -53,7 +53,7 @@ export class ApiAnnuaireTooManyResultsError extends Error {}
 
 export class ApiAnnuaireInvalidEmailError extends Error {}
 
-export class ApiAnnuaireTimeoutError extends Error {}
+export class ApiAnnuaireConnectionError extends Error {}
 
 export class SendInBlueApiError extends Error {
   constructor(error: AxiosError<{ message: string; code: string }>) {

@@ -73,3 +73,34 @@ export const hasLessThanFiftyEmployees = ({
     cached_tranche_effectifs
   );
 };
+
+export const isEducationNationale = ({
+  cached_libelle_activite_principale,
+  cached_libelle_categorie_juridique,
+}: Organization) => {
+  const isCollegeOuLyceePublic =
+    cached_libelle_activite_principale ===
+      '85.31Z - Enseignement secondaire général' &&
+    cached_libelle_categorie_juridique ===
+      "Établissement public local d'enseignement";
+
+  const isCollegeOuLyceePrive =
+    cached_libelle_activite_principale ===
+      '85.31Z - Enseignement secondaire général' &&
+    cached_libelle_categorie_juridique === 'Association déclarée';
+
+  const isEcolePrimairePublique =
+    cached_libelle_activite_principale === '85.20Z - Enseignement primaire' &&
+    cached_libelle_categorie_juridique === 'Commune et commune nouvelle';
+
+  const isEcolePrimairePrivee =
+    cached_libelle_activite_principale === '85.20Z - Enseignement primaire' &&
+    cached_libelle_categorie_juridique === 'Association déclarée';
+
+  return (
+    isCollegeOuLyceePublic ||
+    isCollegeOuLyceePrive ||
+    isEcolePrimairePublique ||
+    isEcolePrimairePrivee
+  );
+};
