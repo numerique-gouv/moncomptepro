@@ -15,7 +15,7 @@ import {
 
 // more info at https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
-type ApiAnnuaireReponse = {
+type ApiAnnuaireServicePublicReponse = {
   type: 'FeatureCollection';
   features: {
     type: 'Feature';
@@ -62,16 +62,17 @@ export const getContactEmail = async (
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let features: ApiAnnuaireReponse['features'] = [];
+  let features: ApiAnnuaireServicePublicReponse['features'] = [];
   try {
-    const { data }: AxiosResponse<ApiAnnuaireReponse> = await axios({
-      method: 'get',
-      url: `https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/communes/${codeOfficielGeographique}/mairie`,
-      headers: {
-        accept: 'application/json',
-      },
-      timeout: HTTP_CLIENT_TIMEOUT,
-    });
+    const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
+      await axios({
+        method: 'get',
+        url: `https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/communes/${codeOfficielGeographique}/mairie`,
+        headers: {
+          accept: 'application/json',
+        },
+        timeout: HTTP_CLIENT_TIMEOUT,
+      });
 
     features = data.features;
   } catch (e) {

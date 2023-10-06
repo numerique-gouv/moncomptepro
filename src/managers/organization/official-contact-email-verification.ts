@@ -12,7 +12,7 @@ import {
   findById as findOrganizationById,
   getUsers,
 } from '../../repositories/organization/getters';
-import { getContactEmail } from '../../connectors/api-annuaire';
+import { getContactEmail } from '../../connectors/api-annuaire-service-public';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
 
 const OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
@@ -48,10 +48,8 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     throw new OfficialContactEmailVerificationNotNeededError();
   }
 
-  const {
-    cached_code_officiel_geographique,
-    cached_libelle: libelle,
-  } = organization;
+  const { cached_code_officiel_geographique, cached_libelle: libelle } =
+    organization;
 
   let contactEmail;
   try {
@@ -70,7 +68,8 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     return { codeSent: false, contactEmail, libelle };
   }
 
-  const official_contact_email_verification_token = await generateDicewarePassword();
+  const official_contact_email_verification_token =
+    await generateDicewarePassword();
 
   await updateUserOrganizationLink(organization_id, user_id, {
     official_contact_email_verification_token,

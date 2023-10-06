@@ -36,7 +36,7 @@ import {
   isCollectiviteTerritoriale,
   isEntrepriseUnipersonnelle,
 } from '../../services/organization';
-import { getContactEmail } from '../../connectors/api-annuaire';
+import { getContactEmail } from '../../connectors/api-annuaire-service-public';
 import * as Sentry from '@sentry/node';
 import { isEmailValid } from '../../services/security';
 import { markDomainAsVerified } from './main';
