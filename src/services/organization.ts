@@ -97,10 +97,16 @@ export const isEducationNationale = ({
     cached_libelle_activite_principale === '85.20Z - Enseignement primaire' &&
     cached_libelle_categorie_juridique === 'Association déclarée';
 
+  const isEcoleMaternellePublique =
+    cached_libelle_activite_principale ===
+      '85.10Z - Enseignement pré-primaire' &&
+    cached_libelle_categorie_juridique === 'Commune et commune nouvelle';
+
   return (
     isCollegeOuLyceePublic ||
     isCollegeOuLyceePrive ||
     isEcolePrimairePublique ||
-    isEcolePrimairePrivee
+    isEcolePrimairePrivee ||
+    isEcoleMaternellePublique
   );
 };

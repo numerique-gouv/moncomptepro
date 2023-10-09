@@ -165,7 +165,10 @@ export const joinOrganization = async ({
     });
   }
 
-  if (isCollectiviteTerritoriale(organization)) {
+  if (
+    isCollectiviteTerritoriale(organization) &&
+    !isEducationNationale(organization)
+  ) {
     let contactEmail;
     try {
       contactEmail = await getAnnuaireServicePublicContactEmail(
