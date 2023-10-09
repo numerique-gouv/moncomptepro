@@ -226,16 +226,18 @@ export const getAnnuaireEducationNationaleContactEmail = async (
     },
   ] = records;
 
-  if (!isEmailValid(mail)) {
+  const formattedEmail = mail.toLowerCase().trim();
+
+  if (!isEmailValid(formattedEmail)) {
     throw new ApiAnnuaireInvalidEmailError();
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(
-      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${mail}.`
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`
     );
     return TEST_CONTACT_EMAIL;
   }
 
-  return mail;
+  return formattedEmail;
 };

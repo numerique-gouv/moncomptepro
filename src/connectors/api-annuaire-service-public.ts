@@ -100,16 +100,18 @@ export const getAnnuaireServicePublicContactEmail = async (
     },
   ] = features;
 
-  if (!isEmailValid(email)) {
+  const formattedEmail = email.toLowerCase().trim();
+
+  if (!isEmailValid(formattedEmail)) {
     throw new ApiAnnuaireInvalidEmailError();
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(
-      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${email}.`
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`
     );
     return TEST_CONTACT_EMAIL;
   }
 
-  return email;
+  return formattedEmail;
 };
