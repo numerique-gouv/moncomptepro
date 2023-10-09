@@ -79,14 +79,18 @@ export const isEducationNationale = ({
   cached_libelle_categorie_juridique,
 }: Organization) => {
   const isCollegeOuLyceePublic =
-    cached_libelle_activite_principale ===
-      '85.31Z - Enseignement secondaire général' &&
+    (cached_libelle_activite_principale ===
+      '85.31Z - Enseignement secondaire général' ||
+      cached_libelle_activite_principale ===
+        '85.32Z - Enseignement secondaire technique ou professionnel') &&
     cached_libelle_categorie_juridique ===
       "Établissement public local d'enseignement";
 
   const isCollegeOuLyceePrive =
-    cached_libelle_activite_principale ===
-      '85.31Z - Enseignement secondaire général' &&
+    (cached_libelle_activite_principale ===
+      '85.31Z - Enseignement secondaire général' ||
+      cached_libelle_activite_principale ===
+        '85.32Z - Enseignement secondaire technique ou professionnel') &&
     cached_libelle_categorie_juridique === 'Association déclarée';
 
   const isEcolePrimairePublique =
