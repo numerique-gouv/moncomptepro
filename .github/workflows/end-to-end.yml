@@ -37,15 +37,16 @@ jobs:
       matrix:
         e2e_test:
           - join_collectivite_territoriale_official_contact_domain
-          - join_collectivite_territoriale_official_contact_email
           - join_org_with_verified_domain
-          - signup_entreprise_unipersonnelle
-          - join_with_sponsorship
           - join_with_code_sent_to_official_contact_email
-          - signin_from_standard_client
+          - join_with_code_sent_to_official_educ_nat_contact_email
+          - join_with_official_contact_email
+          - join_with_sponsorship
           - signin_from_agentconnect_client
           - signin_from_legacy_client
+          - signin_from_standard_client
           - signin_with_magic_link
+          - signup_entreprise_unipersonnelle
     runs-on: ubuntu-20.04
     services:
       moncomptepro-standard-client:

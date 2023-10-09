@@ -1,9 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { isEmailValid } from '../services/security';
 import {
+  ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
-  ApiAnnuaireTimeoutError,
   ApiAnnuaireTooManyResultsError,
 } from '../errors';
 import { isEmpty } from 'lodash';
@@ -15,7 +15,7 @@ import {
 
 // more info at https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
-type ApiAnnuaireReponse = {
+type ApiAnnuaireServicePublicReponse = {
   type: 'FeatureCollection';
   features: {
     type: 'Feature';
@@ -55,28 +55,32 @@ type ApiAnnuaireReponse = {
   }[];
 };
 
-export const getContactEmail = async (
+export const getAnnuaireServicePublicContactEmail = async (
   codeOfficielGeographique: string | null
 ): Promise<string> => {
   if (isEmpty(codeOfficielGeographique)) {
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let features: ApiAnnuaireReponse['features'] = [];
+  let features: ApiAnnuaireServicePublicReponse['features'] = [];
   try {
-    const { data }: AxiosResponse<ApiAnnuaireReponse> = await axios({
-      method: 'get',
-      url: `https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/communes/${codeOfficielGeographique}/mairie`,
-      headers: {
-        accept: 'application/json',
-      },
-      timeout: HTTP_CLIENT_TIMEOUT,
-    });
+    const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
+      await axios({
+        method: 'get',
+        url: `https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/communes/${codeOfficielGeographique}/mairie`,
+        headers: {
+          accept: 'application/json',
+        },
+        timeout: HTTP_CLIENT_TIMEOUT,
+      });
 
     features = data.features;
   } catch (e) {
-    if (e instanceof AxiosError && e.code === 'ECONNABORTED') {
-      throw new ApiAnnuaireTimeoutError();
+    if (
+      e instanceof AxiosError &&
+      (e.code === 'ECONNABORTED' || e.code === 'ERR_BAD_RESPONSE')
+    ) {
+      throw new ApiAnnuaireConnectionError();
     }
 
     throw e;
@@ -96,16 +100,18 @@ export const getContactEmail = async (
     },
   ] = features;
 
-  if (!isEmailValid(email)) {
+  const formattedEmail = email.toLowerCase().trim();
+
+  if (!isEmailValid(formattedEmail)) {
     throw new ApiAnnuaireInvalidEmailError();
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(
-      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${email}.`
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`
     );
     return TEST_CONTACT_EMAIL;
   }
 
-  return email;
+  return formattedEmail;
 };

@@ -7,7 +7,7 @@ import {
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
 } from './formatters';
-import { InseeNotFoundError, InseeUnexpectedError } from '../../errors';
+import { InseeConnectionError, InseeNotFoundError } from '../../errors';
 import {
   HTTP_CLIENT_TIMEOUT,
   INSEE_CONSUMER_KEY,
@@ -370,7 +370,7 @@ export const getOrganizationInfo = async (
       e instanceof AxiosError &&
       (e.code === 'ECONNABORTED' || e.code === 'ERR_BAD_RESPONSE')
     ) {
-      throw new InseeUnexpectedError();
+      throw new InseeConnectionError();
     }
 
     throw e;

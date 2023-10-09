@@ -8,8 +8,8 @@ import {
 } from '../services/custom-zod-schemas';
 import hasErrorFromField from '../services/has-error-from-field';
 import {
+  InseeConnectionError,
   InseeNotActiveError,
-  InseeUnexpectedError,
   InvalidSiretError,
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
@@ -135,7 +135,7 @@ export const postJoinOrganizationMiddleware = async (
       );
     }
 
-    if (error instanceof InseeUnexpectedError) {
+    if (error instanceof InseeConnectionError) {
       return res.redirect(
         `/users/join-organization?notification=insee_unexpected_error&siret_hint=${req.body.siret}`
       );
