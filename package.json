@@ -64,7 +64,7 @@
     "tld-extract": "^2.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@sinonjs/fake-timers": "^10.3.0",
