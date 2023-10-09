@@ -227,6 +227,14 @@ export const joinOrganization = async ({
       Sentry.captureException(err);
     }
 
+    if (contactEmail === email) {
+      return await linkUserToOrganization({
+        organization_id,
+        user_id,
+        verification_type: 'official_contact_email',
+      });
+    }
+
     if (isEmailValid(contactEmail)) {
       return await linkUserToOrganization({
         organization_id,
