@@ -697,7 +697,7 @@ VALUES
     '4fe4f6fd38d9573137278fc4ba3ce898eeeb70c877e5d86a8f0cd7685e8082fe',
     ARRAY [
       'http://localhost:3000/api/auth/callback/mon-compte-pro',
-      'https:/catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr/api/auth/callback/mon-compte-pro'
+      'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr/api/auth/callback/mon-compte-pro'
     ],
     ARRAY [
       'http://localhost:3000',
