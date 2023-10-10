@@ -9,7 +9,7 @@ import { owaspPasswordStrengthTest } from './owasp-password-strength-tester';
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(plainPassword, 10, function (err: Error, hash: string) {
+    bcrypt.hash(plainPassword, 10, function (err: Error | null, hash: string) {
       if (err) {
         return reject(err);
       }
