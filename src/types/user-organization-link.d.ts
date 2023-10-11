@@ -5,6 +5,7 @@ interface BaseUserOrganizationLink {
     | 'official_contact_email'
     | 'official_contact_domain'
     | 'code_sent_to_official_contact_email'
+    | 'in_liste_dirigeants_rna'
     | null;
   authentication_by_peers_type:
     | 'all_members_notified'
