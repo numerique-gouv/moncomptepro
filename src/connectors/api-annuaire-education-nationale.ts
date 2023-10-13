@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isString } from 'lodash';
 import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
@@ -225,6 +225,10 @@ export const getAnnuaireEducationNationaleContactEmail = async (
       },
     },
   ] = records;
+
+  if (!isString(mail)) {
+    throw new ApiAnnuaireInvalidEmailError();
+  }
 
   const formattedEmail = mail.toLowerCase().trim();
 
