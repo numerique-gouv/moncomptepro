@@ -172,7 +172,8 @@ export const joinOrganization = async ({
     let contactEmail;
     try {
       contactEmail = await getAnnuaireServicePublicContactEmail(
-        organization.cached_code_officiel_geographique
+        organization.cached_code_officiel_geographique,
+        organization.cached_code_postal
       );
     } catch (err) {
       console.error(err);

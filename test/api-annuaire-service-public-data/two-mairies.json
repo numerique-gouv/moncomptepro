@@ -1,0 +1,106 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.12974023819,
+          45.0360565186
+        ]
+      },
+      "properties": {
+        "id": "b6947613-6ec3-4986-b27a-4137ae96425c",
+        "codeInsee": "38253",
+        "pivotLocal": "mairie",
+        "nom": "Mairie - Les Deux Alpes",
+        "adresses": [
+          {
+            "type": "Adresse",
+            "lignes": [
+              "48 avenue de la Muzelle"
+            ],
+            "codePostal": "38860",
+            "commune": "Les Deux Alpes"
+          }
+        ],
+        "horaires": [
+          {
+            "du": "Lundi",
+            "au": "Vendredi",
+            "heures": [
+              {
+                "de": "08:30:00",
+                "a": "12:00:00"
+              },
+              {
+                "de": "14:00:00",
+                "a": "17:00:00"
+              }
+            ]
+          }
+        ],
+        "email": "accueil@mairie2alpes.fr",
+        "telephone": "04 76 79 24 24",
+        "url": "http://www.mairie2alpes.fr",
+        "zonage": {
+          "communes": [
+            "38253 Les Deux Alpes"
+          ]
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.116463,
+          44.989936
+        ]
+      },
+      "properties": {
+        "id": "c93cb8a9-7535-44d6-bf28-36cc3f5fbc74",
+        "codeInsee": "38253",
+        "pivotLocal": "mairie",
+        "nom": "Mairie déléguée - Venosc",
+        "adresses": [
+          {
+            "type": "Adresse",
+            "lignes": [
+              "5 rue du Câble",
+              "Venosc"
+            ],
+            "codePostal": "38520",
+            "commune": "Les Deux Alpes"
+          }
+        ],
+        "horaires": [
+          {
+            "du": "Lundi",
+            "au": "Vendredi",
+            "heures": [
+              {
+                "de": "08:30:00",
+                "a": "12:00:00"
+              },
+              {
+                "de": "14:00:00",
+                "a": "16:30:00"
+              }
+            ]
+          }
+        ],
+        "email": "venosc@mairie2alpes.fr",
+        "telephone": "04 76 80 06 75",
+        "url": "http://www.mairie2alpes.fr",
+        "zonage": {
+          "communes": [
+            "38253 Les Deux Alpes"
+          ]
+        }
+      }
+    }
+  ]
+}
