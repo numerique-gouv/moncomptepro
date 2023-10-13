@@ -55,6 +55,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
 
   const {
     cached_code_officiel_geographique,
+    cached_code_postal,
     siret,
     cached_libelle: libelle,
   } = organization;
@@ -63,7 +64,8 @@ export const sendOfficialContactEmailVerificationEmail = async ({
   try {
     if (isCollectiviteTerritoriale(organization)) {
       contactEmail = await getAnnuaireServicePublicContactEmail(
-        cached_code_officiel_geographique
+        cached_code_officiel_geographique,
+        cached_code_postal
       );
     } else if (isEducationNationale(organization)) {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);

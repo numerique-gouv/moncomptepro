@@ -56,7 +56,8 @@ type ApiAnnuaireServicePublicReponse = {
 };
 
 export const getAnnuaireServicePublicContactEmail = async (
-  codeOfficielGeographique: string | null
+  codeOfficielGeographique: string | null,
+  codePostal: string | null
 ): Promise<string> => {
   if (isEmpty(codeOfficielGeographique)) {
     throw new ApiAnnuaireNotFoundError();
@@ -86,19 +87,34 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw e;
   }
 
-  if (features.length === 0) {
-    throw new ApiAnnuaireNotFoundError();
+  let feature: ApiAnnuaireServicePublicReponse['features'][0] | undefined;
+
+  if (features.length === 1) {
+    feature = features[0];
   }
 
   if (features.length > 1) {
-    throw new ApiAnnuaireTooManyResultsError();
+    if (isEmpty(codePostal)) {
+      // without postal code we cannot choose a mairie
+      throw new ApiAnnuaireTooManyResultsError();
+    }
+
+    feature = features.find(
+      ({
+        properties: {
+          adresses: [{ codePostal: codePostalMairie }],
+        },
+      }) => codePostalMairie === codePostal
+    );
   }
 
-  const [
-    {
-      properties: { email },
-    },
-  ] = features;
+  if (isEmpty(feature)) {
+    throw new ApiAnnuaireNotFoundError();
+  }
+
+  const {
+    properties: { email },
+  } = feature;
 
   const formattedEmail = email.toLowerCase().trim();
 
