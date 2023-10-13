@@ -6,7 +6,7 @@ import {
   ApiAnnuaireNotFoundError,
   ApiAnnuaireTooManyResultsError,
 } from '../errors';
-import { isEmpty } from 'lodash';
+import { isEmpty, isString } from 'lodash';
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
@@ -115,6 +115,10 @@ export const getAnnuaireServicePublicContactEmail = async (
   const {
     properties: { email },
   } = feature;
+
+  if (!isString(email)) {
+    throw new ApiAnnuaireInvalidEmailError();
+  }
 
   const formattedEmail = email.toLowerCase().trim();
 
