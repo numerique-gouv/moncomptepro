@@ -62,7 +62,10 @@ export const sendOfficialContactEmailVerificationEmail = async ({
 
   let contactEmail;
   try {
-    if (isCollectiviteTerritoriale(organization)) {
+    if (
+      isCollectiviteTerritoriale(organization) &&
+      !isEducationNationale(organization)
+    ) {
       contactEmail = await getAnnuaireServicePublicContactEmail(
         cached_code_officiel_geographique,
         cached_code_postal
