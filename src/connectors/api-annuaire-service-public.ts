@@ -42,7 +42,7 @@ type ApiAnnuaireServicePublicReponse = {
         commune: string;
       }[];
       // ex: 'sg@chamonix.fr'
-      email: string;
+      email?: string;
       // ex: '04 50 53 11 13'
       telephone: string;
       // ex: 'http://www.chamonix-mont-blanc.fr'
@@ -99,6 +99,7 @@ export const getAnnuaireServicePublicContactEmail = async (
       throw new ApiAnnuaireTooManyResultsError();
     }
 
+    // Take the first match
     feature = features.find(
       ({
         properties: {

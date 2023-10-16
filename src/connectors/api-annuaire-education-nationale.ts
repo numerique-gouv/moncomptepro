@@ -3,7 +3,6 @@ import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
-  ApiAnnuaireTooManyResultsError,
 } from '../errors';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import {
@@ -210,21 +209,21 @@ export const getAnnuaireEducationNationaleContactEmail = async (
     throw e;
   }
 
-  if (records.length === 0) {
+  let record: ApiAnnuaireEducationNationaleReponse['records'][0] | undefined;
+
+  // We take the first établissement as every établissements are sharing the same SIRET.
+  // We assume the first contact email is OK for every other établissements.
+  record = records[0];
+
+  if (isEmpty(record)) {
     throw new ApiAnnuaireNotFoundError();
   }
 
-  if (records.length > 1) {
-    throw new ApiAnnuaireTooManyResultsError();
-  }
-
-  const [
-    {
-      record: {
-        fields: { mail },
-      },
+  const {
+    record: {
+      fields: { mail },
     },
-  ] = records;
+  } = record;
 
   if (!isString(mail)) {
     throw new ApiAnnuaireInvalidEmailError();
