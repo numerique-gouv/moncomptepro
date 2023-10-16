@@ -1,0 +1,18 @@
+{
+  "total_count": 0,
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D77672253000024&limit=10&offset=0&include_app_metas=False&include_links=False"
+    },
+    {
+      "rel": "first",
+      "href": "https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D77672253000024&limit=10&offset=0&include_app_metas=False&include_links=False"
+    },
+    {
+      "rel": "last",
+      "href": "https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D77672253000024&limit=10&offset=0&include_app_metas=False&include_links=False"
+    }
+  ],
+  "records": []
+}
