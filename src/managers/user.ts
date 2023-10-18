@@ -91,7 +91,7 @@ export const signup = async (
     throw new EmailUnavailableError();
   }
 
-  if (!isPasswordSecure(password)) {
+  if (!isPasswordSecure(password, email)) {
     throw new WeakPasswordError();
   }
 
@@ -331,7 +331,7 @@ export const changePassword = async (
     throw new InvalidTokenError();
   }
 
-  if (!isPasswordSecure(password)) {
+  if (!isPasswordSecure(password, user.email)) {
     throw new WeakPasswordError();
   }
 

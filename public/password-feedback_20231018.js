@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   var passwordInput = document.getElementById("password-input");
+  var passwordInputDataEmail = document.getElementById("password-input").dataset.email
 
   var passphraseInputMessageElement = document.getElementById("passphrase-input-message");
   var passphraseInputMessage20CharElement = document.getElementById("passphrase-input-message-20char");
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var passwordInputMessageUppercaseElement = document.getElementById("password-input-message-uppercase");
   var passwordInputMessage128charElement = document.getElementById("password-input-message-128char");
   var passwordInputMessage3sameElement = document.getElementById("password-input-message-3same");
-  var passwordInputMessageExampleElement = document.getElementById("password-input-message-example");
+  var passwordInputMessageBlacklistedWordElement = document.getElementById("password-input-message-blacklisted-word");
 
   function clearPasswordMessages() {
     passphraseInputMessageElement.style.display = "block";
@@ -34,8 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
     passwordInputMessage128charElement.className = "fr-message fr-message--info";
     passwordInputMessage3sameElement.style.display = "none";
     passwordInputMessage3sameElement.className = "fr-message fr-message--info";
-    passwordInputMessageExampleElement.style.display = "none";
-    passwordInputMessageExampleElement.className = "fr-message fr-message--info";
+    passwordInputMessageBlacklistedWordElement.style.display = "none";
+    passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--info";
+    passwordInputMessageBlacklistedWordElement.innerHTML = "";
   }
 
   function updatePasswordMessages() {
@@ -96,11 +98,28 @@ document.addEventListener("DOMContentLoaded", function() {
       passwordInputMessage3sameElement.className = "fr-message fr-message--error";
       passwordInput.setCustomValidity("2 caractères identiques successifs maximum");
     }
-    if (/.*cheval exact agrafe pile.*/.test(inputValue)) {
-      passwordInputMessageExampleElement.style.display = "block";
-      passwordInputMessageExampleElement.className = "fr-message fr-message--error";
-      passwordInput.setCustomValidity("ne doit pas contenir « cheval exact agrafe pile »");
+    if (passwordInputDataEmail && inputValue.toLowerCase().includes(passwordInputDataEmail)) {
+      passwordInputMessageBlacklistedWordElement.style.display = "block";
+      passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--error";
+      var errorMessage = "ne doit pas contenir votre adresse email"
+      passwordInputMessageBlacklistedWordElement.innerHTML = errorMessage;
+      passwordInput.setCustomValidity(errorMessage);
     }
+    [
+      "moncomptepro",
+      "mon compte pro",
+      "agentconnect",
+      "agent connect",
+      "cheval exact agrafe pile"
+    ].forEach((blacklistedWord) => {
+      if (inputValue.toLowerCase().includes(blacklistedWord)) {
+        passwordInputMessageBlacklistedWordElement.style.display = "block";
+        passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--error";
+        var errorMessage = "ne doit pas contenir « " + blacklistedWord + " »"
+        passwordInputMessageBlacklistedWordElement.innerHTML = errorMessage;
+        passwordInput.setCustomValidity(errorMessage);
+      }
+    });
   }
 
   clearPasswordMessages();

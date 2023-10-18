@@ -164,6 +164,7 @@ export const getSignUpController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
+      email: req.session.email,
     });
   } catch (error) {
     next(error);
