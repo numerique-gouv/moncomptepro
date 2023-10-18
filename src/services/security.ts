@@ -30,9 +30,23 @@ export const validatePassword = async (
   return await bcrypt.compare(plainPassword || '', storedHash);
 };
 
-export const isPasswordSecure = (plainPassword: string) => {
+export const isPasswordSecure = (plainPassword: string, email: string) => {
   const { strong } = owaspPasswordStrengthTest(plainPassword);
-  return strong;
+
+  const lowerCasedBlacklistedWords = [
+    email.toLowerCase(),
+    'moncomptepro',
+    'mon compte pro',
+    'agentconnect',
+    'agent connect',
+    'cheval exact agrafe pile',
+  ];
+
+  const containsBlacklistedWord = lowerCasedBlacklistedWords.some((word) =>
+    plainPassword.toLowerCase().includes(word)
+  );
+
+  return !containsBlacklistedWord && strong;
 };
 
 /*

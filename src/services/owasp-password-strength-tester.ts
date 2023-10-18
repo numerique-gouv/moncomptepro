@@ -27,6 +27,9 @@ interface Config {
   minOptionalTestsToPass: number;
 }
 
+// This default config ensure a minimum entropy of 66.
+// CNIL recommandation are 50 with access restriction (which is our case) or 80 without.
+// More info at https://www.cnil.fr/fr/mots-de-passe-une-nouvelle-recommandation-pour-maitriser-sa-securite
 const defaultConfig: Config = {
   allowPassphrases: true,
   maxLength: 128,
