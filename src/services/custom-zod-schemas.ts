@@ -26,7 +26,11 @@ export const nameSchema = () =>
     .min(1)
     .refine(isNameValid);
 
-export const phoneNumberSchema = () => z.string().refine(isPhoneNumberValid);
+export const phoneNumberSchema = () =>
+  z.union([
+    z.string().refine(isPhoneNumberValid),
+    z.literal('').transform(() => null),
+  ]);
 
 export const idSchema = () =>
   z

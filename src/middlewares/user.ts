@@ -107,12 +107,7 @@ export const checkUserHasPersonalInformationsMiddleware = (
 
       const { given_name, family_name, phone_number, job } =
         getUserFromLoggedInSession(req);
-      if (
-        isEmpty(given_name) ||
-        isEmpty(family_name) ||
-        isEmpty(phone_number) ||
-        isEmpty(job)
-      ) {
+      if (isEmpty(given_name) || isEmpty(family_name) || isEmpty(job)) {
         return res.redirect('/users/personal-information');
       }
 
