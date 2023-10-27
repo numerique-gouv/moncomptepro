@@ -1,5 +1,6 @@
 import { getInternalActiveUsers } from '../repositories/organization/getters';
 import { MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP } from '../env';
+import { isDomainValid } from './security';
 
 /**
  * This fonction return approximate results. As the data tranche effectifs is
@@ -113,4 +114,12 @@ export const isEducationNationale = ({
     isEcolePrimairePrivee ||
     isEcoleMaternellePublique
   );
+};
+
+export const isEducationNationaleDomain = (domain: string) => {
+  if (!isDomainValid(domain)) {
+    return false;
+  }
+
+  return domain.match(/^ac-[a-zA-Z0-9-]*\.fr$/) !== null;
 };

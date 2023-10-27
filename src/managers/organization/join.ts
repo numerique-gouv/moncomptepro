@@ -35,6 +35,7 @@ import {
   hasLessThanFiftyEmployees,
   isCollectiviteTerritoriale,
   isEducationNationale,
+  isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
 } from '../../services/organization';
 import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
@@ -80,6 +81,10 @@ export const getOrganizationSuggestions = async ({
   }
 
   const domain = getEmailDomain(email);
+
+  if (isEducationNationaleDomain(domain)) {
+    return [];
+  }
 
   const organizationsSuggestions = uniqBy(
     [

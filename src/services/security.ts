@@ -50,9 +50,20 @@ export const isPasswordSecure = (plainPassword: string, email: string) => {
 };
 
 /*
- * specifications of this function can be found at
+ * specifications of these functions can be found at
  * https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html#email-address-validation
  */
+export const isDomainValid = (domain: unknown): domain is string => {
+  if (!isString(domain) || isEmpty(domain)) {
+    return false;
+  }
+
+  if (domain.match(/^[a-zA-Z0-9.-]*$/) === null) {
+    return false;
+  }
+
+  return true;
+};
 export const isEmailValid = (email: unknown): email is string => {
   if (!isString(email) || isEmpty(email)) {
     return false;
@@ -72,7 +83,7 @@ export const isEmailValid = (email: unknown): email is string => {
 
   // The domain part contains only letters, numbers, hyphens (-) and periods (.)
   const domain = parts[1];
-  if (domain.match(/^[a-zA-Z0-9.-]*$/) === null) {
+  if (!isDomainValid(domain)) {
     return false;
   }
 
