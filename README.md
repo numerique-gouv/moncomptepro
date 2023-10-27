@@ -14,7 +14,7 @@ Nous identifions les utilisateurs professionnels du privé ou du public sur les 
 
 Pour tester le parcours de connexion complet, vous pouvez tester la connexion MonComptePro depuis le service DataPass qui intègre le bouton de connexion. Pour cela nous mettons à votre disposition une plateforme de démonstration appelée « staging ».
 
-Cette plateforme est disponible via le lien suivant : https://datapass-staging.api.gouv.fr/api-entreprise.
+Cette plateforme est disponible via le lien suivant : https://staging.datapass.api.gouv.fr/api-entreprise.
 
 Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables `yopmail.com`.
 
@@ -70,7 +70,7 @@ Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations,
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 - paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
-- 
+-
 À noter que les seuls périmètres de données (scope) ouverts aux services en lignes sont les suivants :
 - `openid` (données : sub)
 - `email` (données : email, email_verified)
