@@ -321,10 +321,12 @@ VALUES
    '333ba6a6fd9303ab727159eeed704bcbc2549e56cd294fdf58621f01b1856898d18c6b20dd2cec21d4dc06746453331328a1b2c1abe365a92bb2a2f3b9d68c69',
    '031da300506ac31fac6feaf88575b94b886eae7a68c64327ee03e0fa635ae9ae28572e4de53bb435b3fce4f8ac8484334d71de48f3c9abed3709c730173e0fe0',
    ARRAY [
-     'https://grist.dev.incubateur.anct.gouv.fr/_oauth'
+     'https://grist.dev.incubateur.anct.gouv.fr/_oauth',
+     'http://localhost:8484/_oauth'
      ],
    ARRAY [
-     'https://grist.dev.incubateur.anct.gouv.fr'
+     'https://grist.dev.incubateur.anct.gouv.fr',
+     'http://localhost:8484'
      ],
    'openid email organization organizations',
    'https://grist.dev.incubateur.anct.gouv.fr',
