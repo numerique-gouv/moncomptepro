@@ -80,7 +80,7 @@ describe('join organizations', () => {
       // assert reception of notification email
       .then((email) => {
         expect(email.body).to.match(
-          /.*Jean Nouveau.*\(233fd508-224d-4fe7-88ed-0a0d1df10e07@mailslurp.com\).*a rejoint l’organisation.*Direction interministerielle du numerique \(DINUM\).*sur .*MonComptePro/
+          /.*Jean.Nouveau.*\(233fd508-224d-4fe7-88ed-0a0d1df10e07@mailslurp.com\).*a rejoint l’organisation.*Direction interministerielle du numerique \(DINUM\).*sur .*MonComptePro/
         );
       });
   });
