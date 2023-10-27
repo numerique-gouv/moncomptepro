@@ -79,7 +79,9 @@ export const getAnnuaireServicePublicContactEmail = async (
   } catch (e) {
     if (
       e instanceof AxiosError &&
-      (e.code === 'ECONNABORTED' || e.code === 'ERR_BAD_RESPONSE')
+      (e.code === 'ECONNABORTED' ||
+        e.code === 'ERR_BAD_RESPONSE' ||
+        e.code === 'EAI_AGAIN')
     ) {
       throw new ApiAnnuaireConnectionError();
     }
