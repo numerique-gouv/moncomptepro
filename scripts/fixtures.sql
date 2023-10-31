@@ -328,7 +328,7 @@ VALUES
      'https://grist.dev.incubateur.anct.gouv.fr',
      'http://localhost:8484'
      ],
-   'openid email organization organizations',
+   'openid email organization organizations profile',
    'https://grist.dev.incubateur.anct.gouv.fr',
    'Saisir et manipuler collaborativement les données.',
    null, null, null, null),
