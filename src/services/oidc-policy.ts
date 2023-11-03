@@ -12,7 +12,7 @@ const selectOrganizationPrompt = new Prompt(
   new Check(
     'organization_selected',
     'requested scope require organization selection',
-    async ctx => {
+    async (ctx) => {
       const { oidc } = ctx;
 
       // existence of oidc.session.accountId is ensured by previous prompt

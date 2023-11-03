@@ -98,20 +98,21 @@ ORDER BY uoc.connection_count DESC, updated_at DESC
   return rows;
 };
 
-export const addConnection = async (
-  user_id: number,
-  oidc_client_id: number
-) => {
+export const addConnection = async ({
+  user_id,
+  oidc_client_id,
+  organization_id,
+}: BaseConnection) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Connection> = await connection.query(
     `
 INSERT INTO users_oidc_clients
-  (user_id, oidc_client_id, created_at, updated_at)
-VALUES ($1, $2, $3, $4)
-RETURNING user_id, oidc_client_id, created_at, updated_at, id;
+  (user_id, oidc_client_id, organization_id, created_at, updated_at)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING user_id, oidc_client_id, organization_id, created_at, updated_at, id;
 `,
-    [user_id, oidc_client_id, new Date(), new Date()]
+    [user_id, oidc_client_id, organization_id, new Date(), new Date()]
   );
 
   return rows.shift()!;
