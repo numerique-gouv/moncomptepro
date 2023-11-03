@@ -43,7 +43,9 @@ export const connectionCountMiddleware = async (
       } else {
         // This is unexpected, we log it in sentry
         const err = new Error(
-          `Connection ignored in count! session: ${ctx.oidc.session}; client: ${ctx.oidc.client}`
+          `Connection ignored in count! session: ${JSON.stringify(
+            ctx.oidc.session
+          )}; client: ${JSON.stringify(ctx.oidc.client)}`
         );
         console.error(err);
         Sentry.captureException(err);
