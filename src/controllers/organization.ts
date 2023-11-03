@@ -26,6 +26,8 @@ import {
 } from '../managers/organization/join';
 import { getUserFromLoggedInSession } from '../managers/session';
 import { csrfToken } from '../middlewares/csrf-protection';
+import * as url from 'url';
+import { isString } from 'lodash';
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -107,6 +109,13 @@ export const postJoinOrganizationMiddleware = async (
     const userOrganizationLink = await joinOrganization({
       siret,
       user_id: getUserFromLoggedInSession(req).id,
+      // TODO: move this logic in a helper
+      origin: isString(req.session.referer)
+        ? // TODO: use URL.origin with node > v20
+          `${url.parse(req.session.referer).protocol}//${
+            url.parse(req.session.referer).hostname
+          }`
+        : null,
     });
 
     if (req.session.mustReturnOneOrganizationInPayload) {

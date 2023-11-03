@@ -103,9 +103,11 @@ export const getOrganizationSuggestions = async ({
 export const joinOrganization = async ({
   siret,
   user_id,
+  origin,
 }: {
   siret: string;
   user_id: number;
+  origin: string | null;
 }): Promise<UserOrganizationLink> => {
   // Update organizationInfo
   let organizationInfo: OrganizationInfo;
@@ -276,6 +278,7 @@ export const joinOrganization = async ({
       user_id,
       organization_id,
       type: 'non_verified_domain',
+      origin,
     });
     return await linkUserToOrganization({
       organization_id,
@@ -288,6 +291,7 @@ export const joinOrganization = async ({
     user_id,
     organization_id,
     type: 'organization_join_block',
+    origin,
   });
   await sendMail({
     to: [email],

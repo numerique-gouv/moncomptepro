@@ -16,6 +16,8 @@ import {
 } from '../../managers/organization/authentication-by-peers';
 import { getUserFromLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
+import { isString } from 'lodash';
+import url from 'url';
 
 export const getChooseSponsorController = async (
   req: Request,
@@ -169,6 +171,13 @@ export const postNoSponsorFoundController = async (
     await askForSponsorship({
       user_id: getUserFromLoggedInSession(req).id,
       organization_id,
+      // TODO: move this logic in a helper
+      origin: isString(req.session.referer)
+        ? // TODO: use URL.origin with node > v20
+          `${url.parse(req.session.referer).protocol}//${
+            url.parse(req.session.referer).hostname
+          }`
+        : null,
     });
 
     return res.redirect(`/users/unable-to-find-sponsor/${organization_id}`);

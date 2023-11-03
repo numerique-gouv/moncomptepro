@@ -235,9 +235,11 @@ export const getOrganizationLabel = async ({
 export const askForSponsorship = async ({
   user_id,
   organization_id,
+  origin,
 }: {
   user_id: number;
   organization_id: number;
+  origin: string | null;
 }) => {
   const organizationUsers = await getUsers(organization_id);
   const organization = await findOrganizationById(organization_id);
@@ -262,6 +264,7 @@ export const askForSponsorship = async ({
     user_id,
     organization_id,
     type: 'ask_for_sponsorship',
+    origin,
   });
   const { email, given_name, family_name } = user;
   const { cached_libelle, siret } = organization;

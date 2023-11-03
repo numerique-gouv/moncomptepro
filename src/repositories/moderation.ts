@@ -5,19 +5,16 @@ export const createModeration = async ({
   user_id,
   organization_id,
   type,
-}: {
-  user_id: number;
-  organization_id: number;
-  type: Moderation['type'];
-}) => {
+  origin,
+}: BaseModeration) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Moderation> = await connection.query(
     `
-INSERT INTO moderations (user_id, organization_id, type)
-VALUES ($1, $2, $3)
+INSERT INTO moderations (user_id, organization_id, type, origin)
+VALUES ($1, $2, $3, $4)
 RETURNING *;`,
-    [user_id, organization_id, type]
+    [user_id, organization_id, type, origin]
   );
 
   return rows.shift()!;
