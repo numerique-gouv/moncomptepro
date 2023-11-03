@@ -35,14 +35,17 @@ export const connectionCountMiddleware = async (
     // This happens when hitting the resume route.
     try {
       if (ctx.oidc.session?.accountId && ctx.oidc.client?.clientId) {
-        await recordNewConnection(
-          parseInt(ctx.oidc.session?.accountId, 10),
-          ctx.oidc.client?.clientId
-        );
+        await recordNewConnection({
+          accountId: ctx.oidc.session.accountId,
+          client: ctx.oidc.client,
+          params: ctx.oidc.params,
+        });
       } else {
         // This is unexpected, we log it in sentry
         const err = new Error(
-          `Connection ignored in count! session: ${ctx.oidc.session}; client: ${ctx.oidc.client}`
+          `Connection ignored in count! session: ${JSON.stringify(
+            ctx.oidc.session
+          )}; client: ${JSON.stringify(ctx.oidc.client)}`
         );
         console.error(err);
         Sentry.captureException(err);
