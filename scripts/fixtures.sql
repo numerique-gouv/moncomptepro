@@ -710,6 +710,22 @@ VALUES
     'openid email profile organizations',
     'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr',
     'Consultez les indicateurs clés de l’ANCT.',
+    null, null, null, null),
+  (27,
+    'Pad numérique',
+    '82a04a41b604c877ea47fd793c095191b5e4d504bbe90ba37cd3525bf9a32c55',
+    '358f6e21cb963c8baa891c3961110c6cb232aa7919dea7d9ce392ebb3b5eebc1',
+    ARRAY [
+      'http://localhost:3000/auth/oauth2/callback',
+      'https://dinum-pad-dev.osc-fr1.scalingo.io/auth/oauth2/callback'
+    ],
+    ARRAY [
+      'http://localhost:3000/',
+      'https://dinum-pad-dev.osc-fr1.scalingo.io/'
+    ],
+    'openid email profile organizations',
+    'https://dinum-pad-dev.osc-fr1.scalingo.io/',
+    'Prise de notes simple et efficace, seul ou à plusieurs',
     null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
