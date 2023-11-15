@@ -707,7 +707,7 @@ VALUES
       'http://localhost:3000',
       'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr'
     ],
-    'openid email profile organizations',
+    'openid email profile organization organizations',
     'https://catalogue-indicateurs.donnees.dev.incubateur.anct.gouv.fr',
     'Consultez les indicateurs clés de l’ANCT.',
     null, null, null, null),
@@ -723,7 +723,7 @@ VALUES
       'http://localhost:3000/',
       'https://dinum-pad-dev.osc-fr1.scalingo.io/'
     ],
-    'openid email profile organizations',
+    'openid email profile organization',
     'https://dinum-pad-dev.osc-fr1.scalingo.io/',
     'Prise de notes simple et efficace, seul ou à plusieurs',
     null, null, null, null)
