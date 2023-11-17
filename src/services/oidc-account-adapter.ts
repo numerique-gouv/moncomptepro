@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { findById as findUserById } from '../repositories/user';
-import { isCollectiviteTerritoriale, isServicePublic } from './organization';
+import { isCommune, isServicePublic } from './organization';
 import { findByUserId as getUsersOrganizations } from '../repositories/organization/getters';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
 import { mustReturnOneOrganizationInPayload } from './must-return-one-organization-in-payload';
@@ -74,17 +74,15 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
           ...personalClaims,
           label: organization.cached_libelle,
           siret: organization.siret,
-          is_collectivite_territoriale: isCollectiviteTerritoriale(
-            organization,
-            true
-          ),
+          is_collectivite_territoriale: isCommune(organization, true), // deprecated
+          is_commune: isCommune(organization, true),
           is_external: organization.is_external,
           is_service_public: isServicePublic(organization),
         };
       } else {
         return {
           ...personalClaims,
-          organizations: organizations.map(organization => {
+          organizations: organizations.map((organization) => {
             const {
               id,
               siret,
@@ -97,10 +95,8 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
               siret,
               is_external,
               label,
-              is_collectivite_territoriale: isCollectiviteTerritoriale(
-                organization,
-                true
-              ),
+              is_collectivite_territoriale: isCommune(organization, true), // deprecated
+              is_commune: isCommune(organization, true),
               is_service_public: isServicePublic(organization),
             };
           }),

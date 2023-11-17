@@ -27,16 +27,16 @@ export const isEntrepriseUnipersonnelle = ({
   return cat_jur_ok && tra_eff_ok;
 };
 
-export const isCollectiviteTerritoriale = (
+export const isCommune = (
   { cached_libelle_categorie_juridique }: Organization,
-  considerCommunauteDeCommunesAsCollectiviteTerritoriale = false
+  considerCommunauteDeCommunesAsCommune = false
 ): boolean => {
   let cat_jur = [
     'Commune et commune nouvelle',
     'Commune associée et commune déléguée',
   ];
 
-  if (considerCommunauteDeCommunesAsCollectiviteTerritoriale) {
+  if (considerCommunauteDeCommunesAsCommune) {
     cat_jur.push('Communauté de communes');
   }
 
@@ -75,7 +75,7 @@ export const hasLessThanFiftyEmployees = ({
   );
 };
 
-export const isEducationNationale = ({
+export const isEtablissementScolaireDuPremierEtSecondDegre = ({
   cached_libelle_activite_principale,
   cached_libelle_categorie_juridique,
 }: Organization) => {

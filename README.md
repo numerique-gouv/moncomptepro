@@ -75,7 +75,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 - `openid` (données : sub)
 - `email` (données : email, email_verified)
 - `profile` (données : family_name, given_name, updated_at, job)
-- `organization` (données : label, siret, is_collectivite_territoriale, is_external, is_service_public)
+- `organization` (données : label, siret, is_commune, is_external, is_service_public)
 
 #### Exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID
 
@@ -90,13 +90,14 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
   "updated_at": "2023-06-15T16:17:05.958Z",
   "label": "Commune de les martres sur morge - Mairie",
   "siret": "21630215800011",
-  "is_collectivite_territoriale": true,
+  "is_commune": true,
   "is_service_public": true,
   "is_external": true
 }
 ```
 
 > NB : `is_external` vaut `true` lorsque l’utilisateur est externe à l’organisation (ex : prestataire, sous-traitant, mandataire, etc.)
+> NB : si `is_commune` vaut `true` alors `is_service_public` vaut `true` également
 
 ### Spécifications visuelles
 
