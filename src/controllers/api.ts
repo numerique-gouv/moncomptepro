@@ -1,6 +1,6 @@
 import { BadRequest, GatewayTimeout, NotFound } from 'http-errors';
 import { getOrganizationInfo } from '../connectors/api-sirene';
-import notificationMessages from '../notification-messages';
+import notificationMessages from '../config/notification-messages';
 import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
 import {
@@ -8,7 +8,7 @@ import {
   optionalBooleanSchema,
   siretSchema,
 } from '../services/custom-zod-schemas';
-import { InseeConnectionError, InseeNotFoundError } from '../errors';
+import { InseeConnectionError, InseeNotFoundError } from '../config/errors';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 import { markDomainAsVerified } from '../managers/organization/main';
 import { forceJoinOrganization } from '../managers/organization/join';

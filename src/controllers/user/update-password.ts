@@ -7,9 +7,9 @@ import {
   InvalidTokenError,
   LeakedPasswordError,
   WeakPasswordError,
-} from '../../errors';
+} from '../../config/errors';
 import hasErrorFromField from '../../services/has-error-from-field';
-import { MONCOMPTEPRO_HOST } from '../../env';
+import { MONCOMPTEPRO_HOST } from '../../config/env';
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,

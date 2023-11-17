@@ -4,7 +4,7 @@ import {
   getByUserIdOrderedByConnectionCount,
 } from '../repositories/oidc-client';
 import { isEmpty, isString } from 'lodash';
-import { NotFoundError } from '../errors';
+import { NotFoundError } from '../config/errors';
 import { KoaContextWithOIDC } from 'oidc-provider';
 import { mustReturnOneOrganizationInPayload } from '../services/must-return-one-organization-in-payload';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';

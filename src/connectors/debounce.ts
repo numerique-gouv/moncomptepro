@@ -3,7 +3,7 @@ import {
   DEBOUNCE_API_KEY,
   DO_NOT_VALIDATE_MAIL,
   HTTP_CLIENT_TIMEOUT,
-} from '../env';
+} from '../config/env';
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
 type DebounceResponse = {

@@ -1,5 +1,5 @@
 import { getInternalActiveUsers } from '../repositories/organization/getters';
-import { MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP } from '../env';
+import { MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP } from '../config/env';
 import { isDomainValid } from './security';
 
 /**

@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { DATABASE_URL } from '../env';
+import { DATABASE_URL } from '../config/env';
 
 let pool: Pool | null = null;
 
@@ -15,11 +15,11 @@ export const getDatabaseConnection = () => {
 
   pool = new Pool({ connectionString: DATABASE_URL });
 
-  pool.on('connect', client => {
+  pool.on('connect', (client) => {
     console.log(`Connected to database : ${obfuscatedConnectionString}`);
   });
 
-  pool.on('remove', client => {
+  pool.on('remove', (client) => {
     console.log(`Disconnected from database : ${obfuscatedConnectionString}`);
   });
 

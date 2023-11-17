@@ -11,7 +11,7 @@ import {
   LeakedPasswordError,
   UserNotFoundError,
   WeakPasswordError,
-} from '../errors';
+} from '../config/errors';
 
 import {
   create,
@@ -35,7 +35,7 @@ import {
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
   RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-} from '../env';
+} from '../config/env';
 
 export const startLogin = async (
   email: string

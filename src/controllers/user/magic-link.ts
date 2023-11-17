@@ -3,9 +3,9 @@ import {
   loginWithMagicLink,
   sendSendMagicLinkEmail,
 } from '../../managers/user';
-import { InvalidEmailError, InvalidMagicLinkError } from '../../errors';
+import { InvalidEmailError, InvalidMagicLinkError } from '../../config/errors';
 import { z, ZodError } from 'zod';
-import { MONCOMPTEPRO_HOST } from '../../env';
+import { MONCOMPTEPRO_HOST } from '../../config/env';
 import { createLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
 

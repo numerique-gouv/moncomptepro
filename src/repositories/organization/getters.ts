@@ -1,6 +1,6 @@
 import { getDatabaseConnection } from '../../connectors/postgres';
 import { QueryResult } from 'pg';
-import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from '../../env';
+import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from '../../config/env';
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();

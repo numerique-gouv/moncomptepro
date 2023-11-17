@@ -9,7 +9,7 @@ import { findById as findUserById } from '../../repositories/user';
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
-} from '../../errors';
+} from '../../config/errors';
 import { sendMail } from '../../connectors/sendinblue';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
 import { getOrganizationsByUserId } from './main';
@@ -17,7 +17,10 @@ import {
   createModeration,
   findPendingModeration,
 } from '../../repositories/moderation';
-import { NOTIFY_ALL_MEMBER_LIMIT, SUPPORT_EMAIL_ADDRESS } from '../../env';
+import {
+  NOTIFY_ALL_MEMBER_LIMIT,
+  SUPPORT_EMAIL_ADDRESS,
+} from '../../config/env';
 
 export const notifyAllMembers = async ({
   organization_id,

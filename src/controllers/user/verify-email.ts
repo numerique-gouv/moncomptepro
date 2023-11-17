@@ -6,7 +6,10 @@ import {
   verifyEmail,
 } from '../../managers/user';
 import getNotificationsFromRequest from '../../services/get-notifications-from-request';
-import { EmailVerifiedAlreadyError, InvalidTokenError } from '../../errors';
+import {
+  EmailVerifiedAlreadyError,
+  InvalidTokenError,
+} from '../../config/errors';
 import {
   getUserFromLoggedInSession,
   updateUserInLoggedInSession,

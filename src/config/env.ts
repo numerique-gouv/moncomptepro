@@ -1,7 +1,7 @@
 export const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
-  JWKS_PATH = `${__dirname}/../jwks.json`,
+  JWKS_PATH = `${__dirname}/../../jwks.json`,
   SESSION_COOKIE_SECRET = '',
   SENTRY_DSN,
   ACCESS_LOG_PATH,
