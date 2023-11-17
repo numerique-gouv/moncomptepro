@@ -15,8 +15,8 @@ import {
 import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
 import {
-  isCollectiviteTerritoriale,
-  isEducationNationale,
+  isCommune,
+  isEtablissementScolaireDuPremierEtSecondDegre,
 } from '../../services/organization';
 import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
 
@@ -63,14 +63,14 @@ export const sendOfficialContactEmailVerificationEmail = async ({
   let contactEmail;
   try {
     if (
-      isCollectiviteTerritoriale(organization) &&
-      !isEducationNationale(organization)
+      isCommune(organization) &&
+      !isEtablissementScolaireDuPremierEtSecondDegre(organization)
     ) {
       contactEmail = await getAnnuaireServicePublicContactEmail(
         cached_code_officiel_geographique,
         cached_code_postal
       );
-    } else if (isEducationNationale(organization)) {
+    } else if (isEtablissementScolaireDuPremierEtSecondDegre(organization)) {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
     }
   } catch (error) {

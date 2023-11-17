@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import {
-  isCollectiviteTerritoriale,
-  isEducationNationale,
+  isCommune,
   isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
+  isEtablissementScolaireDuPremierEtSecondDegre,
   isServicePublic,
 } from '../src/services/organization';
 import { describe } from 'node:test';
@@ -87,17 +87,17 @@ const onf_org_info: Organization = {
     "Établissement public national à caractère industriel ou commercial doté d'un comptable public",
 };
 
-describe('isCollectiviteTerritoriale', () => {
+describe('isCommune', () => {
   it('should return false for bad call', () => {
-    assert.equal(isCollectiviteTerritoriale({}), false);
+    assert.equal(isCommune({}), false);
   });
 
   it('should return true for collectivite territoriale', () => {
-    assert.equal(isCollectiviteTerritoriale(lamalou_org_info), true);
+    assert.equal(isCommune(lamalou_org_info), true);
   });
 
   it('should return false for administration centrale', () => {
-    assert.equal(isCollectiviteTerritoriale(dinum_org_info), false);
+    assert.equal(isCommune(dinum_org_info), false);
   });
 });
 
@@ -127,7 +127,7 @@ describe('isServicePublic', () => {
   });
 });
 
-describe('isEducationNationale', () => {
+describe('isEtablissementScolaireDuPremierEtSecondDegre', () => {
   it('should return false for unipersonnelle organization', () => {
     const indep_org_info: Organization = {
       siret: '90243432300017',
@@ -140,7 +140,10 @@ describe('isEducationNationale', () => {
       cached_categorie_juridique: '1000 ',
       cached_libelle_categorie_juridique: 'Entrepreneur individuel',
     };
-    assert.equal(isEducationNationale(indep_org_info), false);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(indep_org_info),
+      false
+    );
   });
   it('should return true for lycee public', () => {
     const lycee_public_org_info: Organization = {
@@ -165,7 +168,10 @@ describe('isEducationNationale', () => {
       cached_libelle_categorie_juridique:
         "Établissement public local d'enseignement",
     };
-    assert.equal(isEducationNationale(lycee_public_org_info), true);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(lycee_public_org_info),
+      true
+    );
   });
   it('should return true for college public', () => {
     const college_public_org_info: Organization = {
@@ -190,7 +196,10 @@ describe('isEducationNationale', () => {
       cached_libelle_categorie_juridique:
         "Établissement public local d'enseignement",
     };
-    assert.equal(isEducationNationale(college_public_org_info), true);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(college_public_org_info),
+      true
+    );
   });
   it('should return true for lycee prive', () => {
     const lycee_prive_org_info: Organization = {
@@ -214,7 +223,10 @@ describe('isEducationNationale', () => {
       cached_categorie_juridique: '9220',
       cached_libelle_categorie_juridique: 'Association déclarée',
     };
-    assert.equal(isEducationNationale(lycee_prive_org_info), true);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(lycee_prive_org_info),
+      true
+    );
   });
   it('should return true for ecole primaire publique', () => {
     const ecole_primaire_publique_org_info: Organization = {
@@ -238,7 +250,12 @@ describe('isEducationNationale', () => {
       cached_categorie_juridique: '7210',
       cached_libelle_categorie_juridique: 'Commune et commune nouvelle',
     };
-    assert.equal(isEducationNationale(ecole_primaire_publique_org_info), true);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(
+        ecole_primaire_publique_org_info
+      ),
+      true
+    );
   });
   it('should return true for ecole primaire privee', () => {
     const ecole_primaire_privee_org_info: Organization = {
@@ -262,7 +279,12 @@ describe('isEducationNationale', () => {
       cached_categorie_juridique: '9220',
       cached_libelle_categorie_juridique: 'Association déclarée',
     };
-    assert.equal(isEducationNationale(ecole_primaire_privee_org_info), true);
+    assert.equal(
+      isEtablissementScolaireDuPremierEtSecondDegre(
+        ecole_primaire_privee_org_info
+      ),
+      true
+    );
   });
 });
 

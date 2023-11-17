@@ -33,10 +33,10 @@ import {
 } from '../../repositories/moderation';
 import {
   hasLessThanFiftyEmployees,
-  isCollectiviteTerritoriale,
-  isEducationNationale,
+  isCommune,
   isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
+  isEtablissementScolaireDuPremierEtSecondDegre,
 } from '../../services/organization';
 import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
 import * as Sentry from '@sentry/node';
@@ -171,8 +171,8 @@ export const joinOrganization = async ({
   }
 
   if (
-    isCollectiviteTerritoriale(organization) &&
-    !isEducationNationale(organization)
+    isCommune(organization) &&
+    !isEtablissementScolaireDuPremierEtSecondDegre(organization)
   ) {
     let contactEmail;
     try {
@@ -227,7 +227,7 @@ export const joinOrganization = async ({
     }
   }
 
-  if (isEducationNationale(organization)) {
+  if (isEtablissementScolaireDuPremierEtSecondDegre(organization)) {
     let contactEmail;
     try {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
