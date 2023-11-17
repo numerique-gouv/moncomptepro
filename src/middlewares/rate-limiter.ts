@@ -3,7 +3,7 @@ import { TooManyRequests } from 'http-errors';
 import { getNewRedisClient } from '../connectors/redis';
 import { NextFunction, Request, Response } from 'express';
 import * as Sentry from '@sentry/node';
-import { DO_NOT_RATE_LIMIT } from '../env';
+import { DO_NOT_RATE_LIMIT } from '../config/env';
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -16,20 +16,18 @@ const rateLimiter = new RateLimiterRedis({
   duration: 60, // per minute per IP
 });
 
-const rateLimiterMiddlewareFactory = (rateLimiter: RateLimiterRedis) => async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (!DO_NOT_RATE_LIMIT) {
-      await rateLimiter.consume(req.ip);
+const rateLimiterMiddlewareFactory =
+  (rateLimiter: RateLimiterRedis) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!DO_NOT_RATE_LIMIT) {
+        await rateLimiter.consume(req.ip);
+      }
+      next();
+    } catch (e) {
+      next(new TooManyRequests());
     }
-    next();
-  } catch (e) {
-    next(new TooManyRequests());
-  }
-};
+  };
 
 export const rateLimiterMiddleware = rateLimiterMiddlewareFactory(rateLimiter);
 
@@ -40,9 +38,8 @@ const apiRateLimiter = new RateLimiterRedis({
   duration: 1, // per second per IP
 });
 
-export const apiRateLimiterMiddleware = rateLimiterMiddlewareFactory(
-  apiRateLimiter
-);
+export const apiRateLimiterMiddleware =
+  rateLimiterMiddlewareFactory(apiRateLimiter);
 
 const loginRateLimiter = new RateLimiterRedis({
   storeClient: redisClient,

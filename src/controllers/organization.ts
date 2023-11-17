@@ -14,7 +14,7 @@ import {
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
-} from '../errors';
+} from '../config/errors';
 import {
   quitOrganization,
   selectOrganization,

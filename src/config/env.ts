@@ -1,7 +1,7 @@
 export const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
-  JWKS_PATH = `${__dirname}/../jwks.json`,
+  JWKS_PATH = `${__dirname}/../../jwks.json`,
   SESSION_COOKIE_SECRET = '',
   SENTRY_DSN,
   ACCESS_LOG_PATH,
@@ -57,10 +57,11 @@ export const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
 
     3 * 30 * 24 * 60 // 3 months in minutes
   );
-export const MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP = getNumberFromEnv(
-  'MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP',
-  30
-);
+export const DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP =
+  getNumberFromEnv(
+    'DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP',
+    30
+  );
 export const NOTIFY_ALL_MEMBER_LIMIT = getNumberFromEnv(
   'NOTIFY_ALL_MEMBER_LIMIT',
   50

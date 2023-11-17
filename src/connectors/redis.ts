@@ -1,5 +1,5 @@
 import RedisClient, { RedisOptions } from 'ioredis';
-import { REDIS_URL } from '../env';
+import { REDIS_URL } from '../config/env';
 
 export const getNewRedisClient = (params: RedisOptions = {}) => {
   const redisClient = new RedisClient(REDIS_URL, params);

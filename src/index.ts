@@ -12,7 +12,7 @@ import Provider from 'oidc-provider';
 import path from 'path';
 import oidcProviderRepository from './repositories/redis/oidc-provider';
 import { getNewRedisClient } from './connectors/redis';
-import { oidcProviderConfiguration } from './oidc-provider-configuration';
+import { oidcProviderConfiguration } from './config/oidc-provider-configuration';
 import { getClients } from './repositories/oidc-client';
 import { apiRouter } from './routers/api';
 import { interactionRouter } from './routers/interaction';
@@ -35,7 +35,7 @@ import {
   SENTRY_DSN,
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
-} from './env';
+} from './config/env';
 
 const jwks = require(JWKS_PATH);
 

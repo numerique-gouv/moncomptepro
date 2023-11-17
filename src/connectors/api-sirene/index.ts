@@ -7,12 +7,12 @@ import {
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
 } from './formatters';
-import { InseeConnectionError, InseeNotFoundError } from '../../errors';
+import { InseeConnectionError, InseeNotFoundError } from '../../config/errors';
 import {
   HTTP_CLIENT_TIMEOUT,
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,
-} from '../../env';
+} from '../../config/env';
 import { cloneDeep, set } from 'lodash';
 
 type ApiInseeResponse = {

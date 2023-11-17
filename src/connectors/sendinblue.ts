@@ -3,8 +3,8 @@ import { chain, isEmpty } from 'lodash';
 import path from 'path';
 
 import { render } from '../services/renderer';
-import { SendInBlueApiError } from '../errors';
-import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from '../env';
+import { SendInBlueApiError } from '../config/errors';
+import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from '../config/env';
 
 type RemoteTemplateSlug =
   | 'join-organization'
@@ -62,7 +62,7 @@ export const sendMail = async ({
     // Sendinblue allow a maximum of 99 recipients
     to: chain(to)
       .sampleSize(99)
-      .map(e => ({ email: e }))
+      .map((e) => ({ email: e }))
       .value(),
     subject,
     params,
@@ -87,7 +87,7 @@ export const sendMail = async ({
 
   if (!isEmpty(cc)) {
     // @ts-ignore
-    data.cc = cc.map(e => ({ email: e }));
+    data.cc = cc.map((e) => ({ email: e }));
   }
 
   if (DO_NOT_SEND_MAIL) {

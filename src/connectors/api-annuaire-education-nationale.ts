@@ -3,13 +3,13 @@ import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
-} from '../errors';
+} from '../config/errors';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
-} from '../env';
+} from '../config/env';
 import { isEmailValid } from '../services/security';
 
 type ApiAnnuaireEducationNationaleReponse = {

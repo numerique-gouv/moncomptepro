@@ -1,5 +1,5 @@
 import { getNewRedisClient } from '../../connectors/redis';
-import { SESSION_MAX_AGE_IN_SECONDS } from '../../env';
+import { SESSION_MAX_AGE_IN_SECONDS } from '../../config/env';
 
 const redisClient = getNewRedisClient({
   keyPrefix: 'mcp:selected-organization:',

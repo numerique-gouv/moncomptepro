@@ -4,7 +4,7 @@ import invalidCogData from './api-annuaire-service-public-data/invalid-cog.json'
 import twoMairiesData from './api-annuaire-service-public-data/two-mairies.json';
 import { assert } from 'chai';
 import { getAnnuaireServicePublicContactEmail } from '../src/connectors/api-annuaire-service-public';
-import { ApiAnnuaireNotFoundError } from '../src/errors';
+import { ApiAnnuaireNotFoundError } from '../src/config/errors';
 
 describe('getAnnuaireServicePublicContactEmail', () => {
   it('should throw an error for invalid cog', async () => {

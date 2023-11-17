@@ -5,7 +5,7 @@ import {
   getUsers,
 } from '../../repositories/organization/getters';
 import { isEmpty } from 'lodash';
-import { NotFoundError } from '../../errors';
+import { NotFoundError } from '../../config/errors';
 import {
   addAuthorizedDomain,
   addVerifiedDomain,
@@ -55,11 +55,8 @@ export const markDomainAsVerified = async ({
     throw new NotFoundError();
   }
 
-  const {
-    siret,
-    verified_email_domains,
-    authorized_email_domains,
-  } = organization;
+  const { siret, verified_email_domains, authorized_email_domains } =
+    organization;
 
   if (!verified_email_domains.includes(domain)) {
     await addVerifiedDomain({ siret, domain });

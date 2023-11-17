@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { hasIn, isEmpty, isString } from 'lodash';
 import { customAlphabet, nanoid } from 'nanoid/async';
 import { parse as parseUrl } from 'url';
-import notificationMessages from '../notification-messages';
+import notificationMessages from '../config/notification-messages';
 import dicewareWordlistFrAlt from './security/diceware-wordlist-fr-alt';
 import { owaspPasswordStrengthTest } from './owasp-password-strength-tester';
 

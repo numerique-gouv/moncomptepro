@@ -5,7 +5,7 @@ import getNotificationsFromRequest from '../../services/get-notifications-from-r
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
-} from '../../errors';
+} from '../../config/errors';
 import { NotFound } from 'http-errors';
 import { getOrganizationById } from '../../managers/organization/main';
 import {

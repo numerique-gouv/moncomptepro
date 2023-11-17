@@ -20,7 +20,7 @@ import {
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
-} from '../../errors';
+} from '../../config/errors';
 import {
   addAuthorizedDomain,
   linkUserToOrganization,
@@ -43,7 +43,7 @@ import * as Sentry from '@sentry/node';
 import { isEmailValid } from '../../services/security';
 import { markDomainAsVerified } from './main';
 import { sendMail } from '../../connectors/sendinblue';
-import { SUPPORT_EMAIL_ADDRESS } from '../../env';
+import { SUPPORT_EMAIL_ADDRESS } from '../../config/env';
 import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
 
 export const doSuggestOrganizations = async ({

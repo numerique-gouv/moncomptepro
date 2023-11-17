@@ -5,13 +5,13 @@ import {
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
   ApiAnnuaireTooManyResultsError,
-} from '../errors';
+} from '../config/errors';
 import { isEmpty, isString } from 'lodash';
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
-} from '../env';
+} from '../config/env';
 
 // more info at https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml

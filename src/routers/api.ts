@@ -8,7 +8,7 @@ import {
 import { apiRateLimiterMiddleware } from '../middlewares/rate-limiter';
 import { HttpError } from 'http-errors';
 import expressBasicAuth from 'express-basic-auth';
-import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../env';
+import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../config/env';
 import nocache from 'nocache';
 
 export const apiRouter = () => {

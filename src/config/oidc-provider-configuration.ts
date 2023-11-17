@@ -1,8 +1,8 @@
-import { findAccount } from './services/oidc-account-adapter';
-import { renderWithEjsLayout } from './services/renderer';
-import epochTime from './services/epoch-time';
-import policy from './services/oidc-policy';
-import { destroyLoggedInSession } from './managers/session';
+import { findAccount } from '../services/oidc-account-adapter';
+import { renderWithEjsLayout } from '../services/renderer';
+import epochTime from '../services/epoch-time';
+import policy from '../services/oidc-policy';
+import { destroyLoggedInSession } from '../managers/session';
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,

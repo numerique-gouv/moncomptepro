@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import { HTTP_CLIENT_TIMEOUT } from '../env';
+import { HTTP_CLIENT_TIMEOUT } from '../config/env';
 
 const apiResponseParser = (rawData: string): { [k: string]: number } => {
   return rawData

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import getNotificationsFromRequest from '../services/get-notifications-from-request';
 import { ZodError } from 'zod';
 import { updatePersonalInformations } from '../managers/user';
-import notificationMessages from '../notification-messages';
+import notificationMessages from '../config/notification-messages';
 import { getClientsOrderedByConnectionCount } from '../managers/oidc-client';
 import { getParamsForPostPersonalInformationsController } from './user/update-personal-informations';
 import { getUserOrganizations } from '../managers/organization/main';

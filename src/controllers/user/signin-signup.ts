@@ -10,12 +10,12 @@ import {
   InvalidEmailError,
   LeakedPasswordError,
   WeakPasswordError,
-} from '../../errors';
+} from '../../config/errors';
 import { emailSchema } from '../../services/custom-zod-schemas';
 import { createLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
 import * as Sentry from '@sentry/node';
-import { DISPLAY_TEST_ENV_WARNING } from '../../env';
+import { DISPLAY_TEST_ENV_WARNING } from '../../config/env';
 
 export const getStartSignInController = async (
   req: Request,

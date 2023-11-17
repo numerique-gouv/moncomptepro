@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
 import { updateEmailAddressVerificationStatus } from '../managers/user';
-import { isEligibleToSponsorship } from '../services/organization';
 import {
   getOrganizationsByUserId,
   selectOrganization,
 } from '../managers/organization/main';
 import {
   greetForJoiningOrganization,
+  isEligibleToSponsorship,
   notifyAllMembers,
 } from '../managers/organization/authentication-by-peers';
 import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';

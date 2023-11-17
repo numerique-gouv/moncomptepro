@@ -4,7 +4,7 @@ import nock from 'nock';
 import diffusible from './api-sirene-data/diffusible.json';
 import partiallyNonDiffusible from './api-sirene-data/partially-non-diffusible.json';
 import { getOrganizationInfo } from '../src/connectors/api-sirene';
-import { InseeNotFoundError } from '../src/errors';
+import { InseeNotFoundError } from '../src/config/errors';
 
 chai.use(chaiAsPromised);
 const assert = chai.assert;

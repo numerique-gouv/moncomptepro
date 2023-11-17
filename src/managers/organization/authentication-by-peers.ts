@@ -9,16 +9,78 @@ import { findById as findUserById } from '../../repositories/user';
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
-} from '../../errors';
+} from '../../config/errors';
 import { sendMail } from '../../connectors/sendinblue';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
-import { getOrganizationsByUserId } from './main';
+import { getOrganizationById, getOrganizationsByUserId } from './main';
 import {
   createModeration,
   findPendingModeration,
 } from '../../repositories/moderation';
-import { NOTIFY_ALL_MEMBER_LIMIT, SUPPORT_EMAIL_ADDRESS } from '../../env';
+import {
+  DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP,
+  NOTIFY_ALL_MEMBER_LIMIT,
+  SUPPORT_EMAIL_ADDRESS,
+} from '../../config/env';
 
+export const isEligibleToSponsorship = async ({
+  id,
+}: Organization): Promise<boolean> => {
+  const organization = await getOrganizationById(id);
+  if (!organization) {
+    return false;
+  }
+
+  const internalActiveUsers = await getInternalActiveUsers(id);
+  if (isEmpty(internalActiveUsers)) {
+    return false;
+  }
+
+  const codeEffectifToMemberCountThreshold: {
+    [K in NonNullable<TrancheEffectifs>]: number | null;
+  } = {
+    // Unité non employeuse (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)
+    NN: null,
+    // 0 salarié (n'ayant pas d'effectif au 31/12 mais ayant employé des salariés au cours de l'année de référence)
+    '00': null,
+    // 1 ou 2 salariés
+    '01': null,
+    // 3 à 5 salariés
+    '02': null,
+    // 6 à 9 salariés
+    '03': null,
+    // 10 à 19 salariés
+    11: null,
+    // 20 à 49 salariés
+    12: 5,
+    // 50 à 99 salariés
+    21: 10,
+    // 100 à 199 salariés
+    22: 20,
+    // 200 à 249 salariés
+    31: 25,
+    // 250 à 499 salariés
+    32: 50,
+    // 500 à 999 salariés
+    41: 100,
+    // 1 000 à 1 999 salariés
+    42: 200,
+    // 2 000 à 4 999 salariés
+    51: 500,
+    // 5 000 à 9 999 salariés
+    52: 1000,
+    // 10 000 salariés et plus
+    53: 1000,
+  };
+
+  const memberCountThreshold = organization.cached_tranche_effectifs
+    ? codeEffectifToMemberCountThreshold[
+        organization.cached_tranche_effectifs
+      ] || DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP
+    : DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP;
+
+  return internalActiveUsers.length > memberCountThreshold;
+};
 export const notifyAllMembers = async ({
   organization_id,
   user_id,

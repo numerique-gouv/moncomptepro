@@ -4,7 +4,7 @@ import {
   InvalidTokenError,
   NotFoundError,
   OfficialContactEmailVerificationNotNeededError,
-} from '../../errors';
+} from '../../config/errors';
 import { isExpired } from '../../services/is-expired';
 import { generateDicewarePassword } from '../../services/security';
 import { sendMail } from '../../connectors/sendinblue';

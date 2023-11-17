@@ -1,6 +1,6 @@
 import { BadRequest, GatewayTimeout, NotFound } from 'http-errors';
 import { getOrganizationInfo } from '../connectors/api-sirene';
-import notificationMessages from '../notification-messages';
+import notificationMessages from '../config/notification-messages';
 import { NextFunction, Request, Response } from 'express';
 import { z, ZodError } from 'zod';
 import {
@@ -8,11 +8,12 @@ import {
   optionalBooleanSchema,
   siretSchema,
 } from '../services/custom-zod-schemas';
-import { InseeConnectionError, InseeNotFoundError } from '../errors';
+import { InseeConnectionError, InseeNotFoundError } from '../config/errors';
 import { sendModerationProcessedEmail } from '../managers/moderation';
 import { markDomainAsVerified } from '../managers/organization/main';
 import { forceJoinOrganization } from '../managers/organization/join';
 import { notifyAllMembers } from '../managers/organization/authentication-by-peers';
+import { getUserOrganizationLink } from '../repositories/organization/getters';
 
 export const getOrganizationInfoController = async (
   req: Request,
@@ -78,13 +79,21 @@ export const postForceJoinOrganizationController = async (
       query: req.query,
     });
 
-    const userOrganizationLink = await forceJoinOrganization({
+    let userOrganizationLink = await getUserOrganizationLink(
       organization_id,
-      user_id,
-      is_external,
-    });
+      user_id
+    );
+    if (!userOrganizationLink) {
+      userOrganizationLink = await forceJoinOrganization({
+        organization_id,
+        user_id,
+        is_external,
+      });
+    }
 
-    await notifyAllMembers(userOrganizationLink);
+    if (!userOrganizationLink.authentication_by_peers_type) {
+      await notifyAllMembers(userOrganizationLink);
+    }
 
     return res.json({});
   } catch (e) {

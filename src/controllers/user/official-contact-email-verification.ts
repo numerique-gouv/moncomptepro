@@ -14,7 +14,7 @@ import {
   ApiAnnuaireError,
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
-} from '../../errors';
+} from '../../config/errors';
 import { getUserFromLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
 
