@@ -62,4 +62,29 @@ policy.add(
   )
 );
 
+policy.add(
+  new Prompt(
+    { name: 'update_userinfo', requestable: true },
+
+    new Check(
+      'update_userinfo_prompt',
+      'client required userinfo edition prompt',
+      'interaction_required',
+      async (ctx) => {
+        const { oidc } = ctx;
+        if (
+          ctx.params.prompt === 'update_userinfo' &&
+          !oidc.result?.update_userinfo
+        ) {
+          // @ts-ignore
+          return Check.REQUEST_PROMPT;
+        }
+
+        // @ts-ignore
+        return Check.NO_NEED_TO_PROMPT;
+      }
+    )
+  )
+);
+
 export default policy;

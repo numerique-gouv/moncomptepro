@@ -24,6 +24,15 @@ describe('sign-in from standard client', () => {
     cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
     cy.contains('moncomptepro-standard-client');
     cy.contains('Commune de lamalou-les-bains - Mairie');
+
+    // then it should update userinfo
+    cy.contains('Jean1');
+    cy.get('button#update-userinfo').click();
+    cy.contains('Renseigner son identité');
+    cy.get('[name="family_name"]').type('Moustaki');
+    cy.get('[type="submit"]').click();
+    cy.contains('moncomptepro-standard-client');
+    cy.contains('Moustaki');
   });
 
   it('should sign-in with org selection when having two organization', function () {
