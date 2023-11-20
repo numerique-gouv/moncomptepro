@@ -28,7 +28,7 @@ export const isEligibleToSponsorship = async ({
 }: Organization): Promise<boolean> => {
   const organization = await getOrganizationById(id);
   if (!organization) {
-    return false;
+    throw new NotFoundError();
   }
 
   const internalActiveUsers = await getInternalActiveUsers(id);
