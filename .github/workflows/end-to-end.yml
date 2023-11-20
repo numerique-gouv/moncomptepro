@@ -55,6 +55,7 @@ jobs:
           - 4000:4000
         env:
           SITE_TITLE: moncomptepro-standard-client
+          HOST: http://localhost:4000
           PORT: 4000
           MCP_CLIENT_ID: standard_client_id
           MCP_CLIENT_SECRET: standard_client_secret
@@ -67,6 +68,7 @@ jobs:
           - 4001:4001
         env:
           SITE_TITLE: moncomptepro-agentconnect-client
+          HOST: http://localhost:4001
           PORT: 4001
           MCP_CLIENT_ID: agentconnect_client_id
           MCP_CLIENT_SECRET: agentconnect_client_secret
@@ -81,6 +83,7 @@ jobs:
           - 4002:4002
         env:
           SITE_TITLE: moncomptepro-legacy-client
+          HOST: http://localhost:4002
           PORT: 4002
           MCP_CLIENT_ID: legacy_client_id
           MCP_CLIENT_SECRET: legacy_client_secret
