@@ -444,10 +444,12 @@ VALUES
    ARRAY [
      'http://localhost:9009/auth/callback'
      ],
-   ARRAY []::varchar[],
-   'openid email profile organization',
+   ARRAY [
+     'http://localhost:9009/'
+   ],
+   'openid email phone profile organization organizations',
    'http://localhost:9009/',
-   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null),
   (12,
    'Ma Cantine test',
@@ -660,10 +662,12 @@ VALUES
    ARRAY [
      'http://localhost:3000/login-callback'
      ],
-   ARRAY []::varchar[],
+   ARRAY [
+     'http://localhost:3000/'
+     ],
    'openid email profile organization',
    'http://localhost:3000/',
-   'This is a minimal, nodeJS-based MonComptePro client, to be used for end-to-end testing.',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null),
   (24,
    'Espace sur Demande - ANCT',

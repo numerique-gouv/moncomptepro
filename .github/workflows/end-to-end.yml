@@ -54,33 +54,39 @@ jobs:
         ports:
           - 4000:4000
         env:
+          SITE_TITLE: moncomptepro-standard-client
           PORT: 4000
           MCP_CLIENT_ID: standard_client_id
           MCP_CLIENT_SECRET: standard_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid,email,profile,organization
+          MCP_SCOPES: openid email profile organization
+          STYLESHEET_URL: ''
       moncomptepro-agentconnect-client:
         image: rdubigny/moncomptepro-test-client
         ports:
           - 4001:4001
         env:
+          SITE_TITLE: moncomptepro-agentconnect-client
           PORT: 4001
           MCP_CLIENT_ID: agentconnect_client_id
           MCP_CLIENT_SECRET: agentconnect_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid,uid,given_name,usual_name,email,siren,siret,organizational_unit,belonging_population,phone,chorusdt
+          MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt
           MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
           MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
+          STYLESHEET_URL: ''
       moncomptepro-legacy-client:
         image: rdubigny/moncomptepro-test-client
         ports:
           - 4002:4002
         env:
+          SITE_TITLE: moncomptepro-legacy-client
           PORT: 4002
           MCP_CLIENT_ID: legacy_client_id
           MCP_CLIENT_SECRET: legacy_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid,email,profile,phone,organizations
+          MCP_SCOPES: openid email profile phone organizations
+          STYLESHEET_URL: ''
       redis:
         image: redis
         ports:

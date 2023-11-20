@@ -8,12 +8,14 @@ VALUES
 INSERT INTO organizations
   (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
 VALUES
-  (1, '21340126800130', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '21340126800130', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, '21920023500014', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
 VALUES
-  (1, 1, false, 'verified_email_domain', 'all_members_notified', true);
+  (1, 1, false, 'verified_email_domain', 'all_members_notified', true),
+  (1, 2, false, 'verified_email_domain', 'all_members_notified', true);
 
 INSERT INTO oidc_clients
   (client_name, client_id, client_secret, redirect_uris,
@@ -30,5 +32,16 @@ VALUES
    ARRAY []::varchar[],
    'openid email profile phone organizations',
    'http://localhost:4002/',
-   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
+   null, null, null, null),
+  ('Oidc Test Client',
+   'standard_client_id',
+   'standard_client_secret',
+   ARRAY [
+     'http://localhost:4000/login-callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email profile organization',
+   'http://localhost:4000/',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null);

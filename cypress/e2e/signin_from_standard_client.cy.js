@@ -14,7 +14,15 @@ describe('sign-in from standard client', () => {
       .contains('Se connecter')
       .click();
 
+    cy.contains('moncomptepro-standard-client');
     cy.contains('unused1@yopmail.com');
+    cy.contains('Commune de lamalou-les-bains - Mairie');
+
+    // then it should prompt for organization
+    cy.get('button#select-organization').click();
+    cy.contains('Votre organisation de rattachement');
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
+    cy.contains('moncomptepro-standard-client');
     cy.contains('Commune de lamalou-les-bains - Mairie');
   });
 
@@ -30,13 +38,27 @@ describe('sign-in from standard client', () => {
       .contains('Se connecter')
       .click();
 
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').contains(
+      'Commune de lamalou-les-bains - Mairie'
+    );
     cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').contains(
       'Commune de clamart - Mairie'
     );
 
     cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').click();
 
+    cy.contains('moncomptepro-standard-client');
     cy.contains('unused2@yopmail.com');
     cy.contains('Commune de clamart - Mairie');
+
+    // then it should prompt for organization
+    cy.get('button#select-organization').click();
+    cy.contains('Votre organisation de rattachement');
+    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
+
+    cy.contains('moncomptepro-standard-client');
+    cy.contains('Commune de lamalou-les-bains - Mairie');
   });
+
+  it('should prompt for organization selection', function () {});
 });
