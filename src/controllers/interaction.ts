@@ -28,6 +28,10 @@ export const interactionStartControllerFactory =
         return res.redirect(`/users/select-organization`);
       }
 
+      if (prompt.name === 'update_userinfo') {
+        return res.redirect(`/users/personal-information`);
+      }
+
       return next(new Error(`unknown_interaction_name ${prompt.name}`));
     } catch (error) {
       return next(error);
@@ -51,11 +55,16 @@ export const interactionEndControllerFactory =
           amr: ['pwd'],
         },
         select_organization: false,
+        update_userinfo: false,
       };
 
       const { prompt } = await oidcProvider.interactionDetails(req, res);
       if (prompt.name === 'select_organization') {
         result.select_organization = true;
+      }
+
+      if (prompt.name === 'update_userinfo') {
+        result.update_userinfo = true;
       }
 
       req.session.interactionId = undefined;
