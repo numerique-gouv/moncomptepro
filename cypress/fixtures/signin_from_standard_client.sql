@@ -34,5 +34,5 @@ VALUES
    ARRAY []::varchar[],
    'openid email profile organization',
    'http://localhost:4000/',
-   'This is a small, golang-based OIDC Client, to be used in End-to-end or other testing. More info: https://hub.docker.com/r/beryju/oidc-test-client.',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null);

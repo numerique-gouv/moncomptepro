@@ -20,8 +20,12 @@ export const interactionStartControllerFactory =
         req.session.loginHint = login_hint;
       }
 
-      if (prompt.name === 'login' || prompt.name === 'select-organization') {
+      if (prompt.name === 'login' || prompt.name === 'choose_organization') {
         return res.redirect(`/interaction/${interactionId}/login`);
+      }
+
+      if (prompt.name === 'select_organization') {
+        return res.redirect(`/users/select-organization`);
       }
 
       return next(new Error(`unknown_interaction_name ${prompt.name}`));
@@ -46,7 +50,13 @@ export const interactionEndControllerFactory =
           acr: 'eidas1',
           amr: ['pwd'],
         },
+        select_organization: false,
       };
+
+      const { prompt } = await oidcProvider.interactionDetails(req, res);
+      if (prompt.name === 'select_organization') {
+        result.select_organization = true;
+      }
 
       req.session.interactionId = undefined;
       req.session.mustReturnOneOrganizationInPayload = undefined;

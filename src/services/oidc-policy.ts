@@ -6,36 +6,60 @@ const { Prompt, Check, base } = interactionPolicy;
 
 const policy = base();
 
-const selectOrganizationPrompt = new Prompt(
-  { name: 'select-organization', requestable: true },
+policy.add(
+  new Prompt(
+    { name: 'choose_organization', requestable: false },
+    new Check(
+      'organization_missing',
+      'End-User must select one organization',
+      async (ctx) => {
+        const { oidc } = ctx;
 
-  new Check(
-    'organization_selected',
-    'requested scope require organization selection',
-    async (ctx) => {
-      const { oidc } = ctx;
+        // existence of oidc.session.accountId is ensured by previous prompt
+        const user_id = parseInt(oidc.session!.accountId!, 10);
 
-      // existence of oidc.session.accountId is ensured by previous prompt
-      const user_id = parseInt(oidc.session!.accountId!, 10);
+        const selectedOrganizationId = await getSelectedOrganizationId(user_id);
 
-      const selectedOrganizationId = await getSelectedOrganizationId(user_id);
+        if (
+          mustReturnOneOrganizationInPayload(
+            [...oidc.requestParamScopes].join(' ')
+          ) &&
+          !selectedOrganizationId
+        ) {
+          // @ts-ignore
+          return Check.REQUEST_PROMPT;
+        }
 
-      if (
-        mustReturnOneOrganizationInPayload(
-          [...ctx.oidc.requestParamScopes].join(' ')
-        ) &&
-        !selectedOrganizationId
-      ) {
         // @ts-ignore
-        return Check.REQUEST_PROMPT;
+        return Check.NO_NEED_TO_PROMPT;
       }
-
-      // @ts-ignore
-      return Check.NO_NEED_TO_PROMPT;
-    }
+    )
   )
 );
 
-policy.add(selectOrganizationPrompt);
+policy.add(
+  new Prompt(
+    { name: 'select_organization', requestable: true },
+
+    new Check(
+      'organization_selection_prompt',
+      'client required organization selection prompt',
+      'interaction_required',
+      async (ctx) => {
+        const { oidc } = ctx;
+        if (
+          ctx.params.prompt === 'select_organization' &&
+          !oidc.result?.select_organization
+        ) {
+          // @ts-ignore
+          return Check.REQUEST_PROMPT;
+        }
+
+        // @ts-ignore
+        return Check.NO_NEED_TO_PROMPT;
+      }
+    )
+  )
+);
 
 export default policy;

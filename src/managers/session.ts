@@ -18,6 +18,11 @@ export const createLoggedInSession = async (
     loginHint,
     referer,
   } = req.session;
+
+  // as selected org is not stored in session
+  // we delete this to avoid sync issues
+  await deleteSelectedOrganizationId(user.id);
+
   return await new Promise((resolve, reject) => {
     // session will contain sensitive rights from now
     // we must regenerate session id to ensure it has not leaked

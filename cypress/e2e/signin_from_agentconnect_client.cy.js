@@ -14,6 +14,7 @@ describe('sign-in from agentconnect client', () => {
       .contains('Se connecter')
       .click();
 
+    cy.contains('moncomptepro-agentconnect-client');
     cy.contains('unused1@yopmail.com');
     cy.contains('21340126800130');
   });
