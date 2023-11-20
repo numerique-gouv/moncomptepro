@@ -660,13 +660,15 @@ VALUES
    'client_id',
    'client_secret',
    ARRAY [
+     'https://test.moncomptepro.beta.gouv.fr/login-callback',
      'http://localhost:3000/login-callback'
      ],
    ARRAY [
+     'https://test.moncomptepro.beta.gouv.fr/',
      'http://localhost:3000/'
      ],
    'openid email profile organization',
-   'http://localhost:3000/',
+   'https://test.moncomptepro.beta.gouv.fr/',
    'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null),
   (24,
