@@ -115,6 +115,7 @@ export const notifyAllMembers = async ({
       subject: 'Votre organisation sur MonComptePro',
       template: 'join-organization',
       params: { user_label, libelle: cached_libelle, email, is_external },
+      senderEmail: 'notifications@moncomptepro.beta.gouv.fr',
     });
   }
 
@@ -136,7 +137,6 @@ export const notifyAllMembers = async ({
         libelle: cached_libelle,
         otherUsers,
       },
-      senderEmail: 'notifications@moncomptepro.beta.gouv.fr',
     });
   }
 
