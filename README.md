@@ -12,20 +12,17 @@ Nous identifions les utilisateurs professionnels du privé ou du public sur les 
 
 ## 🗺️ Tester le parcours
 
-Pour tester le parcours de connexion complet, vous pouvez tester la connexion MonComptePro depuis le service DataPass qui intègre le bouton de connexion. Pour cela nous mettons à votre disposition une plateforme de démonstration appelée « staging ».
+Pour tester le parcours de connexion MonComptePro, vous pouvez utiliser notre plateforme dédiée : https://test.moncomptepro.beta.gouv.fr/.
 
-Cette plateforme est disponible via le lien suivant : https://staging.datapass.api.gouv.fr/api-entreprise.
+Vous pouvez utiliser le compte de test suivant :
+- identifiant : user@yopmail.com
+- mot de passe : user@yopmail.com
 
-Cette plateforme utilise de vraies données ouvertes pour les données des organisations. Elle n’est cependant connectée à aucun environment de production. Ainsi vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables `yopmail.com`.
+Cette plateforme utilise de vraies données ouvertes pour les données des organisations.
 
-Vous pouvez également utiliser les comptes de tests suivants :
+Elle n’est cependant connectée à aucun environment de production.
 
-- utilisateur sans droits dans l’outil DataPass :
-    - identifiant : user@yopmail.com
-    - mot de passe : user@yopmail.com
-- utilisateur avec des droits d’instructeur dans l’outil DataPass :
-    - identifiant : api-particulier@yopmail.com
-    - mot de passe : api-particulier@yopmail.com
+Ainsi, vous pouvez vous créer n’importe quel compte utilisateur en entrant n’importe quel numéro SIRET et en utilisant des emails jetables `yopmail.com`.
 
 À noter que les emails reçus sur les adresses en yopmail.com sont accessibles sur : http://yopmail.com/.
 
