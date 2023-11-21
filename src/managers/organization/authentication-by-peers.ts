@@ -136,6 +136,7 @@ export const notifyAllMembers = async ({
         libelle: cached_libelle,
         otherUsers,
       },
+      senderEmail: 'notifications@moncomptepro.beta.gouv.fr',
     });
   }
 

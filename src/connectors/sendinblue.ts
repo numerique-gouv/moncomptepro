@@ -43,17 +43,19 @@ export const sendMail = async ({
   subject,
   template,
   params,
+  senderEmail = 'moncomptepro@beta.gouv.fr',
 }: {
   to: string[];
   cc?: string[];
   subject: string;
   template: RemoteTemplateSlug | LocalTemplateSlug;
   params: any;
+  senderEmail?: string;
 }) => {
   const data = {
     sender: {
       name: 'L’équipe MonComptePro',
-      email: 'moncomptepro@beta.gouv.fr',
+      email: senderEmail,
     },
     replyTo: {
       name: 'L’équipe MonComptePro',
