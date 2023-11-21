@@ -59,7 +59,7 @@ export const sendMail = async ({
     },
     replyTo: {
       name: 'L’équipe MonComptePro',
-      email: 'moncomptepro@beta.gouv.fr',
+      email: senderEmail,
     },
     // Sendinblue allow a maximum of 99 recipients
     to: chain(to)
