@@ -15,6 +15,21 @@ import { forceJoinOrganization } from '../managers/organization/join';
 import { notifyAllMembers } from '../managers/organization/authentication-by-peers';
 import { getUserOrganizationLink } from '../repositories/organization/getters';
 
+export const getPingApiSireneController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await getOrganizationInfo('13002526500013'); // we use DINUM siret for the ping route
+
+    return res.json({});
+  } catch (e) {
+    console.error(e);
+    return res.status(502).json({ message: 'Bad Gateway' });
+  }
+};
+
 export const getOrganizationInfoController = async (
   req: Request,
   res: Response,
@@ -22,15 +37,15 @@ export const getOrganizationInfoController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
+      params: z.object({
         siret: siretSchema(),
       }),
     });
 
     const {
-      query: { siret },
+      params: { siret },
     } = await schema.parseAsync({
-      query: req.query,
+      params: req.params,
     });
 
     const organizationInfo = await getOrganizationInfo(siret);

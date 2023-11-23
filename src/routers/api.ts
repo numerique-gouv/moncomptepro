@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router, urlencoded } from 'express';
 import {
   getOrganizationInfoController,
+  getPingApiSireneController,
   postForceJoinOrganizationController,
   postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
@@ -19,7 +20,13 @@ export const apiRouter = () => {
   apiRouter.use(urlencoded({ extended: false }));
 
   apiRouter.get(
-    '/organization-info',
+    '/sirene/ping',
+    apiRateLimiterMiddleware,
+    getPingApiSireneController
+  );
+
+  apiRouter.get(
+    '/sirene/organization-info/:siret',
     apiRateLimiterMiddleware,
     getOrganizationInfoController
   );
