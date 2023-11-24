@@ -36,7 +36,6 @@ export const getVerifyEmailController = async (
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email: getUserFromLoggedInSession(req).email,
-      checkBeforeSend: true,
     });
 
     return res.render('user/verify-email', {
@@ -105,7 +104,7 @@ export const postSendEmailVerificationController = async (
   try {
     await sendEmailAddressVerificationEmail({
       email: getUserFromLoggedInSession(req).email,
-      checkBeforeSend: false,
+      force: true,
     });
 
     return res.redirect(`/users/verify-email?new_code_sent=true`);

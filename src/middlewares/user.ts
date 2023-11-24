@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 import { isUrlTrusted } from '../services/security';
-import { updateEmailAddressVerificationStatus } from '../managers/user';
+import { needsEmailVerificationRenewal } from '../managers/user';
 import {
   getOrganizationsByUserId,
   selectOrganization,
@@ -16,7 +16,6 @@ import { getUserOrganizationLink } from '../repositories/organization/getters';
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
-  updateUserInLoggedInSession,
 } from '../managers/session';
 
 // redirect user to start sign in page if no email is available in session
@@ -75,14 +74,12 @@ export const checkUserIsVerifiedMiddleware = (
     try {
       if (error) return next(error);
 
-      const { user, needs_email_verification_renewal } =
-        await updateEmailAddressVerificationStatus(
-          getUserFromLoggedInSession(req).email
-        );
+      const { email, email_verified } = getUserFromLoggedInSession(req);
 
-      updateUserInLoggedInSession(req, user);
+      const needs_email_verification_renewal =
+        await needsEmailVerificationRenewal(email);
 
-      if (!user.email_verified) {
+      if (!email_verified || needs_email_verification_renewal) {
         const notification_param = needs_email_verification_renewal
           ? '?notification=email_verification_renewal'
           : '';

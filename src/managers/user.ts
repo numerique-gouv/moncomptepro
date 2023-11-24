@@ -110,10 +110,10 @@ export const signup = async (
 
 export const sendEmailAddressVerificationEmail = async ({
   email,
-  checkBeforeSend,
+  force = false,
 }: {
   email: string;
-  checkBeforeSend: boolean;
+  force?: boolean;
 }): Promise<boolean> => {
   const user = await findByEmail(email);
 
@@ -121,17 +121,21 @@ export const sendEmailAddressVerificationEmail = async ({
     throw new UserNotFoundError();
   }
 
-  if (user.email_verified) {
+  const renewal_needed = isExpired(
+    user.email_verified_at,
+    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+  );
+
+  if (user.email_verified && !renewal_needed) {
     throw new EmailVerifiedAlreadyError();
   }
 
-  if (
-    checkBeforeSend &&
-    !isExpired(
-      user.verify_email_sent_at,
-      VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
-    )
-  ) {
+  const is_token_expired = isExpired(
+    user.verify_email_sent_at,
+    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+  );
+
+  if (!(force || is_token_expired)) {
     return false;
   }
 
@@ -189,30 +193,19 @@ export const verifyEmail = async (
   });
 };
 
-export const updateEmailAddressVerificationStatus = async (
+export const needsEmailVerificationRenewal = async (
   email: string
-): Promise<{ user: User; needs_email_verification_renewal: boolean }> => {
+): Promise<boolean> => {
   const user = await findByEmail(email);
 
   if (isEmpty(user)) {
     throw new UserNotFoundError();
   }
 
-  if (
-    user.email_verified &&
-    isExpired(
-      user.email_verified_at,
-      MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
-    )
-  ) {
-    const updatedUser = await update(user.id, {
-      email_verified: false,
-    });
-
-    return { user: updatedUser, needs_email_verification_renewal: true };
-  }
-
-  return { user, needs_email_verification_renewal: false };
+  return isExpired(
+    user.email_verified_at,
+    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+  );
 };
 
 export const sendSendMagicLinkEmail = async (
