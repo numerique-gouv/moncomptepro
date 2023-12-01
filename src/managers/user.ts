@@ -108,11 +108,16 @@ export const signup = async (
   });
 };
 
+/**
+ * @return true if a new verify token was sent, false otherwise.
+ */
 export const sendEmailAddressVerificationEmail = async ({
   email,
+  isBrowserTrusted,
   force = false,
 }: {
   email: string;
+  isBrowserTrusted: boolean;
   force?: boolean;
 }): Promise<boolean> => {
   const user = await findByEmail(email);
@@ -121,21 +126,21 @@ export const sendEmailAddressVerificationEmail = async ({
     throw new UserNotFoundError();
   }
 
-  const renewal_needed = isExpired(
+  const renewalNeeded = isExpired(
     user.email_verified_at,
     MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
   );
 
-  if (user.email_verified && !renewal_needed) {
+  if (isBrowserTrusted && user.email_verified && !renewalNeeded) {
     throw new EmailVerifiedAlreadyError();
   }
 
-  const is_token_expired = isExpired(
+  const isTokenExpired = isExpired(
     user.verify_email_sent_at,
     VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
   );
 
-  if (!(force || is_token_expired)) {
+  if (!(force || isTokenExpired)) {
     return false;
   }
 

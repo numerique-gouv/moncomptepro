@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import {
   DEBOUNCE_API_KEY,
-  DO_NOT_VALIDATE_MAIL,
+  DO_NOT_CHECK_EMAIL_DELIVERABILITY,
   HTTP_CLIENT_TIMEOUT,
 } from '../config/env';
 
@@ -43,7 +43,7 @@ type EmailDebounceInfo = {
 export const isEmailSafeToSendTransactional = async (
   email: string
 ): Promise<EmailDebounceInfo> => {
-  if (DO_NOT_VALIDATE_MAIL) {
+  if (DO_NOT_CHECK_EMAIL_DELIVERABILITY) {
     console.log(`Email address "${email}" not verified.`);
 
     return { isEmailSafeToSend: true };

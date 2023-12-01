@@ -67,6 +67,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       'Pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.',
   },
+  browser_not_trusted: {
+    type: 'info',
+    description:
+      'Pour garantir la sécurité de votre compte, nous avons besoin d’authentifier votre navigateur.',
+  },
   weak_password: {
     type: 'error',
     description:

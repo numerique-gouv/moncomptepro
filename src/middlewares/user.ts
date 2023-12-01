@@ -17,6 +17,7 @@ import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
 } from '../managers/session';
+import { isBrowserTrustedForUser } from '../managers/browser-authentication';
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
@@ -74,15 +75,27 @@ export const checkUserIsVerifiedMiddleware = (
     try {
       if (error) return next(error);
 
-      const { email, email_verified } = getUserFromLoggedInSession(req);
+      const { id, email, email_verified } = getUserFromLoggedInSession(req);
 
       const needs_email_verification_renewal =
         await needsEmailVerificationRenewal(email);
 
-      if (!email_verified || needs_email_verification_renewal) {
-        const notification_param = needs_email_verification_renewal
-          ? '?notification=email_verification_renewal'
-          : '';
+      const is_browser_trusted = isBrowserTrustedForUser(req, id);
+
+      if (
+        !email_verified ||
+        needs_email_verification_renewal ||
+        !is_browser_trusted
+      ) {
+        let notification_param = '';
+
+        if (!is_browser_trusted) {
+          notification_param = '?notification=browser_not_trusted';
+        }
+
+        if (needs_email_verification_renewal) {
+          notification_param = '?notification=email_verification_renewal';
+        }
 
         return res.redirect(`/users/verify-email${notification_param}`);
       }
