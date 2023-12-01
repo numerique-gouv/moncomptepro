@@ -12,6 +12,7 @@ export const createLoggedInSession = async (
 ): Promise<null> => {
   // we store old session value to pass it to the new logged-in session
   // email will not be passed to the new session as it is not useful within logged session
+  // csrfToken should not be passed to the new session for security reasons
   const {
     interactionId,
     mustReturnOneOrganizationInPayload,
