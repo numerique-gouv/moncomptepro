@@ -25,6 +25,7 @@
                                     name="siret"
                                     aria-label="Numéro SIRET"
                                     pattern="^(\s*\d){14}$"
+                                    maxlength="20"
                                     title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
                                     <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
                                     <% } %>
@@ -63,5 +64,5 @@
         </div>
     </div>
 </div>
-<script src="/assets/fetch-organization-info_20231123.js"></script>
+<script src="/assets/fetch-organization-info_20231201.js"></script>
 <script src="/assets/submit-tile-forms.js"></script>

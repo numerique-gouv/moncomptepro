@@ -22,15 +22,14 @@ const association_org_info: Organization = {
 };
 
 const entreprise_unipersonnelle_org_info: Organization = {
-  siret: '49871959000107',
+  siret: '81801912700021',
   cached_tranche_effectifs: null,
-  cached_tranche_effectifs_unite_legale: '21',
+  cached_tranche_effectifs_unite_legale: null,
   cached_libelle_tranche_effectif: null,
-  cached_activite_principale: '88.10A',
-  cached_libelle_activite_principale: '88.10A - Aide à domicile',
-  cached_categorie_juridique: '5499',
-  cached_libelle_categorie_juridique:
-    'Société à responsabilité limitée (sans autre indication)',
+  cached_activite_principale: '62.01Z',
+  cached_libelle_activite_principale: '62.01Z - Programmation informatique',
+  cached_categorie_juridique: '1000',
+  cached_libelle_categorie_juridique: 'Entrepreneur individuel',
 };
 
 describe('isEntrepriseUnipersonnelle', () => {

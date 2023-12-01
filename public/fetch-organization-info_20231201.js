@@ -65,8 +65,20 @@ document.addEventListener("DOMContentLoaded", function() {
     xmlhttp.send();
   }
 
+  const debounce = (callback, wait) => {
+    let timeoutId = null;
+    return (...args) => {
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        callback(...args);
+      }, wait);
+    };
+  };
+
+  const debouncedShowOrganizationInfo = debounce(showOrganizationInfo, 250);
+
   clearOrganizationInfo();
   showOrganizationInfo();
 
-  siretSelectorElement.addEventListener("input", showOrganizationInfo, false);
+  siretSelectorElement.addEventListener("input", debouncedShowOrganizationInfo, false);
 }, false);
