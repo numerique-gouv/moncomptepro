@@ -109,9 +109,11 @@ export const postSendEmailVerificationController = async (
   next: NextFunction
 ) => {
   try {
+    const { id: user_id, email } = getUserFromLoggedInSession(req);
+
     await sendEmailAddressVerificationEmail({
-      email: getUserFromLoggedInSession(req).email,
-      isBrowserTrusted: true,
+      email,
+      isBrowserTrusted: isBrowserTrustedForUser(req, user_id),
       force: true,
     });
 
