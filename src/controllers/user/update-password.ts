@@ -16,6 +16,7 @@ import {
 } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
 import * as Sentry from '@sentry/node';
+import { setBrowserAsTrustedForUser } from '../../managers/browser-authentication';
 
 export const getResetPasswordController = async (
   req: Request,
@@ -116,7 +117,12 @@ export const postChangePasswordController = async (
       body: req.body,
     });
 
-    await changePassword(reset_password_token, password);
+    const { id: user_id } = await changePassword(
+      reset_password_token,
+      password
+    );
+
+    setBrowserAsTrustedForUser(req, res, user_id);
 
     return res.redirect(
       `/users/start-sign-in?notification=password_change_success`
