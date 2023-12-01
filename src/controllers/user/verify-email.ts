@@ -15,6 +15,10 @@ import {
   updateUserInLoggedInSession,
 } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
+import {
+  isBrowserTrustedForUser,
+  setBrowserAsTrustedForUser,
+} from '../../managers/browser-authentication';
 
 export const getVerifyEmailController = async (
   req: Request,
@@ -34,14 +38,16 @@ export const getVerifyEmailController = async (
       query: req.query,
     });
 
+    const { id: user_id, email } = getUserFromLoggedInSession(req);
+
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
-      email: getUserFromLoggedInSession(req).email,
-      checkBeforeSend: true,
+      email,
+      isBrowserTrusted: isBrowserTrustedForUser(req, user_id),
     });
 
     return res.render('user/verify-email', {
       notifications: await getNotificationsFromRequest(req),
-      email: getUserFromLoggedInSession(req).email,
+      email,
       csrfToken: csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
@@ -78,12 +84,12 @@ export const postVerifyEmailController = async (
       body: req.body,
     });
 
-    const updatedUser = await verifyEmail(
-      getUserFromLoggedInSession(req).email,
-      verify_email_token
-    );
+    const { id: user_id, email } = getUserFromLoggedInSession(req);
 
-    await updateUserInLoggedInSession(req, updatedUser);
+    const updatedUser = await verifyEmail(email, verify_email_token);
+
+    updateUserInLoggedInSession(req, updatedUser);
+    setBrowserAsTrustedForUser(req, res, user_id);
 
     next();
   } catch (error) {
@@ -103,9 +109,12 @@ export const postSendEmailVerificationController = async (
   next: NextFunction
 ) => {
   try {
+    const { id: user_id, email } = getUserFromLoggedInSession(req);
+
     await sendEmailAddressVerificationEmail({
-      email: getUserFromLoggedInSession(req).email,
-      checkBeforeSend: false,
+      email,
+      isBrowserTrusted: isBrowserTrustedForUser(req, user_id),
+      force: true,
     });
 
     return res.redirect(`/users/verify-email?new_code_sent=true`);

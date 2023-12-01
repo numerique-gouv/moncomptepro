@@ -36,6 +36,7 @@ import {
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
 } from './config/env';
+import { trustedBrowserMiddleware } from './managers/browser-authentication';
 
 const jwks = require(JWKS_PATH);
 
@@ -120,6 +121,8 @@ app.use((req, res, next) => {
   }
   return sessionMiddleware(req, res, next);
 });
+
+app.use(trustedBrowserMiddleware);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

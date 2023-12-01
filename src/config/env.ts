@@ -17,7 +17,8 @@ export const {
   API_AUTH_PASSWORD = 'admin',
 } = process.env;
 
-export const DO_NOT_VALIDATE_MAIL = process.env.DO_NOT_VALIDATE_MAIL === 'True';
+export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =
+  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === 'True';
 export const CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE =
   process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE === 'True';
 export const CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE =
@@ -29,6 +30,8 @@ export const DO_NOT_USE_ANNUAIRE_EMAILS =
 export const DO_NOT_RATE_LIMIT = process.env.DO_NOT_RATE_LIMIT === 'True';
 export const DISPLAY_TEST_ENV_WARNING =
   process.env.DISPLAY_TEST_ENV_WARNING === 'True';
+export const DO_NOT_AUTHENTICATE_BROWSER =
+  process.env.DO_NOT_AUTHENTICATE_BROWSER === 'True';
 
 const getNumberFromEnv = (name: string, defaultValue: number) => {
   const value = process.env[name];
@@ -42,6 +45,10 @@ export const HTTP_CLIENT_TIMEOUT = getNumberFromEnv(
 export const SESSION_MAX_AGE_IN_SECONDS = getNumberFromEnv(
   'SESSION_MAX_AGE_IN_SECONDS',
   1 * 24 * 60 * 60 // 1 day in seconds
+);
+export const TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS = getNumberFromEnv(
+  'TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS',
+  3 * 30 * 24 * 60 * 60 // 3 months in seconds
 );
 export const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES =
   getNumberFromEnv('RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES', 60);

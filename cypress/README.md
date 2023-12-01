@@ -21,10 +21,11 @@ export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
 export SENDINBLUE_API_KEY="xxx"
 export MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
 export DO_NOT_SEND_MAIL=False
-export DO_NOT_VALIDATE_MAIL=True
+export DO_NOT_CHECK_EMAIL_DELIVERABILITY=True
 export CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=True
 export DO_NOT_RATE_LIMIT=True
 export DO_NOT_USE_ANNUAIRE_EMAILS=True
+export DO_NOT_AUTHENTICATE_BROWSER=True
 export $(cat cypress/env/join_with_sponsorship.conf) && rm -rf build && npm run build && npm run start
 ```
 

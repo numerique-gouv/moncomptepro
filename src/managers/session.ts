@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { isEmpty } from 'lodash';
 import { deleteSelectedOrganizationId } from '../repositories/redis/selected-organization';
+import { setIsTrustedBrowserFromLoggedInSession } from './browser-authentication';
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session.user);
@@ -38,6 +39,8 @@ export const createLoggedInSession = async (
           mustReturnOneOrganizationInPayload;
         req.session.loginHint = loginHint;
         req.session.referer = referer;
+
+        setIsTrustedBrowserFromLoggedInSession(req);
 
         resolve(null);
       }

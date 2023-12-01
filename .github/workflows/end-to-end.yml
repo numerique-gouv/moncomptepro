@@ -18,10 +18,11 @@ env:
   MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   CYPRESS_MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   DO_NOT_SEND_MAIL: "False"
-  DO_NOT_VALIDATE_MAIL: "True"
+  DO_NOT_CHECK_EMAIL_DELIVERABILITY: "True"
   CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE: "True"
   DO_NOT_RATE_LIMIT: "True"
   DO_NOT_USE_ANNUAIRE_EMAILS: "True"
+  DO_NOT_AUTHENTICATE_BROWSER: "True"
   SESSION_COOKIE_SECRET: secret
   DEBOUNCE_API_KEY:
   SENTRY_DSN:
@@ -45,6 +46,7 @@ jobs:
           - signin_from_agentconnect_client
           - signin_from_legacy_client
           - signin_from_standard_client
+          - signin_with_email_verification_renewal
           - signin_with_magic_link
           - signup_entreprise_unipersonnelle
     runs-on: ubuntu-20.04

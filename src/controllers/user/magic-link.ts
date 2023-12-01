@@ -8,6 +8,7 @@ import { z, ZodError } from 'zod';
 import { MONCOMPTEPRO_HOST } from '../../config/env';
 import { createLoggedInSession } from '../../managers/session';
 import { csrfToken } from '../../middlewares/csrf-protection';
+import { setBrowserAsTrustedForUser } from '../../managers/browser-authentication';
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -112,6 +113,7 @@ export const postSignInWithMagicLinkController = async (
 
     const user = await loginWithMagicLink(magic_link_token);
     await createLoggedInSession(req, user);
+    setBrowserAsTrustedForUser(req, res, user.id);
 
     next();
   } catch (error) {
