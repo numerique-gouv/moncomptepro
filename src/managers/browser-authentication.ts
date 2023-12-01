@@ -7,6 +7,15 @@ import {
 } from '../config/env';
 import { NextFunction, Request, Response } from 'express';
 
+export const setIsTrustedBrowserFromLoggedInSession = (req: Request) => {
+  const parsedCookieValue = parseInt(
+    req.signedCookies?.['trusted-browser'],
+    10
+  );
+
+  req.isTrustedBrowser = parsedCookieValue === req.session.user?.id;
+};
+
 export const trustedBrowserMiddleware = (
   req: Request,
   res: Response,
@@ -18,12 +27,7 @@ export const trustedBrowserMiddleware = (
   return cookieParser([SESSION_COOKIE_SECRET])(req, res, (e) => {
     if (e) next(e);
 
-    const parsedCookieValue = parseInt(
-      req.signedCookies?.['trusted-browser'],
-      10
-    );
-
-    req.isTrustedBrowser = parsedCookieValue === req.session.user?.id;
+    setIsTrustedBrowserFromLoggedInSession(req);
 
     next();
   });
