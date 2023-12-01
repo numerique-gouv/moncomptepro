@@ -25,6 +25,7 @@
                                     name="siret"
                                     aria-label="Numéro SIRET"
                                     pattern="^(\s*\d){14}$"
+                                    maxlength="20"
                                     title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
                                     <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
                                     <% } %>
