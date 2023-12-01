@@ -13,7 +13,7 @@ import {
   TEST_CONTACT_EMAIL,
 } from '../config/env';
 
-// more info at https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/definitions.yaml
+// more info at https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 type ApiAnnuaireServicePublicReponse = {
   type: 'FeatureCollection';
@@ -68,7 +68,7 @@ export const getAnnuaireServicePublicContactEmail = async (
     const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
       await axios({
         method: 'get',
-        url: `https://plateforme.adresse.data.gouv.fr/api-annuaire/v3/communes/${codeOfficielGeographique}/mairie`,
+        url: `https://etablissements-publics.api.gouv.fr/v3/communes/${codeOfficielGeographique}/mairie`,
         headers: {
           accept: 'application/json',
         },
