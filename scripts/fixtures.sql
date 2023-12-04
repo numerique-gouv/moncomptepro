@@ -247,7 +247,10 @@ VALUES
      'https://back.sandbox.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'https://back.sandbox1.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'https://back.sandbox2.datapass.api.gouv.fr/users/auth/api_gouv/callback',
-     'http://localhost:3001/users/auth/api_gouv/callback'
+     'http://localhost:3000/users/auth/api_gouv/callback',
+     'http://localhost:3001/users/auth/api_gouv/callback',
+     'http://localhost:3000/auth/mon_compte_pro/callback',
+     'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
