@@ -9,6 +9,7 @@ export const {
   SENDINBLUE_API_KEY = '',
   TEST_CONTACT_EMAIL = 'mairie@yopmail.com',
   DATABASE_URL,
+  HYYYPERTOOL_URL,
   REDIS_URL = 'redis://:@127.0.0.1:6379',
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,

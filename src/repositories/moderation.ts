@@ -1,5 +1,16 @@
-import { getDatabaseConnection } from '../connectors/postgres';
+import type { AppRouter } from '@betagouv/hyyypertool...trpc';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import { QueryResult } from 'pg';
+import { getDatabaseConnection } from '../connectors/postgres';
+import { HYYYPERTOOL_URL } from '../env';
+
+const trpc = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: HYYYPERTOOL_URL || '',
+    }),
+  ],
+});
 
 export const createModeration = async ({
   user_id,
@@ -10,6 +21,10 @@ export const createModeration = async ({
   organization_id: number;
   type: Moderation['type'];
 }) => {
+  {
+    const say = await trpc.hello.query('Raphael');
+    console.log(say);
+  }
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Moderation> = await connection.query(
