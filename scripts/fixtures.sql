@@ -326,11 +326,13 @@ VALUES
    '031da300506ac31fac6feaf88575b94b886eae7a68c64327ee03e0fa635ae9ae28572e4de53bb435b3fce4f8ac8484334d71de48f3c9abed3709c730173e0fe0',
    ARRAY [
      'https://grist.dev.incubateur.anct.gouv.fr/_oauth',
+     'https://grist.dev.incubateur.anct.gouv.fr/oauth2/callback',
      'http://localhost:8484/_oauth',
      'http://localhost:8484/oauth2/callback'
      ],
    ARRAY [
      'https://grist.dev.incubateur.anct.gouv.fr',
+     'https://grist.dev.incubateur.anct.gouv.fr/o/docs/signed-out',
      'http://localhost:8484',
      'http://localhost:8484/o/docs/signed-out'
      ],
