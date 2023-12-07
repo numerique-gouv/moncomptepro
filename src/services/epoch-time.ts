@@ -1,3 +1,4 @@
-export const epochTime = (date = Date.now()) => Math.floor(date / 1000);
+export const epochTime = (date = new Date()) =>
+  Math.floor(date.getTime() / 1000);
 
 export default epochTime;
