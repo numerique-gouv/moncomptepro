@@ -75,10 +75,7 @@ export const login = async (email: string, password: string): Promise<User> => {
     throw new InvalidCredentialsError();
   }
 
-  return await update(user.id, {
-    sign_in_count: user.sign_in_count + 1,
-    last_sign_in_at: new Date(),
-  });
+  return user;
 };
 
 export const signup = async (
@@ -104,7 +101,6 @@ export const signup = async (
   return await create({
     email,
     encrypted_password: hashedPassword,
-    last_sign_in_at: new Date(),
   });
 };
 
@@ -222,7 +218,6 @@ export const sendSendMagicLinkEmail = async (
   if (isEmpty(user)) {
     user = await create({
       email,
-      last_sign_in_at: new Date(),
     });
   }
 
@@ -271,7 +266,6 @@ export const loginWithMagicLink = async (token: string): Promise<User> => {
     email_verified_at: new Date(),
     magic_link_token: null,
     magic_link_sent_at: null,
-    last_sign_in_at: new Date(),
   });
 };
 
