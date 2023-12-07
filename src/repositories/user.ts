@@ -152,11 +152,10 @@ export const update = async (id: number, fieldsToUpdate: Partial<User>) => {
     fieldsToUpdateWithTimestamps
   );
 
-  const {
-    rows,
-  }: QueryResult<User> = await connection.query(
-    `UPDATE users SET ${paramsString} = ${valuesString} WHERE id = $${values.length +
-      1} RETURNING *`,
+  const { rows }: QueryResult<User> = await connection.query(
+    `UPDATE users SET ${paramsString} = ${valuesString} WHERE id = $${
+      values.length + 1
+    } RETURNING *`,
     [...values, id]
   );
 
@@ -166,11 +165,9 @@ export const update = async (id: number, fieldsToUpdate: Partial<User>) => {
 export const create = async ({
   email,
   encrypted_password = null,
-  last_sign_in_at,
 }: {
   email: string;
   encrypted_password?: string | null;
-  last_sign_in_at: Date;
 }) => {
   const connection = getDatabaseConnection();
 
@@ -185,14 +182,13 @@ export const create = async ({
     reset_password_token: null,
     reset_password_sent_at: null,
     sign_in_count: 0,
-    last_sign_in_at,
+    last_sign_in_at: null,
     created_at: new Date(),
     updated_at: new Date(),
   };
 
-  const { paramsString, valuesString, values } = hashToPostgresParams<User>(
-    userWithTimestamps
-  );
+  const { paramsString, valuesString, values } =
+    hashToPostgresParams<User>(userWithTimestamps);
 
   const { rows }: QueryResult<User> = await connection.query(
     `INSERT INTO users ${paramsString} VALUES ${valuesString} RETURNING *;`,
