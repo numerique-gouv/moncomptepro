@@ -37,6 +37,7 @@ import {
   SESSION_MAX_AGE_IN_SECONDS,
 } from './config/env';
 import { trustedBrowserMiddleware } from './managers/browser-authentication';
+import { jsonParseWithDate } from './services/json-parse-with-date';
 
 const jwks = require(JWKS_PATH);
 
@@ -100,6 +101,10 @@ const sessionMiddleware =
     store: new RedisStore({
       client: getNewRedisClient(),
       prefix: 'mcp:session:',
+      serializer: {
+        parse: jsonParseWithDate,
+        stringify: JSON.stringify,
+      },
     }),
     name: 'session',
     cookie: {
