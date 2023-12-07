@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { mustReturnOneOrganizationInPayload } from '../services/must-return-one-organization-in-payload';
 import { getUserFromLoggedInSession } from '../managers/session';
+import epochTime from '../services/epoch-time';
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -18,6 +19,10 @@ export const interactionStartControllerFactory =
 
       if (login_hint) {
         req.session.loginHint = login_hint;
+      }
+
+      if (prompt.name === 'login' && prompt.reasons.includes('login_prompt')) {
+        return res.redirect(`/users/start-sign-in`);
       }
 
       if (prompt.name === 'login' || prompt.name === 'choose_organization') {
@@ -48,11 +53,16 @@ export const interactionEndControllerFactory =
     } = oidcProvider;
 
     try {
+      const user = getUserFromLoggedInSession(req);
+
       const result = {
         login: {
-          accountId: getUserFromLoggedInSession(req).id.toString(),
+          accountId: user.id.toString(),
           acr: 'eidas1',
           amr: ['pwd'],
+          ts: user.last_sign_in_at
+            ? epochTime(user.last_sign_in_at)
+            : undefined,
         },
         select_organization: false,
         update_userinfo: false,
