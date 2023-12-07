@@ -9,6 +9,7 @@ import { findById as findUserById } from '../../repositories/user';
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
+  UserHasAlreadyBeenAuthenticatedByPeers,
 } from '../../config/errors';
 import { sendMail } from '../../connectors/sendinblue';
 import { updateUserOrganizationLink } from '../../repositories/organization/setters';
@@ -93,6 +94,11 @@ export const notifyAllMembers = async ({
   // The user should be in the organization already
   if (isEmpty(user) || isEmpty(organization)) {
     throw new NotFoundError();
+  }
+
+  // The user has already notified all members
+  if (user.authentication_by_peers_type) {
+    throw new UserHasAlreadyBeenAuthenticatedByPeers();
   }
 
   const { email, given_name, family_name } = user;
@@ -226,7 +232,11 @@ export const chooseSponsor = async ({
     throw new NotFoundError();
   }
 
-  // Note that the user may already be authenticated by his peers.
+  // The user has already been sponsored
+  if (user.authentication_by_peers_type) {
+    throw new UserHasAlreadyBeenAuthenticatedByPeers();
+  }
+
   await sendMail({
     to: [sponsor.email],
     subject: 'Connaissez-vous ce nouveau membre ?',
@@ -242,6 +252,9 @@ export const chooseSponsor = async ({
     },
   });
 
+  // Note that this will allow the user to connect no matter the sponsor decision.
+  // We email the sponsor only for him to be notified.
+  // We log the sponsor decision, it has no influence on the user being able to connect for now.
   return await updateUserOrganizationLink(organization_id, user_id, {
     authentication_by_peers_type: 'sponsored_by_member',
     sponsor_id,
