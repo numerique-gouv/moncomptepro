@@ -84,4 +84,23 @@ describe('join organizations', () => {
         );
       });
   });
+
+  it('should not be able to select another sponsor', () => {
+    cy.login(
+      '233fd508-224d-4fe7-88ed-0a0d1df10e07@mailslurp.com',
+      'password123'
+    );
+
+    cy.visit(`${MONCOMPTEPRO_HOST}/users/choose-sponsor/1`);
+
+    // Open member selection
+    cy.get('.choices').click();
+
+    // Select second member
+    cy.get('[name="search_terms"]').type('Nouveau{enter}');
+
+    cy.get('[type="submit"]').click();
+
+    cy.contains('Une erreur est survenue.');
+  });
 });

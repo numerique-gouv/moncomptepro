@@ -31,6 +31,8 @@ export class UserAlreadyAskedForSponsorshipError extends Error {
   }
 }
 
+export class UserHasAlreadyBeenAuthenticatedByPeers extends Error {}
+
 export class InvalidCredentialsError extends Error {}
 
 export class EmailUnavailableError extends Error {}
