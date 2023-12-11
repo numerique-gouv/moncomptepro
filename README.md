@@ -185,6 +185,63 @@ Vous pouvez configurer votre client OpenId de test directement en nous soumettan
 
 La nouvelle configuration sera déployée en environment de test dès que la pull request sera validée.
 
+## Usage avancé
+
+### Déconnexion
+
+Lorsqu'un utilisateur se déconnecte de votre plateforme, il se peut qu'il soit toujours connecté à MonComptePro. Ainsi,
+si votre utilisateur utilise un poste partagé, une autre personne pourrait utiliser la session MonComptePro et récupérer
+les informations de l'utilisateur initial dans votre service. Il convient d'effectuer une déconnexion simultanée sur
+MonComptePro et sur votre service.
+
+Vous pouvez tester la cinématique de déconnexion via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#logout
+
+Afin d'effectuer une déconnexion simultanée, il faut rediriger l'utilisateur vers la route de déconnexion de MonComptePro :
+
+https://app-test.moncomptepro.beta.gouv.fr/oauth/logout?post_logout_redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2F&client_id=client_id
+
+### Permettre à l'utilisateur de sélectionner une autre organisation
+
+Les utilisateurs peuvent représenter plusieurs organisations dans MonComptePro.
+Au moment de se connecter à votre service, MonComptePro demande à l'utilisateur de choisir l'organisation qu’il souhaite représenter.
+
+Si vous souhaitez donner la possibilité à l’utilisateur de représenter une autre organisation sans qu’il ait besoin de
+se reconnecter, vous pouvez demander l’interface de sélection d’organisation à MonComptePro.
+
+Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#select-organization
+
+Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec le paramètre `prompt=select_organization` comme suit :
+
+https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin-callback&prompt=select_organization
+
+### Permettre à l'utilisateur de mettre à jour ses informations
+
+Les utilisateurs peuvent avoir commis des erreurs lors de la constitution de leur identité sur MonComptePro.
+
+Si vous souhaitez donner l’opportunité à l’utilisateur de mettre à jour ses informations utilisateurs sans qu’il ait besoin
+de se reconnecter, vous pouvez demander l’interface de mise à jour des informations personnelles à MonComptePro.
+
+Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#update-userinfo
+
+Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec le paramètre `prompt=update_userinfo` comme suit :
+
+https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&prompt=update_userinfo
+
+### Exiger une ré-authentification
+
+Certaines fonctionnalités sensibles requièrent d’authentifier l'utilisateur à nouveau pour réduire les risques
+d’usurpations d’identités liés à la durée de session de MonComptePro.
+
+Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#force-login 
+
+Pour ce faire, vous devez passer les paramètres `prompt=login` et `claims={"id_token":{"auth_time":{"essential":true}}}` comme suit :
+
+https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&claims=%7B%22id_token%22%3A%7B%22auth_time%22%3A%7B%22essential%22%3Atrue%7D%7D%7D&prompt=login
+
+Afin de s’assurer que l’utilisateur s’est bien ré-authentifié, il est impératif que votre service vérifie la valeur `auth_time`
+retournée dans l’ID token. Si la date est supérieure à 5 minutes, l’utilisateur ne s'est pas reconnecté récemment et vous
+devez recommencer la cinématique.
+
 ## 👋 Contribuer à MonComptePro
 
 Pour contribuer à MonComptePro vous pouvez installer l'application localement.
