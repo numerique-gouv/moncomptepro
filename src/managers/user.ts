@@ -141,10 +141,6 @@ export const sendEmailAddressVerificationEmail = async ({
   }
 
   const verify_email_token = await generatePinToken();
-  const readable_verify_email_token = verify_email_token.replace(
-    /(.{3})/g,
-    '$1 '
-  );
 
   await update(user.id, {
     verify_email_token,
@@ -156,7 +152,7 @@ export const sendEmailAddressVerificationEmail = async ({
     subject: 'Vérification de votre adresse email',
     template: 'verify-email',
     params: {
-      verify_email_token: readable_verify_email_token,
+      verify_email_token,
     },
   });
 
