@@ -7,27 +7,7 @@ export const findById = async (id: number) => {
 
   const { rows }: QueryResult<User> = await connection.query(
     `
-SELECT
-  id,
-  email,
-  encrypted_password,
-  reset_password_token,
-  reset_password_sent_at,
-  sign_in_count,
-  last_sign_in_at,
-  created_at,
-  updated_at,
-  legacy_user,
-  email_verified,
-  verify_email_token,
-  verify_email_sent_at,
-  given_name,
-  family_name,
-  phone_number,
-  job,
-  magic_link_token,
-  magic_link_sent_at,
-  email_verified_at
+SELECT *
 FROM users WHERE id = $1
 `,
     [id]
@@ -41,27 +21,7 @@ export const findByEmail = async (email: string) => {
 
   const { rows }: QueryResult<User> = await connection.query(
     `
-SELECT
-  id,
-  email,
-  encrypted_password,
-  reset_password_token,
-  reset_password_sent_at,
-  sign_in_count,
-  last_sign_in_at,
-  created_at,
-  updated_at,
-  legacy_user,
-  email_verified,
-  verify_email_token,
-  verify_email_sent_at,
-  given_name,
-  family_name,
-  phone_number,
-  job,
-  magic_link_token,
-  magic_link_sent_at,
-  email_verified_at
+SELECT *
 FROM users WHERE email = $1
 `,
     [email]
@@ -75,27 +35,7 @@ export const findByMagicLinkToken = async (magic_link_token: string) => {
 
   const { rows }: QueryResult<User> = await connection.query(
     `
-SELECT
-  id,
-  email,
-  encrypted_password,
-  reset_password_token,
-  reset_password_sent_at,
-  sign_in_count,
-  last_sign_in_at,
-  created_at,
-  updated_at,
-  legacy_user,
-  email_verified,
-  verify_email_token,
-  verify_email_sent_at,
-  given_name,
-  family_name,
-  phone_number,
-  job,
-  magic_link_token,
-  magic_link_sent_at,
-  email_verified_at
+SELECT *
 FROM users WHERE magic_link_token = $1
 `,
     [magic_link_token]
@@ -111,27 +51,7 @@ export const findByResetPasswordToken = async (
 
   const { rows }: QueryResult<User> = await connection.query(
     `
-SELECT
-  id,
-  email,
-  encrypted_password,
-  reset_password_token,
-  reset_password_sent_at,
-  sign_in_count,
-  last_sign_in_at,
-  created_at,
-  updated_at,
-  legacy_user,
-  email_verified,
-  verify_email_token,
-  verify_email_sent_at,
-  given_name,
-  family_name,
-  phone_number,
-  job,
-  magic_link_token,
-  magic_link_sent_at,
-  email_verified_at
+SELECT *
 FROM users WHERE reset_password_token = $1
 `,
     [reset_password_token]
