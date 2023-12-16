@@ -19,4 +19,5 @@ interface User {
   magic_link_token: string | null;
   magic_link_sent_at: Date | null;
   email_verified_at: Date | null;
+  current_challenge: string | null;
 }
