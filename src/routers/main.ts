@@ -12,6 +12,7 @@ import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/use
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
 import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
 import nocache from 'nocache';
+import { getPasskeysController } from '../controllers/webauthn';
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
@@ -61,6 +62,14 @@ export const mainRouter = (app: Express) => {
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
     getResetPasswordController
+  );
+
+  mainRouter.get(
+    '/passkeys',
+    ejsLayoutMiddlewareFactory(app, true),
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    getPasskeysController
   );
 
   mainRouter.get(

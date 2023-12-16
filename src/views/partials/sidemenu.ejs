@@ -42,6 +42,13 @@
                             <% } %>
                     >Votre mot de passe</a>
                 </li>
+                <li class="fr-sidemenu__item <% if (activeLink === "passkeys") { %>fr-sidemenu__item--active<% } %>">
+                    <a
+                            class="fr-sidemenu__link" href="/passkeys"
+                            <% if (activeLink === "passkeys") { %>aria-current="page"
+                            <% } %>
+                    >Clés d’accès</a>
+                </li>
             </ul>
         </div>
     </div>
