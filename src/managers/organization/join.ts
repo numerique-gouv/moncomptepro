@@ -232,7 +232,7 @@ export const joinOrganization = async ({
     try {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Sentry.captureException(err);
     }
 

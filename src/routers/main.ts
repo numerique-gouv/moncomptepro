@@ -66,6 +66,7 @@ export const mainRouter = (app: Express) => {
 
   mainRouter.get(
     '/passkeys',
+    urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,

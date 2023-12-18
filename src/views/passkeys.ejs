@@ -5,28 +5,27 @@
     <%- include('partials/sidemenu.ejs', {activeLink: 'passkeys'}) %>
     <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
-        <h2>Clés d’accès</h2>
-        <div class="fr-callout fr-icon-information-line">
+        <h2>Vos clés d’accès</h2>
+        <div class="fr-callout fr-icon-information-line" id="webauthn-register" hidden>
             <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
             <p class="fr-callout__text">
                 Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
             </p>
-            <button class="fr-btn" id="btnBegin">
+            <button class="fr-btn" id="webauthn-btn-begin">
                 Créer une clé d’accès
             </button>
         </div>
-        <div class="fr-callout fr-icon-information-line">
+        <div class="fr-callout fr-icon-information-line" id="webauthn-success" hidden>
             <h3 class="fr-callout__title">Tout est en ordre !</h3>
             <p class="fr-callout__text">
                 Vous pouvez désormais utiliser votre empreinte, votre visage ou le verrouillage de l'écran pour vous
                 connecter sur cet appareil
             </p>
-            <p id="success"></p>
             <button class="fr-btn" id="xxx">
                 Essayer
             </button>
         </div>
-        <div class="fr-callout fr-icon-alert-line">
+        <div class="fr-callout fr-icon-alert-line" id="webauthn-error" hidden>
             <h3 class="fr-callout__title">
                 Impossible de créer une clé d’accès sur cet appareil
             </h3>
@@ -34,7 +33,6 @@
                 Assurez-vous que le système d’exploitation de votre appareil est à jour, que le verrouillage de l’écran
                 et le Bluetooth sont activés, et que vous utilisez un navigateur compatible.
             </p>
-            <div id="error"></div>
         </div>
         <p>
             Les clés d’accès vous permettent de vous connecter de façon sécurisée à votre compte MonComptePro
@@ -83,3 +81,5 @@
         </div>
     </div>
 </div>
+<script src="/assets/simplewebauthn.umd.min.js"></script>
+<script src="/assets/webauthn-registration.js"></script>

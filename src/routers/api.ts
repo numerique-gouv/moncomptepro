@@ -1,4 +1,11 @@
-import { NextFunction, Request, Response, Router, urlencoded } from 'express';
+import {
+  json,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+  urlencoded,
+} from 'express';
 import {
   getOrganizationInfoController,
   getPingApiSireneController,
@@ -11,6 +18,10 @@ import { HttpError } from 'http-errors';
 import expressBasicAuth from 'express-basic-auth';
 import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../config/env';
 import nocache from 'nocache';
+import {
+  getGenerateRegistrationOptionsController,
+  getVerifyRegistrationController,
+} from '../controllers/webauthn';
 
 export const apiRouter = () => {
   const apiRouter = Router();
@@ -29,6 +40,17 @@ export const apiRouter = () => {
     '/sirene/organization-info/:siret',
     apiRateLimiterMiddleware,
     getOrganizationInfoController
+  );
+
+  apiRouter.use(
+    '/webauthn/generate-registration-options',
+    getGenerateRegistrationOptionsController
+  );
+
+  apiRouter.use(
+    '/webauthn/verify-registration',
+    json({ inflate: true }),
+    getVerifyRegistrationController
   );
 
   const apiAdminRouter = Router();
