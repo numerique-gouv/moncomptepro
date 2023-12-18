@@ -1,20 +1,30 @@
 import {
   createAuthenticator,
-  getByUserId,
+  find as findAuthenticator,
+  getByUserId as getAuthenticatorsByUserId,
+  saveAuthenticatorCounter,
 } from '../repositories/authenticator';
 import {
   NotFoundError,
+  WebauthnAuthenticationFailedError,
   WebauthnRegistrationFailedError,
 } from '../config/errors';
 import {
+  generateAuthenticationOptions,
   generateRegistrationOptions,
+  VerifiedAuthenticationResponse,
   VerifiedRegistrationResponse,
+  verifyAuthenticationResponse,
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
-import { findById as findUserById, update } from '../repositories/user';
+import { findByEmail as findUserByEmail, update } from '../repositories/user';
 import { isEmpty } from 'lodash';
 import { MONCOMPTEPRO_HOST } from '../config/env';
-import { RegistrationResponseJSON } from '@simplewebauthn/server/esm/deps';
+import {
+  AuthenticationResponseJSON,
+  RegistrationResponseJSON,
+} from '@simplewebauthn/server/esm/deps';
+import { decodeBase64URL, encodeBase64URL } from '../services/base64';
 
 // Human-readable title for your website
 const rpName = 'MonComptePro';
@@ -23,15 +33,30 @@ const rpID = new URL(MONCOMPTEPRO_HOST).host;
 // The URL at which registrations and authentications should occur
 const origin = MONCOMPTEPRO_HOST;
 
-export const getRegistrationOptions = async (user_id: number) => {
-  const user = await findUserById(user_id);
+export const getUserAuthenticators = async (email: string) => {
+  const user = await findUserByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new NotFoundError();
+  }
+
+  const userAuthenticators = await getAuthenticatorsByUserId(user.id);
+
+  return userAuthenticators.map(({ credential_id, counter }) => ({
+    credential_id: encodeBase64URL(credential_id),
+    counter,
+  }));
+};
+
+export const getRegistrationOptions = async (email: string) => {
+  const user = await findUserByEmail(email);
 
   if (isEmpty(user)) {
     throw new NotFoundError();
   }
 
   // Retrieve any of the user's previously-registered authenticators
-  const userAuthenticators = await getByUserId(user.id);
+  const userAuthenticators = await getAuthenticatorsByUserId(user.id);
 
   const registrationOptions = await generateRegistrationOptions({
     rpName,
@@ -46,7 +71,7 @@ export const getRegistrationOptions = async (user_id: number) => {
       id: authenticator.credential_id,
       type: 'public-key',
       // Optional
-      transports: authenticator.transports,
+      transports: authenticator.transports || [],
     })),
     // See "Guiding use of authenticators via authenticatorSelection" below
     authenticatorSelection: {
@@ -67,13 +92,13 @@ export const getRegistrationOptions = async (user_id: number) => {
 };
 
 export const verifyRegistration = async ({
-  user_id,
+  email,
   response,
 }: {
-  user_id: number;
+  email: string;
   response: RegistrationResponseJSON;
 }) => {
-  const user = await findUserById(user_id);
+  const user = await findUserByEmail(email);
 
   if (isEmpty(user) || !user.current_challenge) {
     throw new NotFoundError();
@@ -118,5 +143,107 @@ export const verifyRegistration = async ({
     },
   });
 
-  return verification;
+  return { verified };
+};
+
+export const getAuthenticationOptions = async (email: string | undefined) => {
+  if (!email) {
+    throw new NotFoundError();
+  }
+
+  const user = await findUserByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new NotFoundError();
+  }
+
+  // Retrieve any of the user's previously-registered authenticators
+  const userAuthenticators = await getAuthenticatorsByUserId(user.id);
+
+  console.log(userAuthenticators, 'userAuthenticators');
+
+  const authenticationOptions = await generateAuthenticationOptions({
+    rpID,
+    // Require users to use a previously-registered authenticator
+    allowCredentials: userAuthenticators.map((authenticator) => ({
+      id: authenticator.credential_id,
+      type: 'public-key',
+      transports: authenticator.transports || [],
+    })),
+    userVerification: 'preferred',
+  });
+
+  // Remember the challenge for this user
+  const updatedUser = await update(user.id, {
+    current_challenge: authenticationOptions.challenge,
+  });
+
+  return { updatedUser, authenticationOptions };
+};
+
+export const verifyAuthentication = async ({
+  email,
+  response,
+}: {
+  email: string | undefined;
+  response: AuthenticationResponseJSON;
+}) => {
+  if (!email) {
+    throw new NotFoundError();
+  }
+
+  const user = await findUserByEmail(email);
+
+  if (isEmpty(user) || !user.current_challenge) {
+    throw new NotFoundError();
+  }
+
+  // Retrieve an authenticator from the DB that should match the `id` in the returned credential
+  const authenticator = await findAuthenticator(
+    user.id,
+    decodeBase64URL(response.id)
+  );
+
+  if (isEmpty(authenticator)) {
+    throw new NotFoundError();
+  }
+
+  const {
+    credential_public_key: credentialPublicKey,
+    credential_id: credentialID,
+    counter,
+    transports,
+  } = authenticator;
+
+  let verification: VerifiedAuthenticationResponse;
+  try {
+    verification = await verifyAuthenticationResponse({
+      response,
+      expectedChallenge: user.current_challenge,
+      expectedOrigin: origin,
+      expectedRPID: rpID,
+      authenticator: {
+        credentialPublicKey,
+        credentialID,
+        counter,
+        transports,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    throw new WebauthnAuthenticationFailedError();
+  }
+
+  const { verified, authenticationInfo } = verification;
+
+  if (!verified || isEmpty(authenticationInfo)) {
+    throw new WebauthnAuthenticationFailedError();
+  }
+
+  await saveAuthenticatorCounter(
+    authenticationInfo.credentialID,
+    authenticationInfo.newCounter
+  );
+
+  return { verified, user };
 };

@@ -21,8 +21,3 @@ export const decodeBase64URL = (base64URLString: string): Uint8Array => {
   // Convert the Buffer to a Uint8Array
   return new Uint8Array(buffer);
 };
-
-// Example usage
-let base64URLString: string = 'SGVsbG8'; // This is a base64 URL-encoded string for "Hello"
-let uint8Array: Uint8Array = decodeBase64URL(base64URLString);
-console.log(uint8Array); // Outputs the original Uint8Array

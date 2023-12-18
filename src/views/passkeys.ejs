@@ -6,12 +6,14 @@
     <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Vos clés d’accès</h2>
+        <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
+        <div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
         <div class="fr-callout fr-icon-information-line" id="webauthn-register" hidden>
             <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
             <p class="fr-callout__text">
                 Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
             </p>
-            <button class="fr-btn" id="webauthn-btn-begin">
+            <button class="fr-btn" id="webauthn-btn-begin-registration">
                 Créer une clé d’accès
             </button>
         </div>
@@ -21,7 +23,7 @@
                 Vous pouvez désormais utiliser votre empreinte, votre visage ou le verrouillage de l'écran pour vous
                 connecter sur cet appareil
             </p>
-            <button class="fr-btn" id="xxx">
+            <button class="fr-btn" id="webauthn-btn-begin-authentication">
                 Essayer
             </button>
         </div>
@@ -44,42 +46,32 @@
                     href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
             >En savoir plus</a>
         </p>
-        <h2>Clés d'accès que vous avez créées</h2>
+        <h2>Clés d’accès que vous avez créées</h2>
         <div class="fr-grid-row fr-grid-row--gutters">
-            <div class="fr-col-12 fr-col-lg-10">
-                <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
-                    <div class="fr-tile__body">
-                        <h4 class="fr-tile__title">
-                            1 Password
-                        </h4>
-                        <p class="fr-tile__desc">Création : à l'instant</p>
-                        <p class="fr-tile__desc">
-                            Dernière utilisation : pas encore utilisée
-                        </p>
-                        <br />
-                        <div class="card-button-container">
-                            <form action="/users/quit-organization/< %= id % >" method="post">
-                                <input type="hidden" name="_csrf" value="< %= csrfToken; % >" autocomplete="off">
-                                <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
-                                    Supprimer cette clé d’accès
-                                </button>
-                            </form>
+            <% if (passkeys.length > 0) { %>
+                <% passkeys.forEach(({ credential_id, counter }) => { %>
+                    <div class="fr-col-12 fr-col-lg-10">
+                        <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
+                            <div class="fr-tile__body">
+                                <h4 class="fr-tile__title">
+                                    <%= credential_id %>
+                                </h4>
+                                <p class="fr-tile__desc">Nombre d’utilisations : <%= counter %></p>
+                                <br />
+                            </div>
                         </div>
                     </div>
+                <% }); %>
+            <% } else { %>
+                <div class="fr-col-12 fr-col-lg-8 fr-col-xl-7">
+                    <div class="fr-alert fr-alert--info">
+                        Vous n’avez aucune clé d’accès.
+                    </div>
                 </div>
-            </div>
-            <div class="fr-col-12 fr-col-lg-8 fr-col-xl-7">
-                <div class="fr-alert fr-alert--info">
-                    Vous n’êtes attaché à aucune organisation.
-                </div>
-            </div>
-            <div class="fr-col-12">
-                <button class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line" id="btnBegin">
-                    Créer une clé d’accès
-                </button>
-            </div>
+            <% } %>
         </div>
     </div>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
 <script src="/assets/webauthn-registration.js"></script>
+<script src="/assets/webauthn-authentication.js"></script>

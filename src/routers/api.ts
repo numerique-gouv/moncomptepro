@@ -19,7 +19,9 @@ import expressBasicAuth from 'express-basic-auth';
 import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../config/env';
 import nocache from 'nocache';
 import {
+  getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
+  getVerifyAuthenticationController,
   getVerifyRegistrationController,
 } from '../controllers/webauthn';
 
@@ -51,6 +53,17 @@ export const apiRouter = () => {
     '/webauthn/verify-registration',
     json({ inflate: true }),
     getVerifyRegistrationController
+  );
+
+  apiRouter.use(
+    '/webauthn/generate-authentication-options',
+    getGenerateAuthenticationOptionsController
+  );
+
+  apiRouter.use(
+    '/webauthn/verify-authentication',
+    json({ inflate: true }),
+    getVerifyAuthenticationController
   );
 
   const apiAdminRouter = Router();
