@@ -49,7 +49,8 @@ Voici 3 scénarios que vous pouvez tester sur cet environnement :
 - [ ] J’ai installé et paramétré mon client OpenID sur mon application en développement : voir [Spécifications techniques](#spécifications-techniques)
 - [ ] Pour passer l’erreur `invalid_redirect_uri`, j'ai fourni mon URL de redirection de test à [l’équipe MonComptePro](mailto:moncomptepro@beta.gouv.fr) (ex : http://localhost:3000/auth/callback, https://dev.example.com/api/oauth/connection)
 - [ ] Mon implémentation fonctionne
-- [ ] J’ai récupéré mon `client_id` et mon `client_secret` de production en demandant à l'équipe MonComptePro de me les remettre de manière sécurisée
+- [ ] Je contractualise officiellement ma collaboration avec la Dinum en remplissant le [DataPass dédié](https://datapass.api.gouv.fr/moncomptepro)
+- [ ] Le DataPass étant validé, j’ai récupéré mon `client_id` et mon `client_secret` de production en demandant à l'équipe MonComptePro de me les remettre de manière sécurisée
 - [ ] Mise en production 🚀
 
 ### Connaissances préalables
@@ -232,7 +233,7 @@ https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&s
 Certaines fonctionnalités sensibles requièrent d’authentifier l'utilisateur à nouveau pour réduire les risques
 d’usurpations d’identités liés à la durée de session de MonComptePro.
 
-Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#force-login 
+Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#force-login
 
 Pour ce faire, vous devez passer les paramètres `prompt=login` et `claims={"id_token":{"auth_time":{"essential":true}}}` comme suit :
 
