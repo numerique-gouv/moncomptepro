@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
       successElement.style.display = 'block';
       successElement.innerText = 'Connexion réussie.'
       errorElement.style.display = 'none';
+      window.location.href = '/users/sign-in-with-passkey-done'
     } else {
       successElement.style.display = 'none';
       errorElement.style.display = 'block';

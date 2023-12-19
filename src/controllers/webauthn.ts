@@ -41,6 +41,20 @@ export const getPasskeysController = async (
   }
 };
 
+export const getSignInWithPasskeyController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.render('user/sign-in-with-passkey', {
+      notifications: await getNotificationsFromRequest(req),
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const getGenerateRegistrationOptionsController = async (
   req: Request,
   res: Response,

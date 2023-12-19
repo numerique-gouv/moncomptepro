@@ -160,8 +160,6 @@ export const getAuthenticationOptions = async (email: string | undefined) => {
   // Retrieve any of the user's previously-registered authenticators
   const userAuthenticators = await getAuthenticatorsByUserId(user.id);
 
-  console.log(userAuthenticators, 'userAuthenticators');
-
   const authenticationOptions = await generateAuthenticationOptions({
     rpID,
     // Require users to use a previously-registered authenticator
