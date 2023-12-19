@@ -46,23 +46,27 @@ export const apiRouter = () => {
 
   apiRouter.use(
     '/webauthn/generate-registration-options',
+    apiRateLimiterMiddleware,
     getGenerateRegistrationOptionsController
   );
 
   apiRouter.use(
     '/webauthn/verify-registration',
     json({ inflate: true }),
+    apiRateLimiterMiddleware,
     getVerifyRegistrationController
   );
 
   apiRouter.use(
     '/webauthn/generate-authentication-options',
+    apiRateLimiterMiddleware,
     getGenerateAuthenticationOptionsController
   );
 
   apiRouter.use(
     '/webauthn/verify-authentication',
     json({ inflate: true }),
+    apiRateLimiterMiddleware,
     getVerifyAuthenticationController
   );
 
