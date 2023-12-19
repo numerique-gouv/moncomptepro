@@ -1,6 +1,6 @@
 export const isExpired = (
   emittedDate: Date | null,
-  expirationDurationInMinutes: number
+  expirationDurationInMinutes: number,
 ) => {
   if (!(emittedDate instanceof Date)) {
     return true;

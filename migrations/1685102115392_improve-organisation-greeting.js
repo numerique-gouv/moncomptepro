@@ -2,7 +2,7 @@
 
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 DROP COLUMN has_been_greeted_for_first_organization_join`);
@@ -17,7 +17,7 @@ UPDATE users_organizations
 SET has_been_greeted = TRUE`);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 ADD COLUMN has_been_greeted_for_first_organization_join boolean DEFAULT FALSE`);

@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from 'express';
-import { isUrlTrusted } from '../../services/security';
+import { NextFunction, Request, Response } from "express";
+import { isUrlTrusted } from "../../services/security";
 
 export const issueSessionOrRedirectController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (req.session.interactionId) {
@@ -19,7 +19,7 @@ export const issueSessionOrRedirectController = async (
       return res.redirect(referer);
     }
 
-    return res.redirect('/');
+    return res.redirect("/");
   } catch (error) {
     next(error);
   }

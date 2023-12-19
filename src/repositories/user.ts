@@ -1,6 +1,6 @@
-import { getDatabaseConnection } from '../connectors/postgres';
-import { QueryResult } from 'pg';
-import { hashToPostgresParams } from '../services/hash-to-postgres-params';
+import { getDatabaseConnection } from "../connectors/postgres";
+import { QueryResult } from "pg";
+import { hashToPostgresParams } from "../services/hash-to-postgres-params";
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();
@@ -10,7 +10,7 @@ export const findById = async (id: number) => {
 SELECT *
 FROM users WHERE id = $1
 `,
-    [id]
+    [id],
   );
 
   return rows.shift();
@@ -24,7 +24,7 @@ export const findByEmail = async (email: string) => {
 SELECT *
 FROM users WHERE email = $1
 `,
-    [email]
+    [email],
   );
 
   return rows.shift();
@@ -38,14 +38,14 @@ export const findByMagicLinkToken = async (magic_link_token: string) => {
 SELECT *
 FROM users WHERE magic_link_token = $1
 `,
-    [magic_link_token]
+    [magic_link_token],
   );
 
   return rows.shift();
 };
 
 export const findByResetPasswordToken = async (
-  reset_password_token: string
+  reset_password_token: string,
 ) => {
   const connection = getDatabaseConnection();
 
@@ -54,7 +54,7 @@ export const findByResetPasswordToken = async (
 SELECT *
 FROM users WHERE reset_password_token = $1
 `,
-    [reset_password_token]
+    [reset_password_token],
   );
 
   return rows.shift();
@@ -69,14 +69,14 @@ export const update = async (id: number, fieldsToUpdate: Partial<User>) => {
   };
 
   const { paramsString, valuesString, values } = hashToPostgresParams<User>(
-    fieldsToUpdateWithTimestamps
+    fieldsToUpdateWithTimestamps,
   );
 
   const { rows }: QueryResult<User> = await connection.query(
     `UPDATE users SET ${paramsString} = ${valuesString} WHERE id = $${
       values.length + 1
     } RETURNING *`,
-    [...values, id]
+    [...values, id],
   );
 
   return rows.shift()!;
@@ -112,7 +112,7 @@ export const create = async ({
 
   const { rows }: QueryResult<User> = await connection.query(
     `INSERT INTO users ${paramsString} VALUES ${valuesString} RETURNING *;`,
-    values
+    values,
   );
 
   return rows.shift()!;

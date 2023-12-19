@@ -1,6 +1,6 @@
-import { getDatabaseConnection } from '../../connectors/postgres';
-import { QueryResult } from 'pg';
-import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from '../../config/env';
+import { getDatabaseConnection } from "../../connectors/postgres";
+import { QueryResult } from "pg";
+import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from "../../config/env";
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();
@@ -35,7 +35,7 @@ SELECT
     organization_info_fetched_at
 FROM organizations
 WHERE id = $1`,
-    [id]
+    [id],
   );
 
   return rows.shift();
@@ -84,7 +84,7 @@ FROM organizations o
 INNER JOIN users_organizations uo ON uo.organization_id = o.id
 WHERE uo.user_id = $1
 ORDER BY uo.created_at`,
-      [user_id]
+      [user_id],
     );
 
   return rows;
@@ -127,7 +127,7 @@ AND m.type = 'organization_join_block'
 AND m.moderated_at IS NULL
 ORDER BY m.created_at
 `,
-    [user_id]
+    [user_id],
   );
 
   return rows;
@@ -165,7 +165,7 @@ SELECT id,
 FROM organizations
 WHERE cached_est_active = 'true'
   AND $1 = ANY (verified_email_domains)`,
-    [email_domain]
+    [email_domain],
   );
 
   return rows;
@@ -212,7 +212,7 @@ FROM (SELECT o.*, substring(u.email from '@(.*)$') as domain, count(*)
       HAVING count(*) >= 5
       ORDER BY count(*) DESC) sub
 WHERE domain=$1`,
-      [email_domain]
+      [email_domain],
     );
 
   return rows;
@@ -236,7 +236,7 @@ SELECT
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1`,
-      [organization_id]
+      [organization_id],
     );
 
   return rows;
@@ -272,9 +272,9 @@ WHERE uo.organization_id = $1
         new Date(
           new Date().getTime() -
             MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES *
-              60e3
+              60e3,
         ),
-      ]
+      ],
     );
 
   return rows;
@@ -282,7 +282,7 @@ WHERE uo.organization_id = $1
 
 export const getUserOrganizationLink = async (
   organization_id: number,
-  user_id: number
+  user_id: number,
 ) => {
   const connection = getDatabaseConnection();
 
@@ -303,7 +303,7 @@ SELECT
   official_contact_email_verification_sent_at
 FROM users_organizations
 WHERE organization_id = $1 AND user_id = $2`,
-    [organization_id, user_id]
+    [organization_id, user_id],
   );
 
   return rows.shift();

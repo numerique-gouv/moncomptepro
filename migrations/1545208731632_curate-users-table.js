@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users 
 DROP COLUMN remember_created_at,
@@ -27,7 +27,7 @@ ALTER COLUMN updated_at type timestamp with time zone;
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 ALTER COLUMN reset_password_sent_at type timestamp without time zone,

@@ -1,12 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
-import getNotificationsFromRequest from '../services/get-notifications-from-request';
-import { z, ZodError } from 'zod';
+import { NextFunction, Request, Response } from "express";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import { z, ZodError } from "zod";
 import {
   idSchema,
   optionalBooleanSchema,
   siretSchema,
-} from '../services/custom-zod-schemas';
-import hasErrorFromField from '../services/has-error-from-field';
+} from "../services/custom-zod-schemas";
+import hasErrorFromField from "../services/has-error-from-field";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -14,23 +14,23 @@ import {
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
-} from '../config/errors';
+} from "../config/errors";
 import {
   quitOrganization,
   selectOrganization,
-} from '../managers/organization/main';
+} from "../managers/organization/main";
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
   joinOrganization,
-} from '../managers/organization/join';
-import { getUserFromLoggedInSession } from '../managers/session';
-import { csrfToken } from '../middlewares/csrf-protection';
+} from "../managers/organization/join";
+import { getUserFromLoggedInSession } from "../managers/session";
+import { csrfToken } from "../middlewares/csrf-protection";
 
 export const getJoinOrganizationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -55,10 +55,10 @@ export const getJoinOrganizationController = async (
       !do_not_propose_suggestions &&
       (await doSuggestOrganizations({ user_id, email }))
     ) {
-      return res.redirect('/users/organization-suggestions');
+      return res.redirect("/users/organization-suggestions");
     }
 
-    return res.render('user/join-organization', {
+    return res.render("user/join-organization", {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       siretHint: siret_hint,
@@ -71,7 +71,7 @@ export const getJoinOrganizationController = async (
 export const getOrganizationSuggestionsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { id: user_id, email } = getUserFromLoggedInSession(req);
 
@@ -80,7 +80,7 @@ export const getOrganizationSuggestionsController = async (
     email,
   });
 
-  return res.render('user/organization-suggestions', {
+  return res.render("user/organization-suggestions", {
     organizationSuggestions,
     csrfToken: csrfToken(req),
   });
@@ -89,7 +89,7 @@ export const getOrganizationSuggestionsController = async (
 export const postJoinOrganizationMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -128,22 +128,22 @@ export const postJoinOrganizationMiddleware = async (
     if (
       error instanceof InvalidSiretError ||
       error instanceof InseeNotActiveError ||
-      (error instanceof ZodError && hasErrorFromField(error, 'siret'))
+      (error instanceof ZodError && hasErrorFromField(error, "siret"))
     ) {
       return res.redirect(
-        `/users/join-organization?notification=invalid_siret&siret_hint=${req.body.siret}`
+        `/users/join-organization?notification=invalid_siret&siret_hint=${req.body.siret}`,
       );
     }
 
     if (error instanceof InseeConnectionError) {
       return res.redirect(
-        `/users/join-organization?notification=insee_unexpected_error&siret_hint=${req.body.siret}`
+        `/users/join-organization?notification=insee_unexpected_error&siret_hint=${req.body.siret}`,
       );
     }
 
     if (error instanceof UserInOrganizationAlreadyError) {
       return res.redirect(
-        `/users/join-organization?notification=user_in_organization_already&siret_hint=${req.body.siret}`
+        `/users/join-organization?notification=user_in_organization_already&siret_hint=${req.body.siret}`,
       );
     }
 
@@ -154,10 +154,10 @@ export const postJoinOrganizationMiddleware = async (
 export const getUnableToAutoJoinOrganizationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    return res.render('user/unable-to-auto-join-organization');
+    return res.render("user/unable-to-auto-join-organization");
   } catch (e) {
     next(e);
   }
@@ -166,7 +166,7 @@ export const getUnableToAutoJoinOrganizationController = async (
 export const postQuitUserOrganizationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -187,7 +187,7 @@ export const postQuitUserOrganizationController = async (
     });
 
     return res.redirect(
-      `/manage-organizations?notification=quit_organization_success`
+      `/manage-organizations?notification=quit_organization_success`,
     );
   } catch (error) {
     next(error);

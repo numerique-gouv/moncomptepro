@@ -2,15 +2,15 @@ import {
   getEmailDomain,
   isAFreeEmailProvider,
   usesAFreeEmailProvider,
-} from '../../services/uses-a-free-email-provider';
-import { isEmpty, some, uniqBy } from 'lodash';
+} from "../../services/uses-a-free-email-provider";
+import { isEmpty, some, uniqBy } from "lodash";
 import {
   findById as findOrganizationById,
   findByMostUsedEmailDomain,
   findByUserId,
   findByVerifiedEmailDomain,
-} from '../../repositories/organization/getters';
-import { findById as findUserById } from '../../repositories/user';
+} from "../../repositories/organization/getters";
+import { findById as findUserById } from "../../repositories/user";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -20,31 +20,31 @@ import {
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
   UserNotFoundError,
-} from '../../config/errors';
+} from "../../config/errors";
 import {
   addAuthorizedDomain,
   linkUserToOrganization,
   upsert,
-} from '../../repositories/organization/setters';
-import { getOrganizationInfo } from '../../connectors/api-sirene';
+} from "../../repositories/organization/setters";
+import { getOrganizationInfo } from "../../connectors/api-sirene";
 import {
   createModeration,
   findPendingModeration,
-} from '../../repositories/moderation';
+} from "../../repositories/moderation";
 import {
   hasLessThanFiftyEmployees,
   isCommune,
   isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
-} from '../../services/organization';
-import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
-import * as Sentry from '@sentry/node';
-import { isEmailValid } from '../../services/security';
-import { markDomainAsVerified } from './main';
-import { sendMail } from '../../connectors/sendinblue';
-import { SUPPORT_EMAIL_ADDRESS } from '../../config/env';
-import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
+} from "../../services/organization";
+import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
+import * as Sentry from "@sentry/node";
+import { isEmailValid } from "../../services/security";
+import { markDomainAsVerified } from "./main";
+import { sendMail } from "../../connectors/sendinblue";
+import { SUPPORT_EMAIL_ADDRESS } from "../../config/env";
+import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -63,7 +63,7 @@ export const doSuggestOrganizations = async ({
       ...(await findByVerifiedEmailDomain(domain)),
       ...(await findByMostUsedEmailDomain(domain)),
     ],
-    'id'
+    "id",
   );
   const userOrganizations = await findByUserId(user_id);
 
@@ -91,13 +91,13 @@ export const getOrganizationSuggestions = async ({
       ...(await findByVerifiedEmailDomain(domain)),
       ...(await findByMostUsedEmailDomain(domain)),
     ],
-    'id'
+    "id",
   );
   const userOrganizations = await findByUserId(user_id);
   const userOrganizationsIds = userOrganizations.map(({ id }) => id);
 
   return organizationsSuggestions.filter(
-    ({ id }) => !userOrganizationsIds.includes(id)
+    ({ id }) => !userOrganizationsIds.includes(id),
   );
 };
 export const joinOrganization = async ({
@@ -135,14 +135,14 @@ export const joinOrganization = async ({
   }
 
   const usersOrganizations = await findByUserId(user_id);
-  if (some(usersOrganizations, ['id', organization.id])) {
+  if (some(usersOrganizations, ["id", organization.id])) {
     throw new UserInOrganizationAlreadyError();
   }
 
   const pendingModeration = await findPendingModeration({
     user_id,
     organization_id: organization.id,
-    type: 'organization_join_block',
+    type: "organization_join_block",
   });
   if (!isEmpty(pendingModeration)) {
     throw new UserAlreadyAskedToJoinOrganizationError();
@@ -178,7 +178,7 @@ export const joinOrganization = async ({
     try {
       contactEmail = await getAnnuaireServicePublicContactEmail(
         organization.cached_code_officiel_geographique,
-        organization.cached_code_postal
+        organization.cached_code_postal,
       );
     } catch (err) {
       console.error(err);
@@ -192,7 +192,7 @@ export const joinOrganization = async ({
         await markDomainAsVerified({
           organization_id,
           domain: contactDomain,
-          verification_type: 'official_contact_domain',
+          verification_type: "official_contact_domain",
         });
       }
 
@@ -200,7 +200,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: 'official_contact_email',
+          verification_type: "official_contact_email",
         });
       }
 
@@ -208,7 +208,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: 'official_contact_domain',
+          verification_type: "official_contact_domain",
         });
       }
 
@@ -240,7 +240,7 @@ export const joinOrganization = async ({
       return await linkUserToOrganization({
         organization_id,
         user_id,
-        verification_type: 'official_contact_email',
+        verification_type: "official_contact_email",
       });
     }
 
@@ -258,7 +258,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: 'verified_email_domain',
+      verification_type: "verified_email_domain",
     });
   }
 
@@ -267,7 +267,7 @@ export const joinOrganization = async ({
       organization_id,
       user_id,
       is_external: true,
-      verification_type: 'verified_email_domain',
+      verification_type: "verified_email_domain",
     });
   }
 
@@ -275,7 +275,7 @@ export const joinOrganization = async ({
     await createModeration({
       user_id,
       organization_id,
-      type: 'non_verified_domain',
+      type: "non_verified_domain",
     });
     return await linkUserToOrganization({
       organization_id,
@@ -287,13 +287,13 @@ export const joinOrganization = async ({
   await createModeration({
     user_id,
     organization_id,
-    type: 'organization_join_block',
+    type: "organization_join_block",
   });
   await sendMail({
     to: [email],
     cc: [SUPPORT_EMAIL_ADDRESS],
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: 'unable-to-auto-join-organization',
+    template: "unable-to-auto-join-organization",
     params: {
       libelle: cached_libelle || siret,
     },
@@ -322,7 +322,7 @@ export const forceJoinOrganization = async ({
   const verification_type =
     verified_email_domains.includes(domain) ||
     external_authorized_email_domains.includes(domain)
-      ? 'verified_email_domain'
+      ? "verified_email_domain"
       : null;
 
   return await linkUserToOrganization({

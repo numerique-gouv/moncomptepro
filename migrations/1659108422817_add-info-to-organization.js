@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
     ALTER TABLE organizations
     ADD COLUMN cached_libelle character varying,
@@ -23,20 +23,20 @@ exports.up = async pgm => {
   `);
 
   console.log(
-    '\x1b[31m',
-    'WARNING: this migration introduce new data for organization'
+    "\x1b[31m",
+    "WARNING: this migration introduce new data for organization",
   );
-  console.log('This data is fetch at each organization creation');
+  console.log("This data is fetch at each organization creation");
   console.log(
-    'To fetch this additional data for existing organisation, run the script:'
+    "To fetch this additional data for existing organisation, run the script:",
   );
   console.log(
-    'time npm run update-organization-info 2>update-organizations-info-err.log',
-    '\x1b[0m'
+    "time npm run update-organization-info 2>update-organizations-info-err.log",
+    "\x1b[0m",
   );
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
     ALTER TABLE organizations
     DROP COLUMN cached_libelle,

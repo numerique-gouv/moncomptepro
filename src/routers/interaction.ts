@@ -1,10 +1,10 @@
-import { Router, urlencoded } from 'express';
+import { Router, urlencoded } from "express";
 import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
-} from '../controllers/interaction';
-import { checkUserSignInRequirementsMiddleware } from '../middlewares/user';
-import nocache from 'nocache';
+} from "../controllers/interaction";
+import { checkUserSignInRequirementsMiddleware } from "../middlewares/user";
+import nocache from "nocache";
 
 export const interactionRouter = (oidcProvider: any) => {
   const interactionRouter = Router();
@@ -14,13 +14,13 @@ export const interactionRouter = (oidcProvider: any) => {
   interactionRouter.use(urlencoded({ extended: false }));
 
   interactionRouter.get(
-    '/:grant',
-    interactionStartControllerFactory(oidcProvider)
+    "/:grant",
+    interactionStartControllerFactory(oidcProvider),
   );
   interactionRouter.get(
-    '/:grant/login',
+    "/:grant/login",
     checkUserSignInRequirementsMiddleware,
-    interactionEndControllerFactory(oidcProvider)
+    interactionEndControllerFactory(oidcProvider),
   );
 
   return interactionRouter;

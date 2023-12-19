@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError } from "axios";
 
 export class InvalidEmailError extends Error {
   constructor(public didYouMean: string) {

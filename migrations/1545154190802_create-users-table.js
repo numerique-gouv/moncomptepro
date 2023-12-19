@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`    
 CREATE TABLE users (
     id serial NOT NULL,
@@ -41,6 +41,6 @@ ALTER SEQUENCE users_id_seq RESTART WITH 5000;
   `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`DROP TABLE users;`);
 };

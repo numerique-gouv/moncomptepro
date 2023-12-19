@@ -1,15 +1,15 @@
-import { NextFunction, Request, Response } from 'express';
-import { z } from 'zod';
-import { idSchema } from '../../services/custom-zod-schemas';
+import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+import { idSchema } from "../../services/custom-zod-schemas";
 
-import { getSponsorLabel } from '../../managers/organization/authentication-by-peers';
-import { getUserFromLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
+import { getSponsorLabel } from "../../managers/organization/authentication-by-peers";
+import { getUserFromLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getWelcomeController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -29,7 +29,7 @@ export const getWelcomeController = async (
       organization_id,
     });
 
-    return res.render('user/welcome', {
+    return res.render("user/welcome", {
       csrfToken: csrfToken(req),
       sponsor_label,
     });

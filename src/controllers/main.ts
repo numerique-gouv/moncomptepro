@@ -1,28 +1,28 @@
-import { NextFunction, Request, Response } from 'express';
-import getNotificationsFromRequest from '../services/get-notifications-from-request';
-import { ZodError } from 'zod';
-import { updatePersonalInformations } from '../managers/user';
-import notificationMessages from '../config/notification-messages';
-import { getClientsOrderedByConnectionCount } from '../managers/oidc-client';
-import { getParamsForPostPersonalInformationsController } from './user/update-personal-informations';
-import { getUserOrganizations } from '../managers/organization/main';
+import { NextFunction, Request, Response } from "express";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import { ZodError } from "zod";
+import { updatePersonalInformations } from "../managers/user";
+import notificationMessages from "../config/notification-messages";
+import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
+import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
+import { getUserOrganizations } from "../managers/organization/main";
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
-} from '../managers/session';
-import { csrfToken } from '../middlewares/csrf-protection';
+} from "../managers/session";
+import { csrfToken } from "../middlewares/csrf-protection";
 
 export const getHomeController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
-    getUserFromLoggedInSession(req).id
+    getUserFromLoggedInSession(req).id,
   );
 
-  return res.render('home', {
+  return res.render("home", {
     notifications: await getNotificationsFromRequest(req),
     oidc_clients,
   });
@@ -31,11 +31,11 @@ export const getHomeController = async (
 export const getPersonalInformationsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = getUserFromLoggedInSession(req);
-    return res.render('personal-information', {
+    return res.render("personal-information", {
       email: user.email,
       given_name: user.given_name,
       family_name: user.family_name,
@@ -52,7 +52,7 @@ export const getPersonalInformationsController = async (
 export const postPersonalInformationsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const {
@@ -66,26 +66,26 @@ export const postPersonalInformationsController = async (
         family_name,
         phone_number,
         job,
-      }
+      },
     );
 
     updateUserInLoggedInSession(req, updatedUser);
 
-    return res.render('personal-information', {
+    return res.render("personal-information", {
       email: updatedUser.email,
       given_name: updatedUser.given_name,
       family_name: updatedUser.family_name,
       phone_number: updatedUser.phone_number,
       job: updatedUser.job,
       notifications: [
-        notificationMessages['personal_information_update_success'],
+        notificationMessages["personal_information_update_success"],
       ],
       csrfToken: csrfToken(req),
     });
   } catch (error) {
     if (error instanceof ZodError) {
       return res.redirect(
-        `/personal-information?notification=invalid_personal_informations`
+        `/personal-information?notification=invalid_personal_informations`,
       );
     }
 
@@ -96,7 +96,7 @@ export const postPersonalInformationsController = async (
 export const getManageOrganizationsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { userOrganizations, pendingUserOrganizations } =
@@ -104,7 +104,7 @@ export const getManageOrganizationsController = async (
         user_id: getUserFromLoggedInSession(req).id,
       });
 
-    return res.render('manage-organizations', {
+    return res.render("manage-organizations", {
       notifications: await getNotificationsFromRequest(req),
       userOrganizations,
       pendingUserOrganizations,
@@ -118,10 +118,10 @@ export const getManageOrganizationsController = async (
 export const getResetPasswordController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    return res.render('reset-password', {
+    return res.render("reset-password", {
       notifications: await getNotificationsFromRequest(req),
       loginHint: getUserFromLoggedInSession(req).email,
       csrfToken: csrfToken(req),
@@ -134,12 +134,12 @@ export const getResetPasswordController = async (
 export const getHelpController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const email = isWithinLoggedInSession(req)
     ? getUserFromLoggedInSession(req).email
     : null;
-  return res.render('help', {
+  return res.render("help", {
     email,
     csrfToken: email && csrfToken(req),
   });

@@ -21,17 +21,18 @@ brew install postgresql
 ### Création de la base Postgres
 
 Lancer l'invite de commande PostgreSQL :
+
 ```shell
 sudo -u postgres psql
 ```
 
-Sur mac : 
+Sur mac :
 
 ```shell
 psql
 ```
 
-Puis dans l'invite de commandes postgresql : 
+Puis dans l'invite de commandes postgresql :
 
 ```sql
 create user moncomptepro with encrypted password 'moncomptepro';
@@ -47,7 +48,7 @@ Quitter l'invite de commandes avec ctrl-D.
 sudo apt install redis
 ```
 
-Sur mac : 
+Sur mac :
 
 ```
 brew install redis
@@ -116,6 +117,7 @@ export $(cat moncomptepro.conf | xargs)
 ```
 
 Installation des dépendances :
+
 ```shell
 npm i --dev
 ```

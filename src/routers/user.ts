@@ -1,15 +1,15 @@
-import { Router, urlencoded } from 'express';
+import { Router, urlencoded } from "express";
 import {
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
   getUnableToAutoJoinOrganizationController,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
-} from '../controllers/organization';
+} from "../controllers/organization";
 import {
   loginRateLimiterMiddleware,
   rateLimiterMiddleware,
-} from '../middlewares/rate-limiter';
+} from "../middlewares/rate-limiter";
 import {
   checkEmailInSessionMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
@@ -19,7 +19,7 @@ import {
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
-} from '../middlewares/user';
+} from "../middlewares/user";
 import {
   getSignInController,
   getSignUpController,
@@ -27,30 +27,30 @@ import {
   postSignInMiddleware,
   postSignUpController,
   postStartSignInController,
-} from '../controllers/user/signin-signup';
+} from "../controllers/user/signin-signup";
 import {
   getVerifyEmailController,
   postSendEmailVerificationController,
   postVerifyEmailController,
-} from '../controllers/user/verify-email';
+} from "../controllers/user/verify-email";
 import {
   getMagicLinkSentController,
   getSignInWithMagicLinkController,
   postSendMagicLinkController,
   postSignInWithMagicLinkController,
-} from '../controllers/user/magic-link';
+} from "../controllers/user/magic-link";
 import {
   getChangePasswordController,
   getResetPasswordController,
   postChangePasswordController,
   postResetPasswordController,
-} from '../controllers/user/update-password';
+} from "../controllers/user/update-password";
 import {
   getPersonalInformationsController,
   postPersonalInformationsController,
-} from '../controllers/user/update-personal-informations';
-import { getWelcomeController } from '../controllers/user/welcome';
-import { issueSessionOrRedirectController } from '../controllers/user/issue-session-or-redirect';
+} from "../controllers/user/update-personal-informations";
+import { getWelcomeController } from "../controllers/user/welcome";
+import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
 import {
   getChooseSponsorController,
   getNoSponsorFoundController,
@@ -58,18 +58,18 @@ import {
   getUnableToFindSponsorController,
   postChooseSponsorMiddleware,
   postNoSponsorFoundController,
-} from '../controllers/user/choose-sponsor';
+} from "../controllers/user/choose-sponsor";
 import {
   getOfficialContactEmailVerificationController,
   postOfficialContactEmailVerificationMiddleware,
-} from '../controllers/user/official-contact-email-verification';
+} from "../controllers/user/official-contact-email-verification";
 import {
   getSelectOrganizationController,
   postSelectOrganizationMiddleware,
-} from '../controllers/user/select-organization';
-import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
-import nocache from 'nocache';
-import { getSignInWithPasskeyController } from '../controllers/webauthn';
+} from "../controllers/user/select-organization";
+import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
+import nocache from "nocache";
+import { getSignInWithPasskeyController } from "../controllers/webauthn";
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -79,273 +79,273 @@ export const userRouter = () => {
   userRouter.use(urlencoded({ extended: false }));
 
   userRouter.get(
-    '/start-sign-in',
+    "/start-sign-in",
     csrfProtectionMiddleware,
-    getStartSignInController
+    getStartSignInController,
   );
   userRouter.post(
-    '/start-sign-in',
+    "/start-sign-in",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postStartSignInController
+    postStartSignInController,
   );
 
   userRouter.get(
-    '/sign-in',
+    "/sign-in",
     csrfProtectionMiddleware,
     checkEmailInSessionMiddleware,
-    getSignInController
+    getSignInController,
   );
   userRouter.post(
-    '/sign-in',
+    "/sign-in",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
     loginRateLimiterMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
   userRouter.get(
-    '/sign-up',
+    "/sign-up",
     csrfProtectionMiddleware,
     checkEmailInSessionMiddleware,
-    getSignUpController
+    getSignUpController,
   );
   userRouter.post(
-    '/sign-up',
+    "/sign-up",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
     postSignUpController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(
-    '/verify-email',
+    "/verify-email",
     csrfProtectionMiddleware,
     checkUserIsConnectedMiddleware,
-    getVerifyEmailController
+    getVerifyEmailController,
   );
   userRouter.post(
-    '/verify-email',
+    "/verify-email",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     postVerifyEmailController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
   userRouter.post(
-    '/send-email-verification',
+    "/send-email-verification",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
-    postSendEmailVerificationController
+    postSendEmailVerificationController,
   );
   userRouter.post(
-    '/send-magic-link',
+    "/send-magic-link",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
     postSendMagicLinkController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
-  userRouter.get('/magic-link-sent', getMagicLinkSentController);
+  userRouter.get("/magic-link-sent", getMagicLinkSentController);
   userRouter.get(
-    '/sign-in-with-magic-link',
+    "/sign-in-with-magic-link",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    getSignInWithMagicLinkController
+    getSignInWithMagicLinkController,
   );
   userRouter.post(
-    '/sign-in-with-magic-link',
+    "/sign-in-with-magic-link",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     postSignInWithMagicLinkController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
   userRouter.get(
-    '/sign-in-with-passkey',
+    "/sign-in-with-passkey",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkEmailInSessionMiddleware,
     getSignInWithPasskeyController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
   userRouter.get(
-    '/sign-in-with-passkey-done',
+    "/sign-in-with-passkey-done",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
   userRouter.get(
-    '/reset-password',
+    "/reset-password",
     csrfProtectionMiddleware,
-    getResetPasswordController
+    getResetPasswordController,
   );
   userRouter.post(
-    '/reset-password',
+    "/reset-password",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postResetPasswordController
+    postResetPasswordController,
   );
   userRouter.get(
-    '/change-password',
+    "/change-password",
     csrfProtectionMiddleware,
-    getChangePasswordController
+    getChangePasswordController,
   );
   userRouter.post(
-    '/change-password',
+    "/change-password",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    postChangePasswordController
+    postChangePasswordController,
   );
 
   userRouter.get(
-    '/personal-information',
+    "/personal-information",
     csrfProtectionMiddleware,
     checkUserIsVerifiedMiddleware,
-    getPersonalInformationsController
+    getPersonalInformationsController,
   );
   userRouter.post(
-    '/personal-information',
+    "/personal-information",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserIsVerifiedMiddleware,
     postPersonalInformationsController,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(
-    '/organization-suggestions',
+    "/organization-suggestions",
     csrfProtectionMiddleware,
     checkUserHasPersonalInformationsMiddleware,
-    getOrganizationSuggestionsController
+    getOrganizationSuggestionsController,
   );
 
   userRouter.get(
-    '/join-organization',
+    "/join-organization",
     csrfProtectionMiddleware,
     checkUserHasPersonalInformationsMiddleware,
-    getJoinOrganizationController
+    getJoinOrganizationController,
   );
   userRouter.post(
-    '/join-organization',
+    "/join-organization",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasPersonalInformationsMiddleware,
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(
-    '/unable-to-auto-join-organization',
-    getUnableToAutoJoinOrganizationController
+    "/unable-to-auto-join-organization",
+    getUnableToAutoJoinOrganizationController,
   );
 
   userRouter.get(
-    '/select-organization',
+    "/select-organization",
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getSelectOrganizationController
+    getSelectOrganizationController,
   );
 
   userRouter.post(
-    '/select-organization',
+    "/select-organization",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
     postSelectOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(
-    '/official-contact-email-verification/:organization_id',
+    "/official-contact-email-verification/:organization_id",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasSelectedAnOrganizationMiddleware,
-    getOfficialContactEmailVerificationController
+    getOfficialContactEmailVerificationController,
   );
 
   userRouter.post(
-    '/official-contact-email-verification/:organization_id',
+    "/official-contact-email-verification/:organization_id",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasSelectedAnOrganizationMiddleware,
     postOfficialContactEmailVerificationMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(
-    '/choose-sponsor/:organization_id',
+    "/choose-sponsor/:organization_id",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    getChooseSponsorController
+    getChooseSponsorController,
   );
 
   userRouter.post(
-    '/choose-sponsor/:organization_id',
+    "/choose-sponsor/:organization_id",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     postChooseSponsorMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
-  userRouter.get('/sponsor-validation', getSponsorValidationController);
+  userRouter.get("/sponsor-validation", getSponsorValidationController);
 
   userRouter.get(
-    '/no-sponsor-found/:organization_id',
+    "/no-sponsor-found/:organization_id",
     csrfProtectionMiddleware,
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    getNoSponsorFoundController
+    getNoSponsorFoundController,
   );
 
   userRouter.post(
-    '/no-sponsor-found/:organization_id',
+    "/no-sponsor-found/:organization_id",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    postNoSponsorFoundController
+    postNoSponsorFoundController,
   );
 
   userRouter.get(
-    '/unable-to-find-sponsor/:organization_id',
+    "/unable-to-find-sponsor/:organization_id",
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    getUnableToFindSponsorController
+    getUnableToFindSponsorController,
   );
 
   userRouter.get(
-    '/welcome/:organization_id',
+    "/welcome/:organization_id",
     csrfProtectionMiddleware,
     checkUserSignInRequirementsMiddleware,
-    getWelcomeController
+    getWelcomeController,
   );
   userRouter.post(
-    '/welcome',
+    "/welcome",
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController
+    issueSessionOrRedirectController,
   );
 
   userRouter.post(
-    '/quit-organization/:id',
+    "/quit-organization/:id",
     csrfProtectionMiddleware,
     checkUserHasPersonalInformationsMiddleware,
-    postQuitUserOrganizationController
+    postQuitUserOrganizationController,
   );
 
   return userRouter;

@@ -1,26 +1,26 @@
-import { NextFunction, Request, Response } from 'express';
-import { z } from 'zod';
-import { idSchema } from '../../services/custom-zod-schemas';
-import getNotificationsFromRequest from '../../services/get-notifications-from-request';
+import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+import { idSchema } from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
-} from '../../config/errors';
-import { NotFound } from 'http-errors';
-import { getOrganizationById } from '../../managers/organization/main';
+} from "../../config/errors";
+import { NotFound } from "http-errors";
+import { getOrganizationById } from "../../managers/organization/main";
 import {
   askForSponsorship,
   chooseSponsor,
   getOrganizationLabel,
   getSponsorOptions,
-} from '../../managers/organization/authentication-by-peers';
-import { getUserFromLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
+} from "../../managers/organization/authentication-by-peers";
+import { getUserFromLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getChooseSponsorController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -40,11 +40,10 @@ export const getChooseSponsorController = async (
       organization_id,
     });
 
-    const { cached_libelle: libelle } = (await getOrganizationById(
-      organization_id
-    ))!;
+    const { cached_libelle: libelle } =
+      (await getOrganizationById(organization_id))!;
 
-    return res.render('user/choose-sponsor', {
+    return res.render("user/choose-sponsor", {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       organization_id,
@@ -63,7 +62,7 @@ export const getChooseSponsorController = async (
 export const postChooseSponsorMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -102,10 +101,10 @@ export const postChooseSponsorMiddleware = async (
 export const getSponsorValidationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    return res.render('user/sponsor-validation');
+    return res.render("user/sponsor-validation");
   } catch (error) {
     next(error);
   }
@@ -114,7 +113,7 @@ export const getSponsorValidationController = async (
 export const getNoSponsorFoundController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -135,7 +134,7 @@ export const getNoSponsorFoundController = async (
       organization_id,
     });
 
-    return res.render('user/no-sponsor-found', {
+    return res.render("user/no-sponsor-found", {
       csrfToken: csrfToken(req),
       organization_id,
     });
@@ -151,7 +150,7 @@ export const getNoSponsorFoundController = async (
 export const postNoSponsorFoundController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -179,7 +178,7 @@ export const postNoSponsorFoundController = async (
 
     if (error instanceof UserAlreadyAskedForSponsorshipError) {
       return res.redirect(
-        `/users/unable-to-find-sponsor/${error.organization_id}`
+        `/users/unable-to-find-sponsor/${error.organization_id}`,
       );
     }
 
@@ -190,7 +189,7 @@ export const postNoSponsorFoundController = async (
 export const getUnableToFindSponsorController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -210,7 +209,7 @@ export const getUnableToFindSponsorController = async (
       organization_id,
     });
 
-    return res.render('user/unable-to-find-sponsor', {
+    return res.render("user/unable-to-find-sponsor", {
       libelle,
     });
   } catch (error) {

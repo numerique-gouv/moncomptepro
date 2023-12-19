@@ -2,7 +2,7 @@
 
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE oidc_clients
 ADD COLUMN id_token_signed_response_alg character varying
@@ -17,7 +17,7 @@ ADD COLUMN introspection_signed_response_alg character varying
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE oidc_clients
 DROP COLUMN id_token_signed_response_alg

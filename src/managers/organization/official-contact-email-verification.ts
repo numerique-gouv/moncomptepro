@@ -1,24 +1,24 @@
-import { isEmpty } from 'lodash';
+import { isEmpty } from "lodash";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
   NotFoundError,
   OfficialContactEmailVerificationNotNeededError,
-} from '../../config/errors';
-import { isExpired } from '../../services/is-expired';
-import { generateDicewarePassword } from '../../services/security';
-import { sendMail } from '../../connectors/sendinblue';
+} from "../../config/errors";
+import { isExpired } from "../../services/is-expired";
+import { generateDicewarePassword } from "../../services/security";
+import { sendMail } from "../../connectors/sendinblue";
 import {
   findById as findOrganizationById,
   getUsers,
-} from '../../repositories/organization/getters';
-import { getAnnuaireServicePublicContactEmail } from '../../connectors/api-annuaire-service-public';
-import { updateUserOrganizationLink } from '../../repositories/organization/setters';
+} from "../../repositories/organization/getters";
+import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
+import { updateUserOrganizationLink } from "../../repositories/organization/setters";
 import {
   isCommune,
   isEtablissementScolaireDuPremierEtSecondDegre,
-} from '../../services/organization';
-import { getAnnuaireEducationNationaleContactEmail } from '../../connectors/api-annuaire-education-nationale';
+} from "../../services/organization";
+import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 
 const OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 
@@ -68,7 +68,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     ) {
       contactEmail = await getAnnuaireServicePublicContactEmail(
         cached_code_officiel_geographique,
-        cached_code_postal
+        cached_code_postal,
       );
     } else if (isEtablissementScolaireDuPremierEtSecondDegre(organization)) {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
@@ -86,7 +86,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     checkBeforeSend &&
     !isExpired(
       official_contact_email_verification_sent_at,
-      OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+      OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
     )
   ) {
     return { codeSent: false, contactEmail, libelle };
@@ -105,7 +105,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
   await sendMail({
     to: [contactEmail],
     subject: `[MonComptePro] Authentifier un email sur MonComptePro`,
-    template: 'official-contact-email-verification',
+    template: "official-contact-email-verification",
     params: {
       given_name,
       family_name,
@@ -147,7 +147,7 @@ export const verifyOfficialContactEmailToken = async ({
 
   const isTokenExpired = isExpired(
     official_contact_email_verification_sent_at,
-    OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   );
 
   if (isTokenExpired) {

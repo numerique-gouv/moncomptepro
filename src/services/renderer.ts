@@ -1,10 +1,10 @@
-import ejs from 'ejs';
-import path from 'path';
-import { Application, NextFunction, Request, Response } from 'express';
+import ejs from "ejs";
+import path from "path";
+import { Application, NextFunction, Request, Response } from "express";
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
-} from '../managers/session';
+} from "../managers/session";
 
 export const render = (absolutePath: string, params: any) => {
   return new Promise((resolve, reject) => {
@@ -35,14 +35,14 @@ const getUserLabel = (req: Request) => {
 // it looks for the _layout file and inject the targeted template in the body variable
 export const ejsLayoutMiddlewareFactory = (
   app: Application,
-  use_dashboard_header: boolean = false
+  use_dashboard_header: boolean = false,
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const orig = res.render;
     res.render = (view, locals = {}) => {
       app.render(view, locals, (err: Error, html: string) => {
         if (err) throw err;
-        orig.call(res, '_layout', {
+        orig.call(res, "_layout", {
           ...locals,
           // @ts-ignore
           body: html,
@@ -57,11 +57,11 @@ export const ejsLayoutMiddlewareFactory = (
 
 export const renderWithEjsLayout = async (
   templateName: string,
-  params = {}
+  params = {},
 ) => {
   const bodyHtml = await render(
     path.resolve(`${__dirname}/../views/${templateName}.ejs`),
-    params
+    params,
   );
 
   return await render(path.resolve(`${__dirname}/../views/_layout.ejs`), {

@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users_organizations
 ADD COLUMN is_external boolean default FALSE;
@@ -12,7 +12,7 @@ ADD COLUMN external_authorized_email_domains character varying[] DEFAULT '{}'::c
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users_organizations
 DROP COLUMN is_external;

@@ -1,9 +1,9 @@
-import { csrfSync } from 'csrf-sync';
-import { Request } from 'express';
+import { csrfSync } from "csrf-sync";
+import { Request } from "express";
 
 const { generateToken, csrfSynchronisedProtection } = csrfSync({
   getTokenFromRequest: (req: Request) => {
-    return req.body['_csrf'];
+    return req.body["_csrf"];
   },
 });
 

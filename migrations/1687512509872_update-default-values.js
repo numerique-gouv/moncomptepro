@@ -2,7 +2,7 @@
 
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE oidc_clients
 ALTER COLUMN redirect_uris SET NOT NULL,
@@ -35,7 +35,7 @@ ALTER TABLE moderations
 ALTER COLUMN type SET NOT NULL`);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE oidc_clients
 ALTER COLUMN redirect_uris DROP NOT NULL,

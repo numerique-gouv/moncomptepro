@@ -1,29 +1,29 @@
-import { NextFunction, Request, Response } from 'express';
-import { isEmpty } from 'lodash';
-import { isUrlTrusted } from '../services/security';
-import { needsEmailVerificationRenewal } from '../managers/user';
+import { NextFunction, Request, Response } from "express";
+import { isEmpty } from "lodash";
+import { isUrlTrusted } from "../services/security";
+import { needsEmailVerificationRenewal } from "../managers/user";
 import {
   getOrganizationsByUserId,
   selectOrganization,
-} from '../managers/organization/main';
+} from "../managers/organization/main";
 import {
   greetForJoiningOrganization,
   isEligibleToSponsorship,
   notifyAllMembers,
-} from '../managers/organization/authentication-by-peers';
-import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
-import { getUserOrganizationLink } from '../repositories/organization/getters';
+} from "../managers/organization/authentication-by-peers";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
-} from '../managers/session';
-import { isBrowserTrustedForUser } from '../managers/browser-authentication';
+} from "../managers/session";
+import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (isEmpty(req.session.email)) {
@@ -40,10 +40,10 @@ export const checkEmailInSessionMiddleware = async (
 export const checkUserIsConnectedMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    if (req.method === 'HEAD') {
+    if (req.method === "HEAD") {
       // From express documentation:
       // The app.get() function is automatically called for the HTTP HEAD method
       // in addition to the GET method if app.head() was not called for the path
@@ -69,7 +69,7 @@ export const checkUserIsConnectedMiddleware = async (
 export const checkUserIsVerifiedMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserIsConnectedMiddleware(req, res, async (error) => {
     try {
@@ -87,14 +87,14 @@ export const checkUserIsVerifiedMiddleware = (
         needs_email_verification_renewal ||
         !is_browser_trusted
       ) {
-        let notification_param = '';
+        let notification_param = "";
 
         if (!is_browser_trusted) {
-          notification_param = '?notification=browser_not_trusted';
+          notification_param = "?notification=browser_not_trusted";
         }
 
         if (needs_email_verification_renewal) {
-          notification_param = '?notification=email_verification_renewal';
+          notification_param = "?notification=email_verification_renewal";
         }
 
         return res.redirect(`/users/verify-email${notification_param}`);
@@ -109,7 +109,7 @@ export const checkUserIsVerifiedMiddleware = (
 export const checkUserHasPersonalInformationsMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserIsVerifiedMiddleware(req, res, async (error) => {
     try {
@@ -118,7 +118,7 @@ export const checkUserHasPersonalInformationsMiddleware = (
       const { given_name, family_name, phone_number, job } =
         getUserFromLoggedInSession(req);
       if (isEmpty(given_name) || isEmpty(family_name) || isEmpty(job)) {
-        return res.redirect('/users/personal-information');
+        return res.redirect("/users/personal-information");
       }
 
       return next();
@@ -130,7 +130,7 @@ export const checkUserHasPersonalInformationsMiddleware = (
 export const checkUserHasAtLeastOneOrganizationMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserHasPersonalInformationsMiddleware(req, res, async (error) => {
     try {
@@ -138,10 +138,10 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
 
       if (
         isEmpty(
-          await getOrganizationsByUserId(getUserFromLoggedInSession(req).id)
+          await getOrganizationsByUserId(getUserFromLoggedInSession(req).id),
         )
       ) {
-        return res.redirect('/users/join-organization');
+        return res.redirect("/users/join-organization");
       }
 
       return next();
@@ -153,14 +153,14 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
 export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserHasAtLeastOneOrganizationMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const selectedOrganizationId = await getSelectedOrganizationId(
-        getUserFromLoggedInSession(req).id
+        getUserFromLoggedInSession(req).id,
       );
 
       if (
@@ -168,7 +168,7 @@ export const checkUserHasSelectedAnOrganizationMiddleware = (
         !selectedOrganizationId
       ) {
         const userOrganisations = await getOrganizationsByUserId(
-          getUserFromLoggedInSession(req).id
+          getUserFromLoggedInSession(req).id,
         );
 
         if (userOrganisations.length === 1) {
@@ -177,7 +177,7 @@ export const checkUserHasSelectedAnOrganizationMiddleware = (
             organization_id: userOrganisations[0].id,
           });
         } else {
-          return res.redirect('/users/select-organization');
+          return res.redirect("/users/select-organization");
         }
       }
 
@@ -190,39 +190,39 @@ export const checkUserHasSelectedAnOrganizationMiddleware = (
 export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserHasSelectedAnOrganizationMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const userOrganisations = await getOrganizationsByUserId(
-        getUserFromLoggedInSession(req).id
+        getUserFromLoggedInSession(req).id,
       );
 
       let organizationThatNeedsOfficialContactEmailVerification;
       if (req.session.mustReturnOneOrganizationInPayload) {
         const selectedOrganizationId = await getSelectedOrganizationId(
-          getUserFromLoggedInSession(req).id
+          getUserFromLoggedInSession(req).id,
         );
 
         organizationThatNeedsOfficialContactEmailVerification =
           userOrganisations.find(
             ({ id, needs_official_contact_email_verification }) =>
               needs_official_contact_email_verification &&
-              id === selectedOrganizationId
+              id === selectedOrganizationId,
           );
       } else {
         organizationThatNeedsOfficialContactEmailVerification =
           userOrganisations.find(
             ({ needs_official_contact_email_verification }) =>
-              needs_official_contact_email_verification
+              needs_official_contact_email_verification,
           );
       }
 
       if (!isEmpty(organizationThatNeedsOfficialContactEmailVerification)) {
         return res.redirect(
-          `/users/official-contact-email-verification/${organizationThatNeedsOfficialContactEmailVerification.id}`
+          `/users/official-contact-email-verification/${organizationThatNeedsOfficialContactEmailVerification.id}`,
         );
       }
 
@@ -235,7 +235,7 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
 export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
     req,
@@ -250,34 +250,33 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
         let organizationThatNeedsAuthenticationByPeers;
         if (req.session.mustReturnOneOrganizationInPayload) {
-          const selectedOrganizationId = await getSelectedOrganizationId(
-            user_id
-          );
+          const selectedOrganizationId =
+            await getSelectedOrganizationId(user_id);
 
           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
             ({ id, authentication_by_peers_type }) =>
-              !authentication_by_peers_type && id === selectedOrganizationId
+              !authentication_by_peers_type && id === selectedOrganizationId,
           );
         } else {
           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
-            ({ authentication_by_peers_type }) => !authentication_by_peers_type
+            ({ authentication_by_peers_type }) => !authentication_by_peers_type,
           );
         }
 
         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
           if (
             await isEligibleToSponsorship(
-              organizationThatNeedsAuthenticationByPeers
+              organizationThatNeedsAuthenticationByPeers,
             )
           ) {
             return res.redirect(
-              `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`
+              `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`,
             );
           }
 
           const link = await getUserOrganizationLink(
             organizationThatNeedsAuthenticationByPeers.id,
-            user_id
+            user_id,
           );
 
           // link exists because we get the organization id from getOrganizationsByUserId above
@@ -288,35 +287,35 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
       } catch (error) {
         next(error);
       }
-    }
+    },
   );
 
 export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   checkUserHasBeenAuthenticatedByPeersMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
       const userOrganisations = await getOrganizationsByUserId(
-        getUserFromLoggedInSession(req).id
+        getUserFromLoggedInSession(req).id,
       );
 
       let organizationThatNeedsGreetings;
       if (req.session.mustReturnOneOrganizationInPayload) {
         const selectedOrganizationId = await getSelectedOrganizationId(
-          getUserFromLoggedInSession(req).id
+          getUserFromLoggedInSession(req).id,
         );
 
         organizationThatNeedsGreetings = userOrganisations.find(
           ({ id, has_been_greeted }) =>
-            !has_been_greeted && id === selectedOrganizationId
+            !has_been_greeted && id === selectedOrganizationId,
         );
       } else {
         organizationThatNeedsGreetings = userOrganisations.find(
-          ({ id, has_been_greeted }) => !has_been_greeted
+          ({ id, has_been_greeted }) => !has_been_greeted,
         );
       }
 
@@ -327,7 +326,7 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
         });
 
         return res.redirect(
-          `/users/welcome/${organizationThatNeedsGreetings.id}`
+          `/users/welcome/${organizationThatNeedsGreetings.id}`,
         );
       }
 

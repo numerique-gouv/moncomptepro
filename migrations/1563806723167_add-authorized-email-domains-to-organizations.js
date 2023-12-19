@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE organizations
 ADD COLUMN authorized_email_domains character varying[] DEFAULT '{}'::character varying[];
@@ -24,7 +24,7 @@ WHERE organizations.siret = subquery.siret;
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE organizations
 DROP COLUMN authorized_email_domains;

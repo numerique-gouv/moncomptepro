@@ -1,26 +1,26 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { isEmailValid } from '../services/security';
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { isEmailValid } from "../services/security";
 import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
   ApiAnnuaireTooManyResultsError,
-} from '../config/errors';
-import { isEmpty, isString } from 'lodash';
+} from "../config/errors";
+import { isEmpty, isString } from "lodash";
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
-} from '../config/env';
+} from "../config/env";
 
 // more info at https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 type ApiAnnuaireServicePublicReponse = {
-  type: 'FeatureCollection';
+  type: "FeatureCollection";
   features: {
-    type: 'Feature';
+    type: "Feature";
     geometry: {
-      type: 'Point';
+      type: "Point";
       coordinates: [number, number];
     };
     properties: {
@@ -33,7 +33,7 @@ type ApiAnnuaireServicePublicReponse = {
       // ex: "Mairie - Chamonix-Mont-Blanc"
       nom: string;
       adresses: {
-        type: 'Adresse';
+        type: "Adresse";
         // ex: ["38 place de l'Église"]
         lignes: string[];
         // ex: '74402'
@@ -57,20 +57,20 @@ type ApiAnnuaireServicePublicReponse = {
 
 export const getAnnuaireServicePublicContactEmail = async (
   codeOfficielGeographique: string | null,
-  codePostal: string | null
+  codePostal: string | null,
 ): Promise<string> => {
   if (isEmpty(codeOfficielGeographique)) {
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let features: ApiAnnuaireServicePublicReponse['features'] = [];
+  let features: ApiAnnuaireServicePublicReponse["features"] = [];
   try {
     const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
       await axios({
-        method: 'get',
+        method: "get",
         url: `https://etablissements-publics.api.gouv.fr/v3/communes/${codeOfficielGeographique}/mairie`,
         headers: {
-          accept: 'application/json',
+          accept: "application/json",
         },
         timeout: HTTP_CLIENT_TIMEOUT,
       });
@@ -79,9 +79,9 @@ export const getAnnuaireServicePublicContactEmail = async (
   } catch (e) {
     if (
       e instanceof AxiosError &&
-      (e.code === 'ECONNABORTED' ||
-        e.code === 'ERR_BAD_RESPONSE' ||
-        e.code === 'EAI_AGAIN')
+      (e.code === "ECONNABORTED" ||
+        e.code === "ERR_BAD_RESPONSE" ||
+        e.code === "EAI_AGAIN")
     ) {
       throw new ApiAnnuaireConnectionError();
     }
@@ -89,7 +89,7 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw e;
   }
 
-  let feature: ApiAnnuaireServicePublicReponse['features'][0] | undefined;
+  let feature: ApiAnnuaireServicePublicReponse["features"][0] | undefined;
 
   if (features.length === 1) {
     feature = features[0];
@@ -107,7 +107,7 @@ export const getAnnuaireServicePublicContactEmail = async (
         properties: {
           adresses: [{ codePostal: codePostalMairie }],
         },
-      }) => codePostalMairie === codePostal
+      }) => codePostalMairie === codePostal,
     );
   }
 
@@ -131,7 +131,7 @@ export const getAnnuaireServicePublicContactEmail = async (
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(
-      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`,
     );
     return TEST_CONTACT_EMAIL;
   }

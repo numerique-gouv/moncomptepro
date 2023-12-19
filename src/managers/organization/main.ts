@@ -3,17 +3,17 @@ import {
   findByUserId,
   findPendingByUserId,
   getUsers,
-} from '../../repositories/organization/getters';
-import { isEmpty } from 'lodash';
-import { NotFoundError } from '../../config/errors';
+} from "../../repositories/organization/getters";
+import { isEmpty } from "lodash";
+import { NotFoundError } from "../../config/errors";
 import {
   addAuthorizedDomain,
   addVerifiedDomain,
   deleteUserOrganization,
   updateUserOrganizationLink,
-} from '../../repositories/organization/setters';
-import { getEmailDomain } from '../../services/uses-a-free-email-provider';
-import { setSelectedOrganizationId } from '../../repositories/redis/selected-organization';
+} from "../../repositories/organization/setters";
+import { getEmailDomain } from "../../services/uses-a-free-email-provider";
+import { setSelectedOrganizationId } from "../../repositories/redis/selected-organization";
 
 export const getOrganizationsByUserId = findByUserId;
 export const getOrganizationById = findOrganizationById;
@@ -48,7 +48,7 @@ export const markDomainAsVerified = async ({
 }: {
   organization_id: number;
   domain: string;
-  verification_type: UserOrganizationLink['verification_type'];
+  verification_type: UserOrganizationLink["verification_type"];
 }) => {
   const organization = await findOrganizationById(organization_id);
   if (isEmpty(organization)) {
@@ -79,8 +79,8 @@ export const markDomainAsVerified = async ({
         }
 
         return null;
-      }
-    )
+      },
+    ),
   );
 };
 
@@ -93,7 +93,7 @@ export const selectOrganization = async ({
 }) => {
   const userOrganizations = await getOrganizationsByUserId(user_id);
   const organization = userOrganizations.find(
-    ({ id }) => id === organization_id
+    ({ id }) => id === organization_id,
   );
 
   if (isEmpty(organization)) {

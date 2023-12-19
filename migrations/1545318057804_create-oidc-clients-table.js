@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`    
 CREATE TABLE oidc_clients (
     id serial NOT NULL,
@@ -18,6 +18,6 @@ ALTER TABLE ONLY oidc_clients
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`DROP TABLE oidc_clients;`);
 };

@@ -1,10 +1,10 @@
-import { isEmpty } from 'lodash';
-import { findById as findUserById } from '../repositories/user';
-import { isCommune, isServicePublic } from './organization';
-import { findByUserId as getUsersOrganizations } from '../repositories/organization/getters';
-import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
-import { mustReturnOneOrganizationInPayload } from './must-return-one-organization-in-payload';
-import * as Sentry from '@sentry/node';
+import { isEmpty } from "lodash";
+import { findById as findUserById } from "../repositories/user";
+import { isCommune, isServicePublic } from "./organization";
+import { findByUserId as getUsersOrganizations } from "../repositories/organization/getters";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
+import * as Sentry from "@sentry/node";
 
 export const findAccount = async (ctx: any, sub: string, token: any) => {
   const user = await findUserById(parseInt(sub, 10));
@@ -45,7 +45,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         const selectedOrganizationId = await getSelectedOrganizationId(id);
 
         if (selectedOrganizationId === null) {
-          const err = Error('selectedOrganizationId should be set');
+          const err = Error("selectedOrganizationId should be set");
           // This Error will be silently swallowed by oidc-provider.
           // We add additional logs to keep traces.
           console.error(err);
@@ -59,12 +59,12 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         }
 
         const organization = organizations.find(
-          ({ id }) => id === selectedOrganizationId
+          ({ id }) => id === selectedOrganizationId,
         );
 
         if (isEmpty(organization)) {
           // see comments on above error management
-          const err = Error('organization should be set');
+          const err = Error("organization should be set");
           console.error(err);
           Sentry.captureException(err);
           throw err;

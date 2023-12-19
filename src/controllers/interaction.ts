@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import { mustReturnOneOrganizationInPayload } from '../services/must-return-one-organization-in-payload';
-import { getUserFromLoggedInSession } from '../managers/session';
-import epochTime from '../services/epoch-time';
+import { NextFunction, Request, Response } from "express";
+import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
+import { getUserFromLoggedInSession } from "../managers/session";
+import epochTime from "../services/epoch-time";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -21,19 +21,19 @@ export const interactionStartControllerFactory =
         req.session.loginHint = login_hint;
       }
 
-      if (prompt.name === 'login' && prompt.reasons.includes('login_prompt')) {
+      if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
         return res.redirect(`/users/start-sign-in`);
       }
 
-      if (prompt.name === 'login' || prompt.name === 'choose_organization') {
+      if (prompt.name === "login" || prompt.name === "choose_organization") {
         return res.redirect(`/interaction/${interactionId}/login`);
       }
 
-      if (prompt.name === 'select_organization') {
+      if (prompt.name === "select_organization") {
         return res.redirect(`/users/select-organization`);
       }
 
-      if (prompt.name === 'update_userinfo') {
+      if (prompt.name === "update_userinfo") {
         return res.redirect(`/users/personal-information`);
       }
 
@@ -58,8 +58,8 @@ export const interactionEndControllerFactory =
       const result = {
         login: {
           accountId: user.id.toString(),
-          acr: 'eidas1',
-          amr: ['pwd'],
+          acr: "eidas1",
+          amr: ["pwd"],
           ts: user.last_sign_in_at
             ? epochTime(user.last_sign_in_at)
             : undefined,
@@ -69,11 +69,11 @@ export const interactionEndControllerFactory =
       };
 
       const { prompt } = await oidcProvider.interactionDetails(req, res);
-      if (prompt.name === 'select_organization') {
+      if (prompt.name === "select_organization") {
         result.select_organization = true;
       }
 
-      if (prompt.name === 'update_userinfo') {
+      if (prompt.name === "update_userinfo") {
         result.update_userinfo = true;
       }
 
@@ -86,7 +86,7 @@ export const interactionEndControllerFactory =
       if (error instanceof SessionNotFound) {
         // we may have taken to long to provide a session to the user since he has been redirected
         // we fail silently
-        return res.redirect('/');
+        return res.redirect("/");
       }
 
       next(error);

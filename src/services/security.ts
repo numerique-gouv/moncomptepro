@@ -1,10 +1,10 @@
-import bcrypt from 'bcryptjs';
-import { hasIn, isEmpty, isString } from 'lodash';
-import { customAlphabet, nanoid } from 'nanoid/async';
-import { parse as parseUrl } from 'url';
-import notificationMessages from '../config/notification-messages';
-import dicewareWordlistFrAlt from './security/diceware-wordlist-fr-alt';
-import { owaspPasswordStrengthTest } from './owasp-password-strength-tester';
+import bcrypt from "bcryptjs";
+import { hasIn, isEmpty, isString } from "lodash";
+import { customAlphabet, nanoid } from "nanoid/async";
+import { parse as parseUrl } from "url";
+import notificationMessages from "../config/notification-messages";
+import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
+import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -21,13 +21,13 @@ export const hashPassword = async (plainPassword: string): Promise<string> => {
 
 export const validatePassword = async (
   plainPassword: string,
-  storedHash: string | null
+  storedHash: string | null,
 ) => {
   if (!plainPassword || !storedHash) {
     return false;
   }
 
-  return await bcrypt.compare(plainPassword || '', storedHash);
+  return await bcrypt.compare(plainPassword || "", storedHash);
 };
 
 export const isPasswordSecure = (plainPassword: string, email: string) => {
@@ -35,15 +35,15 @@ export const isPasswordSecure = (plainPassword: string, email: string) => {
 
   const lowerCasedBlacklistedWords = [
     email.toLowerCase(),
-    'moncomptepro',
-    'mon compte pro',
-    'agentconnect',
-    'agent connect',
-    'cheval exact agrafe pile',
+    "moncomptepro",
+    "mon compte pro",
+    "agentconnect",
+    "agent connect",
+    "cheval exact agrafe pile",
   ];
 
   const containsBlacklistedWord = lowerCasedBlacklistedWords.some((word) =>
-    plainPassword.toLowerCase().includes(word)
+    plainPassword.toLowerCase().includes(word),
   );
 
   return !containsBlacklistedWord && strong;
@@ -69,7 +69,7 @@ export const isEmailValid = (email: unknown): email is string => {
     return false;
   }
 
-  const parts = email.split('@').filter((part) => part);
+  const parts = email.split("@").filter((part) => part);
 
   // The email address contains two parts, separated with an @ symbol.
   // => these parts are non-empty strings
@@ -102,7 +102,7 @@ export const isEmailValid = (email: unknown): email is string => {
 };
 
 export const isPhoneNumberValid = (
-  phoneNumber: unknown
+  phoneNumber: unknown,
 ): phoneNumber is string => {
   if (!isString(phoneNumber) || isEmpty(phoneNumber)) {
     return false;
@@ -127,7 +127,7 @@ export const isNameValid = (name: unknown): name is string => {
   return true;
 };
 
-const nanoidPin = customAlphabet('0123456789', 10);
+const nanoidPin = customAlphabet("0123456789", 10);
 
 export const generatePinToken = async () => {
   return await nanoidPin();
@@ -137,9 +137,9 @@ export const generateToken = async () => {
   return await nanoid(64);
 };
 
-type dice = '1' | '2' | '3' | '4' | '5' | '6';
+type dice = "1" | "2" | "3" | "4" | "5" | "6";
 type fiveDices = `${dice}${dice}${dice}${dice}${dice}`;
-const nanoidFiveDices = customAlphabet('123456', 5);
+const nanoidFiveDices = customAlphabet("123456", 5);
 
 export const generateDicewarePassword = async () => {
   const firstFiveDices = (await nanoidFiveDices()) as fiveDices;
@@ -153,7 +153,7 @@ export const isSiretValid = (siret: unknown): siret is string => {
     return false;
   }
 
-  const siretNoSpaces = siret.replace(/\s/g, '');
+  const siretNoSpaces = siret.replace(/\s/g, "");
 
   return !!siretNoSpaces.match(/^\d{14}$/);
 };

@@ -1,6 +1,6 @@
-import { interactionPolicy } from 'oidc-provider';
-import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
-import { mustReturnOneOrganizationInPayload } from './must-return-one-organization-in-payload';
+import { interactionPolicy } from "oidc-provider";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
 
 const { Prompt, Check, base } = interactionPolicy;
 
@@ -8,10 +8,10 @@ const policy = base();
 
 policy.add(
   new Prompt(
-    { name: 'choose_organization', requestable: false },
+    { name: "choose_organization", requestable: false },
     new Check(
-      'organization_missing',
-      'End-User must select one organization',
+      "organization_missing",
+      "End-User must select one organization",
       async (ctx) => {
         const { oidc } = ctx;
 
@@ -22,7 +22,7 @@ policy.add(
 
         if (
           mustReturnOneOrganizationInPayload(
-            [...oidc.requestParamScopes].join(' ')
+            [...oidc.requestParamScopes].join(" "),
           ) &&
           !selectedOrganizationId
         ) {
@@ -32,23 +32,23 @@ policy.add(
 
         // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 
 policy.add(
   new Prompt(
-    { name: 'select_organization', requestable: true },
+    { name: "select_organization", requestable: true },
 
     new Check(
-      'organization_selection_prompt',
-      'client required organization selection prompt',
-      'interaction_required',
+      "organization_selection_prompt",
+      "client required organization selection prompt",
+      "interaction_required",
       async (ctx) => {
         const { oidc } = ctx;
         if (
-          ctx.params.prompt === 'select_organization' &&
+          ctx.params.prompt === "select_organization" &&
           !oidc.result?.select_organization
         ) {
           // @ts-ignore
@@ -57,23 +57,23 @@ policy.add(
 
         // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 
 policy.add(
   new Prompt(
-    { name: 'update_userinfo', requestable: true },
+    { name: "update_userinfo", requestable: true },
 
     new Check(
-      'update_userinfo_prompt',
-      'client required userinfo edition prompt',
-      'interaction_required',
+      "update_userinfo_prompt",
+      "client required userinfo edition prompt",
+      "interaction_required",
       async (ctx) => {
         const { oidc } = ctx;
         if (
-          ctx.params.prompt === 'update_userinfo' &&
+          ctx.params.prompt === "update_userinfo" &&
           !oidc.result?.update_userinfo
         ) {
           // @ts-ignore
@@ -82,9 +82,9 @@ policy.add(
 
         // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 
 export default policy;

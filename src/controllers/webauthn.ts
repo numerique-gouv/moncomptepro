@@ -1,38 +1,38 @@
-import { NextFunction, Request, Response } from 'express';
-import getNotificationsFromRequest from '../services/get-notifications-from-request';
+import { NextFunction, Request, Response } from "express";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import {
   createLoggedInSession,
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
-} from '../managers/session';
+} from "../managers/session";
 import {
   getAuthenticationOptions,
   getRegistrationOptions,
   getUserAuthenticators,
   verifyAuthentication,
   verifyRegistration,
-} from '../managers/webauthn';
-import { z, ZodError } from 'zod';
-import { BadRequest } from 'http-errors';
-import { WebauthnRegistrationFailedError } from '../config/errors';
+} from "../managers/webauthn";
+import { z, ZodError } from "zod";
+import { BadRequest } from "http-errors";
+import { WebauthnRegistrationFailedError } from "../config/errors";
 import {
   AuthenticationResponseJSON,
   RegistrationResponseJSON,
-} from '@simplewebauthn/server/esm/deps';
-import { setBrowserAsTrustedForUser } from '../managers/browser-authentication';
+} from "@simplewebauthn/server/esm/deps";
+import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 
 export const getPasskeysController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = getUserFromLoggedInSession(req);
 
     const passkeys = await getUserAuthenticators(user.email);
 
-    return res.render('passkeys', {
+    return res.render("passkeys", {
       notifications: await getNotificationsFromRequest(req),
       passkeys,
     });
@@ -44,10 +44,10 @@ export const getPasskeysController = async (
 export const getSignInWithPasskeyController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    return res.render('user/sign-in-with-passkey', {
+    return res.render("user/sign-in-with-passkey", {
       notifications: await getNotificationsFromRequest(req),
     });
   } catch (e) {
@@ -58,13 +58,13 @@ export const getSignInWithPasskeyController = async (
 export const getGenerateRegistrationOptionsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = getUserFromLoggedInSession(req);
 
     const { updatedUser, registrationOptions } = await getRegistrationOptions(
-      user.email
+      user.email,
     );
     updateUserInLoggedInSession(req, updatedUser);
 
@@ -77,7 +77,7 @@ export const getGenerateRegistrationOptionsController = async (
 export const getVerifyRegistrationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -109,7 +109,7 @@ export const getVerifyRegistrationController = async (
 export const getGenerateAuthenticationOptionsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const email = isWithinLoggedInSession(req)
@@ -132,7 +132,7 @@ export const getGenerateAuthenticationOptionsController = async (
 export const getVerifyAuthenticationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({

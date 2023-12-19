@@ -1,4 +1,4 @@
-import { CredentialDeviceType } from '@simplewebauthn/typescript-types';
+import { CredentialDeviceType } from "@simplewebauthn/typescript-types";
 
 interface BaseAuthenticator {
   credential_id: Uint8Array;

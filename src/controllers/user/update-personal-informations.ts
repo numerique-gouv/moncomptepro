@@ -1,25 +1,25 @@
-import { NextFunction, Request, Response } from 'express';
-import getNotificationsFromRequest from '../../services/get-notifications-from-request';
-import { z, ZodError } from 'zod';
-import { updatePersonalInformations } from '../../managers/user';
+import { NextFunction, Request, Response } from "express";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
+import { z, ZodError } from "zod";
+import { updatePersonalInformations } from "../../managers/user";
 import {
   nameSchema,
   phoneNumberSchema,
-} from '../../services/custom-zod-schemas';
+} from "../../services/custom-zod-schemas";
 import {
   getUserFromLoggedInSession,
   updateUserInLoggedInSession,
-} from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
+} from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getPersonalInformationsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = getUserFromLoggedInSession(req);
-    return res.render('user/personal-information', {
+    return res.render("user/personal-information", {
       given_name: user.given_name,
       family_name: user.family_name,
       phone_number: user.phone_number,
@@ -32,7 +32,7 @@ export const getPersonalInformationsController = async (
   }
 };
 export const getParamsForPostPersonalInformationsController = async (
-  req: Request
+  req: Request,
 ) => {
   const schema = z.object({
     body: z.object({
@@ -50,7 +50,7 @@ export const getParamsForPostPersonalInformationsController = async (
 export const postPersonalInformationsController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const {
@@ -64,7 +64,7 @@ export const postPersonalInformationsController = async (
         family_name,
         phone_number,
         job,
-      }
+      },
     );
 
     updateUserInLoggedInSession(req, updatedUser);
@@ -73,7 +73,7 @@ export const postPersonalInformationsController = async (
   } catch (error) {
     if (error instanceof ZodError) {
       return res.redirect(
-        `/users/personal-information?notification=invalid_personal_informations`
+        `/users/personal-information?notification=invalid_personal_informations`,
       );
     }
 

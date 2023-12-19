@@ -1,13 +1,13 @@
-import { KoaContextWithOIDC } from 'oidc-provider';
-import { NextFunction } from 'express';
-import { recordNewConnection } from '../managers/oidc-client';
-import * as Sentry from '@sentry/node';
+import { KoaContextWithOIDC } from "oidc-provider";
+import { NextFunction } from "express";
+import { recordNewConnection } from "../managers/oidc-client";
+import * as Sentry from "@sentry/node";
 
 // this is not an express middleware but an oidc-provider middleware as described here:
 // https://github.com/panva/node-oidc-provider/blob/v7.x/docs/README.md#pre--and-post-middlewares
 export const connectionCountMiddleware = async (
   ctx: KoaContextWithOIDC,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   // We do not have enough testing tools to properly cover this.
   // We developed it by manually testing the following user journey:
@@ -24,8 +24,8 @@ export const connectionCountMiddleware = async (
   // console.log(ctx.oidc.session?.accountId, 'ctx.oidc.session.accountId');
 
   if (
-    (ctx.oidc.route === 'authorization' && ctx.oidc.session?.accountId) ||
-    ctx.oidc.route === 'resume'
+    (ctx.oidc.route === "authorization" && ctx.oidc.session?.accountId) ||
+    ctx.oidc.route === "resume"
   ) {
     // we log a connection in 2 cases:
     // 1. a client ask for a connection and the oidcProvider answer back with an accountId
@@ -44,8 +44,8 @@ export const connectionCountMiddleware = async (
         // This is unexpected, we log it in sentry
         const err = new Error(
           `Connection ignored in count! session: ${JSON.stringify(
-            ctx.oidc.session
-          )}; client: ${JSON.stringify(ctx.oidc.client)}`
+            ctx.oidc.session,
+          )}; client: ${JSON.stringify(ctx.oidc.client)}`,
         );
         console.error(err);
         Sentry.captureException(err);

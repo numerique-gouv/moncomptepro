@@ -1,8 +1,8 @@
-import { getNewRedisClient } from '../../connectors/redis';
-import { SESSION_MAX_AGE_IN_SECONDS } from '../../config/env';
+import { getNewRedisClient } from "../../connectors/redis";
+import { SESSION_MAX_AGE_IN_SECONDS } from "../../config/env";
 
 const redisClient = getNewRedisClient({
-  keyPrefix: 'mcp:selected-organization:',
+  keyPrefix: "mcp:selected-organization:",
 });
 
 export const getSelectedOrganizationId = async (user_id: number) => {
@@ -12,12 +12,12 @@ export const getSelectedOrganizationId = async (user_id: number) => {
 
 export const setSelectedOrganizationId = async (
   user_id: number,
-  selectedOrganization: number
+  selectedOrganization: number,
 ) => {
   await redisClient.setex(
     user_id.toString(),
     SESSION_MAX_AGE_IN_SECONDS,
-    selectedOrganization
+    selectedOrganization,
   );
 };
 

@@ -1,13 +1,13 @@
 // heavily inspired from https://github.com/nowsecure/owasp-password-strength-test
 
 type errorCode =
-  | 'failedMinLength'
-  | 'failedMaxLength'
-  | 'failedThreeRepeatedChars'
-  | 'optionalLowercaseRequired'
-  | 'optionalUppercaseRequired'
-  | 'optionalNumberRequired'
-  | 'optionalSpecialCharRequired';
+  | "failedMinLength"
+  | "failedMaxLength"
+  | "failedThreeRepeatedChars"
+  | "optionalLowercaseRequired"
+  | "optionalUppercaseRequired"
+  | "optionalNumberRequired"
+  | "optionalSpecialCharRequired";
 
 interface Result {
   errors: errorCode[];
@@ -45,15 +45,15 @@ const tests = {
   required: [
     // enforce a minimum length
     (password: string, config: Config): errorCode | null =>
-      password.length < config.minLength ? 'failedMinLength' : null,
+      password.length < config.minLength ? "failedMinLength" : null,
 
     // enforce a maximum length
     (password: string, config: Config): errorCode | null =>
-      password.length > config.maxLength ? 'failedMaxLength' : null,
+      password.length > config.maxLength ? "failedMaxLength" : null,
 
     // forbid repeating characters
     (password: string, config: Config): errorCode | null =>
-      /(.)\1{2,}/.test(password) ? 'failedThreeRepeatedChars' : null,
+      /(.)\1{2,}/.test(password) ? "failedThreeRepeatedChars" : null,
   ],
 
   // An array of optional tests. These tests are "optional" in two senses:
@@ -68,26 +68,26 @@ const tests = {
   optional: [
     // require at least one lowercase letter
     (password: string, config: Config): errorCode | null =>
-      !/[a-z]/.test(password) ? 'optionalLowercaseRequired' : null,
+      !/[a-z]/.test(password) ? "optionalLowercaseRequired" : null,
 
     // require at least one uppercase letter
     (password: string, config: Config): errorCode | null =>
-      !/[A-Z]/.test(password) ? 'optionalUppercaseRequired' : null,
+      !/[A-Z]/.test(password) ? "optionalUppercaseRequired" : null,
 
     // require at least one number
     (password: string, config: Config): errorCode | null =>
-      !/[0-9]/.test(password) ? 'optionalNumberRequired' : null,
+      !/[0-9]/.test(password) ? "optionalNumberRequired" : null,
 
     // require at least one special character
     (password: string, config: Config): errorCode | null =>
-      !/[^A-Za-z0-9]/.test(password) ? 'optionalSpecialCharRequired' : null,
+      !/[^A-Za-z0-9]/.test(password) ? "optionalSpecialCharRequired" : null,
   ],
 };
 
 // This method tests password strength
 export const owaspPasswordStrengthTest = (
   password: string,
-  options: Partial<Config> = {}
+  options: Partial<Config> = {},
 ): Result => {
   const config = { ...defaultConfig, ...options };
   // create an object to store the test results

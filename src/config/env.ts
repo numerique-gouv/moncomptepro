@@ -2,36 +2,36 @@ export const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
   JWKS_PATH = `${__dirname}/../../jwks.json`,
-  SESSION_COOKIE_SECRET = '',
+  SESSION_COOKIE_SECRET = "",
   SENTRY_DSN,
   ACCESS_LOG_PATH,
   DEBOUNCE_API_KEY,
-  SENDINBLUE_API_KEY = '',
-  TEST_CONTACT_EMAIL = 'mairie@yopmail.com',
+  SENDINBLUE_API_KEY = "",
+  TEST_CONTACT_EMAIL = "mairie@yopmail.com",
   DATABASE_URL,
-  REDIS_URL = 'redis://:@127.0.0.1:6379',
+  REDIS_URL = "redis://:@127.0.0.1:6379",
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,
-  SUPPORT_EMAIL_ADDRESS = 'moncomptepro@beta.gouv.fr',
-  API_AUTH_USERNAME = 'admin',
-  API_AUTH_PASSWORD = 'admin',
+  SUPPORT_EMAIL_ADDRESS = "moncomptepro@beta.gouv.fr",
+  API_AUTH_USERNAME = "admin",
+  API_AUTH_PASSWORD = "admin",
 } = process.env;
 
 export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =
-  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === 'True';
+  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === "True";
 export const CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE =
-  process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE === 'True';
+  process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE === "True";
 export const CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE =
-  process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE === 'True';
-export const DO_NOT_SEND_MAIL = process.env.DO_NOT_SEND_MAIL === 'True';
-export const SECURE_COOKIES = (process.env.SECURE_COOKIES || 'true') === 'true';
+  process.env.CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE === "True";
+export const DO_NOT_SEND_MAIL = process.env.DO_NOT_SEND_MAIL === "True";
+export const SECURE_COOKIES = (process.env.SECURE_COOKIES || "true") === "true";
 export const DO_NOT_USE_ANNUAIRE_EMAILS =
-  process.env.DO_NOT_USE_ANNUAIRE_EMAILS === 'True';
-export const DO_NOT_RATE_LIMIT = process.env.DO_NOT_RATE_LIMIT === 'True';
+  process.env.DO_NOT_USE_ANNUAIRE_EMAILS === "True";
+export const DO_NOT_RATE_LIMIT = process.env.DO_NOT_RATE_LIMIT === "True";
 export const DISPLAY_TEST_ENV_WARNING =
-  process.env.DISPLAY_TEST_ENV_WARNING === 'True';
+  process.env.DISPLAY_TEST_ENV_WARNING === "True";
 export const DO_NOT_AUTHENTICATE_BROWSER =
-  process.env.DO_NOT_AUTHENTICATE_BROWSER === 'True';
+  process.env.DO_NOT_AUTHENTICATE_BROWSER === "True";
 
 const getNumberFromEnv = (name: string, defaultValue: number) => {
   const value = process.env[name];
@@ -39,37 +39,37 @@ const getNumberFromEnv = (name: string, defaultValue: number) => {
 };
 // we wait just enough to avoid nginx default timeout of 60 seconds
 export const HTTP_CLIENT_TIMEOUT = getNumberFromEnv(
-  'HTTP_CLIENT_TIMEOUT',
-  55 * 1000 // 55 seconds in milliseconds;
+  "HTTP_CLIENT_TIMEOUT",
+  55 * 1000, // 55 seconds in milliseconds;
 );
 export const SESSION_MAX_AGE_IN_SECONDS = getNumberFromEnv(
-  'SESSION_MAX_AGE_IN_SECONDS',
-  1 * 24 * 60 * 60 // 1 day in seconds
+  "SESSION_MAX_AGE_IN_SECONDS",
+  1 * 24 * 60 * 60, // 1 day in seconds
 );
 export const TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS = getNumberFromEnv(
-  'TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS',
-  3 * 30 * 24 * 60 * 60 // 3 months in seconds
+  "TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS",
+  3 * 30 * 24 * 60 * 60, // 3 months in seconds
 );
 export const RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES =
-  getNumberFromEnv('RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES', 60);
+  getNumberFromEnv("RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES", 60);
 export const VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES =
-  getNumberFromEnv('VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES', 60);
+  getNumberFromEnv("VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES", 60);
 export const MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES = getNumberFromEnv(
-  'MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES',
-  60
+  "MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES",
+  60,
 );
 export const MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES =
   getNumberFromEnv(
-    'MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES',
+    "MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES",
 
-    3 * 30 * 24 * 60 // 3 months in minutes
+    3 * 30 * 24 * 60, // 3 months in minutes
   );
 export const DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP =
   getNumberFromEnv(
-    'DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP',
-    30
+    "DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP",
+    30,
   );
 export const NOTIFY_ALL_MEMBER_LIMIT = getNumberFromEnv(
-  'NOTIFY_ALL_MEMBER_LIMIT',
-  50
+  "NOTIFY_ALL_MEMBER_LIMIT",
+  50,
 );

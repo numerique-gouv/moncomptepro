@@ -3,26 +3,26 @@ import {
   getInternalActiveUsers,
   getUserOrganizationLink,
   getUsers,
-} from '../../repositories/organization/getters';
-import { isEmpty, sampleSize } from 'lodash';
-import { findById as findUserById } from '../../repositories/user';
+} from "../../repositories/organization/getters";
+import { isEmpty, sampleSize } from "lodash";
+import { findById as findUserById } from "../../repositories/user";
 import {
   NotFoundError,
   UserAlreadyAskedForSponsorshipError,
   UserHasAlreadyBeenAuthenticatedByPeers,
-} from '../../config/errors';
-import { sendMail } from '../../connectors/sendinblue';
-import { updateUserOrganizationLink } from '../../repositories/organization/setters';
-import { getOrganizationById, getOrganizationsByUserId } from './main';
+} from "../../config/errors";
+import { sendMail } from "../../connectors/sendinblue";
+import { updateUserOrganizationLink } from "../../repositories/organization/setters";
+import { getOrganizationById, getOrganizationsByUserId } from "./main";
 import {
   createModeration,
   findPendingModeration,
-} from '../../repositories/moderation';
+} from "../../repositories/moderation";
 import {
   DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP,
   NOTIFY_ALL_MEMBER_LIMIT,
   SUPPORT_EMAIL_ADDRESS,
-} from '../../config/env';
+} from "../../config/env";
 
 export const isEligibleToSponsorship = async ({
   id,
@@ -43,13 +43,13 @@ export const isEligibleToSponsorship = async ({
     // Unité non employeuse (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)
     NN: null,
     // 0 salarié (n'ayant pas d'effectif au 31/12 mais ayant employé des salariés au cours de l'année de référence)
-    '00': null,
+    "00": null,
     // 1 ou 2 salariés
-    '01': null,
+    "01": null,
     // 3 à 5 salariés
-    '02': null,
+    "02": null,
     // 6 à 9 salariés
-    '03': null,
+    "03": null,
     // 10 à 19 salariés
     11: null,
     // 20 à 49 salariés
@@ -107,21 +107,21 @@ export const notifyAllMembers = async ({
   // Email organization members of the organization
   const internalActiveUsers = await getInternalActiveUsers(organization_id);
   const otherInternalUsers = internalActiveUsers.filter(
-    ({ email: e }) => e !== email
+    ({ email: e }) => e !== email,
   );
   if (otherInternalUsers.length > 0) {
     const user_label =
       !given_name && !family_name ? email : `${given_name} ${family_name}`;
     const otherInternalUsersSample = sampleSize(
       otherInternalUsers,
-      NOTIFY_ALL_MEMBER_LIMIT
+      NOTIFY_ALL_MEMBER_LIMIT,
     );
     await sendMail({
       to: otherInternalUsersSample.map(({ email }) => email),
-      subject: 'Votre organisation sur MonComptePro',
-      template: 'join-organization',
+      subject: "Votre organisation sur MonComptePro",
+      template: "join-organization",
       params: { user_label, libelle: cached_libelle, email, is_external },
-      senderEmail: 'notifications@moncomptepro.beta.gouv.fr',
+      senderEmail: "notifications@moncomptepro.beta.gouv.fr",
     });
   }
 
@@ -130,13 +130,13 @@ export const notifyAllMembers = async ({
   const usersInOrganization = await getUsers(organization_id);
   const otherUsers = usersInOrganization.filter(
     ({ email: e, authentication_by_peers_type }) =>
-      e !== email && !!authentication_by_peers_type
+      e !== email && !!authentication_by_peers_type,
   );
   if (!is_external && otherUsers.length > 0) {
     await sendMail({
       to: [email],
-      subject: 'Votre organisation sur MonComptePro',
-      template: 'organization-welcome',
+      subject: "Votre organisation sur MonComptePro",
+      template: "organization-welcome",
       params: {
         given_name,
         family_name,
@@ -147,7 +147,7 @@ export const notifyAllMembers = async ({
   }
 
   return await updateUserOrganizationLink(organization_id, user_id, {
-    authentication_by_peers_type: 'all_members_notified',
+    authentication_by_peers_type: "all_members_notified",
   });
 };
 export const greetForJoiningOrganization = async ({
@@ -159,7 +159,7 @@ export const greetForJoiningOrganization = async ({
 }) => {
   const userOrganisations = await getOrganizationsByUserId(user_id);
   const organization = userOrganisations.find(
-    ({ id }) => id === organization_id
+    ({ id }) => id === organization_id,
   );
 
   if (isEmpty(organization)) {
@@ -171,8 +171,8 @@ export const greetForJoiningOrganization = async ({
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
     to: [email],
-    subject: 'Votre compte MonComptePro a bien été créé',
-    template: 'welcome',
+    subject: "Votre compte MonComptePro a bien été créé",
+    template: "welcome",
     params: { given_name, family_name, email },
   });
 
@@ -239,8 +239,8 @@ export const chooseSponsor = async ({
 
   await sendMail({
     to: [sponsor.email],
-    subject: 'Connaissez-vous ce nouveau membre ?',
-    template: 'choose-sponsor',
+    subject: "Connaissez-vous ce nouveau membre ?",
+    template: "choose-sponsor",
     params: {
       given_name: user.given_name,
       family_name: user.family_name,
@@ -256,7 +256,7 @@ export const chooseSponsor = async ({
   // We email the sponsor only for him to be notified.
   // We log the sponsor decision, it has no influence on the user being able to connect for now.
   return await updateUserOrganizationLink(organization_id, user_id, {
-    authentication_by_peers_type: 'sponsored_by_member',
+    authentication_by_peers_type: "sponsored_by_member",
     sponsor_id,
   });
 };
@@ -328,7 +328,7 @@ export const askForSponsorship = async ({
   const pendingModeration = await findPendingModeration({
     user_id,
     organization_id,
-    type: 'ask_for_sponsorship',
+    type: "ask_for_sponsorship",
   });
   if (!isEmpty(pendingModeration)) {
     throw new UserAlreadyAskedForSponsorshipError(organization_id);
@@ -337,7 +337,7 @@ export const askForSponsorship = async ({
   await createModeration({
     user_id,
     organization_id,
-    type: 'ask_for_sponsorship',
+    type: "ask_for_sponsorship",
   });
   const { email, given_name, family_name } = user;
   const { cached_libelle, siret } = organization;
@@ -345,7 +345,7 @@ export const askForSponsorship = async ({
     to: [email],
     cc: [SUPPORT_EMAIL_ADDRESS],
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: 'unable-to-find-sponsor',
+    template: "unable-to-find-sponsor",
     params: {
       given_name,
       family_name,

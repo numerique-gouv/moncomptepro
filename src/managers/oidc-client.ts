@@ -2,16 +2,16 @@ import {
   addConnection,
   findByClientId,
   getByUserIdOrderedByConnectionCount,
-} from '../repositories/oidc-client';
-import { isEmpty, isString } from 'lodash';
-import { NotFoundError } from '../config/errors';
-import { KoaContextWithOIDC } from 'oidc-provider';
-import { mustReturnOneOrganizationInPayload } from '../services/must-return-one-organization-in-payload';
-import { getSelectedOrganizationId } from '../repositories/redis/selected-organization';
-import * as Sentry from '@sentry/node';
+} from "../repositories/oidc-client";
+import { isEmpty, isString } from "lodash";
+import { NotFoundError } from "../config/errors";
+import { KoaContextWithOIDC } from "oidc-provider";
+import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import * as Sentry from "@sentry/node";
 
 export const getClientsOrderedByConnectionCount = async (
-  user_id: number
+  user_id: number,
 ): Promise<OidcClient[]> => {
   return await getByUserIdOrderedByConnectionCount(user_id);
 };
@@ -23,8 +23,8 @@ export const recordNewConnection = async ({
 }: {
   accountId: string;
   // tricky way to get the non exported Client type
-  client: NonNullable<KoaContextWithOIDC['oidc']['client']>;
-  params: KoaContextWithOIDC['oidc']['params'];
+  client: NonNullable<KoaContextWithOIDC["oidc"]["client"]>;
+  params: KoaContextWithOIDC["oidc"]["params"];
 }): Promise<Connection> => {
   const user_id = parseInt(accountId, 10);
 
@@ -35,7 +35,7 @@ export const recordNewConnection = async ({
   }
   const oidc_client_id = oidc_client.id;
 
-  let organization_id: BaseConnection['organization_id'] = null;
+  let organization_id: BaseConnection["organization_id"] = null;
   const scope = params?.scope;
   if (isString(scope) && mustReturnOneOrganizationInPayload(scope)) {
     try {

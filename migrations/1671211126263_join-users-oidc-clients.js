@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 CREATE TABLE users_oidc_clients (
     user_id int REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -13,7 +13,7 @@ CREATE TABLE users_oidc_clients (
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 DROP TABLE users_oidc_clients;
 `);

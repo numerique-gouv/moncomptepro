@@ -1,5 +1,5 @@
-import { getDatabaseConnection } from '../connectors/postgres';
-import { QueryResult } from 'pg';
+import { getDatabaseConnection } from "../connectors/postgres";
+import { QueryResult } from "pg";
 
 export const getClients = async () => {
   const connection = getDatabaseConnection();
@@ -51,7 +51,7 @@ SELECT
 FROM oidc_clients
 WHERE client_id = $1
 `,
-    [client_id]
+    [client_id],
   );
 
   return rows.shift();
@@ -92,7 +92,7 @@ FROM (
 INNER JOIN oidc_clients oc ON oc.id = uoc.oidc_client_id
 ORDER BY uoc.connection_count DESC, updated_at DESC
 `,
-    [user_id]
+    [user_id],
   );
 
   return rows;
@@ -112,7 +112,7 @@ INSERT INTO users_oidc_clients
 VALUES ($1, $2, $3, $4, $5)
 RETURNING user_id, oidc_client_id, organization_id, created_at, updated_at, id;
 `,
-    [user_id, oidc_client_id, organization_id, new Date(), new Date()]
+    [user_id, oidc_client_id, organization_id, new Date(), new Date()],
   );
 
   return rows.shift()!;

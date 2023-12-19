@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 CREATE TABLE organizations (
     id serial PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE UNIQUE INDEX index_organizations_on_siret ON organizations USING btree (s
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 DROP TABLE users_organizations;
 `);

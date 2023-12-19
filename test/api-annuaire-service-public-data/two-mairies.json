@@ -5,10 +5,7 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.12974023819,
-          45.0360565186
-        ]
+        "coordinates": [6.12974023819, 45.0360565186]
       },
       "properties": {
         "id": "b6947613-6ec3-4986-b27a-4137ae96425c",
@@ -18,9 +15,7 @@
         "adresses": [
           {
             "type": "Adresse",
-            "lignes": [
-              "48 avenue de la Muzelle"
-            ],
+            "lignes": ["48 avenue de la Muzelle"],
             "codePostal": "38860",
             "commune": "Les Deux Alpes"
           }
@@ -45,9 +40,7 @@
         "telephone": "04 76 79 24 24",
         "url": "http://www.mairie2alpes.fr",
         "zonage": {
-          "communes": [
-            "38253 Les Deux Alpes"
-          ]
+          "communes": ["38253 Les Deux Alpes"]
         }
       }
     },
@@ -55,10 +48,7 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.116463,
-          44.989936
-        ]
+        "coordinates": [6.116463, 44.989936]
       },
       "properties": {
         "id": "c93cb8a9-7535-44d6-bf28-36cc3f5fbc74",
@@ -68,10 +58,7 @@
         "adresses": [
           {
             "type": "Adresse",
-            "lignes": [
-              "5 rue du Câble",
-              "Venosc"
-            ],
+            "lignes": ["5 rue du Câble", "Venosc"],
             "codePostal": "38520",
             "commune": "Les Deux Alpes"
           }
@@ -96,9 +83,7 @@
         "telephone": "04 76 80 06 75",
         "url": "http://www.mairie2alpes.fr",
         "zonage": {
-          "communes": [
-            "38253 Les Deux Alpes"
-          ]
+          "communes": ["38253 Les Deux Alpes"]
         }
       }
     }

@@ -5,25 +5,25 @@ import {
   Response,
   Router,
   urlencoded,
-} from 'express';
+} from "express";
 import {
   getOrganizationInfoController,
   getPingApiSireneController,
   postForceJoinOrganizationController,
   postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
-} from '../controllers/api';
-import { apiRateLimiterMiddleware } from '../middlewares/rate-limiter';
-import { HttpError } from 'http-errors';
-import expressBasicAuth from 'express-basic-auth';
-import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../config/env';
-import nocache from 'nocache';
+} from "../controllers/api";
+import { apiRateLimiterMiddleware } from "../middlewares/rate-limiter";
+import { HttpError } from "http-errors";
+import expressBasicAuth from "express-basic-auth";
+import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from "../config/env";
+import nocache from "nocache";
 import {
   getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
   getVerifyAuthenticationController,
   getVerifyRegistrationController,
-} from '../controllers/webauthn';
+} from "../controllers/webauthn";
 
 export const apiRouter = () => {
   const apiRouter = Router();
@@ -33,41 +33,41 @@ export const apiRouter = () => {
   apiRouter.use(urlencoded({ extended: false }));
 
   apiRouter.get(
-    '/sirene/ping',
+    "/sirene/ping",
     apiRateLimiterMiddleware,
-    getPingApiSireneController
+    getPingApiSireneController,
   );
 
   apiRouter.get(
-    '/sirene/organization-info/:siret',
+    "/sirene/organization-info/:siret",
     apiRateLimiterMiddleware,
-    getOrganizationInfoController
+    getOrganizationInfoController,
   );
 
   apiRouter.use(
-    '/webauthn/generate-registration-options',
+    "/webauthn/generate-registration-options",
     apiRateLimiterMiddleware,
-    getGenerateRegistrationOptionsController
+    getGenerateRegistrationOptionsController,
   );
 
   apiRouter.use(
-    '/webauthn/verify-registration',
+    "/webauthn/verify-registration",
     json({ inflate: true }),
     apiRateLimiterMiddleware,
-    getVerifyRegistrationController
+    getVerifyRegistrationController,
   );
 
   apiRouter.use(
-    '/webauthn/generate-authentication-options',
+    "/webauthn/generate-authentication-options",
     apiRateLimiterMiddleware,
-    getGenerateAuthenticationOptionsController
+    getGenerateAuthenticationOptionsController,
   );
 
   apiRouter.use(
-    '/webauthn/verify-authentication',
+    "/webauthn/verify-authentication",
     json({ inflate: true }),
     apiRateLimiterMiddleware,
-    getVerifyAuthenticationController
+    getVerifyAuthenticationController,
   );
 
   const apiAdminRouter = Router();
@@ -76,22 +76,22 @@ export const apiRouter = () => {
     apiRateLimiterMiddleware,
     expressBasicAuth({
       users: { [API_AUTH_USERNAME]: API_AUTH_PASSWORD },
-    })
+    }),
   );
 
   apiAdminRouter.post(
-    '/join-organization',
-    postForceJoinOrganizationController
+    "/join-organization",
+    postForceJoinOrganizationController,
   );
 
   apiAdminRouter.post(
-    '/send-moderation-processed-email',
-    postSendModerationProcessedEmail
+    "/send-moderation-processed-email",
+    postSendModerationProcessedEmail,
   );
 
-  apiAdminRouter.post('/mark-domain-as-verified', postMarkDomainAsVerified);
+  apiAdminRouter.post("/mark-domain-as-verified", postMarkDomainAsVerified);
 
-  apiRouter.use('/admin', apiAdminRouter);
+  apiRouter.use("/admin", apiAdminRouter);
 
   apiRouter.use(
     async (err: HttpError, req: Request, res: Response, next: NextFunction) => {
@@ -102,7 +102,7 @@ export const apiRouter = () => {
       return res
         .status(statusCode)
         .json({ message: err.message || err.statusMessage });
-    }
+    },
   );
 
   return apiRouter;

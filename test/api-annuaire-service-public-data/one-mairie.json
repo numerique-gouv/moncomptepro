@@ -5,10 +5,7 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.86932469999,
-          45.9238165999
-        ]
+        "coordinates": [6.86932469999, 45.9238165999]
       },
       "properties": {
         "id": "4b3bd44a-f249-4a3c-8c54-b3479c3a2f92",
@@ -18,9 +15,7 @@
         "adresses": [
           {
             "type": "Adresse",
-            "lignes": [
-              "38 place de l'Église"
-            ],
+            "lignes": ["38 place de l'Église"],
             "codePostal": "74402",
             "commune": "Chamonix Cedex"
           }
@@ -45,9 +40,7 @@
         "telephone": "04 50 53 11 13",
         "url": "http://www.chamonix-mont-blanc.fr",
         "zonage": {
-          "communes": [
-            "74056 Chamonix-Mont-Blanc"
-          ]
+          "communes": ["74056 Chamonix-Mont-Blanc"]
         }
       }
     }

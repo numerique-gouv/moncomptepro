@@ -1,27 +1,27 @@
-import { isEmpty, isString } from 'lodash';
+import { isEmpty, isString } from "lodash";
 import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
-} from '../config/errors';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+} from "../config/errors";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
-} from '../config/env';
-import { isEmailValid } from '../services/security';
+} from "../config/env";
+import { isEmailValid } from "../services/security";
 
 type ApiAnnuaireEducationNationaleReponse = {
   total_count: number;
   links: {
-    rel: 'self' | 'first' | 'last';
+    rel: "self" | "first" | "last";
     // ex: "https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D19750663700010&limit=10&offset=0&include_app_metas=False&include_links=False"
     href: string;
   }[];
   records: {
     links: {
-      rel: 'self' | 'datasets' | 'dataset';
+      rel: "self" | "datasets" | "dataset";
       // ex: "https://data.education.gouv.fr/api/v2/catalog/datasets"
       href: string;
     }[];
@@ -64,11 +64,11 @@ type ApiAnnuaireEducationNationaleReponse = {
         // ex: null
         ecole_elementaire: string | null;
         // ex: '1'
-        voie_generale: '1' | '0';
+        voie_generale: "1" | "0";
         // ex: '1'
-        voie_technologique: '1' | '0';
+        voie_technologique: "1" | "0";
         // ex: '0'
-        voie_professionnelle: '1' | '0';
+        voie_professionnelle: "1" | "0";
         // ex: '01 45 22 76 95'
         telephone: string;
         // ex: '01 45 22 85 12'
@@ -84,33 +84,33 @@ type ApiAnnuaireEducationNationaleReponse = {
         // ex: 0
         ulis: number;
         // ex: '0'
-        apprentissage: '1' | '0';
+        apprentissage: "1" | "0";
         // ex: '0'
-        segpa: '1' | '0';
+        segpa: "1" | "0";
         // ex: '0'
-        section_arts: '1' | '0';
+        section_arts: "1" | "0";
         // ex: '0'
-        section_cinema: '1' | '0';
+        section_cinema: "1" | "0";
         // ex: '0'
-        section_theatre: '1' | '0';
+        section_theatre: "1" | "0";
         // ex: '0'
-        section_sport: '1' | '0';
+        section_sport: "1" | "0";
         // ex: '0'
-        section_internationale: '1' | '0';
+        section_internationale: "1" | "0";
         // ex: '1'
-        section_europeenne: '1' | '0';
+        section_europeenne: "1" | "0";
         // ex: '0'
-        lycee_agricole: '1' | '0';
+        lycee_agricole: "1" | "0";
         // ex: '0'
-        lycee_militaire: '1' | '0';
+        lycee_militaire: "1" | "0";
         // ex: '0'
-        lycee_des_metiers: '1' | '0';
+        lycee_des_metiers: "1" | "0";
         // ex: '1'
-        post_bac: '1' | '0';
+        post_bac: "1" | "0";
         // ex: null
         appartenance_education_prioritaire: null;
         // ex: '1'
-        greta: '1' | '0';
+        greta: "1" | "0";
         // ex: '19750663700010'
         siren_siret: string;
         // ex: 564
@@ -179,20 +179,20 @@ type ApiAnnuaireEducationNationaleReponse = {
 };
 
 export const getAnnuaireEducationNationaleContactEmail = async (
-  siret: string | null
+  siret: string | null,
 ): Promise<string> => {
   if (isEmpty(siret)) {
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let records: ApiAnnuaireEducationNationaleReponse['records'] = [];
+  let records: ApiAnnuaireEducationNationaleReponse["records"] = [];
   try {
     const { data }: AxiosResponse<ApiAnnuaireEducationNationaleReponse> =
       await axios({
-        method: 'GET',
+        method: "GET",
         url: `https://data.education.gouv.fr/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D${siret}`,
         headers: {
-          accept: 'application/json',
+          accept: "application/json",
         },
         timeout: HTTP_CLIENT_TIMEOUT,
       });
@@ -201,9 +201,9 @@ export const getAnnuaireEducationNationaleContactEmail = async (
   } catch (e) {
     if (
       e instanceof AxiosError &&
-      (e.code === 'ECONNABORTED' ||
-        e.code === 'ERR_BAD_RESPONSE' ||
-        e.code === 'EAI_AGAIN')
+      (e.code === "ECONNABORTED" ||
+        e.code === "ERR_BAD_RESPONSE" ||
+        e.code === "EAI_AGAIN")
     ) {
       throw new ApiAnnuaireConnectionError();
     }
@@ -211,7 +211,7 @@ export const getAnnuaireEducationNationaleContactEmail = async (
     throw e;
   }
 
-  let record: ApiAnnuaireEducationNationaleReponse['records'][0] | undefined;
+  let record: ApiAnnuaireEducationNationaleReponse["records"][0] | undefined;
 
   // We take the first établissement as every établissements are sharing the same SIRET.
   // We assume the first contact email is OK for every other établissements.
@@ -239,7 +239,7 @@ export const getAnnuaireEducationNationaleContactEmail = async (
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
     console.log(
-      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`
+      `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`,
     );
     return TEST_CONTACT_EMAIL;
   }

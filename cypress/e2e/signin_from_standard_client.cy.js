@@ -1,73 +1,73 @@
 const MONCOMPTEPRO_HOST =
-  Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
+  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
 
-describe('sign-in from standard client', () => {
-  it('should sign-in without org selection when having only one organization', function () {
+describe("sign-in from standard client", () => {
+  it("should sign-in without org selection when having only one organization", function () {
     cy.visit(`http://localhost:4000`);
-    cy.get('button.moncomptepro-button').click();
+    cy.get("button.moncomptepro-button").click();
 
-    cy.get('[name="login"]').type('unused1@yopmail.com');
+    cy.get('[name="login"]').type("unused1@yopmail.com");
     cy.get('[type="submit"]').click();
 
-    cy.get('[name="password"]').type('password123');
+    cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains('Se connecter')
+      .contains("Se connecter")
       .click();
 
-    cy.contains('moncomptepro-standard-client');
-    cy.contains('unused1@yopmail.com');
-    cy.contains('Commune de lamalou-les-bains - Mairie');
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("unused1@yopmail.com");
+    cy.contains("Commune de lamalou-les-bains - Mairie");
 
     // then it should prompt for organization
-    cy.get('button#select-organization').click();
-    cy.contains('Votre organisation de rattachement');
-    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
-    cy.contains('moncomptepro-standard-client');
-    cy.contains('Commune de lamalou-les-bains - Mairie');
+    cy.get("button#select-organization").click();
+    cy.contains("Votre organisation de rattachement");
+    cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("Commune de lamalou-les-bains - Mairie");
 
     // then it should update userinfo
-    cy.contains('Jean1');
-    cy.get('button#update-userinfo').click();
-    cy.contains('Renseigner son identité');
-    cy.get('[name="family_name"]').type('Moustaki');
+    cy.contains("Jean1");
+    cy.get("button#update-userinfo").click();
+    cy.contains("Renseigner son identité");
+    cy.get('[name="family_name"]').type("Moustaki");
     cy.get('[type="submit"]').click();
-    cy.contains('moncomptepro-standard-client');
-    cy.contains('Moustaki');
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("Moustaki");
   });
 
-  it('should sign-in with org selection when having two organization', function () {
+  it("should sign-in with org selection when having two organization", function () {
     cy.visit(`http://localhost:4000`);
-    cy.get('button.moncomptepro-button').click();
+    cy.get("button.moncomptepro-button").click();
 
-    cy.get('[name="login"]').type('unused2@yopmail.com');
+    cy.get('[name="login"]').type("unused2@yopmail.com");
     cy.get('[type="submit"]').click();
 
-    cy.get('[name="password"]').type('password123');
+    cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains('Se connecter')
+      .contains("Se connecter")
       .click();
 
-    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').contains(
-      'Commune de lamalou-les-bains - Mairie'
+    cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
+      "Commune de lamalou-les-bains - Mairie",
     );
-    cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').contains(
-      'Commune de clamart - Mairie'
+    cy.get(".fr-grid-row .fr-col-12:last-child .fr-tile__link").contains(
+      "Commune de clamart - Mairie",
     );
 
-    cy.get('.fr-grid-row .fr-col-12:last-child .fr-tile__link').click();
+    cy.get(".fr-grid-row .fr-col-12:last-child .fr-tile__link").click();
 
-    cy.contains('moncomptepro-standard-client');
-    cy.contains('unused2@yopmail.com');
-    cy.contains('Commune de clamart - Mairie');
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("unused2@yopmail.com");
+    cy.contains("Commune de clamart - Mairie");
 
     // then it should prompt for organization
-    cy.get('button#select-organization').click();
-    cy.contains('Votre organisation de rattachement');
-    cy.get('.fr-grid-row .fr-col-12:first-child .fr-tile__link').click();
+    cy.get("button#select-organization").click();
+    cy.contains("Votre organisation de rattachement");
+    cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
 
-    cy.contains('moncomptepro-standard-client');
-    cy.contains('Commune de lamalou-les-bains - Mairie');
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("Commune de lamalou-les-bains - Mairie");
   });
 
-  it('should prompt for organization selection', function () {});
+  it("should prompt for organization selection", function () {});
 });

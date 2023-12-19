@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE moderations
 ALTER COLUMN type TYPE character varying;
@@ -8,7 +8,7 @@ DROP TYPE moderation_type;
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 CREATE TYPE moderation_type AS ENUM('organization_join_block');
 ALTER TABLE moderations
