@@ -1,11 +1,11 @@
-import { capitalize, isEmpty } from 'lodash';
-import { categoriesJuridiques } from './categories-juridiques';
-import { codesEffectifs } from './codes-effectifs';
-import { codesNaf } from './codes-naf';
-import { codesVoies } from './codes-voie';
+import { capitalize, isEmpty } from "lodash";
+import { categoriesJuridiques } from "./categories-juridiques";
+import { codesEffectifs } from "./codes-effectifs";
+import { codesNaf } from "./codes-naf";
+import { codesVoies } from "./codes-voie";
 
 export const formatEnseigne = (...args) =>
-  capitalize(args.filter(e => !isEmpty(e)).join(' ')) || '';
+  capitalize(args.filter((e) => !isEmpty(e)).join(" ")) || "";
 
 export const formatNomComplet = ({
   denominationUniteLegale,
@@ -16,29 +16,31 @@ export const formatNomComplet = ({
 }) => {
   const formattedFirstName = formatFirstNames([prenomUsuelUniteLegale]);
   const formattedName = formatNameFull(nomUniteLegale, nomUsageUniteLegale);
-  return `${capitalize(denominationUniteLegale) ||
-    [formattedFirstName, formattedName].filter(e => !!e).join(' ') ||
-    'Nom inconnu'}${sigleUniteLegale ? ` (${sigleUniteLegale})` : ''}`;
+  return `${
+    capitalize(denominationUniteLegale) ||
+    [formattedFirstName, formattedName].filter((e) => !!e).join(" ") ||
+    "Nom inconnu"
+  }${sigleUniteLegale ? ` (${sigleUniteLegale})` : ""}`;
 };
 
-export const formatNameFull = (nomPatronymique = '', nomUsage = '') => {
+export const formatNameFull = (nomPatronymique = "", nomUsage = "") => {
   if (nomUsage && nomPatronymique) {
     return `${capitalize(nomUsage)} (${capitalize(nomPatronymique)})`;
   }
-  return capitalize(nomUsage || nomPatronymique || '');
+  return capitalize(nomUsage || nomPatronymique || "");
 };
 
 export const formatFirstNames = (firstNames, nameCount = 0) => {
-  const formatted = firstNames.map(capitalize).filter(name => !!name);
+  const formatted = firstNames.map(capitalize).filter((name) => !!name);
   if (nameCount > 0 && nameCount < firstNames.length) {
-    return formatted.slice(0, nameCount).join(', ');
+    return formatted.slice(0, nameCount).join(", ");
   }
-  return formatted.join(', ');
+  return formatted.join(", ");
 };
 
-const wrapWord = (word, punct = ' ', caps = false) => {
+const wrapWord = (word, punct = " ", caps = false) => {
   if (!word) {
-    return '';
+    return "";
   }
   if (caps) {
     return capitalize(word) + punct;
@@ -46,7 +48,7 @@ const wrapWord = (word, punct = ' ', caps = false) => {
   return word.toString().toLowerCase() + punct;
 };
 
-const libelleFromTypeVoie = codeVoie => {
+const libelleFromTypeVoie = (codeVoie) => {
   return codesVoies[codeVoie] || codeVoie;
 };
 
@@ -78,44 +80,44 @@ export const formatAdresseEtablissement = ({
     !codePaysEtrangerEtablissement &&
     !libellePaysEtrangerEtablissement
   ) {
-    return '';
+    return "";
   }
 
   const fullLibelleFromTypeVoie = libelleFromTypeVoie(typeVoieEtablissement);
 
   return [
-    wrapWord(complementAdresseEtablissement, ', ', true),
+    wrapWord(complementAdresseEtablissement, ", ", true),
     wrapWord(numeroVoieEtablissement),
     wrapWord(indiceRepetitionEtablissement),
     wrapWord(fullLibelleFromTypeVoie),
-    wrapWord(libelleVoieEtablissement, ', '),
-    wrapWord(distributionSpecialeEtablissement, ', '),
+    wrapWord(libelleVoieEtablissement, ", "),
+    wrapWord(distributionSpecialeEtablissement, ", "),
     wrapWord(codePostalEtablissement || codeCedexEtablissement),
     wrapWord(
       libelleCommuneEtablissement ||
         libelleCedexEtablissement ||
         libelleCommuneEtrangerEtablissement,
-      '',
-      true
+      "",
+      true,
     ),
     libellePaysEtrangerEtablissement
-      ? `, ${wrapWord(libellePaysEtrangerEtablissement, '', true)}`
-      : '',
-  ].join('');
+      ? `, ${wrapWord(libellePaysEtrangerEtablissement, "", true)}`
+      : "",
+  ].join("");
 };
 
-export const libelleFromCodeNaf = (codeNaf = '', addCode = true) => {
-  const label = codesNaf[codeNaf] || 'Activité inconnue';
+export const libelleFromCodeNaf = (codeNaf = "", addCode = true) => {
+  const label = codesNaf[codeNaf] || "Activité inconnue";
   return addCode && codeNaf ? `${codeNaf} - ${label}` : label;
 };
 
-export const libelleFromCategoriesJuridiques = categorie =>
+export const libelleFromCategoriesJuridiques = (categorie) =>
   categoriesJuridiques[categorie] || null;
 
 export const libelleFromCodeEffectif = (
   codeEffectif,
   anneeEffectif,
-  characterEmployeurUniteLegale
+  characterEmployeurUniteLegale,
 ) => {
   const libelle = codesEffectifs[codeEffectif];
 
@@ -125,8 +127,8 @@ export const libelleFromCodeEffectif = (
   if (libelle) {
     return libelle;
   }
-  if (characterEmployeurUniteLegale === 'N') {
-    return 'Unité non employeuse';
+  if (characterEmployeurUniteLegale === "N") {
+    return "Unité non employeuse";
   }
   return null;
 };

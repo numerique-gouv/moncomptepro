@@ -1,13 +1,13 @@
-const { isFree } = require('is-disposable-email-domain');
-const { isEmpty } = require('lodash');
+const { isFree } = require("is-disposable-email-domain");
+const { isEmpty } = require("lodash");
 
 const doNotValidateMail =
-  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === 'True';
+  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === "True";
 
 exports.shorthands = undefined;
 
 exports.up = async (pgm) => {
-  console.log('Start removing free email provider domains...');
+  console.log("Start removing free email provider domains...");
   let i = 0;
 
   while (true) {
@@ -22,7 +22,7 @@ SELECT
     external_verified_email_domains
 FROM organizations
 ORDER BY id LIMIT 1 OFFSET $1`,
-      [i]
+      [i],
     );
 
     if (isEmpty(results)) {
@@ -40,17 +40,17 @@ ORDER BY id LIMIT 1 OFFSET $1`,
     ] = results;
 
     authorized_email_domains = authorized_email_domains.filter(
-      (d) => doNotValidateMail || !isFree(d)
+      (d) => doNotValidateMail || !isFree(d),
     );
     external_authorized_email_domains =
       external_authorized_email_domains.filter(
-        (d) => doNotValidateMail || !isFree(d)
+        (d) => doNotValidateMail || !isFree(d),
       );
     verified_email_domains = verified_email_domains.filter(
-      (d) => doNotValidateMail || !isFree(d)
+      (d) => doNotValidateMail || !isFree(d),
     );
     external_verified_email_domains = external_verified_email_domains.filter(
-      (d) => doNotValidateMail || !isFree(d)
+      (d) => doNotValidateMail || !isFree(d),
     );
 
     await pgm.db.query(
@@ -68,13 +68,13 @@ WHERE id = $1`,
         external_authorized_email_domains,
         verified_email_domains,
         external_verified_email_domains,
-      ]
+      ],
     );
 
     i++;
   }
 
-  console.log('Free email provider domains removed!');
+  console.log("Free email provider domains removed!");
 };
 
 exports.down = () => {};

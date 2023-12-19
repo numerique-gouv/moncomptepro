@@ -1,31 +1,31 @@
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 // @ts-ignore
-import RedisStore from 'connect-redis';
-import express, { NextFunction, Request, Response } from 'express';
-import session from 'express-session';
-import fs from 'fs';
+import RedisStore from "connect-redis";
+import express, { NextFunction, Request, Response } from "express";
+import session from "express-session";
+import fs from "fs";
 // @ts-ignore
-import helmet from 'helmet';
-import { Server } from 'http';
-import morgan from 'morgan';
-import Provider from 'oidc-provider';
-import path from 'path';
-import oidcProviderRepository from './repositories/redis/oidc-provider';
-import { getNewRedisClient } from './connectors/redis';
-import { oidcProviderConfiguration } from './config/oidc-provider-configuration';
-import { getClients } from './repositories/oidc-client';
-import { apiRouter } from './routers/api';
-import { interactionRouter } from './routers/interaction';
-import { mainRouter } from './routers/main';
-import { userRouter } from './routers/user';
+import helmet from "helmet";
+import { Server } from "http";
+import morgan from "morgan";
+import Provider from "oidc-provider";
+import path from "path";
+import oidcProviderRepository from "./repositories/redis/oidc-provider";
+import { getNewRedisClient } from "./connectors/redis";
+import { oidcProviderConfiguration } from "./config/oidc-provider-configuration";
+import { getClients } from "./repositories/oidc-client";
+import { apiRouter } from "./routers/api";
+import { interactionRouter } from "./routers/interaction";
+import { mainRouter } from "./routers/main";
+import { userRouter } from "./routers/user";
 import {
   ejsLayoutMiddlewareFactory,
   renderWithEjsLayout,
-} from './services/renderer';
-import { HttpError } from 'http-errors';
-import { ZodError } from 'zod';
-import { connectionCountMiddleware } from './middlewares/connection-count';
-import { isNull, omitBy } from 'lodash';
+} from "./services/renderer";
+import { HttpError } from "http-errors";
+import { ZodError } from "zod";
+import { connectionCountMiddleware } from "./middlewares/connection-count";
+import { isNull, omitBy } from "lodash";
 import {
   ACCESS_LOG_PATH,
   JWKS_PATH,
@@ -35,9 +35,9 @@ import {
   SENTRY_DSN,
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
-} from './config/env';
-import { trustedBrowserMiddleware } from './managers/browser-authentication';
-import { jsonParseWithDate } from './services/json-parse-with-date';
+} from "./config/env";
+import { trustedBrowserMiddleware } from "./managers/browser-authentication";
+import { jsonParseWithDate } from "./services/json-parse-with-date";
 
 const jwks = require(JWKS_PATH);
 
@@ -56,22 +56,22 @@ app.use(
   helmet({
     hsts: false,
     frameguard: false,
-  })
+  }),
 );
 
 app.use((req, res, next) => {
   const cspConfig = {
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", 'data:', 'stats.data.gouv.fr'],
-      connectSrc: ["'self'", 'stats.data.gouv.fr'],
-      scriptSrc: ["'self'", 'stats.data.gouv.fr'],
+      imgSrc: ["'self'", "data:", "stats.data.gouv.fr"],
+      connectSrc: ["'self'", "stats.data.gouv.fr"],
+      scriptSrc: ["'self'", "stats.data.gouv.fr"],
       styleSrc: ["'self'"],
-      fontSrc: ["'self'", 'data:'],
+      fontSrc: ["'self'", "data:"],
       // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
       // and seems not useful for open id provider redirection.
       // We bypass this security for now.
-      formAction: ["'self'", '*'],
+      formAction: ["'self'", "*"],
     },
   };
 
@@ -80,37 +80,37 @@ app.use((req, res, next) => {
 
 // Disable etag globally to avoid triggering invalid csrf token error
 // Note that express.static always sends weak ETags.
-app.set('etag', false);
+app.set("etag", false);
 
 let morganOption = {};
 
 if (ACCESS_LOG_PATH) {
   morganOption = {
-    stream: fs.createWriteStream(ACCESS_LOG_PATH, { flags: 'a' }),
+    stream: fs.createWriteStream(ACCESS_LOG_PATH, { flags: "a" }),
   };
 }
 
-const logger = morgan('combined', morganOption);
+const logger = morgan("combined", morganOption);
 app.use(logger);
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 const sessionMiddleware =
   // @ts-ignore
   session({
     store: new RedisStore({
       client: getNewRedisClient(),
-      prefix: 'mcp:session:',
+      prefix: "mcp:session:",
       serializer: {
         parse: jsonParseWithDate,
         stringify: JSON.stringify,
       },
     }),
-    name: 'session',
+    name: "session",
     cookie: {
       maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
       secure: SECURE_COOKIES,
-      sameSite: 'lax',
+      sameSite: "lax",
     },
     secret: [SESSION_COOKIE_SECRET],
     // future default
@@ -129,8 +129,8 @@ app.use((req, res, next) => {
 
 app.use(trustedBrowserMiddleware);
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 let server: Server;
 
@@ -139,7 +139,7 @@ let server: Server;
 
   // the oidc provider expect provided client attributes to be not null if provided
   const clientsWithoutNullProperties = clients.map((client) =>
-    omitBy(client, isNull)
+    omitBy(client, isNull),
   );
 
   // @ts-ignore
@@ -157,30 +157,30 @@ let server: Server;
         Sentry.captureException(err);
       });
 
-      ctx.type = 'html';
-      ctx.body = await renderWithEjsLayout('error', {
+      ctx.type = "html";
+      ctx.body = await renderWithEjsLayout("error", {
         error_code: err.statusCode || err,
         error_message: `${error}: ${error_description}`,
       });
     },
     cookies: {
       names: {
-        session: 'oidc.session',
-        interaction: 'oidc.interaction',
-        resume: 'oidc.interaction_resume',
-        state: 'oidc.state',
+        session: "oidc.session",
+        interaction: "oidc.interaction",
+        resume: "oidc.interaction_resume",
+        state: "oidc.state",
       },
       long: {
         overwrite: true,
         signed: true,
         secure: SECURE_COOKIES,
-        sameSite: 'lax',
+        sameSite: "lax",
       },
       short: {
         overwrite: true,
         signed: true,
         secure: SECURE_COOKIES,
-        sameSite: 'lax',
+        sameSite: "lax",
       },
       keys: [SESSION_COOKIE_SECRET],
     },
@@ -192,36 +192,36 @@ let server: Server;
   oidcProvider.use(connectionCountMiddleware);
 
   app.use(
-    '/assets',
-    express.static('public', { maxAge: 7 * 24 * 60 * 60 * 1000 })
+    "/assets",
+    express.static("public", { maxAge: 7 * 24 * 60 * 60 * 1000 }),
   ); // 1 week in milliseconds
-  app.get('/favicon.ico', function (req, res, next) {
-    return res.sendFile('favicons/favicon.ico', {
-      root: 'public',
+  app.get("/favicon.ico", function (req, res, next) {
+    return res.sendFile("favicons/favicon.ico", {
+      root: "public",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
   });
 
-  app.use('/', mainRouter(app));
+  app.use("/", mainRouter(app));
   app.use(
-    '/interaction',
+    "/interaction",
     ejsLayoutMiddlewareFactory(app),
-    interactionRouter(oidcProvider)
+    interactionRouter(oidcProvider),
   );
-  app.use('/users', ejsLayoutMiddlewareFactory(app), userRouter());
-  app.use('/api', apiRouter());
+  app.use("/users", ejsLayoutMiddlewareFactory(app), userRouter());
+  app.use("/api", apiRouter());
 
   app.use((req, res, next) => {
-    if (req.url === '/.well-known/openid-configuration') {
-      req.url = '/oauth/.well-known/openid-configuration';
+    if (req.url === "/.well-known/openid-configuration") {
+      req.url = "/oauth/.well-known/openid-configuration";
     }
     next();
   });
-  app.use('/oauth', oidcProvider.callback());
+  app.use("/oauth", oidcProvider.callback());
 
   app.use(async (req, res, next) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.status(404).send(await renderWithEjsLayout('not-found-error'));
+    res.setHeader("Content-Type", "text/html");
+    res.status(404).send(await renderWithEjsLayout("not-found-error"));
   });
 
   // The error handler must be before any other error middleware and after all controllers
@@ -232,22 +232,22 @@ let server: Server;
       err: HttpError | ZodError,
       req: Request,
       res: Response,
-      next: NextFunction
+      next: NextFunction,
     ) => {
       console.error(err);
 
       if (err instanceof ZodError) {
-        return res.status(400).render('error', {
+        return res.status(400).render("error", {
           error_code: 400,
           error_message: err.message,
         });
       }
 
-      return res.status(err.statusCode || 500).render('error', {
+      return res.status(err.statusCode || 500).render("error", {
         error_code: err.statusCode || err,
         error_message: err.message,
       });
-    }
+    },
   );
 
   server = app.listen(PORT, () => {

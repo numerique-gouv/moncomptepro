@@ -1,7 +1,7 @@
-import { findById as findUserById } from '../repositories/user';
-import { sendMail } from '../connectors/sendinblue';
+import { findById as findUserById } from "../repositories/user";
+import { sendMail } from "../connectors/sendinblue";
 
-import { findById as findOrganizationById } from '../repositories/organization/getters';
+import { findById as findOrganizationById } from "../repositories/organization/getters";
 
 export const sendModerationProcessedEmail = async ({
   organization_id,
@@ -12,14 +12,13 @@ export const sendModerationProcessedEmail = async ({
 }): Promise<{ emailSent: boolean }> => {
   const { email } = (await findUserById(user_id))!;
 
-  const { cached_libelle, siret } = (await findOrganizationById(
-    organization_id
-  ))!;
+  const { cached_libelle, siret } =
+    (await findOrganizationById(organization_id))!;
 
   await sendMail({
     to: [email],
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: 'moderation-processed',
+    template: "moderation-processed",
     params: {
       libelle: cached_libelle || siret,
     },

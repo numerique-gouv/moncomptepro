@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash';
-import { isEmailSafeToSendTransactional } from '../connectors/debounce';
-import { sendMail } from '../connectors/sendinblue';
+import { isEmpty } from "lodash";
+import { isEmailSafeToSendTransactional } from "../connectors/debounce";
+import { sendMail } from "../connectors/sendinblue";
 import {
   EmailUnavailableError,
   EmailVerifiedAlreadyError,
@@ -11,7 +11,7 @@ import {
   LeakedPasswordError,
   UserNotFoundError,
   WeakPasswordError,
-} from '../config/errors';
+} from "../config/errors";
 
 import {
   create,
@@ -19,26 +19,26 @@ import {
   findByMagicLinkToken,
   findByResetPasswordToken,
   update,
-} from '../repositories/user';
-import { getDidYouMeanSuggestion } from '../services/did-you-mean';
-import { isExpired } from '../services/is-expired';
+} from "../repositories/user";
+import { getDidYouMeanSuggestion } from "../services/did-you-mean";
+import { isExpired } from "../services/is-expired";
 import {
   generatePinToken,
   generateToken,
   hashPassword,
   isPasswordSecure,
   validatePassword,
-} from '../services/security';
-import { hasPasswordBeenPwned } from '../connectors/pwnedpasswords';
+} from "../services/security";
+import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
   RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-} from '../config/env';
+} from "../config/env";
 
 export const startLogin = async (
-  email: string
+  email: string,
 ): Promise<{ email: string; userExists: boolean }> => {
   const userExists = !isEmpty(await findByEmail(email));
 
@@ -46,9 +46,8 @@ export const startLogin = async (
     return { email, userExists: true };
   }
 
-  let { isEmailSafeToSend, didYouMean } = await isEmailSafeToSendTransactional(
-    email
-  );
+  let { isEmailSafeToSend, didYouMean } =
+    await isEmailSafeToSendTransactional(email);
 
   if (!isEmailSafeToSend) {
     if (!didYouMean) {
@@ -80,7 +79,7 @@ export const login = async (email: string, password: string): Promise<User> => {
 
 export const signup = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<User> => {
   const user = await findByEmail(email);
 
@@ -124,7 +123,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
   const renewalNeeded = isExpired(
     user.email_verified_at,
-    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
   );
 
   if (isBrowserTrusted && user.email_verified && !renewalNeeded) {
@@ -133,7 +132,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
   const isTokenExpired = isExpired(
     user.verify_email_sent_at,
-    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   );
 
   if (!(force || isTokenExpired)) {
@@ -149,8 +148,8 @@ export const sendEmailAddressVerificationEmail = async ({
 
   await sendMail({
     to: [user.email],
-    subject: 'Vérification de votre adresse email',
-    template: 'verify-email',
+    subject: "Vérification de votre adresse email",
+    template: "verify-email",
     params: {
       verify_email_token,
     },
@@ -161,7 +160,7 @@ export const sendEmailAddressVerificationEmail = async ({
 
 export const verifyEmail = async (
   email: string,
-  token: string
+  token: string,
 ): Promise<User> => {
   const user = await findByEmail(email);
 
@@ -175,7 +174,7 @@ export const verifyEmail = async (
 
   const isTokenExpired = isExpired(
     user.verify_email_sent_at,
-    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   );
 
   if (isTokenExpired) {
@@ -191,7 +190,7 @@ export const verifyEmail = async (
 };
 
 export const needsEmailVerificationRenewal = async (
-  email: string
+  email: string,
 ): Promise<boolean> => {
   const user = await findByEmail(email);
 
@@ -201,13 +200,13 @@ export const needsEmailVerificationRenewal = async (
 
   return isExpired(
     user.email_verified_at,
-    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES
+    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
   );
 };
 
 export const sendSendMagicLinkEmail = async (
   email: string,
-  host: string
+  host: string,
 ): Promise<boolean> => {
   let user = await findByEmail(email);
 
@@ -226,8 +225,8 @@ export const sendSendMagicLinkEmail = async (
 
   await sendMail({
     to: [user.email],
-    subject: 'Lien de connexion à MonComptePro',
-    template: 'magic-link',
+    subject: "Lien de connexion à MonComptePro",
+    template: "magic-link",
     params: {
       magic_link: `${host}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
     },
@@ -250,7 +249,7 @@ export const loginWithMagicLink = async (token: string): Promise<User> => {
 
   const isTokenExpired = isExpired(
     user.magic_link_sent_at,
-    MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   );
 
   if (isTokenExpired) {
@@ -267,7 +266,7 @@ export const loginWithMagicLink = async (token: string): Promise<User> => {
 
 export const sendResetPasswordEmail = async (
   email: string,
-  host: string
+  host: string,
 ): Promise<boolean> => {
   const user = await findByEmail(email);
 
@@ -285,8 +284,8 @@ export const sendResetPasswordEmail = async (
 
   await sendMail({
     to: [user.email],
-    subject: 'Instructions pour la réinitialisation du mot de passe',
-    template: 'reset-password',
+    subject: "Instructions pour la réinitialisation du mot de passe",
+    template: "reset-password",
     params: {
       reset_password_link: `${host}/users/change-password?reset_password_token=${resetPasswordToken}`,
     },
@@ -297,7 +296,7 @@ export const sendResetPasswordEmail = async (
 
 export const changePassword = async (
   token: string,
-  password: string
+  password: string,
 ): Promise<User> => {
   // check that token as not the default empty value as it will match all users
   if (!token) {
@@ -312,7 +311,7 @@ export const changePassword = async (
 
   const isTokenExpired = isExpired(
     user.reset_password_sent_at,
-    RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES
+    RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   );
 
   if (isTokenExpired) {
@@ -345,7 +344,7 @@ export const updatePersonalInformations = async (
     family_name,
     phone_number,
     job,
-  }: Pick<User, 'given_name' | 'family_name' | 'phone_number' | 'job'>
+  }: Pick<User, "given_name" | "family_name" | "phone_number" | "job">,
 ): Promise<User> => {
   return await update(userId, {
     given_name,

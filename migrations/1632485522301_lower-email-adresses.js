@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
       UPDATE users
       SET email = LOWER(users.email)
@@ -34,4 +34,4 @@ exports.up = async pgm => {
 `);
 };
 
-exports.down = async pgm => {};
+exports.down = async (pgm) => {};

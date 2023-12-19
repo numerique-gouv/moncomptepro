@@ -1,7 +1,7 @@
-import { getDatabaseConnection } from '../connectors/postgres';
-import { QueryResult } from 'pg';
-import { Authenticator, BaseAuthenticator } from '../types/authenticator';
-import { decodeBase64URL, encodeBase64URL } from '../services/base64';
+import { getDatabaseConnection } from "../connectors/postgres";
+import { QueryResult } from "pg";
+import { Authenticator, BaseAuthenticator } from "../types/authenticator";
+import { decodeBase64URL, encodeBase64URL } from "../services/base64";
 
 export const getByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
@@ -12,7 +12,7 @@ export const getByUserId = async (user_id: number) => {
         FROM authenticators
         WHERE user_id = $1
     `,
-    [user_id]
+    [user_id],
   );
 
   return rows.map((auth) => ({
@@ -32,7 +32,7 @@ export const find = async (user_id: number, credential_id: Uint8Array) => {
         WHERE user_id = $1
           and credential_id = $2
     `,
-    [user_id, encodeBase64URL(credential_id)]
+    [user_id, encodeBase64URL(credential_id)],
   );
 
   return rows
@@ -81,7 +81,7 @@ export const createAuthenticator = async ({
       credential_device_type,
       credential_backed_up,
       transports,
-    ]
+    ],
   );
 
   return rows.shift()!;
@@ -89,7 +89,7 @@ export const createAuthenticator = async ({
 
 export const saveAuthenticatorCounter = async (
   credential_id: Uint8Array,
-  counter: number
+  counter: number,
 ) => {
   const connexion = getDatabaseConnection();
 
@@ -99,7 +99,7 @@ export const saveAuthenticatorCounter = async (
         SET counter = $2
         WHERE credential_id = $1
         RETURNING *`,
-    [encodeBase64URL(credential_id), counter]
+    [encodeBase64URL(credential_id), counter],
   );
 
   return rows.shift()!;

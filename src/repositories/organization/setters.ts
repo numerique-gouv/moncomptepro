@@ -1,6 +1,6 @@
-import { getDatabaseConnection } from '../../connectors/postgres';
-import { QueryResult } from 'pg';
-import { hashToPostgresParams } from '../../services/hash-to-postgres-params';
+import { getDatabaseConnection } from "../../connectors/postgres";
+import { QueryResult } from "pg";
+import { hashToPostgresParams } from "../../services/hash-to-postgres-params";
 
 export const upsert = async ({
   siret,
@@ -126,7 +126,7 @@ RETURNING *
       new Date(),
       new Date(),
       new Date(),
-    ]
+    ],
   );
 
   return rows.shift()!;
@@ -138,7 +138,7 @@ const addDomain = async ({
 }: {
   siret: string;
   domain: string;
-  listName: 'verified_email_domains' | 'authorized_email_domains';
+  listName: "verified_email_domains" | "authorized_email_domains";
 }) => {
   const connection = getDatabaseConnection();
 
@@ -150,7 +150,7 @@ SET ${listName} = array_append(${listName}, $2)
 WHERE siret = $1
 RETURNING *
     `,
-    [siret, domain, new Date()]
+    [siret, domain, new Date()],
   );
 
   return rows.shift()!;
@@ -166,7 +166,7 @@ export const addAuthorizedDomain = async ({
   return await addDomain({
     siret,
     domain,
-    listName: 'authorized_email_domains',
+    listName: "authorized_email_domains",
   });
 };
 
@@ -177,7 +177,7 @@ export const addVerifiedDomain = async ({
   siret: string;
   domain: string;
 }) => {
-  return await addDomain({ siret, domain, listName: 'verified_email_domains' });
+  return await addDomain({ siret, domain, listName: "verified_email_domains" });
 };
 
 export const linkUserToOrganization = async ({
@@ -190,8 +190,8 @@ export const linkUserToOrganization = async ({
   organization_id: number;
   user_id: number;
   is_external?: boolean;
-  verification_type: UserOrganizationLink['verification_type'];
-  needs_official_contact_email_verification?: UserOrganizationLink['needs_official_contact_email_verification'];
+  verification_type: UserOrganizationLink["verification_type"];
+  needs_official_contact_email_verification?: UserOrganizationLink["needs_official_contact_email_verification"];
 }): Promise<UserOrganizationLink> => {
   const connection = getDatabaseConnection();
 
@@ -216,7 +216,7 @@ RETURNING *`,
       needs_official_contact_email_verification,
       new Date(),
       new Date(),
-    ]
+    ],
   );
 
   return rows.shift()!;
@@ -225,7 +225,7 @@ RETURNING *`,
 export const updateUserOrganizationLink = async (
   organization_id: number,
   user_id: number,
-  fieldsToUpdate: Partial<BaseUserOrganizationLink>
+  fieldsToUpdate: Partial<BaseUserOrganizationLink>,
 ) => {
   const connection = getDatabaseConnection();
 
@@ -235,7 +235,7 @@ export const updateUserOrganizationLink = async (
   };
 
   const { paramsString, valuesString, values } = hashToPostgresParams<User>(
-    fieldsToUpdateWithTimestamps
+    fieldsToUpdateWithTimestamps,
   );
 
   const { rows }: QueryResult<UserOrganizationLink> = await connection.query(
@@ -243,7 +243,7 @@ export const updateUserOrganizationLink = async (
 UPDATE users_organizations SET ${paramsString} = ${valuesString}
 WHERE organization_id = $${values.length + 1}
 AND user_id = $${values.length + 2} RETURNING *`,
-    [...values, organization_id, user_id]
+    [...values, organization_id, user_id],
   );
 
   return rows.shift()!;
@@ -262,7 +262,7 @@ export const deleteUserOrganization = async ({
     `
 DELETE FROM users_organizations
 WHERE user_id = $1 AND organization_id = $2`,
-    [user_id, organization_id]
+    [user_id, organization_id],
   );
 
   return rowCount > 0;

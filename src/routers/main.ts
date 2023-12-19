@@ -1,4 +1,4 @@
-import { Express, Router, urlencoded } from 'express';
+import { Express, Router, urlencoded } from "express";
 import {
   getHelpController,
   getHomeController,
@@ -6,13 +6,13 @@ import {
   getPersonalInformationsController,
   getResetPasswordController,
   postPersonalInformationsController,
-} from '../controllers/main';
-import { ejsLayoutMiddlewareFactory } from '../services/renderer';
-import { checkUserHasAtLeastOneOrganizationMiddleware } from '../middlewares/user';
-import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
-import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
-import nocache from 'nocache';
-import { getPasskeysController } from '../controllers/webauthn';
+} from "../controllers/main";
+import { ejsLayoutMiddlewareFactory } from "../services/renderer";
+import { checkUserHasAtLeastOneOrganizationMiddleware } from "../middlewares/user";
+import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
+import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
+import nocache from "nocache";
+import { getPasskeysController } from "../controllers/webauthn";
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
@@ -20,65 +20,65 @@ export const mainRouter = (app: Express) => {
   mainRouter.use(nocache());
 
   mainRouter.get(
-    '/',
+    "/",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getHomeController
+    getHomeController,
   );
 
   mainRouter.get(
-    '/personal-information',
+    "/personal-information",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getPersonalInformationsController
+    getPersonalInformationsController,
   );
 
   mainRouter.post(
-    '/personal-information',
+    "/personal-information",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    postPersonalInformationsController
+    postPersonalInformationsController,
   );
 
   mainRouter.get(
-    '/manage-organizations',
+    "/manage-organizations",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getManageOrganizationsController
+    getManageOrganizationsController,
   );
 
   mainRouter.get(
-    '/reset-password',
+    "/reset-password",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getResetPasswordController
+    getResetPasswordController,
   );
 
   mainRouter.get(
-    '/passkeys',
+    "/passkeys",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
-    getPasskeysController
+    getPasskeysController,
   );
 
   mainRouter.get(
-    '/help',
+    "/help",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    getHelpController
+    getHelpController,
   );
 
   return mainRouter;

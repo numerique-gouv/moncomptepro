@@ -1,1 +1,1 @@
-declare module 'tld-extract';
+declare module "tld-extract";

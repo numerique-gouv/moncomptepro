@@ -1,1 +1,1 @@
-declare module 'is-disposable-email-domain';
+declare module "is-disposable-email-domain";

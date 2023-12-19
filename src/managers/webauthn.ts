@@ -3,12 +3,12 @@ import {
   find as findAuthenticator,
   getByUserId as getAuthenticatorsByUserId,
   saveAuthenticatorCounter,
-} from '../repositories/authenticator';
+} from "../repositories/authenticator";
 import {
   NotFoundError,
   WebauthnAuthenticationFailedError,
   WebauthnRegistrationFailedError,
-} from '../config/errors';
+} from "../config/errors";
 import {
   generateAuthenticationOptions,
   generateRegistrationOptions,
@@ -16,18 +16,18 @@ import {
   VerifiedRegistrationResponse,
   verifyAuthenticationResponse,
   verifyRegistrationResponse,
-} from '@simplewebauthn/server';
-import { findByEmail as findUserByEmail, update } from '../repositories/user';
-import { isEmpty } from 'lodash';
-import { MONCOMPTEPRO_HOST } from '../config/env';
+} from "@simplewebauthn/server";
+import { findByEmail as findUserByEmail, update } from "../repositories/user";
+import { isEmpty } from "lodash";
+import { MONCOMPTEPRO_HOST } from "../config/env";
 import {
   AuthenticationResponseJSON,
   RegistrationResponseJSON,
-} from '@simplewebauthn/server/esm/deps';
-import { decodeBase64URL, encodeBase64URL } from '../services/base64';
+} from "@simplewebauthn/server/esm/deps";
+import { decodeBase64URL, encodeBase64URL } from "../services/base64";
 
 // Human-readable title for your website
-const rpName = 'MonComptePro';
+const rpName = "MonComptePro";
 // A unique identifier for your website
 const rpID = new URL(MONCOMPTEPRO_HOST).host;
 // The URL at which registrations and authentications should occur
@@ -65,21 +65,21 @@ export const getRegistrationOptions = async (email: string) => {
     userName: user.email,
     // Don't prompt users for additional information about the authenticator
     // (Recommended for smoother UX)
-    attestationType: 'none',
+    attestationType: "none",
     // Prevent users from re-registering existing authenticators
     excludeCredentials: userAuthenticators.map((authenticator) => ({
       id: authenticator.credential_id,
-      type: 'public-key',
+      type: "public-key",
       // Optional
       transports: authenticator.transports || [],
     })),
     // See "Guiding use of authenticators via authenticatorSelection" below
     authenticatorSelection: {
       // Defaults
-      residentKey: 'preferred',
-      userVerification: 'preferred',
+      residentKey: "preferred",
+      userVerification: "preferred",
       // Optional
-      authenticatorAttachment: 'platform',
+      authenticatorAttachment: "platform",
     },
   });
 
@@ -165,10 +165,10 @@ export const getAuthenticationOptions = async (email: string | undefined) => {
     // Require users to use a previously-registered authenticator
     allowCredentials: userAuthenticators.map((authenticator) => ({
       id: authenticator.credential_id,
-      type: 'public-key',
+      type: "public-key",
       transports: authenticator.transports || [],
     })),
-    userVerification: 'preferred',
+    userVerification: "preferred",
   });
 
   // Remember the challenge for this user
@@ -199,7 +199,7 @@ export const verifyAuthentication = async ({
   // Retrieve an authenticator from the DB that should match the `id` in the returned credential
   const authenticator = await findAuthenticator(
     user.id,
-    decodeBase64URL(response.id)
+    decodeBase64URL(response.id),
   );
 
   if (isEmpty(authenticator)) {
@@ -240,7 +240,7 @@ export const verifyAuthentication = async ({
 
   await saveAuthenticatorCounter(
     authenticationInfo.credentialID,
-    authenticationInfo.newCounter
+    authenticationInfo.newCounter,
   );
 
   return { verified, user };

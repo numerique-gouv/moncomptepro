@@ -1,24 +1,24 @@
 // source https://github.com/panva/node-oidc-provider/blob/6fbcd71b08b8b8f381a97a82809de42c75904c6b/example/adapters/redis.js
-import { isEmpty } from 'lodash';
-import { getNewRedisClient } from '../../connectors/redis';
+import { isEmpty } from "lodash";
+import { getNewRedisClient } from "../../connectors/redis";
 
 const client = getNewRedisClient({
-  keyPrefix: 'oidc:',
+  keyPrefix: "oidc:",
 });
 
 const grantable = new Set([
-  'AccessToken',
-  'AuthorizationCode',
-  'RefreshToken',
-  'DeviceCode',
-  'BackchannelAuthenticationRequest',
+  "AccessToken",
+  "AuthorizationCode",
+  "RefreshToken",
+  "DeviceCode",
+  "BackchannelAuthenticationRequest",
 ]);
 
 const consumable = new Set([
-  'AuthorizationCode',
-  'RefreshToken',
-  'DeviceCode',
-  'BackchannelAuthenticationRequest',
+  "AuthorizationCode",
+  "RefreshToken",
+  "DeviceCode",
+  "BackchannelAuthenticationRequest",
 ]);
 
 function grantKeyFor(id: any) {
@@ -42,7 +42,7 @@ class RedisAdapter {
   async upsert(
     id: any,
     payload: { grantId: any; userCode: any; uid: any },
-    expiresIn: number
+    expiresIn: number,
   ) {
     const key = this.key(id);
     const store = consumable.has(this.name)
@@ -51,7 +51,7 @@ class RedisAdapter {
 
     const multi = client.multi();
     // @ts-ignore
-    multi[consumable.has(this.name) ? 'hmset' : 'set'](key, store);
+    multi[consumable.has(this.name) ? "hmset" : "set"](key, store);
 
     if (expiresIn) {
       multi.expire(key, expiresIn);
@@ -92,7 +92,7 @@ class RedisAdapter {
       return undefined;
     }
 
-    if (typeof data === 'string') {
+    if (typeof data === "string") {
       return JSON.parse(data);
     }
     // @ts-ignore
@@ -127,7 +127,7 @@ class RedisAdapter {
   }
 
   async consume(id: any) {
-    await client.hset(this.key(id), 'consumed', Math.floor(Date.now() / 1000));
+    await client.hset(this.key(id), "consumed", Math.floor(Date.now() / 1000));
   }
 
   key(id: any) {

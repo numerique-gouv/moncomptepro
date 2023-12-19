@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 import {
   DEBOUNCE_API_KEY,
   DO_NOT_CHECK_EMAIL_DELIVERABILITY,
   HTTP_CLIENT_TIMEOUT,
-} from '../config/env';
+} from "../config/env";
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
 type DebounceResponse = {
@@ -41,7 +41,7 @@ type EmailDebounceInfo = {
 };
 
 export const isEmailSafeToSendTransactional = async (
-  email: string
+  email: string,
 ): Promise<EmailDebounceInfo> => {
   if (DO_NOT_CHECK_EMAIL_DELIVERABILITY) {
     console.log(`Email address "${email}" not verified.`);
@@ -55,24 +55,24 @@ export const isEmailSafeToSendTransactional = async (
         debounce: { send_transactional, did_you_mean: didYouMean },
       },
     }: AxiosResponse<DebounceResponse> = await axios({
-      method: 'get',
+      method: "get",
       url: `https://api.debounce.io/v1/?email=${email}&api=${DEBOUNCE_API_KEY}`,
       headers: {
-        accept: 'application/json',
+        accept: "application/json",
       },
       timeout: HTTP_CLIENT_TIMEOUT,
     });
 
     console.log(
       `Email address "${email}" is ${
-        send_transactional === '1' ? '' : 'NOT '
-      }safe to send.${didYouMean ? ` Suggested email ${didYouMean}` : ''}`
+        send_transactional === "1" ? "" : "NOT "
+      }safe to send.${didYouMean ? ` Suggested email ${didYouMean}` : ""}`,
     );
 
-    return { isEmailSafeToSend: send_transactional === '1', didYouMean };
+    return { isEmailSafeToSend: send_transactional === "1", didYouMean };
   } catch (error) {
     console.error(error);
 
-    throw new Error('Error from Debounce API');
+    throw new Error("Error from Debounce API");
   }
 };

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from "axios";
 import {
   formatAdresseEtablissement,
   formatEnseigne,
@@ -6,14 +6,14 @@ import {
   libelleFromCategoriesJuridiques,
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
-} from './formatters';
-import { InseeConnectionError, InseeNotFoundError } from '../../config/errors';
+} from "./formatters";
+import { InseeConnectionError, InseeNotFoundError } from "../../config/errors";
 import {
   HTTP_CLIENT_TIMEOUT,
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,
-} from '../../config/env';
-import { cloneDeep, set } from 'lodash';
+} from "../../config/env";
+import { cloneDeep, set } from "lodash";
 
 type ApiInseeResponse = {
   etablissement: {
@@ -24,7 +24,7 @@ type ApiInseeResponse = {
     // ex: '21740056300011'
     siret: string;
     // ex: 'O'
-    statutDiffusionEtablissement: 'O' | 'P' | 'N';
+    statutDiffusionEtablissement: "O" | "P" | "N";
     // ex: '1983-03-01'
     dateCreationEtablissement: string;
     // ex: '32'
@@ -42,7 +42,7 @@ type ApiInseeResponse = {
       // ex: 'A'
       etatAdministratifUniteLegale: string;
       // ex: 'O'
-      statutDiffusionUniteLegale: 'O' | 'P' | 'N';
+      statutDiffusionUniteLegale: "O" | "P" | "N";
       // ex: '1982-01-01'
       dateCreationUniteLegale: string;
       // ex: '7210'
@@ -64,7 +64,7 @@ type ApiInseeResponse = {
       pseudonymeUniteLegale: string | null;
       // ex: '84.11Z'
       activitePrincipaleUniteLegale: string;
-      nomenclatureActivitePrincipaleUniteLegale: 'NAFRev2';
+      nomenclatureActivitePrincipaleUniteLegale: "NAFRev2";
       identifiantAssociationUniteLegale: string | null;
       // ex: 'N'
       economieSocialeSolidaireUniteLegale: string;
@@ -142,7 +142,7 @@ type ApiInseeResponse = {
       changementDenominationUsuelleEtablissement: boolean;
       // ex: '84.11Z'
       activitePrincipaleEtablissement: string;
-      nomenclatureActivitePrincipaleEtablissement: 'NAFRev2';
+      nomenclatureActivitePrincipaleEtablissement: "NAFRev2";
       // ex: true
       changementActivitePrincipaleEtablissement: boolean;
       // ex: 'O'
@@ -154,111 +154,111 @@ type ApiInseeResponse = {
 };
 
 const hideNonDiffusibleData = (
-  etablissement: ApiInseeResponse['etablissement']
-): ApiInseeResponse['etablissement'] => {
+  etablissement: ApiInseeResponse["etablissement"],
+): ApiInseeResponse["etablissement"] => {
   const hiddenEtablissement = cloneDeep(etablissement);
-  set(hiddenEtablissement, 'uniteLegale.denominationUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.sigleUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle1UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle2UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.denominationUsuelle3UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.sexeUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.nomUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.nomUsageUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.prenom1UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.prenom2UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.prenom3UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.prenom4UniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.prenomUsuelUniteLegale', null);
-  set(hiddenEtablissement, 'uniteLegale.pseudonymeUniteLegale', null);
+  set(hiddenEtablissement, "uniteLegale.denominationUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.sigleUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.denominationUsuelle1UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.denominationUsuelle2UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.denominationUsuelle3UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.sexeUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.nomUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.nomUsageUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.prenom1UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.prenom2UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.prenom3UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.prenom4UniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.prenomUsuelUniteLegale", null);
+  set(hiddenEtablissement, "uniteLegale.pseudonymeUniteLegale", null);
   set(
     hiddenEtablissement,
-    'adresseEtablissement.complementAdresseEtablissement',
-    null
+    "adresseEtablissement.complementAdresseEtablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresseEtablissement.numeroVoieEtablissement',
-    null
+    "adresseEtablissement.numeroVoieEtablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresseEtablissement.indiceRepetitionEtablissement',
-    null
+    "adresseEtablissement.indiceRepetitionEtablissement",
+    null,
   );
-  set(hiddenEtablissement, 'adresseEtablissement.typeVoieEtablissement', null);
+  set(hiddenEtablissement, "adresseEtablissement.typeVoieEtablissement", null);
   set(
     hiddenEtablissement,
-    'adresseEtablissement.libelleVoieEtablissement',
-    null
-  );
-  set(
-    hiddenEtablissement,
-    'adresse2Etablissement.complementAdresse2Etablissement',
-    null
+    "adresseEtablissement.libelleVoieEtablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresse2Etablissement.numeroVoie2Etablissement',
-    null
+    "adresse2Etablissement.complementAdresse2Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresse2Etablissement.indiceRepetition2Etablissement',
-    null
+    "adresse2Etablissement.numeroVoie2Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresse2Etablissement.typeVoie2Etablissement',
-    null
+    "adresse2Etablissement.indiceRepetition2Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'adresse2Etablissement.libelleVoie2Etablissement',
-    null
+    "adresse2Etablissement.typeVoie2Etablissement",
+    null,
+  );
+  set(
+    hiddenEtablissement,
+    "adresse2Etablissement.libelleVoie2Etablissement",
+    null,
   );
 
   set(
     hiddenEtablissement,
-    'periodesEtablissement.0.enseigne1Etablissement',
-    null
+    "periodesEtablissement.0.enseigne1Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'periodesEtablissement.0.enseigne2Etablissement',
-    null
+    "periodesEtablissement.0.enseigne2Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'periodesEtablissement.0.enseigne3Etablissement',
-    null
+    "periodesEtablissement.0.enseigne3Etablissement",
+    null,
   );
   set(
     hiddenEtablissement,
-    'periodesEtablissement.0.denominationUsuelleEtablissement',
-    null
+    "periodesEtablissement.0.denominationUsuelleEtablissement",
+    null,
   );
 
   return hiddenEtablissement;
 };
 
 export const getOrganizationInfo = async (
-  siret: string
+  siret: string,
 ): Promise<OrganizationInfo> => {
   try {
     const {
       data: { access_token },
     } = await axios.post(
-      'https://api.insee.fr/token',
-      'grant_type=client_credentials',
+      "https://api.insee.fr/token",
+      "grant_type=client_credentials",
       {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         auth: {
           username: INSEE_CONSUMER_KEY!,
           password: INSEE_CONSUMER_SECRET!,
         },
         timeout: HTTP_CLIENT_TIMEOUT,
-      }
+      },
     );
 
     let {
@@ -268,16 +268,16 @@ export const getOrganizationInfo = async (
       {
         headers: { Authorization: `Bearer ${access_token}` },
         timeout: HTTP_CLIENT_TIMEOUT,
-      }
+      },
     );
 
     const { statutDiffusionEtablissement } = etablissement;
 
-    if (statutDiffusionEtablissement === 'N') {
+    if (statutDiffusionEtablissement === "N") {
       throw new InseeNotFoundError();
     }
 
-    if (statutDiffusionEtablissement === 'P') {
+    if (statutDiffusionEtablissement === "P") {
       etablissement = hideNonDiffusibleData(etablissement);
     }
 
@@ -315,7 +315,7 @@ export const getOrganizationInfo = async (
     const enseigne = formatEnseigne(
       enseigne1Etablissement,
       enseigne2Etablissement,
-      enseigne3Etablissement
+      enseigne3Etablissement,
     );
 
     const nomComplet = formatNomComplet({
@@ -327,7 +327,7 @@ export const getOrganizationInfo = async (
     });
 
     const organizationLabel = `${nomComplet}${
-      enseigne ? ` - ${enseigne}` : ''
+      enseigne ? ` - ${enseigne}` : ""
     }`;
 
     return {
@@ -339,22 +339,22 @@ export const getOrganizationInfo = async (
       trancheEffectifsUniteLegale,
       libelleTrancheEffectif: libelleFromCodeEffectif(
         trancheEffectifsEtablissement,
-        anneeEffectifsEtablissement
+        anneeEffectifsEtablissement,
       ),
       etatAdministratif: etatAdministratifEtablissement,
-      estActive: etatAdministratifEtablissement === 'A',
+      estActive: etatAdministratifEtablissement === "A",
       statutDiffusion: statutDiffusionEtablissement,
-      estDiffusible: statutDiffusionEtablissement === 'O',
+      estDiffusible: statutDiffusionEtablissement === "O",
       adresse: formatAdresseEtablissement(adresseEtablissement),
       codePostal: codePostalEtablissement,
       codeOfficielGeographique: codeCommuneEtablissement,
       activitePrincipale: activitePrincipaleEtablissement,
       libelleActivitePrincipale: libelleFromCodeNaf(
-        activitePrincipaleEtablissement
+        activitePrincipaleEtablissement,
       ),
       categorieJuridique: categorieJuridiqueUniteLegale,
       libelleCategorieJuridique: libelleFromCategoriesJuridiques(
-        categorieJuridiqueUniteLegale
+        categorieJuridiqueUniteLegale,
       ),
     };
   } catch (e) {
@@ -368,9 +368,9 @@ export const getOrganizationInfo = async (
 
     if (
       e instanceof AxiosError &&
-      (e.code === 'ECONNABORTED' ||
-        e.code === 'ERR_BAD_RESPONSE' ||
-        e.code === 'EAI_AGAIN')
+      (e.code === "ECONNABORTED" ||
+        e.code === "ERR_BAD_RESPONSE" ||
+        e.code === "EAI_AGAIN")
     ) {
       throw new InseeConnectionError();
     }

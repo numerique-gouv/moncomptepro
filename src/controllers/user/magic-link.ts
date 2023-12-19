@@ -1,19 +1,19 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from "express";
 import {
   loginWithMagicLink,
   sendSendMagicLinkEmail,
-} from '../../managers/user';
-import { InvalidEmailError, InvalidMagicLinkError } from '../../config/errors';
-import { z, ZodError } from 'zod';
-import { MONCOMPTEPRO_HOST } from '../../config/env';
-import { createLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
-import { setBrowserAsTrustedForUser } from '../../managers/browser-authentication';
+} from "../../managers/user";
+import { InvalidEmailError, InvalidMagicLinkError } from "../../config/errors";
+import { z, ZodError } from "zod";
+import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { createLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
+import { setBrowserAsTrustedForUser } from "../../managers/browser-authentication";
 
 export const postSendMagicLinkController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     await sendSendMagicLinkEmail(req.session.email!, MONCOMPTEPRO_HOST);
@@ -31,11 +31,11 @@ export const postSendMagicLinkController = async (
 export const getMagicLinkSentController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const email = req.session.email;
-    return res.render('user/magic-link-sent', { email });
+    return res.render("user/magic-link-sent", { email });
   } catch (error) {
     next(error);
   }
@@ -44,7 +44,7 @@ export const getMagicLinkSentController = async (
 export const getSignInWithMagicLinkController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -69,23 +69,23 @@ export const getSignInWithMagicLinkController = async (
       // without being too annoying for legitimate users that just wanted to use a different browser.
       // Note that switching browser might not be a voluntary action from the user (ex: opening safari on macOS).
       // This mechanism also provides the user with a way to step back.
-      return res.render('user/sign-in-with-magic-link', {
+      return res.render("user/sign-in-with-magic-link", {
         csrfToken: csrfToken(req),
         magicLinkToken: magic_link_token,
       });
     }
 
-    return res.render('autosubmit-form', {
+    return res.render("autosubmit-form", {
       csrfToken: csrfToken(req),
-      actionLabel: 'Connexion...',
-      actionPath: '/users/sign-in-with-magic-link',
-      inputName: 'magic_link_token',
+      actionLabel: "Connexion...",
+      actionPath: "/users/sign-in-with-magic-link",
+      inputName: "magic_link_token",
       inputValue: magic_link_token,
     });
   } catch (error) {
     if (error instanceof ZodError) {
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_magic_link`
+        `/users/start-sign-in?notification=invalid_magic_link`,
       );
     }
 
@@ -96,7 +96,7 @@ export const getSignInWithMagicLinkController = async (
 export const postSignInWithMagicLinkController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -119,7 +119,7 @@ export const postSignInWithMagicLinkController = async (
   } catch (error) {
     if (error instanceof InvalidMagicLinkError || error instanceof ZodError) {
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_magic_link`
+        `/users/start-sign-in?notification=invalid_magic_link`,
       );
     }
 

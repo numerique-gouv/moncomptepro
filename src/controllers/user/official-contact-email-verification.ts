@@ -1,27 +1,27 @@
-import { NextFunction, Request, Response } from 'express';
-import { z, ZodError } from 'zod';
+import { NextFunction, Request, Response } from "express";
+import { z, ZodError } from "zod";
 import {
   idSchema,
   officialContactEmailVerificationTokenSchema,
   optionalBooleanSchema,
-} from '../../services/custom-zod-schemas';
+} from "../../services/custom-zod-schemas";
 import {
   sendOfficialContactEmailVerificationEmail,
   verifyOfficialContactEmailToken,
-} from '../../managers/organization/official-contact-email-verification';
-import getNotificationsFromRequest from '../../services/get-notifications-from-request';
+} from "../../managers/organization/official-contact-email-verification";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
-} from '../../config/errors';
-import { getUserFromLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
+} from "../../config/errors";
+import { getUserFromLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getOfficialContactEmailVerificationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -48,7 +48,7 @@ export const getOfficialContactEmailVerificationController = async (
         checkBeforeSend: true,
       });
 
-    return res.render('user/official-contact-email-verification', {
+    return res.render("user/official-contact-email-verification", {
       notifications: await getNotificationsFromRequest(req),
       contactEmail,
       csrfToken: csrfToken(req),
@@ -60,13 +60,13 @@ export const getOfficialContactEmailVerificationController = async (
   } catch (error) {
     if (error instanceof OfficialContactEmailVerificationNotNeededError) {
       return res.redirect(
-        `/users/join-organization?notification=official_contact_email_verification_not_needed`
+        `/users/join-organization?notification=official_contact_email_verification_not_needed`,
       );
     }
 
     if (error instanceof ApiAnnuaireError) {
       return res.redirect(
-        `/users/join-organization?notification=api_annuaire_error`
+        `/users/join-organization?notification=api_annuaire_error`,
       );
     }
 
@@ -77,7 +77,7 @@ export const getOfficialContactEmailVerificationController = async (
 export const postOfficialContactEmailVerificationMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -111,7 +111,7 @@ export const postOfficialContactEmailVerificationMiddleware = async (
       (error instanceof InvalidTokenError || error instanceof ZodError)
     ) {
       return res.redirect(
-        `/users/official-contact-email-verification/${req.params.organization_id}?notification=invalid_verify_email_code`
+        `/users/official-contact-email-verification/${req.params.organization_id}?notification=invalid_verify_email_code`,
       );
     }
 

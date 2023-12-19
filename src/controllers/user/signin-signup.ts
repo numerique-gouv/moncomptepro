@@ -1,26 +1,26 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from "express";
 import getNotificationsFromRequest, {
   getNotificationLabelFromRequest,
-} from '../../services/get-notifications-from-request';
-import { z, ZodError } from 'zod';
-import { login, signup, startLogin } from '../../managers/user';
+} from "../../services/get-notifications-from-request";
+import { z, ZodError } from "zod";
+import { login, signup, startLogin } from "../../managers/user";
 import {
   EmailUnavailableError,
   InvalidCredentialsError,
   InvalidEmailError,
   LeakedPasswordError,
   WeakPasswordError,
-} from '../../config/errors';
-import { emailSchema } from '../../services/custom-zod-schemas';
-import { createLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
-import * as Sentry from '@sentry/node';
-import { DISPLAY_TEST_ENV_WARNING } from '../../config/env';
+} from "../../config/errors";
+import { emailSchema } from "../../services/custom-zod-schemas";
+import { createLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
+import * as Sentry from "@sentry/node";
+import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 
 export const getStartSignInController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -38,9 +38,9 @@ export const getStartSignInController = async (
     const loginHint = req.session.loginHint || req.session.email;
 
     const hasEmailError =
-      (await getNotificationLabelFromRequest(req)) === 'invalid_email';
+      (await getNotificationLabelFromRequest(req)) === "invalid_email";
 
-    return res.render('user/start-sign-in', {
+    return res.render("user/start-sign-in", {
       notifications: !hasEmailError && (await getNotificationsFromRequest(req)),
       hasEmailError,
       didYouMean,
@@ -56,7 +56,7 @@ export const getStartSignInController = async (
 export const postStartSignInController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -74,21 +74,21 @@ export const postStartSignInController = async (
     const { email, userExists } = await startLogin(login);
     req.session.email = email;
 
-    return res.redirect(`/users/${userExists ? 'sign-in' : 'sign-up'}`);
+    return res.redirect(`/users/${userExists ? "sign-in" : "sign-up"}`);
   } catch (error) {
     if (error instanceof InvalidEmailError) {
       const didYouMeanQueryParam = error?.didYouMean
         ? `&did_you_mean=${error.didYouMean}`
-        : '';
+        : "";
 
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}${didYouMeanQueryParam}`
+        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}${didYouMeanQueryParam}`,
       );
     }
 
     if (error instanceof ZodError) {
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}`
+        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}`,
       );
     }
 
@@ -99,10 +99,10 @@ export const postStartSignInController = async (
 export const getSignInController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    return res.render('user/sign-in', {
+    return res.render("user/sign-in", {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
     });
@@ -114,7 +114,7 @@ export const getSignInController = async (
 export const postSignInMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -145,7 +145,7 @@ export const postSignInMiddleware = async (
 export const getSignUpController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -160,7 +160,7 @@ export const getSignUpController = async (
       query: req.query,
     });
 
-    return res.render('user/sign-up', {
+    return res.render("user/sign-up", {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
@@ -174,7 +174,7 @@ export const getSignUpController = async (
 export const postSignUpController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -196,7 +196,7 @@ export const postSignUpController = async (
   } catch (error) {
     if (error instanceof EmailUnavailableError) {
       return res.redirect(
-        `/users/start-sign-in?notification=email_unavailable`
+        `/users/start-sign-in?notification=email_unavailable`,
       );
     }
     if (error instanceof WeakPasswordError) {

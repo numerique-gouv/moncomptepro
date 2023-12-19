@@ -1,18 +1,18 @@
-const { isEmpty, difference } = require('lodash');
+const { isEmpty, difference } = require("lodash");
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   const { rows } = await pgm.db.query(
     `
 SELECT id FROM organizations
 WHERE NOT (authorized_email_domains @> verified_email_domains)
-ORDER BY id`
+ORDER BY id`,
   );
 
   const ids = rows.map(({ id }) => id);
 
   console.log(
-    'Start adding verified domains not present in authorized domains...'
+    "Start adding verified domains not present in authorized domains...",
   );
 
   for (const id of ids) {
@@ -22,14 +22,14 @@ ORDER BY id`
 SELECT verified_email_domains, authorized_email_domains
 FROM organizations
 WHERE id = $1`,
-      [id]
+      [id],
     );
 
     let [{ verified_email_domains, authorized_email_domains }] = results;
 
     const missingAuthorizedDomains = difference(
       verified_email_domains,
-      authorized_email_domains
+      authorized_email_domains,
     );
     for (const missingAuthorizedDomain of missingAuthorizedDomains) {
       await pgm.db.query(
@@ -37,12 +37,12 @@ WHERE id = $1`,
 UPDATE organizations
 SET authorized_email_domains = array_append(authorized_email_domains, $2)
 WHERE id = $1`,
-        [id, missingAuthorizedDomain]
+        [id, missingAuthorizedDomain],
       );
     }
   }
 
-  console.log('Addition completed!');
+  console.log("Addition completed!");
 };
 
-exports.down = async pgm => {};
+exports.down = async (pgm) => {};

@@ -1,24 +1,24 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from "express";
 import {
   getOrganizationsByUserId,
   selectOrganization,
-} from '../../managers/organization/main';
-import { z } from 'zod';
-import { idSchema } from '../../services/custom-zod-schemas';
-import { getUserFromLoggedInSession } from '../../managers/session';
-import { csrfToken } from '../../middlewares/csrf-protection';
+} from "../../managers/organization/main";
+import { z } from "zod";
+import { idSchema } from "../../services/custom-zod-schemas";
+import { getUserFromLoggedInSession } from "../../managers/session";
+import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getSelectOrganizationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const userOrganizations = await getOrganizationsByUserId(
-      getUserFromLoggedInSession(req).id
+      getUserFromLoggedInSession(req).id,
     );
 
-    return res.render('user/select-organization', {
+    return res.render("user/select-organization", {
       userOrganizations,
       csrfToken: csrfToken(req),
     });
@@ -30,7 +30,7 @@ export const getSelectOrganizationController = async (
 export const postSelectOrganizationMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({

@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 ADD COLUMN magic_link_token character varying,
@@ -13,7 +13,7 @@ ALTER COLUMN encrypted_password
 DROP NOT NULL;`);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 DROP COLUMN magic_link_token,

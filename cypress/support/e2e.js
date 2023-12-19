@@ -14,12 +14,12 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import 'cypress-mailslurp';
+import "cypress-mailslurp";
 
 const MONCOMPTEPRO_HOST =
-  Cypress.env('MONCOMPTEPRO_HOST') || 'http://localhost:3000';
+  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
 
-Cypress.Commands.add('login', (email, password) => {
+Cypress.Commands.add("login", (email, password) => {
   cy.session([email, password], () => {
     // Visit the signup page
     cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
@@ -30,7 +30,7 @@ Cypress.Commands.add('login', (email, password) => {
 
     cy.get('[name="password"]').type(password);
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains('Se connecter')
+      .contains("Se connecter")
       .click();
   });
 });

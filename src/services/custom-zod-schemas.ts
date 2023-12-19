@@ -4,15 +4,15 @@ import {
   isNotificationLabelValid,
   isPhoneNumberValid,
   isSiretValid,
-} from './security';
-import { z } from 'zod';
-import { normalizeOfficialContactEmailVerificationToken } from './normalize-official-contact-email-verification-token';
+} from "./security";
+import { z } from "zod";
+import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
 
 export const siretSchema = () =>
   z
     .string()
     .refine(isSiretValid)
-    .transform((val) => val.replace(/\s/g, ''));
+    .transform((val) => val.replace(/\s/g, ""));
 
 export const emailSchema = () =>
   z
@@ -25,7 +25,7 @@ export const nameSchema = () => z.string().min(1).refine(isNameValid);
 export const phoneNumberSchema = () =>
   z.union([
     z.string().refine(isPhoneNumberValid),
-    z.literal('').transform(() => null),
+    z.literal("").transform(() => null),
   ]);
 
 export const idSchema = () =>
@@ -39,7 +39,7 @@ export const optionalBooleanSchema = () =>
   z
     .string()
     .optional()
-    .transform((val) => val === 'true');
+    .transform((val) => val === "true");
 
 export const notificationLabelSchema = () =>
   z.string().refine(isNotificationLabelValid).optional();

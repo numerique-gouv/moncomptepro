@@ -1,7 +1,7 @@
-import { Request } from 'express';
-import { z } from 'zod';
-import notificationMessages from '../config/notification-messages';
-import { notificationLabelSchema } from './custom-zod-schemas';
+import { Request } from "express";
+import { z } from "zod";
+import notificationMessages from "../config/notification-messages";
+import { notificationLabelSchema } from "./custom-zod-schemas";
 
 export const getNotificationLabelFromRequest = async (req: Request) => {
   const schema = z.object({

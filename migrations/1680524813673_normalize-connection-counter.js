@@ -1,7 +1,7 @@
-const { isEmpty } = require('lodash');
+const { isEmpty } = require("lodash");
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
       ALTER TABLE users_oidc_clients
           DROP CONSTRAINT users_oidc_clients_pkey;
@@ -12,7 +12,7 @@ exports.up = async pgm => {
   `);
 
   console.log(
-    'Start duplicating users_oidc_clients entry with connection_count...'
+    "Start duplicating users_oidc_clients entry with connection_count...",
   );
   let i = 0;
 
@@ -29,7 +29,7 @@ exports.up = async pgm => {
           FROM users_oidc_clients
           ORDER BY id
           LIMIT 1 OFFSET $1`,
-      [i]
+      [i],
     );
 
     if (isEmpty(results)) {
@@ -46,7 +46,7 @@ exports.up = async pgm => {
           `
 INSERT INTO users_oidc_clients (user_id, oidc_client_id, created_at, updated_at)
 VALUES ($1, $2, $3, $4)`,
-          [user_id, oidc_client_id, created_at, updated_at]
+          [user_id, oidc_client_id, created_at, updated_at],
         );
       }
     }
@@ -54,7 +54,7 @@ VALUES ($1, $2, $3, $4)`,
     i++;
   }
 
-  console.log('Duplication completed!');
+  console.log("Duplication completed!");
 
   await pgm.db.query(`
       ALTER TABLE users_oidc_clients
@@ -62,7 +62,7 @@ VALUES ($1, $2, $3, $4)`,
   `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 CREATE TABLE tmp_users_oidc_clients AS
 SELECT

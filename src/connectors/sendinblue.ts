@@ -1,39 +1,39 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { chain, isEmpty } from 'lodash';
-import path from 'path';
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { chain, isEmpty } from "lodash";
+import path from "path";
 
-import { render } from '../services/renderer';
-import { SendInBlueApiError } from '../config/errors';
-import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from '../config/env';
+import { render } from "../services/renderer";
+import { SendInBlueApiError } from "../config/errors";
+import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
 
 type RemoteTemplateSlug =
-  | 'join-organization'
-  | 'verify-email'
-  | 'reset-password'
-  | 'magic-link'
-  | 'choose-sponsor'
-  | 'official-contact-email-verification';
+  | "join-organization"
+  | "verify-email"
+  | "reset-password"
+  | "magic-link"
+  | "choose-sponsor"
+  | "official-contact-email-verification";
 type LocalTemplateSlug =
-  | 'organization-welcome'
-  | 'unable-to-auto-join-organization'
-  | 'unable-to-find-sponsor'
-  | 'welcome'
-  | 'moderation-processed';
+  | "organization-welcome"
+  | "unable-to-auto-join-organization"
+  | "unable-to-find-sponsor"
+  | "welcome"
+  | "moderation-processed";
 
 // active templates id are listed at https://app-smtp.sendinblue.com/templates
 const remoteTemplateSlugToSendinblueTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
-  'join-organization': 61,
-  'verify-email': 6,
-  'reset-password': 7,
-  'magic-link': 29,
-  'choose-sponsor': 56,
-  'official-contact-email-verification': 64,
+  "join-organization": 61,
+  "verify-email": 6,
+  "reset-password": 7,
+  "magic-link": 29,
+  "choose-sponsor": 56,
+  "official-contact-email-verification": 64,
 };
 const defaultTemplateId = 21;
 const hasRemoteTemplate = (
-  template: RemoteTemplateSlug | LocalTemplateSlug
+  template: RemoteTemplateSlug | LocalTemplateSlug,
 ): template is RemoteTemplateSlug =>
   remoteTemplateSlugToSendinblueTemplateId.hasOwnProperty(template);
 
@@ -43,7 +43,7 @@ export const sendMail = async ({
   subject,
   template,
   params,
-  senderEmail = 'moncomptepro@beta.gouv.fr',
+  senderEmail = "moncomptepro@beta.gouv.fr",
 }: {
   to: string[];
   cc?: string[];
@@ -54,11 +54,11 @@ export const sendMail = async ({
 }) => {
   const data = {
     sender: {
-      name: 'L’équipe MonComptePro',
+      name: "L’équipe MonComptePro",
       email: senderEmail,
     },
     replyTo: {
-      name: 'L’équipe MonComptePro',
+      name: "L’équipe MonComptePro",
       email: senderEmail,
     },
     // Sendinblue allow a maximum of 99 recipients
@@ -70,7 +70,7 @@ export const sendMail = async ({
     params,
     tags: [template],
     headers: {
-      charset: 'iso-8859-1',
+      charset: "iso-8859-1",
     },
     templateId: 0,
   };
@@ -82,7 +82,7 @@ export const sendMail = async ({
     data.params = {
       text_content: await render(
         path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
-        params
+        params,
       ),
     };
   }
@@ -100,18 +100,18 @@ export const sendMail = async ({
 
   try {
     const response: AxiosResponse<{ messageId: string }> = await axios({
-      method: 'post',
+      method: "post",
       url: `https://api.sendinblue.com/v3/smtp/email`,
       headers: {
-        'api-key': SENDINBLUE_API_KEY,
-        'content-type': 'application/json',
-        accept: 'application/json',
+        "api-key": SENDINBLUE_API_KEY,
+        "content-type": "application/json",
+        accept: "application/json",
       },
       data,
     });
 
     console.log(
-      `${template} email sent to ${to} with message id ${response.data.messageId}`
+      `${template} email sent to ${to} with message id ${response.data.messageId}`,
     );
   } catch (error) {
     console.error(error);
@@ -119,7 +119,7 @@ export const sendMail = async ({
       throw new SendInBlueApiError(error);
     }
 
-    throw new Error('Error from SendInBlue API');
+    throw new Error("Error from SendInBlue API");
   }
 
   return true;

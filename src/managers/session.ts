@@ -1,8 +1,8 @@
-import { Request } from 'express';
-import { isEmpty } from 'lodash';
-import { deleteSelectedOrganizationId } from '../repositories/redis/selected-organization';
-import { setIsTrustedBrowserFromLoggedInSession } from './browser-authentication';
-import { update } from '../repositories/user';
+import { Request } from "express";
+import { isEmpty } from "lodash";
+import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
+import { update } from "../repositories/user";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session.user);
@@ -10,7 +10,7 @@ export const isWithinLoggedInSession = (req: Request) => {
 
 export const createLoggedInSession = async (
   req: Request,
-  user: User
+  user: User,
 ): Promise<null> => {
   // we store old session value to pass it to the new logged-in session
   // email will not be passed to the new session as it is not useful within logged session
@@ -54,7 +54,7 @@ export const createLoggedInSession = async (
 
 export const getUserFromLoggedInSession = (req: Request) => {
   if (!isWithinLoggedInSession(req)) {
-    throw Error('unable to get user info');
+    throw Error("unable to get user info");
   }
 
   return req.session.user!;
@@ -65,7 +65,7 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
     !isWithinLoggedInSession(req) ||
     getUserFromLoggedInSession(req).id !== user.id
   ) {
-    throw Error('unable to update user info');
+    throw Error("unable to update user info");
   }
 
   req.session.user = user;

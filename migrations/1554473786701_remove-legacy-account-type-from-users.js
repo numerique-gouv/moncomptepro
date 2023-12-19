@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 UPDATE users SET roles = array_append(roles, legacy_account_type)
 WHERE legacy_account_type <> 'service_provider';
@@ -12,7 +12,7 @@ DROP COLUMN legacy_account_type;
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users
 ADD COLUMN legacy_account_type character varying;

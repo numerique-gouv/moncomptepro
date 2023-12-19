@@ -1,39 +1,39 @@
-import { BadRequest, GatewayTimeout, NotFound } from 'http-errors';
-import { getOrganizationInfo } from '../connectors/api-sirene';
-import notificationMessages from '../config/notification-messages';
-import { NextFunction, Request, Response } from 'express';
-import { z, ZodError } from 'zod';
+import { BadRequest, GatewayTimeout, NotFound } from "http-errors";
+import { getOrganizationInfo } from "../connectors/api-sirene";
+import notificationMessages from "../config/notification-messages";
+import { NextFunction, Request, Response } from "express";
+import { z, ZodError } from "zod";
 import {
   idSchema,
   optionalBooleanSchema,
   siretSchema,
-} from '../services/custom-zod-schemas';
-import { InseeConnectionError, InseeNotFoundError } from '../config/errors';
-import { sendModerationProcessedEmail } from '../managers/moderation';
-import { markDomainAsVerified } from '../managers/organization/main';
-import { forceJoinOrganization } from '../managers/organization/join';
-import { notifyAllMembers } from '../managers/organization/authentication-by-peers';
-import { getUserOrganizationLink } from '../repositories/organization/getters';
+} from "../services/custom-zod-schemas";
+import { InseeConnectionError, InseeNotFoundError } from "../config/errors";
+import { sendModerationProcessedEmail } from "../managers/moderation";
+import { markDomainAsVerified } from "../managers/organization/main";
+import { forceJoinOrganization } from "../managers/organization/join";
+import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
+import { getUserOrganizationLink } from "../repositories/organization/getters";
 
 export const getPingApiSireneController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    await getOrganizationInfo('13002526500013'); // we use DINUM siret for the ping route
+    await getOrganizationInfo("13002526500013"); // we use DINUM siret for the ping route
 
     return res.json({});
   } catch (e) {
     console.error(e);
-    return res.status(502).json({ message: 'Bad Gateway' });
+    return res.status(502).json({ message: "Bad Gateway" });
   }
 };
 
 export const getOrganizationInfoController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -58,15 +58,15 @@ export const getOrganizationInfoController = async (
 
     if (e instanceof ZodError) {
       return next(
-        new BadRequest(notificationMessages['invalid_siret'].description)
+        new BadRequest(notificationMessages["invalid_siret"].description),
       );
     }
 
     if (e instanceof InseeConnectionError) {
       return next(
         new GatewayTimeout(
-          notificationMessages['insee_unexpected_error'].description
-        )
+          notificationMessages["insee_unexpected_error"].description,
+        ),
       );
     }
 
@@ -77,7 +77,7 @@ export const getOrganizationInfoController = async (
 export const postForceJoinOrganizationController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -96,7 +96,7 @@ export const postForceJoinOrganizationController = async (
 
     let userOrganizationLink = await getUserOrganizationLink(
       organization_id,
-      user_id
+      user_id,
     );
     if (!userOrganizationLink) {
       userOrganizationLink = await forceJoinOrganization({
@@ -124,7 +124,7 @@ export const postForceJoinOrganizationController = async (
 export const postSendModerationProcessedEmail = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -156,7 +156,7 @@ export const postSendModerationProcessedEmail = async (
 export const postMarkDomainAsVerified = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const schema = z.object({
@@ -175,7 +175,7 @@ export const postMarkDomainAsVerified = async (
     await markDomainAsVerified({
       organization_id,
       domain,
-      verification_type: 'verified_email_domain',
+      verification_type: "verified_email_domain",
     });
 
     return res.json({});

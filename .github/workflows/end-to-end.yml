@@ -63,7 +63,7 @@ jobs:
           MCP_CLIENT_SECRET: standard_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile organization
-          STYLESHEET_URL: ''
+          STYLESHEET_URL: ""
       moncomptepro-agentconnect-client:
         image: rdubigny/moncomptepro-test-client
         ports:
@@ -78,7 +78,7 @@ jobs:
           MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt
           MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
           MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
-          STYLESHEET_URL: ''
+          STYLESHEET_URL: ""
       moncomptepro-legacy-client:
         image: rdubigny/moncomptepro-test-client
         ports:
@@ -91,7 +91,7 @@ jobs:
           MCP_CLIENT_SECRET: legacy_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile phone organizations
-          STYLESHEET_URL: ''
+          STYLESHEET_URL: ""
       redis:
         image: redis
         ports:
@@ -108,7 +108,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - name: Cache node modules
         uses: actions/cache@v3
         env:

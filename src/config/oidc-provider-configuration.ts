@@ -1,38 +1,38 @@
-import { findAccount } from '../services/oidc-account-adapter';
-import { renderWithEjsLayout } from '../services/renderer';
-import epochTime from '../services/epoch-time';
-import policy from '../services/oidc-policy';
-import { destroyLoggedInSession } from '../managers/session';
+import { findAccount } from "../services/oidc-account-adapter";
+import { renderWithEjsLayout } from "../services/renderer";
+import epochTime from "../services/epoch-time";
+import policy from "../services/oidc-policy";
+import { destroyLoggedInSession } from "../managers/session";
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
   shortTokenTtlInSeconds = 10 * 60,
   tokenTtlInSeconds = 60 * 60,
 }) => ({
-  acrValues: ['eidas1'],
+  acrValues: ["eidas1"],
   claims: {
     amr: null,
     // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
-    openid: ['sub'],
-    email: ['email', 'email_verified'],
-    profile: ['family_name', 'given_name', 'updated_at', 'job'],
-    phone: ['phone_number', 'phone_number_verified'],
+    openid: ["sub"],
+    email: ["email", "email_verified"],
+    profile: ["family_name", "given_name", "updated_at", "job"],
+    phone: ["phone_number", "phone_number_verified"],
     organization: [
-      'label',
-      'siret',
-      'is_collectivite_territoriale', // deprecated
-      'is_commune',
-      'is_external',
-      'is_service_public',
+      "label",
+      "siret",
+      "is_collectivite_territoriale", // deprecated
+      "is_commune",
+      "is_external",
+      "is_service_public",
     ],
     // This scope will be deprecated
-    organizations: ['organizations'],
+    organizations: ["organizations"],
     // Additional scopes for AgentConnect use only
-    uid: ['uid'],
-    given_name: ['given_name'],
-    usual_name: ['usual_name'],
-    siret: ['siret'],
-    is_service_public: ['is_service_public'],
+    uid: ["uid"],
+    given_name: ["given_name"],
+    usual_name: ["usual_name"],
+    siret: ["siret"],
+    is_service_public: ["is_service_public"],
   },
   features: {
     claimsParameter: { enabled: true },
@@ -47,13 +47,13 @@ export const oidcProviderConfiguration = ({
         await destroyLoggedInSession(ctx.req);
         const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
-        ctx.type = 'html';
-        ctx.body = await renderWithEjsLayout('autosubmit-form', {
+        ctx.type = "html";
+        ctx.body = await renderWithEjsLayout("autosubmit-form", {
           csrfToken,
-          actionLabel: 'Déconnexion...',
-          actionPath: '/oauth/logout/confirm',
-          inputName: 'logout',
-          inputValue: 'non-empty-value',
+          actionLabel: "Déconnexion...",
+          actionPath: "/oauth/logout/confirm",
+          inputName: "logout",
+          inputValue: "non-empty-value",
         });
       },
       // @ts-ignore
@@ -62,7 +62,7 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // Make sure the user is logged out from express.
         await destroyLoggedInSession(ctx.req);
-        ctx.redirect('/users/start-sign-in/?notification=logout_success');
+        ctx.redirect("/users/start-sign-in/?notification=logout_success");
       },
     },
   },
@@ -109,29 +109,29 @@ export const oidcProviderConfiguration = ({
     return grant;
   },
   pkce: { required: () => false },
-  responseTypes: ['code'],
+  responseTypes: ["code"],
   routes: {
-    authorization: '/authorize',
-    token: '/token',
-    userinfo: '/userinfo',
-    end_session: '/logout',
-    introspection: '/token/introspection',
+    authorization: "/authorize",
+    token: "/token",
+    userinfo: "/userinfo",
+    end_session: "/logout",
+    introspection: "/token/introspection",
   },
   scopes: [
-    'openid',
-    'email',
-    'profile',
-    'organization',
+    "openid",
+    "email",
+    "profile",
+    "organization",
     // This scope will be deprecated
-    'organizations',
+    "organizations",
     // Additional scopes for AgentConnect use only
-    'uid',
-    'given_name',
-    'usual_name',
-    'siret',
-    'is_service_public',
+    "uid",
+    "given_name",
+    "usual_name",
+    "siret",
+    "is_service_public",
   ],
-  subjectTypes: ['public'],
+  subjectTypes: ["public"],
   ttl: {
     // Set ttl to default value to remove warning in console
     AccessToken: tokenTtlInSeconds,

@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users_organizations
 ADD COLUMN created_at timestamp with time zone NOT NULL DEFAULT timestamp 'epoch',
@@ -13,7 +13,7 @@ ADD COLUMN updated_at timestamp with time zone NOT NULL DEFAULT timestamp 'epoch
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users_organizations
 DROP COLUMN created_at,

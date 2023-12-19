@@ -1,6 +1,6 @@
 exports.shorthands = undefined;
 
-exports.up = async pgm => {
+exports.up = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users 
 ADD COLUMN email_verified boolean NOT NULL DEFAULT FALSE,
@@ -13,7 +13,7 @@ CREATE UNIQUE INDEX index_users_on_verify_email_token ON users USING btree (veri
 `);
 };
 
-exports.down = async pgm => {
+exports.down = async (pgm) => {
   await pgm.db.query(`
 ALTER TABLE users 
 DROP COLUMN email_verified,

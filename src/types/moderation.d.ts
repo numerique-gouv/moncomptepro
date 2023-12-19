@@ -3,9 +3,9 @@ interface Moderation {
   user_id: number;
   organization_id: number;
   type:
-    | 'organization_join_block'
-    | 'non_verified_domain'
-    | 'ask_for_sponsorship';
+    | "organization_join_block"
+    | "non_verified_domain"
+    | "ask_for_sponsorship";
   created_at: Date;
   moderated_at: Date | null;
   comment: string | null;
