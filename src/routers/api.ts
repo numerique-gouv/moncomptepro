@@ -1,4 +1,11 @@
-import { NextFunction, Request, Response, Router, urlencoded } from 'express';
+import {
+  json,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+  urlencoded,
+} from 'express';
 import {
   getOrganizationInfoController,
   getPingApiSireneController,
@@ -11,6 +18,12 @@ import { HttpError } from 'http-errors';
 import expressBasicAuth from 'express-basic-auth';
 import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from '../config/env';
 import nocache from 'nocache';
+import {
+  getGenerateAuthenticationOptionsController,
+  getGenerateRegistrationOptionsController,
+  getVerifyAuthenticationController,
+  getVerifyRegistrationController,
+} from '../controllers/webauthn';
 
 export const apiRouter = () => {
   const apiRouter = Router();
@@ -29,6 +42,32 @@ export const apiRouter = () => {
     '/sirene/organization-info/:siret',
     apiRateLimiterMiddleware,
     getOrganizationInfoController
+  );
+
+  apiRouter.use(
+    '/webauthn/generate-registration-options',
+    apiRateLimiterMiddleware,
+    getGenerateRegistrationOptionsController
+  );
+
+  apiRouter.use(
+    '/webauthn/verify-registration',
+    json({ inflate: true }),
+    apiRateLimiterMiddleware,
+    getVerifyRegistrationController
+  );
+
+  apiRouter.use(
+    '/webauthn/generate-authentication-options',
+    apiRateLimiterMiddleware,
+    getGenerateAuthenticationOptionsController
+  );
+
+  apiRouter.use(
+    '/webauthn/verify-authentication',
+    json({ inflate: true }),
+    apiRateLimiterMiddleware,
+    getVerifyAuthenticationController
   );
 
   const apiAdminRouter = Router();

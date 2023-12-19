@@ -69,3 +69,7 @@ export class SendInBlueApiError extends Error {
 }
 
 export class OfficialContactEmailVerificationNotNeededError extends Error {}
+
+export class WebauthnRegistrationFailedError extends Error {}
+
+export class WebauthnAuthenticationFailedError extends Error {}

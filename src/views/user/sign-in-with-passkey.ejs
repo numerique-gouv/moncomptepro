@@ -1,0 +1,28 @@
+<div class="card-container">
+    <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
+    <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
+    <div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
+    <div class="fr-card">
+        <div class="fr-card__body">
+            <div class="fr-card__content">
+                <h4 class="fr-card__title">
+                    Utilisez votre clé d'accès pour confirmer votre identité
+                </h4>
+                <div class="fr-card__desc">
+                    <div>
+                        Votre appareil vous demandera d'utiliser votre empreinte, votre visage ou le verrouillage de
+                        l'écran
+                    </div>
+                    <div class="card-button-container">
+                        <span></span>
+                        <button class="fr-btn" id="webauthn-btn-begin-authentication">
+                            Continuer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/simplewebauthn.umd.min.js"></script>
+<script src="/assets/webauthn-authentication.js"></script>

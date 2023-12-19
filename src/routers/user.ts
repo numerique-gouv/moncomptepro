@@ -69,6 +69,7 @@ import {
 } from '../controllers/user/select-organization';
 import { csrfProtectionMiddleware } from '../middlewares/csrf-protection';
 import nocache from 'nocache';
+import { getSignInWithPasskeyController } from '../controllers/webauthn';
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -164,6 +165,22 @@ export const userRouter = () => {
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
     postSignInWithMagicLinkController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+  userRouter.get(
+    '/sign-in-with-passkey',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkEmailInSessionMiddleware,
+    getSignInWithPasskeyController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController
+  );
+  userRouter.get(
+    '/sign-in-with-passkey-done',
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController
   );
