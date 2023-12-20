@@ -13,7 +13,7 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
-import { sendZammadMail } from "../../connectors/sendinblue";
+import { sendZammadMail } from "../../connectors/sendZammadMail";
 import {
   createModeration,
   findPendingModeration,
