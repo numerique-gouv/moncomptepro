@@ -76,7 +76,7 @@ export const sendMail = async ({
   senderEmail?: string;
 }) => {
   const data = {
-    cc: [] as { email: string }[],
+    cc: undefined as { email: string }[] | undefined,
     sender: {
       name: "L’équipe MonComptePro",
       email: senderEmail,
