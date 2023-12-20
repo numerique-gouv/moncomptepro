@@ -75,7 +75,7 @@
     "nocache": "^4.0.0",
     "node-pg-migrate": "^6.2.2",
     "npm-run-all2": "^6.1.2",
-    "oidc-provider": "^7.14.3",
+    "oidc-provider": "^8.4.3",
     "pg": "^8.11.3",
     "rate-limiter-flexible": "^2.4.2",
     "tld-extract": "^2.1.0",
