@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       moncomptepro-standard-client:
-        image: rdubigny/moncomptepro-test-client
+        image: ghcr.io/betagouv/moncomptepro-test-client
         ports:
           - 4000:4000
         env:
@@ -65,7 +65,7 @@ jobs:
           MCP_SCOPES: openid email profile organization
           STYLESHEET_URL: ""
       moncomptepro-agentconnect-client:
-        image: rdubigny/moncomptepro-test-client
+        image: ghcr.io/betagouv/moncomptepro-test-client
         ports:
           - 4001:4001
         env:
@@ -80,7 +80,7 @@ jobs:
           MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
           STYLESHEET_URL: ""
       moncomptepro-legacy-client:
-        image: rdubigny/moncomptepro-test-client
+        image: ghcr.io/betagouv/moncomptepro-test-client
         ports:
           - 4002:4002
         env:
