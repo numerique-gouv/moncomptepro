@@ -1,10 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash";
 import path from "path";
-
-import { render } from "../services/renderer";
+import {
+  DO_NOT_SEND_MAIL,
+  SENDINBLUE_API_KEY,
+  ZAMMAD_URL,
+} from "../config/env";
 import { SendInBlueApiError } from "../config/errors";
-import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
+import { render } from "../services/renderer";
 
 type RemoteTemplateSlug =
   | "join-organization"
@@ -37,6 +40,26 @@ const hasRemoteTemplate = (
 ): template is RemoteTemplateSlug =>
   remoteTemplateSlugToSendinblueTemplateId.hasOwnProperty(template);
 
+export async function sendZammadMail({
+  to = [],
+  cc = [],
+  subject,
+  template,
+  params,
+  senderEmail = "moncomptepro@beta.gouv.fr",
+}: {
+  to: string[];
+  cc?: string[];
+  subject: string;
+  template: RemoteTemplateSlug | LocalTemplateSlug;
+  params: any;
+  senderEmail?: string;
+}) {
+  const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
+  console.log("Sending mail to Zammad ", CREATE_TICKET_ENDPOINT);
+  return Promise.reject("Not implemented");
+}
+
 export const sendMail = async ({
   to = [],
   cc = [],
@@ -53,6 +76,7 @@ export const sendMail = async ({
   senderEmail?: string;
 }) => {
   const data = {
+    cc: [] as { email: string }[],
     sender: {
       name: "L’équipe MonComptePro",
       email: senderEmail,
@@ -88,7 +112,6 @@ export const sendMail = async ({
   }
 
   if (!isEmpty(cc)) {
-    // @ts-ignore
     data.cc = cc.map((e) => ({ email: e }));
   }
 

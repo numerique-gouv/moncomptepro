@@ -1,16 +1,6 @@
-import {
-  getEmailDomain,
-  isAFreeEmailProvider,
-  usesAFreeEmailProvider,
-} from "../../services/uses-a-free-email-provider";
+import * as Sentry from "@sentry/node";
 import { isEmpty, some, uniqBy } from "lodash";
-import {
-  findById as findOrganizationById,
-  findByMostUsedEmailDomain,
-  findByUserId,
-  findByVerifiedEmailDomain,
-} from "../../repositories/organization/getters";
-import { findById as findUserById } from "../../repositories/user";
+import { SUPPORT_EMAIL_ADDRESS } from "../../config/env";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -21,16 +11,26 @@ import {
   UserInOrganizationAlreadyError,
   UserNotFoundError,
 } from "../../config/errors";
+import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
+import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
+import { getOrganizationInfo } from "../../connectors/api-sirene";
+import { sendMail } from "../../connectors/sendinblue";
+import {
+  createModeration,
+  findPendingModeration,
+} from "../../repositories/moderation";
+import {
+  findByMostUsedEmailDomain,
+  findByUserId,
+  findByVerifiedEmailDomain,
+  findById as findOrganizationById,
+} from "../../repositories/organization/getters";
 import {
   addAuthorizedDomain,
   linkUserToOrganization,
   upsert,
 } from "../../repositories/organization/setters";
-import { getOrganizationInfo } from "../../connectors/api-sirene";
-import {
-  createModeration,
-  findPendingModeration,
-} from "../../repositories/moderation";
+import { findById as findUserById } from "../../repositories/user";
 import {
   hasLessThanFiftyEmployees,
   isCommune,
@@ -38,13 +38,13 @@ import {
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
-import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
-import * as Sentry from "@sentry/node";
 import { isEmailValid } from "../../services/security";
+import {
+  getEmailDomain,
+  isAFreeEmailProvider,
+  usesAFreeEmailProvider,
+} from "../../services/uses-a-free-email-provider";
 import { markDomainAsVerified } from "./main";
-import { sendMail } from "../../connectors/sendinblue";
-import { SUPPORT_EMAIL_ADDRESS } from "../../config/env";
-import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 
 export const doSuggestOrganizations = async ({
   user_id,
