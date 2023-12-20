@@ -15,6 +15,7 @@ export const {
   SUPPORT_EMAIL_ADDRESS = "moncomptepro@beta.gouv.fr",
   API_AUTH_USERNAME = "admin",
   API_AUTH_PASSWORD = "admin",
+  ZAMMAD_TOKEN,
   ZAMMAD_URL,
 } = process.env;
 

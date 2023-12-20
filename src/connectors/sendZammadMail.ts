@@ -1,8 +1,22 @@
 //
 
-import { chain } from "lodash";
-import { DO_NOT_SEND_MAIL, ZAMMAD_URL } from "../config/env";
-import { LocalTemplateSlug, RemoteTemplateSlug } from "./sendinblue";
+import { sampleSize } from "lodash";
+import path from "node:path";
+import { DO_NOT_SEND_MAIL, ZAMMAD_TOKEN, ZAMMAD_URL } from "../config/env";
+import { render } from "../services/renderer";
+import { LocalTemplateSlug } from "./sendinblue";
+
+//
+
+const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
+const FROM_MON_COMPTE_PRO = "MonComptePro";
+const GROUP_MON_COMPTE_PRO = "MonComptePro";
+const GROUP_MON_COMPTE_PRO_ID = "24";
+const MODERATION_TAG = "moderation";
+const PRIORITY_1_NORMAL = "1";
+const SENDER_GROUP_MON_COMPTE_PRO = 2;
+const STATE_CLOSED = "closed";
+const TYPE_EMAIL = 1;
 
 //
 
@@ -17,35 +31,29 @@ export async function sendZammadMail({
   to: string[];
   cc?: string[];
   subject: string;
-  template: RemoteTemplateSlug | LocalTemplateSlug;
+  template: LocalTemplateSlug;
   params: any;
   senderEmail?: string;
 }) {
-  const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
-  console.log("Sending mail to Zammad ", CREATE_TICKET_ENDPOINT);
 
-  const data = {
-    cc: undefined as { email: string }[] | undefined,
-    sender: {
-      name: "L’équipe MonComptePro",
-      email: senderEmail,
-    },
-    replyTo: {
-      name: "L’équipe MonComptePro",
-      email: senderEmail,
-    },
-    // Sendinblue allow a maximum of 99 recipients
-    to: chain(to)
-      .sampleSize(99)
-      .map((e) => ({ email: e }))
-      .value(),
-    subject,
+  const body = await render(
+    path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
     params,
-    tags: [template],
-    headers: {
-      charset: "iso-8859-1",
+  );
+  const data = {
+    title: subject,
+    group: GROUP_MON_COMPTE_PRO,
+    state_id: STATE_CLOSED,
+    priority_id: PRIORITY_1_NORMAL,
+    article: {
+      from: FROM_MON_COMPTE_PRO,
+      to: sampleSize(to, 99).join(","),
+      body,
+      type_id: TYPE_EMAIL,
+      sender_id: SENDER_GROUP_MON_COMPTE_PRO,
+      content_type: "text/html",
     },
-    templateId: 0,
+    tags: [MODERATION_TAG, template].join(","),
   };
 
   if (DO_NOT_SEND_MAIL) {
@@ -54,5 +62,23 @@ export async function sendZammadMail({
     return;
   }
 
-  return Promise.reject("Not implemented");
+  const ticket = await fetch(CREATE_TICKET_ENDPOINT, {
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${ZAMMAD_TOKEN}`,
+    },
+    body: JSON.stringify(data),
+    method: "POST",
+  });
 }
+(async () => {
+  console.log("!!!!!!!");
+  const ticket = await sendZammadMail({
+    params: { libelle: "test" },
+    subject: "Ping " + new Date().toLocaleDateString(),
+    template: "unable-to-auto-join-organization",
+    to: ["user@yopmail.com"],
+  });
+  console.log({ ticket });
+  console.log("!!!!!!!");
+})();
