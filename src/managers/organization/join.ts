@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/node";
 import { isEmpty, some, uniqBy } from "lodash";
-import { SUPPORT_EMAIL_ADDRESS } from "../../config/env";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -14,7 +13,7 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
-import { sendMail } from "../../connectors/sendinblue";
+import { sendZammadMail } from "../../connectors/sendinblue";
 import {
   createModeration,
   findPendingModeration,
@@ -289,9 +288,8 @@ export const joinOrganization = async ({
     organization_id,
     type: "organization_join_block",
   });
-  await sendMail({
+  await sendZammadMail({
     to: [email],
-    cc: [SUPPORT_EMAIL_ADDRESS],
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
     template: "unable-to-auto-join-organization",
     params: {

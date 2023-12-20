@@ -57,6 +57,37 @@ export async function sendZammadMail({
 }) {
   const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
   console.log("Sending mail to Zammad ", CREATE_TICKET_ENDPOINT);
+
+  const data = {
+    cc: undefined as { email: string }[] | undefined,
+    sender: {
+      name: "L’équipe MonComptePro",
+      email: senderEmail,
+    },
+    replyTo: {
+      name: "L’équipe MonComptePro",
+      email: senderEmail,
+    },
+    // Sendinblue allow a maximum of 99 recipients
+    to: chain(to)
+      .sampleSize(99)
+      .map((e) => ({ email: e }))
+      .value(),
+    subject,
+    params,
+    tags: [template],
+    headers: {
+      charset: "iso-8859-1",
+    },
+    templateId: 0,
+  };
+
+  if (DO_NOT_SEND_MAIL) {
+    console.log(`${template} mail not send to ${to}:`);
+    console.log(data);
+    return;
+  }
+
   return Promise.reject("Not implemented");
 }
 
