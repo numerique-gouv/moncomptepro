@@ -8,15 +8,14 @@ import { LocalTemplateSlug } from "./sendinblue";
 
 //
 
+const CLOSED_STATE_ID = "4";
 const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
+const EMAIL_TYPE_ID = 1;
 const FROM_MON_COMPTE_PRO = "MonComptePro";
 const GROUP_MON_COMPTE_PRO = "MonComptePro";
-const GROUP_MON_COMPTE_PRO_ID = "24";
+const GROUP_MON_COMPTE_PRO_SENDER_ID = 1;
 const MODERATION_TAG = "moderation";
-const PRIORITY_1_NORMAL = "1";
-const SENDER_GROUP_MON_COMPTE_PRO = 2;
-const STATE_CLOSED = "closed";
-const TYPE_EMAIL = 1;
+const NORMAL_PRIORITY_ID = "1";
 
 //
 
@@ -35,22 +34,23 @@ export async function sendZammadMail({
   params: any;
   senderEmail?: string;
 }) {
-
   const body = await render(
     path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
     params,
   );
+
   const data = {
     title: subject,
     group: GROUP_MON_COMPTE_PRO,
-    state_id: STATE_CLOSED,
-    priority_id: PRIORITY_1_NORMAL,
+    customer_id: `guess:${to.at(0)}`,
+    state_id: CLOSED_STATE_ID,
+    priority_id: NORMAL_PRIORITY_ID,
     article: {
-      from: FROM_MON_COMPTE_PRO,
+      from: GROUP_MON_COMPTE_PRO,
       to: sampleSize(to, 99).join(","),
       body,
-      type_id: TYPE_EMAIL,
-      sender_id: SENDER_GROUP_MON_COMPTE_PRO,
+      type_id: EMAIL_TYPE_ID,
+      sender_id: GROUP_MON_COMPTE_PRO_SENDER_ID,
       content_type: "text/html",
     },
     tags: [MODERATION_TAG, template].join(","),
@@ -62,7 +62,7 @@ export async function sendZammadMail({
     return;
   }
 
-  const ticket = await fetch(CREATE_TICKET_ENDPOINT, {
+  const response = await fetch(CREATE_TICKET_ENDPOINT, {
     headers: {
       "content-type": "application/json",
       Authorization: `Bearer ${ZAMMAD_TOKEN}`,
@@ -70,15 +70,8 @@ export async function sendZammadMail({
     body: JSON.stringify(data),
     method: "POST",
   });
+
+  const ticket = await response.json();
+
+  return ticket as { id: number };
 }
-(async () => {
-  console.log("!!!!!!!");
-  const ticket = await sendZammadMail({
-    params: { libelle: "test" },
-    subject: "Ping " + new Date().toLocaleDateString(),
-    template: "unable-to-auto-join-organization",
-    to: ["user@yopmail.com"],
-  });
-  console.log({ ticket });
-  console.log("!!!!!!!");
-})();
