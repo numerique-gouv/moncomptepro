@@ -4,14 +4,13 @@ import { sampleSize } from "lodash";
 import path from "node:path";
 import { DO_NOT_SEND_MAIL, ZAMMAD_TOKEN, ZAMMAD_URL } from "../config/env";
 import { render } from "../services/renderer";
-import { LocalTemplateSlug } from "./sendinblue";
+import { LocalTemplate } from "./sendinblue";
 
 //
 
 const CLOSED_STATE_ID = "4";
 const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
 const EMAIL_TYPE_ID = 1;
-const FROM_MON_COMPTE_PRO = "MonComptePro";
 const GROUP_MON_COMPTE_PRO = "MonComptePro";
 const GROUP_MON_COMPTE_PRO_SENDER_ID = 1;
 const MODERATION_TAG = "moderation";
@@ -25,15 +24,11 @@ export async function sendZammadMail({
   subject,
   template,
   params,
-  senderEmail = "moncomptepro@beta.gouv.fr",
 }: {
   to: string[];
   cc?: string[];
   subject: string;
-  template: LocalTemplateSlug;
-  params: any;
-  senderEmail?: string;
-}) {
+} & LocalTemplate) {
   const body = await render(
     path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
     params,

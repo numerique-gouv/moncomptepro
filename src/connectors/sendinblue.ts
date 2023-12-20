@@ -19,6 +19,11 @@ export type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed";
 
+export type LocalTemplate = {
+  template: "unable-to-auto-join-organization";
+  params: { libelle: string };
+};
+
 // active templates id are listed at https://app-smtp.sendinblue.com/templates
 const remoteTemplateSlugToSendinblueTemplateId: {
   [k in RemoteTemplateSlug]: number;
