@@ -16,7 +16,7 @@ export const createModeration = async ({
 
   const { rows }: QueryResult<Moderation> = await connection.query(
     `
-INSERT INTO moderations (user_id, organization_id, type)
+INSERT INTO moderations (user_id, organization_id, type, ticket_id)
 VALUES ($1, $2, $3, $4)
 RETURNING *;`,
     [user_id, organization_id, type, ticket_id],
