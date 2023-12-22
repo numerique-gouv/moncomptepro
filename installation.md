@@ -158,7 +158,7 @@ version: "3.5"
 
 services:
   oidc-test-client:
-    image: rdubigny/moncomptepro-test-client
+    image: ghcr.io/betagouv/moncomptepro-test-client
     ports:
       - 9009:9009
     environment:
