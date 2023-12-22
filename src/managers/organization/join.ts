@@ -276,6 +276,7 @@ export const joinOrganization = async ({
       user_id,
       organization_id,
       type: "non_verified_domain",
+      ticket_id: null,
     });
     return await linkUserToOrganization({
       organization_id,
@@ -301,6 +302,7 @@ export const joinOrganization = async ({
     user_id,
     organization_id,
     type: "organization_join_block",
+    ticket_id: ticket.id,
   });
 
   throw new UnableToAutoJoinOrganizationError();
