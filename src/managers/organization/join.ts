@@ -19,10 +19,10 @@ import {
   findPendingModeration,
 } from "../../repositories/moderation";
 import {
+  findById as findOrganizationById,
   findByMostUsedEmailDomain,
   findByUserId,
   findByVerifiedEmailDomain,
-  findById as findOrganizationById,
 } from "../../repositories/organization/getters";
 import {
   addAuthorizedDomain,
