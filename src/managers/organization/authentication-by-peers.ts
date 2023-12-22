@@ -355,5 +355,6 @@ export const askForSponsorship = async ({
     user_id,
     organization_id,
     type: "ask_for_sponsorship",
+    ticket_id: ticket.id,
   });
 };

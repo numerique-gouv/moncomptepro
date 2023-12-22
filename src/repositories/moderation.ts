@@ -1,14 +1,16 @@
-import { getDatabaseConnection } from "../connectors/postgres";
 import { QueryResult } from "pg";
+import { getDatabaseConnection } from "../connectors/postgres";
 
 export const createModeration = async ({
   user_id,
   organization_id,
   type,
+  ticket_id,
 }: {
   user_id: number;
   organization_id: number;
   type: Moderation["type"];
+  ticket_id: number;
 }) => {
   const connection = getDatabaseConnection();
 
@@ -17,7 +19,7 @@ export const createModeration = async ({
 INSERT INTO moderations (user_id, organization_id, type)
 VALUES ($1, $2, $3)
 RETURNING *;`,
-    [user_id, organization_id, type],
+    [user_id, organization_id, type, ticket_id],
   );
 
   return rows.shift()!;

@@ -1,5 +1,6 @@
 //
 
+import axios, { AxiosResponse } from "axios";
 import path from "node:path";
 import {
   DO_NOT_SEND_MAIL,
@@ -58,16 +59,17 @@ export async function sendZammadMail({
     return;
   }
 
-  const response = await fetch(CREATE_TICKET_ENDPOINT, {
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${ZAMMAD_TOKEN}`,
+  const { data: ticket }: AxiosResponse<{ id: number }> = await axios.post(
+    CREATE_TICKET_ENDPOINT,
+    {
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${ZAMMAD_TOKEN}`,
+      },
+      body: data,
+      method: "POST",
     },
-    body: JSON.stringify(data),
-    method: "POST",
-  });
+  );
 
-  const ticket = await response.json();
-
-  return ticket as { id: number };
+  return ticket;
 }
