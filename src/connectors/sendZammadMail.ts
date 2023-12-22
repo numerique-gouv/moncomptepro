@@ -9,7 +9,6 @@ import {
   ZAMMAD_URL,
 } from "../config/env";
 import { render } from "../services/renderer";
-import { LocalTemplate } from "./sendinblue";
 
 //
 
@@ -72,3 +71,19 @@ export async function sendZammadMail({
 
   return ticket;
 }
+
+//
+
+type LocalTemplate =
+| {
+    template: "unable-to-auto-join-organization";
+    params: { libelle: string };
+  }
+| {
+    template: "unable-to-find-sponsor";
+    params: {
+      given_name: string;
+      family_name: string;
+      libelle: string;
+    };
+  };
