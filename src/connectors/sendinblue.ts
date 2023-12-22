@@ -5,14 +5,14 @@ import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
 import { SendInBlueApiError } from "../config/errors";
 import { render } from "../services/renderer";
 
-export type RemoteTemplateSlug =
+type RemoteTemplateSlug =
   | "join-organization"
   | "verify-email"
   | "reset-password"
   | "magic-link"
   | "choose-sponsor"
   | "official-contact-email-verification";
-export type LocalTemplateSlug =
+type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
   | "unable-to-find-sponsor"
