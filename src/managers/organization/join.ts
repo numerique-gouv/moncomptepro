@@ -19,7 +19,7 @@ import {
   findPendingModeration,
 } from "../../repositories/moderation";
 import {
-  findById as findOrganizationById,
+  findById,
   findByMostUsedEmailDomain,
   findByUserId,
   findByVerifiedEmailDomain,
@@ -308,7 +308,7 @@ export const forceJoinOrganization = async ({
   is_external?: boolean;
 }) => {
   const user = await findUserById(user_id);
-  const organization = await findOrganizationById(organization_id);
+  const organization = await findById(organization_id);
   if (isEmpty(user) || isEmpty(organization)) {
     throw new NotFoundError();
   }
