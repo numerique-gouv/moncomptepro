@@ -5,6 +5,7 @@ import {
   InseeNotActiveError,
   InvalidSiretError,
   NotFoundError,
+  SendZammadApiError,
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
@@ -283,12 +284,7 @@ export const joinOrganization = async ({
     });
   }
 
-  await createModeration({
-    user_id,
-    organization_id,
-    type: "organization_join_block",
-  });
-  await sendZammadMail({
+  const ticket = await sendZammadMail({
     to: email,
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
     template: "unable-to-auto-join-organization",
@@ -296,6 +292,17 @@ export const joinOrganization = async ({
       libelle: cached_libelle || siret,
     },
   });
+
+  if (!ticket) {
+    throw new SendZammadApiError("Unable to create ticket");
+  }
+
+  await createModeration({
+    user_id,
+    organization_id,
+    type: "organization_join_block",
+  });
+
   throw new UnableToAutoJoinOrganizationError();
 };
 export const forceJoinOrganization = async ({

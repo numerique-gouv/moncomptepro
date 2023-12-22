@@ -1,7 +1,12 @@
 //
 
 import path from "node:path";
-import { DO_NOT_SEND_MAIL, ZAMMAD_TOKEN, ZAMMAD_URL } from "../config/env";
+import {
+  DO_NOT_SEND_MAIL,
+  MODERATION_TAG,
+  ZAMMAD_TOKEN,
+  ZAMMAD_URL,
+} from "../config/env";
 import { render } from "../services/renderer";
 import { LocalTemplate } from "./sendinblue";
 
@@ -12,7 +17,6 @@ const CREATE_TICKET_ENDPOINT = `${ZAMMAD_URL}/api/v1/tickets`;
 const EMAIL_TYPE_ID = 1;
 const GROUP_MONCOMPTEPRO = "MonComptePro";
 const GROUP_MONCOMPTEPRO_SENDER_ID = 1;
-const MODERATION_TAG = "moderation";
 const NORMAL_PRIORITY_ID = "1";
 
 //

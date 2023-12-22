@@ -1,28 +1,29 @@
+import { isEmpty, sampleSize } from "lodash";
+import {
+  DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP,
+  NOTIFY_ALL_MEMBER_LIMIT,
+} from "../../config/env";
+import {
+  NotFoundError,
+  SendZammadApiError,
+  UserAlreadyAskedForSponsorshipError,
+  UserHasAlreadyBeenAuthenticatedByPeers,
+} from "../../config/errors";
+import { sendZammadMail } from "../../connectors/sendZammadMail";
+import { sendMail } from "../../connectors/sendinblue";
+import {
+  createModeration,
+  findPendingModeration,
+} from "../../repositories/moderation";
 import {
   findById as findOrganizationById,
   getInternalActiveUsers,
   getUserOrganizationLink,
   getUsers,
 } from "../../repositories/organization/getters";
-import { isEmpty, sampleSize } from "lodash";
-import { findById as findUserById } from "../../repositories/user";
-import {
-  NotFoundError,
-  UserAlreadyAskedForSponsorshipError,
-  UserHasAlreadyBeenAuthenticatedByPeers,
-} from "../../config/errors";
-import { sendMail } from "../../connectors/sendinblue";
 import { updateUserOrganizationLink } from "../../repositories/organization/setters";
+import { findById as findUserById } from "../../repositories/user";
 import { getOrganizationById, getOrganizationsByUserId } from "./main";
-import {
-  createModeration,
-  findPendingModeration,
-} from "../../repositories/moderation";
-import {
-  DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP,
-  NOTIFY_ALL_MEMBER_LIMIT,
-  SUPPORT_EMAIL_ADDRESS,
-} from "../../config/env";
 
 export const isEligibleToSponsorship = async ({
   id,
@@ -333,23 +334,26 @@ export const askForSponsorship = async ({
   if (!isEmpty(pendingModeration)) {
     throw new UserAlreadyAskedForSponsorshipError(organization_id);
   }
+  const { email, given_name, family_name } = user;
+  const { cached_libelle, siret } = organization;
+  const ticket = await sendZammadMail({
+    to: email,
+    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    template: "unable-to-find-sponsor",
+    params: {
+      given_name: given_name ?? "",
+      family_name: family_name ?? "",
+      libelle: cached_libelle || siret,
+    },
+  });
+
+  if (!ticket) {
+    throw new SendZammadApiError("Unable to create ticket");
+  }
 
   await createModeration({
     user_id,
     organization_id,
     type: "ask_for_sponsorship",
-  });
-  const { email, given_name, family_name } = user;
-  const { cached_libelle, siret } = organization;
-  await sendMail({
-    to: [email],
-    cc: [SUPPORT_EMAIL_ADDRESS],
-    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: "unable-to-find-sponsor",
-    params: {
-      given_name,
-      family_name,
-      libelle: cached_libelle || siret,
-    },
   });
 };
