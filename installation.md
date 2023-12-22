@@ -107,6 +107,8 @@ SENTRY_DSN=
 SECURE_COOKIES="false"
 INSEE_CONSUMER_KEY=yourownkey
 INSEE_CONSUMER_SECRET=yourownsecret
+ZAMMAD_URL=http://zammad/
+ZAMMAD_TOKEN=your_zammad_token
 EOT
 ```
 

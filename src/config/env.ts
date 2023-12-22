@@ -15,6 +15,9 @@ export const {
   SUPPORT_EMAIL_ADDRESS = "moncomptepro@beta.gouv.fr",
   API_AUTH_USERNAME = "admin",
   API_AUTH_PASSWORD = "admin",
+  ZAMMAD_TOKEN,
+  ZAMMAD_URL,
+  MODERATION_TAG = "moderation",
 } = process.env;
 
 export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =

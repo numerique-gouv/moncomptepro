@@ -1,10 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash";
 import path from "path";
-
-import { render } from "../services/renderer";
-import { SendInBlueApiError } from "../config/errors";
 import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
+import { SendInBlueApiError } from "../config/errors";
+import { render } from "../services/renderer";
 
 type RemoteTemplateSlug =
   | "join-organization"
@@ -53,6 +52,7 @@ export const sendMail = async ({
   senderEmail?: string;
 }) => {
   const data = {
+    cc: undefined as { email: string }[] | undefined,
     sender: {
       name: "L’équipe MonComptePro",
       email: senderEmail,
@@ -88,7 +88,6 @@ export const sendMail = async ({
   }
 
   if (!isEmpty(cc)) {
-    // @ts-ignore
     data.cc = cc.map((e) => ({ email: e }));
   }
 

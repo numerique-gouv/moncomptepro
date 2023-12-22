@@ -1,16 +1,5 @@
-import {
-  getEmailDomain,
-  isAFreeEmailProvider,
-  usesAFreeEmailProvider,
-} from "../../services/uses-a-free-email-provider";
+import * as Sentry from "@sentry/node";
 import { isEmpty, some, uniqBy } from "lodash";
-import {
-  findById as findOrganizationById,
-  findByMostUsedEmailDomain,
-  findByUserId,
-  findByVerifiedEmailDomain,
-} from "../../repositories/organization/getters";
-import { findById as findUserById } from "../../repositories/user";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -19,18 +8,28 @@ import {
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
-  UserNotFoundError,
+  UserNotFoundError
 } from "../../config/errors";
+import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
+import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
+import { getOrganizationInfo } from "../../connectors/api-sirene";
+import { sendZammadMail } from "../../connectors/sendZammadMail";
+import {
+  createModeration,
+  findPendingModeration,
+} from "../../repositories/moderation";
+import {
+  findById,
+  findByMostUsedEmailDomain,
+  findByUserId,
+  findByVerifiedEmailDomain,
+} from "../../repositories/organization/getters";
 import {
   addAuthorizedDomain,
   linkUserToOrganization,
   upsert,
 } from "../../repositories/organization/setters";
-import { getOrganizationInfo } from "../../connectors/api-sirene";
-import {
-  createModeration,
-  findPendingModeration,
-} from "../../repositories/moderation";
+import { findById as findUserById } from "../../repositories/user";
 import {
   hasLessThanFiftyEmployees,
   isCommune,
@@ -38,13 +37,13 @@ import {
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
-import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
-import * as Sentry from "@sentry/node";
 import { isEmailValid } from "../../services/security";
+import {
+  getEmailDomain,
+  isAFreeEmailProvider,
+  usesAFreeEmailProvider,
+} from "../../services/uses-a-free-email-provider";
 import { markDomainAsVerified } from "./main";
-import { sendMail } from "../../connectors/sendinblue";
-import { SUPPORT_EMAIL_ADDRESS } from "../../config/env";
-import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -276,6 +275,7 @@ export const joinOrganization = async ({
       user_id,
       organization_id,
       type: "non_verified_domain",
+      ticket_id: null,
     });
     return await linkUserToOrganization({
       organization_id,
@@ -284,20 +284,22 @@ export const joinOrganization = async ({
     });
   }
 
-  await createModeration({
-    user_id,
-    organization_id,
-    type: "organization_join_block",
-  });
-  await sendMail({
-    to: [email],
-    cc: [SUPPORT_EMAIL_ADDRESS],
+  const ticket = await sendZammadMail({
+    to: email,
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
     template: "unable-to-auto-join-organization",
     params: {
       libelle: cached_libelle || siret,
     },
   });
+
+  await createModeration({
+    user_id,
+    organization_id,
+    type: "organization_join_block",
+    ticket_id: ticket.id,
+  });
+
   throw new UnableToAutoJoinOrganizationError();
 };
 export const forceJoinOrganization = async ({
@@ -310,7 +312,7 @@ export const forceJoinOrganization = async ({
   is_external?: boolean;
 }) => {
   const user = await findUserById(user_id);
-  const organization = await findOrganizationById(organization_id);
+  const organization = await findById(organization_id);
   if (isEmpty(user) || isEmpty(organization)) {
     throw new NotFoundError();
   }
