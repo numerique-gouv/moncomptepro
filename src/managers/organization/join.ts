@@ -5,11 +5,10 @@ import {
   InseeNotActiveError,
   InvalidSiretError,
   NotFoundError,
-  SendZammadApiError,
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
-  UserNotFoundError,
+  UserNotFoundError
 } from "../../config/errors";
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
@@ -294,15 +293,11 @@ export const joinOrganization = async ({
     },
   });
 
-  if (!ticket) {
-    throw new SendZammadApiError("Unable to create ticket");
-  }
-
   await createModeration({
     user_id,
     organization_id,
     type: "organization_join_block",
-    ticket_id: ticket.id,
+    ticket_id: Number.isNaN(ticket.id) ? null : ticket.id,
   });
 
   throw new UnableToAutoJoinOrganizationError();

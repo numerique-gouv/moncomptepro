@@ -5,9 +5,8 @@ import {
 } from "../../config/env";
 import {
   NotFoundError,
-  SendZammadApiError,
   UserAlreadyAskedForSponsorshipError,
-  UserHasAlreadyBeenAuthenticatedByPeers,
+  UserHasAlreadyBeenAuthenticatedByPeers
 } from "../../config/errors";
 import { sendZammadMail } from "../../connectors/sendZammadMail";
 import { sendMail } from "../../connectors/sendinblue";
@@ -347,14 +346,10 @@ export const askForSponsorship = async ({
     },
   });
 
-  if (!ticket) {
-    throw new SendZammadApiError("Unable to create ticket");
-  }
-
   await createModeration({
     user_id,
     organization_id,
     type: "ask_for_sponsorship",
-    ticket_id: ticket.id,
+    ticket_id: Number.isNaN(ticket.id) ? null : ticket.id,
   });
 };
