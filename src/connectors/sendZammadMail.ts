@@ -55,7 +55,7 @@ export async function sendZammadMail({
   if (DO_NOT_SEND_MAIL) {
     console.log(`${template} mail not send to ${to}:`);
     console.log(data);
-    return { id: NaN };
+    return { id: null };
   }
 
   const { data: ticket }: AxiosResponse<{ id: number }> = await axios.post(

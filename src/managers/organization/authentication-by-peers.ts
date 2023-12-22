@@ -350,6 +350,6 @@ export const askForSponsorship = async ({
     user_id,
     organization_id,
     type: "ask_for_sponsorship",
-    ticket_id: Number.isNaN(ticket.id) ? null : ticket.id,
+    ticket_id: ticket.id,
   });
 };

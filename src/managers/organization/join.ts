@@ -297,7 +297,7 @@ export const joinOrganization = async ({
     user_id,
     organization_id,
     type: "organization_join_block",
-    ticket_id: Number.isNaN(ticket.id) ? null : ticket.id,
+    ticket_id: ticket.id,
   });
 
   throw new UnableToAutoJoinOrganizationError();
