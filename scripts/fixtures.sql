@@ -250,7 +250,8 @@ VALUES
      'http://localhost:3000/users/auth/api_gouv/callback',
      'http://localhost:3001/users/auth/api_gouv/callback',
      'http://localhost:3000/auth/mon_compte_pro/callback',
-     'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
+     'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://datapass-reborn.onrender.com/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
@@ -258,7 +259,8 @@ VALUES
      'https://datapass-development.api.gouv.fr',
      'https://sandbox.datapass.api.gouv.fr',
      'https://sandbox1.datapass.api.gouv.fr',
-     'https://sandbox2.datapass.api.gouv.fr'
+     'https://sandbox2.datapass.api.gouv.fr',
+     'https://datapass-reborn.onrender.com'
      ],
    'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
