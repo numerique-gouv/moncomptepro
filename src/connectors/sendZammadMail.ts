@@ -61,13 +61,12 @@ export async function sendZammadMail({
 
   const { data: ticket }: AxiosResponse<{ id: number }> = await axios.post(
     CREATE_TICKET_ENDPOINT,
+    data,
     {
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${ZAMMAD_TOKEN}`,
       },
-      body: JSON.stringify(data),
-      method: "POST",
     },
   );
 
