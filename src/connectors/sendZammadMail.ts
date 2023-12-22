@@ -66,7 +66,7 @@ export async function sendZammadMail({
         "content-type": "application/json",
         Authorization: `Bearer ${ZAMMAD_TOKEN}`,
       },
-      body: data,
+      body: JSON.stringify(data),
       method: "POST",
     },
   );
