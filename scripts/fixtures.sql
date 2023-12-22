@@ -250,7 +250,8 @@ VALUES
      'http://localhost:3000/users/auth/api_gouv/callback',
      'http://localhost:3001/users/auth/api_gouv/callback',
      'http://localhost:3000/auth/mon_compte_pro/callback',
-     'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
+     'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://datapass-reborn.onrender.com/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
@@ -258,7 +259,8 @@ VALUES
      'https://datapass-development.api.gouv.fr',
      'https://sandbox.datapass.api.gouv.fr',
      'https://sandbox1.datapass.api.gouv.fr',
-     'https://sandbox2.datapass.api.gouv.fr'
+     'https://sandbox2.datapass.api.gouv.fr',
+     'https://datapass-reborn.onrender.com'
      ],
    'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
@@ -738,6 +740,20 @@ VALUES
     'openid email profile organization',
     'https://dinum-pad-dev.osc-fr1.scalingo.io/',
     'Prise de notes simple et efficace, seul ou à plusieurs',
+    null, null, null, null),
+  (28,
+    'ANSSI Lab Outline',
+    'ct2okyedpoyl59rpvuod4q0fc8fr1fyg0gj5bid3tamw7mtzs7m7swc65mc7w0o1',
+    '6z18xdo9nf66z30eaufqat7lwfp3l13hmr476ewp1jfc47tnfm72rjstcfnsugvb',
+    ARRAY [
+      'https://lab-anssi-docs.cleverapps.io/auth/oidc.callback'
+    ],
+    ARRAY [
+      'https://lab-anssi-docs.cleverapps.io/'
+    ],
+    'openid email profile organization',
+    'https://lab-anssi-docs.cleverapps.io/',
+    'Gestion documentaire du Lab de l’ANSSI',
     null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
