@@ -17,6 +17,7 @@ export const {
   API_AUTH_PASSWORD = "admin",
   ZAMMAD_TOKEN,
   ZAMMAD_URL,
+  MODERATION_TAG = "moderation",
 } = process.env;
 
 export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =
