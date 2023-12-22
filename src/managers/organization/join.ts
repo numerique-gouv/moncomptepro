@@ -289,7 +289,7 @@ export const joinOrganization = async ({
     type: "organization_join_block",
   });
   await sendZammadMail({
-    to: [email],
+    to: email,
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
     template: "unable-to-auto-join-organization",
     params: {
