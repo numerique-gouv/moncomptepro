@@ -59,7 +59,13 @@ export const deleteUserAuthenticator = async (
     throw new NotFoundError();
   }
 
-  await deleteAuthenticator(user.id, credential_id);
+  const hasBeenDeleted = await deleteAuthenticator(user.id, credential_id);
+
+  if (!hasBeenDeleted) {
+    throw new NotFoundError();
+  }
+
+  return true;
 };
 
 export const getRegistrationOptions = async (email: string) => {

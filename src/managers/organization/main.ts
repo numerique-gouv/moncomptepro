@@ -37,9 +37,16 @@ export const quitOrganization = async ({
   user_id: number;
   organization_id: number;
 }) => {
-  await deleteUserOrganization({ user_id, organization_id });
+  const hasBeenRemoved = await deleteUserOrganization({
+    user_id,
+    organization_id,
+  });
 
-  return null;
+  if (!hasBeenRemoved) {
+    throw new NotFoundError();
+  }
+
+  return true;
 };
 export const markDomainAsVerified = async ({
   organization_id,
