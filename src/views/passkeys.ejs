@@ -58,6 +58,19 @@
                                 </h4>
                                 <p class="fr-tile__desc">Nombre d’utilisations : <%= counter %></p>
                                 <br />
+                                <div class="card-button-container">
+                                    <form action="/delete-passkeys/<%= credential_id; %>" method="post">
+                                        <input
+                                                type="hidden"
+                                                name="_csrf"
+                                                value="<%= csrfToken; %>"
+                                                autocomplete="off"
+                                        >
+                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                            Supprimer cette clé d’accès
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -7,6 +7,7 @@ import {
   updateUserInLoggedInSession,
 } from "../managers/session";
 import {
+  deleteUserAuthenticator,
   getAuthenticationOptions,
   getRegistrationOptions,
   getUserAuthenticators,
@@ -21,6 +22,7 @@ import {
   RegistrationResponseJSON,
 } from "@simplewebauthn/server/esm/deps";
 import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
+import { csrfToken } from "../middlewares/csrf-protection";
 
 export const getPasskeysController = async (
   req: Request,
@@ -35,7 +37,29 @@ export const getPasskeysController = async (
     return res.render("passkeys", {
       notifications: await getNotificationsFromRequest(req),
       passkeys,
+      csrfToken: csrfToken(req),
     });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const deletePasskeyController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const paramsSchema = z.object({
+      credential_id: z.string(),
+    });
+    const { credential_id } = paramsSchema.parse(req.params);
+
+    const user = getUserFromLoggedInSession(req);
+
+    await deleteUserAuthenticator(user.email, credential_id);
+
+    return res.redirect(`/passkeys?notification=passkey_successfully_deleted`);
   } catch (e) {
     next(e);
   }

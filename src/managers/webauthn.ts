@@ -1,7 +1,8 @@
 import {
   createAuthenticator,
-  find as findAuthenticator,
-  getByUserId as getAuthenticatorsByUserId,
+  deleteAuthenticator,
+  findAuthenticator,
+  getAuthenticatorsByUserId,
   saveAuthenticatorCounter,
 } from "../repositories/authenticator";
 import {
@@ -46,6 +47,19 @@ export const getUserAuthenticators = async (email: string) => {
     credential_id: encodeBase64URL(credential_id),
     counter,
   }));
+};
+
+export const deleteUserAuthenticator = async (
+  email: string,
+  credential_id: string,
+) => {
+  const user = await findUserByEmail(email);
+
+  if (isEmpty(user)) {
+    throw new NotFoundError();
+  }
+
+  await deleteAuthenticator(user.id, credential_id);
 };
 
 export const getRegistrationOptions = async (email: string) => {

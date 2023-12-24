@@ -12,7 +12,10 @@ import { checkUserHasAtLeastOneOrganizationMiddleware } from "../middlewares/use
 import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";
-import { getPasskeysController } from "../controllers/webauthn";
+import {
+  deletePasskeyController,
+  getPasskeysController,
+} from "../controllers/webauthn";
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
@@ -71,6 +74,15 @@ export const mainRouter = (app: Express) => {
     csrfProtectionMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
     getPasskeysController,
+  );
+
+  mainRouter.post(
+    "/delete-passkeys/:credential_id",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    csrfProtectionMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    deletePasskeyController,
   );
 
   mainRouter.get(

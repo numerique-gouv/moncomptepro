@@ -108,6 +108,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       "Les données Annuaire Service Public de l’organisation, nécessaires pour valider le rattachement, sont indisponibles pour le moment. Merci de réessayer ultérieurement.",
   },
+  passkey_successfully_deleted: {
+    type: "success",
+    description: "Votre clé d’accès a bien été supprimée.",
+  },
 };
 
 export default notificationMessages;
