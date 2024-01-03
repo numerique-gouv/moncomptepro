@@ -5,29 +5,20 @@
     <%- include('partials/sidemenu.ejs', {activeLink: 'passkeys'}) %>
     <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+        <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
         <h2>Vos clés d’accès</h2>
-        <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
-        <div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
-        <div class="fr-callout fr-icon-information-line" id="webauthn-register" hidden>
-            <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
-            <p class="fr-callout__text">
-                Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
-            </p>
-            <button class="fr-btn" id="webauthn-btn-begin-registration">
-                Créer une clé d’accès
-            </button>
-        </div>
-        <div class="fr-callout fr-icon-information-line" id="webauthn-success" hidden>
-            <h3 class="fr-callout__title">Tout est en ordre !</h3>
-            <p class="fr-callout__text">
-                Vous pouvez désormais utiliser votre empreinte, votre visage ou le verrouillage de l'écran pour vous
-                connecter sur cet appareil
-            </p>
-            <button class="fr-btn" id="webauthn-btn-begin-authentication">
-                Essayer
-            </button>
-        </div>
-        <div class="fr-callout fr-icon-alert-line" id="webauthn-error" hidden>
+        <% if (passkeys.length <= 0) { %>
+            <div class="fr-callout fr-icon-information-line" id="webauthn-register">
+                <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
+                <p class="fr-callout__text">
+                    Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
+                </p>
+                <button class="fr-btn" id="webauthn-btn-begin-registration">
+                    Créer une clé d’accès
+                </button>
+            </div>
+        <% } %>
+        <div class="fr-callout fr-icon-alert-line" id="webauthn-not-supported" hidden>
             <h3 class="fr-callout__title">
                 Impossible de créer une clé d’accès sur cet appareil
             </h3>
@@ -58,10 +49,31 @@
                                 </h4>
                                 <p class="fr-tile__desc">Nombre d’utilisations : <%= counter %></p>
                                 <br />
+                                <div class="card-button-container">
+                                    <form action="/delete-passkeys/<%= credential_id; %>" method="post">
+                                        <input
+                                                type="hidden"
+                                                name="_csrf"
+                                                value="<%= csrfToken; %>"
+                                                autocomplete="off"
+                                        >
+                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                            Supprimer cette clé d’accès
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 <% }); %>
+                <div class="fr-col-12">
+                    <button
+                            class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
+                            id="webauthn-btn-begin-registration"
+                    >
+                        Créer une clé d’accès sur cet appareil
+                    </button>
+                </div>
             <% } else { %>
                 <div class="fr-col-12 fr-col-lg-8 fr-col-xl-7">
                     <div class="fr-alert fr-alert--info">
@@ -70,8 +82,12 @@
                 </div>
             <% } %>
         </div>
+        <form id="registration_response_form" action="/passkeys/verify-registration" method="post" hidden>
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="registration_response_string" autocomplete="off">
+            <button type="submit" class="fr-btn"></button>
+        </form>
     </div>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
-<script src="/assets/webauthn-registration.js"></script>
-<script src="/assets/webauthn-authentication.js"></script>
+<script src="/assets/webauthn-registration-20240103.js"></script>

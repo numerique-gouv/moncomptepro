@@ -3,7 +3,7 @@ import { QueryResult } from "pg";
 import { Authenticator, BaseAuthenticator } from "../types/authenticator";
 import { decodeBase64URL, encodeBase64URL } from "../services/base64";
 
-export const getByUserId = async (user_id: number) => {
+export const getAuthenticatorsByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Authenticator> = await connection.query(
@@ -17,12 +17,16 @@ export const getByUserId = async (user_id: number) => {
 
   return rows.map((auth) => ({
     ...auth,
+    // TODO remove TS ignore
     // @ts-ignore
     credential_id: decodeBase64URL(auth.credential_id),
   }));
 };
 
-export const find = async (user_id: number, credential_id: Uint8Array) => {
+export const findAuthenticator = async (
+  user_id: number,
+  credential_id: Uint8Array,
+) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Authenticator> = await connection.query(
@@ -103,4 +107,22 @@ export const saveAuthenticatorCounter = async (
   );
 
   return rows.shift()!;
+};
+
+export const deleteAuthenticator = async (
+  user_id: number,
+  credential_id: string,
+) => {
+  const connection = getDatabaseConnection();
+
+  const { rowCount } = await connection.query(
+    `
+        DELETE FROM authenticators
+        WHERE user_id = $1
+          and credential_id = $2
+        RETURNING *`,
+    [user_id, credential_id],
+  );
+
+  return rowCount > 0;
 };

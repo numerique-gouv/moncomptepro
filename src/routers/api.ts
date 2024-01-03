@@ -21,8 +21,7 @@ import nocache from "nocache";
 import {
   getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
-  getVerifyAuthenticationController,
-  getVerifyRegistrationController,
+  postVerifyAuthenticationController,
 } from "../controllers/webauthn";
 
 export const apiRouter = () => {
@@ -44,30 +43,23 @@ export const apiRouter = () => {
     getOrganizationInfoController,
   );
 
-  apiRouter.use(
+  apiRouter.get(
     "/webauthn/generate-registration-options",
     apiRateLimiterMiddleware,
     getGenerateRegistrationOptionsController,
   );
 
-  apiRouter.use(
-    "/webauthn/verify-registration",
-    json({ inflate: true }),
-    apiRateLimiterMiddleware,
-    getVerifyRegistrationController,
-  );
-
-  apiRouter.use(
+  apiRouter.get(
     "/webauthn/generate-authentication-options",
     apiRateLimiterMiddleware,
     getGenerateAuthenticationOptionsController,
   );
 
-  apiRouter.use(
+  apiRouter.post(
     "/webauthn/verify-authentication",
     json({ inflate: true }),
     apiRateLimiterMiddleware,
-    getVerifyAuthenticationController,
+    postVerifyAuthenticationController,
   );
 
   const apiAdminRouter = Router();
