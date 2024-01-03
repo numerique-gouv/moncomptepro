@@ -152,7 +152,7 @@ export const verifyRegistration = async ({
   } = registrationInfo;
 
   // Save the authenticator info so that we can get it by user ID later
-  await createAuthenticator({
+  return await createAuthenticator({
     user_id: user.id,
     authenticator: {
       credential_id,
@@ -162,8 +162,6 @@ export const verifyRegistration = async ({
       credential_backed_up,
     },
   });
-
-  return { verified };
 };
 
 export const getAuthenticationOptions = async (email: string | undefined) => {

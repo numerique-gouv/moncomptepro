@@ -22,7 +22,6 @@ import {
   getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
   postVerifyAuthenticationController,
-  postVerifyRegistrationController,
 } from "../controllers/webauthn";
 
 export const apiRouter = () => {
@@ -48,13 +47,6 @@ export const apiRouter = () => {
     "/webauthn/generate-registration-options",
     apiRateLimiterMiddleware,
     getGenerateRegistrationOptionsController,
-  );
-
-  apiRouter.post(
-    "/webauthn/verify-registration",
-    json({ inflate: true }),
-    apiRateLimiterMiddleware,
-    postVerifyRegistrationController,
   );
 
   apiRouter.get(

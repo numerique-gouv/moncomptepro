@@ -15,6 +15,7 @@ import nocache from "nocache";
 import {
   deletePasskeyController,
   getPasskeysController,
+  postVerifyRegistrationController,
 } from "../controllers/webauthn";
 
 export const mainRouter = (app: Express) => {
@@ -77,10 +78,21 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.post(
+    "/passkeys/verify-registration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    csrfProtectionMiddleware,
+    rateLimiterMiddleware,
+    checkUserHasAtLeastOneOrganizationMiddleware,
+    postVerifyRegistrationController,
+  );
+
+  mainRouter.post(
     "/delete-passkeys/:credential_id",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
+    rateLimiterMiddleware,
     checkUserHasAtLeastOneOrganizationMiddleware,
     deletePasskeyController,
   );

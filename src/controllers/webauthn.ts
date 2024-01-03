@@ -105,21 +105,25 @@ export const postVerifyRegistrationController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.custom<RegistrationResponseJSON>(),
+      registration_response_string: z.string(),
     });
+    const { registration_response_string } = await schema.parseAsync(req.body);
 
-    const { body: response } = await schema.parseAsync({
-      body: req.body,
-    });
+    const registrationResponseJson = JSON.parse(registration_response_string);
+    const registrationResponseSchema = z.custom<RegistrationResponseJSON>();
+
+    const response = await registrationResponseSchema.parseAsync(
+      registrationResponseJson,
+    );
 
     const user = getUserFromLoggedInSession(req);
 
-    const verification = await verifyRegistration({
+    await verifyRegistration({
       email: user.email,
       response,
     });
 
-    return res.json(verification);
+    return res.redirect(`/passkeys?notification=passkey_successfully_created`);
   } catch (e) {
     console.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {

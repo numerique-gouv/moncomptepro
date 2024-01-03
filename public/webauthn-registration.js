@@ -1,19 +1,17 @@
 document.addEventListener('DOMContentLoaded', async function() {
   const { browserSupportsWebAuthn, startRegistration } = SimpleWebAuthnBrowser;
 
-  const registerElement = document.getElementById('webauthn-register');
   const beginElement = document.getElementById('webauthn-btn-begin-registration');
-  const successElement = document.getElementById('webauthn-success');
+  const registrationResponseStringInputElement = document.querySelector('input[name="registration_response_string"]');
+  const registrationResponseForm = document.getElementById('registration_response_form');
   const successAlertElement = document.getElementById('webauthn-alert-success');
-  const errorElement = document.getElementById('webauthn-error');
+  const notSupportedElement = document.getElementById('webauthn-not-supported');
   const errorAlertElement = document.getElementById('webauthn-alert-error');
 
   const clearDisplay = () => {
-    registerElement.style.display = 'block';
-    successElement.style.display = 'none';
     successAlertElement.style.display = 'none';
     successAlertElement.innerText = '';
-    errorElement.style.display = 'none';
+    notSupportedElement.style.display = 'none';
     errorAlertElement.style.display = 'none';
     errorAlertElement.innerText = '';
   };
@@ -34,43 +32,24 @@ document.addEventListener('DOMContentLoaded', async function() {
       clearDisplay();
       errorAlertElement.style.display = 'block';
       if (error.name === 'InvalidStateError') {
-        errorElement.innerText = `Une erreur est survenue. Erreur: cette clé est déjà enregistrée.`;
+        errorAlertElement.innerText = `Une erreur est survenue. Erreur: cette clé est déjà enregistrée.`;
       }
-      errorElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
+      errorAlertElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
 
       throw error;
     }
 
     // POST the response to the endpoint that calls
     // @simplewebauthn/server -> verifyRegistrationResponse()
-    const verificationResp = await fetch('/api/webauthn/verify-registration', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(attResp),
-    });
-
-    // Wait for the results of verification
-    const verificationJSON = await verificationResp.json();
-
-    if (verificationJSON && verificationJSON.verified) {
-      clearDisplay();
-      successElement.style.display = 'block';
-      successAlertElement.style.display = 'block';
-      successAlertElement.innerText = 'Clé d’accès créée.';
-    } else {
-      clearDisplay();
-      errorAlertElement.style.display = 'block';
-      errorElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
-    }
+    registrationResponseStringInputElement.value = JSON.stringify(attResp);
+    registrationResponseForm.submit();
   };
 
   clearDisplay();
+
   if (!browserSupportsWebAuthn()) {
-    errorElement.style.display = 'block';
+    notSupportedElement.style.display = 'block';
   } else {
-    registerElement.style.display = 'block';
     beginElement.addEventListener('click', onRegisterClick);
   }
 }, false);
