@@ -4,13 +4,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   const beginElement = document.getElementById('webauthn-btn-begin-registration');
   const registrationResponseStringInputElement = document.querySelector('input[name="registration_response_string"]');
   const registrationResponseForm = document.getElementById('registration_response_form');
-  const successAlertElement = document.getElementById('webauthn-alert-success');
   const notSupportedElement = document.getElementById('webauthn-not-supported');
   const errorAlertElement = document.getElementById('webauthn-alert-error');
 
   const clearDisplay = () => {
-    successAlertElement.style.display = 'none';
-    successAlertElement.innerText = '';
     notSupportedElement.style.display = 'none';
     errorAlertElement.style.display = 'none';
     errorAlertElement.innerText = '';

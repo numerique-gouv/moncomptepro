@@ -7,7 +7,6 @@
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Vos clés d’accès</h2>
         <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
-        <div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
         <% if (passkeys.length <= 0) { %>
             <div class="fr-callout fr-icon-information-line" id="webauthn-register">
                 <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
