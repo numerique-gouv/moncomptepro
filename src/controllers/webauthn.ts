@@ -98,7 +98,7 @@ export const getGenerateRegistrationOptionsController = async (
   }
 };
 
-export const getVerifyRegistrationController = async (
+export const postVerifyRegistrationController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -153,7 +153,7 @@ export const getGenerateAuthenticationOptionsController = async (
   }
 };
 
-export const getVerifyAuthenticationController = async (
+export const postVerifyAuthenticationController = async (
   req: Request,
   res: Response,
   next: NextFunction,
