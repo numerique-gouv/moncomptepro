@@ -5,8 +5,8 @@
     <%- include('partials/sidemenu.ejs', {activeLink: 'passkeys'}) %>
     <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+        <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
         <h2>Vos clés d’accès</h2>
-        <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
         <% if (passkeys.length <= 0) { %>
             <div class="fr-callout fr-icon-information-line" id="webauthn-register">
                 <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>

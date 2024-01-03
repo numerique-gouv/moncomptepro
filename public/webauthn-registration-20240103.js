@@ -30,8 +30,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       errorAlertElement.style.display = 'block';
       if (error.name === 'InvalidStateError') {
         errorAlertElement.innerText = `Une erreur est survenue. Erreur: cette clé est déjà enregistrée.`;
+      } else if (error.name === 'NotAllowedError') {
+        errorAlertElement.innerText = `Une erreur est survenue. Nous n’avons pas pu enregistrer vos modifications. Merci de réessayer.`
+      } else {
+        errorAlertElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
       }
-      errorAlertElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
+
+      errorAlertElement.scrollIntoView({ behavior: 'smooth' });
 
       throw error;
     }
