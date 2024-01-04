@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       clearDisplay();
       errorAlertElement.style.display = 'block';
       if (error.name === 'InvalidStateError') {
-        errorAlertElement.innerText = `Une erreur est survenue. Erreur: cette clé est déjà enregistrée.`;
+        errorAlertElement.innerText = `Cette clé est déjà enregistrée. Vous pouvez d'ores et déjà utiliser votre empreinte digitale, votre visage, le verrouillage de l’écran ou une clé de sécurité physique pour vous connecter sur cet appareil.`;
       } else if (error.name === 'NotAllowedError') {
         errorAlertElement.innerText = `Une erreur est survenue. Nous n’avons pas pu enregistrer vos modifications. Merci de réessayer.`
       } else {
