@@ -139,11 +139,15 @@ export const verifyRegistration = async ({
     throw new NotFoundError();
   }
 
+  const current_challenge = user.current_challenge;
+  // challenge must only be use a single time
+  await update(user.id, { current_challenge: null });
+
   let verification: VerifiedRegistrationResponse;
   try {
     verification = await verifyRegistrationResponse({
       response,
-      expectedChallenge: user.current_challenge,
+      expectedChallenge: current_challenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
     });
@@ -178,6 +182,9 @@ export const verifyRegistration = async ({
       counter,
       credential_device_type,
       credential_backed_up,
+      transports: response.response.transports as
+        | AuthenticatorTransport[]
+        | undefined,
       display_name,
       last_used_at: null,
       usage_count: 0,
@@ -235,6 +242,10 @@ export const verifyAuthentication = async ({
     throw new NotFoundError();
   }
 
+  const current_challenge = user.current_challenge;
+  // challenge must only be use a single time
+  await update(user.id, { current_challenge: null });
+
   // Retrieve an authenticator from the DB that should match the `id` in the returned credential
   const authenticator = await findAuthenticator(
     user.id,
@@ -256,7 +267,7 @@ export const verifyAuthentication = async ({
   try {
     verification = await verifyAuthenticationResponse({
       response,
-      expectedChallenge: user.current_challenge,
+      expectedChallenge: current_challenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
       authenticator: {
