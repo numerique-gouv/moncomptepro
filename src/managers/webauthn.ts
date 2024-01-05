@@ -3,7 +3,7 @@ import {
   deleteAuthenticator,
   findAuthenticator,
   getAuthenticatorsByUserId,
-  saveAuthenticatorCounter,
+  updateAuthenticator,
 } from "../repositories/authenticator";
 import {
   NotFoundError,
@@ -26,6 +26,8 @@ import {
   RegistrationResponseJSON,
 } from "@simplewebauthn/server/esm/deps";
 import { decodeBase64URL, encodeBase64URL } from "../services/base64";
+import { getAuthenticatorFriendlyName } from "../connectors/github-passkey-authenticator-aaguids";
+import moment from "moment";
 
 // Human-readable title for your website
 const rpName = "MonComptePro";
@@ -43,10 +45,17 @@ export const getUserAuthenticators = async (email: string) => {
 
   const userAuthenticators = await getAuthenticatorsByUserId(user.id);
 
-  return userAuthenticators.map(({ credential_id, counter }) => ({
-    credential_id: encodeBase64URL(credential_id),
-    counter,
-  }));
+  return userAuthenticators.map(
+    ({ credential_id, counter, display_name, created_at, last_used_at }) => ({
+      credential_id: encodeBase64URL(credential_id),
+      counter,
+      display_name: display_name || encodeBase64URL(credential_id),
+      created_at: moment(created_at).locale("fr").calendar(),
+      last_used_at: last_used_at
+        ? moment(last_used_at).locale("fr").calendar()
+        : "pas encore utilisée",
+    }),
+  );
 };
 
 export const deleteUserAuthenticator = async (
@@ -144,12 +153,15 @@ export const verifyRegistration = async ({
   }
 
   const {
+    aaguid,
     credentialPublicKey: credential_public_key,
     credentialID: credential_id,
     counter,
     credentialDeviceType: credential_device_type,
     credentialBackedUp: credential_backed_up,
   } = registrationInfo;
+
+  const display_name = await getAuthenticatorFriendlyName(aaguid);
 
   // Save the authenticator info so that we can get it by user ID later
   return await createAuthenticator({
@@ -160,6 +172,8 @@ export const verifyRegistration = async ({
       counter,
       credential_device_type,
       credential_backed_up,
+      display_name,
+      last_used_at: null,
     },
   });
 };
@@ -256,10 +270,13 @@ export const verifyAuthentication = async ({
     throw new WebauthnAuthenticationFailedError();
   }
 
-  await saveAuthenticatorCounter(
-    authenticationInfo.credentialID,
-    authenticationInfo.newCounter,
-  );
+  const { credentialID: newCredentialID, newCounter } = authenticationInfo;
+
+  await updateAuthenticator(newCredentialID, {
+    // for some reason, newCounter is not incremented in authenticationInfo
+    counter: newCounter + 1,
+    last_used_at: new Date(),
+  });
 
   return { verified, user };
 };

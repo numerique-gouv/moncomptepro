@@ -39,14 +39,18 @@
         </p>
         <% if (passkeys.length > 0) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
-                <% passkeys.forEach(({ credential_id, counter }) => { %>
+                <% passkeys.forEach(({ credential_id, counter, display_name, created_at, last_used_at }) => { %>
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
                                 <h4 class="fr-tile__title">
-                                    <%= credential_id %>
+                                    <%= display_name; %>
                                 </h4>
-                                <p class="fr-tile__desc">Nombre d’utilisations : <%= counter %></p>
+                                <p class="fr-tile__desc">Création : <%= created_at; %></p>
+                                <p class="fr-tile__desc">
+                                    Dernière utilisation : <%= last_used_at; %>
+                                </p>
+                                <p class="fr-tile__desc">Nombre d’utilisations : <%= counter; %></p>
                                 <br />
                                 <div class="card-button-container">
                                     <form action="/delete-passkeys/<%= credential_id; %>" method="post">

@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
           organizationAlertElement.style.display = "block";
           organizationAlertElement.innerHTML = "Nous n'avons pas trouvé votre organisation.";
         } else if (xmlhttp.status === 504) {
-          // silently fails
+          // fail silently
         } else {
           organizationAlertElement.style.display = "block";
           organizationAlertElement.innerHTML =

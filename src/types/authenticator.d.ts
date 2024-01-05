@@ -1,6 +1,8 @@
 import { CredentialDeviceType } from "@simplewebauthn/typescript-types";
 
 interface BaseAuthenticator {
+  display_name: string | null;
+  last_used_at: Date | null;
   credential_id: Uint8Array;
   credential_public_key: Uint8Array;
   counter: number;
@@ -13,4 +15,5 @@ interface BaseAuthenticator {
 
 interface Authenticator extends BaseAuthenticator {
   user_id: number;
+  created_at: Date;
 }

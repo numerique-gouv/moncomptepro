@@ -56,7 +56,7 @@ export const loginRateLimiterMiddleware = async (
   try {
     if (!DO_NOT_RATE_LIMIT) {
       if (!req.session.email) {
-        // silently fail
+        // fail silently
         const err = new Error(
           "Email not defined in loginRateLimiterMiddleware. Ensure checkEmailInSessionMiddleware was used before this middleware.",
         );

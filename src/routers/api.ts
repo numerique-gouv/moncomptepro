@@ -35,14 +35,12 @@ export const apiRouter = () => {
     getOrganizationInfoController,
   );
 
-  // TODO ensure user is logged
   apiRouter.get(
     "/webauthn/generate-registration-options",
     apiRateLimiterMiddleware,
     getGenerateRegistrationOptionsController,
   );
 
-  // TODO ensure user is logged
   apiRouter.get(
     "/webauthn/generate-authentication-options",
     apiRateLimiterMiddleware,
