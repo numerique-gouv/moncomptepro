@@ -37,16 +37,10 @@ export const getOrganizationInfoController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        siret: siretSchema(),
-      }),
+      siret: siretSchema(),
     });
 
-    const {
-      params: { siret },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { siret } = await schema.parseAsync(req.params);
 
     const organizationInfo = await getOrganizationInfo(siret);
 
@@ -81,18 +75,14 @@ export const postForceJoinOrganizationController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        organization_id: idSchema(),
-        user_id: idSchema(),
-        is_external: optionalBooleanSchema(),
-      }),
+      organization_id: idSchema(),
+      user_id: idSchema(),
+      is_external: optionalBooleanSchema(),
     });
 
-    const {
-      query: { organization_id, user_id, is_external },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { organization_id, user_id, is_external } = await schema.parseAsync(
+      req.query,
+    );
 
     let userOrganizationLink = await getUserOrganizationLink(
       organization_id,
@@ -128,17 +118,11 @@ export const postSendModerationProcessedEmail = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        organization_id: idSchema(),
-        user_id: idSchema(),
-      }),
+      organization_id: idSchema(),
+      user_id: idSchema(),
     });
 
-    const {
-      query: { organization_id, user_id },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { organization_id, user_id } = await schema.parseAsync(req.query);
 
     await sendModerationProcessedEmail({ organization_id, user_id });
 
@@ -160,17 +144,11 @@ export const postMarkDomainAsVerified = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        organization_id: idSchema(),
-        domain: z.string().min(1),
-      }),
+      organization_id: idSchema(),
+      domain: z.string().min(1),
     });
 
-    const {
-      query: { organization_id, domain },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { organization_id, domain } = await schema.parseAsync(req.query);
 
     await markDomainAsVerified({
       organization_id,

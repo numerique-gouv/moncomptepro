@@ -52,10 +52,10 @@ export const deletePasskeyController = async (
   next: NextFunction,
 ) => {
   try {
-    const paramsSchema = z.object({
+    const schema = z.object({
       credential_id: z.string(),
     });
-    const { credential_id } = paramsSchema.parse(req.params);
+    const { credential_id } = schema.parse(req.params);
 
     const user = getUserFromLoggedInSession(req);
 

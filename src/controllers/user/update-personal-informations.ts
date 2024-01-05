@@ -35,17 +35,13 @@ export const getParamsForPostPersonalInformationsController = async (
   req: Request,
 ) => {
   const schema = z.object({
-    body: z.object({
-      given_name: nameSchema(),
-      family_name: nameSchema(),
-      phone_number: phoneNumberSchema(),
-      job: z.string().min(1),
-    }),
+    given_name: nameSchema(),
+    family_name: nameSchema(),
+    phone_number: phoneNumberSchema(),
+    job: z.string().min(1),
   });
 
-  return await schema.parseAsync({
-    body: req.body,
-  });
+  return await schema.parseAsync(req.body);
 };
 export const postPersonalInformationsController = async (
   req: Request,
@@ -53,9 +49,8 @@ export const postPersonalInformationsController = async (
   next: NextFunction,
 ) => {
   try {
-    const {
-      body: { given_name, family_name, phone_number, job },
-    } = await getParamsForPostPersonalInformationsController(req);
+    const { given_name, family_name, phone_number, job } =
+      await getParamsForPostPersonalInformationsController(req);
 
     const updatedUser = await updatePersonalInformations(
       getUserFromLoggedInSession(req).id,

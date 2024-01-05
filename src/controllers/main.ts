@@ -55,9 +55,8 @@ export const postPersonalInformationsController = async (
   next: NextFunction,
 ) => {
   try {
-    const {
-      body: { given_name, family_name, phone_number, job },
-    } = await getParamsForPostPersonalInformationsController(req);
+    const { given_name, family_name, phone_number, job } =
+      await getParamsForPostPersonalInformationsController(req);
 
     const updatedUser = await updatePersonalInformations(
       getUserFromLoggedInSession(req).id,

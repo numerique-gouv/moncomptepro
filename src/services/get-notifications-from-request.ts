@@ -5,16 +5,10 @@ import { notificationLabelSchema } from "./custom-zod-schemas";
 
 export const getNotificationLabelFromRequest = async (req: Request) => {
   const schema = z.object({
-    query: z.object({
-      notification: notificationLabelSchema(),
-    }),
+    notification: notificationLabelSchema(),
   });
 
-  const {
-    query: { notification },
-  } = await schema.parseAsync({
-    query: req.query,
-  });
+  const { notification } = await schema.parseAsync(req.query);
 
   return notification;
 };
