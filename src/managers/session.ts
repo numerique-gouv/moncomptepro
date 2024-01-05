@@ -15,12 +15,8 @@ export const createLoggedInSession = async (
   // we store old session value to pass it to the new logged-in session
   // email will not be passed to the new session as it is not useful within logged session
   // csrfToken should not be passed to the new session for security reasons
-  const {
-    interactionId,
-    mustReturnOneOrganizationInPayload,
-    loginHint,
-    referer,
-  } = req.session;
+  const { interactionId, mustReturnOneOrganizationInPayload, referer } =
+    req.session;
 
   // as selected org is not stored in session
   // we delete this to avoid sync issues
@@ -41,7 +37,6 @@ export const createLoggedInSession = async (
         req.session.interactionId = interactionId;
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
-        req.session.loginHint = loginHint;
         req.session.referer = referer;
 
         setIsTrustedBrowserFromLoggedInSession(req);

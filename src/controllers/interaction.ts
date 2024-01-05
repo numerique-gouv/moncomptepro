@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { getUserFromLoggedInSession } from "../managers/session";
 import epochTime from "../services/epoch-time";
+import { postStartSignInController } from "./user/signin-signup";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -18,7 +19,9 @@ export const interactionStartControllerFactory =
         mustReturnOneOrganizationInPayload(scope);
 
       if (login_hint) {
-        req.session.loginHint = login_hint;
+        req.session.email = login_hint;
+        req.body.login = login_hint;
+        return postStartSignInController(req, res, next);
       }
 
       if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
@@ -79,7 +82,6 @@ export const interactionEndControllerFactory =
 
       req.session.interactionId = undefined;
       req.session.mustReturnOneOrganizationInPayload = undefined;
-      req.session.loginHint = undefined;
 
       await oidcProvider.interactionFinished(req, res, result);
     } catch (error) {

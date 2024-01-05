@@ -35,7 +35,7 @@ export const getStartSignInController = async (
       query: req.query,
     });
 
-    const loginHint = req.session.loginHint || req.session.email;
+    const loginHint = req.session.email;
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
