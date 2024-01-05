@@ -93,11 +93,15 @@ export const postVerifyRegistrationController = async (
 ) => {
   try {
     const schema = z.object({
-      registration_response_string: z.string(),
+      webauthn_registration_response_string: z.string(),
     });
-    const { registration_response_string } = await schema.parseAsync(req.body);
+    const { webauthn_registration_response_string } = await schema.parseAsync(
+      req.body,
+    );
 
-    const registrationResponseJson = JSON.parse(registration_response_string);
+    const registrationResponseJson = JSON.parse(
+      webauthn_registration_response_string,
+    );
     const registrationResponseSchema = z.custom<RegistrationResponseJSON>();
 
     const response = await registrationResponseSchema.parseAsync(
@@ -115,7 +119,7 @@ export const postVerifyRegistrationController = async (
   } catch (e) {
     console.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
-      return next(new BadRequest());
+      return res.redirect(`/passkeys?notification=invalid_passkey`);
     }
 
     next(e);
