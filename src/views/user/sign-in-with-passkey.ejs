@@ -48,6 +48,11 @@
             </div>
         </div>
     </div>
+    <form id="webauthn-authentication-response-form" action="/users/sign-in-with-passkey" method="post" hidden>
+        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+        <input type="hidden" name="webauthn_authentication_response_string" autocomplete="off">
+        <button type="submit" class="fr-btn"></button>
+    </form>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
 <script src="/assets/webauthn-authentication-20240105.js"></script>

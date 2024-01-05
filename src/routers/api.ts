@@ -1,11 +1,4 @@
-import {
-  json,
-  NextFunction,
-  Request,
-  Response,
-  Router,
-  urlencoded,
-} from "express";
+import { NextFunction, Request, Response, Router, urlencoded } from "express";
 import {
   getOrganizationInfoController,
   getPingApiSireneController,
@@ -21,7 +14,6 @@ import nocache from "nocache";
 import {
   getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
-  postVerifyAuthenticationController,
 } from "../controllers/webauthn";
 
 export const apiRouter = () => {
@@ -43,23 +35,18 @@ export const apiRouter = () => {
     getOrganizationInfoController,
   );
 
+  // TODO ensure user is logged
   apiRouter.get(
     "/webauthn/generate-registration-options",
     apiRateLimiterMiddleware,
     getGenerateRegistrationOptionsController,
   );
 
+  // TODO ensure user is logged
   apiRouter.get(
     "/webauthn/generate-authentication-options",
     apiRateLimiterMiddleware,
     getGenerateAuthenticationOptionsController,
-  );
-
-  apiRouter.post(
-    "/webauthn/verify-authentication",
-    json({ inflate: true }),
-    apiRateLimiterMiddleware,
-    postVerifyAuthenticationController,
   );
 
   const apiAdminRouter = Router();
