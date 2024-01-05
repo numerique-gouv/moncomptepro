@@ -82,6 +82,7 @@ jobs:
           MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
           MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
           STYLESHEET_URL: ""
+          LOGIN_HINT: unused1@yopmail.com
       moncomptepro-legacy-client:
         image: ghcr.io/betagouv/moncomptepro-test-client
         ports:

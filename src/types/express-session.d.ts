@@ -4,7 +4,6 @@ export interface LoggedOutSessionData {
   email?: string;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
-  loginHint?: string;
   referer?: string;
 }
 
