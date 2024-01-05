@@ -11,7 +11,7 @@ describe("sign-in from standard client", () => {
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("Se connecter")
+      .contains("S’identifier")
       .click();
 
     cy.contains("moncomptepro-standard-client");
@@ -44,7 +44,7 @@ describe("sign-in from standard client", () => {
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("Se connecter")
+      .contains("S’identifier")
       .click();
 
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(

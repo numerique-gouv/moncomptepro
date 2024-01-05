@@ -105,6 +105,7 @@ export const getSignInController = async (
     return res.render("user/sign-in", {
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
+      email: req.session.email,
     });
   } catch (error) {
     next(error);

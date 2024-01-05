@@ -21,7 +21,7 @@ describe("sign-in with email verification renewal", () => {
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("Se connecter")
+      .contains("S’identifier")
       .click();
 
     cy.contains(

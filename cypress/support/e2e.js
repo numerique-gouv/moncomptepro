@@ -30,7 +30,7 @@ Cypress.Commands.add("login", (email, password) => {
 
     cy.get('[name="password"]').type(password);
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("Se connecter")
+      .contains("S’identifier")
       .click();
   });
 });

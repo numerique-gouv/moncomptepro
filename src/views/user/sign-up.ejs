@@ -7,7 +7,15 @@
                     Choisir votre mot de passe
                 </h4>
                 <div class="fr-card__desc">
-                    <form action="/users/sign-up" method="post">
+                    <div class="fr-notice moncomptepro-notice--email fr-mb-2w">
+                        <div class="fr-container">
+                            <div class="fr-notice__body">
+                                Email professionnel : <strong><%= email; %></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="/users/sign-up" method="post" class="fr-mb-2w">
                         <input type="hidden" name="_csrf" value="<%= csrfToken ;%>" autocomplete="off">
 
                         <div class="fr-input-group fr-password">
@@ -80,8 +88,9 @@
 
                         <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
                     </form>
-                    <br />
+
                     <p class="fr-hr-or">ou</p>
+
                     <div>
                         <div>
                             <b>Connectez-vous sans mot de passe</b> en recevant <b>un lien par email.</b>
