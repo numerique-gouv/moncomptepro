@@ -39,7 +39,7 @@
         </p>
         <% if (passkeys.length > 0) { %>
             <div class="fr-grid-row fr-grid-row--gutters">
-                <% passkeys.forEach(({ credential_id, counter, display_name, created_at, last_used_at }) => { %>
+                <% passkeys.forEach(({ credential_id, usage_count, display_name, created_at, last_used_at }) => { %>
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
@@ -50,7 +50,7 @@
                                 <p class="fr-tile__desc">
                                     Dernière utilisation : <%= last_used_at; %>
                                 </p>
-                                <p class="fr-tile__desc">Nombre d’utilisations : <%= counter; %></p>
+                                <p class="fr-tile__desc">Nombre d’utilisations : <%= usage_count; %></p>
                                 <br />
                                 <div class="card-button-container">
                                     <form action="/delete-passkeys/<%= credential_id; %>" method="post">

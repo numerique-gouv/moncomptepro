@@ -46,9 +46,15 @@ export const getUserAuthenticators = async (email: string) => {
   const userAuthenticators = await getAuthenticatorsByUserId(user.id);
 
   return userAuthenticators.map(
-    ({ credential_id, counter, display_name, created_at, last_used_at }) => ({
+    ({
+      credential_id,
+      usage_count,
+      display_name,
+      created_at,
+      last_used_at,
+    }) => ({
       credential_id: encodeBase64URL(credential_id),
-      counter,
+      usage_count,
       display_name: display_name || encodeBase64URL(credential_id),
       created_at: moment(created_at).locale("fr").calendar(),
       last_used_at: last_used_at
@@ -174,6 +180,7 @@ export const verifyRegistration = async ({
       credential_backed_up,
       display_name,
       last_used_at: null,
+      usage_count: 0,
     },
   });
 };
@@ -274,8 +281,9 @@ export const verifyAuthentication = async ({
 
   await updateAuthenticator(newCredentialID, {
     // for some reason, newCounter is not incremented in authenticationInfo
-    counter: newCounter + 1,
+    counter: newCounter,
     last_used_at: new Date(),
+    usage_count: authenticator.usage_count + 1,
   });
 
   return { verified, user };

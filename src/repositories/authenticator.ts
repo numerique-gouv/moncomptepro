@@ -58,6 +58,7 @@ export const createAuthenticator = async ({
     transports,
     display_name,
     last_used_at,
+    usage_count,
   },
 }: {
   user_id: number;
@@ -77,9 +78,10 @@ export const createAuthenticator = async ({
              transports,
              display_name,
              created_at,
-             last_used_at)
+             last_used_at,
+             usage_count)
         VALUES
-            ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9)
+            ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10)
         RETURNING *;`,
     [
       user_id,
@@ -91,6 +93,7 @@ export const createAuthenticator = async ({
       transports,
       display_name,
       last_used_at,
+      usage_count,
     ],
   );
 
@@ -99,17 +102,17 @@ export const createAuthenticator = async ({
 
 export const updateAuthenticator = async (
   credential_id: Uint8Array,
-  { counter, last_used_at }: Partial<BaseAuthenticator>,
+  { counter, last_used_at, usage_count }: Partial<BaseAuthenticator>,
 ) => {
   const connexion = getDatabaseConnection();
 
   const { rows }: QueryResult<Authenticator> = await connexion.query(
     `
         UPDATE authenticators
-        SET counter = $2, last_used_at = $3
+        SET counter = $2, last_used_at = $3, usage_count = $4
         WHERE credential_id = $1
         RETURNING *`,
-    [encodeBase64URL(credential_id), counter, last_used_at],
+    [encodeBase64URL(credential_id), counter, last_used_at, usage_count],
   );
 
   return rows.shift()!;
