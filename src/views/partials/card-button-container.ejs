@@ -1,10 +1,13 @@
 <div class="card-button-container">
     <span>
         <% if (locals.showGoBackButton) { %>
-            <a id="go-back-link"
-               class="fr-link fr-fi-arrow-left-line fr-link--icon-left">
+            <button
+                    id="go-back-link"
+                    type="button"
+                    class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
+            >
                 retour
-            </a>
+            </button>
             <script type="text/javascript" src="/assets/go-back.js"></script>
         <% } %>
     </span>

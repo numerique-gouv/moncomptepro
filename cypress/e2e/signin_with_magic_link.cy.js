@@ -21,7 +21,7 @@ describe("sign-in with magic link", () => {
     cy.get('[type="submit"]').click();
 
     cy.get('[action="/users/send-magic-link"]  [type="submit"]')
-      .contains("Envoyer le lien")
+      .contains("Recevoir un lien d’identification")
       .click();
 
     cy.contains("Votre lien vous attend à l’adresse...");

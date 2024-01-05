@@ -11,7 +11,7 @@ describe("sign-in from agentconnect client", () => {
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("Se connecter")
+      .contains("S’identifier")
       .click();
 
     cy.contains("moncomptepro-agentconnect-client");

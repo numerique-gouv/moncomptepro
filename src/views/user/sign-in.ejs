@@ -7,13 +7,21 @@
                     Accéder au compte
                 </h4>
                 <div class="fr-card__desc">
+                    <div class="fr-notice moncomptepro-notice--email fr-mb-2w">
+                        <div class="fr-container">
+                            <div class="fr-notice__body">
+                                Email professionnel : <strong><%= email; %></strong>
+                            </div>
+                        </div>
+                    </div>
+
                     <form action="/users/sign-in" method="post">
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
                         <div class="fr-input-group fr-password">
                             <label class="fr-label" for="password-input">
-                                Mot de passe
+                                Renseignez votre mot de passe
                             </label>
                             <div class="fr-input-wrap">
                                 <input
@@ -37,52 +45,59 @@
                                     Afficher
                                 </label>
                             </div>
-                            <p>
-                                <a href="/users/reset-password" class="fr-link">Mot de passe oublié ?</a>
-                            </p>
                         </div>
                         <ul class="fr-btns-group">
                             <li>
                                 <button class="fr-btn" type="submit">
-                                    Se connecter
+                                    S’identifier
+                                </button>
+                            </li>
+                        </ul>
+                        <p>
+                            <a href="/users/reset-password" class="fr-link">Mot de passe oublié ?</a>
+                        </p>
+                    </form>
+
+                    <p class="fr-hr-or">ou</p>
+
+                    <form action="/users/send-magic-link" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                        <ul class="fr-btns-group fr-btns-group--icon-left">
+                            <li>
+                                <button
+                                        class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-mail-open-line"
+                                        type="submit"
+                                >
+                                    Recevoir un lien d’identification
                                 </button>
                             </li>
                         </ul>
                     </form>
-                    <br />
-                    <p class="fr-hr-or">ou</p>
-                    <div>
-                        <div>
-                            <b>Connectez-vous sans mot de passe</b> en recevant <b>un lien par email.</b>
-                        </div>
-                        <br>
-                        <div class="card-button-container">
-                            <div id="magic-link-icon-inline">
-                                <img src="/assets/magic-link.svg" alt="">
-                            </div>
-                            <form action="/users/send-magic-link" method="post">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                                <%- include('../partials/card-button-container.ejs', {label: 'Envoyer le lien'}) %>
-                            </form>
-                        </div>
-                    </div>
                     <p class="fr-hr-or">ou</p>
-                    <div>
-                        <div>
-                            Utilisez votre clé d’accès.
-                        </div>
-                        <br>
-                        <div class="card-button-container">
-                            <div class="card-button-container">
-                                <span></span>
-                                <div>
-                                    <a class="fr-btn" href="/users/sign-in-with-passkey">
-                                        Continuer
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+
+                    <ul class="fr-btns-group fr-btns-group--icon-left">
+                        <li>
+                            <a
+                                    class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-lock-unlock-line"
+                                    href="/users/sign-in-with-passkey"
+                            >
+                                Se connecter avec une clé d’accès
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="card-button-container fr-mt-2w">
+                        <span>
+                                <button
+                                        id="go-back-link"
+                                        class="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
+                                >
+                                    retour
+                                </button>
+                        </span>
+                        <span></span>
                     </div>
                 </div>
             </div>
@@ -90,3 +105,4 @@
     </div>
 </div>
 <script src="/assets/show-password.js"></script>
+<script type="text/javascript" src="/assets/go-back.js"></script>

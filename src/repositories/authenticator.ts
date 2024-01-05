@@ -17,7 +17,6 @@ export const getAuthenticatorsByUserId = async (user_id: number) => {
 
   return rows.map((auth) => ({
     ...auth,
-    // TODO remove TS ignore
     // @ts-ignore
     credential_id: decodeBase64URL(auth.credential_id),
   }));
