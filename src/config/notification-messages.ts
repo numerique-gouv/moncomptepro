@@ -117,6 +117,14 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "success",
     description: "Votre clé d’accès a bien été supprimée.",
   },
+  passkey_not_found: {
+    type: "error",
+    description: "Nous n’avons pas trouvé votre clé d’accès.",
+  },
+  invalid_passkey: {
+    type: "error",
+    description: "Votre clé d’accès est invalide.",
+  },
 };
 
 export default notificationMessages;

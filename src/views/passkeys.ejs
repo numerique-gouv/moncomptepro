@@ -37,9 +37,8 @@
                     href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
             >En savoir plus</a>
         </p>
-        <h2>Clés d’accès que vous avez créées</h2>
-        <div class="fr-grid-row fr-grid-row--gutters">
-            <% if (passkeys.length > 0) { %>
+        <% if (passkeys.length > 0) { %>
+            <div class="fr-grid-row fr-grid-row--gutters">
                 <% passkeys.forEach(({ credential_id, counter }) => { %>
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
@@ -74,20 +73,14 @@
                         Créer une clé d’accès sur cet appareil
                     </button>
                 </div>
-            <% } else { %>
-                <div class="fr-col-12 fr-col-lg-8 fr-col-xl-7">
-                    <div class="fr-alert fr-alert--info">
-                        Vous n’avez aucune clé d’accès.
-                    </div>
-                </div>
-            <% } %>
-        </div>
-        <form id="registration_response_form" action="/passkeys/verify-registration" method="post" hidden>
+            </div>
+        <% } %>
+        <form id="webauthn-registration-response-form" action="/passkeys/verify-registration" method="post" hidden>
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-            <input type="hidden" name="registration_response_string" autocomplete="off">
+            <input type="hidden" name="webauthn_registration_response_string" autocomplete="off">
             <button type="submit" class="fr-btn"></button>
         </form>
     </div>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
-<script src="/assets/webauthn-registration-20240104.js"></script>
+<script src="/assets/webauthn-registration-20240105.js"></script>

@@ -15,8 +15,10 @@ import {
   verifyRegistration,
 } from "../managers/webauthn";
 import { z, ZodError } from "zod";
-import { BadRequest } from "http-errors";
-import { WebauthnRegistrationFailedError } from "../config/errors";
+import {
+  NotFoundError,
+  WebauthnRegistrationFailedError,
+} from "../config/errors";
 import {
   AuthenticationResponseJSON,
   RegistrationResponseJSON,
@@ -65,20 +67,6 @@ export const deletePasskeyController = async (
   }
 };
 
-export const getSignInWithPasskeyController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    return res.render("user/sign-in-with-passkey", {
-      notifications: await getNotificationsFromRequest(req),
-    });
-  } catch (e) {
-    next(e);
-  }
-};
-
 export const getGenerateRegistrationOptionsController = async (
   req: Request,
   res: Response,
@@ -105,11 +93,15 @@ export const postVerifyRegistrationController = async (
 ) => {
   try {
     const schema = z.object({
-      registration_response_string: z.string(),
+      webauthn_registration_response_string: z.string(),
     });
-    const { registration_response_string } = await schema.parseAsync(req.body);
+    const { webauthn_registration_response_string } = await schema.parseAsync(
+      req.body,
+    );
 
-    const registrationResponseJson = JSON.parse(registration_response_string);
+    const registrationResponseJson = JSON.parse(
+      webauthn_registration_response_string,
+    );
     const registrationResponseSchema = z.custom<RegistrationResponseJSON>();
 
     const response = await registrationResponseSchema.parseAsync(
@@ -127,9 +119,24 @@ export const postVerifyRegistrationController = async (
   } catch (e) {
     console.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
-      return next(new BadRequest());
+      return res.redirect(`/passkeys?notification=invalid_passkey`);
     }
 
+    next(e);
+  }
+};
+
+export const getSignInWithPasskeyController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    return res.render("user/sign-in-with-passkey", {
+      notifications: await getNotificationsFromRequest(req),
+      csrfToken: csrfToken(req),
+    });
+  } catch (e) {
     next(e);
   }
 };
@@ -164,12 +171,20 @@ export const postVerifyAuthenticationController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.custom<AuthenticationResponseJSON>(),
+      webauthn_authentication_response_string: z.string(),
     });
+    const { webauthn_authentication_response_string } = await schema.parseAsync(
+      req.body,
+    );
 
-    const { body: response } = await schema.parseAsync({
-      body: req.body,
-    });
+    const authenticationResponseJson = JSON.parse(
+      webauthn_authentication_response_string,
+    );
+    const authenticationResponseSchema = z.custom<AuthenticationResponseJSON>();
+
+    const response = await authenticationResponseSchema.parseAsync(
+      authenticationResponseJson,
+    );
 
     const email = isWithinLoggedInSession(req)
       ? getUserFromLoggedInSession(req).email
@@ -183,11 +198,19 @@ export const postVerifyAuthenticationController = async (
     await createLoggedInSession(req, user);
     setBrowserAsTrustedForUser(req, res, user.id);
 
-    return res.json({ verified });
+    next();
   } catch (e) {
     console.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
-      return next(new BadRequest());
+      return res.redirect(
+        `/users/sign-in-with-passkey?notification=invalid_passkey`,
+      );
+    }
+
+    if (e instanceof NotFoundError) {
+      return res.redirect(
+        `/users/sign-in-with-passkey?notification=passkey_not_found`,
+      );
     }
 
     next(e);

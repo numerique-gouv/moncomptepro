@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', async function() {
   const { browserSupportsWebAuthn, startRegistration } = SimpleWebAuthnBrowser;
 
   const beginElement = document.getElementById('webauthn-btn-begin-registration');
-  const registrationResponseStringInputElement = document.querySelector('input[name="registration_response_string"]');
-  const registrationResponseForm = document.getElementById('registration_response_form');
+  const registrationResponseStringInputElement = document.querySelector('input[name="webauthn_registration_response_string"]');
+  const registrationResponseForm = document.getElementById('webauthn-registration-response-form');
   const notSupportedElement = document.getElementById('webauthn-not-supported');
   const errorAlertElement = document.getElementById('webauthn-alert-error');
 

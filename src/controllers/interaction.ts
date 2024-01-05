@@ -18,17 +18,23 @@ export const interactionStartControllerFactory =
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
 
-      if (login_hint) {
-        req.session.email = login_hint;
-        req.body.login = login_hint;
-        return postStartSignInController(req, res, next);
-      }
-
       if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
+        if (login_hint) {
+          req.session.email = login_hint;
+          req.body.login = login_hint;
+          return postStartSignInController(req, res, next);
+        }
+
         return res.redirect(`/users/start-sign-in`);
       }
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
+        if (login_hint) {
+          req.session.email = login_hint;
+          req.body.login = login_hint;
+          return postStartSignInController(req, res, next);
+        }
+
         return res.redirect(`/interaction/${interactionId}/login`);
       }
 
