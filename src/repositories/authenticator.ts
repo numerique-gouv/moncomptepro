@@ -56,6 +56,8 @@ export const createAuthenticator = async ({
     credential_device_type,
     credential_backed_up,
     transports,
+    display_name,
+    last_used_at,
   },
 }: {
   user_id: number;
@@ -72,9 +74,12 @@ export const createAuthenticator = async ({
              counter,
              credential_device_type,
              credential_backed_up,
-             transports)
+             transports,
+             display_name,
+             created_at,
+             last_used_at)
         VALUES
-            ($1, $2, $3, $4, $5, $6, $7)
+            ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9)
         RETURNING *;`,
     [
       user_id,
@@ -84,25 +89,27 @@ export const createAuthenticator = async ({
       credential_device_type,
       credential_backed_up,
       transports,
+      display_name,
+      last_used_at,
     ],
   );
 
   return rows.shift()!;
 };
 
-export const saveAuthenticatorCounter = async (
+export const updateAuthenticator = async (
   credential_id: Uint8Array,
-  counter: number,
+  { counter, last_used_at }: Partial<BaseAuthenticator>,
 ) => {
   const connexion = getDatabaseConnection();
 
   const { rows }: QueryResult<Authenticator> = await connexion.query(
     `
         UPDATE authenticators
-        SET counter = $2
+        SET counter = $2, last_used_at = $3
         WHERE credential_id = $1
         RETURNING *`,
-    [encodeBase64URL(credential_id), counter],
+    [encodeBase64URL(credential_id), counter, last_used_at],
   );
 
   return rows.shift()!;
