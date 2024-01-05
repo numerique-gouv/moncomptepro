@@ -23,7 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (error) {
       successElement.style.display = 'none';
       errorElement.style.display = 'block';
-      errorElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
+      if (error.name === 'NotAllowedError') {
+        errorElement.innerText = `Une erreur est survenue. Nous n’avons pas pu vérifier vos informations. Merci de réessayer.`
+      } else {
+        errorElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
+      }
 
       throw error;
     }
