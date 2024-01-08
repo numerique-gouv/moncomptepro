@@ -35,18 +35,18 @@ export const mainRouter = (app: Express) => {
     "/personal-information",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
     checkUserCanAccessAppMiddleware,
+    csrfProtectionMiddleware,
     getPersonalInformationsController,
   );
 
   mainRouter.post(
     "/personal-information",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
-    rateLimiterMiddleware,
     checkUserCanAccessAppMiddleware,
+    csrfProtectionMiddleware,
     postPersonalInformationsController,
   );
 
@@ -54,8 +54,8 @@ export const mainRouter = (app: Express) => {
     "/manage-organizations",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
     checkUserCanAccessAppMiddleware,
+    csrfProtectionMiddleware,
     getManageOrganizationsController,
   );
 
@@ -63,8 +63,8 @@ export const mainRouter = (app: Express) => {
     "/reset-password",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
     checkUserCanAccessAppMiddleware,
+    csrfProtectionMiddleware,
     getResetPasswordController,
   );
 
@@ -72,28 +72,28 @@ export const mainRouter = (app: Express) => {
     "/passkeys",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    checkUserCanAccessAppMiddleware,
     getPasskeysController,
   );
 
   mainRouter.post(
     "/passkeys/verify-registration",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    rateLimiterMiddleware,
-    checkUserCanAccessAppMiddleware,
     postVerifyRegistrationController,
   );
 
   mainRouter.post(
     "/delete-passkeys/:credential_id",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    rateLimiterMiddleware,
-    checkUserCanAccessAppMiddleware,
     deletePasskeyController,
   );
 
