@@ -20,7 +20,6 @@ export const oidcProviderConfiguration = ({
     organization: [
       "label",
       "siret",
-      "is_collectivite_territoriale", // deprecated
       "is_commune",
       "is_external",
       "is_service_public",

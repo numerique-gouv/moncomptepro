@@ -74,8 +74,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
           ...personalClaims,
           label: organization.cached_libelle,
           siret: organization.siret,
-          is_collectivite_territoriale: isCommune(organization, true), // deprecated
-          is_commune: isCommune(organization, true),
+          is_commune: isCommune(organization),
           is_external: organization.is_external,
           is_service_public: isServicePublic(organization),
         };
@@ -95,8 +94,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
               siret,
               is_external,
               label,
-              is_collectivite_territoriale: isCommune(organization, true), // deprecated
-              is_commune: isCommune(organization, true),
+              is_commune: isCommune(organization),
               is_service_public: isServicePublic(organization),
             };
           }),
