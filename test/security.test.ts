@@ -1,10 +1,10 @@
 import { assert } from "chai";
 import {
+  getTrustedReferrerPath,
   isEmailValid,
   isNameValid,
   isPasswordSecure,
   isSiretValid,
-  isUrlTrusted,
 } from "../src/services/security";
 import { MONCOMPTEPRO_HOST } from "../src/config/env";
 
@@ -118,24 +118,27 @@ describe("isNameValid", () => {
 
 describe("isUrlTrusted", () => {
   it("should not trust null url", () => {
-    assert.equal(isUrlTrusted(null), false);
+    assert.equal(getTrustedReferrerPath(null), null);
   });
   it("should not trust no string url", () => {
-    assert.equal(isUrlTrusted(["api.gouv.fr"]), false);
+    assert.equal(getTrustedReferrerPath(["api.gouv.fr"]), null);
   });
   it("should not trust empty url", () => {
-    assert.equal(isUrlTrusted(""), false);
+    assert.equal(getTrustedReferrerPath(""), null);
   });
   it("should not trust external domain (over https)", () => {
-    assert.equal(isUrlTrusted("https://www.google.com"), false);
+    assert.equal(getTrustedReferrerPath("https://www.google.com"), null);
   });
   it("should trust relative path", () => {
-    assert.equal(isUrlTrusted("/users/join-organization"), true);
+    assert.equal(
+      getTrustedReferrerPath("/users/join-organization"),
+      "/users/join-organization",
+    );
   });
   it("should trust absolute path on same domain", () => {
     assert.equal(
-      isUrlTrusted(`${MONCOMPTEPRO_HOST}/users/join-organization`),
-      true,
+      getTrustedReferrerPath(`${MONCOMPTEPRO_HOST}/users/join-organization`),
+      "/users/join-organization",
     );
   });
 });

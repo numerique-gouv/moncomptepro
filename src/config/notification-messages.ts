@@ -67,6 +67,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       "Pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
   },
+  session_expired: {
+    type: "info",
+    description: "Votre session a expiré. Merci de vous identifier à nouveau.",
+  },
   browser_not_trusted: {
     type: "info",
     description:

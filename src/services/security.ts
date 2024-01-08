@@ -170,26 +170,30 @@ const canParseURL = (input: string, base?: string) => {
   }
 };
 
-export const isUrlTrusted = (url: unknown): url is string => {
-  if (!isString(url) || isEmpty(url)) {
-    return false;
+export const getTrustedReferrerPath = (referrer: unknown): string | null => {
+  if (!isString(referrer) || isEmpty(referrer)) {
+    return null;
   }
 
-  const isValidURL = canParseURL(url);
-  const isValidRelativeURL = canParseURL(url, MONCOMPTEPRO_HOST);
+  const isValidURL = canParseURL(referrer);
+  const isValidRelativeURL = canParseURL(referrer, MONCOMPTEPRO_HOST);
   let parsedURL: URL;
   if (isValidURL) {
-    parsedURL = new URL(url);
+    parsedURL = new URL(referrer);
   } else if (isValidRelativeURL) {
-    // url may be relative
-    parsedURL = new URL(url, MONCOMPTEPRO_HOST);
+    // referrer may be relative
+    parsedURL = new URL(referrer, MONCOMPTEPRO_HOST);
   } else {
-    return false;
+    return null;
   }
 
   const moncompteproURL = new URL(MONCOMPTEPRO_HOST);
 
-  return moncompteproURL.origin === parsedURL.origin;
+  if (moncompteproURL.origin !== parsedURL.origin) {
+    return null;
+  }
+
+  return `${parsedURL.pathname}${parsedURL.search}`;
 };
 
 export const isNotificationLabelValid = (label: unknown): label is string => {

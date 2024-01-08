@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { isEmpty } from "lodash";
-import { isUrlTrusted } from "../services/security";
+import { getTrustedReferrerPath } from "../services/security";
 import { needsEmailVerificationRenewal } from "../managers/user";
 import {
   getOrganizationsByUserId,
@@ -53,8 +53,16 @@ export const checkUserIsConnectedMiddleware = async (
     }
 
     if (!isWithinLoggedInSession(req)) {
-      if (isUrlTrusted(req.originalUrl)) {
-        req.session.referer = req.originalUrl;
+      const rawReferrer =
+        req.get("Referrer") ||
+        (req.method === "GET" ? req.originalUrl : undefined);
+      const referrerPath = getTrustedReferrerPath(rawReferrer);
+      if (referrerPath) {
+        req.session.referrerPath = referrerPath;
+
+        return res.redirect(
+          `/users/start-sign-in?notification=session_expired`,
+        );
       }
 
       return res.redirect(`/users/start-sign-in`);
