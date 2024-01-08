@@ -17,6 +17,7 @@ import {
 import { z, ZodError } from "zod";
 import {
   NotFoundError,
+  UserNotLoggedInError,
   WebauthnRegistrationFailedError,
 } from "../config/errors";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@simplewebauthn/server/esm/deps";
 import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import { csrfToken } from "../middlewares/csrf-protection";
+import { Unauthorized } from "http-errors";
 
 export const getPasskeysController = async (
   req: Request,
@@ -82,6 +84,10 @@ export const getGenerateRegistrationOptionsController = async (
 
     return res.json(registrationOptions);
   } catch (e) {
+    if (e instanceof UserNotLoggedInError) {
+      return next(new Unauthorized());
+    }
+
     next(e);
   }
 };
@@ -150,6 +156,10 @@ export const getGenerateAuthenticationOptionsController = async (
     const email = isWithinLoggedInSession(req)
       ? getUserFromLoggedInSession(req).email
       : req.session.email;
+
+    if (!email) {
+      return next(new Unauthorized());
+    }
 
     const { updatedUser, authenticationOptions } =
       await getAuthenticationOptions(email);

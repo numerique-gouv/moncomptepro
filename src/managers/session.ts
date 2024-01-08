@@ -3,6 +3,7 @@ import { isEmpty } from "lodash";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
 import { update } from "../repositories/user";
+import { UserNotLoggedInError } from "../config/errors";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session.user);
@@ -49,7 +50,7 @@ export const createLoggedInSession = async (
 
 export const getUserFromLoggedInSession = (req: Request) => {
   if (!isWithinLoggedInSession(req)) {
-    throw Error("unable to get user info");
+    throw new UserNotLoggedInError();
   }
 
   return req.session.user!;
@@ -60,7 +61,7 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
     !isWithinLoggedInSession(req) ||
     getUserFromLoggedInSession(req).id !== user.id
   ) {
-    throw Error("unable to update user info");
+    throw new UserNotLoggedInError();
   }
 
   req.session.user = user;
