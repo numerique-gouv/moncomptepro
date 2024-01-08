@@ -4,15 +4,15 @@ import { idSchema } from "../../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import {
   NotFoundError,
-  UserAlreadyAskedForSponsorshipError,
+  UserHasAlreadyBeenAuthenticatedByPeers,
 } from "../../config/errors";
 import { NotFound } from "http-errors";
 import { getOrganizationById } from "../../managers/organization/main";
 import {
-  askForSponsorship,
   chooseSponsor,
   getOrganizationLabel,
   getSponsorOptions,
+  notifyAllMembers,
 } from "../../managers/organization/authentication-by-peers";
 import { getUserFromLoggedInSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
@@ -135,7 +135,7 @@ export const getNoSponsorFoundController = async (
   }
 };
 
-export const postNoSponsorFoundController = async (
+export const postNoSponsorFoundMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -147,50 +147,20 @@ export const postNoSponsorFoundController = async (
 
     const { organization_id } = await schema.parseAsync(req.params);
 
-    await askForSponsorship({
+    await notifyAllMembers({
       user_id: getUserFromLoggedInSession(req).id,
       organization_id,
     });
 
-    return res.redirect(`/users/unable-to-find-sponsor/${organization_id}`);
+    return next();
   } catch (error) {
     if (error instanceof NotFoundError) {
       next(new NotFound());
     }
 
-    if (error instanceof UserAlreadyAskedForSponsorshipError) {
-      return res.redirect(
-        `/users/unable-to-find-sponsor/${error.organization_id}`,
-      );
-    }
-
-    next(error);
-  }
-};
-
-export const getUnableToFindSponsorController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const schema = z.object({
-      organization_id: idSchema(),
-    });
-
-    const { organization_id } = await schema.parseAsync(req.params);
-
-    const libelle = await getOrganizationLabel({
-      user_id: getUserFromLoggedInSession(req).id,
-      organization_id,
-    });
-
-    return res.render("user/unable-to-find-sponsor", {
-      libelle,
-    });
-  } catch (error) {
-    if (error instanceof NotFoundError) {
-      next(new NotFound());
+    if (error instanceof UserHasAlreadyBeenAuthenticatedByPeers) {
+      // fail silently
+      return next();
     }
 
     next(error);

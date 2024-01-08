@@ -74,16 +74,7 @@ export async function sendZammadMail({
 
 //
 
-type LocalTemplate =
-| {
-    template: "unable-to-auto-join-organization";
-    params: { libelle: string };
-  }
-| {
-    template: "unable-to-find-sponsor";
-    params: {
-      given_name: string;
-      family_name: string;
-      libelle: string;
-    };
-  };
+type LocalTemplate = {
+  template: "unable-to-auto-join-organization";
+  params: { libelle: string };
+};

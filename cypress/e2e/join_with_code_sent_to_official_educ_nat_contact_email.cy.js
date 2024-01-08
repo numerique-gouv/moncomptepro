@@ -57,6 +57,12 @@ describe("join organizations", () => {
         cy.get('[type="submit"]').click();
       });
 
+    // Click on "Je ne connais aucune des personnes proposées"
+    cy.get('[href="/users/no-sponsor-found/1"]').click();
+
+    // Click on the confirmation button
+    cy.get('[type="submit"]').contains("Personne ne peut me parrainer").click();
+
     cy.contains("Votre compte est créé");
 
     cy.mailslurp()
