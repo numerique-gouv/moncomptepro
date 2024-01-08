@@ -150,6 +150,9 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
     }
   });
 
+export const checkUserCanAccessAppMiddleware =
+  checkUserHasAtLeastOneOrganizationMiddleware;
+
 export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,
   res: Response,

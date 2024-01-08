@@ -8,7 +8,7 @@ import {
   postPersonalInformationsController,
 } from "../controllers/main";
 import { ejsLayoutMiddlewareFactory } from "../services/renderer";
-import { checkUserHasAtLeastOneOrganizationMiddleware } from "../middlewares/user";
+import { checkUserCanAccessAppMiddleware } from "../middlewares/user";
 import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";
@@ -27,7 +27,7 @@ export const mainRouter = (app: Express) => {
     "/",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getHomeController,
   );
 
@@ -36,7 +36,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getPersonalInformationsController,
   );
 
@@ -46,7 +46,7 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     postPersonalInformationsController,
   );
 
@@ -55,7 +55,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getManageOrganizationsController,
   );
 
@@ -64,7 +64,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getResetPasswordController,
   );
 
@@ -73,7 +73,7 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getPasskeysController,
   );
 
@@ -83,7 +83,7 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     postVerifyRegistrationController,
   );
 
@@ -93,7 +93,7 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     deletePasskeyController,
   );
 
