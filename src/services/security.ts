@@ -1,10 +1,10 @@
 import bcrypt from "bcryptjs";
 import { hasIn, isEmpty, isString } from "lodash";
 import { customAlphabet, nanoid } from "nanoid/async";
-import { parse as parseUrl } from "url";
 import notificationMessages from "../config/notification-messages";
 import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
+import { MONCOMPTEPRO_HOST } from "../config/env";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -158,16 +158,38 @@ export const isSiretValid = (siret: unknown): siret is string => {
   return !!siretNoSpaces.match(/^\d{14}$/);
 };
 
+// URL.canParse has been introduced in node v19
+// TODO replace this when it is available
+const canParseURL = (input: string, base?: string) => {
+  try {
+    new URL(input, base);
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const isUrlTrusted = (url: unknown): url is string => {
   if (!isString(url) || isEmpty(url)) {
     return false;
   }
 
-  const parsedUrl = parseUrl(url);
+  const isValidURL = canParseURL(url);
+  const isValidRelativeURL = canParseURL(url, MONCOMPTEPRO_HOST);
+  let parsedURL: URL;
+  if (isValidURL) {
+    parsedURL = new URL(url);
+  } else if (isValidRelativeURL) {
+    // url may be relative
+    parsedURL = new URL(url, MONCOMPTEPRO_HOST);
+  } else {
+    return false;
+  }
 
-  return !!parsedUrl.hostname
-    ? parsedUrl.hostname.match(/^([a-zA-Z-_0-9]*\.)?api.gouv.fr$/) !== null
-    : parsedUrl.pathname?.match(/^(\/[a-zA-Z-_0-9]*)+$/) !== null;
+  const moncompteproURL = new URL(MONCOMPTEPRO_HOST);
+
+  return moncompteproURL.origin === parsedURL.origin;
 };
 
 export const isNotificationLabelValid = (label: unknown): label is string => {
