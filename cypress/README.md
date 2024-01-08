@@ -43,7 +43,7 @@ npm run delete-database && npm run load-ci-fixtures cypress/fixtures/join_with_s
 On your host, install cypress:
 
 ```bash
-npm -g install cypress@12
+npm -g install cypress@12.17.1
 npm -g install cypress-mailslurp@1
 ```
 

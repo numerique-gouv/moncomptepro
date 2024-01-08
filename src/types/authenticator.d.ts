@@ -18,3 +18,7 @@ interface Authenticator extends BaseAuthenticator {
   user_id: number;
   created_at: Date;
 }
+
+interface SerializedAuthenticator extends Omit<Authenticator, "credential_id"> {
+  credential_id: string;
+}

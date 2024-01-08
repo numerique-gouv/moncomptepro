@@ -20,6 +20,16 @@ import {
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 
+const getReferrerPath = (req: Request) => {
+  // If method is not GET (ex: POST), then the referrer must be taken from
+  // the referrer header. This ensures the referrerPath can be redirected to.
+  const originPath =
+    req.method === "GET" ? getTrustedReferrerPath(req.originalUrl) : null;
+  const referrerPath = getTrustedReferrerPath(req.get("Referrer"));
+
+  return originPath || referrerPath || undefined;
+};
+
 // redirect user to start sign in page if no email is available in session
 export const checkEmailInSessionMiddleware = async (
   req: Request,
@@ -54,10 +64,7 @@ export const checkUserIsConnectedMiddleware = async (
     }
 
     if (!isWithinLoggedInSession(req)) {
-      const rawReferrer =
-        req.get("Referrer") ||
-        (req.method === "GET" ? req.originalUrl : undefined);
-      const referrerPath = getTrustedReferrerPath(rawReferrer);
+      const referrerPath = getReferrerPath(req);
       if (referrerPath) {
         req.session.referrerPath = referrerPath;
 
@@ -174,8 +181,7 @@ export const checkUserHasLoggedInRecentlyMiddleware = (
       const hasLoggedInRecently = hasUserLoggedInRecently(req);
 
       if (!hasLoggedInRecently) {
-        req.session.referrerPath =
-          getTrustedReferrerPath(req.get("Referrer")) || undefined;
+        req.session.referrerPath = getReferrerPath(req);
 
         return res.redirect(`/users/start-sign-in?notification=login_required`);
       }
