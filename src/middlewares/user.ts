@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { isEmpty } from "lodash";
-import { isUrlTrusted } from "../services/security";
+import { getTrustedReferrerPath } from "../services/security";
 import { needsEmailVerificationRenewal } from "../managers/user";
 import {
   getOrganizationsByUserId,
@@ -15,6 +15,7 @@ import { getSelectedOrganizationId } from "../repositories/redis/selected-organi
 import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   getUserFromLoggedInSession,
+  hasUserLoggedInRecently,
   isWithinLoggedInSession,
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
@@ -53,8 +54,16 @@ export const checkUserIsConnectedMiddleware = async (
     }
 
     if (!isWithinLoggedInSession(req)) {
-      if (isUrlTrusted(req.originalUrl)) {
-        req.session.referer = req.originalUrl;
+      const rawReferrer =
+        req.get("Referrer") ||
+        (req.method === "GET" ? req.originalUrl : undefined);
+      const referrerPath = getTrustedReferrerPath(rawReferrer);
+      if (referrerPath) {
+        req.session.referrerPath = referrerPath;
+
+        return res.redirect(
+          `/users/start-sign-in?notification=session_expired`,
+        );
       }
 
       return res.redirect(`/users/start-sign-in`);
@@ -145,6 +154,33 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
       }
 
       return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserCanAccessAppMiddleware =
+  checkUserHasAtLeastOneOrganizationMiddleware;
+
+export const checkUserHasLoggedInRecentlyMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) =>
+  checkUserCanAccessAppMiddleware(req, res, async (error) => {
+    try {
+      if (error) return next(error);
+
+      const hasLoggedInRecently = hasUserLoggedInRecently(req);
+
+      if (!hasLoggedInRecently) {
+        req.session.referrerPath =
+          getTrustedReferrerPath(req.get("Referrer")) || undefined;
+
+        return res.redirect(`/users/start-sign-in?notification=login_required`);
+      }
+
+      next();
     } catch (error) {
       next(error);
     }

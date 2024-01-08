@@ -4,7 +4,7 @@ export interface LoggedOutSessionData {
   email?: string;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
-  referer?: string;
+  referrerPath?: string;
 }
 
 declare module "express-session" {

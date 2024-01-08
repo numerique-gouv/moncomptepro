@@ -3,6 +3,9 @@ import { isEmpty } from "lodash";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
 import { update } from "../repositories/user";
+import { UserNotLoggedInError } from "../config/errors";
+import { isExpired } from "../services/is-expired";
+import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session.user);
@@ -15,7 +18,7 @@ export const createLoggedInSession = async (
   // we store old session value to pass it to the new logged-in session
   // email will not be passed to the new session as it is not useful within logged session
   // csrfToken should not be passed to the new session for security reasons
-  const { interactionId, mustReturnOneOrganizationInPayload, referer } =
+  const { interactionId, mustReturnOneOrganizationInPayload, referrerPath } =
     req.session;
 
   // as selected org is not stored in session
@@ -37,7 +40,7 @@ export const createLoggedInSession = async (
         req.session.interactionId = interactionId;
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
-        req.session.referer = referer;
+        req.session.referrerPath = referrerPath;
 
         setIsTrustedBrowserFromLoggedInSession(req);
 
@@ -49,7 +52,7 @@ export const createLoggedInSession = async (
 
 export const getUserFromLoggedInSession = (req: Request) => {
   if (!isWithinLoggedInSession(req)) {
-    throw Error("unable to get user info");
+    throw new UserNotLoggedInError();
   }
 
   return req.session.user!;
@@ -60,7 +63,7 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
     !isWithinLoggedInSession(req) ||
     getUserFromLoggedInSession(req).id !== user.id
   ) {
-    throw Error("unable to update user info");
+    throw new UserNotLoggedInError();
   }
 
   req.session.user = user;
@@ -80,4 +83,15 @@ export const destroyLoggedInSession = async (req: Request): Promise<null> => {
       }
     });
   });
+};
+
+export const hasUserLoggedInRecently = (req: Request) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return !isExpired(
+    req.session.user!.last_sign_in_at,
+    RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  );
 };

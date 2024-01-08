@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { isUrlTrusted } from "../../services/security";
+import { getTrustedReferrerPath } from "../../services/security";
 
 export const issueSessionOrRedirectController = async (
   req: Request,
@@ -11,12 +11,15 @@ export const issueSessionOrRedirectController = async (
       return res.redirect(`/interaction/${req.session.interactionId}/login`);
     }
 
-    if (req.session.referer && isUrlTrusted(req.session.referer)) {
+    if (
+      req.session.referrerPath &&
+      getTrustedReferrerPath(req.session.referrerPath)
+    ) {
       // copy string by value
-      const referer = `${req.session.referer}`;
+      const referrerPath = `${req.session.referrerPath}`;
       // then delete referer value from session
-      req.session.referer = undefined;
-      return res.redirect(referer);
+      req.session.referrerPath = undefined;
+      return res.redirect(referrerPath);
     }
 
     return res.redirect("/");

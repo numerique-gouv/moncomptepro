@@ -8,7 +8,10 @@ import {
   postPersonalInformationsController,
 } from "../controllers/main";
 import { ejsLayoutMiddlewareFactory } from "../services/renderer";
-import { checkUserHasAtLeastOneOrganizationMiddleware } from "../middlewares/user";
+import {
+  checkUserCanAccessAppMiddleware,
+  checkUserHasLoggedInRecentlyMiddleware,
+} from "../middlewares/user";
 import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";
@@ -27,7 +30,7 @@ export const mainRouter = (app: Express) => {
     "/",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasAtLeastOneOrganizationMiddleware,
+    checkUserCanAccessAppMiddleware,
     getHomeController,
   );
 
@@ -35,18 +38,18 @@ export const mainRouter = (app: Express) => {
     "/personal-information",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAppMiddleware,
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     getPersonalInformationsController,
   );
 
   mainRouter.post(
     "/personal-information",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAppMiddleware,
     csrfProtectionMiddleware,
-    rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     postPersonalInformationsController,
   );
 
@@ -54,8 +57,8 @@ export const mainRouter = (app: Express) => {
     "/manage-organizations",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAppMiddleware,
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     getManageOrganizationsController,
   );
 
@@ -63,8 +66,8 @@ export const mainRouter = (app: Express) => {
     "/reset-password",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAppMiddleware,
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     getResetPasswordController,
   );
 
@@ -72,28 +75,28 @@ export const mainRouter = (app: Express) => {
     "/passkeys",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     getPasskeysController,
   );
 
   mainRouter.post(
     "/passkeys/verify-registration",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     postVerifyRegistrationController,
   );
 
   mainRouter.post(
     "/delete-passkeys/:credential_id",
+    rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    rateLimiterMiddleware,
-    checkUserHasAtLeastOneOrganizationMiddleware,
     deletePasskeyController,
   );
 

@@ -74,4 +74,4 @@ export class WebauthnRegistrationFailedError extends Error {}
 
 export class WebauthnAuthenticationFailedError extends Error {}
 
-export class SendZammadApiError extends Error {}
+export class UserNotLoggedInError extends Error {}
