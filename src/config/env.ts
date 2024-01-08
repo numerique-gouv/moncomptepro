@@ -76,3 +76,7 @@ export const NOTIFY_ALL_MEMBER_LIMIT = getNumberFromEnv(
   "NOTIFY_ALL_MEMBER_LIMIT",
   50,
 );
+export const RECENT_LOGIN_INTERVAL_IN_MINUTES = getNumberFromEnv(
+  "RECENT_LOGIN_INTERVAL_IN_MINUTES",
+  15,
+);

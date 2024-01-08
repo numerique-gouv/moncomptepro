@@ -15,6 +15,7 @@ import { getSelectedOrganizationId } from "../repositories/redis/selected-organi
 import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   getUserFromLoggedInSession,
+  hasUserLoggedInRecently,
   isWithinLoggedInSession,
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
@@ -160,6 +161,30 @@ export const checkUserHasAtLeastOneOrganizationMiddleware = (
 
 export const checkUserCanAccessAppMiddleware =
   checkUserHasAtLeastOneOrganizationMiddleware;
+
+export const checkUserHasLoggedInRecentlyMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) =>
+  checkUserCanAccessAppMiddleware(req, res, async (error) => {
+    try {
+      if (error) return next(error);
+
+      const hasLoggedInRecently = hasUserLoggedInRecently(req);
+
+      if (!hasLoggedInRecently) {
+        req.session.referrerPath =
+          getTrustedReferrerPath(req.get("Referrer")) || undefined;
+
+        return res.redirect(`/users/start-sign-in?notification=login_required`);
+      }
+
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
 
 export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,

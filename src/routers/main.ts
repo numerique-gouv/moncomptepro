@@ -8,7 +8,10 @@ import {
   postPersonalInformationsController,
 } from "../controllers/main";
 import { ejsLayoutMiddlewareFactory } from "../services/renderer";
-import { checkUserCanAccessAppMiddleware } from "../middlewares/user";
+import {
+  checkUserCanAccessAppMiddleware,
+  checkUserHasLoggedInRecentlyMiddleware,
+} from "../middlewares/user";
 import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";

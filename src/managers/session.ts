@@ -4,6 +4,8 @@ import { deleteSelectedOrganizationId } from "../repositories/redis/selected-org
 import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
 import { update } from "../repositories/user";
 import { UserNotLoggedInError } from "../config/errors";
+import { isExpired } from "../services/is-expired";
+import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session.user);
@@ -81,4 +83,15 @@ export const destroyLoggedInSession = async (req: Request): Promise<null> => {
       }
     });
   });
+};
+
+export const hasUserLoggedInRecently = (req: Request) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return !isExpired(
+    req.session.user!.last_sign_in_at,
+    RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  );
 };
