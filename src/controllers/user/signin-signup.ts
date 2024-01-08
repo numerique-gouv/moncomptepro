@@ -24,16 +24,10 @@ export const getStartSignInController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        did_you_mean: z.string().min(1).optional(),
-      }),
+      did_you_mean: z.string().min(1).optional(),
     });
 
-    const {
-      query: { did_you_mean: didYouMean },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
 
     const loginHint = req.session.email;
 
@@ -60,16 +54,10 @@ export const postStartSignInController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        login: emailSchema(),
-      }),
+      login: emailSchema(),
     });
 
-    const {
-      body: { login },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { login } = await schema.parseAsync(req.body);
 
     const { email, userExists } = await startLogin(login);
     req.session.email = email;
@@ -119,16 +107,10 @@ export const postSignInMiddleware = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        password: z.string().min(1),
-      }),
+      password: z.string().min(1),
     });
 
-    const {
-      body: { password },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { password } = await schema.parseAsync(req.body);
 
     const user = await login(req.session.email!, password);
     await createLoggedInSession(req, user);
@@ -150,16 +132,10 @@ export const getSignUpController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        login_hint: emailSchema().optional(),
-      }),
+      login_hint: emailSchema().optional(),
     });
 
-    const {
-      query: { login_hint },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { login_hint } = await schema.parseAsync(req.query);
 
     return res.render("user/sign-up", {
       notifications: await getNotificationsFromRequest(req),

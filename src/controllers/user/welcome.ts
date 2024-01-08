@@ -13,16 +13,10 @@ export const getWelcomeController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
 
-    const {
-      params: { organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { organization_id } = await schema.parseAsync(req.params);
 
     const sponsor_label = await getSponsorLabel({
       user_id: getUserFromLoggedInSession(req).id,

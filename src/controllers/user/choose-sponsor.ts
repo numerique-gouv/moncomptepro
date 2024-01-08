@@ -24,16 +24,10 @@ export const getChooseSponsorController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
 
-    const {
-      params: { organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { organization_id } = await schema.parseAsync(req.params);
 
     const sponsorOptions = await getSponsorOptions({
       user_id: getUserFromLoggedInSession(req).id,
@@ -117,16 +111,10 @@ export const getNoSponsorFoundController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
 
-    const {
-      params: { organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { organization_id } = await schema.parseAsync(req.params);
 
     // we call this fonction only to ensure user is in organization
     await getOrganizationLabel({
@@ -154,16 +142,10 @@ export const postNoSponsorFoundController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
 
-    const {
-      params: { organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { organization_id } = await schema.parseAsync(req.params);
 
     await askForSponsorship({
       user_id: getUserFromLoggedInSession(req).id,
@@ -193,16 +175,10 @@ export const getUnableToFindSponsorController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
 
-    const {
-      params: { organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { organization_id } = await schema.parseAsync(req.params);
 
     const libelle = await getOrganizationLabel({
       user_id: getUserFromLoggedInSession(req).id,

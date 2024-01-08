@@ -48,16 +48,10 @@ export const getSignInWithMagicLinkController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        magic_link_token: z.string().min(1),
-      }),
+      magic_link_token: z.string().min(1),
     });
 
-    const {
-      query: { magic_link_token },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { magic_link_token } = await schema.parseAsync(req.query);
 
     if (!req.session.email) {
       // This is a robot protection mechanism.
@@ -100,16 +94,10 @@ export const postSignInWithMagicLinkController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        magic_link_token: z.string().min(1),
-      }),
+      magic_link_token: z.string().min(1),
     });
 
-    const {
-      body: { magic_link_token },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { magic_link_token } = await schema.parseAsync(req.body);
 
     const user = await loginWithMagicLink(magic_link_token);
     await createLoggedInSession(req, user);

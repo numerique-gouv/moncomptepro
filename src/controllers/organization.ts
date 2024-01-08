@@ -34,18 +34,13 @@ export const getJoinOrganizationController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        siret_hint: z.string().optional(),
-        notification: z.string().optional(),
-        do_not_propose_suggestions: optionalBooleanSchema(),
-      }),
+      siret_hint: z.string().optional(),
+      notification: z.string().optional(),
+      do_not_propose_suggestions: optionalBooleanSchema(),
     });
 
-    const {
-      query: { notification, siret_hint, do_not_propose_suggestions },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { notification, siret_hint, do_not_propose_suggestions } =
+      await schema.parseAsync(req.query);
 
     const { id: user_id, email } = getUserFromLoggedInSession(req);
 
@@ -93,16 +88,10 @@ export const postJoinOrganizationMiddleware = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        siret: siretSchema(),
-      }),
+      siret: siretSchema(),
     });
 
-    const {
-      body: { siret },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { siret } = await schema.parseAsync(req.body);
 
     const userOrganizationLink = await joinOrganization({
       siret,
@@ -170,16 +159,10 @@ export const postQuitUserOrganizationController = async (
 ) => {
   try {
     const schema = z.object({
-      params: z.object({
-        id: idSchema(),
-      }),
+      id: idSchema(),
     });
 
-    const {
-      params: { id: organization_id },
-    } = await schema.parseAsync({
-      params: req.params,
-    });
+    const { id: organization_id } = await schema.parseAsync(req.params);
 
     await quitOrganization({
       user_id: getUserFromLoggedInSession(req).id,

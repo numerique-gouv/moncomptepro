@@ -45,16 +45,10 @@ export const postResetPasswordController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        login: emailSchema(),
-      }),
+      login: emailSchema(),
     });
 
-    const {
-      body: { login },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { login } = await schema.parseAsync(req.body);
 
     await sendResetPasswordEmail(login, MONCOMPTEPRO_HOST);
 
@@ -77,16 +71,10 @@ export const getChangePasswordController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        reset_password_token: z.string().min(1),
-      }),
+      reset_password_token: z.string().min(1),
     });
 
-    const {
-      query: { reset_password_token },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { reset_password_token } = await schema.parseAsync(req.query);
 
     return res.render("user/change-password", {
       resetPasswordToken: reset_password_token,
@@ -105,17 +93,13 @@ export const postChangePasswordController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        reset_password_token: z.string().min(1),
-        password: z.string().min(1),
-      }),
+      reset_password_token: z.string().min(1),
+      password: z.string().min(1),
     });
 
-    const {
-      body: { reset_password_token, password },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { reset_password_token, password } = await schema.parseAsync(
+      req.body,
+    );
 
     const { id: user_id } = await changePassword(
       reset_password_token,

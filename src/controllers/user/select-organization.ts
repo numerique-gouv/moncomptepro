@@ -34,15 +34,9 @@ export const postSelectOrganizationMiddleware = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        organization_id: idSchema(),
-      }),
+      organization_id: idSchema(),
     });
-    const {
-      body: { organization_id },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { organization_id } = await schema.parseAsync(req.body);
 
     await selectOrganization({
       user_id: getUserFromLoggedInSession(req).id,

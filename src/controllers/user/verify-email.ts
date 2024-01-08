@@ -27,16 +27,10 @@ export const getVerifyEmailController = async (
 ) => {
   try {
     const schema = z.object({
-      query: z.object({
-        new_code_sent: optionalBooleanSchema(),
-      }),
+      new_code_sent: optionalBooleanSchema(),
     });
 
-    const {
-      query: { new_code_sent },
-    } = await schema.parseAsync({
-      query: req.query,
-    });
+    const { new_code_sent } = await schema.parseAsync(req.query);
 
     const { id: user_id, email } = getUserFromLoggedInSession(req);
 
@@ -70,19 +64,13 @@ export const postVerifyEmailController = async (
 ) => {
   try {
     const schema = z.object({
-      body: z.object({
-        verify_email_token: z
-          .string()
-          .min(1)
-          .transform((val) => val.replace(/\s+/g, "")),
-      }),
+      verify_email_token: z
+        .string()
+        .min(1)
+        .transform((val) => val.replace(/\s+/g, "")),
     });
 
-    const {
-      body: { verify_email_token },
-    } = await schema.parseAsync({
-      body: req.body,
-    });
+    const { verify_email_token } = await schema.parseAsync(req.body);
 
     const { id: user_id, email } = getUserFromLoggedInSession(req);
 
