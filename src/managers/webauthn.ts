@@ -25,7 +25,7 @@ import {
   AuthenticationResponseJSON,
   RegistrationResponseJSON,
 } from "@simplewebauthn/server/esm/deps";
-import { decodeBase64URL, encodeBase64URL } from "../services/base64";
+import { encodeBase64URL } from "../services/base64";
 import { getAuthenticatorFriendlyName } from "../connectors/github-passkey-authenticator-aaguids";
 import moment from "moment";
 
@@ -247,10 +247,7 @@ export const verifyAuthentication = async ({
   await update(user.id, { current_challenge: null });
 
   // Retrieve an authenticator from the DB that should match the `id` in the returned credential
-  const authenticator = await findAuthenticator(
-    user.id,
-    decodeBase64URL(response.id),
-  );
+  const authenticator = await findAuthenticator(user.id, response.id);
 
   if (isEmpty(authenticator)) {
     throw new NotFoundError();
