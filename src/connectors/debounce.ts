@@ -2,8 +2,10 @@ import axios, { AxiosResponse } from "axios";
 import {
   DEBOUNCE_API_KEY,
   DO_NOT_CHECK_EMAIL_DELIVERABILITY,
+  EMAIL_DELIVERABILITY_WHITELIST,
   HTTP_CLIENT_TIMEOUT,
 } from "../config/env";
+import { getEmailDomain } from "../services/uses-a-free-email-provider";
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
 type DebounceResponse = {
@@ -45,6 +47,13 @@ export const isEmailSafeToSendTransactional = async (
 ): Promise<EmailDebounceInfo> => {
   if (DO_NOT_CHECK_EMAIL_DELIVERABILITY) {
     console.log(`Email address "${email}" not verified.`);
+
+    return { isEmailSafeToSend: true };
+  }
+
+  const domain = getEmailDomain(email);
+  if (EMAIL_DELIVERABILITY_WHITELIST.includes(domain)) {
+    console.log(`Email address "${email}" is whitelisted.`);
 
     return { isEmailSafeToSend: true };
   }

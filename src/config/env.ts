@@ -75,3 +75,12 @@ export const RECENT_LOGIN_INTERVAL_IN_MINUTES = getNumberFromEnv(
   "RECENT_LOGIN_INTERVAL_IN_MINUTES",
   15,
 );
+
+const getArrayFromEnv = (name: string) => {
+  const value = process.env[name];
+  return value ? value.split(",") : [];
+};
+
+export const EMAIL_DELIVERABILITY_WHITELIST = getArrayFromEnv(
+  "EMAIL_DELIVERABILITY_WHITELIST",
+);
