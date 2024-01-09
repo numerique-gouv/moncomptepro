@@ -97,7 +97,7 @@ export const postForceJoinOrganizationController = async (
     }
 
     if (!userOrganizationLink.authentication_by_peers_type) {
-      await notifyAllMembers(userOrganizationLink);
+      await notifyAllMembers({ user_id, organization_id });
     }
 
     return res.json({});

@@ -25,12 +25,6 @@ export class UserInOrganizationAlreadyError extends Error {}
 
 export class UserAlreadyAskedToJoinOrganizationError extends Error {}
 
-export class UserAlreadyAskedForSponsorshipError extends Error {
-  constructor(public organization_id: number) {
-    super();
-  }
-}
-
 export class UserHasAlreadyBeenAuthenticatedByPeers extends Error {}
 
 export class InvalidCredentialsError extends Error {}

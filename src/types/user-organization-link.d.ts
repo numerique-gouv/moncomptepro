@@ -10,6 +10,7 @@ interface BaseUserOrganizationLink {
   authentication_by_peers_type:
     | "all_members_notified"
     | "sponsored_by_member"
+    | "is_the_only_active_member"
     | null;
   has_been_greeted: boolean;
   sponsor_id: number | null;

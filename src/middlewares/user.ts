@@ -8,17 +8,16 @@ import {
 } from "../managers/organization/main";
 import {
   greetForJoiningOrganization,
-  isEligibleToSponsorship,
   notifyAllMembers,
 } from "../managers/organization/authentication-by-peers";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
+import { getInternalActiveUsers } from "../repositories/organization/getters";
 
 const getReferrerPath = (req: Request) => {
   // If method is not GET (ex: POST), then the referrer must be taken from
@@ -286,7 +285,7 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
       try {
         if (error) return next(error);
 
-        const user_id = getUserFromLoggedInSession(req).id;
+        const { id: user_id, email } = getUserFromLoggedInSession(req);
 
         const userOrganisations = await getOrganizationsByUserId(user_id);
 
@@ -306,23 +305,18 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
         }
 
         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
-          if (
-            await isEligibleToSponsorship(
-              organizationThatNeedsAuthenticationByPeers,
-            )
-          ) {
-            return res.redirect(
-              `/users/choose-sponsor/${organizationThatNeedsAuthenticationByPeers.id}`,
-            );
-          }
-
-          const link = await getUserOrganizationLink(
-            organizationThatNeedsAuthenticationByPeers.id,
-            user_id,
+          const organization_id = organizationThatNeedsAuthenticationByPeers.id;
+          const internalActiveUsers =
+            await getInternalActiveUsers(organization_id);
+          const otherInternalUsers = internalActiveUsers.filter(
+            ({ email: e }) => e !== email,
           );
 
-          // link exists because we get the organization id from getOrganizationsByUserId above
-          await notifyAllMembers(link!);
+          if (otherInternalUsers.length > 0) {
+            return res.redirect(`/users/choose-sponsor/${organization_id}`);
+          } else {
+            await notifyAllMembers({ user_id, organization_id });
+          }
         }
 
         return next();

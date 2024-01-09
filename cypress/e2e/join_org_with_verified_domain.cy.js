@@ -50,6 +50,12 @@ describe("join organizations", () => {
     // Click on the suggested organization
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
 
+    // Click on "Je ne connais aucune des personnes proposées"
+    cy.get('[href="/users/no-sponsor-found/1"]').click();
+
+    // Click on the confirmation button
+    cy.get('[type="submit"]').contains("Personne ne peut me parrainer").click();
+
     // Click on "continue" on the welcome page
     cy.get('[type="submit"]').click();
 

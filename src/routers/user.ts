@@ -56,9 +56,8 @@ import {
   getChooseSponsorController,
   getNoSponsorFoundController,
   getSponsorValidationController,
-  getUnableToFindSponsorController,
   postChooseSponsorMiddleware,
-  postNoSponsorFoundController,
+  postNoSponsorFoundMiddleware,
 } from "../controllers/user/choose-sponsor";
 import {
   getOfficialContactEmailVerificationController,
@@ -325,13 +324,9 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
     csrfProtectionMiddleware,
-    postNoSponsorFoundController,
-  );
-
-  userRouter.get(
-    "/unable-to-find-sponsor/:organization_id",
-    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    getUnableToFindSponsorController,
+    postNoSponsorFoundMiddleware,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController,
   );
 
   userRouter.get(

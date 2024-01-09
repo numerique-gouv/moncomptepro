@@ -1,92 +1,28 @@
 import { isEmpty, sampleSize } from "lodash";
-import {
-  DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP,
-  NOTIFY_ALL_MEMBER_LIMIT,
-} from "../../config/env";
+import { NOTIFY_ALL_MEMBER_LIMIT } from "../../config/env";
 import {
   NotFoundError,
-  UserAlreadyAskedForSponsorshipError,
-  UserHasAlreadyBeenAuthenticatedByPeers
+  UserHasAlreadyBeenAuthenticatedByPeers,
 } from "../../config/errors";
-import { sendZammadMail } from "../../connectors/sendZammadMail";
 import { sendMail } from "../../connectors/sendinblue";
 import {
-  createModeration,
-  findPendingModeration,
-} from "../../repositories/moderation";
-import {
   findById as findOrganizationById,
+  getActiveUsers,
   getInternalActiveUsers,
   getUserOrganizationLink,
   getUsers,
 } from "../../repositories/organization/getters";
 import { updateUserOrganizationLink } from "../../repositories/organization/setters";
 import { findById as findUserById } from "../../repositories/user";
-import { getOrganizationById, getOrganizationsByUserId } from "./main";
+import { getOrganizationsByUserId } from "./main";
 
-export const isEligibleToSponsorship = async ({
-  id,
-}: Organization): Promise<boolean> => {
-  const organization = await getOrganizationById(id);
-  if (!organization) {
-    throw new NotFoundError();
-  }
-
-  const internalActiveUsers = await getInternalActiveUsers(id);
-  if (isEmpty(internalActiveUsers)) {
-    return false;
-  }
-
-  const codeEffectifToMemberCountThreshold: {
-    [K in NonNullable<TrancheEffectifs>]: number | null;
-  } = {
-    // Unité non employeuse (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)
-    NN: null,
-    // 0 salarié (n'ayant pas d'effectif au 31/12 mais ayant employé des salariés au cours de l'année de référence)
-    "00": null,
-    // 1 ou 2 salariés
-    "01": null,
-    // 3 à 5 salariés
-    "02": null,
-    // 6 à 9 salariés
-    "03": null,
-    // 10 à 19 salariés
-    11: null,
-    // 20 à 49 salariés
-    12: 5,
-    // 50 à 99 salariés
-    21: 10,
-    // 100 à 199 salariés
-    22: 20,
-    // 200 à 249 salariés
-    31: 25,
-    // 250 à 499 salariés
-    32: 50,
-    // 500 à 999 salariés
-    41: 100,
-    // 1 000 à 1 999 salariés
-    42: 200,
-    // 2 000 à 4 999 salariés
-    51: 500,
-    // 5 000 à 9 999 salariés
-    52: 1000,
-    // 10 000 salariés et plus
-    53: 1000,
-  };
-
-  const memberCountThreshold = organization.cached_tranche_effectifs
-    ? codeEffectifToMemberCountThreshold[
-        organization.cached_tranche_effectifs
-      ] || DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP
-    : DEFAULT_MEMBER_COUNT_THRESHOLD_TO_ACTIVATE_SPONSORSHIP;
-
-  return internalActiveUsers.length > memberCountThreshold;
-};
 export const notifyAllMembers = async ({
-  organization_id,
   user_id,
-  is_external,
-}: UserOrganizationLink) => {
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
   const organizationUsers = await getUsers(organization_id);
   const user = organizationUsers.find(({ id }) => id === user_id);
   const organization = await findOrganizationById(organization_id);
@@ -101,7 +37,7 @@ export const notifyAllMembers = async ({
     throw new UserHasAlreadyBeenAuthenticatedByPeers();
   }
 
-  const { email, given_name, family_name } = user;
+  const { email, given_name, family_name, is_external } = user;
   const { cached_libelle } = organization;
 
   // Email organization members of the organization
@@ -109,6 +45,8 @@ export const notifyAllMembers = async ({
   const otherInternalUsers = internalActiveUsers.filter(
     ({ email: e }) => e !== email,
   );
+
+  let authentication_by_peers_type: BaseUserOrganizationLink["authentication_by_peers_type"];
   if (otherInternalUsers.length > 0) {
     const user_label =
       !given_name && !family_name ? email : `${given_name} ${family_name}`;
@@ -120,34 +58,22 @@ export const notifyAllMembers = async ({
       to: otherInternalUsersSample.map(({ email }) => email),
       subject: "Votre organisation sur MonComptePro",
       template: "join-organization",
-      params: { user_label, libelle: cached_libelle, email, is_external },
+      params: {
+        user_label,
+        libelle: cached_libelle,
+        email,
+        is_external: is_external,
+      },
       senderEmail: "notifications@moncomptepro.beta.gouv.fr",
     });
-  }
 
-  // Email organization members list to the user (if he is an internal member)
-  // Note that non-active users are also listed here.
-  const usersInOrganization = await getUsers(organization_id);
-  const otherUsers = usersInOrganization.filter(
-    ({ email: e, authentication_by_peers_type }) =>
-      e !== email && !!authentication_by_peers_type,
-  );
-  if (!is_external && otherUsers.length > 0) {
-    await sendMail({
-      to: [email],
-      subject: "Votre organisation sur MonComptePro",
-      template: "organization-welcome",
-      params: {
-        given_name,
-        family_name,
-        libelle: cached_libelle,
-        otherUsers,
-      },
-    });
+    authentication_by_peers_type = "all_members_notified";
+  } else {
+    authentication_by_peers_type = "is_the_only_active_member";
   }
 
   return await updateUserOrganizationLink(organization_id, user_id, {
-    authentication_by_peers_type: "all_members_notified",
+    authentication_by_peers_type,
   });
 };
 export const greetForJoiningOrganization = async ({
@@ -167,6 +93,7 @@ export const greetForJoiningOrganization = async ({
   }
 
   const { given_name, family_name, email } = (await findUserById(user_id))!;
+  const { cached_libelle, is_external } = organization;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -175,6 +102,26 @@ export const greetForJoiningOrganization = async ({
     template: "welcome",
     params: { given_name, family_name, email },
   });
+
+  // Email organization members list to the user (if he is an internal member)
+  const usersInOrganization = await getActiveUsers(organization_id);
+  const otherUsers = usersInOrganization.filter(
+    ({ email: e, authentication_by_peers_type }) =>
+      e !== email && !!authentication_by_peers_type,
+  );
+  if (!is_external && otherUsers.length > 0) {
+    await sendMail({
+      to: [email],
+      subject: "Votre organisation sur MonComptePro",
+      template: "organization-welcome",
+      params: {
+        given_name,
+        family_name,
+        libelle: cached_libelle,
+        otherUsers,
+      },
+    });
+  }
 
   return await updateUserOrganizationLink(organization_id, user_id, {
     has_been_greeted: true,
@@ -307,49 +254,4 @@ export const getOrganizationLabel = async ({
   }
 
   return organization.cached_libelle;
-};
-export const askForSponsorship = async ({
-  user_id,
-  organization_id,
-}: {
-  user_id: number;
-  organization_id: number;
-}) => {
-  const organizationUsers = await getUsers(organization_id);
-  const organization = await findOrganizationById(organization_id);
-
-  const user = organizationUsers.find(({ id }) => id === user_id);
-
-  // The user should be in the organization already
-  if (isEmpty(user) || isEmpty(organization)) {
-    throw new NotFoundError();
-  }
-
-  const pendingModeration = await findPendingModeration({
-    user_id,
-    organization_id,
-    type: "ask_for_sponsorship",
-  });
-  if (!isEmpty(pendingModeration)) {
-    throw new UserAlreadyAskedForSponsorshipError(organization_id);
-  }
-  const { email, given_name, family_name } = user;
-  const { cached_libelle, siret } = organization;
-  const ticket = await sendZammadMail({
-    to: email,
-    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: "unable-to-find-sponsor",
-    params: {
-      given_name: given_name ?? "",
-      family_name: family_name ?? "",
-      libelle: cached_libelle || siret,
-    },
-  });
-
-  await createModeration({
-    user_id,
-    organization_id,
-    type: "ask_for_sponsorship",
-    ticket_id: ticket.id,
-  });
 };

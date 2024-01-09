@@ -217,36 +217,13 @@ WHERE domain=$1`,
 
   return rows;
 };
-export const getUsers = async (organization_id: number) => {
+export const getUsersByOrganization = async (
+  organization_id: number,
+  additionalWhereClause: string = "",
+  additionalParams: any[] = [],
+) => {
   const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<User & BaseUserOrganizationLink> =
-    await connection.query(
-      `
-SELECT
-    u.*,
-    uo.is_external,
-    uo.verification_type,
-    uo.authentication_by_peers_type,
-    uo.has_been_greeted,
-    uo.sponsor_id,
-    uo.needs_official_contact_email_verification,
-    uo.official_contact_email_verification_token,
-    uo.official_contact_email_verification_sent_at
-FROM users u
-INNER JOIN users_organizations AS uo ON uo.user_id = u.id
-WHERE uo.organization_id = $1`,
-      [organization_id],
-    );
-
-  return rows;
-};
-/**
- * Active users are user whom email as been verified within the last 3 months.
- * @param organization_id
- */
-export const getInternalActiveUsers = async (organization_id: number) => {
-  const connection = getDatabaseConnection();
+  const baseParams = [organization_id];
 
   const { rows }: QueryResult<User & BaseUserOrganizationLink> =
     await connection.query(
@@ -264,21 +241,39 @@ SELECT
 FROM users u
 INNER JOIN users_organizations AS uo ON uo.user_id = u.id
 WHERE uo.organization_id = $1
-  AND uo.is_external = FALSE
-  AND uo.authentication_by_peers_type IS NOT NULL
-  AND u.email_verified_at >= $2`,
-      [
-        organization_id,
-        new Date(
-          new Date().getTime() -
-            MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES *
-              60e3,
-        ),
-      ],
+${additionalWhereClause}`,
+      [...baseParams, ...additionalParams],
     );
 
   return rows;
 };
+
+export const getUsers = (organization_id: number) =>
+  getUsersByOrganization(organization_id);
+
+const inactiveThresholdDate = new Date(
+  new Date().getTime() -
+    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES * 60e3,
+);
+
+export const getActiveUsers = (organization_id: number) =>
+  getUsersByOrganization(
+    organization_id,
+    `
+  AND uo.authentication_by_peers_type IS NOT NULL
+  AND u.email_verified_at >= $2`,
+    [inactiveThresholdDate],
+  );
+
+export const getInternalActiveUsers = (organization_id: number) =>
+  getUsersByOrganization(
+    organization_id,
+    `
+  AND uo.is_external = FALSE
+  AND uo.authentication_by_peers_type IS NOT NULL
+  AND u.email_verified_at >= $2`,
+    [inactiveThresholdDate],
+  );
 
 export const getUserOrganizationLink = async (
   organization_id: number,

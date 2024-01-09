@@ -15,7 +15,6 @@ type RemoteTemplateSlug =
 type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
-  | "unable-to-find-sponsor"
   | "welcome"
   | "moderation-processed";
 
