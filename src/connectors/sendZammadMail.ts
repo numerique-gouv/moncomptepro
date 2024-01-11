@@ -9,6 +9,7 @@ import {
   ZAMMAD_URL,
 } from "../config/env";
 import { render } from "../services/renderer";
+import { logger } from "../services/log";
 
 //
 
@@ -53,8 +54,8 @@ export async function sendZammadMail({
   };
 
   if (DO_NOT_SEND_MAIL) {
-    console.log(`${template} mail not send to ${to}:`);
-    console.log(data);
+    logger.info(`${template} mail not send to ${to}:`);
+    logger.info(data);
     return { id: null };
   }
 

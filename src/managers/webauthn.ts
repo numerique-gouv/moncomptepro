@@ -28,6 +28,7 @@ import {
 import { encodeBase64URL } from "../services/base64";
 import { getAuthenticatorFriendlyName } from "../connectors/github-passkey-authenticator-aaguids";
 import moment from "moment";
+import { logger } from "../services/log";
 
 // Human-readable title for your website
 const rpName = "MonComptePro";
@@ -152,7 +153,7 @@ export const verifyRegistration = async ({
       expectedRPID: rpID,
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     throw new WebauthnRegistrationFailedError();
   }
 
@@ -275,7 +276,7 @@ export const verifyAuthentication = async ({
       },
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     throw new WebauthnAuthenticationFailedError();
   }
 

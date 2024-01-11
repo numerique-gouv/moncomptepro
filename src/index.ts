@@ -38,6 +38,7 @@ import {
 } from "./config/env";
 import { trustedBrowserMiddleware } from "./managers/browser-authentication";
 import { jsonParseWithDate } from "./services/json-parse-with-date";
+import { logger } from "./services/log";
 
 const jwks = require(JWKS_PATH);
 
@@ -90,8 +91,8 @@ if (ACCESS_LOG_PATH) {
   };
 }
 
-const logger = morgan("combined", morganOption);
-app.use(logger);
+const httpLogger = morgan("combined", morganOption);
+app.use(httpLogger);
 
 app.set("trust proxy", 1);
 
@@ -149,7 +150,7 @@ let server: Server;
     jwks,
     // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
-      console.error(err);
+      logger.error(err);
       Sentry.withScope((scope) => {
         scope.addEventProcessor((event) => {
           return Sentry.addRequestDataToEvent(event, ctx.request);
@@ -234,7 +235,7 @@ let server: Server;
       res: Response,
       next: NextFunction,
     ) => {
-      console.error(err);
+      logger.error(err);
 
       if (err instanceof ZodError) {
         return res.status(400).render("error", {
@@ -251,10 +252,10 @@ let server: Server;
   );
 
   server = app.listen(PORT, () => {
-    console.log(`application is listening on port ${PORT}`);
+    logger.info(`application is listening on port ${PORT}`);
   });
 })().catch((err) => {
   if (server && server.listening) server.close();
-  console.error(err);
+  logger.error(err);
   process.exit(1);
 });

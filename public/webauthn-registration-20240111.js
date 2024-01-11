@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     notSupportedElement.style.display = 'none';
     errorAlertElement.style.display = 'none';
     errorAlertElement.innerText = '';
+    beginElement.disabled = true;
   };
 // Start registration when the user clicks a button
   const onRegisterClick = async () => {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
 
       errorAlertElement.scrollIntoView({ behavior: 'smooth' });
+      beginElement.disabled = false;
 
       throw error;
     }

@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { DATABASE_URL } from "../config/env";
+import { logger } from "../services/log";
 
 let pool: Pool | null = null;
 
@@ -16,15 +17,15 @@ export const getDatabaseConnection = () => {
   pool = new Pool({ connectionString: DATABASE_URL });
 
   pool.on("connect", (client) => {
-    console.log(`Connected to database : ${obfuscatedConnectionString}`);
+    logger.debug(`Connected to database : ${obfuscatedConnectionString}`);
   });
 
   pool.on("remove", (client) => {
-    console.log(`Disconnected from database : ${obfuscatedConnectionString}`);
+    logger.debug(`Disconnected from database : ${obfuscatedConnectionString}`);
   });
 
   pool.on("error", (error, client) => {
-    console.error(`Database error: ${error}`);
+    logger.error(`Database error: ${error}`);
   });
 
   return pool;

@@ -2,6 +2,7 @@ import { KoaContextWithOIDC } from "oidc-provider";
 import { NextFunction } from "express";
 import { recordNewConnection } from "../managers/oidc-client";
 import * as Sentry from "@sentry/node";
+import { logger } from "../services/log";
 
 // this is not an express middleware but an oidc-provider middleware as described here:
 // https://github.com/panva/node-oidc-provider/blob/v7.x/docs/README.md#pre--and-post-middlewares
@@ -17,11 +18,11 @@ export const connectionCountMiddleware = async (
   // - the user log in application A
 
   // We retro-engineered the oidcProvider behavior by logging variables as follows:
-  // console.log('pre middleware', ctx.method, ctx.path);
+  // logger.info('pre middleware', ctx.method, ctx.path);
   await next();
-  // console.log('post middleware', ctx.method, ctx.oidc.route);
-  // console.log(ctx.oidc.client?.clientId, 'ctx.oidc.client.clientId');
-  // console.log(ctx.oidc.session?.accountId, 'ctx.oidc.session.accountId');
+  // logger.info('post middleware', ctx.method, ctx.oidc.route);
+  // logger.info(ctx.oidc.client?.clientId, 'ctx.oidc.client.clientId');
+  // logger.info(ctx.oidc.session?.accountId, 'ctx.oidc.session.accountId');
 
   if (
     (ctx.oidc.route === "authorization" && ctx.oidc.session?.accountId) ||
@@ -47,11 +48,11 @@ export const connectionCountMiddleware = async (
             ctx.oidc.session,
           )}; client: ${JSON.stringify(ctx.oidc.client)}`,
         );
-        console.error(err);
+        logger.error(err);
         Sentry.captureException(err);
       }
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       Sentry.captureException(err);
     }
   }

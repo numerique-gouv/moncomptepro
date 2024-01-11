@@ -8,6 +8,7 @@ import {
 } from "../managers/organization/main";
 import {
   greetForJoiningOrganization,
+  markAsWhitelisted,
   notifyAllMembers,
 } from "../managers/organization/authentication-by-peers";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
@@ -18,6 +19,10 @@ import {
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
+import { UserNotFoundError } from "../config/errors";
+import { Unauthorized } from "http-errors";
+import { PAIR_AUTHENTICATION_WHITELIST } from "../config/env";
+import { getEmailDomain } from "../services/uses-a-free-email-provider";
 
 const getReferrerPath = (req: Request) => {
   // If method is not GET (ex: POST), then the referrer must be taken from
@@ -117,6 +122,11 @@ export const checkUserIsVerifiedMiddleware = (
 
       return next();
     } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        // The user has an active session but is not in the database anymore
+        next(new Unauthorized());
+      }
+
       next(error);
     }
   });
@@ -312,7 +322,9 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
             ({ email: e }) => e !== email,
           );
 
-          if (otherInternalUsers.length > 0) {
+          if (PAIR_AUTHENTICATION_WHITELIST.includes(getEmailDomain(email))) {
+            await markAsWhitelisted({ user_id, organization_id });
+          } else if (otherInternalUsers.length > 0) {
             return res.redirect(`/users/choose-sponsor/${organization_id}`);
           } else {
             await notifyAllMembers({ user_id, organization_id });

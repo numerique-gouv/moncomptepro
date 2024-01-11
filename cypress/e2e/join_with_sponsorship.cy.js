@@ -103,4 +103,16 @@ describe("join organizations", () => {
 
     cy.contains("Une erreur est survenue.");
   });
+
+  it("should not see sponsorship screen when whitelisted", () => {
+    cy.login("unused@fakedomain.com", "password123");
+
+    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+
+    // Click on the suggested organization
+    cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
+
+    // should not see sponsorship screen
+    cy.contains("Votre compte est créé");
+  });
 });
