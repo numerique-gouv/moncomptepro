@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const onAuthenticateClick = async () => {
     // Reset success/error messages
     errorElement.style.display = 'none';
-    errorElement.innerText = ''
+    errorElement.innerText = '';
+    beginElement.disabled = true;
 
     // GET registration options from the endpoint that calls
     // @simplewebauthn/server -> generateRegistrationOptions()
@@ -23,11 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (error) {
       errorElement.style.display = 'block';
       if (error.name === 'NotAllowedError') {
-        errorElement.innerText = `Une erreur est survenue. Nous n’avons pas pu vérifier vos informations. Merci de réessayer.`
+        errorElement.innerText = `Une erreur est survenue. Nous n’avons pas pu vérifier vos informations. Merci de réessayer.`;
       } else {
         errorElement.innerText = `Une erreur est survenue. Erreur: ${JSON.stringify(error, null, 2)}`;
       }
 
+      beginElement.disabled = false;
       throw error;
     }
 
