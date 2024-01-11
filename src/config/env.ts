@@ -78,11 +78,19 @@ export const RECENT_LOGIN_INTERVAL_IN_MINUTES = getNumberFromEnv(
   15,
 );
 
-const getArrayFromEnv = (name: string) => {
+export const getArrayFromEnv = (name: string) => {
   const value = process.env[name];
-  return value ? value.split(",") : [];
+  return value
+    ? value
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item)
+    : [];
 };
 
 export const EMAIL_DELIVERABILITY_WHITELIST = getArrayFromEnv(
   "EMAIL_DELIVERABILITY_WHITELIST",
+);
+export const PAIR_AUTHENTICATION_WHITELIST = getArrayFromEnv(
+  "PAIR_AUTHENTICATION_WHITELIST",
 );

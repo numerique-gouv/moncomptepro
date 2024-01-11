@@ -58,13 +58,14 @@ VALUES
   (53, 'unused53@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Sponsor48', '0123456789', 'Sbire'),
   (54, 'unused54@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Sponsor49', '0123456789', 'Sbire'),
   (55, 'unused55@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Sponsor50', '0123456789', 'Sbire'),
-  (56, 'unused56@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Sponsor51', '0123456789', 'Sbire');
+  (56, 'unused56@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Sponsor51', '0123456789', 'Sbire'),
+  (57, 'unused@fakedomain.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'FakeDomain', '0123456789', 'Sbire');
 
 INSERT INTO organizations
   (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
 VALUES
   -- DIRECTION INTERMINISTERIELLE DU NUMERIQUE (DINUM)
-  (1, '13002526500013', '{"mailslurp.com"}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '13002526500013', '{"mailslurp.com","fakedomain.com"}', '{"mailslurp.com","fakedomain.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, needs_official_contact_email_verification, has_been_greeted)
