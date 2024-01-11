@@ -18,6 +18,8 @@ import {
 } from "../managers/session";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
+import { UserNotFoundError } from "../config/errors";
+import { Unauthorized } from "http-errors";
 
 const getReferrerPath = (req: Request) => {
   // If method is not GET (ex: POST), then the referrer must be taken from
@@ -117,6 +119,11 @@ export const checkUserIsVerifiedMiddleware = (
 
       return next();
     } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        // The user has an active session but is not in the database anymore
+        next(new Unauthorized());
+      }
+
       next(error);
     }
   });
