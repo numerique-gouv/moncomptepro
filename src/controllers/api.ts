@@ -14,6 +14,7 @@ import { markDomainAsVerified } from "../managers/organization/main";
 import { forceJoinOrganization } from "../managers/organization/join";
 import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
 import { getUserOrganizationLink } from "../repositories/organization/getters";
+import { logger } from "../services/log";
 
 export const getPingApiSireneController = async (
   req: Request,
@@ -25,7 +26,7 @@ export const getPingApiSireneController = async (
 
     return res.json({});
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     return res.status(502).json({ message: "Bad Gateway" });
   }
 };
@@ -102,7 +103,7 @@ export const postForceJoinOrganizationController = async (
 
     return res.json({});
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }
@@ -128,7 +129,7 @@ export const postSendModerationProcessedEmail = async (
 
     return res.json({});
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }
@@ -158,7 +159,7 @@ export const postMarkDomainAsVerified = async (
 
     return res.json({});
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
     }

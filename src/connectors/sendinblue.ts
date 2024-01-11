@@ -4,6 +4,7 @@ import path from "path";
 import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
 import { SendInBlueApiError } from "../config/errors";
 import { render } from "../services/renderer";
+import { logger } from "../services/log";
 
 type RemoteTemplateSlug =
   | "join-organization"
@@ -91,8 +92,8 @@ export const sendMail = async ({
   }
 
   if (DO_NOT_SEND_MAIL) {
-    console.log(`${template} mail not send to ${to}:`);
-    console.log(data);
+    logger.info(`${template} mail not send to ${to}:`);
+    logger.info(data);
     return;
   }
 
@@ -108,11 +109,11 @@ export const sendMail = async ({
       data,
     });
 
-    console.log(
+    logger.info(
       `${template} email sent to ${to} with message id ${response.data.messageId}`,
     );
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     if (error instanceof AxiosError) {
       throw new SendInBlueApiError(error);
     }

@@ -2,6 +2,7 @@ import { mapValues, memoize } from "lodash";
 import axios, { AxiosResponse } from "axios";
 import { HTTP_CLIENT_TIMEOUT } from "../config/env";
 import * as Sentry from "@sentry/node";
+import { logger } from "../services/log";
 
 type GithubPasskeyAuthenticatorAaguidsResponse = {
   [key: string]: {
@@ -25,7 +26,7 @@ const fetchPasskeyAuthenticatorAaguids = async () => {
 
     return mapValues(data, ({ name }) => name);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     throw new Error("Error from github call");
   }

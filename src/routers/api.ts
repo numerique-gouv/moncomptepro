@@ -15,6 +15,7 @@ import {
   getGenerateAuthenticationOptionsController,
   getGenerateRegistrationOptionsController,
 } from "../controllers/webauthn";
+import { logger } from "../services/log";
 
 export const apiRouter = () => {
   const apiRouter = Router();
@@ -72,7 +73,7 @@ export const apiRouter = () => {
 
   apiRouter.use(
     async (err: HttpError, req: Request, res: Response, next: NextFunction) => {
-      console.error(err);
+      logger.error(err);
 
       const statusCode = err.statusCode || 500;
 

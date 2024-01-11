@@ -5,6 +5,7 @@ import { findByUserId as getUsersOrganizations } from "../repositories/organizat
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
 import * as Sentry from "@sentry/node";
+import { logger } from "./log";
 
 export const findAccount = async (ctx: any, sub: string, token: any) => {
   const user = await findUserById(parseInt(sub, 10));
@@ -48,7 +49,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
           const err = Error("selectedOrganizationId should be set");
           // This Error will be silently swallowed by oidc-provider.
           // We add additional logs to keep traces.
-          console.error(err);
+          logger.error(err);
           Sentry.captureException(err);
           // this will result in a 400 Bad Request
           // Response: {
@@ -65,7 +66,7 @@ export const findAccount = async (ctx: any, sub: string, token: any) => {
         if (isEmpty(organization)) {
           // see comments on above error management
           const err = Error("organization should be set");
-          console.error(err);
+          logger.error(err);
           Sentry.captureException(err);
           throw err;
         }

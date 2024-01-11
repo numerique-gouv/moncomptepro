@@ -6,6 +6,7 @@ import {
   HTTP_CLIENT_TIMEOUT,
 } from "../config/env";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
+import { logger } from "../services/log";
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
 type DebounceResponse = {
@@ -46,14 +47,14 @@ export const isEmailSafeToSendTransactional = async (
   email: string,
 ): Promise<EmailDebounceInfo> => {
   if (DO_NOT_CHECK_EMAIL_DELIVERABILITY) {
-    console.log(`Email address "${email}" not verified.`);
+    logger.info(`Email address "${email}" not verified.`);
 
     return { isEmailSafeToSend: true };
   }
 
   const domain = getEmailDomain(email);
   if (EMAIL_DELIVERABILITY_WHITELIST.includes(domain)) {
-    console.log(`Email address "${email}" is whitelisted.`);
+    logger.info(`Email address "${email}" is whitelisted.`);
 
     return { isEmailSafeToSend: true };
   }
@@ -72,7 +73,7 @@ export const isEmailSafeToSendTransactional = async (
       timeout: HTTP_CLIENT_TIMEOUT,
     });
 
-    console.log(
+    logger.info(
       `Email address "${email}" is ${
         send_transactional === "1" ? "" : "NOT "
       }safe to send.${didYouMean ? ` Suggested email ${didYouMean}` : ""}`,
@@ -80,7 +81,7 @@ export const isEmailSafeToSendTransactional = async (
 
     return { isEmailSafeToSend: send_transactional === "1", didYouMean };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     throw new Error("Error from Debounce API");
   }

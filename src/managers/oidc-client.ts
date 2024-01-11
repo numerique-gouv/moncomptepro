@@ -9,6 +9,7 @@ import { KoaContextWithOIDC } from "oidc-provider";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import * as Sentry from "@sentry/node";
+import { logger } from "../services/log";
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number,
@@ -42,7 +43,7 @@ export const recordNewConnection = async ({
       organization_id = await getSelectedOrganizationId(user_id);
     } catch (err) {
       // This is unexpected, we silently fail and log it in sentry
-      console.error(err);
+      logger.error(err);
       Sentry.captureException(err);
     }
   }

@@ -12,6 +12,7 @@ import {
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
 } from "../config/env";
+import { logger } from "../services/log";
 
 // more info at https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
@@ -130,7 +131,7 @@ export const getAnnuaireServicePublicContactEmail = async (
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
-    console.log(
+    logger.info(
       `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`,
     );
     return TEST_CONTACT_EMAIL;

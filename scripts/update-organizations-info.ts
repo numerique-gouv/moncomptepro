@@ -4,6 +4,7 @@ import { getDatabaseConnection } from "../src/connectors/postgres";
 import { AxiosError } from "axios";
 import { upsert } from "../src/repositories/organization/setters";
 import { Pool } from "pg";
+import { logger } from "../src/services/log";
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
@@ -40,7 +41,7 @@ function isOrganizationInfo(
 }
 
 (async () => {
-  console.log("Start updating organization info...");
+  logger.info("Start updating organization info...");
   let connection: Pool;
   let i = 0;
 
@@ -59,15 +60,15 @@ function isOrganizationInfo(
     // 50ms is an estimated additional delay from insee API
     const estimatedExecutionTimeInMilliseconds =
       Math.max(maxInseeCallRateInMs, 320) * toInteger(count);
-    console.log("");
-    console.log(
+    logger.info("");
+    logger.info(
       "\x1b[33m",
       `Estimated execution time is ${humanReadableDuration(
         estimatedExecutionTimeInMilliseconds,
       )}`,
       "\x1b[0m",
     );
-    console.log("");
+    logger.info("");
 
     while (true) {
       const start = process.hrtime();
@@ -91,7 +92,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
       }
 
       // 2. fetch organization info
-      console.log(`${i}: fetching info for ${siret} (id: ${id})...`);
+      logger.info(`${i}: fetching info for ${siret} (id: ${id})...`);
       let organizationInfo = {};
       try {
         organizationInfo = await getOrganizationInfo(siret);
@@ -104,23 +105,23 @@ ORDER BY id LIMIT 1 OFFSET $1`,
           throw new Error("invalid response from sirene API");
         }
       } catch (error) {
-        console.log(
+        logger.info(
           "\x1b[31m",
           `Error while fetching data for: ${siret}`,
           "\x1b[0m",
         );
-        console.error(`Error while fetching data for: ${siret}`);
-        console.error(
+        logger.error(`Error while fetching data for: ${siret}`);
+        logger.error(
           error instanceof AxiosError && !isEmpty(error.response)
             ? error.response.data
             : error,
         );
-        console.error("");
+        logger.error("");
       }
 
       // 3. update the organization
       if (isOrganizationInfo(organizationInfo)) {
-        console.log(`libelle: ${organizationInfo.libelle}`);
+        logger.info(`libelle: ${organizationInfo.libelle}`);
         await upsert({ siret, organizationInfo });
       }
 
@@ -142,16 +143,14 @@ ORDER BY id LIMIT 1 OFFSET $1`,
     }
 
     await connection.end();
-    console.log("");
-    console.log("\x1b[32m", "Update completed!", "\x1b[0m");
+    logger.info("");
+    logger.info("\x1b[32m", "Update completed!", "\x1b[0m");
   } catch (e) {
     await connection!.end();
-    console.log("");
-    console.log("\x1b[31m", "Update aborted!", "\x1b[0m");
-    console.error(
-      `Unexpected error! The update was interrupted at index ${i}.`,
-    );
-    console.error(e);
+    logger.info("");
+    logger.info("\x1b[31m", "Update aborted!", "\x1b[0m");
+    logger.error(`Unexpected error! The update was interrupted at index ${i}.`);
+    logger.error(e);
     process.exit(1);
   }
 })();

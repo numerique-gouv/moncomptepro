@@ -44,6 +44,7 @@ import {
   usesAFreeEmailProvider,
 } from "../../services/uses-a-free-email-provider";
 import { markDomainAsVerified } from "./main";
+import { logger } from "../../services/log";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -180,7 +181,7 @@ export const joinOrganization = async ({
         organization.cached_code_postal,
       );
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       Sentry.captureException(err);
     }
 
@@ -231,7 +232,7 @@ export const joinOrganization = async ({
     try {
       contactEmail = await getAnnuaireEducationNationaleContactEmail(siret);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       Sentry.captureException(err);
     }
 

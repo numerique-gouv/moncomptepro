@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import axios from "axios";
 import { HTTP_CLIENT_TIMEOUT } from "../config/env";
+import { logger } from "../services/log";
 
 const apiResponseParser = (rawData: string): { [k: string]: number } => {
   return rawData
@@ -36,7 +37,7 @@ export const hasPasswordBeenPwned = async (
 
     return parsedData[hashTrailingChars] > 10;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     throw new Error("Error from pwnedpasswords API");
   }

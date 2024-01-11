@@ -18,6 +18,8 @@ export const {
   ZAMMAD_TOKEN,
   ZAMMAD_URL,
   MODERATION_TAG = "moderation",
+  // "trace" | "debug" | "info" | "warn" | "error" | "fatal"
+  LOG_LEVEL = "info",
 } = process.env;
 
 export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =

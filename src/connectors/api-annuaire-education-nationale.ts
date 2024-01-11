@@ -11,6 +11,7 @@ import {
   TEST_CONTACT_EMAIL,
 } from "../config/env";
 import { isEmailValid } from "../services/security";
+import { logger } from "../services/log";
 
 type ApiAnnuaireEducationNationaleReponse = {
   total_count: number;
@@ -238,7 +239,7 @@ export const getAnnuaireEducationNationaleContactEmail = async (
   }
 
   if (DO_NOT_USE_ANNUAIRE_EMAILS) {
-    console.log(
+    logger.info(
       `Test email address ${TEST_CONTACT_EMAIL} was used instead of the real one ${formattedEmail}.`,
     );
     return TEST_CONTACT_EMAIL;

@@ -27,6 +27,7 @@ import {
 import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { Unauthorized } from "http-errors";
+import { logger } from "../services/log";
 
 export const getPasskeysController = async (
   req: Request,
@@ -123,7 +124,7 @@ export const postVerifyRegistrationController = async (
 
     return res.redirect(`/passkeys?notification=passkey_successfully_created`);
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
       return res.redirect(`/passkeys?notification=invalid_passkey`);
     }
@@ -210,7 +211,7 @@ export const postVerifyAuthenticationController = async (
 
     next();
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
       return res.redirect(
         `/users/sign-in-with-passkey?notification=invalid_passkey`,
