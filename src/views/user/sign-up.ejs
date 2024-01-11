@@ -86,7 +86,20 @@
                             </div>
                         </div>
 
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+                        <div class="card-button-container">
+                            <span>
+                                <a
+                                        type="button"
+                                        class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
+                                        href="/users/start-sign-in"
+                                >
+                                    retour
+                                </a>
+                            </span>
+                            <button class="fr-btn" type="submit">
+                                Valider
+                            </button>
+                        </div>
                     </form>
 
                     <p class="fr-hr-or">ou</p>
