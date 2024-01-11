@@ -755,6 +755,34 @@ VALUES
     'openid email profile organization',
     'https://lab-anssi-docs.cleverapps.io/',
     'Gestion documentaire du Lab de l’ANSSI',
+    null, null, null, null),
+  (29,
+    'ASTREA',
+    '2gvsfa9cdpx1n799kfqln7lz7bj6czacjdppaq151fud8ufrklmwnl7s9cj67nls',
+    '0xeuz4budrvdfia7hq9vrgmog0mj03zgoe8puvuzhowkyw95ra4g6xolvyef8rzk',
+    ARRAY [
+      'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg/redirect_uri',
+      'https://mai-web-b2-astrea-qlf02.apps.ocp-genmob.mtrl.fr.ssg/redirect_uri',
+      'https://mai-web-b2-astrea-qlf03.apps.ocp-genmob.mtrl.fr.ssg/redirect_uri',
+      'https://mai-web-b2-astrea-qlf04.apps.ocp-genmob.mtrl.fr.ssg/redirect_uri',
+      'https://mai-web-b2-astrea-qlf01.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
+      'https://mai-web-b2-astrea-qlf02.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
+      'https://mai-web-b2-astrea-qlf03.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
+      'https://mai-web-b2-astrea-qlf04.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri'
+    ],
+    ARRAY [
+      'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg',
+      'https://mai-web-b2-astrea-qlf02.apps.ocp-genmob.mtrl.fr.ssg',
+      'https://mai-web-b2-astrea-qlf03.apps.ocp-genmob.mtrl.fr.ssg',
+      'https://mai-web-b2-astrea-qlf04.apps.ocp-genmob.mtrl.fr.ssg',
+      'https://mai-web-b2-astrea-qlf01.apps.ocp4.on-prem.innershift.ssghosting.net',
+      'https://mai-web-b2-astrea-qlf02.apps.ocp4.on-prem.innershift.ssghosting.net',
+      'https://mai-web-b2-astrea-qlf03.apps.ocp4.on-prem.innershift.ssghosting.net',
+      'https://mai-web-b2-astrea-qlf04.apps.ocp4.on-prem.innershift.ssghosting.net'
+    ],
+    'openid email profile organization',
+    'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg',
+    'Le Casier Judiciaire National lance la nouvelle application B2+ pour permettre la délivrance des bulletins n°2.',
     null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
