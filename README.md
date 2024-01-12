@@ -174,7 +174,7 @@ Avec la librairie [react-dsfr](https://github.com/codegouvfr/react-dsfr/blob/mai
 <MonCompteProButton url="#" />
 ```
 
-La documentation détaillée ce trouve ici : https://react-dsfr-components.etalab.studio/?path=/docs/components-moncompteprobutton--default
+La documentation détaillée ce trouve ici : [https://components.react-dsfr.codegouv.studio/?path=/docs/components-moncompteprobutton--default](https://components.react-dsfr.codegouv.studio/?path=/docs/components-moncompteprobutton--default)
 
 #### Ressources
 
