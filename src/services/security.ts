@@ -5,6 +5,7 @@ import notificationMessages from "../config/notification-messages";
 import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
 import { MONCOMPTEPRO_HOST } from "../config/env";
+import { parse_host } from "tld-extract";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -59,6 +60,12 @@ export const isDomainValid = (domain: unknown): domain is string => {
   }
 
   if (domain.match(/^[a-zA-Z0-9.-]*$/) === null) {
+    return false;
+  }
+
+  try {
+    parse_host(domain, { allowDotlessTLD: true });
+  } catch (error) {
     return false;
   }
 
