@@ -339,7 +339,7 @@ VALUES
      'http://localhost:8484',
      'http://localhost:8484/o/docs/signed-out'
      ],
-   'openid email organization organizations profile',
+   'openid email organization profile',
    'https://grist.dev.incubateur.anct.gouv.fr',
    'Saisir et manipuler collaborativement les données.',
    null, null, null, null),
