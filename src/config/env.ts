@@ -1,7 +1,6 @@
 export const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,
-  JWKS_PATH = `${__dirname}/../../jwks.json`,
   SENTRY_DSN,
   ACCESS_LOG_PATH,
   DEBOUNCE_API_KEY,
@@ -94,3 +93,10 @@ export const PAIR_AUTHENTICATION_WHITELIST = getArrayFromEnv(
   "PAIR_AUTHENTICATION_WHITELIST",
 );
 export const SESSION_COOKIE_SECRET = getArrayFromEnv("SESSION_COOKIE_SECRET");
+
+export const getJSONFromEnv = (name: string) => {
+  const value = process.env[name];
+  return value ? JSON.parse(value) : {};
+};
+
+export const JWKS = getJSONFromEnv("JWKS");

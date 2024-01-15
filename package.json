@@ -9,7 +9,7 @@
     "lint": "prettier --write */*.ts",
     "start": "node build/index.js",
     "dev": "concurrently \"npm:watch-js\" \"npm:watch-node\" \"npm:watch-ejs\"",
-    "build": "tsc && node-pg-migrate up && ts-node scripts/generate-keys.js && bash -c 'cp -r src/views build/views' && bash -c 'cp node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js public/simplewebauthn.umd.min.js' && bash -c 'cp node_modules/choices.js/public/assets/{scripts/choices.min.js,styles/choices.min.css} public/' && bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons,utility} public/'",
+    "build": "tsc && node-pg-migrate up && bash -c 'cp -r src/views build/views' && bash -c 'cp node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js public/simplewebauthn.umd.min.js' && bash -c 'cp node_modules/choices.js/public/assets/{scripts/choices.min.js,styles/choices.min.css} public/' && bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons,utility} public/'",
     "import": "ts-node scripts/import.js",
     "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
     "migrate": "node-pg-migrate",
