@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     notSupportedElement.style.display = 'none';
     errorAlertElement.style.display = 'none';
     errorAlertElement.innerText = '';
-    beginElement.disabled = true;
+    beginElement.disabled = false;
   };
 // Start registration when the user clicks a button
   const onRegisterClick = async () => {
     // Reset success/error messages
     clearDisplay();
+    beginElement.disabled = true;
 
     // GET registration options from the endpoint that calls
     // @simplewebauthn/server -> generateRegistrationOptions()
