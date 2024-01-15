@@ -24,7 +24,7 @@ export const trustedBrowserMiddleware = (
   if (req.headers.authorization) {
     return next();
   }
-  return cookieParser([SESSION_COOKIE_SECRET])(req, res, (e) => {
+  return cookieParser(SESSION_COOKIE_SECRET)(req, res, (e) => {
     if (e) next(e);
 
     setIsTrustedBrowserFromLoggedInSession(req);
