@@ -28,7 +28,7 @@ import { connectionCountMiddleware } from "./middlewares/connection-count";
 import { isNull, omitBy } from "lodash";
 import {
   ACCESS_LOG_PATH,
-  JWKS_PATH,
+  JWKS,
   MONCOMPTEPRO_HOST,
   PORT,
   SECURE_COOKIES,
@@ -39,8 +39,6 @@ import {
 import { trustedBrowserMiddleware } from "./managers/browser-authentication";
 import { jsonParseWithDate } from "./services/json-parse-with-date";
 import { logger } from "./services/log";
-
-const jwks = require(JWKS_PATH);
 
 const app = express();
 
@@ -147,7 +145,7 @@ let server: Server;
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
     clients: clientsWithoutNullProperties,
     adapter: oidcProviderRepository,
-    jwks,
+    jwks: JWKS,
     // @ts-ignore
     renderError: async (ctx, { error, error_description }, err) => {
       logger.error(err);
