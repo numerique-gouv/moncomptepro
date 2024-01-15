@@ -113,7 +113,7 @@ const sessionMiddleware =
       secure: SECURE_COOKIES,
       sameSite: "lax",
     },
-    secret: [SESSION_COOKIE_SECRET],
+    secret: SESSION_COOKIE_SECRET,
     // future default
     resave: false,
     // future default
@@ -183,7 +183,7 @@ let server: Server;
         secure: SECURE_COOKIES,
         sameSite: "lax",
       },
-      keys: [SESSION_COOKIE_SECRET],
+      keys: SESSION_COOKIE_SECRET,
     },
     ...oidcProviderConfiguration({
       sessionTtlInSeconds: SESSION_MAX_AGE_IN_SECONDS,
