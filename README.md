@@ -102,6 +102,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 > NB : `is_external` vaut `true` lorsque l’utilisateur est externe à l’organisation (ex : prestataire, sous-traitant, mandataire, etc.)
 > NB : si `is_commune` vaut `true` alors `is_service_public` vaut `true` également
+> NB : MonComptePro vérifie systématiquement les adresses emails, en conséquence `email_verified` vaut toujours `true`
 
 ### Spécifications visuelles
 
