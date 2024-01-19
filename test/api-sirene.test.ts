@@ -3,6 +3,7 @@ import chaiAsPromised from "chai-as-promised";
 import nock from "nock";
 import diffusible from "./api-sirene-data/diffusible.json";
 import partiallyNonDiffusible from "./api-sirene-data/partially-non-diffusible.json";
+import searchBySiren from "./api-sirene-data/search-by-siren.json";
 import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { InseeNotFoundError } from "../src/config/errors";
 
@@ -19,30 +20,47 @@ describe("getOrganizationInfo", () => {
     });
   });
 
+  const diffusibleOrganizationInfo = {
+    siret: "20007184300060",
+    libelle: "Cc du vexin normand",
+    nomComplet: "Cc du vexin normand",
+    enseigne: "",
+    trancheEffectifs: "22",
+    trancheEffectifsUniteLegale: "22",
+    libelleTrancheEffectif: "100 à 199 salariés, en 2021",
+    etatAdministratif: "A",
+    estActive: true,
+    statutDiffusion: "O",
+    estDiffusible: true,
+    adresse: "3 rue maison de vatimesnil, 27150 Etrepagny",
+    codePostal: "27150",
+    codeOfficielGeographique: "27226",
+    activitePrincipale: "84.11Z",
+    libelleActivitePrincipale: "84.11Z - Administration publique générale",
+    categorieJuridique: "7346",
+    libelleCategorieJuridique: "Communauté de communes",
+  };
+
   it("should return valid payload for diffusible établissement", async () => {
     nock("https://api.insee.fr")
       .get("/entreprises/sirene/V3/siret/20007184300060")
       .reply(200, diffusible);
-    await assert.eventually.deepEqual(getOrganizationInfo("20007184300060"), {
-      siret: "20007184300060",
-      libelle: "Cc du vexin normand",
-      nomComplet: "Cc du vexin normand",
-      enseigne: "",
-      trancheEffectifs: null,
-      trancheEffectifsUniteLegale: "22",
-      libelleTrancheEffectif: null,
-      etatAdministratif: "A",
-      estActive: true,
-      statutDiffusion: "O",
-      estDiffusible: true,
-      adresse: "3 rue maison de vatimesnil, 27150 Etrepagny",
-      codePostal: "27150",
-      codeOfficielGeographique: "27226",
-      activitePrincipale: "84.11Z",
-      libelleActivitePrincipale: "84.11Z - Administration publique générale",
-      categorieJuridique: "7346",
-      libelleCategorieJuridique: "Communauté de communes",
-    });
+    await assert.eventually.deepEqual(
+      getOrganizationInfo("20007184300060"),
+      diffusibleOrganizationInfo,
+    );
+  });
+
+  it("should return valid payload for diffusible établissement", async () => {
+    nock("https://api.insee.fr")
+      .get(
+        "/entreprises/sirene/V3/siret?q=siren:200071843 AND etablissementSiege:true",
+      )
+      .reply(200, searchBySiren);
+    await assert.eventually.deepEqual(
+      getOrganizationInfo("200071843"),
+      diffusibleOrganizationInfo,
+    );
   });
 
   it("should show partial data for partially non diffusible établissement", async () => {

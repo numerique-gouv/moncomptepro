@@ -9,10 +9,10 @@
     "siret": "20007184300060",
     "statutDiffusionEtablissement": "O",
     "dateCreationEtablissement": "2021-01-27",
-    "trancheEffectifsEtablissement": null,
-    "anneeEffectifsEtablissement": null,
+    "trancheEffectifsEtablissement": "22",
+    "anneeEffectifsEtablissement": "2021",
     "activitePrincipaleRegistreMetiersEtablissement": null,
-    "dateDernierTraitementEtablissement": "2021-02-02T09:48:38",
+    "dateDernierTraitementEtablissement": "2023-11-30T10:17:50",
     "etablissementSiege": true,
     "nombrePeriodesEtablissement": 1,
     "uniteLegale": {
@@ -41,11 +41,11 @@
       "societeMissionUniteLegale": null,
       "caractereEmployeurUniteLegale": "O",
       "trancheEffectifsUniteLegale": "22",
-      "anneeEffectifsUniteLegale": "2020",
+      "anneeEffectifsUniteLegale": "2021",
       "nicSiegeUniteLegale": "00060",
-      "dateDernierTraitementUniteLegale": "2023-07-20T10:04:55",
+      "dateDernierTraitementUniteLegale": "2023-11-30T10:17:50",
       "categorieEntreprise": "PME",
-      "anneeCategorieEntreprise": "2020"
+      "anneeCategorieEntreprise": "2021"
     },
     "adresseEtablissement": {
       "complementAdresseEtablissement": null,

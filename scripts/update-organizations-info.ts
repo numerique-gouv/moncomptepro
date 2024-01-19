@@ -5,40 +5,16 @@ import { AxiosError } from "axios";
 import { upsert } from "../src/repositories/organization/setters";
 import { Pool } from "pg";
 import { logger } from "../src/services/log";
+import {
+  getDurationInMilliseconds,
+  humanReadableDuration,
+  isOrganizationInfo,
+} from "../src/services/script-helpers";
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
 const rateInMsFromArgs = toInteger(process.argv[2]);
 const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 250;
-
-// from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
-const getDurationInMilliseconds = (start: [number, number]) => {
-  const NS_PER_SEC = 1e9;
-  const NS_TO_MS = 1e6;
-  const diff = process.hrtime(start);
-
-  return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
-};
-
-// from https://stackoverflow.com/questions/19700283/how-to-convert-time-in-milliseconds-to-hours-min-sec-format-in-javascript
-const humanReadableDuration = (msDuration: number) => {
-  const h = Math.floor(msDuration / 1000 / 60 / 60);
-  const m = Math.floor((msDuration / 1000 / 60 / 60 - h) * 60);
-  const s = Math.floor(((msDuration / 1000 / 60 / 60 - h) * 60 - m) * 60);
-
-  // To get time format 00:00:00
-  const seconds = s < 10 ? `0${s}` : `${s}`;
-  const minutes = m < 10 ? `0${m}` : `${m}`;
-  const hours = h < 10 ? `0${h}` : `${h}`;
-
-  return `${hours}h ${minutes}m ${seconds}s`;
-};
-
-function isOrganizationInfo(
-  organizationInfo: OrganizationInfo | {},
-): organizationInfo is OrganizationInfo {
-  return !isEmpty(organizationInfo);
-}
 
 (async () => {
   logger.info("Start updating organization info...");
@@ -73,7 +49,7 @@ function isOrganizationInfo(
     while (true) {
       const start = process.hrtime();
 
-      // 1. get a organization
+      // 1. get an organization
       const { rows: results } = await connection.query(
         `
 SELECT id, siret, organization_info_fetched_at
@@ -93,7 +69,7 @@ ORDER BY id LIMIT 1 OFFSET $1`,
 
       // 2. fetch organization info
       logger.info(`${i}: fetching info for ${siret} (id: ${id})...`);
-      let organizationInfo = {};
+      let organizationInfo: any = {};
       try {
         organizationInfo = await getOrganizationInfo(siret);
 
