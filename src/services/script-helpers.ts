@@ -1,5 +1,10 @@
 // from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
 import { isEmpty } from "lodash";
+import fs from "fs";
+
+export const startDurationMesure = () => {
+  return process.hrtime();
+};
 
 export const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;
@@ -7,6 +12,18 @@ export const getDurationInMilliseconds = (start: [number, number]) => {
   const diff = process.hrtime(start);
 
   return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
+};
+
+export const throttleApiCall = async (
+  start: [number, number],
+  maxCallRateInMs: number,
+) => {
+  const durationInMilliseconds = getDurationInMilliseconds(start);
+  const waitTimeInMilliseconds = Math.max(
+    maxCallRateInMs - durationInMilliseconds,
+    0,
+  );
+  await new Promise((resolve) => setTimeout(resolve, waitTimeInMilliseconds));
 };
 
 // from https://stackoverflow.com/questions/19700283/how-to-convert-time-in-milliseconds-to-hours-min-sec-format-in-javascript
@@ -21,6 +38,22 @@ export const humanReadableDuration = (msDuration: number) => {
   const hours = h < 10 ? `0${h}` : `${h}`;
 
   return `${hours}h ${minutes}m ${seconds}s`;
+};
+
+export const getNumberOfLineInFile = async (
+  input_file: string,
+): Promise<number> => {
+  let i;
+  let count = 0;
+  return await new Promise((resolve) => {
+    fs.createReadStream(input_file)
+      .on("data", (chunk) => {
+        for (i = 0; i < chunk.length; ++i) if (chunk[i] == 10) count++;
+      })
+      .on("end", () => {
+        resolve(count);
+      });
+  });
 };
 
 export function isOrganizationInfo(
