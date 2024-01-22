@@ -13,7 +13,7 @@
     "import": "ts-node scripts/import.js",
     "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
     "migrate": "node-pg-migrate",
-    "load-fixtures": " node-pg-migrate up && psql -v ON_ERROR_STOP=1 -f scripts/fixtures.sql && npm run update-organization-info 2000",
+    "load-fixtures": " node-pg-migrate up && psql $DATABASE_URL -v ON_ERROR_STOP=1 -f scripts/fixtures.sql && npm run update-organization-info 2000",
     "delete-database": "psql -v ON_ERROR_STOP=1 -f scripts/delete_all.sql",
     "load-ci-fixtures": "node-pg-migrate up && psql -v ON_ERROR_STOP=1 -f",
     "test:lint": "prettier */*.ts --list-different",
