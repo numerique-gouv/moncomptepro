@@ -1,0 +1,8 @@
+{
+  "jobs": [
+    {
+      "command": "0 2 * * * scripts/create-anonymized-copy-of-database.sh",
+      "size": "S"
+    }
+  ]
+}
