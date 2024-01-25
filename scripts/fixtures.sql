@@ -456,7 +456,7 @@ VALUES
    ARRAY [
      'http://localhost:9009/'
    ],
-   'openid email phone profile organization organizations',
+   'openid email profile phone organization organizations',
    'http://localhost:9009/',
    'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
    null, null, null, null),
@@ -505,7 +505,7 @@ VALUES
      'http://localhost:4500',
      'https://egapro-charon.dev.fabrique.social.gouv.fr'
      ],
-   'openid email profile organization organizations',
+   'openid email profile phone organization organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
    'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.',
    null, null, null, null),
