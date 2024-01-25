@@ -52,7 +52,9 @@ export const isServicePublic = ({
 
   const siret_ok = ["1", "2"].some((e) => siret?.startsWith(e));
 
-  return cat_jur_ok || siret_ok;
+  const whitelist_ok = ["32025248901075"].includes(siret);
+
+  return cat_jur_ok || siret_ok || whitelist_ok;
 };
 
 export const hasLessThanFiftyEmployees = ({

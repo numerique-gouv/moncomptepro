@@ -86,6 +86,17 @@ const onf_org_info: Organization = {
     "Établissement public national à caractère industriel ou commercial doté d'un comptable public",
 };
 
+const whitelisted_org_info: Organization = {
+  siret: "32025248901075",
+  cached_tranche_effectifs: "42",
+  cached_tranche_effectifs_unite_legale: "51",
+  cached_libelle_tranche_effectif: "1 000 à 1 999 salariés, en 2021",
+  cached_activite_principale: "64.92Z",
+  cached_libelle_activite_principale: "64.92Z - Autre distribution de crédit",
+  cached_categorie_juridique: "5599",
+  cached_libelle_categorie_juridique: "SA à conseil d'administration (s.a.i.)",
+};
+
 describe("isCommune", () => {
   it("should return false for bad call", () => {
     assert.equal(isCommune({}), false);
@@ -121,8 +132,12 @@ describe("isServicePublic", () => {
     assert.equal(isServicePublic(association_org_info), false);
   });
 
-  it("should return false for établissement public à caractère industriel et commercial", () => {
+  it("should return true for établissement public à caractère industriel et commercial", () => {
     assert.equal(isServicePublic(onf_org_info), true);
+  });
+
+  it("should return true for whitelisted établissement", () => {
+    assert.equal(isServicePublic(whitelisted_org_info), true);
   });
 });
 
