@@ -224,6 +224,25 @@ body {
     color: var(--text-default-info);
 }
 
+.fr-notice.moncomptepro-notice--change-email {
+  color: var(--text-action-high-blue-france);
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.fr-notice.moncomptepro-notice--change-email .fr-notice__body:before {
+    content: none;
+}
+
+.fr-notice.moncomptepro-notice--change-email .fr-notice__body {
+    padding-left: 0;
+}
+
+.fr-notice.moncomptepro-notice--change-email .fr-btn--close:before {
+    -webkit-mask-image: url(icons/system/arrow-go-back-fill.svg);
+    mask-image: url(icons/system/arrow-go-back-fill.svg);;
+}
+
 .fr-tile.moncomptepro-selectable-tile {
     box-shadow: inset 0 0 0 1px var(--border-default-grey);;
 }
