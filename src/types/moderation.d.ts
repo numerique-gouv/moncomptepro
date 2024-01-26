@@ -7,4 +7,5 @@ interface Moderation {
   created_at: Date;
   moderated_at: Date | null;
   comment: string | null;
+  moderated_by: string | null;
 }
