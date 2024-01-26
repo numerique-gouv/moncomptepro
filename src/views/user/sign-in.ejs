@@ -7,10 +7,17 @@
                     Accéder au compte
                 </h4>
                 <div class="fr-card__desc">
-                    <div class="fr-notice moncomptepro-notice--email fr-mb-2w">
+                    <div class="fr-notice fr-notice--info moncomptepro-notice--change-email fr-mb-2w">
                         <div class="fr-container">
                             <div class="fr-notice__body">
-                                Email professionnel : <strong><%= email; %></strong>
+                                <strong><%= email; %></strong>
+                                <a
+                                        class="fr-btn fr-btn--close"
+                                        title="Changer d’adresse email"
+                                        href="/users/start-sign-in"
+                                >
+                                    Changer d’adresse email
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -90,13 +97,12 @@
 
                     <div class="card-button-container fr-mt-2w">
                         <span>
-                            <a
-                                    type="button"
-                                    class="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
-                                    href="/users/start-sign-in"
-                            >
-                                retour
-                            </a>
+                                <button
+                                        id="go-back-link"
+                                        class="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
+                                >
+                                    retour
+                                </button>
                         </span>
                         <span></span>
                     </div>
@@ -106,3 +112,4 @@
     </div>
 </div>
 <script src="/assets/show-password.js"></script>
+<script type="text/javascript" src="/assets/go-back.js"></script>
