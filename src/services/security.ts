@@ -127,11 +127,7 @@ export const isNameValid = (name: unknown): name is string => {
     return false;
   }
 
-  if (name.match(/[$&+,:;=?@#|'<>.^*()%!]/)) {
-    return false;
-  }
-
-  return true;
+  return !!name.match(/^[^$&+:;=?@#|<>.^*()%!\d_\[\]{}\\\/"`~]*$/);
 };
 
 const nanoidPin = customAlphabet("0123456789", 10);

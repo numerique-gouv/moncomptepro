@@ -103,16 +103,58 @@ describe("isSiretValid", () => {
 });
 
 describe("isNameValid", () => {
-  it("should return false if an email is provided", () => {
-    assert.equal(isNameValid("jean@domaine.fr"), false);
+  const invalidNames = [
+    null,
+    "",
+    "jean@domaine.fr",
+    "dsi_etudes_applications",
+    "R2 - Sebastien",
+    "0000",
+    "CCTV70",
+    "0623456789",
+    ";GOUZE",
+    "Agathe/Carine",
+    `<script>alert("hello")</script>`,
+    "SG/PAFF/DDTM06",
+    "Jean*Robert",
+    "Jose_luis",
+    "MME.",
+    "Sabrina.b",
+    "M.Christine",
+    "Bousbecque59098*",
+    "vAL2RIE",
+    "Ch.",
+    "YOANNI TH.",
+    "M. le Président",
+  ];
+
+  invalidNames.forEach((invalidName) => {
+    it(`should return false for invalid names : ${invalidName}`, () => {
+      assert.equal(isNameValid(invalidName), false);
+    });
   });
 
-  it("should return true if a name is provided", () => {
-    assert.equal(isNameValid("Jean"), true);
-  });
+  const validNames = [
+    "Jean",
+    "Jean-Jean",
+    "TAREK      WAJDI",
+    "  Tania",
+    "Надежда",
+    "沃德天·",
+    "อาทิตย์ นาถมทอง",
+    "俊宇",
+    "Doğan",
+    "Hanåğğne",
+    "سليمان خالد",
+    "marcn     bh",
+    "THỊ PHƯƠNG HỒNG",
+    "Yamina⁵",
+  ];
 
-  it("should return true if a nom composé is provided", () => {
-    assert.equal(isNameValid("Jean-Jean"), true);
+  validNames.forEach((validName) => {
+    it(`should return true for valid names : ${validName}`, () => {
+      assert.equal(isNameValid(validName), true);
+    });
   });
 });
 

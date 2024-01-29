@@ -27,6 +27,8 @@
                 </label>
                 <input
                         class="fr-input" required type="text" name="given_name"
+                        pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
+                        title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Prénom"
                 <% if (given_name) { %> value="<%= given_name; %>"
                         <% } %>
@@ -39,6 +41,8 @@
                 </label>
                 <input
                         class="fr-input" required type="text" name="family_name"
+                        pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
+                        title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Nom"
                 <% if (family_name) { %> value="<%= family_name; %>"
                         <% } %>

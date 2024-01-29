@@ -20,7 +20,12 @@ export const emailSchema = () =>
     .refine(isEmailValid)
     .transform((val) => val.toLowerCase().trim());
 
-export const nameSchema = () => z.string().min(1).refine(isNameValid);
+export const nameSchema = () =>
+  z
+    .string()
+    .min(1)
+    .refine(isNameValid)
+    .transform((val) => val.trim());
 
 export const phoneNumberSchema = () =>
   z.union([

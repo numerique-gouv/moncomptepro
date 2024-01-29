@@ -26,7 +26,7 @@ describe("sign-in from standard client", () => {
     cy.contains("Commune de lamalou-les-bains - Mairie");
 
     // then it should update userinfo
-    cy.contains("Jean1");
+    cy.contains("Jean Un");
     cy.get("button#update-userinfo").click();
     cy.contains("Renseigner son identité");
     cy.get('[name="family_name"]').type("Moustaki");
