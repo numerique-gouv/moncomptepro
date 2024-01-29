@@ -52,7 +52,8 @@ export const isServicePublic = ({
 
   const siret_ok = ["1", "2"].some((e) => siret?.startsWith(e));
 
-  const whitelist_ok = ["32025248901075"].includes(siret);
+  const siren = (siret || "").substring(0, 9);
+  const whitelist_ok = ["320252489"].includes(siren);
 
   return cat_jur_ok || siret_ok || whitelist_ok;
 };
