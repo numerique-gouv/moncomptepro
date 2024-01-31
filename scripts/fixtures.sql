@@ -783,7 +783,23 @@ VALUES
     'openid email profile organization',
     'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg',
     'Le Casier Judiciaire National lance la nouvelle application B2+ pour permettre la délivrance des bulletins n°2.',
-    null, null, null, null)
+    null, null, null, null),
+  (30,
+   'Grist - DINUM - Preprod',
+   '343ba6a6fd9303ab727159eeed704bcbc2549e56cd294fdf58621f01b1856898d18c6b20dd2cea21d4dc06746453331328a1b2c1abe365a92bb2a2f3b9d68c68',
+   '022da300506ac31fbc6feaf88575b94b886eae7a68c64327ee03e0fa135ae9ae28572e4de53bb435b3fce4f8ac8484334d71de48f3c9abed3709c730173e0bc9',
+   ARRAY [
+     'https://grist-preprod.beta.numerique.gouv.fr/_oauth',
+     'https://grist-preprod.beta.numerique.gouv.fr/oauth2/callback'
+     ],
+   ARRAY [
+     'https://grist-preprod.beta.numerique.gouv.fr/',
+     'https://grist-preprod.beta.numerique.gouv.fr/o/docs/signed-out'
+     ],
+   'openid email organization profile',
+   'https://grist-preprod.beta.numerique.gouv.fr/',
+   'Saisir et manipuler collaborativement les données.',
+   null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
   SET (client_name, client_id, client_secret, redirect_uris, post_logout_redirect_uris, scope, client_uri,
