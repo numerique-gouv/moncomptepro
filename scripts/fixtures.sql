@@ -685,11 +685,13 @@ VALUES
    'g9NDuOf8PAikAc4hWZzt2e3dbVxBxvZxkcZL4bHk85cfmqHot70VwhJtv9EzR7yD7MJ9LEpGAbCQdYZHO6BDd9Wn6Bx8SIwBZvaOmNmeVcU49aCZEvXjD718XeV3ihq1',
    'bAOwASqfT7RQjmURcklebBrTY79xmFY9lmkAWrBW50sdcFCYVyyKizJ7wYIlJs8dayWXJcHjNS6waBDxNy1Lb7erGPlm7ocEfnGwjK7wnhshr5DXVSVmbh5K9BhvK6gN',
    ARRAY [
-     'https://espace-demande.dev.incubateur.anct.gouv.fr/complete/moncomptepro/',
+     'https://espace-demande.dev.incubateur.anct.gouv.fr/complete/moncomptepro/',     
+     'http://localhost:3000/complete/moncomptepro/',
      'http://localhost:3001/dev/complete/moncomptepro/'
      ],
    ARRAY [
      'https://espace-demande.dev.incubateur.anct.gouv.fr',
+     'http://localhost:3000',
      'http://localhost:3001'
      ],
    'openid email profile organization',
