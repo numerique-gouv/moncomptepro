@@ -815,7 +815,7 @@ VALUES
      ],
    'openid email organization profile',
    'https://plusfraichemaville.fr',
-   "Site de l'ADEME pour accompagner les collectivités dans la lutte contre les îlots de chaleur urbains.",
+   'Site de l’ADEME pour accompagner les collectivités dans la lutte contre les îlots de chaleur urbains.',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
