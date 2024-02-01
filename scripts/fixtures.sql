@@ -800,6 +800,22 @@ VALUES
    'openid email organization profile',
    'https://grist-preprod.beta.numerique.gouv.fr/',
    'Saisir et manipuler collaborativement les données.',
+   null, null, null, null),
+  (31,
+   'Plus Fraiche Ma Ville',
+   'wkhtaqgkwkyprtgnujji668aibmlrzc98y9src51z2d7wsqtu25kp2qxgroawclfmkcnbvw9n3moukvsin20pe6kyerg2wgcxu45bsacdweoiqgefsajchv2pia3r1co',
+   't0gtm3x1totp1wqj2z9vsehnfox0ncitx39hhjleminzfam1nb4ys32mr9ewuviz80r0teyt79f4roze8dsrewapk5s8k8iuw313o7cbfma9fmcjikkn21e2ilezo9jo',
+   ARRAY [
+     'http://localhost:3000/api/auth/callback',
+     'https://staging.plusfraichemaville.fr/api/auth/callback'
+     ],
+   ARRAY [
+     'http://localhost:3000/espace-projet',
+     'http://staging.plusfraichemaville.fr/espace-projet'
+     ],
+   'openid email organization profile',
+   'https://plusfraichemaville.fr',
+   "Site de l'ADEME pour accompagner les collectivités dans la lutte contre les îlots de chaleur urbains.",
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
