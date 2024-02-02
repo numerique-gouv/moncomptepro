@@ -117,7 +117,7 @@ jobs:
       - run: npm ci
       - run: npm install cypress@12
       - run: npm run migrate up
-      - run: npm run load-ci-fixtures -- cypress/fixtures/${{ matrix.e2e_test }}.sql
+      - run: npm run fixtures:load-ci -- cypress/fixtures/${{ matrix.e2e_test }}.sql
       - run: npm run update-organization-info -- 2000
       - name: Dotenv Action
         uses: falti/dotenv-action@v1.0.4

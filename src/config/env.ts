@@ -1,3 +1,6 @@
+// load variable from .env file, only used in local dev env
+import "dotenv/config";
+
 export const {
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,

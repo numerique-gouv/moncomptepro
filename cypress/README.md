@@ -37,7 +37,7 @@ cd /opt/apps/api-auth/current
 export $(cat /etc/api-auth.conf | xargs)
 export PGDATABASE=api-auth-test
 export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
-npm run delete-database && npm run load-ci-fixtures cypress/fixtures/join_with_sponsorship.sql && npm run update-organization-info 2000
+npm run delete-database && npm run fixtures:load-ci cypress/fixtures/join_with_sponsorship.sql && npm run update-organization-info 2000
 ```
 
 On your host, install cypress:
