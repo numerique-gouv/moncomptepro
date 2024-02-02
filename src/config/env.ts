@@ -10,7 +10,6 @@ export const {
   REDIS_URL = "redis://:@127.0.0.1:6379",
   INSEE_CONSUMER_KEY,
   INSEE_CONSUMER_SECRET,
-  SUPPORT_EMAIL_ADDRESS = "moncomptepro@beta.gouv.fr",
   API_AUTH_USERNAME = "admin",
   API_AUTH_PASSWORD = "admin",
   ZAMMAD_TOKEN,
