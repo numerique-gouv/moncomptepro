@@ -670,11 +670,13 @@ VALUES
    'client_secret',
    ARRAY [
      'https://test.moncomptepro.beta.gouv.fr/login-callback',
-     'http://localhost:3000/login-callback'
+     'http://localhost:3000/login-callback',
+     'http://localhost:3001/login-callback'
      ],
    ARRAY [
      'https://test.moncomptepro.beta.gouv.fr/',
-     'http://localhost:3000/'
+     'http://localhost:3000/',
+     'http://localhost:3001/'
      ],
    'openid email profile organization',
    'https://test.moncomptepro.beta.gouv.fr/',

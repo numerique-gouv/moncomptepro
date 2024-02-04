@@ -252,6 +252,4 @@ devez recommencer la cinématique.
 
 Pour contribuer à MonComptePro vous pouvez installer l'application localement.
 
-Les instructions se trouvent sur [la page de doc dédiée](./installation.md)
-
-Les instructions d’installation complètes incluant l'infrastructure se trouvent ici (lien privé, disponible uniquement à notre équipe en interne) : https://github.com/betagouv/moncomptepro-infrastructure
+Les instructions se trouvent sur [la page de doc dédiée](./installation.md).

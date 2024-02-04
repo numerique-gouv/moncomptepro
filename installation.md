@@ -1,174 +1,69 @@
-# Installation locale de MonComptePro
+# MonComptePro - Installation Guide
 
-Cette liste d'instruction a été testée sur Ubuntu 20.
+This guide provides steps to run the MonComptePro Node.js application locally while managing its dependencies in Docker containers.
 
-## Configuration des bases de données
+## Prerequisites
 
-### Installation de Postgres
+- Node.js (v16) installed locally (we suggest the usage of [nvm](https://github.com/nvm-sh/nvm))
+- Docker (>= v25) and Docker Compose (>= v2.24) installed ([doc](https://docs.docker.com/engine/install/))
+- Clone the MonComptePro repository
 
-```shell
-sudo apt update
-sudo apt install postgresql
-```
+## Setting Up Dependencies with Docker
 
-Sur Mac :
+1. **Start Dependencies**: Navigate to the root directory of the cloned repository and run:
 
-```
-brew up
-brew install postgresql
-```
+   ```bash
+   docker compose up
+   ```
 
-### Création de la base Postgres
+   This will start all required services (e.g., databases) defined in the `docker-compose.yml`.
 
-Lancer l'invite de commande PostgreSQL :
+## Setting Up the Node.js Application
 
-```shell
-sudo -u postgres psql
-```
+1. **Install Node.js Dependencies**: Inside the project's root directory, run:
 
-Sur mac :
+   ```bash
+   npm install
+   ```
 
-```shell
-psql
-```
+2. **Create a local version of dotenv file**: Inside the project's root directory, run:
 
-Puis dans l'invite de commandes postgresql :
+   ```bash
+   cp .env.sample .env
+   ```
 
-```sql
-create user moncomptepro with encrypted password 'moncomptepro';
-create database moncomptepro owner moncomptepro;
-grant all privileges on database moncomptepro to moncomptepro;
-```
+   This will create a local copy of the .env file containing the environnement variables to run MonComptePro.
 
-Quitter l'invite de commandes avec ctrl-D.
+3. **Get your own INSEE api credential**: or use the one of your teammates.
 
-### Installation de Redis
+   Fetch them at https://api.gouv.fr/les-api/sirene_v3.
 
-```shell
-sudo apt install redis
-```
+   Then fill your local .env file with them.
 
-Sur mac :
+4. **Database Initialization**: The database will be automatically initialized with data from `scripts/fixtures.sql`.
 
-```
-brew install redis
-brew services start redis # pour lancer le serveur redis automatiquement au démarrage
-```
+   ```bash
+   npm run fixtures:load
+   ```
 
-## Installation de l'application
+5. **Run the Application**: Start the Node.js server with:
 
-### Installation de nodeJS avec NVM
+   ```bash
+   npm run dev
+   ```
 
-```shell
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-```
+## Testing the Application
 
-Sur Mac :
+The application is now available at http://localhost:3000.
 
-```
-brew install nvm
-```
+To log in, use the email address user@yopmail.com and the password "user@yopmail.com".
 
-Suivre les instructions en console puis :
+Emails are not sent but printed in the console.
 
-```shell
-nvm install 16
-```
+## Testing the Connection with a Test Client
 
-### Build du projet
+MonComptePro is provided with a test client: https://github.com/betagouv/moncomptepro-test-client
 
-Cloner le projet :
+This container is launched within the MonComptePro `docker-compose.yml`.
 
-```shell
-git clone https://github.com/betagouv/moncomptepro.git
-cd moncomptepro
-```
-
-Création du fichier de configuration.
-
-Attention, il faut remplacer les identifiants de l'INSEE par vos propres identifiants. Pour créer un compte : https://api.gouv.fr/les-api/sirene_v3.
-
-```shell
-cat <<EOT >> moncomptepro.conf
-NODE_ENV=production
-PGUSER=moncomptepro
-PGPASSWORD=moncomptepro
-PGDATABASE=moncomptepro
-PGPORT=5432
-DATABASE_URL=postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
-SENDINBLUE_API_KEY=
-MONCOMPTEPRO_HOST=http://localhost:3000
-DO_NOT_SEND_MAIL=True
-DO_NOT_CHECK_EMAIL_DELIVERABILITY=True
-CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=True
-DO_NOT_USE_ANNUAIRE_EMAILS=True
-SESSION_COOKIE_SECRET=moncompteprosecret
-SENTRY_DSN=
-SECURE_COOKIES="false"
-INSEE_CONSUMER_KEY=yourownkey
-INSEE_CONSUMER_SECRET=yourownsecret
-ZAMMAD_URL=http://zammad/
-ZAMMAD_TOKEN=your_zammad_token
-EOT
-```
-
-Chargement des variables d'environnements :
-
-```shell
-export $(cat moncomptepro.conf | xargs)
-```
-
-Installation des dépendances :
-
-```shell
-npm i --dev
-```
-
-Migration de la base de donnée et chargement de données de tests :
-
-```shell
-npm run build
-psql -h 127.0.0.1 -v ON_ERROR_STOP=1 -d moncomptepro -f scripts/fixtures.sql
-npm run update-organization-info 2000
-```
-
-Lancement du projet en mode interactif :
-
-```shell
-npm run dev
-```
-
-## Tester l'application
-
-L'application est maintenant disponible sur http://localhost:3000.
-
-Pour se connecter, utiliser l'adresse mail user@yopmail.com et le mot de passe "user@yopmail.com".
-
-Les mails ne sont pas envoyés mais imprimés en console.
-
-## Tester la connexion avec un client de test
-
-Vous pouvez utiliser le client de test suivant : https://github.com/betagouv/moncomptepro-test-client
-
-Ce conteneur est instantiable via `docker`.
-
-Vous pouvez utiliser la configuration `docker-compose` suivante :
-
-```yaml
-# docker-compose.yaml
-version: "3.5"
-
-services:
-  oidc-test-client:
-    image: ghcr.io/betagouv/moncomptepro-test-client
-    ports:
-      - 9009:9009
-    environment:
-      PORT: 9009
-      CALLBACK_URL: /auth/callback
-      MCP_CLIENT_ID: test-id
-      MCP_CLIENT_SECRET: test-secret
-      MCP_PROVIDER: https://app-development.moncomptepro.beta.gouv.fr/
-```
-
-Vous pouvez lancer le conteneur avec `docker-compose up` dans le dossier du fichier `docker-compose.yaml`.
+It's available at http://localhost:3001
