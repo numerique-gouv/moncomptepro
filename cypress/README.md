@@ -1,44 +1,35 @@
 # Run cypress locally
 
-In the MonComptePro virtual machine, set up the test database:
+## Setup env vars
 
-```bash
-sudo su - postgres
-psql -c 'DROP DATABASE IF EXISTS "api-auth-test";'
-psql -c ' CREATE DATABASE "api-auth-test" WITH OWNER "api-auth";'
-exit
+You will need to set `SENDINBLUE_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
+
+Ask a teammate for them and put the values in your `.env`.
+
+Also in your .env put the following values :
+
+```dotenv
+DO_NOT_SEND_MAIL=False
+DO_NOT_RATE_LIMIT=True
 ```
 
-In the MonComptePro virtual machine, run the app on the test database:
+## Load test fixtures in database
+
+Note that this will delete your database. Load the specific fixtures in database:
 
 ```bash
-sudo systemctl stop api-auth
-sudo su - api-auth
-cd /opt/apps/api-auth/current
-export $(cat /etc/api-auth.conf | xargs)
-export PGDATABASE=api-auth-test
-export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
-export SENDINBLUE_API_KEY="xxx"
-export MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
-export DO_NOT_SEND_MAIL=False
-export DO_NOT_CHECK_EMAIL_DELIVERABILITY=True
-export CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=True
-export DO_NOT_RATE_LIMIT=True
-export DO_NOT_USE_ANNUAIRE_EMAILS=True
-export DO_NOT_AUTHENTICATE_BROWSER=True
-export $(cat cypress/env/join_with_sponsorship.conf) && rm -rf build && npm run build && npm run start
+ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/join_with_sponsorship.sql" "update-organization-info 2000"
 ```
 
-In the MonComptePro virtual machine, load the fixtures in database:
+## Start MonComptePro with the test configuration
+
+Then run the app with the specific env vars:
 
 ```bash
-sudo su - api-auth
-cd /opt/apps/api-auth/current
-export $(cat /etc/api-auth.conf | xargs)
-export PGDATABASE=api-auth-test
-export DATABASE_URL=postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
-npm run delete-database && npm run fixtures:load-ci cypress/fixtures/join_with_sponsorship.sql && npm run update-organization-info 2000
+env $(grep -v '^#' cypress/env/join_with_sponsorship.conf | xargs) npm run dev
 ```
+
+## Run Cypress
 
 On your host, install cypress:
 
@@ -51,6 +42,6 @@ On your host, run the tests
 
 ```bash
 export CYPRESS_MAILSLURP_API_KEY=xxx
-export CYPRESS_MONCOMPTEPRO_HOST=https://app-development.moncomptepro.beta.gouv.fr
+export CYPRESS_MONCOMPTEPRO_HOST=http://localhost:3000
 cypress open
 ```

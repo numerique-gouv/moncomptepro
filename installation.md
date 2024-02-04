@@ -43,7 +43,7 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 4. **Database Initialization**: The database will be automatically initialized with data from `scripts/fixtures.sql`.
 
    ```bash
-   env $(grep -v '^#' .env | xargs) npm run fixtures:load
+   npm run fixtures:load
    ```
 
 5. **Run the Application**: Start the Node.js server with:
@@ -66,4 +66,4 @@ MonComptePro is provided with a test client: https://github.com/betagouv/moncomp
 
 This container is launched within the MonComptePro `docker-compose.yml`.
 
-It's available at http://localhost:9009
+It's available at http://localhost:3001

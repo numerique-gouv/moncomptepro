@@ -20,9 +20,12 @@ services:
   oidc-test-client:
     image: ghcr.io/betagouv/moncomptepro-test-client
     ports:
-      - "9009:9009"
+      - "3001:3001"
     environment:
-      PORT: 9009
+      # default env var can be found at https://github.com/betagouv/moncomptepro-test-client/blob/master/.env
+      PORT: 3001
+      HOST: http://localhost:3001
+      MCP_CLIENT_ID: client_id
       MCP_PROVIDER: http://localhost:3000/
     network_mode: "host"
 
