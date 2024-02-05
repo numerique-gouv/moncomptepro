@@ -42,7 +42,7 @@ describe("join organizations", () => {
       "Commune de clamart - Mairie",
     );
 
-    // The user get this suggestion because it as 5 members with mailslurp.com as email domain
+    // The user gets this suggestion because last because it has fewer members
     cy.get(".fr-grid-row .fr-col-12:last-child .fr-tile__link").contains(
       "Commune de clamart - Service assainissement",
     );

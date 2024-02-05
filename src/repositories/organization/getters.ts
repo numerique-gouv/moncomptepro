@@ -137,34 +137,41 @@ export const findByVerifiedEmailDomain = async (email_domain: string) => {
 
   const { rows }: QueryResult<Organization> = await connection.query(
     `
-SELECT id,
-    siret,
-    verified_email_domains,
-    authorized_email_domains,
-    external_authorized_email_domains,
-    created_at,
-    updated_at,
-    cached_libelle,
-    cached_nom_complet,
-    cached_enseigne,
-    cached_tranche_effectifs,
-    cached_tranche_effectifs_unite_legale,
-    cached_libelle_tranche_effectif,
-    cached_etat_administratif,
-    cached_est_active,
-    cached_statut_diffusion,
-    cached_est_diffusible,
-    cached_adresse,
-    cached_code_postal,
-    cached_code_officiel_geographique,
-    cached_activite_principale,
-    cached_libelle_activite_principale,
-    cached_categorie_juridique,
-    cached_libelle_categorie_juridique,
-    organization_info_fetched_at
-FROM organizations
+SELECT o.id,
+    o.siret,
+    o.verified_email_domains,
+    o.authorized_email_domains,
+    o.external_authorized_email_domains,
+    o.created_at,
+    o.updated_at,
+    o.cached_libelle,
+    o.cached_nom_complet,
+    o.cached_enseigne,
+    o.cached_tranche_effectifs,
+    o.cached_tranche_effectifs_unite_legale,
+    o.cached_libelle_tranche_effectif,
+    o.cached_etat_administratif,
+    o.cached_est_active,
+    o.cached_statut_diffusion,
+    o.cached_est_diffusible,
+    o.cached_adresse,
+    o.cached_code_postal,
+    o.cached_code_officiel_geographique,
+    o.cached_activite_principale,
+    o.cached_libelle_activite_principale,
+    o.cached_categorie_juridique,
+    o.cached_libelle_categorie_juridique,
+    o.organization_info_fetched_at
+FROM organizations o
+FULL OUTER JOIN (
+  SELECT
+    uo.organization_id as id, count(*) as member_count
+  FROM users_organizations uo
+  GROUP BY uo.organization_id
+) org_with_count on org_with_count.id = o.id
 WHERE cached_est_active = 'true'
-  AND $1 = ANY (verified_email_domains)`,
+  AND $1 = ANY (verified_email_domains)
+ORDER BY member_count desc NULLS LAST;`,
     [email_domain],
   );
 
