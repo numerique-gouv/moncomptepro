@@ -37,12 +37,12 @@ describe("join organizations", () => {
     // Visit the signup page
     cy.visit(`${MONCOMPTEPRO_HOST}/`);
 
-    // The user get this suggestion because it as mailslurp.com as verified domain
+    // The user gets this suggestion because it as mailslurp.com as verified domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
       "Commune de clamart - Mairie",
     );
 
-    // The user get this suggestion because it as 5 members with mailslurp.com as email domain
+    // The user gets this suggestion because last because it has fewer members
     cy.get(".fr-grid-row .fr-col-12:last-child .fr-tile__link").contains(
       "Commune de clamart - Service assainissement",
     );
@@ -108,17 +108,17 @@ describe("join organizations", () => {
     // external users should not be warned for newcomers
     cy.mailslurp().then((mailslurp) =>
       mailslurp
-        // not that this method may return empty emails array before receiving one.
+        // note that this method may return empty emails arrays before receiving one.
         .getEmails("04972db5-2c62-460e-8a88-848317acfe34")
         .then((emails) => {
           expect(emails).to.be.empty;
         }),
     );
 
-    // non authenticated users should not be warned for newcomers
+    // non-authenticated users should not be warned for newcomers
     cy.mailslurp().then((mailslurp) =>
       mailslurp
-        // not that this method may return empty emails array before receiving one.
+        // note that this method may return empty emails arrays before receiving one.
         .getEmails("869c78e6-196d-4e95-9662-44d25f801b06")
         .then((emails) => {
           expect(emails).to.be.empty;

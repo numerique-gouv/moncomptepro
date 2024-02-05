@@ -17,7 +17,7 @@ VALUES
   -- COMMUNE DE CLAMART - Mairie
   (1, '21920023500014', '{"mailslurp.com"}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- COMMUNE DE CLAMART - Service assainissement
-  (2, '21920023500394', '{}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, '21920023500394', '{"mailslurp.com"}', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (3, '45334017600024', '{"randomain.fr"}', '{"randomain.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
@@ -27,7 +27,7 @@ VALUES
   (7, 1, true, 'verified_email_domain', 'all_members_notified', true),
   (8, 1, false, 'verified_email_domain', null, false),
   (2, 2, false, 'verified_email_domain', 'all_members_notified', true),
-  (3, 2, false, 'verified_email_domain', 'all_members_notified', true),
-  (4, 2, false, 'verified_email_domain', 'all_members_notified', true),
-  (5, 2, false, 'verified_email_domain', 'all_members_notified', true),
-  (6, 2, false, 'verified_email_domain', 'all_members_notified', true);
+  (3, 1, false, 'verified_email_domain', 'all_members_notified', true),
+  (4, 1, false, 'verified_email_domain', 'all_members_notified', true),
+  (5, 1, false, 'verified_email_domain', 'all_members_notified', true),
+  (6, 1, false, 'verified_email_domain', 'all_members_notified', true);
