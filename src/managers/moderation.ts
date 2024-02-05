@@ -1,5 +1,5 @@
 import { findById as findUserById } from "../repositories/user";
-import { sendMail } from "../connectors/sendinblue";
+import { sendMail } from "../connectors/brevo";
 
 import { findById as findOrganizationById } from "../repositories/organization/getters";
 

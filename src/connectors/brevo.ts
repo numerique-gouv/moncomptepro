@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash";
 import path from "path";
-import { DO_NOT_SEND_MAIL, SENDINBLUE_API_KEY } from "../config/env";
-import { SendInBlueApiError } from "../config/errors";
+import { BREVO_API_KEY, DO_NOT_SEND_MAIL } from "../config/env";
+import { BrevoApiError } from "../config/errors";
 import { render } from "../services/renderer";
 import { logger } from "../services/log";
 
@@ -19,8 +19,8 @@ type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed";
 
-// active templates id are listed at https://app-smtp.sendinblue.com/templates
-const remoteTemplateSlugToSendinblueTemplateId: {
+// active templates id are listed at https://app-smtp.brevo.com/templates
+const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
   "join-organization": 61,
@@ -34,7 +34,7 @@ const defaultTemplateId = 21;
 const hasRemoteTemplate = (
   template: RemoteTemplateSlug | LocalTemplateSlug,
 ): template is RemoteTemplateSlug =>
-  remoteTemplateSlugToSendinblueTemplateId.hasOwnProperty(template);
+  remoteTemplateSlugToBrevoTemplateId.hasOwnProperty(template);
 
 export const sendMail = async ({
   to = [],
@@ -61,7 +61,7 @@ export const sendMail = async ({
       name: "L’équipe MonComptePro",
       email: senderEmail,
     },
-    // Sendinblue allow a maximum of 99 recipients
+    // Brevo allow a maximum of 99 recipients
     to: chain(to)
       .sampleSize(99)
       .map((e) => ({ email: e }))
@@ -76,7 +76,7 @@ export const sendMail = async ({
   };
 
   if (hasRemoteTemplate(template)) {
-    data.templateId = remoteTemplateSlugToSendinblueTemplateId[template];
+    data.templateId = remoteTemplateSlugToBrevoTemplateId[template];
   } else {
     data.templateId = defaultTemplateId;
     data.params = {
@@ -100,9 +100,9 @@ export const sendMail = async ({
   try {
     const response: AxiosResponse<{ messageId: string }> = await axios({
       method: "post",
-      url: `https://api.sendinblue.com/v3/smtp/email`,
+      url: `https://api.brevo.com/v3/smtp/email`,
       headers: {
-        "api-key": SENDINBLUE_API_KEY,
+        "api-key": BREVO_API_KEY,
         "content-type": "application/json",
         accept: "application/json",
       },
@@ -115,10 +115,10 @@ export const sendMail = async ({
   } catch (error) {
     logger.error(error);
     if (error instanceof AxiosError) {
-      throw new SendInBlueApiError(error);
+      throw new BrevoApiError(error);
     }
 
-    throw new Error("Error from SendInBlue API");
+    throw new Error("Error from Brevo API");
   }
 
   return true;

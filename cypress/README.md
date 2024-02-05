@@ -2,7 +2,7 @@
 
 ## Setup env vars
 
-You will need to set `SENDINBLUE_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
+You will need to set `BREVO_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
 
 Ask a teammate for them and put the values in your `.env`.
 

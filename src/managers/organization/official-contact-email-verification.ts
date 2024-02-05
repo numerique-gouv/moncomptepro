@@ -7,7 +7,7 @@ import {
 } from "../../config/errors";
 import { isExpired } from "../../services/is-expired";
 import { generateDicewarePassword } from "../../services/security";
-import { sendMail } from "../../connectors/sendinblue";
+import { sendMail } from "../../connectors/brevo";
 import {
   findById as findOrganizationById,
   getUsers,
