@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { isEmpty, some, uniqBy } from "lodash";
+import { isEmpty, some } from "lodash";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -20,7 +20,6 @@ import {
 } from "../../repositories/moderation";
 import {
   findById,
-  findByMostUsedEmailDomain,
   findByUserId,
   findByVerifiedEmailDomain,
 } from "../../repositories/organization/getters";
@@ -58,13 +57,7 @@ export const doSuggestOrganizations = async ({
   }
 
   const domain = getEmailDomain(email);
-  const organizationsSuggestions = uniqBy(
-    [
-      ...(await findByVerifiedEmailDomain(domain)),
-      ...(await findByMostUsedEmailDomain(domain)),
-    ],
-    "id",
-  );
+  const organizationsSuggestions = await findByVerifiedEmailDomain(domain);
   const userOrganizations = await findByUserId(user_id);
 
   return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
@@ -86,13 +79,7 @@ export const getOrganizationSuggestions = async ({
     return [];
   }
 
-  const organizationsSuggestions = uniqBy(
-    [
-      ...(await findByVerifiedEmailDomain(domain)),
-      ...(await findByMostUsedEmailDomain(domain)),
-    ],
-    "id",
-  );
+  const organizationsSuggestions = await findByVerifiedEmailDomain(domain);
   const userOrganizations = await findByUserId(user_id);
   const userOrganizationsIds = userOrganizations.map(({ id }) => id);
 

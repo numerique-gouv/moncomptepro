@@ -170,53 +170,7 @@ WHERE cached_est_active = 'true'
 
   return rows;
 };
-export const findByMostUsedEmailDomain = async (email_domain: string) => {
-  const connection = getDatabaseConnection();
 
-  const { rows }: QueryResult<Organization & { count: number }> =
-    await connection.query(
-      `
-SELECT
-    sub.id,
-    sub.siret,
-    sub.verified_email_domains,
-    sub.authorized_email_domains,
-    sub.external_authorized_email_domains,
-    sub.created_at,
-    sub.updated_at,
-    sub.cached_libelle,
-    sub.cached_nom_complet,
-    sub.cached_enseigne,
-    sub.cached_tranche_effectifs,
-    sub.cached_tranche_effectifs_unite_legale,
-    sub.cached_libelle_tranche_effectif,
-    sub.cached_etat_administratif,
-    sub.cached_est_active,
-    sub.cached_statut_diffusion,
-    sub.cached_est_diffusible,
-    sub.cached_adresse,
-    sub.cached_code_postal,
-    sub.cached_code_officiel_geographique,
-    sub.cached_activite_principale,
-    sub.cached_libelle_activite_principale,
-    sub.cached_categorie_juridique,
-    sub.cached_libelle_categorie_juridique,
-    sub.organization_info_fetched_at,
-    sub.count
-FROM (SELECT o.*, substring(u.email from '@(.*)$') as domain, count(*)
-      FROM users_organizations uo
-               INNER JOIN organizations o on o.id = uo.organization_id
-               INNER JOIN users u on u.id = uo.user_id
-      WHERE o.cached_est_active = 'true'
-      GROUP BY o.id, substring(u.email from '@(.*)$')
-      HAVING count(*) >= 5
-      ORDER BY count(*) DESC) sub
-WHERE domain=$1`,
-      [email_domain],
-    );
-
-  return rows;
-};
 export const getUsersByOrganization = async (
   organization_id: number,
   additionalWhereClause: string = "",
