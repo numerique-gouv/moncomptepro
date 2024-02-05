@@ -13,9 +13,9 @@ DO_NOT_SEND_MAIL=False
 DO_NOT_RATE_LIMIT=True
 ```
 
-## Load test fixtures in database
+## Load test fixtures in the database
 
-Note that this will delete your database. Load the specific fixtures in database:
+Note that this will delete your database. Load the specific fixtures in the database:
 
 ```bash
 ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/join_with_sponsorship.sql" "update-organization-info 2000"
