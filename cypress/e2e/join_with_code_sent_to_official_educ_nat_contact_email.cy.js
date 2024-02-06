@@ -42,10 +42,9 @@ describe("join organizations", () => {
       )
       // extract the verification code from the email subject
       .then((email) => {
-        const matches =
-          /.*<a style="text-decoration:none; color:#000091; font-weight:normal;" target="_blank"><strong>([a-z]{2,25}-[a-z]{2,25})<\/strong><\/a>.*/.exec(
-            email.body,
-          );
+        const matches = /.*<strong>([a-z]{2,25}-[a-z]{2,25})<\/strong>.*/.exec(
+          email.body,
+        );
         if (matches && matches.length > 0) {
           return matches[1];
         }
