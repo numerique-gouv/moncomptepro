@@ -51,11 +51,11 @@ export class ApiAnnuaireInvalidEmailError extends Error {}
 
 export class ApiAnnuaireConnectionError extends Error {}
 
-export class SendInBlueApiError extends Error {
+export class BrevoApiError extends Error {
   constructor(error: AxiosError<{ message: string; code: string }>) {
     if (error.response?.data?.code && error.response?.data?.message) {
       super(error.response?.data?.message);
-      this.name = `SendInBlueApiError ${error.response?.data?.code}`;
+      this.name = `BrevoApiError ${error.response?.data?.code}`;
     } else {
       super();
     }

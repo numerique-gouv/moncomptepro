@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
-import { sendMail } from "../connectors/sendinblue";
+import { sendMail } from "../connectors/brevo";
 import {
   EmailUnavailableError,
   EmailVerifiedAlreadyError,

@@ -4,7 +4,7 @@ import {
   NotFoundError,
   UserHasAlreadyBeenAuthenticatedByPeers,
 } from "../../config/errors";
-import { sendMail } from "../../connectors/sendinblue";
+import { sendMail } from "../../connectors/brevo";
 import {
   findById as findOrganizationById,
   getActiveUsers,

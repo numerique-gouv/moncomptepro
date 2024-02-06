@@ -7,6 +7,7 @@ export const {
   SENTRY_DSN,
   ACCESS_LOG_PATH,
   DEBOUNCE_API_KEY,
+  BREVO_API_KEY = "",
   SENDINBLUE_API_KEY = "",
   TEST_CONTACT_EMAIL = "mairie@yopmail.com",
   DATABASE_URL,
