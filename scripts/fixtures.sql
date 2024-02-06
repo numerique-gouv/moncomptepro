@@ -248,10 +248,14 @@ VALUES
      'https://back.sandbox.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'https://back.sandbox1.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'https://back.sandbox2.datapass.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.staging.datapass.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.staging1.datapass.api.gouv.fr/users/auth/api_gouv/callback',
+     'https://back.staging2.datapass.api.gouv.fr/users/auth/api_gouv/callback',
      'http://localhost:3000/users/auth/api_gouv/callback',
      'http://localhost:3001/users/auth/api_gouv/callback',
      'http://localhost:3000/auth/mon_compte_pro/callback',
      'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://datapass-reborn.onrender.com/auth/mon_compte_pro/callback'
      ],
    ARRAY [
@@ -261,6 +265,9 @@ VALUES
      'https://sandbox.datapass.api.gouv.fr',
      'https://sandbox1.datapass.api.gouv.fr',
      'https://sandbox2.datapass.api.gouv.fr',
+     'https://staging.datapass.api.gouv.fr',
+     'https://staging1.datapass.api.gouv.fr',
+     'https://staging2.datapass.api.gouv.fr',
      'https://datapass-reborn.onrender.com'
      ],
    'openid email profile phone organization organizations',
