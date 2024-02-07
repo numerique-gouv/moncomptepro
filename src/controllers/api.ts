@@ -146,7 +146,7 @@ export const postMarkDomainAsVerified = async (
   try {
     const schema = z.object({
       organization_id: idSchema(),
-      domain: z.string().min(1),
+      domain: z.string().trim().min(1),
     });
 
     const { organization_id, domain } = await schema.parseAsync(req.query);

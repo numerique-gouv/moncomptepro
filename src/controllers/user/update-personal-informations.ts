@@ -38,7 +38,7 @@ export const getParamsForPostPersonalInformationsController = async (
     given_name: nameSchema(),
     family_name: nameSchema(),
     phone_number: phoneNumberSchema(),
-    job: z.string().min(1),
+    job: z.string().trim().min(1),
   });
 
   return await schema.parseAsync(req.body);

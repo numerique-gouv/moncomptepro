@@ -71,7 +71,7 @@ export const getChangePasswordController = async (
 ) => {
   try {
     const schema = z.object({
-      reset_password_token: z.string().min(1),
+      reset_password_token: z.string().trim().min(1),
     });
 
     const { reset_password_token } = await schema.parseAsync(req.query);
@@ -93,8 +93,8 @@ export const postChangePasswordController = async (
 ) => {
   try {
     const schema = z.object({
-      reset_password_token: z.string().min(1),
-      password: z.string().min(1),
+      reset_password_token: z.string().trim().min(1),
+      password: z.string().trim().min(1),
     });
 
     const { reset_password_token, password } = await schema.parseAsync(
