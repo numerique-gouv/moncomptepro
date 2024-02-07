@@ -14,9 +14,10 @@ type RemoteDeprecatedTemplateSlug =
   | "join-organization"
   | "verify-email"
   | "reset-password"
-  | "magic-link"
+  | "magic-link";
+type RemoteTemplateSlug =
+  | "official-contact-email-verification"
   | "choose-sponsor";
-type RemoteTemplateSlug = "official-contact-email-verification";
 type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
@@ -31,15 +32,14 @@ const remoteTemplateSlugToBrevoDeprecatedTemplateId: {
   "verify-email": 6,
   "reset-password": 7,
   "magic-link": 29,
-  "choose-sponsor": 56,
 };
 const defaultBrevoDeprecatedTemplateId = 21;
 const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
   "official-contact-email-verification": 3,
+  "choose-sponsor": 2,
   // TODO: progressively uncomment these lines
-  // "choose-sponsor": 2,
   // "reset-password": 5,
   // "magic-link": 1,
   // "join-organization": 4,
