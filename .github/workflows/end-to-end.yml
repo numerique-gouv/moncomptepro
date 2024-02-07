@@ -53,6 +53,7 @@ jobs:
           - signin_with_magic_link
           - signup_entreprise_unipersonnelle
           - redirect_after_session_expiration
+          - reset_password
     runs-on: ubuntu-20.04
     services:
       moncomptepro-standard-client:
