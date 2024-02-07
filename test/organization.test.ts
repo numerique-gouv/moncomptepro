@@ -111,6 +111,19 @@ describe("isCommune", () => {
   });
 });
 
+const track_dechet_public_org_info: Organization = {
+  siret: "25680169700010",
+  cached_tranche_effectifs: "NN",
+  cached_tranche_effectifs_unite_legale: "NN",
+  cached_libelle_tranche_effectif:
+    "Unité non employeuse (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)",
+  cached_activite_principale: "38.21Z",
+  cached_libelle_activite_principale:
+    "38.21Z - Traitement et élimination des déchets non dangereux",
+  cached_categorie_juridique: "7354",
+  cached_libelle_categorie_juridique: "Syndicat mixte fermé",
+};
+
 describe("isServicePublic", () => {
   it("should return false for bad call", () => {
     assert.equal(isServicePublic({}), false);
@@ -138,6 +151,10 @@ describe("isServicePublic", () => {
 
   it("should return true for whitelisted établissement", () => {
     assert.equal(isServicePublic(whitelisted_org_info), true);
+  });
+
+  it("should return true for public etablissement", () => {
+    assert.equal(isServicePublic(track_dechet_public_org_info), true);
   });
 });
 
