@@ -42,6 +42,5 @@ On your host, run the tests
 
 ```bash
 export CYPRESS_MAILSLURP_API_KEY=xxx
-export CYPRESS_MONCOMPTEPRO_HOST=http://localhost:3000
-cypress open
+cypress run --headed --spec "cypress/e2e/join_with_sponsorship.cy.js"
 ```
