@@ -13,11 +13,11 @@ import { logger } from "../services/log";
 type RemoteDeprecatedTemplateSlug =
   | "join-organization"
   | "verify-email"
-  | "reset-password"
   | "magic-link";
 type RemoteTemplateSlug =
   | "official-contact-email-verification"
-  | "choose-sponsor";
+  | "choose-sponsor"
+  | "reset-password";
 type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
@@ -30,7 +30,6 @@ const remoteTemplateSlugToBrevoDeprecatedTemplateId: {
 } = {
   "join-organization": 61,
   "verify-email": 6,
-  "reset-password": 7,
   "magic-link": 29,
 };
 const defaultBrevoDeprecatedTemplateId = 21;
@@ -39,8 +38,8 @@ const remoteTemplateSlugToBrevoTemplateId: {
 } = {
   "official-contact-email-verification": 3,
   "choose-sponsor": 2,
+  "reset-password": 5,
   // TODO: progressively uncomment these lines
-  // "reset-password": 5,
   // "magic-link": 1,
   // "join-organization": 4,
   // "verify-email": 6,
