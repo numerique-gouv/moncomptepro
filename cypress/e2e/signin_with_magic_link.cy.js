@@ -38,9 +38,7 @@ describe("sign-in with magic link", () => {
       // extract the connection link from the email subject
       .then((email) => {
         const matches =
-          /.*<a style="text-decoration:none; color:#fff; font-weight:normal;" target="_blank" href="([^"]+)"><strong>Se connecter<\/strong><\/a>.*/.exec(
-            email.body,
-          );
+          /.*<a href="([^"]+)" class="r13-r default-button".*/.exec(email.body);
         if (matches && matches.length > 0) {
           return matches[1];
         }
