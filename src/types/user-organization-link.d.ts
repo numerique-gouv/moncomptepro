@@ -2,6 +2,7 @@ interface BaseUserOrganizationLink {
   is_external: boolean;
   verification_type:
     | "verified_email_domain"
+    | "trackdechets_email_domain"
     | "official_contact_email"
     | "official_contact_domain"
     | "code_sent_to_official_contact_email"

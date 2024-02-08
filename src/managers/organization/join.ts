@@ -44,6 +44,7 @@ import {
 } from "../../services/uses-a-free-email-provider";
 import { markDomainAsVerified } from "./main";
 import { logger } from "../../services/log";
+import { MAX_SUGGESTED_ORGANIZATIONS } from "../../config/env";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -60,7 +61,11 @@ export const doSuggestOrganizations = async ({
   const organizationsSuggestions = await findByVerifiedEmailDomain(domain);
   const userOrganizations = await findByUserId(user_id);
 
-  return isEmpty(userOrganizations) && !isEmpty(organizationsSuggestions);
+  return (
+    isEmpty(userOrganizations) &&
+    !isEmpty(organizationsSuggestions) &&
+    organizationsSuggestions.length <= MAX_SUGGESTED_ORGANIZATIONS
+  );
 };
 export const getOrganizationSuggestions = async ({
   user_id,
@@ -80,6 +85,11 @@ export const getOrganizationSuggestions = async ({
   }
 
   const organizationsSuggestions = await findByVerifiedEmailDomain(domain);
+
+  if (organizationsSuggestions.length > MAX_SUGGESTED_ORGANIZATIONS) {
+    return [];
+  }
+
   const userOrganizations = await findByUserId(user_id);
   const userOrganizationsIds = userOrganizations.map(({ id }) => id);
 
@@ -140,6 +150,7 @@ export const joinOrganization = async ({
     cached_libelle,
     authorized_email_domains,
     verified_email_domains,
+    trackdechets_email_domains,
     external_authorized_email_domains,
   } = organization;
   const { email, given_name, family_name } = user;
@@ -258,6 +269,14 @@ export const joinOrganization = async ({
     });
   }
 
+  if (trackdechets_email_domains.includes(domain)) {
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+      verification_type: "trackdechets_email_domain",
+    });
+  }
+
   if (authorized_email_domains.includes(domain)) {
     await createModeration({
       user_id,
@@ -305,15 +324,25 @@ export const forceJoinOrganization = async ({
     throw new NotFoundError();
   }
   const { email } = user;
-  const { verified_email_domains, external_authorized_email_domains } =
-    organization;
+  const {
+    verified_email_domains,
+    external_authorized_email_domains,
+    trackdechets_email_domains,
+  } = organization;
 
   const domain = getEmailDomain(email);
-  const verification_type =
+
+  let verification_type: BaseUserOrganizationLink["verification_type"];
+  if (
     verified_email_domains.includes(domain) ||
     external_authorized_email_domains.includes(domain)
-      ? "verified_email_domain"
-      : null;
+  ) {
+    verification_type = "verified_email_domain";
+  } else if (trackdechets_email_domains.includes(domain)) {
+    verification_type = "trackdechets_email_domain";
+  } else {
+    verification_type = null;
+  }
 
   return await linkUserToOrganization({
     organization_id,
