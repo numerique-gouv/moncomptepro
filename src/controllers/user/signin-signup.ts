@@ -24,7 +24,7 @@ export const getStartSignInController = async (
 ) => {
   try {
     const schema = z.object({
-      did_you_mean: z.string().min(1).optional(),
+      did_you_mean: z.string().trim().min(1).optional(),
     });
 
     const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
@@ -107,7 +107,7 @@ export const postSignInMiddleware = async (
 ) => {
   try {
     const schema = z.object({
-      password: z.string().min(1),
+      password: z.string().trim().min(1),
     });
 
     const { password } = await schema.parseAsync(req.body);
@@ -156,7 +156,7 @@ export const postSignUpController = async (
   try {
     const schema = z.object({
       body: z.object({
-        password: z.string().min(1),
+        password: z.string().trim().min(1),
       }),
     });
 

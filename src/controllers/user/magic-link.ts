@@ -48,7 +48,7 @@ export const getSignInWithMagicLinkController = async (
 ) => {
   try {
     const schema = z.object({
-      magic_link_token: z.string().min(1),
+      magic_link_token: z.string().trim().min(1),
     });
 
     const { magic_link_token } = await schema.parseAsync(req.query);
@@ -94,7 +94,7 @@ export const postSignInWithMagicLinkController = async (
 ) => {
   try {
     const schema = z.object({
-      magic_link_token: z.string().min(1),
+      magic_link_token: z.string().trim().min(1),
     });
 
     const { magic_link_token } = await schema.parseAsync(req.body);

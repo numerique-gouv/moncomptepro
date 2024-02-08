@@ -11,31 +11,29 @@ import { normalizeOfficialContactEmailVerificationToken } from "./normalize-offi
 export const siretSchema = () =>
   z
     .string()
+    .trim()
     .refine(isSiretValid)
     .transform((val) => val.replace(/\s/g, ""));
 
 export const emailSchema = () =>
   z
     .string()
+    .trim()
     .refine(isEmailValid)
-    .transform((val) => val.toLowerCase().trim());
+    .transform((val) => val.toLowerCase());
 
-export const nameSchema = () =>
-  z
-    .string()
-    .min(1)
-    .refine(isNameValid)
-    .transform((val) => val.trim());
+export const nameSchema = () => z.string().trim().min(1).refine(isNameValid);
 
 export const phoneNumberSchema = () =>
   z.union([
-    z.string().refine(isPhoneNumberValid),
+    z.string().trim().refine(isPhoneNumberValid),
     z.literal("").transform(() => null),
   ]);
 
 export const idSchema = () =>
   z
     .string()
+    .trim()
     .min(1)
     .refine((val) => val.match(/^\d*$/))
     .transform((val) => parseInt(val, 10));
@@ -52,5 +50,6 @@ export const notificationLabelSchema = () =>
 export const officialContactEmailVerificationTokenSchema = () =>
   z
     .string()
+    .trim()
     .min(1)
     .transform((val) => normalizeOfficialContactEmailVerificationToken(val));
