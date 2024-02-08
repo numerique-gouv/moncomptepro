@@ -10,14 +10,12 @@ import { BrevoApiError } from "../config/errors";
 import { render } from "../services/renderer";
 import { logger } from "../services/log";
 
-type RemoteDeprecatedTemplateSlug =
-  | "join-organization"
-  | "verify-email"
-  | "magic-link";
+type RemoteDeprecatedTemplateSlug = "join-organization" | "verify-email";
 type RemoteTemplateSlug =
   | "official-contact-email-verification"
   | "choose-sponsor"
-  | "reset-password";
+  | "reset-password"
+  | "magic-link";
 type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
@@ -30,7 +28,6 @@ const remoteTemplateSlugToBrevoDeprecatedTemplateId: {
 } = {
   "join-organization": 61,
   "verify-email": 6,
-  "magic-link": 29,
 };
 const defaultBrevoDeprecatedTemplateId = 21;
 const remoteTemplateSlugToBrevoTemplateId: {
@@ -39,8 +36,8 @@ const remoteTemplateSlugToBrevoTemplateId: {
   "official-contact-email-verification": 3,
   "choose-sponsor": 2,
   "reset-password": 5,
+  "magic-link": 1,
   // TODO: progressively uncomment these lines
-  // "magic-link": 1,
   // "join-organization": 4,
   // "verify-email": 6,
 };
