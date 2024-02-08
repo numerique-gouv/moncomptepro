@@ -5,8 +5,8 @@ import {
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
   isServicePublic,
+  isWasteManagementOrganization,
 } from "../src/services/organization";
-import { describe } from "node:test";
 
 const association_org_info: Organization = {
   siret: "83511518900010",
@@ -111,7 +111,7 @@ describe("isCommune", () => {
   });
 });
 
-const track_dechet_public_org_info: Organization = {
+const trackdechets_public_org_info: Organization = {
   siret: "25680169700010",
   cached_tranche_effectifs: "NN",
   cached_tranche_effectifs_unite_legale: "NN",
@@ -154,7 +154,20 @@ describe("isServicePublic", () => {
   });
 
   it("should return true for public etablissement", () => {
-    assert.equal(isServicePublic(track_dechet_public_org_info), true);
+    assert.equal(isServicePublic(trackdechets_public_org_info), true);
+  });
+});
+
+describe("isWasteManagementOrganization", () => {
+  it("should return false for collectivité territoriale", () => {
+    assert.equal(isWasteManagementOrganization(lamalou_org_info), false);
+  });
+
+  it("should return true for waste management organization", () => {
+    assert.equal(
+      isWasteManagementOrganization(trackdechets_public_org_info),
+      true,
+    );
   });
 });
 

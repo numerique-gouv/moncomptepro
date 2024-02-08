@@ -131,21 +131,24 @@ RETURNING *
 
   return rows.shift()!;
 };
-const addDomain = async ({
+const upsertDomain = async ({
   siret,
   domain,
   listName,
 }: {
   siret: string;
   domain: string;
-  listName: "verified_email_domains" | "authorized_email_domains";
+  listName:
+    | "verified_email_domains"
+    | "authorized_email_domains"
+    | "trackdechets_email_domains";
 }) => {
   const connection = getDatabaseConnection();
 
   const { rows }: QueryResult<Organization> = await connection.query(
     `
 UPDATE organizations
-SET ${listName} = array_append(${listName}, $2)
+SET ${listName} = ARRAY(SELECT DISTINCT UNNEST(${listName} || ARRAY[$2]))
   , updated_at               = $3
 WHERE siret = $1
 RETURNING *
@@ -163,7 +166,7 @@ export const addAuthorizedDomain = async ({
   siret: string;
   domain: string;
 }) => {
-  return await addDomain({
+  return await upsertDomain({
     siret,
     domain,
     listName: "authorized_email_domains",
@@ -177,7 +180,25 @@ export const addVerifiedDomain = async ({
   siret: string;
   domain: string;
 }) => {
-  return await addDomain({ siret, domain, listName: "verified_email_domains" });
+  return await upsertDomain({
+    siret,
+    domain,
+    listName: "verified_email_domains",
+  });
+};
+
+export const addTrackdechetsDomain = async ({
+  siret,
+  domain,
+}: {
+  siret: string;
+  domain: string;
+}) => {
+  return await upsertDomain({
+    siret,
+    domain,
+    listName: "trackdechets_email_domains",
+  });
 };
 
 export const linkUserToOrganization = async ({
