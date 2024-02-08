@@ -78,6 +78,10 @@ export const RECENT_LOGIN_INTERVAL_IN_MINUTES = getNumberFromEnv(
   "RECENT_LOGIN_INTERVAL_IN_MINUTES",
   15,
 );
+export const MAX_SUGGESTED_ORGANIZATIONS = getNumberFromEnv(
+  "MAX_SUGGESTED_ORGANIZATIONS",
+  3,
+);
 
 export const getArrayFromEnv = (name: string) => {
   const value = process.env[name];
