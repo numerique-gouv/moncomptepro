@@ -256,6 +256,9 @@ VALUES
      'http://localhost:3000/auth/mon_compte_pro/callback',
      'https://sandbox.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox1.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://datapass-reborn.onrender.com/auth/mon_compte_pro/callback'
      ],
    ARRAY [
@@ -268,6 +271,9 @@ VALUES
      'https://staging.datapass.api.gouv.fr',
      'https://staging1.datapass.api.gouv.fr',
      'https://staging2.datapass.api.gouv.fr',
+     'https://sandbox.v2.datapass.api.gouv.fr',
+     'https://sandbox1.v2.datapass.api.gouv.fr',
+     'https://sandbox2.v2.datapass.api.gouv.fr',
      'https://datapass-reborn.onrender.com'
      ],
    'openid email profile phone organization organizations',
