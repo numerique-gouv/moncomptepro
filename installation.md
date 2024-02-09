@@ -24,7 +24,11 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 
    ```bash
    npm install
+   npm run build:assets
    ```
+
+   Note: the `build:assets` command builds required JS and CSS assets of dependencies and adds them in the `public/` dir.
+   Make sure to run this again when you update dependencies to have up-to-date built files.
 
 2. **Create a local version of dotenv file**: Inside the project's root directory, run:
 
