@@ -4,9 +4,9 @@
 
 Nous identifions les utilisateurs professionnels du privé ou du public sur les plateformes suivantes :
 
-- DataPass : http://datapass.api.gouv.fr
-- L’API Manager API Particulier : https://mon.portail.api.gouv.fr/
-- L’API Manager API Entreprise : https://dashboard.entreprise.api.gouv.fr/
+- DataPass : https://datapass.api.gouv.fr
+- L’API Manager API Particulier : https://particulier.api.gouv.fr/
+- L’API Manager API Entreprise : https://entreprise.api.gouv.fr/
 - HubEE : https://hubee.numerique.gouv.fr/
 - catalogue.data.gouv : https://catalogue.data.gouv.fr/
 
