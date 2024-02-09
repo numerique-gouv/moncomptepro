@@ -46,13 +46,13 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
    npm run fixtures:load
    ```
 
-5. **Run the Application**: Start the Node.js server with:
+## Running the Application
 
-   ```bash
-   npm run dev
-   ```
+After setting up the application, start the Node.js server with:
 
-## Testing the Application
+```bash
+npm run dev
+```
 
 The application is now available at http://localhost:3000.
 
