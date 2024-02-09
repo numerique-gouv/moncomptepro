@@ -1,24 +1,12 @@
-header {
-    grid-area: header;
-}
-
-main {
-    grid-area: main;
-}
-
-footer {
-    grid-area: footer;
-}
-
 body {
     min-height: 100vh;
     background-color: #ffffff;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-areas:
-    'header'
-    'main'
-    'footer';
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
 }
 
 .page-container {
