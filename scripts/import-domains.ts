@@ -2,7 +2,7 @@
 import { isEmpty, toInteger } from "lodash";
 import fs from "fs";
 import {
-  addAuthorizedDomain,
+  addTrackdechetsDomain,
   upsert,
 } from "../src/repositories/organization/setters";
 import {
@@ -24,6 +24,11 @@ import {
 } from "../src/services/script-helpers";
 import { AxiosError } from "axios";
 import { isAFreeEmailProvider } from "../src/services/uses-a-free-email-provider";
+import {
+  isServicePublic,
+  isWasteManagementOrganization,
+} from "../src/services/organization";
+import { isDomainValid, isSiretValid } from "../src/services/security";
 
 const { parse, transform, stringify } = require("csv");
 
@@ -51,13 +56,22 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     header: true,
   });
 
-  type CsvData = { siren: string; declarant: string; last_declared_at: string };
+  type InputCsvData = { domain: string; siret: string };
+  type OutputCsvData = { domain: string; siret: string; result: string };
   const input_file_lines = await getNumberOfLineInFile(INPUT_FILE);
   let i = 1;
+  let rejected_invalid_domain_count = 0;
+  let rejected_invalid_siret_count = 0;
+  let rejected_free_email_domain_count = 0;
+  let rejected_empty_org_count = 0;
+  let rejected_service_public_count = 0;
+  let rejected_waste_management_organizations = 0;
+  let unexpected_error_count = 0;
+  let success_count = 0;
 
   // 50ms is an estimated additional delay from insee API
   const estimatedExecutionTimeInMilliseconds =
-    Math.max(maxInseeCallRateInMs, 320) * input_file_lines;
+    (maxInseeCallRateInMs + 50) * input_file_lines;
 
   logger.info("");
   logger.info(
@@ -71,42 +85,72 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
   const transformStream = transform(
     async function (
-      data: CsvData,
-      done: (err: null | Error, data: null | CsvData) => void,
+      data: InputCsvData,
+      done: (err: null | Error, data: OutputCsvData) => void,
     ) {
       const start = startDurationMesure();
       try {
-        const siren = data.siren;
-        const domain = data.declarant.split("@").pop()!;
-        logger.info(`${i}: processing ${siren} <> ${domain}...`);
-
-        // 1. get organizationInfo
-        const organizationInfo = await getOrganizationInfo(siren, access_token);
-        if (!isOrganizationInfo(organizationInfo)) {
-          throw new Error("empty organizationInfo");
+        const siret = data.siret;
+        const domain = data.domain;
+        logger.info(`${i}: processing ${siret} <> ${domain}...`);
+        // 0. checks params
+        if (!isDomainValid(domain)) {
+          i++;
+          rejected_invalid_domain_count++;
+          return done(null, { ...data, result: "rejected_invalid_domain" });
+        }
+        if (!isSiretValid(siret)) {
+          i++;
+          rejected_invalid_siret_count++;
+          return done(null, { ...data, result: "rejected_invalid_siret" });
         }
 
-        // 2. update organizationInfo
+        // 1. checks for free email providers
+        if (isAFreeEmailProvider(domain)) {
+          i++;
+          rejected_free_email_domain_count++;
+          return done(null, { ...data, result: "rejected_free_email_domain" });
+        }
+
+        // 2. get organizationInfo
+        const organizationInfo = await getOrganizationInfo(siret, access_token);
+        if (!isOrganizationInfo(organizationInfo)) {
+          await throttleApiCall(start, maxInseeCallRateInMs);
+          i++;
+          rejected_empty_org_count++;
+          return done(null, { ...data, result: "rejected_empty_org" });
+        }
+
+        // 3. update organizationInfo
         const organization: Organization = await upsert({
           siret: organizationInfo.siret,
           organizationInfo,
         });
 
-        // 3. check for free email providers
-        if (isAFreeEmailProvider(domain)) {
-          throw new Error("free email provider");
+        // 4. discard public services
+        if (isServicePublic(organization)) {
+          await throttleApiCall(start, maxInseeCallRateInMs);
+          i++;
+          rejected_service_public_count++;
+          return done(null, { ...data, result: "rejected_service_public" });
         }
 
-        // 4. check if domain exists
-        if (!organization.authorized_email_domains.includes(domain)) {
-          await addAuthorizedDomain({ siret: organization.siret, domain });
-        } else {
-          logger.info("\x1b[31m", `domain already in database`, "\x1b[0m");
+        // 5. discard waste management organizations
+        if (isWasteManagementOrganization(organization)) {
+          await throttleApiCall(start, maxInseeCallRateInMs);
+          i++;
+          rejected_waste_management_organizations++;
+          return done(null, {
+            ...data,
+            result: "rejected_waste_management_organizations",
+          });
         }
 
+        await addTrackdechetsDomain({ siret, domain });
         await throttleApiCall(start, maxInseeCallRateInMs);
         i++;
-        return done(null, null);
+        success_count++;
+        return done(null, { ...data, result: "success" });
       } catch (error) {
         logger.info(
           "\x1b[31m",
@@ -119,14 +163,60 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
         await throttleApiCall(start, maxInseeCallRateInMs);
         i++;
-        // we put this in an output for future attempts
-        return done(null, data);
+        unexpected_error_count++;
+        return done(null, { ...data, result: "unexpected_error" });
       }
     },
     { parallel: 1 }, // avoid messing with line orders
-  ).on("end", () =>
-    logger.info(`Import done! failed inputs are recorded in ${OUTPUT_FILE}.`),
-  );
+  ).on("end", () => {
+    logger.info(`Import done! Import logs are recorded in ${OUTPUT_FILE}.`);
+    logger.info("");
+    logger.info(
+      "success_count:                          \x1b[32m",
+      success_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_invalid_domain_count:          \x1b[33m",
+      rejected_invalid_domain_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_invalid_siret_count:           \x1b[33m",
+      rejected_invalid_siret_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_free_email_domain_count:       \x1b[33m",
+      rejected_free_email_domain_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_empty_org_count:               \x1b[33m",
+      rejected_empty_org_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_service_public_count:          \x1b[33m",
+      rejected_service_public_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "rejected_waste_management_organizations:\x1b[33m",
+      rejected_waste_management_organizations,
+      "\x1b[0m",
+    );
+    logger.info(
+      "unexpected_error_count:                 \x1b[31m",
+      unexpected_error_count,
+      "\x1b[0m",
+    );
+    logger.info(
+      "total:                                  \x1b[1m",
+      i - 1,
+      "\x1b[21m",
+    );
+  });
 
   logger.info(`Importing data from ${INPUT_FILE}`);
 
