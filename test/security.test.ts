@@ -33,6 +33,10 @@ describe("isEmailValid", () => {
     assert.equal(isEmailValid("test@test_test"), false);
   });
 
+  it("should return false if tld has the wrong case", () => {
+    assert.equal(isEmailValid("jean@wanadoo.Fr"), false);
+  });
+
   it("should return false if local part is longer than 63 characters", () => {
     assert.equal(
       isEmailValid(
