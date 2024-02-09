@@ -16,11 +16,7 @@ export const siretSchema = () =>
     .transform((val) => val.replace(/\s/g, ""));
 
 export const emailSchema = () =>
-  z
-    .string()
-    .trim()
-    .refine(isEmailValid)
-    .transform((val) => val.toLowerCase());
+  z.string().trim().toLowerCase().refine(isEmailValid);
 
 export const nameSchema = () => z.string().trim().min(1).refine(isNameValid);
 
