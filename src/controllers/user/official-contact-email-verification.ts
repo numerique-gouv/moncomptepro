@@ -17,6 +17,8 @@ import {
 } from "../../config/errors";
 import { getUserFromLoggedInSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
+import { getOrganizationTypeLabel } from "../../services/organization";
+import { getOrganizationById } from "../../managers/organization/main";
 
 export const getOfficialContactEmailVerificationController = async (
   req: Request,
@@ -48,6 +50,9 @@ export const getOfficialContactEmailVerificationController = async (
         checkBeforeSend: true,
       });
 
+    // call to sendOfficialContactEmailVerificationEmail ensure organization exists
+    const organization = (await getOrganizationById(organization_id))!;
+
     return res.render("user/official-contact-email-verification", {
       notifications: await getNotificationsFromRequest(req),
       contactEmail,
@@ -56,6 +61,7 @@ export const getOfficialContactEmailVerificationController = async (
       codeSent,
       libelle,
       organization_id,
+      organization_type_label: getOrganizationTypeLabel(organization),
     });
   } catch (error) {
     if (error instanceof OfficialContactEmailVerificationNotNeededError) {
