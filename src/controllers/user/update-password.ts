@@ -25,6 +25,7 @@ export const getResetPasswordController = async (
 ) => {
   try {
     return res.render("user/reset-password", {
+      pageTitle: "Réinitialiser mon mot de passe",
       notifications: await getNotificationsFromRequest(req),
       loginHint:
         req.session.email ||
@@ -77,6 +78,7 @@ export const getChangePasswordController = async (
     const { reset_password_token } = await schema.parseAsync(req.query);
 
     return res.render("user/change-password", {
+      pageTitle: "Changer votre mot de passe",
       resetPasswordToken: reset_password_token,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),

@@ -35,7 +35,10 @@ export const getMagicLinkSentController = async (
 ) => {
   try {
     const email = req.session.email;
-    return res.render("user/magic-link-sent", { email });
+    return res.render("user/magic-link-sent", {
+      pageTitle: "Recevoir un lien d'identification",
+      email,
+    });
   } catch (error) {
     next(error);
   }
@@ -64,12 +67,14 @@ export const getSignInWithMagicLinkController = async (
       // Note that switching browser might not be a voluntary action from the user (ex: opening safari on macOS).
       // This mechanism also provides the user with a way to step back.
       return res.render("user/sign-in-with-magic-link", {
+        pageTitle: "Connexion avec un lien",
         csrfToken: csrfToken(req),
         magicLinkToken: magic_link_token,
       });
     }
 
     return res.render("autosubmit-form", {
+      pageTitle: "Connexion en cours, la page va se recharger automatiquement…",
       csrfToken: csrfToken(req),
       actionLabel: "Connexion...",
       actionPath: "/users/sign-in-with-magic-link",

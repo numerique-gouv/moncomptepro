@@ -54,6 +54,7 @@ export const getJoinOrganizationController = async (
     }
 
     return res.render("user/join-organization", {
+      pageTitle: "Rejoindre une organisation",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       siretHint: siret_hint,
@@ -76,6 +77,7 @@ export const getOrganizationSuggestionsController = async (
   });
 
   return res.render("user/organization-suggestions", {
+    pageTitle: "Votre organisation de rattachement",
     organizationSuggestions,
     csrfToken: csrfToken(req),
   });
@@ -146,7 +148,9 @@ export const getUnableToAutoJoinOrganizationController = async (
   next: NextFunction,
 ) => {
   try {
-    return res.render("user/unable-to-auto-join-organization");
+    return res.render("user/unable-to-auto-join-organization", {
+      pageTitle: "Rattachement en cours",
+    });
   } catch (e) {
     next(e);
   }

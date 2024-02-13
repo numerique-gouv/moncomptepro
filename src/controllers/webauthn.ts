@@ -40,6 +40,7 @@ export const getPasskeysController = async (
     const passkeys = await getUserAuthenticators(user.email);
 
     return res.render("passkeys", {
+      pageTitle: "Vos clés d'accès",
       notifications: await getNotificationsFromRequest(req),
       passkeys,
       csrfToken: csrfToken(req),
@@ -140,6 +141,7 @@ export const getSignInWithPasskeyController = async (
 ) => {
   try {
     return res.render("user/sign-in-with-passkey", {
+      pageTitle: "Se connecter avec une clé d’accès",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
     });

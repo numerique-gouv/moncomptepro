@@ -20,6 +20,7 @@ export const getPersonalInformationsController = async (
   try {
     const user = getUserFromLoggedInSession(req);
     return res.render("user/personal-information", {
+      pageTitle: "Renseigner votre identité",
       given_name: user.given_name,
       family_name: user.family_name,
       phone_number: user.phone_number,

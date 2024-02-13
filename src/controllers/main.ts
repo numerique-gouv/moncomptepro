@@ -23,6 +23,7 @@ export const getHomeController = async (
   );
 
   return res.render("home", {
+    pageTitle: "Accueil",
     notifications: await getNotificationsFromRequest(req),
     oidc_clients,
   });
@@ -36,6 +37,7 @@ export const getPersonalInformationsController = async (
   try {
     const user = getUserFromLoggedInSession(req);
     return res.render("personal-information", {
+      pageTitle: "Vos informations personnelles",
       email: user.email,
       given_name: user.given_name,
       family_name: user.family_name,
@@ -71,6 +73,7 @@ export const postPersonalInformationsController = async (
     updateUserInLoggedInSession(req, updatedUser);
 
     return res.render("personal-information", {
+      pageTitle: "Vos informations personnelles",
       email: updatedUser.email,
       given_name: updatedUser.given_name,
       family_name: updatedUser.family_name,
@@ -104,6 +107,7 @@ export const getManageOrganizationsController = async (
       });
 
     return res.render("manage-organizations", {
+      pageTitle: "Vos organisations",
       notifications: await getNotificationsFromRequest(req),
       userOrganizations,
       pendingUserOrganizations,
@@ -121,6 +125,7 @@ export const getResetPasswordController = async (
 ) => {
   try {
     return res.render("reset-password", {
+      pageTitle: "Votre mot de passe",
       notifications: await getNotificationsFromRequest(req),
       loginHint: getUserFromLoggedInSession(req).email,
       csrfToken: csrfToken(req),
@@ -139,6 +144,7 @@ export const getHelpController = async (
     ? getUserFromLoggedInSession(req).email
     : null;
   return res.render("help", {
+    pageTitle: "Aide",
     email,
     csrfToken: email && csrfToken(req),
   });

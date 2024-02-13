@@ -65,6 +65,7 @@ export const renderWithEjsLayout = async (
   );
 
   return await render(path.resolve(`${__dirname}/../views/_layout.ejs`), {
+    ...params,
     body: bodyHtml,
   });
 };

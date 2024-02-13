@@ -1,5 +1,12 @@
 <head>
-    <title>MonComptePro</title>
+    <title>
+      <% if (locals.error_code) { %>
+        Erreur <%= locals.error_code %> -
+      <% } else if (locals.notifications && locals.notifications.some(({ type }) => type === 'error')) { %>
+        Erreur -
+      <% } %>
+      <% if (locals.pageTitle) { %><%= locals.pageTitle %> - <% } %>MonComptePro
+    </title>
     <meta charset="utf-8" />
     <meta
             name="viewport"

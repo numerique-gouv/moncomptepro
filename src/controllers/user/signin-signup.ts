@@ -35,6 +35,7 @@ export const getStartSignInController = async (
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
 
     return res.render("user/start-sign-in", {
+      pageTitle: "S'inscrire ou se connecter",
       notifications: !hasEmailError && (await getNotificationsFromRequest(req)),
       hasEmailError,
       didYouMean,
@@ -91,6 +92,7 @@ export const getSignInController = async (
 ) => {
   try {
     return res.render("user/sign-in", {
+      pageTitle: "Accéder au compte",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       email: req.session.email,
