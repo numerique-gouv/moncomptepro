@@ -15,7 +15,7 @@
                                 <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal moncomptepro-selectable-tile <% if (index === 0) { %>moncomptepro-selected-tile<% } %>">
                                     <div class="fr-tile__body">
                                         <h2 class="fr-tile__title">
-                                            <a class="fr-tile__link" href><%= cached_libelle; %></a>
+                                            <a class="fr-tile__link" href aria-label="<%= cached_libelle; %> (choisir cette organisation)"><%= cached_libelle; %></a>
                                         </h2>
                                         <p class="fr-tile__desc"><%= cached_adresse; %></p>
                                         <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
@@ -34,7 +34,10 @@
                             <form id="form-join-organization-default" action="/users/select-organization" method="post">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
                                 <input type="hidden" name="organization_id" value="<%= userOrganizations[0].id %>" autocomplete="off">
-                                <button id="submit-join-organization-default" class="fr-btn">
+                                <button
+                                    id="submit-join-organization-default"
+                                    class="fr-btn"
+                                    aria-label="Continuer en choisissant l'organisation <%= userOrganizations[0].cached_libelle %>">
                                     Continuer
                                 </button>
                             </form>

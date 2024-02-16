@@ -30,7 +30,11 @@
                                 <div class="card-button-container">
                                     <form action="/users/quit-organization/<%= id %>" method="post">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                        <button
+                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            type="submit"
+                                            aria-label="Quitter l'organisation <%= cached_libelle; %>"
+                                        >
                                             Quitter l’organisation
                                         </button>
                                     </form>
@@ -39,6 +43,7 @@
                                         href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="Détails sur l’Annuaire des Entreprises sur <%= cached_libelle; %>"
                                     >
                                         Détails sur l’Annuaire des Entreprises
                                     </a>

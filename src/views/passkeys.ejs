@@ -57,7 +57,10 @@
                                                 value="<%= csrfToken; %>"
                                                 autocomplete="off"
                                         >
-                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                        <button
+                                            aria-label="Supprimer la clé d'accès <%= display_name; %>"
+                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            type="submit">
                                             Supprimer cette clé d’accès
                                         </button>
                                     </form>
