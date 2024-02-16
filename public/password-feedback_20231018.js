@@ -14,29 +14,77 @@ document.addEventListener("DOMContentLoaded", function() {
   var passwordInputMessage3sameElement = document.getElementById("password-input-message-3same");
   var passwordInputMessageBlacklistedWordElement = document.getElementById("password-input-message-blacklisted-word");
 
+  function toggleValidity(element, isValid) {
+    if (isValid) {
+      setValid(element);
+    } else {
+      setError(element);
+    }
+  }
+
+  function resetValidity(element, options = {}) {
+    if (!element) {
+      return;
+    }
+    const display = options.display || "block";
+    element.classList.remove('fr-message--error');
+    element.classList.remove('fr-message--valid');
+    element.classList.add('fr-message--info');
+    element.removeAttribute("data-condition-ok");
+    element.style.display = display;
+  }
+
+  function setValid(element) {
+    if (!element) {
+      return;
+    }
+    element.classList.remove('fr-message--info');
+    element.classList.remove('fr-message--error');
+    element.classList.add('fr-message--valid');
+    element.removeAttribute("data-condition-ok");
+  }
+
+  function setError(element) {
+    if (!element) {
+      return;
+    }
+    element.classList.remove('fr-message--info');
+    element.classList.remove('fr-message--valid');
+    element.classList.add('fr-message--error');
+    element.setAttribute("data-condition-ok", "false");
+    element.style.display = "block";
+  }
+
+  const debounce = function(callback, wait) {
+    let timeoutId = null;
+    const handler = (...args) => {
+      handler.cancel(...args);
+      timeoutId = window.setTimeout(() => {
+        callback(...args);
+      }, wait);
+    };
+    handler.cancel = (...args) => {
+      window.clearTimeout(timeoutId);
+    }
+    return handler;
+  }
+
+  // wait a little before notifying sr users of their input to prevent spam
+  const debouncedNotifyScreenReader = debounce(notifyScreenReader, 2000);
+
   function clearPasswordMessages() {
     passphraseInputMessageElement.style.display = "block";
-    passphraseInputMessageElement.className = "fr-message";
-    passphraseInputMessage20CharElement.style.display = "block";
-    passphraseInputMessage20CharElement.className = "fr-message fr-message--info";
-    passwordInputMessageElement.style.display = "block";
-    passwordInputMessageElement.className = "fr-message";
-    passwordInputMessage10charElement.style.display = "block";
-    passwordInputMessage10charElement.className = "fr-message fr-message--info";
-    passwordInputMessageSpecialElement.style.display = "block";
-    passwordInputMessageSpecialElement.className = "fr-message fr-message--info";
-    passwordInputMessageNumberElement.style.display = "block";
-    passwordInputMessageNumberElement.className = "fr-message fr-message--info";
-    passwordInputMessageLowercaseElement.style.display = "block";
-    passwordInputMessageLowercaseElement.className = "fr-message fr-message--info";
-    passwordInputMessageUppercaseElement.style.display = "block";
-    passwordInputMessageUppercaseElement.className = "fr-message fr-message--info";
-    passwordInputMessage128charElement.style.display = "none";
-    passwordInputMessage128charElement.className = "fr-message fr-message--info";
-    passwordInputMessage3sameElement.style.display = "none";
-    passwordInputMessage3sameElement.className = "fr-message fr-message--info";
-    passwordInputMessageBlacklistedWordElement.style.display = "none";
-    passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--info";
+    resetValidity(passphraseInputMessage20CharElement);
+
+    resetValidity(passwordInputMessage10charElement);
+    resetValidity(passwordInputMessageSpecialElement);
+    resetValidity(passwordInputMessageNumberElement);
+    resetValidity(passwordInputMessageLowercaseElement);
+    resetValidity(passwordInputMessageUppercaseElement);
+
+    resetValidity(passwordInputMessage128charElement, { display: "none" });
+    resetValidity(passwordInputMessage3sameElement, { display: "none" });
+    resetValidity(passwordInputMessageBlacklistedWordElement, { display: "none" });
     passwordInputMessageBlacklistedWordElement.innerHTML = "";
   }
 
@@ -46,15 +94,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var inputValue = passwordInput.value;
     var inputLength = passwordInput.value.length;
-    if (inputLength < 10) {
-      passwordInputMessage10charElement.className = "fr-message fr-message--error";
-      passwordInput.setCustomValidity("10 caractères minimum");
-    }
-    if (inputLength >= 10) {
-      passwordInputMessage10charElement.className = "fr-message fr-message--valid";
-    }
+    toggleValidity(passwordInputMessage10charElement, inputLength >= 10);
     if (inputLength >= 20) {
-      passphraseInputMessage20CharElement.className = "fr-message fr-message--valid";
+      setValid(passphraseInputMessage20CharElement);
       passwordInputMessageElement.style.display = "none";
       passwordInputMessage10charElement.style.display = "none";
       passwordInputMessageSpecialElement.style.display = "none";
@@ -63,47 +105,21 @@ document.addEventListener("DOMContentLoaded", function() {
       passwordInputMessageUppercaseElement.style.display = "none";
     }
     if (inputLength > 128) {
-      passwordInputMessage128charElement.style.display = "block";
-      passwordInputMessage128charElement.className = "fr-message fr-message--error";
-      passwordInput.setCustomValidity("128 caractères maximum");
+      setError(passwordInputMessage128charElement);
     }
     if (inputLength < 20) {
-      if (/[^A-Za-z0-9]/.test(inputValue)) {
-        passwordInputMessageSpecialElement.className = "fr-message fr-message--valid";
-      } else {
-        passwordInputMessageSpecialElement.className = "fr-message fr-message--error";
-        passwordInput.setCustomValidity("1 caractère spécial minimum");
-      }
-      if (/[0-9]/.test(inputValue)) {
-        passwordInputMessageNumberElement.className = "fr-message fr-message--valid";
-      } else {
-        passwordInputMessageNumberElement.className = "fr-message fr-message--error";
-        passwordInput.setCustomValidity("1 chiffre minimum");
-      }
-      if (/[a-z]/.test(inputValue)) {
-        passwordInputMessageLowercaseElement.className = "fr-message fr-message--valid";
-      } else {
-        passwordInputMessageLowercaseElement.className = "fr-message fr-message--error";
-        passwordInput.setCustomValidity("1 lettre minuscule minimum");
-      }
-      if (/[A-Z]/.test(inputValue)) {
-        passwordInputMessageUppercaseElement.className = "fr-message fr-message--valid";
-      } else {
-        passwordInputMessageUppercaseElement.className = "fr-message fr-message--error";
-        passwordInput.setCustomValidity("1 lettre majuscule minimum");
-      }
+      toggleValidity(passwordInputMessageSpecialElement, /[^A-Za-z0-9]/.test(inputValue));
+      toggleValidity(passwordInputMessageNumberElement, /[0-9]/.test(inputValue));
+      toggleValidity(passwordInputMessageLowercaseElement, /[a-z]/.test(inputValue));
+      toggleValidity(passwordInputMessageUppercaseElement, /[A-Z]/.test(inputValue));
     }
     if (/(.)\1{2,}/.test(inputValue)) {
-      passwordInputMessage3sameElement.style.display = "block";
-      passwordInputMessage3sameElement.className = "fr-message fr-message--error";
-      passwordInput.setCustomValidity("2 caractères identiques successifs maximum");
+      setError(passwordInputMessage3sameElement);
     }
+
     if (passwordInputDataEmail && inputValue.toLowerCase().includes(passwordInputDataEmail)) {
-      passwordInputMessageBlacklistedWordElement.style.display = "block";
-      passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--error";
-      var errorMessage = "ne doit pas contenir votre adresse email"
-      passwordInputMessageBlacklistedWordElement.innerHTML = errorMessage;
-      passwordInput.setCustomValidity(errorMessage);
+      setError(passwordInputMessageBlacklistedWordElement);
+      passwordInputMessageBlacklistedWordElement.innerHTML = "ne doit pas contenir votre adresse email";
     }
     [
       "moncomptepro",
@@ -113,16 +129,45 @@ document.addEventListener("DOMContentLoaded", function() {
       "cheval exact agrafe pile"
     ].forEach((blacklistedWord) => {
       if (inputValue.toLowerCase().includes(blacklistedWord)) {
-        passwordInputMessageBlacklistedWordElement.style.display = "block";
-        passwordInputMessageBlacklistedWordElement.className = "fr-message fr-message--error";
-        var errorMessage = "ne doit pas contenir « " + blacklistedWord + " »"
-        passwordInputMessageBlacklistedWordElement.innerHTML = errorMessage;
-        passwordInput.setCustomValidity(errorMessage);
+        setError(passwordInputMessageBlacklistedWordElement);
+        passwordInputMessageBlacklistedWordElement.innerHTML = "ne doit pas contenir « " + blacklistedWord + " »";
       }
     });
   }
 
+  function updateHelpTexts() {
+    let conditions = [];
+    document.querySelectorAll('[data-condition-ok="false"]').forEach((element) => {
+      conditions.push(element.textContent.trim());
+    });
+
+    if (!conditions.length) {
+      passwordInput.setCustomValidity("");
+      debouncedNotifyScreenReader.cancel();
+      return;
+    }
+
+    if (passwordInput.value.length < 20) {
+      conditions.push("ou alors 20 caractères minimum sans autres conditions");
+    }
+
+    let conditionsString = "Format restant à respecter : " + conditions.join(" ");
+    if (conditionsString.slice(-1) === ",") {
+        conditionsString = conditionsString.slice(0, -1);
+    }
+    debouncedNotifyScreenReader(conditionsString);
+    passwordInput.setCustomValidity(conditionsString);
+  }
+
   clearPasswordMessages();
 
-  passwordInput.addEventListener("input", updatePasswordMessages, false);
+  passwordInput.addEventListener("input", () => {
+    updatePasswordMessages();
+    updateHelpTexts();
+  }, false);
+
+  // don't spam sr users with delayed notification when they try to submit the form, they will get the customValidity message
+  passwordInput.closest('form').querySelector('button[type="submit"]').addEventListener('click', () => {
+    debouncedNotifyScreenReader.cancel();
+  })
 }, false);
