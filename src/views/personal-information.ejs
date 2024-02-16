@@ -26,6 +26,7 @@
                         pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                         title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Prénom"
+                        id="given_name"
                 <% if (given_name) { %> value="<%= given_name; %>"
                         <% } %>
                 >
@@ -40,6 +41,7 @@
                         pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                         title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Nom"
+                        id="family_name"
                 <% if (family_name) { %> value="<%= family_name; %>"
                         <% } %>
                 >
@@ -51,7 +53,7 @@
                 </label>
                 <input
                         class="fr-input" type="tel" name="phone_number"
-                        aria-label="Téléphone professionnel"
+                        id="phone_number"
                         pattern="\+?(?:[0-9][ \-]?){6,14}[0-9]"
                         title="un numéro de téléphone doit être écrit en chiffres, avec ou sans extension internationale (ex: France +33)"
                 <% if (phone_number) { %> value="<%= phone_number; %>"
@@ -64,8 +66,8 @@
                     Fonction au sein de l’organisation que vous représentez *
                 </label>
                 <input
-                        class="fr-input" required type="text" name="job"
-                        aria-label="Fonction"
+                        class="fr-input" required type="text" name="job" id="job"
+                        aria-label="Fonction au sein de l’organisation que vous représentez"
                 <% if (job) { %> value="<%= job; %>"
                         <% } %>
                 >

@@ -11,7 +11,7 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
                         <div class="fr-input-group">
-                            <label class="fr-label" for="siret">
+                            <label class="fr-label" for="siret-selector">
                                 SIRET de l’organisation que vous représentez
                                 <span class="fr-hint-text">
                                     Il est composé de 14 chiffres
@@ -23,7 +23,6 @@
                                     required
                                     type="text"
                                     name="siret"
-                                    aria-label="Numéro SIRET"
                                     pattern="^(\s*\d){14}$"
                                     maxlength="20"
                                     title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
