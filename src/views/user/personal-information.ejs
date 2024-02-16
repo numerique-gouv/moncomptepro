@@ -10,6 +10,9 @@
                     <p>
                         Ces informations nous permettent d’authentifier votre compte.
                     </p>
+
+                    <p aria-hidden="true" class="fr-hint-text">Les champs notés * sont obligatoires.</p>
+
                     <form action="/users/personal-information" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 

@@ -17,6 +17,8 @@
         <form action="/personal-information" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
+            <p aria-hidden="true" class="fr-hint-text">Les champs notés * sont obligatoires.</p>
+
             <div class="fr-input-group">
                 <label class="fr-label" for="given_name">
                     Prénom *
