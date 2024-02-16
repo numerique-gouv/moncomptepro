@@ -4,12 +4,15 @@
 <body>
     <% if (locals.use_dashboard_header) { %>
         <%- include('partials/dashboard-header.ejs'); %>
+        <div>
+            <%- body; %>
+        </div>
     <% } else { %>
         <%- include('partials/header.ejs'); %>
+        <main>
+            <%- body; %>
+        </main>
     <% } %>
-    <main>
-        <%- body; %>
-    </main>
     <%- include('partials/footer.ejs'); %>
 </body>
 </html>

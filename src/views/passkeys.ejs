@@ -1,9 +1,6 @@
 <div class="dashboard-container">
-    <div class="dashboard-head">
-        <h1>MonComptePro</h1>
-    </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'passkeys'}) %>
-    <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+    <main id="main" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
         <h2>Vos clés d’accès</h2>
@@ -84,7 +81,7 @@
             <input type="hidden" name="webauthn_registration_response_string" autocomplete="off">
             <button type="submit" class="fr-btn"></button>
         </form>
-    </div>
+    </main>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
 <script src="/assets/webauthn-registration-20240115.js"></script>

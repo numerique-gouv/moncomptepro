@@ -1,9 +1,6 @@
 <div class="dashboard-container">
-    <div class="dashboard-head">
-        <h1>MonComptePro</h1>
-    </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'personal-information'}) %>
-    <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+    <main id="main" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>
             Vos informations personnelles
@@ -79,5 +76,5 @@
                 Mettre à jour
             </button>
         </form>
-    </div>
+    </main>
 </div>
