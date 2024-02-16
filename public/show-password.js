@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
-  var password_input = document.getElementById("password-input");
-  var password_show = document.getElementById("password-show");
-
-  function toggleShowPassword() {
-    if (password_input.type === "password") {
-      password_input.type = "text";
-    } else {
-      password_input.type = "password";
+  document.querySelectorAll('.js-password-container__toggle').forEach((checkbox) => {
+    const container = checkbox.closest('.js-password-container');
+    if (!container) {
+      return;
     }
-  }
-
-  password_show.addEventListener("click", toggleShowPassword);
+    const input = container.querySelector('.js-password-container__input');
+    if (!input) {
+      return;
+    }
+    checkbox.addEventListener('click', () => {
+      input.type = checkbox.checked ? "text" : "password";
+    });
+  });
 }, false);

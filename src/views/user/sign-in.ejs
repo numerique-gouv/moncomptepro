@@ -27,13 +27,13 @@
 
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                        <div class="fr-input-group fr-password">
+                        <div class="fr-input-group fr-password js-password-container">
                             <label class="fr-label" for="password-input">
                                 Renseignez votre mot de passe
                             </label>
                             <div class="fr-input-wrap">
                                 <input
-                                        class="fr-password__input fr-input"
+                                        class="fr-password__input fr-input js-password-container__input"
                                         required
                                         aria-required="true"
                                         name="password"
@@ -45,6 +45,7 @@
                             </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
                                 <input
+                                        class="js-password-container__toggle"
                                         aria-label="Afficher le mot de passe"
                                         id="password-show"
                                         type="checkbox"
