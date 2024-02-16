@@ -33,10 +33,13 @@
                                     autofocus="on"
                             <% } else { %>
                                     value="<%= locals.loginHint; %>"
-                                    <% } %>
+                            <% } %>
+                            <% if (locals.hasEmailError) { %>
+                                    aria-describedby="email-error"
+                            <% } %>
                             >
                             <% if (locals.hasEmailError) { %>
-                                <p class="fr-error-text">
+                                <p class="fr-error-text" id="email-error">
                                     Adresse email invalide.
                                 </p>
                             <% } %>
