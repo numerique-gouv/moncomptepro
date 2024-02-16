@@ -156,7 +156,9 @@ VALUES
   (40, '21950127700897', '{}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (41, '21590512600011', '{"moncourrier.fr.nf"}', '{"moncourrier.fr.nf"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (42, '81403721400016', '{"yeswehack.ninja"}', '{"yeswehack.ninja"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (43, '11006801200050', '{"beta.gouv.fr"}', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (43, '11006801200050', '{"beta.gouv.fr"}', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (44, '54205118000066', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (45, '31723624800017', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (id)
   DO UPDATE
   SET (siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
