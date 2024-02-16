@@ -25,7 +25,7 @@ describe("sign-in with email verification renewal", () => {
       .click();
 
     cy.contains(
-      "Pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
+      "pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
     );
 
     // Verify the email with the code received by email

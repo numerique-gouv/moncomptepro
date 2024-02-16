@@ -25,7 +25,7 @@ describe("sign-in with magic link", () => {
     );
     cy.get('[action="/users/sign-in"] [type="submit"]').click();
 
-    cy.contains("Mot de passe incorrect.");
+    cy.contains("mot de passe incorrect.");
 
     // start resetting password
     cy.get('a[href="/users/reset-password"]')
@@ -36,7 +36,7 @@ describe("sign-in with magic link", () => {
 
     cy.get('[action="/users/reset-password"] [type="submit"]').click();
 
-    cy.contains("Vous allez recevoir un lien de réinitialisation par e-mail.");
+    cy.contains("vous allez recevoir un lien de réinitialisation par e-mail.");
 
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
