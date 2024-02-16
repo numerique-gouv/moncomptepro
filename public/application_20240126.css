@@ -178,7 +178,7 @@ footer {
     height: 18rem;
 }
 
-.not-found-error > h3 {
+.not-found-error > h1 {
     text-align: center;
     max-width: 52rem;
 }
