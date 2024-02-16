@@ -46,7 +46,7 @@ describe("join organizations", () => {
               ],
             },
             1,
-            "c6c64542-5601-43e0-b320-b20da72f6edc",
+            "0c5b976c-b6b0-406e-a7ed-08ddae8d2d81",
             60000,
             true,
           )

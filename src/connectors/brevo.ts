@@ -29,7 +29,6 @@ const remoteTemplateSlugToBrevoDeprecatedTemplateId: {
 } = {
   "verify-email": 6,
 };
-const defaultBrevoDeprecatedTemplateId = 21;
 const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
@@ -41,7 +40,13 @@ const remoteTemplateSlugToBrevoTemplateId: {
   // TODO: progressively uncomment these lines
   // "verify-email": 6,
 };
-// const defaultBrevoTemplateId = 7;
+const localTemplateSlugs: LocalTemplateSlug[] = [
+  "organization-welcome",
+  "unable-to-auto-join-organization",
+  "welcome",
+  "moderation-processed",
+];
+const defaultBrevoTemplateId = 7;
 
 const hasRemoteTemplate = (
   template:
@@ -51,7 +56,17 @@ const hasRemoteTemplate = (
 ): template is RemoteTemplateSlug =>
   remoteTemplateSlugToBrevoTemplateId.hasOwnProperty(template);
 
-const usesNewBrevoAccount = hasRemoteTemplate;
+const isLocalTemplateSlug = (value: string): value is LocalTemplateSlug => {
+  return localTemplateSlugs.includes(value as LocalTemplateSlug);
+};
+
+const usesNewBrevoAccount = (
+  template:
+    | RemoteTemplateSlug
+    | RemoteDeprecatedTemplateSlug
+    | LocalTemplateSlug,
+): template is RemoteTemplateSlug | LocalTemplateSlug =>
+  hasRemoteTemplate(template) || isLocalTemplateSlug(template);
 
 const hasRemoteDeprecatedTemplate = (
   template:
@@ -128,7 +143,7 @@ export const sendMail = async ({
   } else if (hasRemoteDeprecatedTemplate(template)) {
     data.templateId = remoteTemplateSlugToBrevoDeprecatedTemplateId[template];
   } else {
-    data.templateId = defaultBrevoDeprecatedTemplateId;
+    data.templateId = defaultBrevoTemplateId;
     data.params = {
       text_content: await render(
         path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
