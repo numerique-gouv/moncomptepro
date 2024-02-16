@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     e.preventDefault();
     input.value = link.innerText;
     element.style.display = "none";
+    input.focus();
   }
 
   link.addEventListener("click", fillInputWithSuggestion);
