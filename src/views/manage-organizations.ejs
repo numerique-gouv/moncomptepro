@@ -22,11 +22,9 @@
                                 <p class="fr-tile__desc">
                                     Activité principale (NAF/APE) : <%= cached_libelle_activite_principale; %>
                                 </p>
-                                <br />
                                 <p><strong><small>
                                     Si vous ne travaillez plus pour cette organisation, vous pouvez quitter l’organisation.
                                 </small></strong></p>
-                                <br />
                                 <div class="card-button-container">
                                     <form action="/users/quit-organization/<%= id %>" method="post">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">

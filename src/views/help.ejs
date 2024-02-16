@@ -12,7 +12,7 @@
             </h3>
             <p>Vous êtes peut-être dans l’une de ces situations :</p>
             <ul>
-                <li>Vous avez fait une erreur de saisie dans votre adresse
+                <li class="fr-mb-3w">Vous avez fait une erreur de saisie dans votre adresse
                     <% if (locals.email) { %>
                         <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
                             <%= email; %>
@@ -23,17 +23,14 @@
                     <br>
                     💡 <b><a class="fr-link" href="/users/start-sign-in">Recréez un compte avec la
                             bonne adresse</a></b></li>
-                <br>
-                <li>Le code est arrivé dans vos courriers indésirables<br>
+                <li class="fr-mb-3w">Le code est arrivé dans vos courriers indésirables<br>
                     💡 <b>Vérifiez vos spams</b></li>
-                <br>
-                <li>Votre organisation utilise une protection contre les spams (comme MailInBlack)<br>
+                <li class="fr-mb-3w">Votre organisation utilise une protection contre les spams (comme MailInBlack)<br>
                     💡 <b>Contactez votre fournisseur de mail pour qu’il autorise les emails en provenance de
                         moncomptepro@beta.gouv.fr</b>
                 </li>
-                <br>
                 <% if (locals.csrfToken) { %>
-                    <li>Votre code a expiré ou vous avez perdu l’email qui contenait le code<br>
+                    <li class="fr-mb-3w">Votre code a expiré ou vous avez perdu l’email qui contenait le code<br>
                         💡 <b>
                             <form
                                     id="send-email-verification" autocomplete="off"
@@ -49,7 +46,6 @@
                             </form>
                         </b>
                     </li>
-                    <br>
                 <% } %>
             </ul>
             <p>Vous n’êtes dans aucune de ces situations ? <a
@@ -104,10 +100,9 @@
                 d’utiliser une <i>phrase secrête</i> de plusieurs mots facile à mémoriser plutôt
                 qu’une courte suite de lettre complexe à mémoriser :
             </p>
-            <div>
+            <div class="fr-mb-3w">
                 <img src="/assets/936_complexite_du_mot_de_passe_light.png" alt="Illustration phrase secrête">
             </div>
-            <br>
             <p>
                 Pour plus d’information sur les mots de passe, vous pouvez consulter
                 <a
