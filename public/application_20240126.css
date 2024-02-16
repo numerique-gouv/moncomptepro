@@ -187,15 +187,25 @@ footer {
     margin-bottom: 8rem;
 }
 
+/* anchors are meant to be second in the DOM (for better screen reader support)
+ * but we want to display them first visually
+ */
+.title-with-anchor {
+  display: flex;
+}
+
 .title-with-anchor > a {
-    visibility: hidden;
+    order: -1;
+    align-self: center;
+    opacity: 0;
     transform: translateX(-28px);
-    margin-right: -40px;
+    margin-right: -32px;
     background-color: transparent !important;
 }
 
-.title-with-anchor:hover > a {
-    visibility: visible;
+.title-with-anchor:hover > a,
+.title-with-anchor > a:focus-visible {
+    opacity: 1;
 }
 
 .moncomptepro-notice--email .fr-notice__body:before {
