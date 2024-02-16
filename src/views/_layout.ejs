@@ -2,6 +2,20 @@
 <html lang="fr">
 <%- include('partials/head.ejs'); %>
 <body>
+      <div class="fr-skiplinks">
+          <nav class="fr-container" role="navigation" aria-label="Accès rapide">
+              <ul class="fr-skiplinks__list">
+                <% if (locals.use_dashboard_header) { %>
+                  <li>
+                      <a class="fr-link" href="#main">Contenu</a>
+                  </li>
+                <% } %>
+                  <li>
+                      <a class="fr-link" href="#footer">Pied de page</a>
+                  </li>
+              </ul>
+        </nav>
+    </div>
     <% if (locals.use_dashboard_header) { %>
         <%- include('partials/dashboard-header.ejs'); %>
         <div>
