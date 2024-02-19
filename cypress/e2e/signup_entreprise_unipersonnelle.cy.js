@@ -2,15 +2,12 @@ const MONCOMPTEPRO_HOST =
   Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
 
 describe("Signup into new entreprise unipersonnelle", () => {
-  before(function () {
-    return cy
-      .mailslurp()
-      .then((mailslurp) => mailslurp.createInbox())
-      .then((inbox) => {
-        // save inbox id and email address to this (make sure you use function and not arrow syntax)
-        cy.wrap(inbox.id).as("inboxId");
-        cy.wrap(inbox.emailAddress).as("emailAddress");
-      });
+  before(() => {
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: "8b805202-b7b3-42ac-b047-f37bdc559211",
+      }),
+    );
   });
 
   it("creates a user", function () {
@@ -18,7 +15,9 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
 
     // Sign up with the previously created inbox
-    cy.get('[name="login"]').type(this.emailAddress);
+    cy.get('[name="login"]').type(
+      "8b805202-b7b3-42ac-b047-f37bdc559211@mailslurp.com",
+    );
     cy.get('[type="submit"]').click();
 
     cy.get('[name="password"]').type(
@@ -27,13 +26,19 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
-    cy.get("#verify-email > p").contains(this.emailAddress);
+    cy.get("#verify-email > p").contains(
+      "8b805202-b7b3-42ac-b047-f37bdc559211@mailslurp.com",
+    );
 
     // Verify the email with the code received by email
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(this.inboxId, 60000, true),
+        mailslurp.waitForLatestEmail(
+          "8b805202-b7b3-42ac-b047-f37bdc559211",
+          60000,
+          true,
+        ),
       )
       // extract the verification code from the email subject
       .then((email) => {
@@ -69,7 +74,11 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(this.inboxId, 60000, true),
+        mailslurp.waitForLatestEmail(
+          "8b805202-b7b3-42ac-b047-f37bdc559211",
+          60000,
+          true,
+        ),
       )
       // assert reception of confirmation email
       .then((email) => {
