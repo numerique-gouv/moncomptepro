@@ -1,22 +1,18 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash";
 import path from "path";
-import {
-  BREVO_API_KEY,
-  DO_NOT_SEND_MAIL,
-  SENDINBLUE_API_KEY,
-} from "../config/env";
+import { BREVO_API_KEY, DO_NOT_SEND_MAIL } from "../config/env";
 import { BrevoApiError } from "../config/errors";
 import { render } from "../services/renderer";
 import { logger } from "../services/log";
 
-type RemoteDeprecatedTemplateSlug = "verify-email";
 type RemoteTemplateSlug =
   | "official-contact-email-verification"
   | "choose-sponsor"
   | "reset-password"
   | "magic-link"
-  | "join-organization";
+  | "join-organization"
+  | "verify-email";
 type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
@@ -24,11 +20,6 @@ type LocalTemplateSlug =
   | "moderation-processed";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
-const remoteTemplateSlugToBrevoDeprecatedTemplateId: {
-  [k in RemoteDeprecatedTemplateSlug]: number;
-} = {
-  "verify-email": 6,
-};
 const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
@@ -37,8 +28,7 @@ const remoteTemplateSlugToBrevoTemplateId: {
   "reset-password": 5,
   "magic-link": 1,
   "join-organization": 4,
-  // TODO: progressively uncomment these lines
-  // "verify-email": 6,
+  "verify-email": 6,
 };
 const localTemplateSlugs: LocalTemplateSlug[] = [
   "organization-welcome",
@@ -49,32 +39,13 @@ const localTemplateSlugs: LocalTemplateSlug[] = [
 const defaultBrevoTemplateId = 7;
 
 const hasRemoteTemplate = (
-  template:
-    | RemoteTemplateSlug
-    | RemoteDeprecatedTemplateSlug
-    | LocalTemplateSlug,
+  template: RemoteTemplateSlug | LocalTemplateSlug,
 ): template is RemoteTemplateSlug =>
   remoteTemplateSlugToBrevoTemplateId.hasOwnProperty(template);
 
 const isLocalTemplateSlug = (value: string): value is LocalTemplateSlug => {
   return localTemplateSlugs.includes(value as LocalTemplateSlug);
 };
-
-const usesNewBrevoAccount = (
-  template:
-    | RemoteTemplateSlug
-    | RemoteDeprecatedTemplateSlug
-    | LocalTemplateSlug,
-): template is RemoteTemplateSlug | LocalTemplateSlug =>
-  hasRemoteTemplate(template) || isLocalTemplateSlug(template);
-
-const hasRemoteDeprecatedTemplate = (
-  template:
-    | RemoteTemplateSlug
-    | RemoteDeprecatedTemplateSlug
-    | LocalTemplateSlug,
-): template is RemoteDeprecatedTemplateSlug =>
-  remoteTemplateSlugToBrevoDeprecatedTemplateId.hasOwnProperty(template);
 
 export const sendMail = async ({
   to = [],
@@ -87,22 +58,19 @@ export const sendMail = async ({
   to: string[];
   cc?: string[];
   subject: string;
-  template:
-    | RemoteTemplateSlug
-    | RemoteDeprecatedTemplateSlug
-    | LocalTemplateSlug;
+  template: RemoteTemplateSlug | LocalTemplateSlug;
   params: any;
   senderEmail?: string;
 }) => {
   const data = {
     cc: undefined as { email: string }[] | undefined,
     sender: {
-      name: "",
-      email: "",
+      name: "L’équipe MonComptePro",
+      email: senderEmail || "ne-pas-repondre@email.moncomptepro.beta.gouv.fr",
     },
     replyTo: {
-      name: "",
-      email: "",
+      name: "L’équipe MonComptePro",
+      email: senderEmail || "support@moncomptepro.beta.gouv.fr",
     },
     // Brevo allow a maximum of 99 recipients
     to: chain(to)
@@ -118,30 +86,8 @@ export const sendMail = async ({
     templateId: 0,
   };
 
-  if (usesNewBrevoAccount(template)) {
-    data.sender = {
-      name: "L’équipe MonComptePro",
-      email: senderEmail || "ne-pas-repondre@email.moncomptepro.beta.gouv.fr",
-    };
-    data.replyTo = {
-      name: "L’équipe MonComptePro",
-      email: senderEmail || "support@moncomptepro.beta.gouv.fr",
-    };
-  } else {
-    data.sender = {
-      name: "L’équipe MonComptePro",
-      email: senderEmail || "moncomptepro@beta.gouv.fr",
-    };
-    data.replyTo = {
-      name: "L’équipe MonComptePro",
-      email: senderEmail || "moncomptepro@beta.gouv.fr",
-    };
-  }
-
   if (hasRemoteTemplate(template)) {
     data.templateId = remoteTemplateSlugToBrevoTemplateId[template];
-  } else if (hasRemoteDeprecatedTemplate(template)) {
-    data.templateId = remoteTemplateSlugToBrevoDeprecatedTemplateId[template];
   } else {
     data.templateId = defaultBrevoTemplateId;
     data.params = {
@@ -167,9 +113,7 @@ export const sendMail = async ({
       method: "post",
       url: `https://api.brevo.com/v3/smtp/email`,
       headers: {
-        "api-key": usesNewBrevoAccount(template)
-          ? BREVO_API_KEY
-          : SENDINBLUE_API_KEY,
+        "api-key": BREVO_API_KEY,
         "content-type": "application/json",
         accept: "application/json",
       },
