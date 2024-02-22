@@ -73,7 +73,7 @@ Le domaine email `yopmail.com` peut rejoindre librement plusieurs organisations,
 
 Afin de configurer votre module ou votre client OpenId Connect, vous trouverez ci-dessous les paramètres de configuration spécifiques à MonComptePro :
 
-- paramètres de configuration de l’instance de test : https://app-test.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
+- paramètres de configuration de l’instance de test : https://app-sandbox.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - paramètres de configuration de l’instance de production : https://app.moncomptepro.beta.gouv.fr/.well-known/openid-configuration
 - À noter que les seuls périmètres de données (scope) ouverts aux services en lignes sont les suivants :
 - `openid` (données : sub)
@@ -204,7 +204,7 @@ Vous pouvez tester la cinématique de déconnexion via le lien suivant : https:
 
 Afin d'effectuer une déconnexion simultanée, il faut rediriger l'utilisateur vers la route de déconnexion de MonComptePro :
 
-https://app-test.moncomptepro.beta.gouv.fr/oauth/logout?post_logout_redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2F&client_id=client_id
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/logout?post_logout_redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2F&client_id=client_id
 
 ### Permettre à l'utilisateur de sélectionner une autre organisation
 
@@ -218,7 +218,7 @@ Vous pouvez tester la cinématique via le lien suivant : https://test.moncompte
 
 Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec le paramètre `prompt=select_organization` comme suit :
 
-https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin-callback&prompt=select_organization
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin-callback&prompt=select_organization
 
 ### Permettre à l'utilisateur de mettre à jour ses informations
 
@@ -231,7 +231,7 @@ Vous pouvez tester la cinématique via le lien suivant : https://test.moncompte
 
 Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec le paramètre `prompt=update_userinfo` comme suit :
 
-https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&prompt=update_userinfo
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&prompt=update_userinfo
 
 ### Exiger une ré-authentification
 
@@ -242,7 +242,7 @@ Vous pouvez tester la cinématique via le lien suivant : https://test.moncompte
 
 Pour ce faire, vous devez passer les paramètres `prompt=login` et `claims={"id_token":{"auth_time":{"essential":true}}}` comme suit :
 
-https://app-test.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&claims=%7B%22id_token%22%3A%7B%22auth_time%22%3A%7B%22essential%22%3Atrue%7D%7D%7D&prompt=login
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&claims=%7B%22id_token%22%3A%7B%22auth_time%22%3A%7B%22essential%22%3Atrue%7D%7D%7D&prompt=login
 
 Afin de s’assurer que l’utilisateur s’est bien ré-authentifié, il est impératif que votre service vérifie la valeur `auth_time`
 retournée dans l’ID token. Si la date est supérieure à 5 minutes, l’utilisateur ne s'est pas reconnecté récemment et vous
