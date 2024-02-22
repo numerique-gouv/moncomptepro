@@ -245,7 +245,7 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       true,
     );
   });
-  it("should return true for lycee prive", () => {
+  it("should return false for lycee prive", () => {
     const lycee_prive_org_info: Organization = {
       siret: "31458546400014",
       cached_libelle: "Ogec maitrise de massabielle",
@@ -269,7 +269,7 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
     };
     assert.equal(
       isEtablissementScolaireDuPremierEtSecondDegre(lycee_prive_org_info),
-      true,
+      false,
     );
   });
   it("should return true for ecole primaire publique", () => {
@@ -301,7 +301,7 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       true,
     );
   });
-  it("should return true for ecole primaire privee", () => {
+  it("should return false for ecole primaire privee", () => {
     const ecole_primaire_privee_org_info: Organization = {
       siret: "39945558300027",
       cached_libelle:
@@ -327,7 +327,7 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       isEtablissementScolaireDuPremierEtSecondDegre(
         ecole_primaire_privee_org_info,
       ),
-      true,
+      false,
     );
   });
 });
