@@ -134,3 +134,26 @@ export const isEducationNationaleDomain = (domain: string) => {
 
   return domain.match(/^ac-[a-zA-Z0-9-]*\.fr$/) !== null;
 };
+
+export const getOrganizationTypeLabel = (organization: Organization) => {
+  if (isEtablissementScolaireDuPremierEtSecondDegre(organization)) {
+    return "établissement scolaire";
+  } else {
+    if (isCommune(organization)) {
+      return "mairie";
+    }
+
+    if (isServicePublic(organization)) {
+      return "service";
+    }
+  }
+
+  if (
+    isEntrepriseUnipersonnelle(organization) &&
+    isWasteManagementOrganization(organization)
+  ) {
+    return "entreprise";
+  }
+
+  return "organisation";
+};

@@ -26,6 +26,9 @@ describe("join organizations", () => {
     cy.get('[type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
+    cy.contains(
+      "nous avons envoyé un code secret à l’adresse email de votre mairie",
+    );
     cy.get("#email-badge-lowercase").contains(
       "26ccc0fa-0dc3-4f12-9335-7bb00282920c@mailslurp.com",
     );

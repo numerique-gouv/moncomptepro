@@ -10,7 +10,7 @@
                     <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
                         <p>
                             Pour vérifier votre appartenance à l’organisation <%= libelle %>,
-                            nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre mairie :
+                            nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
                             <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
                                 <%= contactEmail; %>
                             </span>.
