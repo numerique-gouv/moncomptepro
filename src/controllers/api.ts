@@ -1,19 +1,23 @@
-import { BadRequest, GatewayTimeout, NotFound } from "http-errors";
-import { getOrganizationInfo } from "../connectors/api-sirene";
-import notificationMessages from "../config/notification-messages";
 import { NextFunction, Request, Response } from "express";
-import { z, ZodError } from "zod";
+import { BadRequest, GatewayTimeout, NotFound } from "http-errors";
+import { ZodError, z } from "zod";
+import {
+  InseeConnectionError,
+  InseeNotFoundError,
+  NotFoundError,
+} from "../config/errors";
+import notificationMessages from "../config/notification-messages";
+import { getOrganizationInfo } from "../connectors/api-sirene";
+import { sendModerationProcessedEmail } from "../managers/moderation";
+import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
+import { forceJoinOrganization } from "../managers/organization/join";
+import { markDomainAsVerified } from "../managers/organization/main";
+import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   idSchema,
   optionalBooleanSchema,
   siretSchema,
 } from "../services/custom-zod-schemas";
-import { InseeConnectionError, InseeNotFoundError } from "../config/errors";
-import { sendModerationProcessedEmail } from "../managers/moderation";
-import { markDomainAsVerified } from "../managers/organization/main";
-import { forceJoinOrganization } from "../managers/organization/join";
-import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
-import { getUserOrganizationLink } from "../repositories/organization/getters";
 import { logger } from "../services/log";
 
 export const getPingApiSireneController = async (
@@ -132,6 +136,10 @@ export const postSendModerationProcessedEmail = async (
     logger.error(e);
     if (e instanceof ZodError) {
       return next(new BadRequest());
+    }
+
+    if (e instanceof NotFoundError) {
+      return next(new NotFound());
     }
 
     next(e);
