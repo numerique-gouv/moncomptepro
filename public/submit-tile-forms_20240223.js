@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById(submitId).addEventListener("click", function(e) {
       e.stopPropagation();
       e.preventDefault();
-      formElement.submit();
+      formElement.requestSubmit();
     });
   });
 
