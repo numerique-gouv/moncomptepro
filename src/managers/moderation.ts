@@ -1,7 +1,7 @@
-import { findById as findUserById } from "../repositories/user";
+import { NotFoundError } from "../config/errors";
 import { sendMail } from "../connectors/brevo";
-
 import { findById as findOrganizationById } from "../repositories/organization/getters";
+import { findById as findUserById } from "../repositories/user";
 
 export const sendModerationProcessedEmail = async ({
   organization_id,
@@ -10,10 +10,21 @@ export const sendModerationProcessedEmail = async ({
   organization_id: number;
   user_id: number;
 }): Promise<{ emailSent: boolean }> => {
-  const { email } = (await findUserById(user_id))!;
+  const user = await findUserById(user_id);
 
-  const { cached_libelle, siret } =
-    (await findOrganizationById(organization_id))!;
+  if (!user) {
+    throw new NotFoundError();
+  }
+
+  const { email } = user;
+
+  const organization = await findOrganizationById(organization_id);
+
+  if (!organization) {
+    throw new NotFoundError();
+  }
+
+  const { cached_libelle, siret } = organization;
 
   await sendMail({
     to: [email],
