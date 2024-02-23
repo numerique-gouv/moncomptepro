@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
   var organizationInfoAdresseElement = document.getElementById("organization-info-adresse");
   var organizationInfoActivitePrincipaleElement = document.getElementById("organization-info-activite-principale");
   var organizationAlertElement = document.getElementById("organization-alert");
+  var organizationAlertContentElement = organizationAlertElement.querySelector('.alert--content');
   var siretSelectorElement = document.getElementById("siret-selector");
+  var submitElement = document.querySelector('.card-button-container button[type="submit"]');
 
   function clearOrganizationInfo() {
     organizationInfoElement.style.display = "none";
@@ -12,7 +14,9 @@ document.addEventListener("DOMContentLoaded", function() {
     organizationInfoAdresseElement.innerHTML = "";
     organizationInfoActivitePrincipaleElement.innerHTML = "";
     organizationAlertElement.style.display = "none";
-    organizationAlertElement.innerHTML = "";
+    organizationAlertContentElement.innerHTML = "";
+    submitElement.removeAttribute('aria-label');
+    siretSelectorElement.removeAttribute('aria-describedby');
   }
 
   function showOrganizationInfo() {
@@ -40,23 +44,31 @@ document.addEventListener("DOMContentLoaded", function() {
           if (estActive) {
             organizationInfoElement.style.display = "block";
             organizationInfoLibelleElement.innerHTML = libelle;
+            organizationInfoLibelleElement.setAttribute('aria-label', "Organisation correspondante au SIRET donné : " + libelle);
+            submitElement.setAttribute('aria-label', "Enregistrer l'organisation " + libelle);
             organizationInfoAdresseElement.innerHTML = adresse;
             organizationInfoActivitePrincipaleElement.innerHTML = libelleActivitePrincipale;
+            siretSelectorElement.removeAttribute('aria-describedby');
           } else {
             organizationAlertElement.style.display = "block";
-            organizationAlertElement.innerHTML = "État administratif de l'établissement : fermé";
+            organizationAlertContentElement.innerHTML = "État administratif de l'établissement : fermé";
+            siretSelectorElement.setAttribute('aria-describedby', organizationAlertElement.id);
           }
         } else if (xmlhttp.status === 404) {
           organizationAlertElement.style.display = "block";
-          organizationAlertElement.innerHTML = "Nous n'avons pas trouvé votre organisation.";
+          organizationAlertContentElement.innerHTML = "Nous n'avons pas trouvé votre organisation.";
         } else if (xmlhttp.status === 504) {
           // fail silently
         } else {
           organizationAlertElement.style.display = "block";
-          organizationAlertElement.innerHTML =
+          organizationAlertContentElement.innerHTML =
             "Erreur inconnue lors de la récupération des informations de cet établissement. " +
             "Merci de réessayer ultérieurement. " +
             "Vous pouvez également nous signaler cette erreur par mail à contact@moncomptepro.beta.gouv.fr.";
+        }
+        if (xmlhttp.status !== 200) {
+          submitElement.removeAttribute('aria-label');
+          siretSelectorElement.setAttribute('aria-describedby', organizationAlertElement.id);
         }
       }
     };

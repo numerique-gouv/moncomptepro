@@ -3,13 +3,16 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     Renseigner son identité
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <p>
                         Ces informations nous permettent d’authentifier votre compte.
                     </p>
+
+                    <p aria-hidden="true" class="fr-hint-text">Les champs notés * sont obligatoires.</p>
+
                     <form action="/users/personal-information" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
@@ -22,6 +25,7 @@
                                     pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                                     title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                                     aria-label="Prénom"
+                                    id="given_name"
                             <% if (given_name) { %> value="<%= given_name; %>"
                                     <% } %>
                             >
@@ -36,6 +40,7 @@
                                     pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                                     title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                                     aria-label="Nom"
+                                    id="family_name"
                             <% if (family_name) { %> value="<%= family_name; %>"
                                     <% } %>
                             >
@@ -50,7 +55,7 @@
                             </label>
                             <input
                                     class="fr-input" type="tel" name="phone_number"
-                                    aria-label="Téléphone professionnel"
+                                    id="phone_number"
                                     pattern="\+?(?:[0-9][ \-]?){6,14}[0-9]"
                                     title="un numéro de téléphone doit être écrit en chiffres, avec ou sans extension internationale (ex: France +33)"
                             <% if (phone_number) { %> value="<%= phone_number; %>"
@@ -63,8 +68,8 @@
                                 Fonction au sein de l’organisation que vous représentez *
                             </label>
                             <input
-                                    class="fr-input" required type="text" name="job"
-                                    aria-label="Fonction"
+                                    class="fr-input" required type="text" name="job" id="job"
+                                    aria-label="Fonction au sein de l’organisation que vous représentez"
                             <% if (job) { %> value="<%= job; %>"
                                     <% } %>
                             >

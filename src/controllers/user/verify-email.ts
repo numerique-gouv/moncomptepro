@@ -40,6 +40,7 @@ export const getVerifyEmailController = async (
     });
 
     return res.render("user/verify-email", {
+      pageTitle: "Vérifier votre email",
       notifications: await getNotificationsFromRequest(req),
       email,
       csrfToken: csrfToken(req),

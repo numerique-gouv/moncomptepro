@@ -2,20 +2,20 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     Votre organisation de rattachement
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <p><span class="fr-label">Sélectionnez l’organisation dont vous faites partie</span></p>
 
-                    <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-grid-row fr-grid-row--gutters fr-mb-2w">
                         <% organizationSuggestions.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }) => { %>
                         <div class="fr-col-12">
                             <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal">
                                 <div class="fr-tile__body">
-                                    <h4 class="fr-tile__title">
-                                        <a class="fr-tile__link" href><%= cached_libelle; %></a>
-                                    </h4>
+                                    <h2 class="fr-tile__title">
+                                        <a class="fr-tile__link" href aria-label="Sélectionner l'organisation <%= cached_libelle; %>"><%= cached_libelle; %></a>
+                                    </h2>
                                     <p class="fr-tile__desc"><%= cached_adresse; %></p>
                                     <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
                                 </div>
@@ -27,17 +27,14 @@
                         </div>
                         <% }); %>
                     </div>
-                    <br />
-                    <ul class="fr-btns-group">
-                        <li>
-                            <a
-                                href="/users/join-organization?do_not_propose_suggestions=true"
-                                class="fr-btn fr-btn--secondary"
-                            >
-                                Je veux rejoindre une autre organisation
-                            </a>
-                        </li>
-                    </ul>
+                    <p class="fr-mb-0">
+                        <a
+                            href="/users/join-organization?do_not_propose_suggestions=true"
+                            class="fr-btn fr-btn--secondary btn--fullwidth"
+                        >
+                            Je veux rejoindre une autre organisation
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>

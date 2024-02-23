@@ -2,14 +2,14 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     Consultez vos e-mails
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <p>
                         Votre lien vous attend
                         <% if (locals.email) { %> à l’adresse...
-                        <br>
+                        <br aria-hidden="true">
                         <b><%= email %></b>
                         <% } %>
                     </p>

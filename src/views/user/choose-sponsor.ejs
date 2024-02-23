@@ -2,9 +2,9 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     Sélectionner un parrain
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
                     <p>
@@ -14,7 +14,7 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
                         <div class="fr-input-group">
-                            <label class="fr-label" for="sponsor_id">
+                            <label class="fr-label" for="searchable-select">
                                 Choisissez votre parrain
                             </label>
                             <select
@@ -37,13 +37,13 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <div class="fr-card__desc">
+                <div class="fr-card__desc fr-mt-0">
                     <div class="fr-container">
-                        <div class="fr-grid-row fr-grid-row--center">
+                        <p class="fr-grid-row fr-grid-row--center">
                             <a class="fr-link fr-fi-question-line fr-link--icon-left" href="/users/no-sponsor-found/<%= organization_id %>">
                                 Je ne connais aucune des personnes proposées
                             </a>
-                        </div>
+                        </p>
                     </div>
                 </div>
             </div>

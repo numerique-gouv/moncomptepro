@@ -1,9 +1,6 @@
 <div class="dashboard-container">
-    <div class="dashboard-head">
-        <h1>MonComptePro</h1>
-    </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'passkeys'}) %>
-    <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+    <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
         <h2>Vos clés d’accès</h2>
@@ -43,15 +40,14 @@
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
-                                <h4 class="fr-tile__title">
+                                <h3 class="fr-tile__title">
                                     <%= display_name; %>
-                                </h4>
+                                </h3>
                                 <p class="fr-tile__desc">Création : <%= created_at; %></p>
                                 <p class="fr-tile__desc">
                                     Dernière utilisation : <%= last_used_at; %>
                                 </p>
                                 <p class="fr-tile__desc">Nombre d’utilisations : <%= usage_count; %></p>
-                                <br />
                                 <div class="card-button-container">
                                     <form action="/delete-passkeys/<%= credential_id; %>" method="post">
                                         <input
@@ -60,7 +56,10 @@
                                                 value="<%= csrfToken; %>"
                                                 autocomplete="off"
                                         >
-                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                        <button
+                                            aria-label="Supprimer la clé d'accès <%= display_name; %>"
+                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            type="submit">
                                             Supprimer cette clé d’accès
                                         </button>
                                     </form>
@@ -84,7 +83,7 @@
             <input type="hidden" name="webauthn_registration_response_string" autocomplete="off">
             <button type="submit" class="fr-btn"></button>
         </form>
-    </div>
+    </main>
 </div>
 <script src="/assets/simplewebauthn.umd.min.js"></script>
 <script src="/assets/webauthn-registration-20240115.js"></script>

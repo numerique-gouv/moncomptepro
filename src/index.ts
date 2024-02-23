@@ -220,7 +220,11 @@ let server: Server;
 
   app.use(async (req, res, next) => {
     res.setHeader("Content-Type", "text/html");
-    res.status(404).send(await renderWithEjsLayout("not-found-error"));
+    res.status(404).send(
+      await renderWithEjsLayout("not-found-error", {
+        pageTitle: "Page introuvable",
+      }),
+    );
   });
 
   // The error handler must be before any other error middleware and after all controllers

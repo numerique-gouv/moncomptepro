@@ -3,13 +3,13 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     S’inscrire ou se connecter
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <% if(locals.displayTestEnvWarning) { %>
                     <div class="fr-alert fr-alert--warning">
-                        <h3 class="fr-alert__title">Vous êtes sur une instance de test</h3>
+                        <h2 class="fr-alert__title">Vous êtes sur une instance de test</h2>
                         <p>
                             Afin de limiter le risque de divulguer vos informations personnelles,
                             merci de ne pas utiliser votre adresse email.
@@ -33,10 +33,13 @@
                                     autofocus="on"
                             <% } else { %>
                                     value="<%= locals.loginHint; %>"
-                                    <% } %>
+                            <% } %>
+                            <% if (locals.hasEmailError) { %>
+                                    aria-describedby="email-error"
+                            <% } %>
                             >
                             <% if (locals.hasEmailError) { %>
-                                <p class="fr-error-text">
+                                <p class="fr-error-text" id="email-error">
                                     Adresse email invalide.
                                 </p>
                             <% } %>
@@ -44,10 +47,10 @@
                                 <p id="did-you-mean-element" class="fr-info-text">
                                     <span>
                                     Vouliez-vous dire
-                                    <a id="did-you-mean-link" href="#"><%= locals.didYouMean %></a> ?
+                                    <a id="did-you-mean-link" href="#" title="<%= locals.didYouMean %> (cliquer pour remplir le champ)"><%= locals.didYouMean %></a> ?
                                     </span>
                                 </p>
-                                <script type="text/javascript" src="/assets/did-you-mean.js"></script>
+                                <script type="text/javascript" src="/assets/did-you-mean_20240223.js"></script>
                             <% } %>
                         </div>
 

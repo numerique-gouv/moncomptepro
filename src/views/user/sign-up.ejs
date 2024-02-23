@@ -3,13 +3,14 @@
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
-                <h4 class="fr-card__title">
+                <h1 class="fr-card__title">
                     Choisir votre mot de passe
-                </h4>
+                </h1>
                 <div class="fr-card__desc">
                     <div class="fr-notice fr-notice--info moncomptepro-notice--change-email fr-mb-2w">
                         <div class="fr-container">
-                            <div class="fr-notice__body">
+                            <p class="fr-notice__body">
+                                <span class="fr-sr-only">Votre email :</span>
                                 <strong><%= email; %></strong>
                                 <a
                                         class="fr-btn fr-btn--close"
@@ -18,20 +19,20 @@
                                 >
                                     Changer d’adresse email
                                 </a>
-                            </div>
+                            </p>
                         </div>
                     </div>
 
                     <form action="/users/sign-up" method="post" class="fr-mb-2w">
                         <input type="hidden" name="_csrf" value="<%= csrfToken ;%>" autocomplete="off">
 
-                        <div class="fr-input-group fr-password">
+                        <div class="fr-input-group fr-password js-password-container">
                             <label class="fr-label" for="password-input">
                                 Mot de passe
                             </label>
                             <div class="fr-input-wrap">
                                 <input
-                                        class="fr-password__input fr-input"
+                                        class="fr-password__input fr-input js-password-container__input"
                                         aria-describedby="password-input-messages"
                                         aria-required="true"
                                         name="password"
@@ -42,67 +43,29 @@
                                         data-email="<%= email; %>"
                                 >
                             </div>
-                            <div class="fr-messages-group" id="password-input-messages" aria-live="assertive">
-                                <p class="fr-message" id="password-input-message">
-                                    Votre mot de passe doit contenir :
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-10char">
-                                    10 caractères minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-special">
-                                    1 caractère spécial minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-number">
-                                    1 chiffre minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-lowercase">
-                                    1 lettre minuscule minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-uppercase">
-                                    1 lettre majuscule minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-128char">
-                                    128 caractères maximum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-3same">
-                                    2 caractères identiques successifs maximum
-                                </p>
-                                <p class="fr-message" id="passphrase-input-message">
-                                    Alternativement, votre mot de passe peut être une <i>phrase secrête</i>
-                                    (<a
-                                            target="_blank" rel="noopener noreferrer"
-                                            href="/help#choisir-mot-de-passe">en savoir plus</a>)
-                                    et doit contenir :
-                                </p>
-                                <p class="fr-message fr-message--info" id="passphrase-input-message-20char">
-                                    20 caractères minimum
-                                </p>
-                                <p class="fr-message fr-message--info" id="password-input-message-blacklisted-word">
-                                </p>
-                            </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
                                 <input
+                                        class="js-password-container__toggle"
                                         aria-label="Afficher le mot de passe"
                                         id="password-show"
                                         type="checkbox"
-                                        aria-describedby="password-show-messages"
                                 >
                                 <label class="fr-password__checkbox fr-label" for="password-show">
                                     Afficher
                                 </label>
                             </div>
+                            <%- include('../partials/password-input-messages.ejs') %>
                         </div>
 
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', ariaLabel: 'Valider le mot de passe', showGoBackButton: true}) %>
                     </form>
 
                     <p class="fr-hr-or">ou</p>
 
                     <div>
-                        <div>
+                        <p class="fr-text--sm">
                             <b>Connectez-vous sans mot de passe</b> en recevant <b>un lien par email.</b>
-                        </div>
-                        <br>
+                        </p>
                         <div class="card-button-container">
                             <div id="magic-link-icon-inline">
                                 <img src="/assets/magic-link.svg" alt="">
@@ -119,5 +82,5 @@
         </div>
     </div>
 </div>
-<script src="/assets/show-password.js"></script>
-<script src="/assets/password-feedback_20231018.js"></script>
+<script src="/assets/show-password_20240223.js"></script>
+<script src="/assets/password-feedback_20240223.js"></script>

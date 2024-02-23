@@ -1,14 +1,11 @@
 <div class="dashboard-container">
-    <div class="dashboard-head">
-        <h1>MonComptePro</h1>
-    </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'personal-information'}) %>
-    <div class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+    <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>
             Vos informations personnelles
         </h2>
-        <div class="fr-notice moncomptepro-notice--email">
+        <div class="fr-notice moncomptepro-notice--email fr-mb-3w">
             <div class="fr-container">
                 <div class="fr-notice__body">
                     <p>
@@ -17,9 +14,10 @@
                 </div>
             </div>
         </div>
-        <br />
         <form action="/personal-information" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+            <p aria-hidden="true" class="fr-hint-text">Les champs notés * sont obligatoires.</p>
 
             <div class="fr-input-group">
                 <label class="fr-label" for="given_name">
@@ -30,6 +28,7 @@
                         pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                         title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Prénom"
+                        id="given_name"
                 <% if (given_name) { %> value="<%= given_name; %>"
                         <% } %>
                 >
@@ -44,6 +43,7 @@
                         pattern="[^$\&+:;=?@#\|<>.^*\(\)%!\d_\[\]\{\}\\\/\x22`~]*"
                         title="un nom ne doit pas contenir de chiffres ou de caractères spéciaux"
                         aria-label="Nom"
+                        id="family_name"
                 <% if (family_name) { %> value="<%= family_name; %>"
                         <% } %>
                 >
@@ -55,7 +55,7 @@
                 </label>
                 <input
                         class="fr-input" type="tel" name="phone_number"
-                        aria-label="Téléphone professionnel"
+                        id="phone_number"
                         pattern="\+?(?:[0-9][ \-]?){6,14}[0-9]"
                         title="un numéro de téléphone doit être écrit en chiffres, avec ou sans extension internationale (ex: France +33)"
                 <% if (phone_number) { %> value="<%= phone_number; %>"
@@ -68,16 +68,16 @@
                     Fonction au sein de l’organisation que vous représentez *
                 </label>
                 <input
-                        class="fr-input" required type="text" name="job"
-                        aria-label="Fonction"
+                        class="fr-input" required type="text" name="job" id="job"
+                        aria-label="Fonction au sein de l’organisation que vous représentez"
                 <% if (job) { %> value="<%= job; %>"
                         <% } %>
                 >
             </div>
 
-            <button class="fr-btn fr-btn--secondary" type="submit">
+            <button class="fr-btn fr-btn--secondary" type="submit" aria-label="Mettre à jour les informations personnelles">
                 Mettre à jour
             </button>
         </form>
-    </div>
+    </main>
 </div>

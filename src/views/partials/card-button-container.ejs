@@ -11,7 +11,7 @@
             <script type="text/javascript" src="/assets/go-back.js"></script>
         <% } %>
     </span>
-    <button class="fr-btn" type="submit">
+    <button class="fr-btn" type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
         <%= label; %>
     </button>
 </div>

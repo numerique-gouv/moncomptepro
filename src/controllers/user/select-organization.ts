@@ -19,6 +19,7 @@ export const getSelectOrganizationController = async (
     );
 
     return res.render("user/select-organization", {
+      pageTitle: "Choisir une organisation",
       userOrganizations,
       csrfToken: csrfToken(req),
     });

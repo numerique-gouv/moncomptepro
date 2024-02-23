@@ -1,9 +1,6 @@
 <div class="dashboard-container">
-    <div class="dashboard-head">
-        <h1>MonComptePro</h1>
-    </div>
     <%- include('partials/sidemenu.ejs', {activeLink: 'manage-organizations'}) %>
-    <div class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
+    <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Vos organisations de rattachement</h2>
         <div class="fr-grid-row fr-grid-row--gutters">
@@ -18,22 +15,24 @@
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
-                                <h4 class="fr-tile__title">
+                                <h3 class="fr-tile__title">
                                     <%= cached_libelle; %>
-                                </h4>
+                                </h3>
                                 <p class="fr-tile__desc"><%= cached_adresse; %></p>
                                 <p class="fr-tile__desc">
                                     Activité principale (NAF/APE) : <%= cached_libelle_activite_principale; %>
                                 </p>
-                                <br />
                                 <p><strong><small>
                                     Si vous ne travaillez plus pour cette organisation, vous pouvez quitter l’organisation.
                                 </small></strong></p>
-                                <br />
                                 <div class="card-button-container">
                                     <form action="/users/quit-organization/<%= id %>" method="post">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-                                        <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
+                                        <button
+                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            type="submit"
+                                            aria-label="Quitter l'organisation <%= cached_libelle; %>"
+                                        >
                                             Quitter l’organisation
                                         </button>
                                     </form>
@@ -42,6 +41,7 @@
                                         href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="Détails sur l’Annuaire des Entreprises sur <%= cached_libelle; %>"
                                     >
                                         Détails sur l’Annuaire des Entreprises
                                     </a>
@@ -60,9 +60,9 @@
                     <div class="fr-col-12 fr-col-lg-10">
                         <div class="fr-tile fr-enlarge-link fr-tile--horizontal">
                             <div class="fr-tile__body">
-                                <h4 class="fr-tile__title">
+                                <h3 class="fr-tile__title">
                                     <a class="fr-tile__link"><%= cached_libelle; %></a>
-                                </h4>
+                                </h3>
                                 <p class="fr-tile__desc"><%= cached_adresse; %></p>
                                 <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
                                 <br />
@@ -109,5 +109,5 @@
                 </div>
             <% } %>
         </div>
-    </div>
+    </main>
 </div>

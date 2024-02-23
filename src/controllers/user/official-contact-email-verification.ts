@@ -54,6 +54,7 @@ export const getOfficialContactEmailVerificationController = async (
     const organization = (await getOrganizationById(organization_id))!;
 
     return res.render("user/official-contact-email-verification", {
+      pageTitle: "Vérifier votre email",
       notifications: await getNotificationsFromRequest(req),
       contactEmail,
       csrfToken: csrfToken(req),

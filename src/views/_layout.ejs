@@ -2,14 +2,32 @@
 <html lang="fr">
 <%- include('partials/head.ejs'); %>
 <body>
+      <div class="fr-skiplinks">
+          <nav class="fr-container" role="navigation" aria-label="Accès rapide">
+              <ul class="fr-skiplinks__list">
+                <% if (locals.use_dashboard_header) { %>
+                  <li>
+                      <a class="fr-link" href="#main">Contenu</a>
+                  </li>
+                <% } %>
+                  <li>
+                      <a class="fr-link" href="#footer">Pied de page</a>
+                  </li>
+              </ul>
+        </nav>
+    </div>
     <% if (locals.use_dashboard_header) { %>
         <%- include('partials/dashboard-header.ejs'); %>
+        <div>
+            <%- body; %>
+        </div>
     <% } else { %>
         <%- include('partials/header.ejs'); %>
+        <main>
+            <%- body; %>
+        </main>
     <% } %>
-    <main>
-        <%- body; %>
-    </main>
     <%- include('partials/footer.ejs'); %>
+    <div tabindex="-1" id="aria-live-message" aria-live="assertive" class="fr-sr-only"></div>
 </body>
 </html>

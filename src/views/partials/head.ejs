@@ -1,5 +1,12 @@
 <head>
-    <title>MonComptePro</title>
+    <title>
+      <% if (locals.error_code) { %>
+        Erreur <%= locals.error_code %> -
+      <% } else if (locals.notifications && locals.notifications.some(({ type }) => type === 'error')) { %>
+        Erreur -
+      <% } %>
+      <% if (locals.pageTitle) { %><%= locals.pageTitle %> - <% } %>MonComptePro
+    </title>
     <meta charset="utf-8" />
     <meta
             name="viewport"
@@ -15,9 +22,10 @@
     <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicons/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicons/android-chrome-512x512.png">
-    <link rel="stylesheet" href="/assets/application_20240126.css">
+    <link rel="stylesheet" href="/assets/application_20240223.css" />
     <link rel="stylesheet" href="/assets/dsfr.min.css">
     <link rel="stylesheet" href="/assets/utility/utility.css">
+    <script src="/assets/a11y.js"></script>
     <!-- Matomo -->
     <script type="text/javascript" src="/assets/matomo.js"></script>
     <noscript><p><img src="https://stats.data.gouv.fr/matomo.php?idsite=85&amp;rec=1" style="border:0;" alt="" /></p></noscript>

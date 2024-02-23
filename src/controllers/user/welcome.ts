@@ -24,6 +24,7 @@ export const getWelcomeController = async (
     });
 
     return res.render("user/welcome", {
+      pageTitle: "Compte créé",
       csrfToken: csrfToken(req),
       sponsor_label,
     });

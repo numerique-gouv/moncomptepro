@@ -38,6 +38,7 @@ export const getChooseSponsorController = async (
       (await getOrganizationById(organization_id))!;
 
     return res.render("user/choose-sponsor", {
+      pageTitle: "Sélectionner un parrain",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       organization_id,
@@ -98,7 +99,9 @@ export const getSponsorValidationController = async (
   next: NextFunction,
 ) => {
   try {
-    return res.render("user/sponsor-validation");
+    return res.render("user/sponsor-validation", {
+      pageTitle: "Compte vérifié",
+    });
   } catch (error) {
     next(error);
   }
@@ -123,6 +126,7 @@ export const getNoSponsorFoundController = async (
     });
 
     return res.render("user/no-sponsor-found", {
+      pageTitle: "Vérifier votre profil sans parrainage",
       csrfToken: csrfToken(req),
       organization_id,
     });
