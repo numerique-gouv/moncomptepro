@@ -120,7 +120,7 @@ export const joinOrganization = async ({
     organizationInfo,
   });
 
-  // Ensure Organization is active
+  // Ensure the organization is active
   if (!organization.cached_est_active) {
     throw new InseeNotActiveError();
   }
@@ -142,7 +142,8 @@ export const joinOrganization = async ({
     type: "organization_join_block",
   });
   if (!isEmpty(pendingModeration)) {
-    throw new UserAlreadyAskedToJoinOrganizationError();
+    const { id: moderation_id } = pendingModeration;
+    throw new UserAlreadyAskedToJoinOrganizationError(moderation_id);
   }
 
   const {
@@ -300,14 +301,14 @@ export const joinOrganization = async ({
     },
   });
 
-  await createModeration({
+  const { id: moderation_id } = await createModeration({
     user_id,
     organization_id,
     type: "organization_join_block",
     ticket_id: ticket.id,
   });
 
-  throw new UnableToAutoJoinOrganizationError();
+  throw new UnableToAutoJoinOrganizationError(moderation_id);
 };
 export const forceJoinOrganization = async ({
   organization_id,

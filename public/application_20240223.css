@@ -126,7 +126,7 @@ footer {
     text-transform: lowercase;
 }
 
-#send-email-verification {
+.moncomptepro-inline-form {
     display: inline;
 }
 
@@ -252,4 +252,12 @@ footer {
 .btn--fullwidth {
     justify-content: center !important;
     width: 100% !important;
+}
+
+.fr-card .moncomptepro-login-help {
+  text-align: center;
+}
+
+.fr-card .moncomptepro-login-help .fr-link--icon-left[class*=" fr-icon-"]:before {
+  margin-right: 0;
 }

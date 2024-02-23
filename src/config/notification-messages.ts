@@ -103,6 +103,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "success",
     description: "Vous ne faites désormais plus partie de cette organisation.",
   },
+  cancel_moderation_success: {
+    type: "success",
+    description: "Votre demande de rattachement a bien été annulée.",
+  },
   logout_success: {
     type: "info",
     description: "Information : vous êtes maintenant déconnecté.",

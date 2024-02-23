@@ -22,7 +22,7 @@ import {
   ejsLayoutMiddlewareFactory,
   renderWithEjsLayout,
 } from "./services/renderer";
-import { HttpError } from "http-errors";
+import { HttpError, NotFound } from "http-errors";
 import { ZodError } from "zod";
 import { connectionCountMiddleware } from "./middlewares/connection-count";
 import { isNull, omitBy } from "lodash";
@@ -238,6 +238,10 @@ let server: Server;
       next: NextFunction,
     ) => {
       logger.error(err);
+
+      if (err instanceof NotFound) {
+        return res.status(404).render("not-found-error");
+      }
 
       if (err instanceof ZodError) {
         return res.status(400).render("error", {

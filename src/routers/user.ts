@@ -3,6 +3,7 @@ import {
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
   getUnableToAutoJoinOrganizationController,
+  postCancelModerationAndRedirectControllerFactory,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from "../controllers/organization";
@@ -254,7 +255,27 @@ export const userRouter = () => {
 
   userRouter.get(
     "/unable-to-auto-join-organization",
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
     getUnableToAutoJoinOrganizationController,
+  );
+
+  userRouter.post(
+    "/cancel-moderation-and-redirect-to-sign-in/:moderation_id",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    postCancelModerationAndRedirectControllerFactory("/users/start-sign-in"),
+  );
+
+  userRouter.post(
+    "/cancel-moderation-and-redirect-to-join-org/:moderation_id",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    postCancelModerationAndRedirectControllerFactory(
+      "/users/join-organization",
+    ),
   );
 
   userRouter.get(
@@ -348,6 +369,16 @@ export const userRouter = () => {
     checkUserCanAccessAppMiddleware,
     csrfProtectionMiddleware,
     postQuitUserOrganizationController,
+  );
+
+  userRouter.post(
+    "/cancel-moderation/:moderation_id",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    postCancelModerationAndRedirectControllerFactory(
+      "/manage-organizations?notification=cancel_moderation_success",
+    ),
   );
 
   return userRouter;

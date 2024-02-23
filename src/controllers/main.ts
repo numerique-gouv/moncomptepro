@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 import { updatePersonalInformations } from "../managers/user";
 import notificationMessages from "../config/notification-messages";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
@@ -12,6 +12,10 @@ import {
   updateUserInLoggedInSession,
 } from "../managers/session";
 import { csrfToken } from "../middlewares/csrf-protection";
+import { idSchema } from "../services/custom-zod-schemas";
+import { getOrganizationFromModeration } from "../managers/moderation";
+import { isEmpty } from "lodash";
+import { ForbiddenError, NotFoundError } from "../config/errors";
 
 export const getHomeController = async (
   req: Request,
@@ -140,12 +144,45 @@ export const getHelpController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const email = isWithinLoggedInSession(req)
-    ? getUserFromLoggedInSession(req).email
-    : null;
-  return res.render("help", {
-    pageTitle: "Aide",
-    email,
-    csrfToken: email && csrfToken(req),
-  });
+  try {
+    let email: string | undefined;
+    let user: User | undefined;
+    let cached_libelle: string | null | undefined;
+
+    if (isWithinLoggedInSession(req)) {
+      user = getUserFromLoggedInSession(req);
+      email = user.email;
+    }
+
+    const schema = z.object({
+      moderation_id: z.union([idSchema(), z.undefined()]),
+    });
+    let { moderation_id } = await schema.parseAsync(req.query);
+
+    if (!isEmpty(user) && moderation_id) {
+      try {
+        const organization = await getOrganizationFromModeration({
+          user,
+          moderation_id,
+        });
+        cached_libelle = organization.cached_libelle;
+      } catch (e) {
+        if (!(e instanceof NotFoundError || e instanceof ForbiddenError)) {
+          return next(e);
+        }
+
+        moderation_id = undefined;
+      }
+    }
+
+    return res.render("help", {
+      pageTitle: "Aide",
+      email,
+      csrfToken: email && csrfToken(req),
+      organization_label: cached_libelle,
+      moderation_id,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

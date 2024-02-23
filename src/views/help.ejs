@@ -33,7 +33,7 @@
                     <li class="fr-mb-3w">Votre code a expiré ou vous avez perdu l’email qui contenait le code<br>
                         💡 <b>
                             <form
-                                    id="send-email-verification" autocomplete="off"
+                                    class="moncomptepro-inline-form" autocomplete="off"
                                     action="/users/send-email-verification"
                                     method="post"
                             >
@@ -54,6 +54,57 @@
                 >Contactez-nous</a>.
             </p>
         </div>
+        <% if (locals.email && locals.moderation_id) { %>
+            <div id="modifier-moderation">
+                <h3 class="title-with-anchor">
+                    <span>Modifier une demande de rattachement en cours</span>
+                    <a
+                            aria-label="Lien direct vers section Modifier une demande de rattachement en cours"
+                            class="fr-btn fr-btn--sm fr-icon-link  fr-btn--tertiary-no-outline"
+                            href="#modifier-moderation"
+                    ></a>
+                </h3>
+                <p>Vous avez demandé à être rattaché à <%= organization_label; %> avec votre adresse <%= email; %> :</p>
+                <ul>
+                    <li class="fr-mb-3w">Vous voulez utiliser une autre adresse email<br>
+                        💡 <b>
+                            <form
+                                    class="moncomptepro-inline-form"
+                                    autocomplete="off"
+                                    action="/users/cancel-moderation-and-redirect-to-sign-in/<%= moderation_id; %>"
+                                    method="post"
+                            >
+                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                <input
+                                        aria-label="Corriger l'email <%= email; %>"
+                                        class="fr-link"
+                                        type="submit"
+                                        value="Annuler la demande en cours et utiliser une autre adresse email"
+                                />
+                            </form>
+                        </b>
+                    </li>
+                    <li class="fr-mb-3w">Vous voulez être rattaché à une autre organisation<br>
+                        💡 <b>
+                            <form
+                                    class="moncomptepro-inline-form"
+                                    autocomplete="off"
+                                    action="/users/cancel-moderation-and-redirect-to-join-org/<%= moderation_id; %>"
+                                    method="post"
+                            >
+                                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                <input
+                                        aria-label="Corriger l’organisation <%= organization_label; %>"
+                                        class="fr-link"
+                                        type="submit"
+                                        value="Annuler la demande en cours et sélectionner une organisation différente"
+                                />
+                            </form>
+                        </b>
+                    </li>
+                </ul>
+            </div>
+        <% } %>
         <div id="organisation-etrangere">
             <h3 class="title-with-anchor">
                 <span>Puis-je rejoindre une organisation étrangère ?</span>
@@ -64,7 +115,8 @@
                 ></a>
             </h3>
             <p>
-                Non, MonComptePro vous permet de représenter uniquement des organisations enregistrées auprès de l’INSEE.
+                Non, MonComptePro vous permet de représenter uniquement des organisations enregistrées auprès de
+                l’INSEE.
             </p>
         </div>
         <div id="modifier-coordonnees">
@@ -106,8 +158,8 @@
             <p>
                 Pour plus d’information sur les mots de passe, vous pouvez consulter
                 <a
-                    href="https://www.cnil.fr/fr/les-conseils-de-la-cnil-pour-un-bon-mot-de-passe"
-                    target="_blank" rel="noopener noreferrer"
+                        href="https://www.cnil.fr/fr/les-conseils-de-la-cnil-pour-un-bon-mot-de-passe"
+                        target="_blank" rel="noopener noreferrer"
                 >les recommandations de la CNIL</a>.
             </p>
         </div>

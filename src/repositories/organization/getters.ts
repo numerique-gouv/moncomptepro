@@ -43,9 +43,10 @@ ORDER BY uo.created_at`,
 export const findPendingByUserId = async (user_id: number) => {
   const connection = getDatabaseConnection();
 
-  const { rows }: QueryResult<Organization> = await connection.query(
-    `
-SELECT o.*
+  const { rows }: QueryResult<Organization & { moderation_id: number }> =
+    await connection.query(
+      `
+SELECT o.*, m.id as moderation_id
 FROM moderations m
 INNER JOIN organizations o on o.id = m.organization_id
 WHERE m.user_id = $1
@@ -53,8 +54,8 @@ AND m.type = 'organization_join_block'
 AND m.moderated_at IS NULL
 ORDER BY m.created_at
 `,
-    [user_id],
-  );
+      [user_id],
+    );
 
   return rows;
 };

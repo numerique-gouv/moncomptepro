@@ -19,11 +19,23 @@ export class UserNotFoundError extends Error {}
 
 export class NotFoundError extends Error {}
 
-export class UnableToAutoJoinOrganizationError extends Error {}
+export class ForbiddenError extends Error {}
+
+export class UnableToAutoJoinOrganizationError extends Error {
+  constructor(public moderationId: number) {
+    super();
+    this.moderationId = moderationId;
+  }
+}
 
 export class UserInOrganizationAlreadyError extends Error {}
 
-export class UserAlreadyAskedToJoinOrganizationError extends Error {}
+export class UserAlreadyAskedToJoinOrganizationError extends Error {
+  constructor(public moderationId: number) {
+    super();
+    this.moderationId = moderationId;
+  }
+}
 
 export class UserHasAlreadyBeenAuthenticatedByPeers extends Error {}
 

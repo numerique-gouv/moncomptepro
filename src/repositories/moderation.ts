@@ -49,3 +49,30 @@ WHERE user_id = $1
 
   return rows.shift();
 };
+
+export const findModerationById = async (id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rows }: QueryResult<Moderation> = await connection.query(
+    `
+  SELECT *
+  FROM moderations
+  WHERE id = $1;`,
+    [id],
+  );
+
+  return rows.shift();
+};
+
+export const deleteModeration = async (id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rowCount } = await connection.query(
+    `
+  DELETE FROM moderations
+  WHERE id = $1;`,
+    [id],
+  );
+
+  return rowCount > 0;
+};
