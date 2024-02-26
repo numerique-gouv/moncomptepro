@@ -40,9 +40,10 @@ describe("sign-in with email verification renewal", () => {
       )
       // extract the verification code from the email subject
       .then((email) => {
-        const matches = /.*<strong>(\s*(?:\d\s*){10})<\/strong>.*/.exec(
-          email.body,
-        );
+        const matches =
+          /.*<span style="color: #000091; font-size: 18px;"><strong>(\s*(?:\d\s*){10})<\/strong><\/span>.*/.exec(
+            email.body,
+          );
         if (matches && matches.length > 0) {
           return matches[1];
         }
