@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // POST the response to the endpoint that calls
     // @simplewebauthn/server -> verifyRegistrationResponse()
     registrationResponseStringInputElement.value = JSON.stringify(attResp);
-    registrationResponseForm.submit();
+    registrationResponseForm.requestSubmit();
   };
 
   clearDisplay();
