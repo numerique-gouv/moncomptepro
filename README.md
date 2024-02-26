@@ -38,7 +38,7 @@ Voici 3 scénarios que vous pouvez tester sur cet environnement :
 ### Les étapes de l’installation
 
 - [ ] Je me familiarise avec la cinématique OpenId Connect : voir [Connaissances préalables](#connaissances-préalables)
-- [ ] [Je contacte l'équipe MonComptePro](mailto:moncomptepro@beta.gouv.fr?subject=Int%C3%A9gration%20MonComptePro&body=Bonjour%2C%0D%0A%0D%0AJe%20voudrais%20int%C3%A9grer%20MonComptePro%20sur%20notre%20plateforme.%20Pouvez-vous%20m'envoyer%20un%20client_id%20et%20un%20client_secret%20de%20test%20%3F%0D%0A%0D%0AVoici%20les%20informations%20de%20test%20de%20notre%20plateforme%20%3A%0D%0A%0D%0A-%20client_name%20%3A%0D%0A-%20redirect_uris%20%3A%0D%0A-%20post_logout_redirect_uris%20%3A%0D%0A-%20%3A%0D%0A-%20client_uri%20%3A%0D%0A-%20client_description%20%3A%0D%0A%0D%0AMerci%20!) en leur demandant le `client_id` et le `client_secret` de test. Je fournis à l'équipe dans cette demande :
+- [ ] [Je contacte l'équipe MonComptePro](mailto:contact@moncomptepro.beta.gouv.fr?subject=Int%C3%A9gration%20MonComptePro&body=Bonjour%2C%0D%0A%0D%0AJe%20voudrais%20int%C3%A9grer%20MonComptePro%20sur%20notre%20plateforme.%20Pouvez-vous%20m'envoyer%20un%20client_id%20et%20un%20client_secret%20de%20test%20%3F%0D%0A%0D%0AVoici%20les%20informations%20de%20test%20de%20notre%20plateforme%20%3A%0D%0A%0D%0A-%20client_name%20%3A%0D%0A-%20redirect_uris%20%3A%0D%0A-%20post_logout_redirect_uris%20%3A%0D%0A-%20%3A%0D%0A-%20client_uri%20%3A%0D%0A-%20client_description%20%3A%0D%0A%0D%0AMerci%20!) en leur demandant le `client_id` et le `client_secret` de test. Je fournis à l'équipe dans cette demande :
   - `client_name` : le nom de mon application
   - `redirect_uris` : la ou les différentes URIs de redirection
   - `post_logout_redirect_uris` : la ou les différentes URIs de redirection post logout
@@ -48,7 +48,7 @@ Voici 3 scénarios que vous pouvez tester sur cet environnement :
 - [ ] J’ai trouvé un client OpenID compatible avec ma pile technique : vous pouvez [consulter la liste officielle du site openid.net](https://openid.net/developers/certified/)
 - [ ] J’affiche un bouton MonComptePro conforme sur mon application en environment de développement : voir [Spécifications visuelles](#spécifications-visuelles)
 - [ ] J’ai installé et paramétré mon client OpenID sur mon application en développement : voir [Spécifications techniques](#spécifications-techniques)
-- [ ] Pour passer l’erreur `invalid_redirect_uri`, j'ai fourni mon URL de redirection de test à [l’équipe MonComptePro](mailto:moncomptepro@beta.gouv.fr) (ex : http://localhost:3000/auth/callback, https://dev.example.com/api/oauth/connection)
+- [ ] Pour passer l’erreur `invalid_redirect_uri`, j'ai fourni mon URL de redirection de test à [l’équipe MonComptePro](mailto:contact@moncomptepro.beta.gouv.fr) (ex : http://localhost:3000/auth/callback, https://dev.example.com/api/oauth/connection)
 - [ ] Mon implémentation fonctionne
 - [ ] Je contractualise officiellement ma collaboration avec la Dinum en remplissant le [DataPass dédié](https://datapass.api.gouv.fr/moncomptepro)
 - [ ] Le DataPass étant validé, j’ai récupéré mon `client_id` et mon `client_secret` de production en demandant à l'équipe MonComptePro de me les remettre de manière sécurisée
