@@ -11,6 +11,7 @@ import {
   InseeConnectionError,
   InseeNotActiveError,
   InvalidSiretError,
+  NotFoundError,
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
@@ -26,6 +27,11 @@ import {
 } from "../managers/organization/join";
 import { getUserFromLoggedInSession } from "../managers/session";
 import { csrfToken } from "../middlewares/csrf-protection";
+import {
+  cancelModeration,
+  getOrganizationFromModeration,
+} from "../managers/moderation";
+import { NotFound } from "http-errors";
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -113,7 +119,9 @@ export const postJoinOrganizationMiddleware = async (
       error instanceof UnableToAutoJoinOrganizationError ||
       error instanceof UserAlreadyAskedToJoinOrganizationError
     ) {
-      return res.redirect(`/users/unable-to-auto-join-organization`);
+      return res.redirect(
+        `/users/unable-to-auto-join-organization?moderation_id=${error.moderationId}`,
+      );
     }
 
     if (
@@ -148,13 +156,50 @@ export const getUnableToAutoJoinOrganizationController = async (
   next: NextFunction,
 ) => {
   try {
+    const schema = z.object({
+      moderation_id: idSchema(),
+    });
+    const { moderation_id } = await schema.parseAsync(req.query);
+    const user = getUserFromLoggedInSession(req);
+
+    const { cached_libelle } = await getOrganizationFromModeration({
+      user,
+      moderation_id,
+    });
+
     return res.render("user/unable-to-auto-join-organization", {
       pageTitle: "Rattachement en cours",
+      csrfToken: csrfToken(req),
+      email: user.email,
+      organization_label: cached_libelle,
+      moderation_id,
     });
   } catch (e) {
+    if (e instanceof NotFoundError) {
+      next(new NotFound());
+    }
+
     next(e);
   }
 };
+
+export const postCancelModerationAndRedirectControllerFactory =
+  (redirectUrl: string) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const schema = z.object({
+        moderation_id: idSchema(),
+      });
+      const { moderation_id } = await schema.parseAsync(req.params);
+      const user = getUserFromLoggedInSession(req);
+
+      await cancelModeration({ user, moderation_id });
+
+      return res.redirect(redirectUrl);
+    } catch (e) {
+      next(e);
+    }
+  };
 
 export const postQuitUserOrganizationController = async (
   req: Request,

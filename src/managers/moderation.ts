@@ -1,7 +1,12 @@
-import { NotFoundError } from "../config/errors";
 import { sendMail } from "../connectors/brevo";
 import { findById as findOrganizationById } from "../repositories/organization/getters";
 import { findById as findUserById } from "../repositories/user";
+import {
+  deleteModeration,
+  findModerationById,
+} from "../repositories/moderation";
+import { isEmpty } from "lodash";
+import { ForbiddenError, NotFoundError } from "../config/errors";
 
 export const sendModerationProcessedEmail = async ({
   organization_id,
@@ -12,7 +17,7 @@ export const sendModerationProcessedEmail = async ({
 }): Promise<{ emailSent: boolean }> => {
   const user = await findUserById(user_id);
 
-  if (!user) {
+  if (isEmpty(user)) {
     throw new NotFoundError();
   }
 
@@ -20,7 +25,7 @@ export const sendModerationProcessedEmail = async ({
 
   const organization = await findOrganizationById(organization_id);
 
-  if (!organization) {
+  if (isEmpty(organization)) {
     throw new NotFoundError();
   }
 
@@ -36,4 +41,49 @@ export const sendModerationProcessedEmail = async ({
   });
 
   return { emailSent: true };
+};
+
+export const getOrganizationFromModeration = async ({
+  user,
+  moderation_id,
+}: {
+  user: User;
+  moderation_id: number;
+}) => {
+  const moderation = await findModerationById(moderation_id);
+
+  if (isEmpty(moderation)) {
+    throw new NotFoundError();
+  }
+
+  const organization = await findOrganizationById(moderation.organization_id);
+  if (!organization) {
+    throw new NotFoundError();
+  }
+
+  if (user.id !== moderation.user_id) {
+    throw new ForbiddenError();
+  }
+
+  return organization;
+};
+
+export const cancelModeration = async ({
+  user,
+  moderation_id,
+}: {
+  user: User;
+  moderation_id: number;
+}) => {
+  const moderation = await findModerationById(moderation_id);
+
+  if (isEmpty(moderation)) {
+    throw new NotFoundError();
+  }
+
+  if (user.id !== moderation.user_id) {
+    throw new ForbiddenError();
+  }
+
+  return await deleteModeration(moderation_id);
 };
