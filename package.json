@@ -13,8 +13,6 @@
     "build:typescript": "tsc",
     "build:views": "bash -c 'cp -r src/views build/views'",
     "build:assets:vite": "vite build",
-    "build:assets:simplewebauthn": "bash -c 'cp node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js public/simplewebauthn.umd.min.js'",
-    "build:assets:choicesjs": "bash -c 'cp node_modules/choices.js/public/assets/{scripts/choices.min.js,styles/choices.min.css} public/'",
     "build:assets:dsfr": "bash -c 'cp -r node_modules/@gouvfr/dsfr/dist/{dsfr.min.css,fonts,icons,utility} public/'",
     "build:db:migrate": "node-pg-migrate up",
     "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",

@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const { startAuthentication } = SimpleWebAuthnBrowser;
+import { startAuthentication } from '@simplewebauthn/browser';
 
+document.addEventListener('DOMContentLoaded', function() {
   const beginElement = document.getElementById('webauthn-btn-begin-authentication');
   const authenticationResponseStringInputElement = document.querySelector('input[name="webauthn_authentication_response_string"]');
   const authenticationResponseForm = document.getElementById('webauthn-authentication-response-form');
