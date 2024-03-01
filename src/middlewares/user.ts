@@ -71,10 +71,6 @@ export const checkUserIsConnectedMiddleware = async (
       const referrerPath = getReferrerPath(req);
       if (referrerPath) {
         req.session.referrerPath = referrerPath;
-
-        return res.redirect(
-          `/users/start-sign-in?notification=session_expired`,
-        );
       }
 
       return res.redirect(`/users/start-sign-in`);
