@@ -4,8 +4,11 @@ DELETE FROM organizations;
 DELETE FROM users_oidc_clients;
 DELETE FROM users;
 DELETE FROM oidc_clients;
-ALTER SEQUENCE moderations_id_seq RESTART WITH 1;
-ALTER SEQUENCE organizations_id_seq RESTART WITH 1;
-ALTER SEQUENCE users_oidc_clients_id_seq RESTART WITH 1;
-ALTER SEQUENCE users_id_seq RESTART WITH 1;
-ALTER SEQUENCE oidc_clients_id_seq RESTART WITH 1;
+-- The sequence starts at 1000 to prevent collisions with data from fixture files
+-- where the IDs are predefined, as well as to avoid any conflicts when a record
+-- is added subsequent to the insertion of fixtures in database.
+ALTER SEQUENCE moderations_id_seq RESTART WITH 1000;
+ALTER SEQUENCE organizations_id_seq RESTART WITH 1000;
+ALTER SEQUENCE users_oidc_clients_id_seq RESTART WITH 1000;
+ALTER SEQUENCE users_id_seq RESTART WITH 1000;
+ALTER SEQUENCE oidc_clients_id_seq RESTART WITH 1000;
