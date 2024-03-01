@@ -25,7 +25,6 @@ describe("redirect after session expiration", () => {
       .contains("Votre organisation")
       .click();
 
-    cy.contains("votre session a expiré");
     login(cy);
     cy.contains("Vos organisations de rattachement");
 
@@ -35,7 +34,6 @@ describe("redirect after session expiration", () => {
     // click on delete organization
     cy.get('[action="/users/quit-organization/1"]').submit();
 
-    cy.contains("votre session a expiré");
     login(cy);
     // should not redirect on the delete route but on the org management page
     cy.contains("Vos organisations de rattachement");

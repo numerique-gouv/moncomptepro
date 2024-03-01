@@ -74,11 +74,6 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       "Information : pour garantir la sécurité de votre compte, merci de vous identifier à nouveau.",
   },
-  session_expired: {
-    type: "info",
-    description:
-      "Information : votre session a expiré. Merci de vous identifier à nouveau.",
-  },
   browser_not_trusted: {
     type: "info",
     description:
