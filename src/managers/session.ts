@@ -8,7 +8,7 @@ import { isExpired } from "../services/is-expired";
 import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
 
 export const isWithinLoggedInSession = (req: Request) => {
-  return !isEmpty(req.session.user);
+  return !isEmpty(req.session?.user);
 };
 
 export const createLoggedInSession = async (

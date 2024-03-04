@@ -137,6 +137,10 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "error",
     description: "Erreur : votre clé d’accès est invalide.",
   },
+  user_successfully_deleted: {
+    type: "success",
+    description: "Ah que salut 💔",
+  },
 };
 
 export default notificationMessages;

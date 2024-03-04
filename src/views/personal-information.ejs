@@ -75,20 +75,30 @@
                 >
             </div>
 
-            <button class="fr-btn fr-btn--secondary" type="submit" aria-label="Mettre à jour les informations personnelles">
+            <button
+                    class="fr-btn fr-btn--secondary"
+                    type="submit"
+                    aria-label="Mettre à jour les informations personnelles"
+            >
                 Mettre à jour
             </button>
         </form>
-        <h3 class="fr-mt-4w">Suppression</h3>
-        <p>Pour des raisons légales, vos données sont sauvegardées pendant 3 ans après la supression de votre compte.</p>
-        <a
-                class="fr-btn btn--danger js-confirm"
-                data-confirm="Attention, t’es chaud copain !"
-                type="submit"
-                href="https://manu.habite.la"
-        >
-            Supprimer votre compte
-        </a>
+        <form class="fr-mt-4w" action="/users/delete" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+            <h3>Suppression</h3>
+
+            <p>Pour des raisons légales, vos données sont sauvegardées pendant 3 ans après la suppression de votre
+                compte.</p>
+
+            <button
+                    class="fr-btn btn--danger js-confirm"
+                    data-confirm="Attention, t’es chaud copain !"
+                    type="submit"
+            >
+                Supprimer votre compte
+            </button>
+        </form>
     </main>
 </div>
 <script src="/assets/confirm.js"></script>
