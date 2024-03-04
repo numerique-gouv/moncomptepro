@@ -249,6 +249,23 @@ footer {
     box-shadow: inset 0 0 0 1px var(--border-plain-blue-france);;
 }
 
+.btn--danger{
+    --hover: inherit !important;
+    --active: inherit !important;
+    background-color: transparent !important;
+    box-shadow: inset 0 0 0 1px var(--border-plain-error) !important;
+    color: var(--border-plain-error) !important;
+}
+
+.btn--danger:disabled,
+a.btn--danger:not([href]) {
+    --hover: inherit !important;
+    --active: inherit !important;
+    background-color: transparent !important;
+    box-shadow: inset 0 0 0 1px var(--border-disabled-grey) !important;
+    color: var(--text-disabled-grey) !important;
+}
+
 .btn--fullwidth {
     justify-content: center !important;
     width: 100% !important;
