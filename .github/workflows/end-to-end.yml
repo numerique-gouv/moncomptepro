@@ -54,6 +54,7 @@ jobs:
           - signup_entreprise_unipersonnelle
           - redirect_after_session_expiration
           - reset_password
+          - join_must_confirm
     runs-on: ubuntu-20.04
     services:
       moncomptepro-standard-client:

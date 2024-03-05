@@ -15,8 +15,10 @@ import {
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
+  UserMustConfirmToJoinOrganizationError,
 } from "../config/errors";
 import {
+  getOrganizationById,
   quitOrganization,
   selectOrganization,
 } from "../managers/organization/main";
@@ -32,6 +34,7 @@ import {
   getOrganizationFromModeration,
 } from "../managers/moderation";
 import { NotFound } from "http-errors";
+import { isEmpty } from "lodash";
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -96,14 +99,16 @@ export const postJoinOrganizationMiddleware = async (
 ) => {
   try {
     const schema = z.object({
+      confirmed: optionalBooleanSchema(),
       siret: siretSchema(),
     });
 
-    const { siret } = await schema.parseAsync(req.body);
+    const { confirmed, siret } = await schema.parseAsync(req.body);
 
     const userOrganizationLink = await joinOrganization({
       siret,
       user_id: getUserFromLoggedInSession(req).id,
+      confirmed,
     });
 
     if (req.session.mustReturnOneOrganizationInPayload) {
@@ -146,6 +151,42 @@ export const postJoinOrganizationMiddleware = async (
       );
     }
 
+    if (error instanceof UserMustConfirmToJoinOrganizationError) {
+      return res.redirect(
+        `/users/join-organization-confirm?organization_id=${error.organizationId}`,
+      );
+    }
+
+    next(error);
+  }
+};
+
+export const getJoinOrganizationConfirmController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const schema = z.object({
+      organization_id: idSchema(),
+    });
+
+    const { organization_id } = await schema.parseAsync(req.query);
+
+    const organization = await getOrganizationById(organization_id);
+
+    if (isEmpty(organization)) {
+      return next(new NotFound());
+    }
+
+    return res.render("user/join-organization-confirm", {
+      pageTitle: "Confirmer le rattachement",
+      csrfToken: csrfToken(req),
+      organization_label: organization.cached_libelle,
+      email: getUserFromLoggedInSession(req).email,
+      siret: organization.siret,
+    });
+  } catch (error) {
     next(error);
   }
 };

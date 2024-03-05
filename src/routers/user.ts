@@ -1,5 +1,6 @@
 import { Router, urlencoded } from "express";
 import {
+  getJoinOrganizationConfirmController,
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
   getUnableToAutoJoinOrganizationController,
@@ -251,6 +252,14 @@ export const userRouter = () => {
     postJoinOrganizationMiddleware,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
+  );
+
+  userRouter.get(
+    "/join-organization-confirm",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    getJoinOrganizationConfirmController,
   );
 
   userRouter.get(

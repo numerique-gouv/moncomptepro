@@ -8,6 +8,7 @@ import {
   UnableToAutoJoinOrganizationError,
   UserAlreadyAskedToJoinOrganizationError,
   UserInOrganizationAlreadyError,
+  UserMustConfirmToJoinOrganizationError,
   UserNotFoundError,
 } from "../../config/errors";
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
@@ -100,9 +101,11 @@ export const getOrganizationSuggestions = async ({
 export const joinOrganization = async ({
   siret,
   user_id,
+  confirmed = false,
 }: {
   siret: string;
   user_id: number;
+  confirmed: boolean;
 }): Promise<UserOrganizationLink> => {
   // Update organizationInfo
   let organizationInfo: OrganizationInfo;
@@ -167,6 +170,14 @@ export const joinOrganization = async ({
       user_id,
       verification_type: null,
     });
+  }
+
+  if (
+    isAFreeEmailProvider(email) &&
+    !hasLessThanFiftyEmployees(organization) &&
+    !confirmed
+  ) {
+    throw new UserMustConfirmToJoinOrganizationError(organization_id);
   }
 
   if (
