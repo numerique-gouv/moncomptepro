@@ -4,7 +4,7 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 
 ## Prerequisites
 
-- Node.js (v16) installed locally (we suggest the usage of [nvm](https://github.com/nvm-sh/nvm))
+- Node.js (v20) installed locally (we suggest the usage of [nvm](https://github.com/nvm-sh/nvm))
 - Docker (>= v25) and Docker Compose (>= v2.24) installed ([doc](https://docs.docker.com/engine/install/))
 - Clone the MonComptePro repository
 

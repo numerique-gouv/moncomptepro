@@ -161,25 +161,13 @@ export const isSiretValid = (siret: unknown): siret is string => {
   return !!siretNoSpaces.match(/^\d{14}$/);
 };
 
-// URL.canParse has been introduced in node v19
-// TODO replace this when it is available
-const canParseURL = (input: string, base?: string) => {
-  try {
-    new URL(input, base);
-
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
 export const getTrustedReferrerPath = (referrer: unknown): string | null => {
   if (!isString(referrer) || isEmpty(referrer)) {
     return null;
   }
 
-  const isValidURL = canParseURL(referrer);
-  const isValidRelativeURL = canParseURL(referrer, MONCOMPTEPRO_HOST);
+  const isValidURL = URL.canParse(referrer);
+  const isValidRelativeURL = URL.canParse(referrer, MONCOMPTEPRO_HOST);
   let parsedURL: URL;
   if (isValidURL) {
     parsedURL = new URL(referrer);
