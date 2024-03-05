@@ -37,6 +37,13 @@ export class UserAlreadyAskedToJoinOrganizationError extends Error {
   }
 }
 
+export class UserMustConfirmToJoinOrganizationError extends Error {
+  constructor(public organizationId: number) {
+    super();
+    this.organizationId = organizationId;
+  }
+}
+
 export class UserHasAlreadyBeenAuthenticatedByPeers extends Error {}
 
 export class InvalidCredentialsError extends Error {}
