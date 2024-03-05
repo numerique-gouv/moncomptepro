@@ -1,0 +1,123 @@
+body {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.page-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 1.5rem auto 1.5rem;
+}
+
+@media all and (max-width: 1248px) {
+  .page-container {
+    margin: 1.5rem;
+    width: calc(100% - 3rem);
+  }
+}
+
+.dashboard-header {
+  background-color: #fff;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 18, .16));
+}
+
+.dashboard-header .dashboard-header__container {
+  max-width: 78rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.dashboard-header__title {
+  max-width: 78rem;
+  margin: auto;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.dashboard-header .dashboard-header__container .dashboard-header__link {
+  flex-shrink: 0;
+}
+
+.dashboard-header .dashboard-header__container .fr-header__brand-top {
+  margin: -1rem;
+}
+
+@media (max-width: 62em) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+}
+
+.dashboard-container nav {
+  grid-area: nav;
+}
+
+.dashboard-container .dashboard-content {
+  grid-area: content;
+}
+
+.dashboard-container {
+  max-width: 78rem;
+  padding: 1.5rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px auto;
+  grid-template-areas: 'nav content';
+}
+
+@media (max-width: 62em) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+}
+
+@media all and (max-width: 768px) {
+
+  .dashboard-container {
+    grid-template-columns: 100%;
+    grid-template-areas:
+                'head'
+                'nav'
+                'content';
+  }
+
+  .dashboard-container .dashboard-content {
+    margin-top: 1rem;
+  }
+}
+
+.card-container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card-container .fr-alert + .fr-alert {
+  margin-top: 0;
+}
+
+.card-container > * {
+  width: 100%;
+  max-width: 35rem;
+}
+
+.card-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
