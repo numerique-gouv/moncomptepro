@@ -2,7 +2,6 @@ import { Request } from "express";
 import { z, ZodError } from "zod";
 import notificationMessages from "../config/notification-messages";
 import { notificationLabelSchema } from "./custom-zod-schemas";
-import * as Sentry from "@sentry/node";
 
 export const getNotificationLabelFromRequest = async (req: Request) => {
   try {
@@ -16,7 +15,6 @@ export const getNotificationLabelFromRequest = async (req: Request) => {
   } catch (e) {
     if (e instanceof ZodError) {
       // fail silently
-      Sentry.captureException(e);
       return null;
     }
 
