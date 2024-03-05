@@ -66,7 +66,7 @@ export const sendMail = async ({
     cc: undefined as { email: string }[] | undefined,
     sender: {
       name: "L’équipe MonComptePro",
-      email: senderEmail || "ne-pas-repondre@email.moncomptepro.beta.gouv.fr",
+      email: senderEmail || "nepasrepondre@email.moncomptepro.beta.gouv.fr",
     },
     replyTo: {
       name: "L’équipe MonComptePro",
