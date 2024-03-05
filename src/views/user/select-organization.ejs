@@ -12,7 +12,7 @@
                     <div class="fr-grid-row fr-grid-row--gutters fr-mb-3v">
                         <% userOrganizations.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }, index) => { %>
                             <div class="fr-col-12">
-                                <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal moncomptepro-selectable-tile <% if (index === 0) { %>moncomptepro-selected-tile<% } %>">
+                                <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal selectable-tile <% if (index === 0) { %>selected-tile<% } %>">
                                     <div class="fr-tile__body">
                                         <h2 class="fr-tile__title">
                                             <a class="fr-tile__link" href aria-label="<%= cached_libelle; %> (choisir cette organisation)"><%= cached_libelle; %></a>

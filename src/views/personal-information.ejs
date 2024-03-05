@@ -5,7 +5,7 @@
         <h2>
             Vos informations personnelles
         </h2>
-        <div class="fr-notice moncomptepro-notice--email fr-mb-3w">
+        <div class="fr-notice notice--email fr-mb-3w">
             <div class="fr-container">
                 <div class="fr-notice__body">
                     <p>
@@ -75,9 +75,32 @@
                 >
             </div>
 
-            <button class="fr-btn fr-btn--secondary" type="submit" aria-label="Mettre à jour les informations personnelles">
+            <button
+                    class="fr-btn fr-btn--secondary"
+                    type="submit"
+                    aria-label="Mettre à jour les informations personnelles"
+            >
                 Mettre à jour
+            </button>
+        </form>
+        <form class="fr-mt-4w" action="/users/delete" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+            <h3>Suppression</h3>
+
+            <p>
+                Pour des raisons légales, vos données sont sauvegardées pendant 3 ans après la suppression de votre
+                compte.
+            </p>
+
+            <button
+                    class="fr-btn btn--danger js-confirm"
+                    data-confirm="Une fois que vous supprimez votre compte, il n'y a pas de retour en arrière. Veuillez en être certain."
+                    type="submit"
+            >
+                Supprimer votre compte
             </button>
         </form>
     </main>
 </div>
+<script src="/assets/confirm.js"></script>

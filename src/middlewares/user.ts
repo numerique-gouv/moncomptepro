@@ -13,6 +13,7 @@ import {
 } from "../managers/organization/authentication-by-peers";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import {
+  destroyLoggedInSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
@@ -120,6 +121,7 @@ export const checkUserIsVerifiedMiddleware = (
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         // The user has an active session but is not in the database anymore
+        await destroyLoggedInSession(req);
         next(new Unauthorized());
       }
 

@@ -1,0 +1,70 @@
+.notice--email .fr-notice__body:before {
+  content: "";
+  background-image: url(/assets/060-at.svg);
+  background-color: inherit;
+}
+
+.fr-notice.notice--email {
+  background-color: var(--background-contrast-info);
+}
+
+.notice--email strong {
+  color: var(--text-default-info);
+}
+
+.fr-notice.notice--change-email {
+  color: var(--text-action-high-blue-france);
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.fr-notice.notice--change-email .fr-notice__body:before {
+  content: none;
+}
+
+.fr-notice.notice--change-email .fr-notice__body {
+  padding-left: 0;
+}
+
+.fr-notice.notice--change-email .fr-btn--close:before {
+  -webkit-mask-image: url(icons/system/arrow-go-back-fill.svg);
+  mask-image: url(icons/system/arrow-go-back-fill.svg);;
+}
+
+.fr-tile.selectable-tile {
+  box-shadow: inset 0 0 0 1px var(--border-default-grey);;
+}
+
+.fr-tile.selectable-tile.selected-tile {
+  box-shadow: inset 0 0 0 1px var(--border-plain-blue-france);;
+}
+
+.btn--danger{
+  --hover: inherit !important;
+  --active: inherit !important;
+  background-color: transparent !important;
+  box-shadow: inset 0 0 0 1px var(--border-plain-error) !important;
+  color: var(--border-plain-error) !important;
+}
+
+.btn--danger:disabled,
+a.btn--danger:not([href]) {
+  --hover: inherit !important;
+  --active: inherit !important;
+  background-color: transparent !important;
+  box-shadow: inset 0 0 0 1px var(--border-disabled-grey) !important;
+  color: var(--text-disabled-grey) !important;
+}
+
+.btn--fullwidth {
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.fr-card .login-help {
+  text-align: center;
+}
+
+.fr-card .login-help .fr-link--icon-left[class*=" fr-icon-"]:before {
+  margin-right: 0;
+}

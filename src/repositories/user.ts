@@ -117,3 +117,17 @@ export const create = async ({
 
   return rows.shift()!;
 };
+
+export const deleteUser = async (id: number) => {
+  const connection = getDatabaseConnection();
+
+  const { rowCount } = await connection.query(
+    `
+        DELETE FROM users
+        WHERE id = $1
+        RETURNING *`,
+    [id],
+  );
+
+  return rowCount > 0;
+};

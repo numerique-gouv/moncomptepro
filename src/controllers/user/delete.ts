@@ -1,0 +1,27 @@
+import { NextFunction, Request, Response } from "express";
+import {
+  destroyLoggedInSession,
+  getUserFromLoggedInSession,
+} from "../../managers/session";
+import { deleteUser } from "../../repositories/user";
+import { logger } from "../../services/log";
+
+export const postDeleteUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id, email } = getUserFromLoggedInSession(req);
+
+    await deleteUser(id);
+    logger.info(`user ${email} successfully deleted`);
+    await destroyLoggedInSession(req);
+
+    return res.redirect(
+      `/users/start-sign-in?notification=user_successfully_deleted`,
+    );
+  } catch (error) {
+    next(error);
+  }
+};

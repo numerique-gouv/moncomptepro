@@ -16,6 +16,7 @@ import {
   checkEmailInSessionMiddleware,
   checkUserCanAccessAppMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
+  checkUserHasLoggedInRecentlyMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserHasSelectedAnOrganizationMiddleware,
@@ -75,6 +76,7 @@ import {
   getSignInWithPasskeyController,
   postVerifyAuthenticationController,
 } from "../controllers/webauthn";
+import { postDeleteUserController } from "../controllers/user/delete";
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -388,6 +390,14 @@ export const userRouter = () => {
     postCancelModerationAndRedirectControllerFactory(
       "/manage-organizations?notification=cancel_moderation_success",
     ),
+  );
+
+  userRouter.post(
+    "/delete",
+    rateLimiterMiddleware,
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postDeleteUserController,
   );
 
   return userRouter;
