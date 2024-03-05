@@ -139,7 +139,7 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   },
   user_successfully_deleted: {
     type: "success",
-    description: "Ah que salut 💔",
+    description: "Votre compte a bien été supprimé.",
   },
 };
 
