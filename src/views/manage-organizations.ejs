@@ -40,9 +40,10 @@
                                     <form action="/users/quit-organization/<%= id %>" method="post">
                                         <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
                                         <button
-                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
                                             type="submit"
                                             aria-label="Quitter l'organisation <%= cached_libelle; %>"
+                                            data-confirm="Une fois que vous quittez cette organisation, il faudra repasser par une étape de validation pour y revenir. Veuillez en être certain."
                                         >
                                             Quitter l’organisation
                                         </button>
@@ -115,3 +116,4 @@
         </div>
     </main>
 </div>
+<script src="/assets/confirm.js"></script>
