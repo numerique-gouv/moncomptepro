@@ -1,16 +1,27 @@
 import { Request } from "express";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import notificationMessages from "../config/notification-messages";
 import { notificationLabelSchema } from "./custom-zod-schemas";
+import * as Sentry from "@sentry/node";
 
 export const getNotificationLabelFromRequest = async (req: Request) => {
-  const schema = z.object({
-    notification: notificationLabelSchema(),
-  });
+  try {
+    const schema = z.object({
+      notification: notificationLabelSchema(),
+    });
 
-  const { notification } = await schema.parseAsync(req.query);
+    const { notification } = await schema.parseAsync(req.query);
 
-  return notification;
+    return notification || null;
+  } catch (e) {
+    if (e instanceof ZodError) {
+      // fail silently
+      Sentry.captureException(e);
+      return null;
+    }
+
+    throw e;
+  }
 };
 
 export const getNotificationsFromRequest = async (req: Request) => {
