@@ -8,7 +8,7 @@
             >
                 retour
             </button>
-            <script type="text/javascript" src="/assets/go-back.js"></script>
+            <script type="module" src="<%= asset('go-back.js') %>"></script>
         <% } %>
     </span>
     <button class="fr-btn" type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>

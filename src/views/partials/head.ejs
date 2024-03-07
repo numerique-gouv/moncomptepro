@@ -17,21 +17,17 @@
     <meta name="googlebot" content="noindex,nofollow" />
     <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    <link rel="icon" type="image/x-icon" href="/assets/favicons/favicon.svg">
-    <link rel="shrotcut icon" type="image/x-icon" href="/assets/favicons/favicon.ico">
-    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicons/android-chrome-512x512.png">
-    <link rel="stylesheet" href="/assets/layout.css">
-    <link rel="stylesheet" href="/assets/dsfr-extension.css">
-    <link rel="stylesheet" href="/assets/custom.css">
-    <link rel="stylesheet" href="/assets/dsfr.min.css">
-    <link rel="stylesheet" href="/assets/utility/utility.css">
-    <script type="text/javascript" src="/assets/a11y.js"></script>
-    <script type="text/javascript" src="/assets/disable-on-submit.js"></script>
-    <script type="text/javascript" src="/assets/load-bar.js"></script>
+    <link rel="icon" type="image/x-icon" href="/dist/favicons/favicon.svg">
+    <link rel="shrotcut icon" type="image/x-icon" href="/dist/favicons/favicon.ico">
+    <link rel="apple-touch-icon" href="/dist/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/dist/favicons/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/dist/favicons/android-chrome-512x512.png">
+    <link rel="stylesheet" href="<%= asset('css/application.css') %>">
+    <link rel="stylesheet" href="/dist/dsfr.min.css">
+    <link rel="stylesheet" href="/dist/utility/utility.css">
+    <script type="module" src="<%= asset('app.js') %>"></script>
     <!-- Matomo -->
-    <script type="text/javascript" src="/assets/matomo.js"></script>
+    <script type="module" src="<%= asset('matomo.js') %>"></script>
     <noscript><p><img src="https://stats.data.gouv.fr/matomo.php?idsite=85&amp;rec=1" style="border:0;" alt="" /></p></noscript>
     <!-- End Matomo Code -->
 </head>

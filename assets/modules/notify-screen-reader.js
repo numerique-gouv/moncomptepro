@@ -6,8 +6,9 @@
  * they navigate the page.
  */
 let screenReaderTimeout = null;
-function notifyScreenReader(message) {
-  const screenReaderLiveElement = document.getElementById('aria-live-message');
+
+export const notifyScreenReader = (message) => {
+  const screenReaderLiveElement = document.getElementById("aria-live-message");
   if (!screenReaderLiveElement) {
     return;
   }
@@ -17,17 +18,4 @@ function notifyScreenReader(message) {
     screenReaderLiveElement.textContent = "";
   }, 10000);
   return screenReaderTimeout;
-}
-
-function explainExternalLinks() {
-  document.querySelectorAll('a[target="_blank"]').forEach((link) => {
-    const ariaLabel = link.getAttribute('aria-label');
-    if (!ariaLabel) {
-      link.setAttribute('aria-label', link.textContent + ' (nouvelle fenêtre)');
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  explainExternalLinks();
-});
+};

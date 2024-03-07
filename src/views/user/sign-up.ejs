@@ -68,7 +68,7 @@
                         </p>
                         <div class="card-button-container">
                             <div id="magic-link-icon-inline">
-                                <img src="/assets/magic-link.svg" alt="">
+                                <img src="/dist/magic-link.svg" alt="">
                             </div>
                             <form action="/users/send-magic-link" method="post">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
@@ -82,5 +82,5 @@
         </div>
     </div>
 </div>
-<script src="/assets/show-password_20240223.js"></script>
-<script src="/assets/password-feedback_20240223.js"></script>
+<script type="module" src="<%= asset('show-password.js') %>"></script>
+<script type="module" src="<%= asset('password-feedback.js') %>"></script>

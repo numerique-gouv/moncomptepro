@@ -50,6 +50,6 @@
         <button type="submit" class="fr-btn"></button>
     </form>
 </div>
-<script src="/assets/simplewebauthn.umd.min.js"></script>
-<script src="/assets/webauthn-authentication_20240223.js"></script>
-<script type="text/javascript" src="/assets/go-back.js"></script>
+<script src="/dist/simplewebauthn.umd.min.js"></script>
+<script type="module" src="<%= asset('webauthn-authentication.js') %>"></script>
+<script type="module" src="<%= asset('go-back.js') %>"></script>

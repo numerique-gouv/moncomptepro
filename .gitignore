@@ -24,3 +24,6 @@ cypress/videos
 
 /build/*
 !/build/.keep
+
+/dist/*
+!/dist/.keep
