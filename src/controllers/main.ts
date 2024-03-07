@@ -1,3 +1,4 @@
+import fs from "fs";
 import { NextFunction, Request, Response } from "express";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { z, ZodError } from "zod";
@@ -16,6 +17,7 @@ import { idSchema } from "../services/custom-zod-schemas";
 import { getOrganizationFromModeration } from "../managers/moderation";
 import { isEmpty } from "lodash";
 import { ForbiddenError, NotFoundError } from "../config/errors";
+import legalPagesManifest from "../legal-pages/manifest.json";
 
 export const getHomeController = async (
   req: Request,
@@ -185,4 +187,25 @@ export const getHelpController = async (
   } catch (error) {
     next(error);
   }
+};
+
+export const getLegalPageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (Object.keys(legalPagesManifest).indexOf(req.params.slug) === -1) {
+    return next(new NotFoundError());
+  }
+  const slug = req.params.slug as keyof typeof legalPagesManifest;
+  const content = await fs.promises.readFile(
+    `${__dirname}/../legal-pages/${legalPagesManifest[slug].file}`,
+    "utf8",
+  );
+
+  return res.render("legal-page", {
+    pageTitle: legalPagesManifest[slug].title,
+    content,
+    notifications: await getNotificationsFromRequest(req),
+  });
 };

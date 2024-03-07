@@ -2,6 +2,7 @@ import { Express, Router, urlencoded } from "express";
 import {
   getHelpController,
   getHomeController,
+  getLegalPageController,
   getManageOrganizationsController,
   getPersonalInformationsController,
   getResetPasswordController,
@@ -106,6 +107,14 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     getHelpController,
+  );
+
+  mainRouter.get(
+    "/legal/:slug",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    csrfProtectionMiddleware,
+    getLegalPageController,
   );
 
   return mainRouter;
