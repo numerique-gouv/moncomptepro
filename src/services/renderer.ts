@@ -23,7 +23,7 @@ const viteAssetPath = (name: string) => {
   if (NODE_ENV !== "production" || manifest === null) {
     try {
       const data = fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "dist", "manifest.json"),
+        path.resolve(__dirname, "..", "..", "dist", ".vite", "manifest.json"),
         "utf8",
       );
       manifest = JSON.parse(data);
