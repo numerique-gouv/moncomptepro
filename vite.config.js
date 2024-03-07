@@ -2,11 +2,18 @@ import { defineConfig } from "vite";
 import { readdirSync } from "fs";
 import { resolve } from "path";
 
-const jsAndCssFiles = readdirSync(resolve(__dirname, "assets"))
-  .filter((file) => file.endsWith(".js") || file.endsWith(".css"))
+const cssFiles = readdirSync(resolve(__dirname, "assets", "css"))
+  .filter((file) => file.endsWith(".css"))
   .reduce((acc, file) => {
-    const key = file.endsWith(".js") ? file.slice(0, -3) : file;
-    acc[key] = `./assets/${file}`;
+    acc[file] = `./assets/css/${file}`;
+    return acc;
+  }, {});
+
+const jsFiles = readdirSync(resolve(__dirname, "assets", "js"))
+  .filter((file) => file.endsWith(".js"))
+  .reduce((acc, file) => {
+    const key = file.slice(0, -3);
+    acc[key] = `./assets/js/${file}`;
     return acc;
   }, {});
 
@@ -25,11 +32,11 @@ export default defineConfig(() => {
 
   const config = {
     // base is same as outDir because our express app serves it under /dist, not /
-    base: '/dist',
+    base: "/dist",
     build: {
       manifest: true,
       rollupOptions: {
-        input: jsAndCssFiles,
+        input: { ...jsFiles, ...cssFiles },
       },
     },
   };
