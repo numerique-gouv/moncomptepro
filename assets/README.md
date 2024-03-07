@@ -19,5 +19,4 @@ While we serve everything via our express app, we use vite to generate assets. T
 
 * actual CSS/JS files are placed here in `/assets`
 * static files are placed in `/public`
-* when building the app, external js/css dependencies, like dsfr files, are copied in `/public`
 * when running the app or building the app (so, in dev or prod), vite generates the `/dist` folder: it builds files from `/assets` and copies files from `/public`. In production, built files have hashes in their names. For our express app to know what those built names are, vite also generates a `/dist/manifest.json` file that contains a map between original asset name and built asset name. The `asset()` ejs helper checks the `manifest.json`.
