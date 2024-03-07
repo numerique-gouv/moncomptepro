@@ -1,3 +1,6 @@
+import { debounce } from './modules/debounce';
+import { notifyScreenReader } from './modules/notify-screen-reader';
+
 document.addEventListener("DOMContentLoaded", function() {
   var passwordInput = document.getElementById("password-input");
   var passwordInputDataEmail = document.getElementById("password-input").dataset.email
@@ -53,20 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
     element.classList.add('fr-message--error');
     element.setAttribute("data-condition-ok", "false");
     element.style.display = "block";
-  }
-
-  const debounce = function(callback, wait) {
-    let timeoutId = null;
-    const handler = (...args) => {
-      handler.cancel(...args);
-      timeoutId = window.setTimeout(() => {
-        callback(...args);
-      }, wait);
-    };
-    handler.cancel = (...args) => {
-      window.clearTimeout(timeoutId);
-    }
-    return handler;
   }
 
   // wait a little before notifying sr users of their input to prevent spam

@@ -1,3 +1,5 @@
+import { debounce } from "./modules/debounce";
+
 document.addEventListener("DOMContentLoaded", function() {
   var organizationInfoElement = document.getElementById("organization-info");
   var organizationInfoLibelleElement = document.getElementById("organization-info-libelle");
@@ -76,16 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
     xmlhttp.open("GET", "/api/sirene/organization-info/" + siret, true);
     xmlhttp.send();
   }
-
-  const debounce = (callback, wait) => {
-    let timeoutId = null;
-    return (...args) => {
-      window.clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(() => {
-        callback(...args);
-      }, wait);
-    };
-  };
 
   const debouncedShowOrganizationInfo = debounce(showOrganizationInfo, 250);
 

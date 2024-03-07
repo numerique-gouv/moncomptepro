@@ -1,6 +1,6 @@
 .notice--email .fr-notice__body:before {
   content: "";
-  background-image: url(/assets/060-at.svg);
+  background-image: url(/dist/060-at.svg);
   background-color: inherit;
 }
 
@@ -27,8 +27,8 @@
 }
 
 .fr-notice.notice--change-email .fr-btn--close:before {
-  -webkit-mask-image: url(icons/system/arrow-go-back-fill.svg);
-  mask-image: url(icons/system/arrow-go-back-fill.svg);;
+  -webkit-mask-image: url("@gouvfr/dsfr/dist/icons/system/arrow-go-back-fill.svg");
+  mask-image: url("@gouvfr/dsfr/dist/icons/system/arrow-go-back-fill.svg");
 }
 
 .fr-tile.selectable-tile {
