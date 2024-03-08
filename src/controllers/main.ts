@@ -1,8 +1,8 @@
-import fs from "fs";
 import { NextFunction, Request, Response } from "express";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { z, ZodError } from "zod";
 import { updatePersonalInformations } from "../managers/user";
+import { AUTOUPDATE_EXTERNAL_CONTENT } from "../config/env";
 import notificationMessages from "../config/notification-messages";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
@@ -17,7 +17,12 @@ import { idSchema } from "../services/custom-zod-schemas";
 import { getOrganizationFromModeration } from "../managers/moderation";
 import { isEmpty } from "lodash";
 import { ForbiddenError, NotFoundError } from "../config/errors";
-import legalPagesManifest from "../legal-pages/manifest.json";
+import {
+  findBySlug as findPageBySlug,
+  createPage,
+  updatePage,
+} from "../repositories/external-pages";
+import { getExternalContent } from "../services/fetch-external-content";
 
 export const getHomeController = async (
   req: Request,
@@ -189,23 +194,65 @@ export const getHelpController = async (
   }
 };
 
+/**
+ * list the pages handled with the external CMS
+ *
+ * Record of <internalSlug, externalSlug>
+ */
+const EXISTING_EXTERNAL_PAGES: Record<string, string> = {
+  accessibilite: "moncomptepro-accessibilite",
+  confidentialite: "moncomptepro-politique-de-confidentialite",
+  "conditions-generales": "moncomptepro-conditions-generales-d-utilisation",
+};
+
 export const getLegalPageController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  if (Object.keys(legalPagesManifest).indexOf(req.params.slug) === -1) {
+  if (!req.params.slug || !EXISTING_EXTERNAL_PAGES[req.params.slug]) {
     return next(new NotFoundError());
   }
-  const slug = req.params.slug as keyof typeof legalPagesManifest;
-  const content = await fs.promises.readFile(
-    `${__dirname}/../legal-pages/${legalPagesManifest[slug].file}`,
-    "utf8",
-  );
+
+  const existingPage = await findPageBySlug(req.params.slug);
+  const content = {
+    body: existingPage?.body || "",
+    title: existingPage?.title || "",
+  };
+
+  // if the page is not in the database, or if it was updated more than a day ago and we want to update content automatically, fetch content
+  const mustFetchContent =
+    req.query.refresh === "1" ||
+    !existingPage ||
+    (AUTOUPDATE_EXTERNAL_CONTENT &&
+      existingPage.updated_at < new Date(Date.now() - 86400000));
+
+  if (mustFetchContent) {
+    const freshContent = await getExternalContent(
+      EXISTING_EXTERNAL_PAGES[req.params.slug],
+    );
+    if (freshContent) {
+      content.body = freshContent.body;
+      content.title = freshContent.title;
+    }
+  }
+  const hasFreshContent = mustFetchContent && !!content.body;
+  if (hasFreshContent && existingPage) {
+    updatePage({
+      ...existingPage,
+      ...content,
+    });
+  }
+  if (hasFreshContent && !existingPage) {
+    createPage({
+      slug: req.params.slug,
+      ...content,
+    });
+  }
 
   return res.render("legal-page", {
-    pageTitle: legalPagesManifest[slug].title,
-    content,
+    pageTitle: content.title,
+    body: content.body,
     notifications: await getNotificationsFromRequest(req),
   });
 };

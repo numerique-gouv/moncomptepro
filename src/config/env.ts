@@ -19,6 +19,7 @@ export const {
   ZAMMAD_TOKEN,
   ZAMMAD_URL,
   MODERATION_TAG = "moderation",
+  EXTERNAL_CONTENT_URL,
   // "trace" | "debug" | "info" | "warn" | "error" | "fatal"
   LOG_LEVEL = "info",
 } = process.env;
@@ -38,6 +39,8 @@ export const DISPLAY_TEST_ENV_WARNING =
   process.env.DISPLAY_TEST_ENV_WARNING === "True";
 export const DO_NOT_AUTHENTICATE_BROWSER =
   process.env.DO_NOT_AUTHENTICATE_BROWSER === "True";
+export const AUTOUPDATE_EXTERNAL_CONTENT =
+  process.env.AUTOUPDATE_EXTERNAL_CONTENT === "True";
 
 const getNumberFromEnv = (name: string, defaultValue: number) => {
   const value = process.env[name];

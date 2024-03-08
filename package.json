@@ -16,7 +16,6 @@
     "build:db:migrate": "node-pg-migrate up",
     "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
-    "fetch-legal-pages": "ts-node --files scripts/fetch-legal-pages.ts",
     "migrate": "node-pg-migrate",
     "fixtures:load": "node-pg-migrate up && ts-node scripts/run-sql-script.ts scripts/fixtures.sql && npm run update-organization-info 2000",
     "fixtures:load-ci": "node-pg-migrate up && ts-node scripts/run-sql-script.ts",
