@@ -7,8 +7,8 @@ module.exports = {
       css: ["./assets/**/*.css"],
       variables: true,
       safelist: {
-        greedy: [/choices/,]
-      }
+        greedy: [/choices/, /fr-table/],
+      },
     }),
   ],
 };

@@ -14,6 +14,7 @@ const parseContent = (html: string) => {
   $("[class]").removeAttr("class");
   $("[id]").removeAttr("id");
   $("p").has("span:empty:first-child:last-child").remove();
+  $("table").addClass("fr-table");
   return {
     title: $("h1").first().text() || "",
     body: $("body").html() || "",
