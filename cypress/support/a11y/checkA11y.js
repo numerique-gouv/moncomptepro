@@ -1,3 +1,20 @@
+import { config as hasPageTitleCheck } from "./checks/has-page-title";
+import { config as pageTitleRule } from "./rules/page-title";
+
+/**
+ * add custom rules to our axe instance
+ *
+ * note: this is called automatically by `checkA11y`
+ *
+ * @param win window object of the current page
+ */
+const configureAxe = (win) => {
+  cy.configureAxe({
+    checks: [hasPageTitleCheck("MonComptePro", win)],
+    rules: [pageTitleRule("MonComptePro")],
+  });
+};
+
 /**
  * custom `checkA11y` function to simplify a11y checks accross all tests:
  *
@@ -57,6 +74,7 @@ const injectAxeIfNeeded = () => {
   cy.window({ log: false }).then((win) => {
     if (!win.axe) {
       cy.injectAxe();
+      configureAxe(win);
     }
   });
 };
@@ -153,7 +171,7 @@ const getTerminalViolationElements = ({ nodes }) => {
 
 const getElementString = (el, defaultSelector) => {
   const selector = el.id ? `#${el.id}` : defaultSelector;
-  if (el.textContent) {
+  if (el.textContent && !["html", "body"].includes(el.tagName.toLowerCase())) {
     let content = el.textContent.replace(/\n/g, " ").trim();
     content = content.length > 15 ? `${content.slice(0, 15)}…` : content;
     return `${selector} "${content}"`;
