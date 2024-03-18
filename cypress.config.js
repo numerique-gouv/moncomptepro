@@ -12,11 +12,6 @@ module.exports = {
 
           return null;
         },
-        table(message) {
-          console.table(message);
-
-          return null;
-        },
       });
       return require("./cypress/plugins/index.js")(on, config);
     },

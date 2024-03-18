@@ -33,7 +33,7 @@ export const checkA11y = (
 
       // then, make an assertion if we don't want to skip failures.
       // cy.wrap is here to make sure our `displayViolations` logs are displayed before the assertion
-      cy.wrap(violationsCount).then((count) => {
+      cy.wrap(violationsCount, { log: false }).then((count) => {
         if (!skipFailures) {
           assert.equal(
             count,
@@ -90,7 +90,7 @@ const cypressLog = (violations) => {
           el.get(0),
           Array.isArray(target) ? target[0] : target,
         ),
-        name: "🎯",
+        name: "dom element:",
       });
     });
   });
@@ -103,38 +103,29 @@ const cypressLog = (violations) => {
  * @link https://github.com/component-driven/cypress-axe#in-your-spec-file
  */
 const terminalLog = (violations) => {
+  if (!violations?.length) {
+    return;
+  }
+
   const violationsCountMessage = `${violations.length} accessibility violation${
     violations.length > 1 ? "s" : ""
   } detected`;
 
-  cy.task("log", violationsCountMessage);
-
-  const helpData = {};
+  const logs = [violationsCountMessage];
 
   // api: https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#results-object
-  const violationData = violations.map(
-    ({ id, help, helpUrl, impact, nodes }) => {
-      helpData[id] = { help, helpUrl };
-      return {
-        impact,
-        id,
-        "dom elements": getTerminalViolationElements({ nodes }),
-      };
-    },
-  );
+  violations.forEach(({ id, impact, nodes }, i) => {
+    logs.push(`  ${i + 1}. [${id}] (${impact} issue):`);
+    getTerminalViolationElements({ nodes }).forEach((el) =>
+      logs.push(`     • ${el}`),
+    );
+  });
+  logs.push("Help to resolve accessibility issues:");
+  violations.forEach(({ id, help, helpUrl }, i) => {
+    logs.push(`  ${i + 1}. [${id}]: ${help}`, `    ${helpUrl}`);
+  });
 
-  // transform result into an object so that the console.table doesn't show
-  // the unnecessary index column but the violation id instead
-  cy.task(
-    "table",
-    violationData.reduce((acc, { id, ...x }) => {
-      acc[id] = x;
-      return acc;
-    }, {}),
-  );
-
-  // show help info/url in another table because it's so long it's hard to read with everything
-  cy.task("table", helpData);
+  cy.task("log", logs.join("\n"), { log: false });
 };
 
 /**
