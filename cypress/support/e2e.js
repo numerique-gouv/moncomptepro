@@ -15,9 +15,13 @@
 
 // Import commands.js using ES2015 syntax:
 import "cypress-mailslurp";
+import "cypress-axe";
+import { checkA11y } from "./a11y/checkA11y";
 
 const MONCOMPTEPRO_HOST =
   Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+
+Cypress.Commands.overwrite("checkA11y", checkA11y);
 
 Cypress.Commands.add("login", (email, password) => {
   cy.session([email, password], () => {
