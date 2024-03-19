@@ -12,7 +12,7 @@
     "build": "run-s build:**",
     "build:typescript": "tsc",
     "build:views": "bash -c 'cp -r src/views build/views'",
-    "build:assets": "vite build",
+    "build:assets": "vite build --clearScreen false",
     "build:db:migrate": "node-pg-migrate up",
     "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "update-organization-info": "ts-node --files scripts/update-organizations-info.ts",
@@ -23,10 +23,10 @@
     "test": "run-s test:*",
     "test:lint": "prettier */*.ts --list-different",
     "test:unit": "CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=False DO_NOT_USE_ANNUAIRE_EMAILS=False DO_NOT_CHECK_EMAIL_DELIVERABILITY=False ts-mocha -p tsconfig.json test/*.ts",
-    "watch:js": "tsc --watch",
+    "watch:js": "tsc --watch --preserveWatchOutput",
     "watch:node": "nodemon --watch build --ext js,ejs --quiet build/index.js",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
-    "watch:assets": "NODE_ENV=development vite build --watch"
+    "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch"
   },
   "license": "AGPL-3.0",
   "dependencies": {
