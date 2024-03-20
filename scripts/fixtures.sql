@@ -861,6 +861,24 @@ VALUES
    'openid email organization profile',
    'https://app-minju-amiable-frontend-dev.azurewebsites.net/',
    'Une plateforme accessible depuis justice.fr qui permet un parcours guidé de l’amiable de l’information des justiciables à la tentative de conciliation ou de médiation',
+   null, null, null, null),
+  (33,
+   'aides-jeunes-accompagnement',
+   'bluSy6KBAl0lMu3I5yD2sYeF90KaOZQEyvYBQNCMq5ohZ40VrMtx23dOPNYDj6Sej0wUE7qGni8g8QtNKstB3sxWbJSWBpfOqnl03AK7bqI0BlNWmw9Vdepy6GFXeVPL',
+   'dB7BjWZaekMgzvJ70vpoTK276VOvyZQzkyGayEMtJZfP2DH7nYZU5lzsKjWaoVjLGNG1RATfXyqoStzLBumkwO8SyZIOJZMdR5OVKmkiSLpijjyv0W7s2QVNwafzyCWs',
+   ARRAY [
+      'https://mes-aides.1jeune1solution.beta.gouv.fr/api/auth/redirect',
+      'https://preprod.mes-aides.incubateur.net/api/auth/redirect',
+      'http://localhost:8080/api/auth/redirect'
+     ],
+   ARRAY [
+      'https://mes-aides.1jeune1solution.beta.gouv.fr/accompagnement',
+      'https://preprod.mes-aides.incubateur.net/accompagnement',
+      'http://localhost:8080/accompagnement'
+     ],
+   'openid email organization profile',
+   'https://mes-aides.1jeune1solution.beta.gouv.fr',
+   'Outil d’accompagnement pour le simulateur de l’équipe Aides Jeunes porté par 1jeune1solution',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
