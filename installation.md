@@ -20,7 +20,11 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 
 ## Setting Up the Node.js Application
 
-1. **Install Node.js Dependencies**: Inside the project's root directory, run:
+1. **Install Node.js Dependencies**:
+
+   > If you don't want to run end-to-end tests locally, you can prevent the installation script to download the (somewhat big) cypress binary by running `CYPRESS_INSTALL_BINARY=0 npm install` instead of the following command.
+
+   Inside the project's root directory, run:
 
    ```bash
    npm install

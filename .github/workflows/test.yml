@@ -15,6 +15,6 @@ jobs:
         with:
           cache: "npm"
           node-version-file: package.json
-      - run: npm ci
+      - run: CYPRESS_INSTALL_BINARY=0 npm ci --include=dev
       - run: npm run test:lint
       - run: npm test

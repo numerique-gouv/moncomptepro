@@ -34,7 +34,7 @@ jobs:
         with:
           cache: "npm"
           node-version-file: package.json
-      - run: npm ci
+      - run: npm ci --omit=dev
       - run: npm run fixtures:load
         env:
           DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}

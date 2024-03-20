@@ -26,10 +26,6 @@ done
 case "${1}" in
   -h|--help|'')
     echo "Easily run e2e tests locally on your machine"
-    echo ""
-    echo "Make sure to have global dependencies installed:"
-    echo "  npm -g install cypress@12.17.1"
-    echo ""
     echo "Usage:"
     echo "${0##*/} [--force] [--port=PORT] [--host=HOST] TEST_NAME [-- CYPRESS_ARGS]"
     echo "  Runs the given test."
