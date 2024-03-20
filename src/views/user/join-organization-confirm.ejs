@@ -7,7 +7,7 @@
                 </h1>
                 <div class="fr-card__desc">
                     <p class="fr-mt-2w">
-                        🕵️ Vous souhaitez rejoindre
+                        <span aria-hidden="true">🕵️</span> Vous souhaitez rejoindre
                         <%= organization_label; %>
                         avec l’adresse email <%= email; %>.
                     </p>
@@ -19,7 +19,7 @@
                         <li>
                             <a
                                     href="/users/start-sign-in"
-                                    aria-label="Corriger l’email <%= organization_label; %>"
+                                    aria-label="Corriger l’email <%= email; %>"
                                     class="fr-btn fr-btn--secondary"
                             >
                                 Corriger l’email
@@ -32,7 +32,7 @@
                                 <input type="hidden" name="confirmed" value="true" autocomplete="off">
 
                                 <input
-                                        aria-label="Corriger l’email <%= email; %>"
+                                        aria-label="Continuer avec cet email (<%= email; %>)"
                                         class="fr-btn fr-btn--secondary"
                                         type="submit"
                                         value="Continuer avec cet email"
