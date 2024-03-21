@@ -1,46 +1,7 @@
 # Run cypress locally
 
-## Setup env vars
+You can use `./scripts/run-test.sh` to run tests locally. Run it to get usage help.
 
-You will need to set `BREVO_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
+The script will error out if it doesn’t find the necessary env vars. Ask a teammate for specific env vars and put the values in your `.env`.
 
-Ask a teammate for them and put the values in your `.env`.
-
-Also in your .env put the following values :
-
-```dotenv
-DO_NOT_SEND_MAIL=False
-DO_NOT_RATE_LIMIT=True
-```
-
-## Load test fixtures in the database
-
-Note that this will delete your database. Load the specific fixtures in the database:
-
-```bash
-ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/join_with_sponsorship.sql" "update-organization-info 2000"
-```
-
-## Start MonComptePro with the test configuration
-
-Then run the app with the specific env vars:
-
-```bash
-env $(grep -v '^#' cypress/env/join_with_sponsorship.conf | xargs) npm run dev
-```
-
-## Run Cypress
-
-On your host, install cypress:
-
-```bash
-npm -g install cypress@12.17.1
-npm -g install cypress-mailslurp@1
-```
-
-On your host, run the tests
-
-```bash
-export CYPRESS_MAILSLURP_API_KEY=xxx
-cypress run --headed --spec "cypress/e2e/join_with_sponsorship.cy.js"
-```
+:information_source: By default, the script runs the test node server on port 3002. This is done so that you can keep your default local dev instance up while running the tests.
