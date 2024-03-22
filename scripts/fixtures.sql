@@ -264,7 +264,13 @@ VALUES
      'https://sandbox2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://sandbox.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://sandbox1.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://sandbox2.api-entreprise..v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
+     'https://sandbox2.api-entreprise..v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging1.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging1.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging2.api-entreprise..v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
@@ -282,7 +288,13 @@ VALUES
      'https://sandbox2.api-entreprise.v2.datapass.api.gouv.fr',
      'https://sandbox.v2.datapass.api.gouv.fr',
      'https://sandbox1.v2.datapass.api.gouv.fr',
-     'https://sandbox2.v2.datapass.api.gouv.fr'
+     'https://sandbox2.v2.datapass.api.gouv.fr',
+     'https://staging.api-entreprise.v2.datapass.api.gouv.fr',
+     'https://staging1.api-entreprise.v2.datapass.api.gouv.fr',
+     'https://staging2.api-entreprise.v2.datapass.api.gouv.fr',
+     'https://staging.v2.datapass.api.gouv.fr',
+     'https://staging1.v2.datapass.api.gouv.fr',
+     'https://staging2.v2.datapass.api.gouv.fr'
      ],
    'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
