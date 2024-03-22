@@ -517,7 +517,7 @@ VALUES
      'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
      'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
      'http://localhost:4500/oauth/callback',
-     'https://egapro-charon.dev.fabrique.social.gouv.fr/oauth/callback'
+     'https://egapro-charon.ovh.fabrique.social.gouv.fr/oauth/callback'
      ],
    ARRAY [
      'http://localhost:3000',
@@ -526,7 +526,7 @@ VALUES
      'https://egapro-master.dev.fabrique.social.gouv.fr',
      'https://egapro-persist-migration-fronts-15ita1p5.dev.fabrique.social.gouv.fr',
      'http://localhost:4500',
-     'https://egapro-charon.dev.fabrique.social.gouv.fr'
+     'https://egapro-charon.ovh.fabrique.social.gouv.fr'
      ],
    'openid email profile phone organization organizations',
    'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
