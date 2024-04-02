@@ -816,7 +816,7 @@ VALUES
       'https://mai-web-b2-astrea-qlf03.apps.ocp4.on-prem.innershift.ssghosting.net',
       'https://mai-web-b2-astrea-qlf04.apps.ocp4.on-prem.innershift.ssghosting.net'
     ],
-    'openid email profile organization',
+    'openid email profile organization phone',
     'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg',
     'Le Casier Judiciaire National lance la nouvelle application B2+ pour permettre la délivrance des bulletins n°2.',
     null, null, null, null),
