@@ -857,16 +857,16 @@ VALUES
    'CSonHvakFfveeeJmTiZBO3IlCuSs8wGRytIZnQ04JcakK3ZwvYjw7TSkx8i6fEnVQnrD6z1j1RhjeM5sdsyXjZRhD5XXmtPAhAGnhA1QM4mV5bKG4M1KVDad6VW0qQCp',
    '4lr4Wj8ZoPXa89Wrfe70QgFP1bdPB3vBgpazrgNfGiHcdicALI6WoyTUKdWMEsO4o3dRAT48JRJs6N6UZGfXuYbxYkkaybJ1RkXk12b7SDt7igjnnfsBYZAxg0q3EBuH',
    ARRAY [
-    'http://localhost:5200/fc-login-callback',
-    'https://localhost:5201/fc-login-callback',
-    'https://app-minju-amiable-frontend-dev.azurewebsites.net/fc-login-callback',
-    'https://app-minju-amiable-frontend-test.azurewebsites.net/fc-login-callback'
+    'http://localhost:5200/mcp-login-callback',
+    'https://localhost:5201/mcp-login-callback',
+    'https://app-minju-amiable-frontend-dev.azurewebsites.net/mcp-login-callback',
+    'https://app-minju-amiable-frontend-test.azurewebsites.net/mcp-login-callback'
      ],
    ARRAY [
-    'http://localhost:5200/fc-logout-callback',
-    'https://localhost:5201/fc-logout-callback',
-    'https://app-minju-amiable-frontend-dev.azurewebsites.net/fc-logout-callback',
-    'https://app-minju-amiable-frontend-test.azurewebsites.net/fc-logout-callback'
+    'http://localhost:5200/mcp-logout-callback',
+    'https://localhost:5201/mcp-logout-callback',
+    'https://app-minju-amiable-frontend-dev.azurewebsites.net/mcp-logout-callback',
+    'https://app-minju-amiable-frontend-test.azurewebsites.net/mcp-logout-callback'
      ],
    'openid email organization profile',
    'https://app-minju-amiable-frontend-dev.azurewebsites.net/',
