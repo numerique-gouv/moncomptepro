@@ -520,7 +520,7 @@ VALUES
      'http://localhost:3000/apiv2/auth/callback/moncomptepro',
      'http://localhost/api/auth/callback/moncomptepro',
      'http://localhost/apiv2/auth/callback/moncomptepro',
-     'https://egapro-preprod.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
+     'https://egapro-preprod.ovh.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
      'https://egapro-preprod.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
      'https://egapro-master.dev.fabrique.social.gouv.fr/api/auth/callback/moncomptepro',
      'https://egapro-master.dev.fabrique.social.gouv.fr/apiv2/auth/callback/moncomptepro',
