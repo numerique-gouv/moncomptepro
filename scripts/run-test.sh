@@ -131,9 +131,9 @@ if [ "$force" = false ]; then
 fi
 
 pid_docker=false
-if [ -z "$(docker-compose ps -q)" ]; then
+if [ -z "$(docker compose ps -q)" ]; then
   echo_important "Starting docker project…"
-  docker-compose up -d &
+  docker compose up -d &
   pid_docker=$!
   sleep 5
 fi
