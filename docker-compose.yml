@@ -26,7 +26,6 @@ services:
       HOST: http://localhost:3001
       MCP_CLIENT_ID: client_id
       MCP_PROVIDER: http://localhost:3000/
-    network_mode: "host"
 
 volumes:
   db-data:
