@@ -23,12 +23,15 @@ for file in cypress/e2e/*.js; do
   available_tests+=("$(basename "$file" .cy.js)")
 done
 
+action=""
+
 case "${1}" in
   -h|--help|'')
     echo "Easily run e2e tests locally on your machine"
     echo "Usage:"
-    echo "${0##*/} [--force] [--port=PORT] [--host=HOST] TEST_NAME [-- CYPRESS_ARGS]"
-    echo "  Runs the given test."
+    echo "${0##*/} run [--force] [--port=PORT] [--host=HOST] TEST_NAME [-- CYPRESS_ARGS]"
+    echo "  Run the given test in cypress."
+    echo "  Before that, it clears local db, sets up env/fixtures and starts the server."
     echo "  Options:"
     echo "    --force: if passed, the script does not ask for confirmation"
     echo "             before clearing local database."
@@ -39,6 +42,9 @@ case "${1}" in
     echo "             Defaults to http://localhost:3002."
     echo "    Everything added after \`-- \` at the end is passed to the cypress command."
     echo "    Defaults to \`--headed\`. Removed if you pass any args."
+    echo "${0##*/} prepare [--force] [--port=PORT] [--host=HOST] TEST_NAME"
+    echo "  Prepare the server for a manual test."
+    echo "  This has the exact same behavior of the run command but does not run cypress."
     echo "${0##*/} list"
     echo "  List existing tests."
     exit 0
@@ -50,7 +56,16 @@ case "${1}" in
     done
     exit 0
     ;;
+  run|prepare)
+    action=$1
+    shift
+    ;;
 esac
+
+if [ -z "$action" ]; then
+  echo_error "Unknown command. Use \`-h\` to see available commands."
+  exit 1
+fi
 
 force=false
 port=3002
@@ -144,17 +159,25 @@ ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypres
 echo_important "Starting local server with testing env…"
 env $(grep -v '^#' cypress/env/join_with_sponsorship.conf | xargs) DO_NOT_SEND_MAIL=False DO_NOT_RATE_LIMIT=True MONCOMPTEPRO_HOST=$host PORT=$port npm run dev &
 pid_server=$!
-sleep 3
 
-echo_important "Starting cypress…"
-mailslurp_api_key=$(grep CYPRESS_MAILSLURP_API_KEY .env | cut -d'=' -f2)
-CYPRESS_MAILSLURP_API_KEY=$mailslurp_api_key CYPRESS_MONCOMPTEPRO_HOST=$host cypress run $cypress_args --spec "cypress/e2e/$test_name.cy.js"
-pid_cypress=$!
+if [ "$action" = "run" ]; then
+  sleep 3
+  echo_important "Starting cypress…"
+  mailslurp_api_key=$(grep CYPRESS_MAILSLURP_API_KEY .env | cut -d'=' -f2)
+  CYPRESS_MAILSLURP_API_KEY=$mailslurp_api_key CYPRESS_MONCOMPTEPRO_HOST=$host cypress run $cypress_args --spec "cypress/e2e/$test_name.cy.js"
+  pid_cypress=$!
 
-# https://stackoverflow.com/a/41762802/257559
-if [ "$pid_docker" != false ]; then
-  wait $pid_docker $pid_server $pid_cypress
+  # https://stackoverflow.com/a/41762802/257559
+  if [ "$pid_docker" != false ]; then
+    wait $pid_docker $pid_server $pid_cypress
+  else
+    wait $pid_server $pid_cypress
+  fi
 else
-  wait $pid_server $pid_cypress
+  if [ "$pid_docker" != false ]; then
+    wait $pid_docker $pid_server
+  else
+    wait $pid_server
+  fi
 fi
 
