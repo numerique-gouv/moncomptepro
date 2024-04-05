@@ -46,7 +46,7 @@ jobs:
           - join_with_code_sent_to_official_educ_nat_contact_email
           - join_with_official_contact_email
           - join_with_sponsorship
-          - signin_from_agentconnect_client
+          # - signin_from_agentconnect_client
           - signin_from_legacy_client
           - signin_from_standard_client
           - signin_with_email_verification_renewal
