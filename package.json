@@ -80,7 +80,7 @@
     "rate-limiter-flexible": "^2.4.2",
     "tld-extract": "^2.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
+    "typescript": "^5.4.3",
     "vite": "^5.1.5",
     "zod": "^3.22.4"
   },
