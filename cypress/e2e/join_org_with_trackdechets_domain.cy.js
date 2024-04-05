@@ -17,7 +17,7 @@ describe("join organizations", () => {
 
   it("join suggested organisation", function () {
     // Visit the signup page
-    cy.visit(`${MONCOMPTEPRO_HOST}/`);
+    cy.visit(`/`);
 
     // The user gets this suggestion because it as mailslurp.com as trackdechets domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(

@@ -15,7 +15,7 @@ describe("join organizations", () => {
       "password123",
     );
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
     cy.get('[name="siret"]').type("21340126800130");
     cy.get('[type="submit"]').click();
 
@@ -28,7 +28,7 @@ describe("join organizations", () => {
       "password123",
     );
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
     cy.get('[name="siret"]').type("21340126800049");
     cy.get('[type="submit"]').click();
 

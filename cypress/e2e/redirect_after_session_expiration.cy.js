@@ -12,7 +12,7 @@ const login = (cy) => {
 
 describe("redirect after session expiration", () => {
   it("should be redirected to organization management page", function () {
-    cy.visit(`${MONCOMPTEPRO_HOST}/manage-organizations`);
+    cy.visit(`/manage-organizations`);
 
     login(cy);
     cy.contains("Vos organisations de rattachement");

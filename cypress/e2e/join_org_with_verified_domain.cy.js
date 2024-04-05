@@ -34,7 +34,7 @@ describe("join organizations", () => {
 
   it("join suggested organisation", function () {
     // Visit the signup page
-    cy.visit(`${MONCOMPTEPRO_HOST}/`);
+    cy.visit(`/`);
 
     // The user gets this suggestion because it as mailslurp.com as verified domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
@@ -127,7 +127,7 @@ describe("join organizations", () => {
 
   it("join another organisation", function () {
     // Visit the join organization page
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
     cy.get('[name="siret"]').type("13002526500013");
     cy.get('[type="submit"]').click();
 
