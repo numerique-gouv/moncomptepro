@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("join organizations", () => {
   before(() => {
@@ -21,7 +20,7 @@ describe("join organizations", () => {
       "password123",
     );
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
 
     // Click on the suggested organization
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
@@ -91,7 +90,7 @@ describe("join organizations", () => {
       "password123",
     );
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/choose-sponsor/1`);
+    cy.visit(`/users/choose-sponsor/1`);
 
     // Open member selection
     cy.get(".choices").click();
@@ -107,7 +106,7 @@ describe("join organizations", () => {
   it("should not see sponsorship screen when whitelisted", () => {
     cy.login("unused@fakedomain.com", "password123");
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
 
     // Click on the suggested organization
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();

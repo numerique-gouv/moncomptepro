@@ -1,11 +1,10 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("join organizations", () => {
   it("join big company with free email provider", function () {
     cy.login("unused1@yopmail.com", "password123");
 
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/join-organization`);
+    cy.visit(`/users/join-organization`);
     cy.get('[name="siret"]').type("54205118000066");
     cy.get('[type="submit"]').click();
 

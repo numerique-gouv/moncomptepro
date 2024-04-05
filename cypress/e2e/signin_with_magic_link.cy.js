@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("sign-in with magic link", () => {
   before(() => {
@@ -12,7 +11,7 @@ describe("sign-in with magic link", () => {
 
   it("should sign-in", function () {
     // Visit the signup page
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
+    cy.visit(`/users/start-sign-in`);
 
     // Sign in with the existing inbox
     cy.get('[name="login"]').type(

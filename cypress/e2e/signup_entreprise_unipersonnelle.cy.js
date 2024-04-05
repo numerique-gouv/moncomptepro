@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("Signup into new entreprise unipersonnelle", () => {
   before(() => {
@@ -12,7 +11,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
 
   it("creates a user", function () {
     // Visit the signup page
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
+    cy.visit(`/users/start-sign-in`);
 
     // Sign up with the previously created inbox
     cy.get('[name="login"]').type(
