@@ -1,8 +1,11 @@
 //
 
 describe("sign-in from legacy client", () => {
-  it("should sign-in", function () {
+  before(() => {
     cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
+  });
+
+  it("should sign-in", function () {
     cy.visit(`http://localhost:4002`);
     cy.get("button.moncomptepro-button").click();
 
