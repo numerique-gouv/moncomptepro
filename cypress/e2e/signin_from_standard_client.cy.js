@@ -2,6 +2,7 @@
 
 describe("sign-in from standard client", () => {
   it("should sign-in without org selection when having only one organization", function () {
+    cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
     cy.visit(`http://localhost:4000`);
     cy.get("button.moncomptepro-button").click();
 

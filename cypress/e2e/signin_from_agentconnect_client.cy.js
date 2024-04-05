@@ -2,6 +2,7 @@
 
 describe("sign-in from agentconnect client", () => {
   it("should sign-in", function () {
+    cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
     cy.visit(`http://localhost:4001`);
     cy.get("button.moncomptepro-button").click();
 

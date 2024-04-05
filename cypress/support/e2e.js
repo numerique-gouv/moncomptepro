@@ -37,3 +37,19 @@ Cypress.Commands.add("login", (email, password) => {
       .click();
   });
 });
+
+Cypress.Commands.add("seed", (name) => {
+  cy.exec("npm run delete-database", {
+    env: {
+      ENABLE_DATABASE_DELETION: "True",
+    },
+  })
+    .its("stderr")
+    .should("be.empty");
+
+  cy.exec(`npm run fixtures:load-ci -- cypress/fixtures/${name}.sql`)
+    .its("stderr")
+    .should("be.empty");
+
+  cy.exec(`npm run update-organization-info -- 2000`);
+});

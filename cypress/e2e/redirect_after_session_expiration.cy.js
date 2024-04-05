@@ -12,6 +12,7 @@ const login = (cy) => {
 
 describe("redirect after session expiration", () => {
   it("should be redirected to organization management page", function () {
+    cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
     cy.visit(`/manage-organizations`);
 
     login(cy);

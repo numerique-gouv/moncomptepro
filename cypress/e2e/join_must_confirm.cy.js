@@ -2,6 +2,8 @@
 
 describe("join organizations", () => {
   it("join big company with free email provider", function () {
+    cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
+
     cy.login("unused1@yopmail.com", "password123");
 
     cy.visit(`/users/join-organization`);

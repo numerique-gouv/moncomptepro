@@ -2,6 +2,8 @@
 
 describe("sign-in with magic link", () => {
   before(() => {
+    cy.seed(__filename.split("/").at(-1).replace(".cy.js", ""));
+
     cy.mailslurp().then((mailslurp) =>
       mailslurp.inboxController.deleteAllInboxEmails({
         inboxId: "8e79c68c-9ce1-4dfe-8e58-fa3763d4cff7",
