@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("join organizations", () => {
   it("join big company with free email provider", function () {

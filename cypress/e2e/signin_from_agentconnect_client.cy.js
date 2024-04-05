@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 describe("sign-in from agentconnect client", () => {
   it("should sign-in", function () {

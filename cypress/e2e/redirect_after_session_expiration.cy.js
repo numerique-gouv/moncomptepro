@@ -1,5 +1,4 @@
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 const login = (cy) => {
   cy.get('[name="login"]').type("unused1@yopmail.com");

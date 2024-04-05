@@ -18,15 +18,14 @@ import "cypress-mailslurp";
 import "cypress-axe";
 import { checkA11y } from "./a11y/checkA11y";
 
-const MONCOMPTEPRO_HOST =
-  Cypress.env("MONCOMPTEPRO_HOST") || "http://localhost:3000";
+//
 
 Cypress.Commands.overwrite("checkA11y", checkA11y);
 
 Cypress.Commands.add("login", (email, password) => {
   cy.session([email, password], () => {
     // Visit the signup page
-    cy.visit(`${MONCOMPTEPRO_HOST}/users/start-sign-in`);
+    cy.visit(`/users/start-sign-in`);
 
     // Sign in with the existing inbox
     cy.get('[name="login"]').type(email);
