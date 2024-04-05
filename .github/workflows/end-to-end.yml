@@ -125,7 +125,7 @@ jobs:
           export-variables: true
           keys-case: bypass
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6.6.1
         with:
           wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
           build: npm run build
