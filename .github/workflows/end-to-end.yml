@@ -162,6 +162,7 @@ jobs:
       - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
       - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
       - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
+      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs moncomptepro
       # - name: Dotenv Action
       #   uses: falti/dotenv-action@v1.1.1
       #   with:
