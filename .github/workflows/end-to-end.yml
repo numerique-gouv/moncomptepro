@@ -174,7 +174,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6.6.1
         with:
-          wait-on: http://app.moncomptepro.localhost
+          # wait-on: http://app.moncomptepro.localhost
           # build: npm run build
           # start: npm start
           install: false
