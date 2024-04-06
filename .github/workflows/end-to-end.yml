@@ -58,58 +58,58 @@ jobs:
           # - reset_password
           # - join_must_confirm
     runs-on: ubuntu-20.04
-    services:
-      moncomptepro-standard-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
-        ports:
-          - 4000:3000
-        env:
-          SITE_TITLE: moncomptepro-standard-client
-          HOST: http://localhost:4000
-          MCP_CLIENT_ID: standard_client_id
-          MCP_CLIENT_SECRET: standard_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid email profile organization
-          STYLESHEET_URL: ""
-      moncomptepro-agentconnect-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
-        ports:
-          - 4001:3000
-        env:
-          SITE_TITLE: moncomptepro-agentconnect-client
-          HOST: http://localhost:4001
-          MCP_CLIENT_ID: agentconnect_client_id
-          MCP_CLIENT_SECRET: agentconnect_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt
-          MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
-          MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
-          STYLESHEET_URL: ""
-          LOGIN_HINT: unused1@yopmail.com
-      moncomptepro-legacy-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
-        ports:
-          - 4002:3000
-        env:
-          SITE_TITLE: moncomptepro-legacy-client
-          HOST: http://localhost:4002
-          MCP_CLIENT_ID: legacy_client_id
-          MCP_CLIENT_SECRET: legacy_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid email profile phone organizations
-          STYLESHEET_URL: ""
-      redis:
-        image: redis:7.0
-        ports:
-          - 6379:6379
-      postgres:
-        image: postgres:14.1
-        env:
-          POSTGRES_USER: ${{ env.PGUSER }}
-          POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
-          POSTGRES_DB: ${{ env.PGDATABASE }}
-        ports:
-          - 5432:5432
+    # services:
+    #   moncomptepro-standard-client:
+    #     image: ghcr.io/betagouv/moncomptepro-test-client
+    #     ports:
+    #       - 4000:3000
+    #     env:
+    #       SITE_TITLE: moncomptepro-standard-client
+    #       HOST: http://localhost:4000
+    #       MCP_CLIENT_ID: standard_client_id
+    #       MCP_CLIENT_SECRET: standard_client_secret
+    #       MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+    #       MCP_SCOPES: openid email profile organization
+    #       STYLESHEET_URL: ""
+    #   moncomptepro-agentconnect-client:
+    #     image: ghcr.io/betagouv/moncomptepro-test-client
+    #     ports:
+    #       - 4001:3000
+    #     env:
+    #       SITE_TITLE: moncomptepro-agentconnect-client
+    #       HOST: http://localhost:4001
+    #       MCP_CLIENT_ID: agentconnect_client_id
+    #       MCP_CLIENT_SECRET: agentconnect_client_secret
+    #       MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+    #       MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt
+    #       MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
+    #       MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
+    #       STYLESHEET_URL: ""
+    #       LOGIN_HINT: unused1@yopmail.com
+    #   moncomptepro-legacy-client:
+    #     image: ghcr.io/betagouv/moncomptepro-test-client
+    #     ports:
+    #       - 4002:3000
+    #     env:
+    #       SITE_TITLE: moncomptepro-legacy-client
+    #       HOST: http://localhost:4002
+    #       MCP_CLIENT_ID: legacy_client_id
+    #       MCP_CLIENT_SECRET: legacy_client_secret
+    #       MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+    #       MCP_SCOPES: openid email profile phone organizations
+    #       STYLESHEET_URL: ""
+    #   redis:
+    #     image: redis:7.0
+    #     ports:
+    #       - 6379:6379
+    #   postgres:
+    #     image: postgres:14.1
+    #     env:
+    #       POSTGRES_USER: ${{ env.PGUSER }}
+    #       POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
+    #       POSTGRES_DB: ${{ env.PGDATABASE }}
+    #     ports:
+    #       - 5432:5432
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -117,19 +117,19 @@ jobs:
           cache: "npm"
           node-version-file: package.json
       - run: npm ci --include=dev
-      - run: npm run migrate up
-      - name: Dotenv Action
-        uses: falti/dotenv-action@v1.1.1
-        with:
-          path: cypress/env/${{ matrix.e2e_test }}.conf
-          export-variables: true
-          keys-case: bypass
+      # - run: npm run migrate up
+      # - name: Dotenv Action
+      #   uses: falti/dotenv-action@v1.1.1
+      #   with:
+      #     path: cypress/env/${{ matrix.e2e_test }}.conf
+      #     export-variables: true
+      #     keys-case: bypass
       - name: Cypress run
         uses: cypress-io/github-action@v6.6.1
         with:
           wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
-          build: npm run build
-          start: npm start
+          # build: npm run build
+          # start: npm start
           install: false
           spec: cypress/e2e/${{ matrix.e2e_test }}/index.cy.js
         env:
