@@ -157,6 +157,7 @@ jobs:
           node-version-file: package.json
       - run: npm ci --include=dev
       - run: |
+          mv .env.sample .env
           echo "INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }}" >> .env
           echo "INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }}" >> .env
       - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
