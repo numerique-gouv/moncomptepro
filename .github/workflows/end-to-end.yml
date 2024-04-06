@@ -156,7 +156,9 @@ jobs:
           cache: "npm"
           node-version-file: package.json
       - run: npm ci --include=dev
-      - run: touch .env
+      - run: |
+          echo "INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }}" >> .env
+          echo "INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }}" >> .env
       - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
       - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
       - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
