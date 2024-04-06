@@ -117,7 +117,7 @@ jobs:
           cache: "npm"
           node-version-file: package.json
       - run: npm ci --include=dev
-      # - run: npm run migrate up
+      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
       # - name: Dotenv Action
       #   uses: falti/dotenv-action@v1.1.1
       #   with:
