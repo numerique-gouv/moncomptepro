@@ -11,6 +11,8 @@ services:
       - migrated-db
     build:
       context: ../
+      cache_from:
+        - ghcr.io/betagouv/moncomptepro:buildcache
     env_file:
       - ../.env
       - ./.env
@@ -33,7 +35,7 @@ services:
       - -c
       - |
         npm run delete-database
-        npm run fixtures:load-ci -- ${DIRNAME}/seed.sql
+        npm run fixtures:load-ci -- ${DIRNAME:-default}/seed.sql
         npm run update-organization-info -- 2000
     depends_on:
       - db
@@ -45,7 +47,7 @@ services:
       - ../scripts:/app/scripts:ro
       - ../src:/app/src:ro
       - ../tsconfig.json:/app/tsconfig.json:ro
-      - ../${DIRNAME}/seed.sql:/app/${DIRNAME}/seed.sql:ro
+      - ../${DIRNAME:-default}/seed.sql:/app/${DIRNAME:-default}/seed.sql:ro
     env_file:
       - ../.env
       - ./.env
