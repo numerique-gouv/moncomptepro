@@ -6,7 +6,7 @@ COPY package*.json ./
 FROM base AS prod-deps
 RUN --mount=type=cache,id=npm,target=/app/.npm \
   npm set cache /app/.npm && \
-  npm ci --production
+  npm ci --omit=dev
 
 FROM base AS build
 RUN --mount=type=cache,id=npm,target=/app/.npm \
