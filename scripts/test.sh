@@ -157,7 +157,7 @@ echo_important "Emptying database and applying fixtures…"
 ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/$test_name.sql" "update-organization-info 2000"
 
 echo_important "Starting local server with testing env…"
-env $(grep -v '^#' cypress/env/join_with_sponsorship.conf | xargs) DO_NOT_SEND_MAIL=False DO_NOT_RATE_LIMIT=True MONCOMPTEPRO_HOST=$host PORT=$port npm run dev &
+env $(grep -v '^#' cypress/env/$test_name.conf | xargs) DO_NOT_SEND_MAIL=False DO_NOT_RATE_LIMIT=True MONCOMPTEPRO_HOST=$host PORT=$port npm run dev &
 pid_server=$!
 
 if [ "$action" = "run" ]; then
