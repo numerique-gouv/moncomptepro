@@ -1,30 +1,9 @@
 version: "3.8"
 
 include:
-  - path: ../../../docker-compose.yml
+  - path: ../../docker-compose.yml
 
 services:
-  moncomptepro:
-    depends_on:
-      - db
-      - redis
-      - migrated-db
-    build: ../../../
-    env_file:
-      - ../../../.env
-      - ./.env
-    environment:
-      PORT: 80
-      MONCOMPTEPRO_HOST: http://app.moncomptepro.localhost
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.moncomptepro.rule=Host(`app.moncomptepro.localhost`)
-      - traefik.http.services.moncomptepro.loadbalancer.server.port=80
-    networks:
-      default:
-        aliases:
-          - app.moncomptepro.localhost
-
   moncomptepro-legacy-client:
     depends_on:
       - moncomptepro
@@ -68,45 +47,3 @@ services:
       default:
         aliases:
           - moncomptepro-standard-client.localhost
-
-  migrated-db:
-    command:
-      - /bin/sh
-      - -c
-      - |
-        npm run delete-database
-        npm run fixtures:load-ci -- seed.sql
-        npm run update-organization-info -- 2000
-    depends_on:
-      - db
-    build: ../../../
-    volumes:
-      - ../../../migrations:/app/migrations:ro
-      - ../../../scripts:/app/scripts:ro
-      - ../../../src:/app/src:ro
-      - ../../../tsconfig.json:/app/tsconfig.json:ro
-      - ./seed.sql:/app/seed.sql:ro
-    env_file:
-      - ../../../.env
-      - ./.env
-    environment:
-      ENABLE_DATABASE_DELETION: "True"
-
-  traefik:
-    image: traefik:v2.9
-    command:
-      - --api.insecure=true
-      - --entrypoints.web.address=:80
-      - --log.level=DEBUG
-      - --providers.docker.exposedbydefault=false
-      - --providers.docker=true
-    ports:
-      - 80:80
-      - 8080:8080
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.entrypoints=web
-      - traefik.http.routers.traefik.rule=Host(`monitor.localhost`)
-      - traefik.http.services.traefik.loadbalancer.server.port=8080
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro

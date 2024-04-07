@@ -38,18 +38,12 @@ Cypress.Commands.add("login", (email, password) => {
   });
 });
 
-Cypress.Commands.add("seed", (name) => {
-  cy.exec("npm run delete-database", {
-    env: {
-      ENABLE_DATABASE_DELETION: "True",
-    },
-  })
-    .its("stderr")
-    .should("be.empty");
-
-  cy.exec(`npm run fixtures:load-ci -- cypress/fixtures/${name}.sql`)
-    .its("stderr")
-    .should("be.empty");
-
-  cy.exec(`npm run update-organization-info -- 2000`);
+Cypress.Commands.add("seed", (dirname) => {
+  const env = { DIRNAME: dirname };
+  cy.exec(`docker compose --project-directory ${dirname} up --detach --build`, {
+    env,
+  });
+  cy.exec(`docker compose --project-directory ${dirname} wait migrated-db`, {
+    env,
+  });
 });
