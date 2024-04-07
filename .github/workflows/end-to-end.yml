@@ -6,9 +6,6 @@ on:
       - Docker Image
     types:
       - completed
-    branches:
-      - "**"
-      - "!master"
 
 env:
   # ACCESS_LOG_PATH:
