@@ -40,15 +40,17 @@ Cypress.Commands.add("login", (email, password) => {
 
 Cypress.Commands.add("seed", (dirname) => {
   const env = { DIRNAME: dirname };
-  const args = Cypress.env("MONCOMPTEPRO_IMAGE")
-    ? { up: "-f cypress/docker-compose.built.yml" }
-    : {};
-  cy.exec(
-    `docker compose --project-directory ${dirname} up --detach --build ${args.up}`,
-    {
-      env,
-    },
-  );
+  const args = {
+    compose: [
+      Cypress.env("MONCOMPTEPRO_IMAGE")
+        ? "--file cypress/docker-compose.built.yml"
+        : "",
+      `--project-directory ${dirname}`,
+    ].join(" "),
+  };
+  cy.exec(`docker compose ${args.compose} up --detach --build `, {
+    env,
+  });
   cy.exec(`docker compose --project-directory ${dirname} wait migrated-db`, {
     env,
   });
