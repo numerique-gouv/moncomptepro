@@ -129,11 +129,11 @@ jobs:
           mv .env.sample .env
           echo "INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }}" >> .env
           echo "INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }}" >> .env
-      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
-      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
-      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
-      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client restart moncomptepro
-      - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs moncomptepro
+      - run: docker pull ${{ env.CYPRESS_MONCOMPTEPRO_IMAGE }}
+      # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
+      # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
+      # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client restart moncomptepro
+      # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs moncomptepro
       # - name: Dotenv Action
       #   uses: falti/dotenv-action@v1.1.1
       #   with:
