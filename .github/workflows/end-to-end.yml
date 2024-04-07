@@ -123,6 +123,7 @@ jobs:
           mv .env.sample .env
           echo "INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }}" >> .env
           echo "INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }}" >> .env
+      - run: docker compose --project-directory cypress/e2e/${{ matrix.e2e_test }} pull
       - run: docker compose --project-directory cypress/e2e/${{ matrix.e2e_test }} build moncomptepro
       # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
       # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client restart moncomptepro
