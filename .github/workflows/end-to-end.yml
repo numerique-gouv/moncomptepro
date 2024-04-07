@@ -19,7 +19,7 @@ env:
   BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
   MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   CYPRESS_MONCOMPTEPRO_HOST: http://172.18.0.1:3000
-  CYPRESS_MONCOMPTEPRO_IMAGE: ghcr.io/${{ github.repository }}:latest #${{ github.sha }}
+  CYPRESS_MONCOMPTEPRO_IMAGE: ghcr.io/${{ github.repository }}:douglasduteil-test-e2e-use-cypress-command-to-seed #${{ github.sha }}
   # CYPRESS_BASE_URL: http://172.18.0.1:3000
   DO_NOT_SEND_MAIL: "False"
   DO_NOT_CHECK_EMAIL_DELIVERABILITY: "True"
