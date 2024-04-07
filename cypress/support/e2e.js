@@ -44,10 +44,18 @@ Cypress.Commands.add("seed", (dirname) => {
     compose: [`--project-directory ${dirname}`].join(" "),
     up: ["--detach", "--build"].join(" "),
   };
-  cy.exec(`docker compose ${args.compose} up ${args.up}`, {
-    env,
-  }).then((result) => cy.task("log", result.stdout));
-  cy.exec(`docker compose ${args.compose} wait migrated-db`, {
-    env,
-  });
+  {
+    const command = `docker compose ${args.compose} up ${args.up}`;
+    cy.task("log", `$ ${command}`);
+    cy.exec(command, {
+      env,
+    }).then((result) => cy.task("log", result.stdout));
+  }
+  {
+    const command = `docker compose ${args.compose} wait migrated-db`;
+    cy.task("log", `$ ${command}`);
+    cy.exec(command, {
+      env,
+    }).then((result) => cy.task("log", result.stdout));
+  }
 });
