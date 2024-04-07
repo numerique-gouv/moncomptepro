@@ -113,8 +113,6 @@ jobs:
     #       POSTGRES_DB: ${{ env.PGDATABASE }}
     #     ports:
     #       - 5432:5432
-    env:
-      DIRNAME: cypress/env/${{ matrix.e2e_test }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

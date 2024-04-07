@@ -43,9 +43,12 @@ Cypress.Commands.add("seed", (dirname) => {
   const args = Cypress.env("MONCOMPTEPRO_IMAGE")
     ? { up: "-f cypress/docker-compose.built.yml" }
     : {};
-  cy.exec(`docker compose --project-directory ${dirname} up --detach --build`, {
-    env,
-  });
+  cy.exec(
+    `docker compose --project-directory ${dirname} up --detach --build ${args.up}`,
+    {
+      env,
+    },
+  );
   cy.exec(`docker compose --project-directory ${dirname} wait migrated-db`, {
     env,
   });
