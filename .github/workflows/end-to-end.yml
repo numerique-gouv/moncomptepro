@@ -19,7 +19,6 @@ env:
   BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
   MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   CYPRESS_MONCOMPTEPRO_HOST: http://172.18.0.1:3000
-  CYPRESS_MONCOMPTEPRO_IMAGE: ghcr.io/${{ github.repository }}:douglasduteil-test-e2e-use-cypress-command-to-seed #${{ github.sha }}
   # CYPRESS_BASE_URL: http://172.18.0.1:3000
   DO_NOT_SEND_MAIL: "False"
   DO_NOT_CHECK_EMAIL_DELIVERABILITY: "True"
@@ -124,7 +123,6 @@ jobs:
           mv .env.sample .env
           echo "INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }}" >> .env
           echo "INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }}" >> .env
-      - run: docker pull ${{ env.CYPRESS_MONCOMPTEPRO_IMAGE }}
       # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client up --build --detach moncomptepro
       # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client logs --follow migrated-db
       # - run: docker compose --project-directory cypress/e2e/signin_from_legacy_client restart moncomptepro
