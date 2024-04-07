@@ -10,9 +10,9 @@ services:
       - redis
       - migrated-db
     build:
-      context: ../
       cache_from:
         - ghcr.io/betagouv/moncomptepro:buildcache
+      context: ../
     env_file:
       - ../.env
       - ./.env
@@ -40,6 +40,8 @@ services:
     depends_on:
       - db
     build:
+      cache_from:
+        - ghcr.io/betagouv/moncomptepro:buildcache
       context: ../
       target: build
     volumes:

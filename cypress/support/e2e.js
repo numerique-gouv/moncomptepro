@@ -46,7 +46,7 @@ Cypress.Commands.add("seed", (dirname) => {
   };
   cy.exec(`docker compose ${args.compose} up ${args.up}`, {
     env,
-  });
+  }).then((result) => cy.task("log", result.stdout));
   cy.exec(`docker compose ${args.compose} wait migrated-db`, {
     env,
   });
