@@ -55,6 +55,7 @@ services:
       - ./.env
     environment:
       ENABLE_DATABASE_DELETION: "True"
+      OUTPUT_FILE: "/tmp/output.csv"
 
   traefik:
     image: traefik:v2.9

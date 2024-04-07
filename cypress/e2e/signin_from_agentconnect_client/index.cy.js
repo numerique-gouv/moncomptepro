@@ -8,6 +8,7 @@ describe("sign-in from agentconnect client", () => {
   after(() => {
     cy.exec(`docker compose --project-directory ${__dirname} stop`);
   });
+
   it("should sign-in", function () {
     cy.visit(`http://moncomptepro-agentconnect-client.localhost`);
     cy.get("button.moncomptepro-button").click();

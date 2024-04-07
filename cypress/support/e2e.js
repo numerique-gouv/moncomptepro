@@ -52,7 +52,7 @@ Cypress.Commands.add("seed", (dirname) => {
     }).then((result) => cy.task("log", result.stdout));
   }
   {
-    const command = `docker compose ${args.compose} wait migrated-db`;
+    const command = `docker compose ${args.compose} logs --follow migrated-db`;
     cy.task("log", `$ ${command}`);
     cy.exec(command, {
       env,
