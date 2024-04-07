@@ -5,6 +5,10 @@ describe("sign-in from legacy client", () => {
     cy.seed(__dirname);
   });
 
+  after(() => {
+    cy.exec(`docker compose --project-directory ${__dirname} stop`);
+  });
+
   it("should sign-in", function () {
     cy.visit(`http://moncomptepro-legacy-client.localhost/`);
     cy.get("button.moncomptepro-button").click();
