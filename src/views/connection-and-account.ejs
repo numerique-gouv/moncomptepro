@@ -1,0 +1,141 @@
+<div class="dashboard-container">
+    <%- include('partials/sidemenu.ejs', {activeLink: 'connection-and-account'}) %>
+    <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+        <%- include('partials/notifications.ejs', {notifications: notifications}) %>
+        <h2>Connexion et compte</h2>
+        <section class="fr-mb-6w">
+            <h3>Identifiants</h3>
+            <div class="fr-notice notice--email fr-mb-3w">
+                <div class="fr-container">
+                    <div class="fr-notice__body">
+                        <p>
+                            L’email rattaché à votre compte est <strong><%= email; %></strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p>
+                Vous avez oublié votre mot de passe ou souhaitez en changer, merci de cliquer sur le bouton ci-après.
+            </p>
+            <form action="/users/reset-password" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                <button class="fr-btn fr-btn--secondary" aria-label="Réinitialiser le mot de passe" type="submit">
+                    Recevoir un lien de réinitialisation de mot de passe
+                </button>
+            </form>
+        </section>
+
+        <section class="fr-mb-6w">
+            <h3>Clés d’accès</h3>
+            <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
+
+            <% if (passkeys.length <= 0) { %>
+                <div class="fr-callout fr-icon-information-line" id="webauthn-register">
+                    <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
+                    <p class="fr-callout__text">
+                        Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
+                    </p>
+                    <button class="fr-btn" id="webauthn-btn-begin-registration">
+                        Créer une clé d’accès
+                    </button>
+                </div>
+            <% } %>
+            <div class="fr-callout fr-icon-alert-line" id="webauthn-not-supported" hidden>
+                <h3 class="fr-callout__title">
+                    Impossible de créer une clé d’accès sur cet appareil
+                </h3>
+                <p class="fr-callout__text">
+                    Assurez-vous que le système d’exploitation de votre appareil est à jour, que le verrouillage de
+                    l’écran
+                    et le Bluetooth sont activés, et que vous utilisez un navigateur compatible.
+                </p>
+            </div>
+            <p>
+                Les clés d’accès vous permettent de vous connecter de façon sécurisée à votre compte MonComptePro
+                en utilisant votre empreinte digitale, votre visage, le verrouillage de l’écran ou une clé de
+                sécurité physique. Ne configurez des clés d’accès que sur les appareils dont vous êtes
+                propriétaire.
+                <a
+                        class="fr-link" target="_blank" rel="noopener noreferrer"
+                        href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
+                >En savoir plus</a>
+            </p>
+            <% if (passkeys.length > 0) { %>
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <% passkeys.forEach(({ credential_id, usage_count, display_name, created_at, last_used_at }) => { %>
+                        <div class="fr-col-12 fr-col-lg-10">
+                            <div class="fr-tile fr-tile--horizontal">
+                                <div class="fr-tile__body">
+                                    <h3 class="fr-tile__title">
+                                        <%= display_name; %>
+                                    </h3>
+                                    <p class="fr-tile__desc">Création : <%= created_at; %></p>
+                                    <p class="fr-tile__desc">
+                                        Dernière utilisation : <%= last_used_at; %>
+                                    </p>
+                                    <p class="fr-tile__desc">Nombre d’utilisations : <%= usage_count; %></p>
+                                    <div class="card-button-container">
+                                        <form action="/delete-passkeys/<%= credential_id; %>" method="post">
+                                            <input
+                                                    type="hidden"
+                                                    name="_csrf"
+                                                    value="<%= csrfToken; %>"
+                                                    autocomplete="off"
+                                            >
+                                            <button
+                                                    aria-label="Supprimer la clé d'accès <%= display_name; %>"
+                                                    class="fr-btn fr-btn--secondary fr-btn--sm"
+                                                    type="submit"
+                                            >
+                                                Supprimer cette clé d’accès
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                    <div class="fr-col-12">
+                        <button
+                                class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
+                                id="webauthn-btn-begin-registration"
+                        >
+                            Créer une clé d’accès sur cet appareil
+                        </button>
+                    </div>
+                </div>
+            <% } %>
+            <form id="webauthn-registration-response-form" action="/passkeys/verify-registration" method="post" hidden>
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                <input type="hidden" name="webauthn_registration_response_string" autocomplete="off">
+
+                <button type="submit" class="fr-btn"></button>
+            </form>
+
+            <script type="module" src="<%= js('webauthn-registration.js') %>"></script>
+        </section>
+
+        <section>
+            <h3>Suppression</h3>
+
+            <p>
+                Votre compte sera supprimé automatiquement 3 ans après votre dernière connexion.
+            </p>
+
+            <form class="fr-mt-4w" action="/users/delete" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+                <button
+                        class="fr-btn btn--danger js-confirm"
+                        data-confirm="Si vous avez changé d’organisation, vous pouvez les modifier sur votre espace personnel.&#10;&#10;Si vous n’utilisez plus MonComptePro avec cette adresse email, vous pouvez supprimer ce compte."
+                        type="submit"
+                >
+                    Supprimer mon compte
+                </button>
+            </form>
+
+            <script type="module" src="<%= js('confirm.js') %>"></script>
+        </section>
+    </main>
+</div>

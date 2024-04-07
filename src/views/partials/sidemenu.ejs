@@ -11,12 +11,12 @@
         </button>
         <div class="fr-collapse" id="fr-sidemenu-wrapper">
             <ul class="fr-sidemenu__list">
-                <li class="fr-sidemenu__item <% if (activeLink === "home") { %>fr-sidemenu__item--active<% } %>">
+                <li class="fr-sidemenu__item <% if (activeLink === "connection-and-account") { %>fr-sidemenu__item--active<% } %>">
                     <a
-                            class="fr-sidemenu__link" href="/"
-                            <% if (activeLink === "home") { %>aria-current="page"
+                            class="fr-sidemenu__link" href="/connection-and-account"
+                            <% if (activeLink === "connection-and-account") { %>aria-current="page"
                             <% } %>
-                    >Vos accès</a>
+                    >Connexion et compte</a>
                 </li>
                 <li class="fr-sidemenu__item <% if (activeLink === "personal-information") { %>fr-sidemenu__item--active<% } %>">
                     <a
@@ -25,7 +25,7 @@
                             <% if (activeLink === "personal-information") { %>aria-current="page"
                             <% } %>
                     >
-                        Vos informations personnelles
+                        Informations personnelles
                     </a>
                 </li>
                 <li class="fr-sidemenu__item <% if (activeLink === "manage-organizations") { %>fr-sidemenu__item--active<% } %>">
@@ -33,21 +33,14 @@
                             class="fr-sidemenu__link" href="/manage-organizations"
                             <% if (activeLink === "manage-organizations") { %>aria-current="page"
                             <% } %>
-                    >Votre organisation</a>
+                    >Organisations</a>
                 </li>
-                <li class="fr-sidemenu__item <% if (activeLink === "reset-password") { %>fr-sidemenu__item--active<% } %>">
+                <li class="fr-sidemenu__item <% if (activeLink === "home") { %>fr-sidemenu__item--active<% } %>">
                     <a
-                            class="fr-sidemenu__link" href="/reset-password"
-                            <% if (activeLink === "reset-password") { %>aria-current="page"
+                            class="fr-sidemenu__link" href="/"
+                            <% if (activeLink === "home") { %>aria-current="page"
                             <% } %>
-                    >Votre mot de passe</a>
-                </li>
-                <li class="fr-sidemenu__item <% if (activeLink === "passkeys") { %>fr-sidemenu__item--active<% } %>">
-                    <a
-                            class="fr-sidemenu__link" href="/passkeys"
-                            <% if (activeLink === "passkeys") { %>aria-current="page"
-                            <% } %>
-                    >Vos clés d’accès</a>
+                    >Services connectés</a>
                 </li>
             </ul>
         </div>

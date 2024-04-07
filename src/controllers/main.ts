@@ -16,6 +16,7 @@ import { idSchema } from "../services/custom-zod-schemas";
 import { getOrganizationFromModeration } from "../managers/moderation";
 import { isEmpty } from "lodash";
 import { ForbiddenError, NotFoundError } from "../config/errors";
+import { getUserAuthenticators } from "../managers/webauthn";
 
 export const getHomeController = async (
   req: Request,
@@ -27,7 +28,7 @@ export const getHomeController = async (
   );
 
   return res.render("home", {
-    pageTitle: "Accueil",
+    pageTitle: "Services connectés",
     notifications: await getNotificationsFromRequest(req),
     oidc_clients,
   });
@@ -41,7 +42,7 @@ export const getPersonalInformationsController = async (
   try {
     const user = getUserFromLoggedInSession(req);
     return res.render("personal-information", {
-      pageTitle: "Vos informations personnelles",
+      pageTitle: "Informations personnelles",
       email: user.email,
       given_name: user.given_name,
       family_name: user.family_name,
@@ -111,7 +112,7 @@ export const getManageOrganizationsController = async (
       });
 
     return res.render("manage-organizations", {
-      pageTitle: "Vos organisations",
+      pageTitle: "Organisations",
       notifications: await getNotificationsFromRequest(req),
       userOrganizations,
       pendingUserOrganizations,
@@ -122,16 +123,21 @@ export const getManageOrganizationsController = async (
   }
 };
 
-export const getResetPasswordController = async (
+export const getConnectionAndAccountController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    return res.render("reset-password", {
-      pageTitle: "Votre mot de passe",
+    const user = getUserFromLoggedInSession(req);
+
+    const passkeys = await getUserAuthenticators(user.email);
+
+    return res.render("connection-and-account", {
+      pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
-      loginHint: getUserFromLoggedInSession(req).email,
+      email: getUserFromLoggedInSession(req).email,
+      passkeys,
       csrfToken: csrfToken(req),
     });
   } catch (error) {

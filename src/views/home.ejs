@@ -2,9 +2,9 @@
     <%- include('partials/sidemenu.ejs', {activeLink: 'home'}) %>
     <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
-        <h2>Vos accès</h2>
+        <h2>Services connectés</h2>
         <% if (oidc_clients.length > 0) { %>
-            <p>MonComptePro vous permet d’accéder à :</p>
+            <p>MonComptePro vous permet de vous connecter à :</p>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <% oidc_clients.forEach(({ client_name, client_uri, client_description }) => { %>
                     <div class="fr-col-12 fr-col-lg-6">
