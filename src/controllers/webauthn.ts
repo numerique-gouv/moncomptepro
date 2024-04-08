@@ -10,7 +10,6 @@ import {
   deleteUserAuthenticator,
   getAuthenticationOptions,
   getRegistrationOptions,
-  getUserAuthenticators,
   verifyAuthentication,
   verifyRegistration,
 } from "../managers/webauthn";
@@ -29,27 +28,6 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import { Unauthorized } from "http-errors";
 import { logger } from "../services/log";
 
-export const getPasskeysController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const user = getUserFromLoggedInSession(req);
-
-    const passkeys = await getUserAuthenticators(user.email);
-
-    return res.render("passkeys", {
-      pageTitle: "Vos clés d'accès",
-      notifications: await getNotificationsFromRequest(req),
-      passkeys,
-      csrfToken: csrfToken(req),
-    });
-  } catch (e) {
-    next(e);
-  }
-};
-
 export const deletePasskeyController = async (
   req: Request,
   res: Response,
@@ -65,7 +43,9 @@ export const deletePasskeyController = async (
 
     await deleteUserAuthenticator(user.email, credential_id);
 
-    return res.redirect(`/passkeys?notification=passkey_successfully_deleted`);
+    return res.redirect(
+      `/connection-and-account?notification=passkey_successfully_deleted`,
+    );
   } catch (e) {
     next(e);
   }
@@ -123,11 +103,15 @@ export const postVerifyRegistrationController = async (
       response,
     });
 
-    return res.redirect(`/passkeys?notification=passkey_successfully_created`);
+    return res.redirect(
+      `/connection-and-account?notification=passkey_successfully_created`,
+    );
   } catch (e) {
     logger.error(e);
     if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
-      return res.redirect(`/passkeys?notification=invalid_passkey`);
+      return res.redirect(
+        `/connection-and-account?notification=invalid_passkey`,
+      );
     }
 
     next(e);

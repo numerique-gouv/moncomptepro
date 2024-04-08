@@ -1,10 +1,10 @@
 import { Express, Router, urlencoded } from "express";
 import {
+  getConnectionAndAccountController,
   getHelpController,
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
-  getResetPasswordController,
   postPersonalInformationsController,
 } from "../controllers/main";
 import { ejsLayoutMiddlewareFactory } from "../services/renderer";
@@ -17,7 +17,6 @@ import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";
 import {
   deletePasskeyController,
-  getPasskeysController,
   postVerifyRegistrationController,
 } from "../controllers/webauthn";
 
@@ -27,11 +26,32 @@ export const mainRouter = (app: Express) => {
   mainRouter.use(nocache());
 
   mainRouter.get(
-    "/",
+    "/connection-and-account",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserCanAccessAppMiddleware,
-    getHomeController,
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    getConnectionAndAccountController,
+  );
+
+  mainRouter.post(
+    "/passkeys/verify-registration",
+    rateLimiterMiddleware,
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postVerifyRegistrationController,
+  );
+
+  mainRouter.post(
+    "/delete-passkeys/:credential_id",
+    rateLimiterMiddleware,
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    deletePasskeyController,
   );
 
   mainRouter.get(
@@ -63,41 +83,11 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.get(
-    "/reset-password",
+    "/",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAppMiddleware,
-    csrfProtectionMiddleware,
-    getResetPasswordController,
-  );
-
-  mainRouter.get(
-    "/passkeys",
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
-    csrfProtectionMiddleware,
-    getPasskeysController,
-  );
-
-  mainRouter.post(
-    "/passkeys/verify-registration",
-    rateLimiterMiddleware,
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
-    csrfProtectionMiddleware,
-    postVerifyRegistrationController,
-  );
-
-  mainRouter.post(
-    "/delete-passkeys/:credential_id",
-    rateLimiterMiddleware,
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
-    csrfProtectionMiddleware,
-    deletePasskeyController,
+    getHomeController,
   );
 
   mainRouter.get(
