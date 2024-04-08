@@ -17,7 +17,7 @@ describe("sign-in with magic link", () => {
 
   it("should reset password then sign-in", function () {
     // Visit the signup page
-    cy.visit(`/users/start-sign-in`);
+    cy.visit(`http://app.moncomptepro.localhost/users/start-sign-in`);
 
     // Sign in with the wrong password
     cy.get('[name="login"]').type(
