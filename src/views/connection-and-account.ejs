@@ -20,7 +20,7 @@
             <form action="/users/reset-password" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                <button class="fr-btn fr-btn--secondary" aria-label="Réinitialiser le mot de passe" type="submit">
+                <button class="fr-btn fr-btn--secondary" type="submit">
                     Recevoir un lien de réinitialisation de mot de passe
                 </button>
             </form>
@@ -32,7 +32,7 @@
 
             <% if (passkeys.length <= 0) { %>
                 <div class="fr-callout fr-icon-information-line" id="webauthn-register">
-                    <h3 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h3>
+                    <h4 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h4>
                     <p class="fr-callout__text">
                         Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
                     </p>
@@ -42,9 +42,9 @@
                 </div>
             <% } %>
             <div class="fr-callout fr-icon-alert-line" id="webauthn-not-supported" hidden>
-                <h3 class="fr-callout__title">
+                <h4 class="fr-callout__title">
                     Impossible de créer une clé d’accès sur cet appareil
-                </h3>
+                </h4>
                 <p class="fr-callout__text">
                     Assurez-vous que le système d’exploitation de votre appareil est à jour, que le verrouillage de
                     l’écran
@@ -58,6 +58,7 @@
                 propriétaire.
                 <a
                         class="fr-link" target="_blank" rel="noopener noreferrer"
+                        aria-label="En savoir plus sur les clés d'accès"
                         href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
                 >En savoir plus</a>
             </p>
@@ -67,9 +68,9 @@
                         <div class="fr-col-12 fr-col-lg-10">
                             <div class="fr-tile fr-tile--horizontal">
                                 <div class="fr-tile__body">
-                                    <h3 class="fr-tile__title">
+                                    <h4 class="fr-tile__title">
                                         <%= display_name; %>
-                                    </h3>
+                                    </h4>
                                     <p class="fr-tile__desc">Création : <%= created_at; %></p>
                                     <p class="fr-tile__desc">
                                         Dernière utilisation : <%= last_used_at; %>
