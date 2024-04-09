@@ -5,15 +5,6 @@
         <h2>
             Vos informations personnelles
         </h2>
-        <div class="fr-notice notice--email fr-mb-3w">
-            <div class="fr-container">
-                <div class="fr-notice__body">
-                    <p>
-                        L’email rattaché à votre compte est <strong><%= email; %></strong>
-                    </p>
-                </div>
-            </div>
-        </div>
         <form action="/personal-information" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
@@ -80,24 +71,5 @@
                 Mettre à jour
             </button>
         </form>
-        <form class="fr-mt-4w" action="/users/delete" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-
-            <h3>Suppression</h3>
-
-            <p>
-                Pour des raisons légales, vos données sont sauvegardées pendant 3 ans après la suppression de votre
-                compte.
-            </p>
-
-            <button
-                    class="fr-btn btn--danger js-confirm"
-                    data-confirm="Si vous avez changé d’organisation, vous pouvez les modifier sur votre espace personnel.&#10;&#10;Si vous n’utilisez plus MonComptePro avec cette adresse email, vous pouvez supprimer ce compte."
-                    type="submit"
-            >
-                Supprimer votre compte
-            </button>
-        </form>
     </main>
 </div>
-<script type="module" src="<%= js('confirm.js') %>"></script>

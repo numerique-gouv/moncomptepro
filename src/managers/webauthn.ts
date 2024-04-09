@@ -33,7 +33,7 @@ import { logger } from "../services/log";
 // Human-readable title for your website
 const rpName = "MonComptePro";
 // A unique identifier for your website
-const rpID = new URL(MONCOMPTEPRO_HOST).host;
+const rpID = new URL(MONCOMPTEPRO_HOST).hostname;
 // The URL at which registrations and authentications should occur
 const origin = MONCOMPTEPRO_HOST;
 

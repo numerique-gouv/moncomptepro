@@ -25,7 +25,7 @@ describe("redirect after session expiration", () => {
     // Wait for session to expire
     cy.wait(5 * 1000);
     cy.get('a.fr-sidemenu__link[href="/manage-organizations"]')
-      .contains("Votre organisation")
+      .contains("Organisations")
       .click();
 
     login(cy);

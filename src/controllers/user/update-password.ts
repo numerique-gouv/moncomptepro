@@ -45,13 +45,22 @@ export const postResetPasswordController = async (
   next: NextFunction,
 ) => {
   try {
-    const schema = z.object({
-      login: emailSchema(),
-    });
+    let email: string;
+    if (isWithinLoggedInSession(req)) {
+      const user = getUserFromLoggedInSession(req);
 
-    const { login } = await schema.parseAsync(req.body);
+      email = user.email;
+    } else {
+      const schema = z.object({
+        login: emailSchema(),
+      });
 
-    await sendResetPasswordEmail(login, MONCOMPTEPRO_HOST);
+      const parsedBody = await schema.parseAsync(req.body);
+
+      email = parsedBody.login;
+    }
+
+    await sendResetPasswordEmail(email, MONCOMPTEPRO_HOST);
 
     return res.redirect(
       "/users/start-sign-in?notification=reset_password_email_sent",
