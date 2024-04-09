@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 
 FROM base AS prod-deps
+ENV CYPRESS_INSTALL_BINARY=0
 RUN --mount=type=cache,id=npm,target=/app/.npm \
   npm set cache /app/.npm && \
   npm ci --omit=dev
