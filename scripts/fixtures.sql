@@ -539,7 +539,7 @@ VALUES
      'https://egapro-charon.ovh.fabrique.social.gouv.fr'
      ],
    'openid email profile phone organization organizations',
-   'https://egapro-preprod.dev.fabrique.social.gouv.fr/',
+   'https://egapro-preprod.ovh.fabrique.social.gouv.fr/',
    'Egapro permet aux entreprises de mesurer, en toute transparence, les écarts de rémunération entre les sexes et de mettre en évidence leurs points de progression.',
    null, null, null, null),
   (14,
