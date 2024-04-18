@@ -1,38 +1,45 @@
-<div class="card-container">
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-card__title">
-                    Vérifier votre profil sans parrainage
-                </h1>
-                <div class="fr-card__desc">
-                    <p>
-                        Sans parrainage, nous notifierons certains des membres de votre organisation
-                        de la création de votre compte.
-                    </p>
+<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
+    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
+        <div>
+        <h1 class="fr-h3">Vérifier votre profil sans parrainage</h1>
+        <div class="fr-card__desc">
+            <p>
+            Sans parrainage, nous notifierons certains des membres de votre
+            organisation de la création de votre compte.
+            </p>
 
-                    <div class="card-button-container">
-                        <span>
-                            <button
-                                    id="go-back-link"
-                                    type="button"
-                                    aria-label="Trouver un parrain (retour)"
-                                    class="fr-btn fr-btn--primary fr-icon-arrow-go-back-line fr-btn--icon-left"
-                            >
-                                Trouver un parrain
-                            </button>
-                        </span>
-                        <form action="/users/no-sponsor-found/<%= organization_id ;%>" method="post">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken ;%>" autocomplete="off">
+            <div class="card-button-container">
+            <span>
+                <button
+                id="go-back-link"
+                type="button"
+                aria-label="Trouver un parrain (retour)"
+                class="fr-btn fr-btn--primary fr-icon-arrow-go-back-line fr-btn--icon-left"
+                >
+                Trouver un parrain
+                </button>
+            </span>
+            <form
+                action="/users/no-sponsor-found/<%= organization_id ;%>"
+                method="post"
+            >
+                <input
+                type="hidden"
+                name="_csrf"
+                value="<%= csrfToken ;%>"
+                autocomplete="off"
+                />
 
-                            <button class="fr-btn fr-btn--secondary" type="submit">
-                                Personne ne peut me parrainer
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <button class="fr-btn fr-btn--secondary" type="submit">
+                Personne ne peut me parrainer
+                </button>
+            </form>
             </div>
         </div>
+        </div>
+    </div>
+    <div class="fr-col-lg-6 fr-py-5w mcp-full-height side-media">
+        <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
     </div>
 </div>
 <script type="module" src="<%= js('go-back.js') %>"></script>

@@ -1,43 +1,45 @@
-<div class="card-container">
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-card__title">
-                    Votre organisation de rattachement
-                </h1>
-                <div class="fr-card__desc">
-                    <p><span class="fr-label">Sélectionnez l’organisation dont vous faites partie</span></p>
-
-                    <div class="fr-grid-row fr-grid-row--gutters fr-mb-2w">
-                        <% organizationSuggestions.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }) => { %>
-                        <div class="fr-col-12">
-                            <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal">
-                                <div class="fr-tile__body">
-                                    <h2 class="fr-tile__title">
-                                        <a class="fr-tile__link" href aria-label="Sélectionner l'organisation <%= cached_libelle; %>"><%= cached_libelle; %></a>
-                                    </h2>
-                                    <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
-                                    <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
-                                </div>
+<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
+    <div class="fr-mb-6w fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
+        <div>
+            <h1 class="fr-h3">
+                Votre organisation de rattachement
+            </h1>
+            <div class="fr-card__desc">
+                <p><span class="fr-label">Sélectionnez l’organisation dont vous faites partie</span></p>
+                <div class="fr-grid-row fr-grid-row--gutters fr-mb-2w">
+                    <% organizationSuggestions.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }) => { %>
+                    <div class="fr-col-12">
+                        <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal">
+                            <div class="fr-tile__body">
+                                <h2 class="fr-tile__title">
+                                    <a class="fr-tile__link" href aria-label="Sélectionner l'organisation <%= cached_libelle; %>"><%= cached_libelle; %></a>
+                                </h2>
+                                <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
+                                <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
                             </div>
-                            <form id="form-join-organization-<%= id %>" hidden action="/users/join-organization" method="post">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                                <input type="hidden" name="siret" value="<%= siret %>" autocomplete="off">
-                            </form>
                         </div>
-                        <% }); %>
+                        <form id="form-join-organization-<%= id %>" hidden action="/users/join-organization" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+                            <input type="hidden" name="siret" value="<%= siret %>" autocomplete="off">
+                        </form>
                     </div>
-                    <p class="fr-mb-0">
-                        <a
-                            href="/users/join-organization?do_not_propose_suggestions=true"
-                            class="fr-btn fr-btn--secondary btn--fullwidth"
-                        >
-                            Je veux rejoindre une autre organisation
-                        </a>
-                    </p>
+                    <% }); %>
                 </div>
+                <p class="fr-mb-0">
+                    <a
+                        href="/users/join-organization?do_not_propose_suggestions=true"
+                        class="fr-btn fr-btn--secondary btn--fullwidth"
+                    >
+                        Je veux rejoindre une autre organisation
+                    </a>
+                </p>
             </div>
         </div>
+    </div>
+    <div
+        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
+    >
+    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
     </div>
 </div>
 <script type="module" src="<%= js('submit-tile-forms.js') %>"></script>

@@ -1,17 +1,26 @@
-<div class="card-container">
-    <div class="fr-alert fr-alert--error">
-        <p class="fr-alert__title">Une erreur est survenue.</p>
-        <pre class="error-code">
-            <b>Erreur <%= error_code %></b>
-            <%= error_message %>
-        </pre>
-        <p>
-            Merci de réessayer ultérieurement.
-        </p>
-        <p>
-            Vous pouvez également nous signaler cette erreur par mail à
-            <a href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Erreur%20sur%20MonComptePro">contact@moncomptepro.beta.gouv.fr</a>.
-        </p>
+<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
+    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
+        <div class="card-container">
+            <div class="fr-alert fr-alert--error">
+                <p class="fr-alert__title">Une erreur est survenue.</p>
+                <pre class="error-code">
+                    <b>Erreur <%= error_code %></b>
+                    <%= error_message %>
+                </pre>
+                <p>
+                    Merci de réessayer ultérieurement.
+                </p>
+                <p>
+                    Vous pouvez également nous signaler cette erreur par mail à
+                    <a href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Erreur%20sur%20MonComptePro">contact@moncomptepro.beta.gouv.fr</a>.
+                </p>
+            </div>
+            <a href="/" class="fr-btn fr-btn--secondary">Retour à l’accueil</a>
+        </div>
     </div>
-    <a href="/" class="fr-btn fr-btn--secondary">Retour à l’accueil</a>
+    <div
+        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
+    >
+    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
+    </div>
 </div>
