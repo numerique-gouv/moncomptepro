@@ -1,12 +1,13 @@
 import { Router, urlencoded } from "express";
+import nocache from "nocache";
+import Provider from "oidc-provider";
 import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
 } from "../controllers/interaction";
 import { checkUserSignInRequirementsMiddleware } from "../middlewares/user";
-import nocache from "nocache";
 
-export const interactionRouter = (oidcProvider: any) => {
+export const interactionRouter = (oidcProvider: Provider) => {
   const interactionRouter = Router();
 
   interactionRouter.use(nocache());

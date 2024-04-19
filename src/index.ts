@@ -1,16 +1,14 @@
 import * as Sentry from "@sentry/node";
-// @ts-ignore
 import RedisStore from "connect-redis";
 import express, { NextFunction, Request, Response } from "express";
 import session from "express-session";
 import fs from "fs";
-// @ts-ignore
 import helmet from "helmet";
 import { Server } from "http";
 import HttpErrors from "http-errors";
 import { isNull, omitBy } from "lodash-es";
 import morgan from "morgan";
-import Provider, { errors } from "oidc-provider";
+import Provider, { ClientMetadata, errors } from "oidc-provider";
 import path from "path";
 import { ZodError } from "zod";
 import {
@@ -138,17 +136,15 @@ let server: Server;
   const clients = await getClients();
 
   // the oidc provider expect provided client attributes to be not null if provided
-  const clientsWithoutNullProperties = clients.map((client) =>
-    omitBy(client, isNull),
+  const clientsWithoutNullProperties = clients.map(
+    (oidcClient) => omitBy(oidcClient, isNull) as ClientMetadata,
   );
 
-  // @ts-ignore
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
-    // clients: clientsWithoutNullProperties,
+    clients: clientsWithoutNullProperties,
     adapter: oidcProviderRepository,
     jwks: JWKS,
-    // @ts-ignore
-    renderError: async (ctx, { error, error_description }, err) => {
+    async renderError(ctx, { error, error_description }, err) {
       logger.error(err);
       Sentry.withScope((scope) => {
         scope.addEventProcessor((event) => {

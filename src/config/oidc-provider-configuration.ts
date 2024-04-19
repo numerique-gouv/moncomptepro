@@ -1,14 +1,16 @@
-import { findAccount } from "../services/oidc-account-adapter";
-import { renderWithEjsLayout } from "../services/renderer";
-import epochTime from "../services/epoch-time";
-import policy from "../services/oidc-policy";
+import { Request } from "express";
+import { Configuration } from "oidc-provider";
 import { destroyLoggedInSession } from "../managers/session";
+import epochTime from "../services/epoch-time";
+import { findAccount } from "../services/oidc-account-adapter";
+import policy from "../services/oidc-policy";
+import { renderWithEjsLayout } from "../services/renderer";
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
   shortTokenTtlInSeconds = 10 * 60,
   tokenTtlInSeconds = 60 * 60,
-}) => ({
+}): Configuration => ({
   acrValues: ["eidas1"],
   claims: {
     amr: null,
@@ -43,7 +45,7 @@ export const oidcProviderConfiguration = ({
       enabled: true,
       // @ts-ignore
       logoutSource: async (ctx, form) => {
-        await destroyLoggedInSession(ctx.req);
+        await destroyLoggedInSession(ctx.req as Request);
         const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
         ctx.type = "html";
@@ -60,7 +62,7 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // Make sure the user is logged out from express.
-        await destroyLoggedInSession(ctx.req);
+        await destroyLoggedInSession(ctx.req as Request);
         ctx.redirect("/users/start-sign-in/?notification=logout_success");
       },
     },
@@ -69,7 +71,6 @@ export const oidcProviderConfiguration = ({
   interactions: {
     policy,
   },
-  // @ts-ignore
   loadExistingGrant: async (ctx) => {
     // we want to skip the consent
     // inspired from https://github.com/panva/node-oidc-provider/blob/main/recipes/skip_consent.md
@@ -77,6 +78,9 @@ export const oidcProviderConfiguration = ({
     // As a consequence, the consent prompt should never be requested afterward.
 
     // The grant id never comes from consent results so we simplified this line
+    if (!ctx.oidc.session || !ctx.oidc.client || !ctx.oidc.params) {
+      return undefined;
+    }
     const grantId = ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
     let grant;
@@ -103,7 +107,7 @@ export const oidcProviderConfiguration = ({
 
     // event existing grant should be updated, as requested scopes might
     // be different
-    grant.addOIDCScope(ctx.oidc.params.scope);
+    grant.addOIDCScope(ctx.oidc.params.scope as string);
     await grant.save();
     return grant;
   },
