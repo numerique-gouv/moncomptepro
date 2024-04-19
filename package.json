@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "type": "module",
   "engines": {
-    "node": "20.11.1"
+    "node": "20.12.2"
   },
   "scripts": {
     "lint": "prettier --write */*.ts",
