@@ -1,4 +1,4 @@
-import { intersection, isEmpty } from "lodash";
+import { intersection, isEmpty } from "lodash-es";
 
 export const organizationClaims = [
   "label",

@@ -1,4 +1,15 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { cloneDeep, set } from "lodash-es";
+import {
+  HTTP_CLIENT_TIMEOUT,
+  INSEE_CONSUMER_KEY,
+  INSEE_CONSUMER_SECRET,
+} from "../../config/env";
+import {
+  InseeConnectionError,
+  InseeNotFoundError,
+  InvalidSiretError,
+} from "../../config/errors";
 import {
   formatAdresseEtablissement,
   formatEnseigne,
@@ -7,17 +18,6 @@ import {
   libelleFromCodeEffectif,
   libelleFromCodeNaf,
 } from "./formatters";
-import {
-  InseeConnectionError,
-  InseeNotFoundError,
-  InvalidSiretError,
-} from "../../config/errors";
-import {
-  HTTP_CLIENT_TIMEOUT,
-  INSEE_CONSUMER_KEY,
-  INSEE_CONSUMER_SECRET,
-} from "../../config/env";
-import { cloneDeep, set } from "lodash";
 
 type InseeEtablissement = {
   // ex: '217400563'

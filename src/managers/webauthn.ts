@@ -1,33 +1,33 @@
 import {
+  VerifiedAuthenticationResponse,
+  VerifiedRegistrationResponse,
+  generateAuthenticationOptions,
+  generateRegistrationOptions,
+  verifyAuthenticationResponse,
+  verifyRegistrationResponse,
+} from "@simplewebauthn/server";
+import type {
+  AuthenticationResponseJSON,
+  RegistrationResponseJSON,
+} from "@simplewebauthn/types";
+import { isEmpty } from "lodash-es";
+import moment from "moment";
+import { MONCOMPTEPRO_HOST } from "../config/env";
+import {
+  NotFoundError,
+  WebauthnAuthenticationFailedError,
+  WebauthnRegistrationFailedError,
+} from "../config/errors";
+import { getAuthenticatorFriendlyName } from "../connectors/github-passkey-authenticator-aaguids";
+import {
   createAuthenticator,
   deleteAuthenticator,
   findAuthenticator,
   getAuthenticatorsByUserId,
   updateAuthenticator,
 } from "../repositories/authenticator";
-import {
-  NotFoundError,
-  WebauthnAuthenticationFailedError,
-  WebauthnRegistrationFailedError,
-} from "../config/errors";
-import {
-  generateAuthenticationOptions,
-  generateRegistrationOptions,
-  VerifiedAuthenticationResponse,
-  VerifiedRegistrationResponse,
-  verifyAuthenticationResponse,
-  verifyRegistrationResponse,
-} from "@simplewebauthn/server";
 import { findByEmail as findUserByEmail, update } from "../repositories/user";
-import { isEmpty } from "lodash";
-import { MONCOMPTEPRO_HOST } from "../config/env";
-import {
-  AuthenticationResponseJSON,
-  RegistrationResponseJSON,
-} from "@simplewebauthn/server/esm/deps";
 import { encodeBase64URL } from "../services/base64";
-import { getAuthenticatorFriendlyName } from "../connectors/github-passkey-authenticator-aaguids";
-import moment from "moment";
 import { logger } from "../services/log";
 
 // Human-readable title for your website

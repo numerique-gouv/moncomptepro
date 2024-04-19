@@ -1,15 +1,15 @@
+import * as Sentry from "@sentry/node";
+import { isEmpty, isString } from "lodash-es";
+import { KoaContextWithOIDC } from "oidc-provider";
+import { NotFoundError } from "../config/errors";
 import {
   addConnection,
   findByClientId,
   getByUserIdOrderedByConnectionCount,
 } from "../repositories/oidc-client";
-import { isEmpty, isString } from "lodash";
-import { NotFoundError } from "../config/errors";
-import { KoaContextWithOIDC } from "oidc-provider";
-import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import * as Sentry from "@sentry/node";
 import { logger } from "../services/log";
+import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number,

@@ -1,20 +1,25 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
-import { isEmpty, toInteger } from "lodash";
 import fs from "fs";
-import {
-  addTrackdechetsDomain,
-  upsert,
-} from "../src/repositories/organization/setters";
+import { isEmpty, toInteger } from "lodash-es";
 import {
   getInseeAccessToken,
   getOrganizationInfo,
 } from "../src/connectors/api-sirene";
+import {
+  addTrackdechetsDomain,
+  upsert,
+} from "../src/repositories/organization/setters";
 // these lines can be uncommented to fix some type import in webstorm
 // import "../src/types/organization-info";
 // import "../src/types/user-organization-link";
 // import "../src/types/user";
 // import "../src/types/organization";
+import { AxiosError } from "axios";
 import { logger } from "../src/services/log";
+import {
+  isServicePublic,
+  isWasteManagementOrganization,
+} from "../src/services/organization";
 import {
   getNumberOfLineInFile,
   humanReadableDuration,
@@ -22,13 +27,8 @@ import {
   startDurationMesure,
   throttleApiCall,
 } from "../src/services/script-helpers";
-import { AxiosError } from "axios";
-import { isAFreeEmailProvider } from "../src/services/uses-a-free-email-provider";
-import {
-  isServicePublic,
-  isWasteManagementOrganization,
-} from "../src/services/organization";
 import { isDomainValid, isSiretValid } from "../src/services/security";
+import { isAFreeEmailProvider } from "../src/services/uses-a-free-email-provider";
 
 const { parse, transform, stringify } = require("csv");
 

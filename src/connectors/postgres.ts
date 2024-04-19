@@ -1,8 +1,9 @@
-import { Pool } from "pg";
+import Pg from "pg";
 import { DATABASE_URL } from "../config/env";
 import { logger } from "../services/log";
 
-let pool: Pool | null = null;
+const { Pool } = Pg;
+let pool: Pg.Pool | null = null;
 
 const obfuscatedConnectionString = (DATABASE_URL || "").replace(
   /\/\/(.*)@/,

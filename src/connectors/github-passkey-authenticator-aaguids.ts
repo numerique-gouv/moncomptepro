@@ -1,7 +1,7 @@
-import { mapValues, memoize } from "lodash";
-import axios, { AxiosResponse } from "axios";
-import { HTTP_CLIENT_TIMEOUT } from "../config/env";
 import * as Sentry from "@sentry/node";
+import axios, { AxiosResponse } from "axios";
+import { mapValues, memoize } from "lodash-es";
+import { HTTP_CLIENT_TIMEOUT } from "../config/env";
 import { logger } from "../services/log";
 
 type GithubPasskeyAuthenticatorAaguidsResponse = {

@@ -1,5 +1,5 @@
 // source https://github.com/panva/node-oidc-provider/blob/6fbcd71b08b8b8f381a97a82809de42c75904c6b/example/adapters/redis.js
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { getNewRedisClient } from "../../connectors/redis";
 
 const client = getNewRedisClient({

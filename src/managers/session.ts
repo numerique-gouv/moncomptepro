@@ -1,11 +1,11 @@
 import { Request } from "express";
-import { isEmpty } from "lodash";
-import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
-import { update } from "../repositories/user";
-import { UserNotLoggedInError } from "../config/errors";
-import { isExpired } from "../services/is-expired";
+import { isEmpty } from "lodash-es";
 import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
+import { UserNotLoggedInError } from "../config/errors";
+import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { update } from "../repositories/user";
+import { isExpired } from "../services/is-expired";
+import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session?.user);
