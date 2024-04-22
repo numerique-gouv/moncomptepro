@@ -55,7 +55,7 @@ jobs:
           - redirect_after_session_expiration
           - reset_password
           - join_must_confirm
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
         image: ghcr.io/betagouv/moncomptepro-test-client
