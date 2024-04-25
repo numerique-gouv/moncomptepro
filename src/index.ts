@@ -45,22 +45,17 @@ const app = express();
 
 if (SENTRY_DSN) {
   Sentry.init({
-    dsn: SENTRY_DSN,
     debug: LOG_LEVEL === "debug",
-    initialScope: {
-      tags: {
-        NODE_ENV,
-        DEPLOY_ENV,
-        HOST: MONCOMPTEPRO_HOST,
-      },
-    },
+    dsn: SENTRY_DSN,
+    environment: DEPLOY_ENV,
+    initialScope: { tags: { NODE_ENV, DEPLOY_ENV, HOST: MONCOMPTEPRO_HOST } },
     integrations: [
       new Sentry.Integrations.Express({ app }),
       new Sentry.Integrations.Http({ tracing: true }),
       new Sentry.Integrations.Postgres(),
     ],
-    tracesSampleRate: 0.5,
     profilesSampleRate: 0.5,
+    tracesSampleRate: 0.5,
   });
 }
 
