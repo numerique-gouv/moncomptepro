@@ -1,6 +1,6 @@
 // from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
-import { isEmpty } from "lodash";
 import fs from "fs";
+import { isEmpty } from "lodash-es";
 
 export const startDurationMesure = () => {
   return process.hrtime();

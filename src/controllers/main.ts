@@ -1,22 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
-import { z, ZodError } from "zod";
-import { updatePersonalInformations } from "../managers/user";
+import { isEmpty } from "lodash-es";
+import { ZodError, z } from "zod";
+import { ForbiddenError, NotFoundError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
+import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
-import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
 } from "../managers/session";
+import { updatePersonalInformations } from "../managers/user";
+import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
-import { getOrganizationFromModeration } from "../managers/moderation";
-import { isEmpty } from "lodash";
-import { ForbiddenError, NotFoundError } from "../config/errors";
-import { getUserAuthenticators } from "../managers/webauthn";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 
 export const getHomeController = async (
   req: Request,

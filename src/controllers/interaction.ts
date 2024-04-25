@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
+import Provider, { errors } from "oidc-provider";
 import { getUserFromLoggedInSession } from "../managers/session";
 import epochTime from "../services/epoch-time";
+import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { postStartSignInController } from "./user/signin-signup";
 
 export const interactionStartControllerFactory =
@@ -53,14 +54,8 @@ export const interactionStartControllerFactory =
   };
 
 export const interactionEndControllerFactory =
-  (oidcProvider: any) =>
+  (oidcProvider: Provider) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const {
-      constructor: {
-        errors: { SessionNotFound },
-      },
-    } = oidcProvider;
-
     try {
       const user = getUserFromLoggedInSession(req);
 
@@ -91,7 +86,7 @@ export const interactionEndControllerFactory =
 
       await oidcProvider.interactionFinished(req, res, result);
     } catch (error) {
-      if (error instanceof SessionNotFound) {
+      if (error instanceof errors.SessionNotFound) {
         // we may have taken to long to provide a session to the user since he has been redirected
         // we fail silently
         return res.redirect("/");

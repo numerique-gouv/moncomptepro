@@ -1,12 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
-import { z, ZodError } from "zod";
-import {
-  idSchema,
-  optionalBooleanSchema,
-  siretSchema,
-} from "../services/custom-zod-schemas";
-import hasErrorFromField from "../services/has-error-from-field";
+import HttpErrors from "http-errors";
+import { isEmpty } from "lodash-es";
+import { ZodError, z } from "zod";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -18,23 +13,28 @@ import {
   UserMustConfirmToJoinOrganizationError,
 } from "../config/errors";
 import {
-  getOrganizationById,
-  quitOrganization,
-  selectOrganization,
-} from "../managers/organization/main";
+  cancelModeration,
+  getOrganizationFromModeration,
+} from "../managers/moderation";
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
   joinOrganization,
 } from "../managers/organization/join";
+import {
+  getOrganizationById,
+  quitOrganization,
+  selectOrganization,
+} from "../managers/organization/main";
 import { getUserFromLoggedInSession } from "../managers/session";
 import { csrfToken } from "../middlewares/csrf-protection";
 import {
-  cancelModeration,
-  getOrganizationFromModeration,
-} from "../managers/moderation";
-import { NotFound } from "http-errors";
-import { isEmpty } from "lodash";
+  idSchema,
+  optionalBooleanSchema,
+  siretSchema,
+} from "../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import hasErrorFromField from "../services/has-error-from-field";
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -176,7 +176,7 @@ export const getJoinOrganizationConfirmController = async (
     const organization = await getOrganizationById(organization_id);
 
     if (isEmpty(organization)) {
-      return next(new NotFound());
+      return next(new HttpErrors.NotFound());
     }
 
     return res.render("user/join-organization-confirm", {
@@ -217,7 +217,7 @@ export const getUnableToAutoJoinOrganizationController = async (
     });
   } catch (e) {
     if (e instanceof NotFoundError) {
-      next(new NotFound());
+      next(new HttpErrors.NotFound());
     }
 
     next(e);

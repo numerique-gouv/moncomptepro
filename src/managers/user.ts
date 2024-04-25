@@ -1,6 +1,4 @@
-import { isEmpty } from "lodash";
-import { isEmailSafeToSendTransactional } from "../connectors/debounce";
-import { sendMail } from "../connectors/brevo";
+import { isEmpty } from "lodash-es";
 import {
   EmailUnavailableError,
   EmailVerifiedAlreadyError,
@@ -12,7 +10,16 @@ import {
   UserNotFoundError,
   WeakPasswordError,
 } from "../config/errors";
+import { sendMail } from "../connectors/brevo";
+import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 
+import {
+  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
+  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+} from "../config/env";
+import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
   findByEmail,
@@ -29,13 +36,6 @@ import {
   isPasswordSecure,
   validatePassword,
 } from "../services/security";
-import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
-import {
-  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
-  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-} from "../config/env";
 
 export const startLogin = async (
   email: string,

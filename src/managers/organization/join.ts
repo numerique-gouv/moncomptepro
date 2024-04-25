@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/node";
-import { isEmpty, some } from "lodash";
+import { isEmpty, some } from "lodash-es";
+import { MAX_SUGGESTED_ORGANIZATIONS } from "../../config/env";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -30,6 +31,7 @@ import {
   upsert,
 } from "../../repositories/organization/setters";
 import { findById as findUserById } from "../../repositories/user";
+import { logger } from "../../services/log";
 import {
   hasLessThanFiftyEmployees,
   isCommune,
@@ -44,8 +46,6 @@ import {
   usesAFreeEmailProvider,
 } from "../../services/uses-a-free-email-provider";
 import { markDomainAsVerified } from "./main";
-import { logger } from "../../services/log";
-import { MAX_SUGGESTED_ORGANIZATIONS } from "../../config/env";
 
 export const doSuggestOrganizations = async ({
   user_id,

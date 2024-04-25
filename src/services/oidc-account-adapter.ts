@@ -1,17 +1,18 @@
-import { isEmpty } from "lodash";
-import { findById as findUserById } from "../repositories/user";
-import { isCommune, isServicePublic } from "./organization";
+import * as Sentry from "@sentry/node";
+import { isEmpty } from "lodash-es";
+import { FindAccount } from "oidc-provider";
 import { findByUserId as getUsersOrganizations } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
-import * as Sentry from "@sentry/node";
+import { findById as findUserById } from "../repositories/user";
 import { logger } from "./log";
+import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
+import { isCommune, isServicePublic } from "./organization";
 
-export const findAccount = async (ctx: any, sub: string, token: any) => {
+export const findAccount: FindAccount = async (ctx, sub, token) => {
   const user = await findUserById(parseInt(sub, 10));
 
   if (isEmpty(user)) {
-    return null;
+    return;
   }
 
   return {

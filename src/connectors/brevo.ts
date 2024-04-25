@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { chain, isEmpty } from "lodash";
+import { chain, isEmpty } from "lodash-es";
 import path from "path";
 import { BREVO_API_KEY, DO_NOT_SEND_MAIL } from "../config/env";
 import { BrevoApiError } from "../config/errors";
-import { render } from "../services/renderer";
 import { logger } from "../services/log";
+import { render } from "../services/renderer";
 
 type RemoteTemplateSlug =
   | "official-contact-email-verification"
@@ -92,7 +92,7 @@ export const sendMail = async ({
     data.templateId = defaultBrevoTemplateId;
     data.params = {
       text_content: await render(
-        path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
+        path.resolve(`${import.meta.dirname}/../views/mails/${template}.ejs`),
         params,
       ),
     };

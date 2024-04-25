@@ -1,22 +1,23 @@
 import { NextFunction, Request, Response } from "express";
+import HttpErrors from "http-errors";
 import { z } from "zod";
-import { idSchema } from "../../services/custom-zod-schemas";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import {
   NotFoundError,
   UserHasAlreadyBeenAuthenticatedByPeers,
 } from "../../config/errors";
-import { NotFound } from "http-errors";
-import { getOrganizationById } from "../../managers/organization/main";
 import {
   chooseSponsor,
   getOrganizationLabel,
   getSponsorOptions,
   notifyAllMembers,
 } from "../../managers/organization/authentication-by-peers";
+import { getOrganizationById } from "../../managers/organization/main";
 import { getUserFromLoggedInSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
+import { idSchema } from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 
+const { NotFound } = HttpErrors;
 export const getChooseSponsorController = async (
   req: Request,
   res: Response,

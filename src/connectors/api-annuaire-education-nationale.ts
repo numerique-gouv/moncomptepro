@@ -1,17 +1,17 @@
-import { isEmpty, isString } from "lodash";
-import {
-  ApiAnnuaireConnectionError,
-  ApiAnnuaireInvalidEmailError,
-  ApiAnnuaireNotFoundError,
-} from "../config/errors";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { isEmpty, isString } from "lodash-es";
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,
   HTTP_CLIENT_TIMEOUT,
   TEST_CONTACT_EMAIL,
 } from "../config/env";
-import { isEmailValid } from "../services/security";
+import {
+  ApiAnnuaireConnectionError,
+  ApiAnnuaireInvalidEmailError,
+  ApiAnnuaireNotFoundError,
+} from "../config/errors";
 import { logger } from "../services/log";
+import { isEmailValid } from "../services/security";
 
 type ApiAnnuaireEducationNationaleReponse = {
   total_count: number;

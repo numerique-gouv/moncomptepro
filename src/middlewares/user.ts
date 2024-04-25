@@ -1,28 +1,28 @@
 import { NextFunction, Request, Response } from "express";
-import { isEmpty } from "lodash";
-import { getTrustedReferrerPath } from "../services/security";
-import { needsEmailVerificationRenewal } from "../managers/user";
-import {
-  getOrganizationsByUserId,
-  selectOrganization,
-} from "../managers/organization/main";
+import HttpErrors from "http-errors";
+import { isEmpty } from "lodash-es";
+import { PAIR_AUTHENTICATION_WHITELIST } from "../config/env";
+import { UserNotFoundError } from "../config/errors";
+import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 import {
   greetForJoiningOrganization,
   markAsWhitelisted,
   notifyAllMembers,
 } from "../managers/organization/authentication-by-peers";
-import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import {
+  getOrganizationsByUserId,
+  selectOrganization,
+} from "../managers/organization/main";
 import {
   destroyLoggedInSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
 } from "../managers/session";
-import { isBrowserTrustedForUser } from "../managers/browser-authentication";
+import { needsEmailVerificationRenewal } from "../managers/user";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
-import { UserNotFoundError } from "../config/errors";
-import { Unauthorized } from "http-errors";
-import { PAIR_AUTHENTICATION_WHITELIST } from "../config/env";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { getTrustedReferrerPath } from "../services/security";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
 
 const getReferrerPath = (req: Request) => {
@@ -122,7 +122,7 @@ export const checkUserIsVerifiedMiddleware = (
       if (error instanceof UserNotFoundError) {
         // The user has an active session but is not in the database anymore
         await destroyLoggedInSession(req);
-        next(new Unauthorized());
+        next(new HttpErrors.Unauthorized());
       }
 
       next(error);

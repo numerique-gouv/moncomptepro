@@ -1,9 +1,9 @@
-import { isDate, isEmpty, toInteger } from "lodash";
+import { AxiosError } from "axios";
+import { isDate, isEmpty, toInteger } from "lodash-es";
+import { Pool } from "pg";
 import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { getDatabaseConnection } from "../src/connectors/postgres";
-import { AxiosError } from "axios";
 import { upsert } from "../src/repositories/organization/setters";
-import { Pool } from "pg";
 import { logger } from "../src/services/log";
 import {
   getDurationInMilliseconds,

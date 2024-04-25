@@ -8,8 +8,8 @@ import {
   ZAMMAD_TOKEN,
   ZAMMAD_URL,
 } from "../config/env";
-import { render } from "../services/renderer";
 import { logger } from "../services/log";
+import { render } from "../services/renderer";
 
 //
 
@@ -32,7 +32,7 @@ export async function sendZammadMail({
   subject: string;
 } & LocalTemplate) {
   const body = await render(
-    path.resolve(`${__dirname}/../views/mails/${template}.ejs`),
+    path.resolve(`${import.meta.dirname}/../views/mails/${template}.ejs`),
     params,
   );
 
