@@ -13,7 +13,9 @@ import path from "path";
 import { ZodError } from "zod";
 import {
   ACCESS_LOG_PATH,
+  DEPLOY_ENV,
   JWKS,
+  LOG_LEVEL,
   MONCOMPTEPRO_HOST,
   NODE_ENV,
   PORT,
@@ -44,11 +46,27 @@ const app = express();
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
+    debug: LOG_LEVEL === "debug",
+    initialScope: {
+      tags: {
+        NODE_ENV,
+        DEPLOY_ENV,
+        HOST: MONCOMPTEPRO_HOST,
+      },
+    },
+    integrations: [
+      new Sentry.Integrations.Express({ app }),
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Postgres(),
+    ],
+    tracesSampleRate: 0.5,
+    profilesSampleRate: 0.5,
   });
 }
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   helmet({
