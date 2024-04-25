@@ -49,6 +49,7 @@ if (SENTRY_DSN) {
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   helmet({
