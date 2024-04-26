@@ -1,25 +1,18 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-py-5w mcp-full-height">
-        <div>
-            <h1 class="fr-h3">
-                Consultez vos e-mails
-            </h1>
-            <div class="fr-card__desc">
-                <p>
-                    Votre lien vous attend
-                    <% if (locals.email) { %> à l’adresse...
-                    <br aria-hidden="true">
-                    <b><%= email %></b>
-                    <% } %>
-                </p>
-                <div id="magic-link-icon-block">
-                    <img src="/dist/magic-link.svg" alt="">
-                </div>
-                <p>Cliquez sur le lien dans l’email pour vous connecter.</p>
-            </div>
+<div>
+    <h1 class="fr-h3">
+        Consultez vos e-mails
+    </h1>
+    <div class="fr-card__desc">
+        <p>
+            Votre lien vous attend
+            <% if (locals.email) { %> à l’adresse...
+            <br aria-hidden="true">
+            <b><%= email %></b>
+            <% } %>
+        </p>
+        <div id="magic-link-icon-block">
+            <img src="/dist/magic-link.svg" alt="">
         </div>
-    </div>
-    <div class="fr-col-lg-6 fr-py-5w mcp-full-height side-media">
-    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
+        <p>Cliquez sur le lien dans l’email pour vous connecter.</p>
     </div>
 </div>

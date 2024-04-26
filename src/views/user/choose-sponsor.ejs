@@ -1,60 +1,50 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
+<div>
+    <div class="fr-mb-2w">
+        <h1 class="fr-h3">
+            Sélectionner un parrain
+        </h1>
         <div>
-            <div class="fr-mb-2w">
-                <h1 class="fr-h3">
-                    Sélectionner un parrain
-                </h1>
-                <div>
-                    <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
-                    <p>
-                        Cette personne sera informée que vous rejoignez l’organisation <%= libelle %> sur MonComptePro.
-                    </p>
-                    <form id="form-join-organization" action="/users/choose-sponsor/<%= organization_id %>" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+            <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
+            <p>
+                Cette personne sera informée que vous rejoignez l’organisation <%= libelle %> sur MonComptePro.
+            </p>
+            <form id="form-join-organization" action="/users/choose-sponsor/<%= organization_id %>" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="searchable-select">
-                                Choisissez votre parrain
-                            </label>
-                            <select
-                                    id="searchable-select"
-                                    class="fr-select"
-                                    name="sponsor_id"
-                                    required
-                            >
-                                <% sponsorOptions.map(function({ id, label }) { %>
-                                    <option value="<%= id %>"><%= label %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
-                    </form>
+                <div class="fr-input-group">
+                    <label class="fr-label" for="searchable-select">
+                        Choisissez votre parrain
+                    </label>
+                    <select
+                            id="searchable-select"
+                            class="fr-select"
+                            name="sponsor_id"
+                            required
+                    >
+                        <% sponsorOptions.map(function({ id, label }) { %>
+                            <option value="<%= id %>"><%= label %></option>
+                        <% }) %>
+                    </select>
                 </div>
-            </div>
-            <div class="fr-card fr-card fr-mb-6w">
-                <div class="fr-card__body">
-                    <div class="fr-card__content fr-px-0">
-                        <div class="fr-card__desc fr-mt-0">
-                            <div class="fr-container">
-                                <p class="fr-grid-row fr-grid-row--center">
-                                    <a class="fr-link fr-fi-question-line fr-link--icon-left" href="/users/no-sponsor-found/<%= organization_id %>">
-                                        Je ne connais aucune des personnes proposées
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
+                <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+            </form>
+        </div>
+    </div>
+    <div class="fr-card fr-card fr-mb-6w">
+        <div class="fr-card__body">
+            <div class="fr-card__content fr-px-0">
+                <div class="fr-card__desc fr-mt-0">
+                    <div class="fr-container">
+                        <p class="fr-grid-row fr-grid-row--center">
+                            <a class="fr-link fr-fi-question-line fr-link--icon-left" href="/users/no-sponsor-found/<%= organization_id %>">
+                                Je ne connais aucune des personnes proposées
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div
-        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
-    >
-    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
-    </div>
 </div>
-
 <script type="module" src="<%= js('searchable-select.js') %>"></script>
 <link rel="stylesheet" href="<%= css('searchable-select.css') %>">

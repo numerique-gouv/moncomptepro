@@ -1,53 +1,46 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-py-5w mcp-full-height">
-        <div>
-            <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
-            <div class="fr-mb-2w">
-                <h1 class="fr-h3">
-                    Vérifier votre email
-                </h1>
-                <div class="fr-card__desc">
-                    <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
-                        <p>
-                            Pour vérifier votre appartenance à l’organisation <%= libelle %>,
-                            nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
-                            <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
-                                <%= contactEmail; %>
-                            </span>.
-                        </p>
 
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
+<div>
+    <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
+    <div class="fr-mb-2w">
+        <h1 class="fr-h3">
+            Vérifier votre email
+        </h1>
+        <div class="fr-card__desc">
+            <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
+                <p>
+                    Pour vérifier votre appartenance à l’organisation <%= libelle %>,
+                    nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
+                    <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                        <%= contactEmail; %>
+                    </span>.
+                </p>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
 
 
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="official_contact_email_verification_token">
-                                Insérer le code reçu
-                            </label>
-                            <input class="fr-input" required
-                                    type="text" id="official_contact_email_verification_token"
-                                    name="official_contact_email_verification_token"
-                                    autocomplete="off">
-                        </div>
-
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
-                    </form>
+                <div class="fr-input-group">
+                    <label class="fr-label" for="official_contact_email_verification_token">
+                        Insérer le code reçu
+                    </label>
+                    <input class="fr-input" required
+                            type="text" id="official_contact_email_verification_token"
+                            name="official_contact_email_verification_token"
+                            autocomplete="off">
                 </div>
-            </div>
-            <div class="fr-alert fr-alert--info">
-                <p>
-                    Cette adresse email n’est pas à jour.
-                </p>
-                <p>
-                    <a class="fr-link fr-fi-arrow-right-line fr-link--icon-left" href="https://lannuaire.service-public.fr/">
-                        Faire une demande de mise à jour sur l’annuaire du service public.
-                    </a>
-                </p>
-            </div>
+
+                <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+            </form>
         </div>
     </div>
-    <div
-        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
-    >
-    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
+    <div class="fr-alert fr-alert--info">
+        <p>
+            Cette adresse email n’est pas à jour.
+        </p>
+        <p>
+            <a class="fr-link fr-fi-arrow-right-line fr-link--icon-left" href="https://lannuaire.service-public.fr/">
+                Faire une demande de mise à jour sur l’annuaire du service public.
+            </a>
+        </p>
     </div>
 </div>
+   

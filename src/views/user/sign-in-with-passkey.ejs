@@ -1,57 +1,48 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-mb-6w fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
-        <div>
-        <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
-        <div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
-        <div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
-        <h1 class="fr-h3">
-            Se connecter avec une clé d’accès
-        </h1>
-        <div class="fr-card__desc">
-            <p>
-                Votre appareil vous demandera d'utiliser votre empreinte, votre visage ou
-                le verrouillage de l'écran pour valider votre identité.
-            </p>
+<div>
+<%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
+<div class="fr-alert fr-alert--error" id="webauthn-alert-error" hidden></div>
+<div class="fr-alert fr-alert--success" id="webauthn-alert-success" hidden></div>
+<h1 class="fr-h3">
+    Se connecter avec une clé d’accès
+</h1>
+<div class="fr-card__desc">
+    <p>
+        Votre appareil vous demandera d'utiliser votre empreinte, votre visage ou
+        le verrouillage de l'écran pour valider votre identité.
+    </p>
 
-            <p>
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
+    <p>
+        <a
+                class="fr-link" target="_blank" rel="noopener noreferrer"
+                href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
+        >
+            En savoir plus
+        </a>
+    </p>
+
+    <button class="fr-btn btn--fullwidth fr-mb-2w" id="webauthn-btn-begin-authentication">
+        Continuer
+    </button>
+
+    <div class="card-button-container">
+        <span>
+                <button
+                        id="go-back-link"
+                        type="button"
+                        class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
                 >
-                    En savoir plus
-                </a>
-            </p>
-
-            <button class="fr-btn btn--fullwidth fr-mb-2w" id="webauthn-btn-begin-authentication">
-                Continuer
-            </button>
-
-            <div class="card-button-container">
-                <span>
-                        <button
-                                id="go-back-link"
-                                type="button"
-                                class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left"
-                        >
-                            retour
-                        </button>
-                </span>
-                <span>
-                </span>
-            </div>
-        </div>
-        <form id="webauthn-authentication-response-form" action="/users/sign-in-with-passkey" method="post" hidden>
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-            <input type="hidden" name="webauthn_authentication_response_string" autocomplete="off">
-            <button type="submit" class="fr-btn"></button>
-        </form>
-        </div>
+                    retour
+                </button>
+        </span>
+        <span>
+        </span>
     </div>
-    <div
-        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
-    >
-    <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
-    </div>
+</div>
+<form id="webauthn-authentication-response-form" action="/users/sign-in-with-passkey" method="post" hidden>
+    <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+    <input type="hidden" name="webauthn_authentication_response_string" autocomplete="off">
+    <button type="submit" class="fr-btn"></button>
+</form>
 </div>
 <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
 <script type="module" src="<%= js('go-back.js') %>"></script>

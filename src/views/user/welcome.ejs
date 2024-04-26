@@ -1,35 +1,24 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-mb-6w fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-pt-5w mcp-full-height">
-        <div>
-            <div>
-                <img src="/dist/tada.svg" alt="">
-            </div>
-            <br>
-            <h1>
-                Votre compte est créé !
-            </h1>
-            <div>
-                <p>
-                    Vous avez reçu un email de confirmation.
-                </p>
+<div>
+    <br>
+    <h1>
+        Votre compte est créé !
+    </h1>
+    <div>
+        <p>
+            Vous avez reçu un email de confirmation.
+        </p>
 
-                <% if (sponsor_label) { %>
-                    <p>
-                        Votre parrain <b><%= sponsor_label %></b> a été informé que vous avez rejoint son organisation sur MonComptePro.
-                    </p>
-                <% } %>
+        <% if (sponsor_label) { %>
+            <p>
+                Votre parrain <b><%= sponsor_label %></b> a été informé que vous avez rejoint son organisation sur MonComptePro.
+            </p>
+        <% } %>
 
-                <form action="/users/welcome" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+        <form action="/users/welcome" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
-                    <%- include('../partials/card-button-container.ejs', {label: 'Continuer'}) %>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div
-        class="fr-col-lg-6 fr-py-5w mcp-full-height side-media"
-    >
-    <%- include('../partials/side-illustration.ejs', {illu: 'welcome.svg'}) %>
+            <%- include('../partials/card-button-container.ejs', {label: 'Continuer'}) %>
+        </form>
     </div>
 </div>
+    

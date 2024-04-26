@@ -1,68 +1,63 @@
-<div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-    <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-py-5w mcp-full-height">
-        <div>
-            <h1 class="fr-h3">
-                Votre organisation de rattachement
-            </h1>
-            <div>
-                <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
-                <form id="form-join-organization" action="/users/join-organization" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                    <div class="fr-input-group">
-                        <label class="fr-label" for="siret-selector">
-                            SIRET de l’organisation que vous représentez
-                            <span class="fr-hint-text">
-                                Il est composé de 14 chiffres
-                            </span>
-                        </label>
-                        <input
-                            id="siret-selector"
-                            class="fr-input"
-                            required
-                            type="text"
-                            name="siret"
-                            pattern="^(\s*\d){14}$"
-                            maxlength="20"
-                            title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
-                            <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
-                            <% } %>
-                        >
-                        <p class="fr-info-text">
-                            <a class="fr-link"
-                                href="https://annuaire-entreprises.data.gouv.fr/<%= useGendarmerieSearchHint ? 'rechercher?terme=r%C3%A9gion+de+gendarmerie&' : '?' %>mtm_campaign=moncomptepro"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Retrouver votre SIRET sur L’Annuaire des Entreprises
-                            </a>
-                        </p>
-                    </div>
+<div>
+    <h1 class="fr-h3">
+        Votre organisation de rattachement
+    </h1>
+    <div>
+        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
+        <form id="form-join-organization" action="/users/join-organization" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
-                    <div class="fr-input-group">
-                        <div id="organization-info" hidden>
-                            <div id="submit-join-organization" class="fr-tile fr-enlarge-link fr-tile--horizontal">
-                                <div class="fr-tile__body">
-                                    <h2 class="fr-tile__title">
-                                        <b><a id="organization-info-libelle" class="fr-tile__link" href></a></b>
-                                    </h2>
-                                    <p id="organization-info-adresse" class="fr-tile__desc fr-pb-0"></p>
-                                    <p id="organization-info-activite-principale" class="fr-tile__desc"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <p id="organization-alert" hidden class="fr-alert fr-alert--error">
-                        <span class="fr-sr-only">Erreur</span>
-                        <span class="alert--content"></span>
-                        </p>
-                    </div>
-
-                    <%- include('../partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
-                </form>
+            <div class="fr-input-group">
+                <label class="fr-label" for="siret-selector">
+                    SIRET de l’organisation que vous représentez
+                    <span class="fr-hint-text">
+                        Il est composé de 14 chiffres
+                    </span>
+                </label>
+                <input
+                    id="siret-selector"
+                    class="fr-input"
+                    required
+                    type="text"
+                    name="siret"
+                    pattern="^(\s*\d){14}$"
+                    maxlength="20"
+                    title="identifiant composé de 14 chiffres attribué par l’INSEE à votre organisation"
+                    <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
+                    <% } %>
+                >
+                <p class="fr-info-text">
+                    <a
+                        class="fr-link"
+                        href="https://annuaire-entreprises.data.gouv.fr/<%= useGendarmerieSearchHint ? 'rechercher?terme=r%C3%A9gion+de+gendarmerie&' : '?' %>mtm_campaign=moncomptepro"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Retrouver votre SIRET sur L’Annuaire des Entreprises
+                    </a>
+                </p>
             </div>
-        </div>
-    </div>
-    <div class="fr-col-lg-6 fr-py-5w mcp-full-height side-media">
-        <%- include('../partials/side-illustration.ejs', {illu: 'authent.svg'}) %>
+
+            <div class="fr-input-group">
+                <div id="organization-info" hidden>
+                    <div id="submit-join-organization" class="fr-tile fr-enlarge-link fr-tile--horizontal">
+                        <div class="fr-tile__body">
+                            <h2 class="fr-tile__title">
+                                <b><a id="organization-info-libelle" class="fr-tile__link" href></a></b>
+                            </h2>
+                            <p id="organization-info-adresse" class="fr-tile__desc fr-pb-0"></p>
+                            <p id="organization-info-activite-principale" class="fr-tile__desc"></p>
+                        </div>
+                    </div>
+                </div>
+                <p id="organization-alert" hidden class="fr-alert fr-alert--error">
+                <span class="fr-sr-only">Erreur</span>
+                <span class="alert--content"></span>
+                </p>
+            </div>
+
+            <%- include('../partials/card-button-container.ejs', {label: 'Enregistrer'}) %>
+        </form>
     </div>
 </div>
 <script type="module" src="<%= js('fetch-organization-info.js') %>"></script>
