@@ -57,7 +57,7 @@
     "csv": "^5.5.3",
     "dotenv": "^16.4.1",
     "ejs": "^3.1.9",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.17.3",
     "helmet": "^7.0.0",
