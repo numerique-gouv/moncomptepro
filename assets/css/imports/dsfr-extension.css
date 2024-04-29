@@ -61,10 +61,10 @@ a.btn--danger:not([href]) {
   width: 100% !important;
 }
 
-.fr-card .login-help {
+.fr-card {
   text-align: center;
 }
 
-.fr-card .login-help .fr-link--icon-left[class*=" fr-icon-"]:before {
+.fr-card .fr-link--icon-left[class*=" fr-icon-"]:before {
   margin-right: 0;
 }
