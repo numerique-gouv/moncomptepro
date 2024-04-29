@@ -55,7 +55,7 @@ if (SENTRY_DSN) {
       new Sentry.Integrations.Postgres(),
     ],
     profilesSampleRate: 0.5,
-    tracesSampleRate: 0.5,
+    tracesSampleRate: 0.2,
   });
 }
 
