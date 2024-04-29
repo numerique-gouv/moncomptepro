@@ -1,34 +1,21 @@
 import * as Sentry from "@sentry/node";
-// @ts-ignore
 import RedisStore from "connect-redis";
 import express, { NextFunction, Request, Response } from "express";
 import session from "express-session";
 import fs from "fs";
-// @ts-ignore
 import helmet from "helmet";
 import { Server } from "http";
+import HttpErrors from "http-errors";
+import { isNull, omitBy } from "lodash-es";
 import morgan from "morgan";
-import Provider from "oidc-provider";
+import Provider, { ClientMetadata, errors } from "oidc-provider";
 import path from "path";
-import oidcProviderRepository from "./repositories/redis/oidc-provider";
-import { getNewRedisClient } from "./connectors/redis";
-import { oidcProviderConfiguration } from "./config/oidc-provider-configuration";
-import { getClients } from "./repositories/oidc-client";
-import { apiRouter } from "./routers/api";
-import { interactionRouter } from "./routers/interaction";
-import { mainRouter } from "./routers/main";
-import { userRouter } from "./routers/user";
-import {
-  ejsLayoutMiddlewareFactory,
-  renderWithEjsLayout,
-} from "./services/renderer";
-import { HttpError, NotFound } from "http-errors";
 import { ZodError } from "zod";
-import { connectionCountMiddleware } from "./middlewares/connection-count";
-import { isNull, omitBy } from "lodash";
 import {
   ACCESS_LOG_PATH,
+  DEPLOY_ENV,
   JWKS,
+  LOG_LEVEL,
   MONCOMPTEPRO_HOST,
   NODE_ENV,
   PORT,
@@ -37,20 +24,44 @@ import {
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
 } from "./config/env";
+import { oidcProviderConfiguration } from "./config/oidc-provider-configuration";
+import { getNewRedisClient } from "./connectors/redis";
 import { trustedBrowserMiddleware } from "./managers/browser-authentication";
+import { connectionCountMiddleware } from "./middlewares/connection-count";
+import { getClients } from "./repositories/oidc-client";
+import oidcProviderRepository from "./repositories/redis/oidc-provider";
+import { apiRouter } from "./routers/api";
+import { interactionRouter } from "./routers/interaction";
+import { mainRouter } from "./routers/main";
+import { userRouter } from "./routers/user";
 import { jsonParseWithDate } from "./services/json-parse-with-date";
 import { logger } from "./services/log";
+import {
+  ejsLayoutMiddlewareFactory,
+  renderWithEjsLayout,
+} from "./services/renderer";
 
 const app = express();
 
 if (SENTRY_DSN) {
   Sentry.init({
+    debug: LOG_LEVEL === "debug",
     dsn: SENTRY_DSN,
+    environment: DEPLOY_ENV,
+    initialScope: { tags: { NODE_ENV, DEPLOY_ENV, HOST: MONCOMPTEPRO_HOST } },
+    integrations: [
+      new Sentry.Integrations.Express({ app }),
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Postgres(),
+    ],
+    profilesSampleRate: 0.5,
+    tracesSampleRate: 0.2,
   });
 }
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   helmet({
@@ -129,7 +140,7 @@ app.use((req, res, next) => {
 
 app.use(trustedBrowserMiddleware);
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(import.meta.dirname, "views"));
 app.set("view engine", "ejs");
 
 let server: Server;
@@ -138,17 +149,15 @@ let server: Server;
   const clients = await getClients();
 
   // the oidc provider expect provided client attributes to be not null if provided
-  const clientsWithoutNullProperties = clients.map((client) =>
-    omitBy(client, isNull),
+  const clientsWithoutNullProperties = clients.map(
+    (oidcClient) => omitBy(oidcClient, isNull) as ClientMetadata,
   );
 
-  // @ts-ignore
   const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
     clients: clientsWithoutNullProperties,
     adapter: oidcProviderRepository,
     jwks: JWKS,
-    // @ts-ignore
-    renderError: async (ctx, { error, error_description }, err) => {
+    async renderError(ctx, { error, error_description }, err) {
       logger.error(err);
       Sentry.withScope((scope) => {
         scope.addEventProcessor((event) => {
@@ -159,7 +168,8 @@ let server: Server;
 
       ctx.type = "html";
       ctx.body = await renderWithEjsLayout("error", {
-        error_code: err.statusCode || err,
+        error_code:
+          err instanceof errors.OIDCProviderError ? err.statusCode : err,
         error_message: `${error}: ${error_description}`,
       });
     },
@@ -243,15 +253,21 @@ let server: Server;
 
   app.use(
     (
-      err: HttpError | ZodError,
+      err: HttpErrors.HttpError | ZodError | Error,
       req: Request,
       res: Response,
       next: NextFunction,
     ) => {
       logger.error(err);
 
-      if (err instanceof NotFound) {
-        return res.status(404).render("not-found-error");
+      if (err instanceof HttpErrors.HttpError) {
+        if (err.statusCode === 404) {
+          return res.status(404).render("not-found-error");
+        }
+        return res.status(err.statusCode || 500).render("error", {
+          error_code: err.statusCode || err,
+          error_message: err.message,
+        });
       }
 
       if (err instanceof ZodError) {
@@ -261,8 +277,8 @@ let server: Server;
         });
       }
 
-      return res.status(err.statusCode || 500).render("error", {
-        error_code: err.statusCode || err,
+      return res.status(500).render("error", {
+        error_code: err,
         error_message: err.message,
       });
     },

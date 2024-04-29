@@ -1,24 +1,24 @@
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
   NotFoundError,
   OfficialContactEmailVerificationNotNeededError,
 } from "../../config/errors";
-import { isExpired } from "../../services/is-expired";
-import { generateDicewarePassword } from "../../services/security";
+import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
+import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { sendMail } from "../../connectors/brevo";
 import {
   findById as findOrganizationById,
   getUsers,
 } from "../../repositories/organization/getters";
-import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { updateUserOrganizationLink } from "../../repositories/organization/setters";
+import { isExpired } from "../../services/is-expired";
 import {
   isCommune,
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
-import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
+import { generateDicewarePassword } from "../../services/security";
 
 const OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequest, GatewayTimeout, NotFound } from "http-errors";
+import HttpErrors from "http-errors";
 import { ZodError, z } from "zod";
 import {
   InseeConnectionError,
@@ -52,18 +52,20 @@ export const getOrganizationInfoController = async (
     return res.json({ organizationInfo });
   } catch (e) {
     if (e instanceof InseeNotFoundError) {
-      return next(new NotFound());
+      return next(new HttpErrors.NotFound());
     }
 
     if (e instanceof ZodError) {
       return next(
-        new BadRequest(notificationMessages["invalid_siret"].description),
+        new HttpErrors.BadRequest(
+          notificationMessages["invalid_siret"].description,
+        ),
       );
     }
 
     if (e instanceof InseeConnectionError) {
       return next(
-        new GatewayTimeout(
+        new HttpErrors.GatewayTimeout(
           notificationMessages["insee_unexpected_error"].description,
         ),
       );
@@ -109,7 +111,7 @@ export const postForceJoinOrganizationController = async (
   } catch (e) {
     logger.error(e);
     if (e instanceof ZodError) {
-      return next(new BadRequest());
+      return next(new HttpErrors.BadRequest());
     }
 
     next(e);
@@ -135,11 +137,11 @@ export const postSendModerationProcessedEmail = async (
   } catch (e) {
     logger.error(e);
     if (e instanceof ZodError) {
-      return next(new BadRequest());
+      return next(new HttpErrors.BadRequest());
     }
 
     if (e instanceof NotFoundError) {
-      return next(new NotFound());
+      return next(new HttpErrors.NotFound());
     }
 
     next(e);
@@ -169,7 +171,7 @@ export const postMarkDomainAsVerified = async (
   } catch (e) {
     logger.error(e);
     if (e instanceof ZodError) {
-      return next(new BadRequest());
+      return next(new HttpErrors.BadRequest());
     }
 
     next(e);

@@ -1,5 +1,16 @@
+import type {
+  AuthenticationResponseJSON,
+  RegistrationResponseJSON,
+} from "@simplewebauthn/types";
 import { NextFunction, Request, Response } from "express";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import HttpErrors from "http-errors";
+import { ZodError, z } from "zod";
+import {
+  NotFoundError,
+  UserNotLoggedInError,
+  WebauthnRegistrationFailedError,
+} from "../config/errors";
+import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import {
   createLoggedInSession,
   getUserFromLoggedInSession,
@@ -13,19 +24,8 @@ import {
   verifyAuthentication,
   verifyRegistration,
 } from "../managers/webauthn";
-import { z, ZodError } from "zod";
-import {
-  NotFoundError,
-  UserNotLoggedInError,
-  WebauthnRegistrationFailedError,
-} from "../config/errors";
-import {
-  AuthenticationResponseJSON,
-  RegistrationResponseJSON,
-} from "@simplewebauthn/server/esm/deps";
-import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import { csrfToken } from "../middlewares/csrf-protection";
-import { Unauthorized } from "http-errors";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
 
 export const deletePasskeyController = async (
@@ -67,7 +67,7 @@ export const getGenerateRegistrationOptionsController = async (
     return res.json(registrationOptions);
   } catch (e) {
     if (e instanceof UserNotLoggedInError) {
-      return next(new Unauthorized());
+      return next(new HttpErrors.Unauthorized());
     }
 
     next(e);
@@ -145,7 +145,7 @@ export const getGenerateAuthenticationOptionsController = async (
       : req.session.email;
 
     if (!email) {
-      return next(new Unauthorized());
+      return next(new HttpErrors.Unauthorized());
     }
 
     const { updatedUser, authenticationOptions } =

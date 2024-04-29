@@ -1,18 +1,18 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { isEmailValid } from "../services/security";
+import { isEmpty, isString } from "lodash-es";
+import {
+  DO_NOT_USE_ANNUAIRE_EMAILS,
+  HTTP_CLIENT_TIMEOUT,
+  TEST_CONTACT_EMAIL,
+} from "../config/env";
 import {
   ApiAnnuaireConnectionError,
   ApiAnnuaireInvalidEmailError,
   ApiAnnuaireNotFoundError,
   ApiAnnuaireTooManyResultsError,
 } from "../config/errors";
-import { isEmpty, isString } from "lodash";
-import {
-  DO_NOT_USE_ANNUAIRE_EMAILS,
-  HTTP_CLIENT_TIMEOUT,
-  TEST_CONTACT_EMAIL,
-} from "../config/env";
 import { logger } from "../services/log";
+import { isEmailValid } from "../services/security";
 
 // more info at https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
 // the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml

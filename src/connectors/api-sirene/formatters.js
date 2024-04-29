@@ -1,4 +1,4 @@
-import { capitalize, isEmpty } from "lodash";
+import { capitalize, isEmpty } from "lodash-es";
 import { categoriesJuridiques } from "./categories-juridiques";
 import { codesEffectifs } from "./codes-effectifs";
 import { codesNaf } from "./codes-naf";

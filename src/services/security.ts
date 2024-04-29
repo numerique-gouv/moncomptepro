@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
-import { hasIn, isEmpty, isString } from "lodash";
+import { hasIn, isEmpty, isString } from "lodash-es";
 import { customAlphabet, nanoid } from "nanoid/async";
-import notificationMessages from "../config/notification-messages";
-import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
-import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
-import { MONCOMPTEPRO_HOST } from "../config/env";
 import { parse_host } from "tld-extract";
+import { MONCOMPTEPRO_HOST } from "../config/env";
+import notificationMessages from "../config/notification-messages";
+import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
+import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {

@@ -1,4 +1,4 @@
-import { isEmpty, sampleSize } from "lodash";
+import { isEmpty, sampleSize } from "lodash-es";
 import { NOTIFY_ALL_MEMBER_LIMIT } from "../../config/env";
 import {
   NotFoundError,

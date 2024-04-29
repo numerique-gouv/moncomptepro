@@ -1,8 +1,8 @@
-import { NODE_ENV } from "../config/env";
 import ejs from "ejs";
-import path from "path";
-import fs from "fs";
 import { Application, NextFunction, Request, Response } from "express";
+import fs from "fs";
+import path from "path";
+import { NODE_ENV } from "../config/env";
 import {
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
@@ -23,7 +23,14 @@ const viteAssetPath = (name: string) => {
   if (NODE_ENV !== "production" || manifest === null) {
     try {
       const data = fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "dist", ".vite", "manifest.json"),
+        path.resolve(
+          import.meta.dirname,
+          "..",
+          "..",
+          "dist",
+          ".vite",
+          "manifest.json",
+        ),
         "utf8",
       );
       manifest = JSON.parse(data);
@@ -130,12 +137,15 @@ export const renderWithEjsLayout = async (
   params = {},
 ) => {
   const bodyHtml = await render(
-    path.resolve(`${__dirname}/../views/${templateName}.ejs`),
+    path.resolve(`${import.meta.dirname}/../views/${templateName}.ejs`),
     params,
   );
 
-  return await render(path.resolve(`${__dirname}/../views/_layout.ejs`), {
-    ...params,
-    body: bodyHtml,
-  });
+  return await render(
+    path.resolve(`${import.meta.dirname}/../views/_layout.ejs`),
+    {
+      ...params,
+      body: bodyHtml,
+    },
+  );
 };

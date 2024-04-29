@@ -1,12 +1,12 @@
+import { isEmpty } from "lodash-es";
+import { ForbiddenError, NotFoundError } from "../config/errors";
 import { sendMail } from "../connectors/brevo";
-import { findById as findOrganizationById } from "../repositories/organization/getters";
-import { findById as findUserById } from "../repositories/user";
 import {
   deleteModeration,
   findModerationById,
 } from "../repositories/moderation";
-import { isEmpty } from "lodash";
-import { ForbiddenError, NotFoundError } from "../config/errors";
+import { findById as findOrganizationById } from "../repositories/organization/getters";
+import { findById as findUserById } from "../repositories/user";
 
 export const sendModerationProcessedEmail = async ({
   organization_id,

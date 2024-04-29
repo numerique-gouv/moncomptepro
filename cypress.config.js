@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   chromeWebSecurity: false,
   defaultCommandTimeout: 60000,
   pageLoadTimeout: 60000,
@@ -14,7 +14,7 @@ module.exports = {
           return null;
         },
       });
-      return require("./cypress/plugins/index.js")(on, config);
+      return config;
     },
   },
 };

@@ -1,9 +1,9 @@
-import { RateLimiterRedis } from "rate-limiter-flexible";
-import { TooManyRequests } from "http-errors";
-import { getNewRedisClient } from "../connectors/redis";
-import { NextFunction, Request, Response } from "express";
 import * as Sentry from "@sentry/node";
+import { NextFunction, Request, Response } from "express";
+import HttpErrors from "http-errors";
+import { RateLimiterRedis } from "rate-limiter-flexible";
 import { DO_NOT_RATE_LIMIT } from "../config/env";
+import { getNewRedisClient } from "../connectors/redis";
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -25,7 +25,7 @@ const rateLimiterMiddlewareFactory =
       }
       next();
     } catch (e) {
-      next(new TooManyRequests());
+      next(new HttpErrors.TooManyRequests());
     }
   };
 
@@ -68,6 +68,6 @@ export const loginRateLimiterMiddleware = async (
     }
     next();
   } catch (e) {
-    next(new TooManyRequests());
+    next(new HttpErrors.TooManyRequests());
   }
 };
