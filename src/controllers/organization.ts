@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -35,6 +35,7 @@ import {
 } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import hasErrorFromField from "../services/has-error-from-field";
+import { getEmailDomain } from "../services/uses-a-free-email-provider";
 
 export const getJoinOrganizationController = async (
   req: Request,
@@ -67,6 +68,8 @@ export const getJoinOrganizationController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       siretHint: siret_hint,
+      useGendarmerieSearchHint:
+        getEmailDomain(email) === "gendarmerie.interieur.gouv.fr",
     });
   } catch (error) {
     next(error);
