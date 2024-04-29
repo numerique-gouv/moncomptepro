@@ -1,58 +1,52 @@
-<div class="card-container">
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-h3">
-                    Votre organisation de rattachement
-                </h1>
-                <div class="fr-card__desc">
-                    <% if (userOrganizations.length > 1) { %>
-                    <p><span class="fr-label">Quelle organisation voulez-vous représenter ?</span></p>
-                    <% } %>
-                    <div class="fr-grid-row fr-grid-row--gutters fr-mb-3v">
-                        <% userOrganizations.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }, index) => { %>
-                            <div class="fr-col-12">
-                                <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal selectable-tile <% if (index === 0) { %>selected-tile<% } %>">
-                                    <div class="fr-tile__body">
-                                        <h2 class="fr-tile__title">
-                                            <a class="fr-tile__link" href aria-label="<%= cached_libelle; %> (choisir cette organisation)"><%= cached_libelle; %></a>
-                                        </h2>
-                                        <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
-                                        <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
-                                    </div>
-                                </div>
-                                <form id="form-join-organization-<%= id %>" hidden action="/users/select-organization" method="post">
-                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                                    <input type="hidden" name="organization_id" value="<%= id %>" autocomplete="off">
-                                </form>
-                            </div>
-                        <% }); %>
+<div>
+    <h1 class="fr-h3">
+        Votre organisation de rattachement
+    </h1>
+    <div>
+        <% if (userOrganizations.length > 1) { %>
+        <p><span class="fr-label">Quelle organisation voulez-vous représenter ?</span></p>
+        <% } %>
+        <div class="fr-grid-row fr-grid-row--gutters fr-mb-3v">
+            <% userOrganizations.forEach(({ id, siret, cached_libelle, cached_adresse, cached_libelle_activite_principale }, index) => { %>
+                <div class="fr-col-12">
+                    <div id="submit-join-organization-<%= id %>" class="fr-tile fr-enlarge-link fr-tile--horizontal selectable-tile <% if (index === 0) { %>selected-tile<% } %>">
+                        <div class="fr-tile__body">
+                            <h2 class="fr-tile__title">
+                                <a class="fr-tile__link" href aria-label="<%= cached_libelle; %> (choisir cette organisation)"><%= cached_libelle; %></a>
+                            </h2>
+                            <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
+                            <p class="fr-tile__desc"><%= cached_libelle_activite_principale; %></p>
+                        </div>
                     </div>
-                    <ul class="fr-btns-group">
-                        <li>
-                            <form id="form-join-organization-default" action="/users/select-organization" method="post">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                                <input type="hidden" name="organization_id" value="<%= userOrganizations[0].id %>" autocomplete="off">
-                                <button
-                                    id="submit-join-organization-default"
-                                    class="fr-btn"
-                                    aria-label="Continuer en choisissant l'organisation <%= userOrganizations[0].cached_libelle %>">
-                                    Continuer
-                                </button>
-                            </form>
-                        </li>
-                        <li>
-                            <a
-                                    href="/users/join-organization?do_not_propose_suggestions=true"
-                                    class="fr-btn fr-btn--secondary"
-                            >
-                                Je veux représenter une autre organisation
-                            </a>
-                        </li>
-                    </ul>
+                    <form id="form-join-organization-<%= id %>" hidden action="/users/select-organization" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+                        <input type="hidden" name="organization_id" value="<%= id %>" autocomplete="off">
+                    </form>
                 </div>
-            </div>
+            <% }); %>
         </div>
+        <ul class="fr-btns-group">
+            <li>
+                <form id="form-join-organization-default" action="/users/select-organization" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
+                    <input type="hidden" name="organization_id" value="<%= userOrganizations[0].id %>" autocomplete="off">
+                    <button
+                        id="submit-join-organization-default"
+                        class="fr-btn"
+                        aria-label="Continuer en choisissant l'organisation <%= userOrganizations[0].cached_libelle %>">
+                        Continuer
+                    </button>
+                </form>
+            </li>
+            <li>
+                <a
+                        href="/users/join-organization?do_not_propose_suggestions=true"
+                        class="fr-btn fr-btn--secondary"
+                >
+                    Je veux représenter une autre organisation
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 <script type="module" src="<%= js('submit-tile-forms.js') %>"></script>
