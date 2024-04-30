@@ -58,20 +58,7 @@ html {
 
 /* not-found-error */
 .not-found-error {
-  gap: 0;
-}
-
-.not-found-error > img {
-  height: 18rem;
-}
-
-.not-found-error > h1 {
-  text-align: center;
-  max-width: 52rem;
-}
-
-.not-found-error > *:last-child {
-  margin-bottom: 8rem;
+  height: 400px;
 }
 
 /*
