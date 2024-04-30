@@ -26,12 +26,11 @@
                     <% if (locals.siretHint) { %>value="<%= locals.siretHint %>"
                     <% } %>
                 >
-                <p class="fr-info-text">
-                    <a
-                        class="fr-link"
-                        href="https://annuaire-entreprises.data.gouv.fr/<%= useGendarmerieSearchHint ? 'rechercher?terme=r%C3%A9gion+de+gendarmerie&' : '?' %>mtm_campaign=moncomptepro"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                <p class="fr-pt-2w">
+                    <a class="fr-link fr-icon-info-fill fr-link--icon-left"
+                       href="https://annuaire-entreprises.data.gouv.fr/<%= useGendarmerieSearchHint ? 'rechercher?terme=r%C3%A9gion+de+gendarmerie&' : '?' %>mtm_campaign=moncomptepro"
+                       target="_blank"
+                       rel="noopener noreferrer"
                     >
                         Retrouver votre SIRET sur L’Annuaire des Entreprises
                     </a>
