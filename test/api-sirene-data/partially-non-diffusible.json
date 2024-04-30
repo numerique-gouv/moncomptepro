@@ -12,7 +12,7 @@
     "trancheEffectifsEtablissement": null,
     "anneeEffectifsEtablissement": null,
     "activitePrincipaleRegistreMetiersEtablissement": null,
-    "dateDernierTraitementEtablissement": "2023-03-06T10:46:30",
+    "dateDernierTraitementEtablissement": "2024-03-30T04:06:54.294",
     "etablissementSiege": true,
     "nombrePeriodesEtablissement": 1,
     "uniteLegale": {
@@ -39,11 +39,11 @@
       "identifiantAssociationUniteLegale": null,
       "economieSocialeSolidaireUniteLegale": null,
       "societeMissionUniteLegale": null,
-      "caractereEmployeurUniteLegale": "N",
+      "caractereEmployeurUniteLegale": null,
       "trancheEffectifsUniteLegale": null,
       "anneeEffectifsUniteLegale": null,
       "nicSiegeUniteLegale": "00019",
-      "dateDernierTraitementUniteLegale": "2023-03-06T10:46:30",
+      "dateDernierTraitementUniteLegale": "2024-03-22T09:28:19.000",
       "categorieEntreprise": null,
       "anneeCategorieEntreprise": null
     },
@@ -51,7 +51,9 @@
       "complementAdresseEtablissement": null,
       "numeroVoieEtablissement": "12",
       "indiceRepetitionEtablissement": null,
-      "typeVoieEtablissement": "AV",
+      "dernierNumeroVoieEtablissement": null,
+      "indiceRepetitionDernierNumeroVoieEtablissement": null,
+      "typeVoieEtablissement": "AVENUE",
       "libelleVoieEtablissement": "DE LA GARE",
       "codePostalEtablissement": "06220",
       "libelleCommuneEtablissement": "VALLAURIS",
@@ -61,7 +63,10 @@
       "codeCedexEtablissement": null,
       "libelleCedexEtablissement": null,
       "codePaysEtrangerEtablissement": null,
-      "libellePaysEtrangerEtablissement": null
+      "libellePaysEtrangerEtablissement": null,
+      "identifiantAdresseEtablissement": "061234567_B",
+      "coordonneeLambertAbscisseEtablissement": "42.123456",
+      "coordonneeLambertOrdonneeEtablissement": "7.123456"
     },
     "adresse2Etablissement": {
       "complementAdresse2Etablissement": null,

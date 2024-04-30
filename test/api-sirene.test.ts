@@ -43,7 +43,7 @@ describe("getOrganizationInfo", () => {
 
   it("should return valid payload for diffusible établissement", async () => {
     nock("https://api.insee.fr")
-      .get("/entreprises/sirene/V3/siret/20007184300060")
+      .get("/entreprises/sirene/siret/20007184300060")
       .reply(200, diffusible);
     await assert.eventually.deepEqual(
       getOrganizationInfo("20007184300060"),
@@ -54,7 +54,7 @@ describe("getOrganizationInfo", () => {
   it("should return valid payload for diffusible établissement", async () => {
     nock("https://api.insee.fr")
       .get(
-        "/entreprises/sirene/V3/siret?q=siren:200071843 AND etablissementSiege:true",
+        "/entreprises/sirene/siret?q=siren:200071843 AND etablissementSiege:true",
       )
       .reply(200, searchBySiren);
     await assert.eventually.deepEqual(
@@ -65,7 +65,7 @@ describe("getOrganizationInfo", () => {
 
   it("should show partial data for partially non diffusible établissement", async () => {
     nock("https://api.insee.fr")
-      .get("/entreprises/sirene/V3/siret/94957325700019")
+      .get("/entreprises/sirene/siret/94957325700019")
       .reply(200, partiallyNonDiffusible);
 
     await assert.eventually.deepEqual(getOrganizationInfo("94957325700019"), {
@@ -93,7 +93,7 @@ describe("getOrganizationInfo", () => {
 
   it("should throw for totally non diffusible établissement", async () => {
     nock("https://api.insee.fr")
-      .get("/entreprises/sirene/V3/siret/53512638700013")
+      .get("/entreprises/sirene/siret/53512638700013")
       .reply(403, {
         header: {
           statut: 403,
