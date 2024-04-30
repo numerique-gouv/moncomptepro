@@ -3,7 +3,7 @@ export default {
   defaultCommandTimeout: 60000,
   pageLoadTimeout: 60000,
   e2e: {
-    // baseUrl: "http://app.moncomptepro.localhost",
+    baseUrl: "http://localhost:3000",
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
@@ -17,5 +17,4 @@ export default {
       return config;
     },
   },
-  video: true,
 };
