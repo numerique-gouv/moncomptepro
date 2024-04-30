@@ -27,7 +27,7 @@ export const getWelcomeController = async (
       pageTitle: "Compte créé",
       csrfToken: csrfToken(req),
       sponsor_label,
-      illustration: "welcome.svg"
+      illustration: "welcome.svg",
     });
   } catch (error) {
     next(error);

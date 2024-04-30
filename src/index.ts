@@ -245,7 +245,8 @@ let server: Server;
     res.status(404).send(
       await renderWithEjsLayout("not-found-error", {
         pageTitle: "Page introuvable",
-        illustration: "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg"
+        illustration:
+          "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
       }),
     );
   });
@@ -265,13 +266,15 @@ let server: Server;
       if (err instanceof HttpErrors.HttpError) {
         if (err.statusCode === 404) {
           return res.status(404).render("not-found-error", {
-            // illustration: "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg"
+            illustration:
+              "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
           });
         }
         return res.status(err.statusCode || 500).render("error", {
           error_code: err.statusCode || err,
           error_message: err.message,
-          illustration: "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg"
+          illustration:
+            "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
         });
       }
 
@@ -279,14 +282,16 @@ let server: Server;
         return res.status(400).render("error", {
           error_code: 400,
           error_message: err.message,
-          illustration: "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg"
+          illustration:
+            "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
         });
       }
 
       return res.status(500).render("error", {
         error_code: err,
         error_message: err.message,
-        illustration: "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg"
+        illustration:
+          "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
       });
     },
   );
