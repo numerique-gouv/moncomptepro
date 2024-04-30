@@ -298,7 +298,7 @@ export const getOrganizationInfo = async (
     if (siretOrSiren.match(/^\d{14}$/)) {
       let { data }: AxiosResponse<EtablissementSearchBySiretResponse> =
         await axios.get(
-          `https://api.insee.fr/entreprises/sirene/V3/siret/${siretOrSiren}`,
+          `https://api.insee.fr/entreprises/sirene/siret/${siretOrSiren}`,
           {
             headers: { Authorization: `Bearer ${access_token}` },
             timeout: HTTP_CLIENT_TIMEOUT,
@@ -310,7 +310,7 @@ export const getOrganizationInfo = async (
       // siretOrSiren is a siren, we fetch the data of the siege social
       let { data }: AxiosResponse<EtablissementSearchResponse> =
         await axios.get(
-          `https://api.insee.fr/entreprises/sirene/V3/siret?q=siren:${siretOrSiren} AND etablissementSiege:true`,
+          `https://api.insee.fr/entreprises/sirene/siret?q=siren:${siretOrSiren} AND etablissementSiege:true`,
           {
             headers: { Authorization: `Bearer ${access_token}` },
             timeout: HTTP_CLIENT_TIMEOUT,
