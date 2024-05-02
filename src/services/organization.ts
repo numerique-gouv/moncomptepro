@@ -46,16 +46,14 @@ export const isServicePublic = ({
   cached_categorie_juridique,
   siret,
 }: Organization): boolean => {
-  const cat_jur_ok = ["3210", "3110", "4", "71", "72", "73", "74"].some(
-    (e) => cached_categorie_juridique?.startsWith(e),
+  const cat_jur_ok = ["4", "71", "72", "73", "74"].some((e) =>
+    cached_categorie_juridique?.startsWith(e),
   );
-
-  const siret_ok = ["1", "2"].some((e) => siret?.startsWith(e));
 
   const siren = (siret || "").substring(0, 9);
   const whitelist_ok = ["320252489"].includes(siren);
 
-  return cat_jur_ok || siret_ok || whitelist_ok;
+  return cat_jur_ok || whitelist_ok;
 };
 
 export const hasLessThanFiftyEmployees = ({
