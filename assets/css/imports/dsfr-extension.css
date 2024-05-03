@@ -60,11 +60,3 @@ a.btn--danger:not([href]) {
   justify-content: center !important;
   width: 100% !important;
 }
-
-.fr-card {
-  text-align: center;
-}
-
-.fr-card .fr-link--icon-left[class*=" fr-icon-"]:before {
-  margin-right: 0;
-}

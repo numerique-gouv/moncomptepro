@@ -56,11 +56,6 @@ html {
   }
 }
 
-/* not-found-error */
-.not-found-error {
-  height: 400px;
-}
-
 /*
  * anchors are meant to be second in the DOM (for better screen reader support)
  * but we want to display them first visually
