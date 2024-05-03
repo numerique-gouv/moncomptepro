@@ -40,6 +40,7 @@ import {
   ejsLayoutMiddlewareFactory,
   renderWithEjsLayout,
 } from "./services/renderer";
+import { usesAuthHeaders } from "./services/uses-auth-headers";
 
 const app = express();
 
@@ -132,7 +133,7 @@ const sessionMiddleware =
 
 // Prevent creation of sessions for API calls on /oauth or /api routes
 app.use((req, res, next) => {
-  if (req.headers.authorization) {
+  if (usesAuthHeaders(req)) {
     return next();
   }
   return sessionMiddleware(req, res, next);
