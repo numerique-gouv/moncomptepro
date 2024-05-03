@@ -1,63 +1,57 @@
-<div class="card-container">
+<div>
     <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-card__title">
-                    S’inscrire ou se connecter
-                </h1>
-                <div class="fr-card__desc">
-                    <% if(locals.displayTestEnvWarning) { %>
-                    <div class="fr-alert fr-alert--warning">
-                        <h2 class="fr-alert__title">Vous êtes sur une instance de test</h2>
-                        <p>
-                            Afin de limiter le risque de divulguer vos informations personnelles,
-                            merci de ne pas utiliser votre adresse email.
-                            Pour vos tests, utilisez des adresses <a target="_blank" rel="noopener noreferrer" href="https://yopmail.com/">yopmail</a>.
-                        </p>
-                    </div>
-                    <br>
-                    <% } %>
-                    <form action="/users/start-sign-in" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-
-                        <div class="fr-input-group<% if (locals.hasEmailError) { %>  fr-input-group--error<% } %>">
-                            <label class="fr-label" for="did-you-mean-input">Email
-                                <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
-                            </label>
-                            <input
-                                    id="did-you-mean-input"
-                                    class="fr-input"
-                                    required type="email" name="login"
-                            <% if (!locals.loginHint) { %>
-                                    autofocus="on"
-                            <% } else { %>
-                                    value="<%= locals.loginHint; %>"
-                            <% } %>
-                            <% if (locals.hasEmailError) { %>
-                                    aria-describedby="email-error"
-                            <% } %>
-                            >
-                            <% if (locals.hasEmailError) { %>
-                                <p class="fr-error-text" id="email-error">
-                                    Adresse email invalide.
-                                </p>
-                            <% } %>
-                            <% if (locals.didYouMean) { %>
-                                <p id="did-you-mean-element" class="fr-info-text">
-                                    <span>
-                                    Vouliez-vous dire
-                                    <a id="did-you-mean-link" href="#" title="<%= locals.didYouMean %> (cliquer pour remplir le champ)"><%= locals.didYouMean %></a> ?
-                                    </span>
-                                </p>
-                                <script type="module" src="<%= js('did-you-mean.js') %>"></script>
-                            <% } %>
-                        </div>
-
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
-                    </form>
-                </div>
-            </div>
+    <h1 class="fr-h3">
+        S’inscrire ou se connecter
+    </h1>
+    <div>
+        <% if(locals.displayTestEnvWarning) { %>
+        <div class="fr-alert fr-alert--warning">
+            <h2 class="fr-alert__title">Vous êtes sur une instance de test</h2>
+            <p>
+                Afin de limiter le risque de divulguer vos informations personnelles,
+                merci de ne pas utiliser votre adresse email.
+                Pour vos tests, utilisez des adresses <a target="_blank" rel="noopener noreferrer" href="https://yopmail.com/">yopmail</a>.
+            </p>
         </div>
+        <br>
+        <% } %>
+        <form action="/users/start-sign-in" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+            <div class="fr-input-group<% if (locals.hasEmailError) { %>  fr-input-group--error<% } %>">
+                <label class="fr-label" for="did-you-mean-input">Email
+                    <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
+                </label>
+                <input
+                        id="did-you-mean-input"
+                        class="fr-input"
+                        required type="email" name="login"
+                <% if (!locals.loginHint) { %>
+                        autofocus="on"
+                <% } else { %>
+                        value="<%= locals.loginHint; %>"
+                <% } %>
+                <% if (locals.hasEmailError) { %>
+                        aria-describedby="email-error"
+                <% } %>
+                >
+                <% if (locals.hasEmailError) { %>
+                    <p class="fr-error-text" id="email-error">
+                        Adresse email invalide.
+                    </p>
+                <% } %>
+                <% if (locals.didYouMean) { %>
+                    <p id="did-you-mean-element" class="fr-info-text">
+                        <span>
+                        Vouliez-vous dire
+                        <a id="did-you-mean-link" href="#" title="<%= locals.didYouMean %> (cliquer pour remplir le champ)"><%= locals.didYouMean %></a> ?
+                        </span>
+                    </p>
+                    <script type="module" src="<%= js('did-you-mean.js') %>"></script>
+                <% } %>
+            </div>
+
+            <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+        </form>
     </div>
 </div>

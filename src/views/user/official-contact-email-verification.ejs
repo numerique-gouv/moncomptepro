@@ -1,38 +1,35 @@
-<div class="card-container">
+
+<div>
     <%- include('../partials/notifications.ejs', {notifications: notifications, noWrapperDiv: true}) %>
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-card__title">
-                    Vérifier votre email
-                </h1>
-                <div class="fr-card__desc">
-                    <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
-                        <p>
-                            Pour vérifier votre appartenance à l’organisation <%= libelle %>,
-                            nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
-                            <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
-                                <%= contactEmail; %>
-                            </span>.
-                        </p>
+    <div class="fr-mb-2w">
+        <h1 class="fr-h3">
+            Vérifier votre email
+        </h1>
+        <div>
+            <form id="verify-email" action="/users/official-contact-email-verification/<%= organization_id %>" method="post" autocomplete="off">
+                <p>
+                    Pour vérifier votre appartenance à l’organisation <%= libelle %>,
+                    nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
+                    <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                        <%= contactEmail; %>
+                    </span>.
+                </p>
 
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
 
 
-                        <div class="fr-input-group">
-                            <label class="fr-label" for="official_contact_email_verification_token">
-                                Insérer le code reçu
-                            </label>
-                            <input class="fr-input" required
-                                   type="text" id="official_contact_email_verification_token"
-                                   name="official_contact_email_verification_token"
-                                   autocomplete="off">
-                        </div>
-
-                        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
-                    </form>
+                <div class="fr-input-group">
+                    <label class="fr-label" for="official_contact_email_verification_token">
+                        Insérer le code reçu
+                    </label>
+                    <input class="fr-input" required
+                           type="text" id="official_contact_email_verification_token"
+                           name="official_contact_email_verification_token"
+                           autocomplete="off">
                 </div>
-            </div>
+
+                <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+            </form>
         </div>
     </div>
     <div class="fr-alert fr-alert--info">
@@ -46,3 +43,4 @@
         </p>
     </div>
 </div>
+   

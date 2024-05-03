@@ -1,37 +1,37 @@
-<div class="card-container">
-    <div class="fr-card">
-        <div class="fr-card__body">
-            <div class="fr-card__content">
-                <h1 class="fr-card__title">
-                    Vérifier votre profil sans parrainage
-                </h1>
-                <div class="fr-card__desc">
-                    <p>
-                        Sans parrainage, nous notifierons certains des membres de votre organisation
-                        de la création de votre compte.
-                    </p>
+<div>
+    <h1 class="fr-h3">Vérifier votre profil sans parrainage</h1>
+    <div>
+        <p>
+        Sans parrainage, nous notifierons certains des membres de votre
+        organisation de la création de votre compte.
+        </p>
 
-                    <div class="card-button-container">
-                        <span>
-                            <button
-                                    id="go-back-link"
-                                    type="button"
-                                    aria-label="Trouver un parrain (retour)"
-                                    class="fr-btn fr-btn--primary fr-icon-arrow-go-back-line fr-btn--icon-left"
-                            >
-                                Trouver un parrain
-                            </button>
-                        </span>
-                        <form action="/users/no-sponsor-found/<%= organization_id ;%>" method="post">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken ;%>" autocomplete="off">
+        <div class="card-button-container">
+        <span>
+            <button
+            id="go-back-link"
+            type="button"
+            aria-label="Trouver un parrain (retour)"
+            class="fr-btn fr-btn--primary fr-icon-arrow-go-back-line fr-btn--icon-left"
+            >
+            Trouver un parrain
+            </button>
+        </span>
+        <form
+            action="/users/no-sponsor-found/<%= organization_id ;%>"
+            method="post"
+        >
+            <input
+            type="hidden"
+            name="_csrf"
+            value="<%= csrfToken ;%>"
+            autocomplete="off"
+            />
 
-                            <button class="fr-btn fr-btn--secondary" type="submit">
-                                Personne ne peut me parrainer
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <button class="fr-btn fr-btn--secondary" type="submit">
+            Personne ne peut me parrainer
+            </button>
+        </form>
         </div>
     </div>
 </div>
