@@ -14,6 +14,7 @@ import {
 } from "../middlewares/rate-limiter";
 import {
   checkEmailInSessionMiddleware,
+  checkIsUser,
   checkUserCanAccessAppMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
   checkUserHasLoggedInRecentlyMiddleware,
@@ -87,12 +88,14 @@ export const userRouter = () => {
 
   userRouter.get(
     "/start-sign-in",
+    checkIsUser,
     csrfProtectionMiddleware,
     getStartSignInController,
   );
   userRouter.post(
     "/start-sign-in",
     rateLimiterMiddleware,
+    checkIsUser,
     csrfProtectionMiddleware,
     postStartSignInController,
   );

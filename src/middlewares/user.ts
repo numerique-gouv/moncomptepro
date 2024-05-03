@@ -24,9 +24,10 @@ import { getInternalActiveUsers } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { getTrustedReferrerPath } from "../services/security";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
+import { usesAuthHeaders } from "../services/uses-auth-headers";
 
 const getReferrerPath = (req: Request) => {
-  // If method is not GET (ex: POST), then the referrer must be taken from
+  // If the method is not GET (ex: POST), then the referrer must be taken from
   // the referrer header. This ensures the referrerPath can be redirected to.
   const originPath =
     req.method === "GET" ? getTrustedReferrerPath(req.originalUrl) : null;
@@ -35,15 +36,18 @@ const getReferrerPath = (req: Request) => {
   return originPath || referrerPath || undefined;
 };
 
-// redirect user to start sign in page if no email is available in session
-export const checkEmailInSessionMiddleware = async (
+export const checkIsUser = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    if (isEmpty(req.session.email)) {
-      return res.redirect(`/users/start-sign-in`);
+    if (usesAuthHeaders(req)) {
+      return next(
+        new HttpErrors.Forbidden(
+          "Access denied. The requested resource does not require authentication.",
+        ),
+      );
     }
 
     return next();
@@ -52,35 +56,60 @@ export const checkEmailInSessionMiddleware = async (
   }
 };
 
+// redirect user to start sign in page if no email is available in session
+export const checkEmailInSessionMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  await checkIsUser(req, res, async (error) => {
+    try {
+      if (error) return next(error);
+
+      if (isEmpty(req.session.email)) {
+        return res.redirect(`/users/start-sign-in`);
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+};
+
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  try {
-    if (req.method === "HEAD") {
-      // From express documentation:
-      // The app.get() function is automatically called for the HTTP HEAD method
-      // in addition to the GET method if app.head() was not called for the path
-      // before app.get().
-      // We return empty response and the headers are sent to the client.
-      return res.send();
-    }
+  await checkIsUser(req, res, async (error) => {
+    try {
+      if (error) return next(error);
 
-    if (!isWithinLoggedInSession(req)) {
-      const referrerPath = getReferrerPath(req);
-      if (referrerPath) {
-        req.session.referrerPath = referrerPath;
+      if (req.method === "HEAD") {
+        // From express documentation:
+        // The app.get() function is automatically called for the HTTP HEAD method
+        // in addition to the GET method if app.head() was not called for the path
+        // before app.get().
+        // We return empty response and the headers are sent to the client.
+        return res.send();
       }
 
-      return res.redirect(`/users/start-sign-in`);
-    }
+      if (!isWithinLoggedInSession(req)) {
+        const referrerPath = getReferrerPath(req);
+        if (referrerPath) {
+          req.session.referrerPath = referrerPath;
+        }
 
-    return next();
-  } catch (error) {
-    next(error);
-  }
+        return res.redirect(`/users/start-sign-in`);
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
 };
 
 export const checkUserIsVerifiedMiddleware = (
