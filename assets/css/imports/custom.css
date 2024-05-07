@@ -1,8 +1,3 @@
-body,
-html {
-  height: 100%;
-}
-
 #email-badge-lowercase {
   text-transform: lowercase;
 }
@@ -87,37 +82,4 @@ html {
   left: 0;
   z-index: 1000;
   position: absolute;
-}
-
-/* MCP side illustration */
-.mcp-full-height {
-  height: 100%;
-}
-
-.mcp-background-alt-grey {
-  display: flex;
-  position: absolute;
-  inset: 0;
-  left: 50%;
-  background: #f6f6f6;
-  z-index: -1;
-}
-
-.mcp-sticky-wrapper {
-  min-height: 100%;
-  display: grid;
-  grid-template-rows: 1fr auto;
-}
-
-.mcp-sticky-body {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-@media only screen and (max-width: 991px) {
-  .side-media,
-  .mcp-background-alt-grey {
-    display: none;
-  }
 }

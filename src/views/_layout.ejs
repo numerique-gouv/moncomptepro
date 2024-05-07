@@ -2,47 +2,36 @@
 <html lang="fr">
 <%- include('partials/head.ejs'); %>
 <body>
-    <div class="mcp-sticky-wrapper">
-        <div class="mcp-sticky-body">
-            <div class="fr-skiplinks">
-                <nav class="fr-container" role="navigation" aria-label="Accès rapide">
-                    <ul class="fr-skiplinks__list">
-                        <% if (locals.use_dashboard_header) { %>
-                        <li>
-                            <a class="fr-link" href="#main">Contenu</a>
-                        </li>
-                        <% } %>
-                        <li>
-                            <a class="fr-link" href="#footer">Pied de page</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div id="loader-bar"></div>
-            <% if (locals.use_dashboard_header) { %>
-                <%- include('partials/dashboard-header.ejs'); %>
-                <div>
-                    <%- body; %>
-                </div>
-            <% } else { %>
-                <%- include('partials/header.ejs'); %>
-                <main class="fr-container mcp-full-height">
-                    <div class="fr-grid-row fr-grid-row--center fr-grid-row--middle mcp-full-height">
-                        <div class="fr-col-lg-5 fr-col-offset-lg-1--right fr-col-md-7 fr-col-sm-8 fr-py-5w mcp-full-height">
-                            <%- body; %>
-                        </div>
-                        <div class="fr-col-lg-6 fr-py-5w mcp-full-height side-media">
-                            <div class="fr-grid-row fr-grid-row--center">
-                                <img src="/dist/<%= locals.illustration ? locals.illustration : 'authent.svg'%>" alt="" />
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                <div class="mcp-background-alt-grey"></div>
-            <% } %>
-        </div>
-        <%- include('partials/footer.ejs'); %>
-        <div tabindex="-1" id="aria-live-message" aria-live="assertive" class="fr-sr-only"></div>
+    <div class="fr-skiplinks">
+        <nav class="fr-container" role="navigation" aria-label="Accès rapide">
+            <ul class="fr-skiplinks__list">
+                <% if (locals.use_dashboard_header) { %>
+                    <li>
+                        <a class="fr-link" href="#main">Contenu</a>
+                    </li>
+                <% } %>
+                <li>
+                    <a class="fr-link" href="#footer">Pied de page</a>
+                </li>
+            </ul>
+        </nav>
     </div>
+    <div id="loader-bar"></div>
+    <% if (locals.use_dashboard_header) { %>
+        <%- include('partials/dashboard-header.ejs'); %>
+        <div>
+            <%- body; %>
+        </div>
+    <% } else { %>
+        <%- include('partials/header.ejs'); %>
+        <main class="onboarding-container">
+            <%- body; %>
+            <div class="centered-container">
+                <img src="/dist/<%= locals.illustration ? locals.illustration : 'authent.svg' %>" alt="" />
+            </div>
+        </main>
+    <% } %>
+    <%- include('partials/footer.ejs'); %>
+    <div tabindex="-1" id="aria-live-message" aria-live="assertive" class="fr-sr-only"></div>
 </body>
 </html>
