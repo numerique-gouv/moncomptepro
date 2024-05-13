@@ -78,6 +78,9 @@ export const checkEmailInSessionMiddleware = async (
   });
 };
 
+export const checkCredentialPromptRequirementsMiddleware =
+  checkEmailInSessionMiddleware;
+
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (
   req: Request,
