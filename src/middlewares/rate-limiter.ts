@@ -4,6 +4,7 @@ import HttpErrors from "http-errors";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { DO_NOT_RATE_LIMIT } from "../config/env";
 import { getNewRedisClient } from "../connectors/redis";
+import { getEmailFromLoggedOutSession } from "../managers/session";
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -55,7 +56,8 @@ export const loginRateLimiterMiddleware = async (
 ) => {
   try {
     if (!DO_NOT_RATE_LIMIT) {
-      if (!req.session.email) {
+      const email = getEmailFromLoggedOutSession(req);
+      if (!email) {
         // fail silently
         const err = new Error(
           "Email not defined in loginRateLimiterMiddleware. Ensure checkEmailInSessionMiddleware was used before this middleware.",
@@ -64,7 +66,7 @@ export const loginRateLimiterMiddleware = async (
         return next();
       }
 
-      await loginRateLimiter.consume(req.session.email);
+      await loginRateLimiter.consume(email);
     }
     next();
   } catch (e) {

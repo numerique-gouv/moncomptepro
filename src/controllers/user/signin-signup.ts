@@ -12,7 +12,11 @@ import {
   WeakPasswordError,
 } from "../../config/errors";
 import { emailSchema } from "../../services/custom-zod-schemas";
-import { createLoggedInSession } from "../../managers/session";
+import {
+  createLoggedInSession,
+  getEmailFromLoggedOutSession,
+  setEmailInLoggedOutSession,
+} from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
 import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
@@ -29,7 +33,7 @@ export const getStartSignInController = async (
 
     const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
 
-    const loginHint = req.session.email;
+    const loginHint = getEmailFromLoggedOutSession(req);
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
@@ -61,7 +65,7 @@ export const postStartSignInController = async (
     const { login } = await schema.parseAsync(req.body);
 
     const { email, userExists } = await startLogin(login);
-    req.session.email = email;
+    setEmailInLoggedOutSession(req, email);
 
     return res.redirect(`/users/${userExists ? "sign-in" : "sign-up"}`);
   } catch (error) {
@@ -95,7 +99,7 @@ export const getSignInController = async (
       pageTitle: "Accéder au compte",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
-      email: req.session.email,
+      email: getEmailFromLoggedOutSession(req),
     });
   } catch (error) {
     next(error);
@@ -114,7 +118,7 @@ export const postSignInMiddleware = async (
 
     const { password } = await schema.parseAsync(req.body);
 
-    const user = await login(req.session.email!, password);
+    const user = await login(getEmailFromLoggedOutSession(req)!, password);
     await createLoggedInSession(req, user);
 
     next();
@@ -143,7 +147,7 @@ export const getSignUpController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
-      email: req.session.email,
+      email: getEmailFromLoggedOutSession(req),
     });
   } catch (error) {
     next(error);
@@ -168,7 +172,7 @@ export const postSignUpController = async (
       body: req.body,
     });
 
-    const user = await signup(req.session.email!, password);
+    const user = await signup(getEmailFromLoggedOutSession(req)!, password);
     await createLoggedInSession(req, user);
 
     next();

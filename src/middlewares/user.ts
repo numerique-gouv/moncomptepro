@@ -15,6 +15,7 @@ import {
 } from "../managers/organization/main";
 import {
   destroyLoggedInSession,
+  getEmailFromLoggedOutSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
@@ -66,7 +67,7 @@ export const checkEmailInSessionMiddleware = async (
     try {
       if (error) return next(error);
 
-      if (isEmpty(req.session.email)) {
+      if (isEmpty(getEmailFromLoggedOutSession(req))) {
         return res.redirect(`/users/start-sign-in`);
       }
 

@@ -95,3 +95,13 @@ export const hasUserLoggedInRecently = (req: Request) => {
     RECENT_LOGIN_INTERVAL_IN_MINUTES,
   );
 };
+
+export const getEmailFromLoggedOutSession = (req: Request) => {
+  return req.session.email;
+};
+
+export const setEmailInLoggedOutSession = (req: Request, email: string) => {
+  req.session.email = email;
+
+  return email;
+};

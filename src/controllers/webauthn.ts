@@ -4,7 +4,7 @@ import type {
 } from "@simplewebauthn/types";
 import { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import {
   NotFoundError,
   UserNotLoggedInError,
@@ -13,6 +13,7 @@ import {
 import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import {
   createLoggedInSession,
+  getEmailFromLoggedOutSession,
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
   updateUserInLoggedInSession,
@@ -142,7 +143,7 @@ export const getGenerateAuthenticationOptionsController = async (
   try {
     const email = isWithinLoggedInSession(req)
       ? getUserFromLoggedInSession(req).email
-      : req.session.email;
+      : getEmailFromLoggedOutSession(req);
 
     if (!email) {
       return next(new HttpErrors.Unauthorized());
@@ -185,7 +186,7 @@ export const postVerifyAuthenticationController = async (
 
     const email = isWithinLoggedInSession(req)
       ? getUserFromLoggedInSession(req).email
-      : req.session.email;
+      : getEmailFromLoggedOutSession(req);
 
     const { user, verified } = await verifyAuthentication({
       email,

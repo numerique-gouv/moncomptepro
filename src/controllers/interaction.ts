@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
-import { getUserFromLoggedInSession } from "../managers/session";
+import {
+  getUserFromLoggedInSession,
+  setEmailInLoggedOutSession,
+} from "../managers/session";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { postStartSignInController } from "./user/signin-signup";
@@ -21,7 +24,7 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
         if (login_hint) {
-          req.session.email = login_hint;
+          setEmailInLoggedOutSession(req, login_hint);
           req.body.login = login_hint;
           return postStartSignInController(req, res, next);
         }
@@ -31,7 +34,7 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
         if (login_hint) {
-          req.session.email = login_hint;
+          setEmailInLoggedOutSession(req, login_hint);
           req.body.login = login_hint;
           return postStartSignInController(req, res, next);
         }
