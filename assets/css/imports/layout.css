@@ -1,17 +1,12 @@
 /* general layout */
-html,
-body {
-  height: 100%;
-}
-
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-footer {
-  margin-top: auto;
+main {
+  flex-grow: 1;
 }
 
 /* page layout container */
