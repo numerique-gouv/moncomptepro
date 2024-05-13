@@ -15,7 +15,8 @@ import { emailSchema } from "../../services/custom-zod-schemas";
 import {
   createLoggedInSession,
   getEmailFromLoggedOutSession,
-  setEmailInLoggedOutSession,
+  setPartialUserFromLoggedOutSession,
+  updatePartialUserFromLoggedOutSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
@@ -64,10 +65,20 @@ export const postStartSignInController = async (
 
     const { login } = await schema.parseAsync(req.body);
 
-    const { email, userExists } = await startLogin(login);
-    setEmailInLoggedOutSession(req, email);
+    const { email, userExists, needsInclusionconnectWelcomePage } =
+      await startLogin(login);
+    setPartialUserFromLoggedOutSession(req, {
+      email,
+      needsInclusionconnectWelcomePage,
+    });
 
-    return res.redirect(`/users/${userExists ? "sign-in" : "sign-up"}`);
+    if (userExists && needsInclusionconnectWelcomePage) {
+      return res.redirect(`/users/inclusionconnect-welcome`);
+    } else if (userExists) {
+      return res.redirect(`/users/sign-in`);
+    } else {
+      return res.redirect("/users/sign-up");
+    }
   } catch (error) {
     if (error instanceof InvalidEmailError) {
       const didYouMeanQueryParam = error?.didYouMean
@@ -85,6 +96,37 @@ export const postStartSignInController = async (
       );
     }
 
+    next(error);
+  }
+};
+
+export const getInclusionconnectWelcomeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    return res.render("user/inclusionconnect-welcome", {
+      pageTitle: "Première connexion",
+      csrfToken: csrfToken(req),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postInclusionconnectWelcomeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await updatePartialUserFromLoggedOutSession(req, {
+      needs_inclusionconnect_welcome_page: false,
+    });
+
+    return res.redirect("/users/sign-in");
+  } catch (error) {
     next(error);
   }
 };

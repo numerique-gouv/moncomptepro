@@ -39,11 +39,21 @@ import {
 
 export const startLogin = async (
   email: string,
-): Promise<{ email: string; userExists: boolean }> => {
-  const userExists = !isEmpty(await findByEmail(email));
+): Promise<{
+  email: string;
+  userExists: boolean;
+  needsInclusionconnectWelcomePage: boolean;
+}> => {
+  const user = await findByEmail(email);
+  const userExists = !isEmpty(user);
 
   if (userExists) {
-    return { email, userExists: true };
+    return {
+      email,
+      userExists: true,
+      needsInclusionconnectWelcomePage:
+        user?.needs_inclusionconnect_welcome_page,
+    };
   }
 
   let { isEmailSafeToSend, didYouMean } =
@@ -57,7 +67,7 @@ export const startLogin = async (
     throw new InvalidEmailError(didYouMean);
   }
 
-  return { email, userExists: false };
+  return { email, userExists: false, needsInclusionconnectWelcomePage: false };
 };
 
 export const login = async (email: string, password: string): Promise<User> => {

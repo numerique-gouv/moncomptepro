@@ -16,6 +16,7 @@ import {
 import {
   destroyLoggedInSession,
   getEmailFromLoggedOutSession,
+  getPartialUserFromLoggedOutSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
@@ -78,8 +79,31 @@ export const checkEmailInSessionMiddleware = async (
   });
 };
 
+// redirect user to inclusionconnect welcome page if needed
+export const checkUserHasSeenInclusionconnectWelcomePage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  await checkEmailInSessionMiddleware(req, res, async (error) => {
+    try {
+      if (error) next(error);
+
+      if (
+        getPartialUserFromLoggedOutSession(req).needsInclusionconnectWelcomePage
+      ) {
+        return res.redirect(`/users/inclusionconnect-welcome`);
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+};
+
 export const checkCredentialPromptRequirementsMiddleware =
-  checkEmailInSessionMiddleware;
+  checkUserHasSeenInclusionconnectWelcomePage;
 
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (

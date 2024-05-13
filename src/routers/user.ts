@@ -27,9 +27,11 @@ import {
   checkUserSignInRequirementsMiddleware,
 } from "../middlewares/user";
 import {
+  getInclusionconnectWelcomeController,
   getSignInController,
   getSignUpController,
   getStartSignInController,
+  postInclusionconnectWelcomeController,
   postSignInMiddleware,
   postSignUpController,
   postStartSignInController,
@@ -101,6 +103,18 @@ export const userRouter = () => {
     postStartSignInController,
   );
 
+  userRouter.get(
+    "/inclusionconnect-welcome",
+    checkEmailInSessionMiddleware,
+    csrfProtectionMiddleware,
+    getInclusionconnectWelcomeController,
+  );
+  userRouter.post(
+    "/inclusionconnect-welcome",
+    checkEmailInSessionMiddleware,
+    csrfProtectionMiddleware,
+    postInclusionconnectWelcomeController,
+  );
   userRouter.get(
     "/sign-in",
     checkCredentialPromptRequirementsMiddleware,
