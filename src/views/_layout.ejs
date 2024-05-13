@@ -19,15 +19,15 @@
     <div id="loader-bar"></div>
     <% if (locals.use_dashboard_header) { %>
         <%- include('partials/dashboard-header.ejs'); %>
-        <div>
+        <main id="main" tabindex="-1">
             <%- body; %>
-        </div>
+        </main>
     <% } else { %>
         <%- include('partials/header.ejs'); %>
         <main class="onboarding-container">
             <%- body; %>
             <div class="centered-container">
-                <img src="/dist/<%= locals.illustration ? locals.illustration : 'authent.svg' %>" alt="" />
+                <img src="/dist/<%= locals.illustration ? locals.illustration : 'authent.svg' ;%>" alt="" />
             </div>
         </main>
     <% } %>
