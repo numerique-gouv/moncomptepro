@@ -1,9 +1,9 @@
 <div>
+    <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
     <h1 class="fr-h3">
         Votre organisation de rattachement
     </h1>
     <div>
-        <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
         <form id="form-join-organization" action="/users/join-organization" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
 
