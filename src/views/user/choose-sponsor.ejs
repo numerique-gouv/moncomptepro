@@ -1,10 +1,10 @@
 <div>
+    <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
     <div class="fr-mb-2w">
         <h1 class="fr-h3">
             Sélectionner un parrain
         </h1>
         <div>
-            <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
             <p>
                 Cette personne sera informée que vous rejoignez l’organisation <%= libelle %> sur MonComptePro.
             </p>

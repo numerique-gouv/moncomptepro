@@ -1,6 +1,6 @@
 <div class="dashboard-container">
     <%- include('partials/sidemenu.ejs', {activeLink: 'personal-information'}) %>
-    <main id="main" tabindex="-1" class="dashboard-content fr-col-12 fr-col-lg-9 fr-col-xl-8 fr-col-offset-lg-1">
+    <div class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>
             Vos informations personnelles
@@ -71,5 +71,5 @@
                 Mettre à jour
             </button>
         </form>
-    </main>
+    </div>
 </div>
