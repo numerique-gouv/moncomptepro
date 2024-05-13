@@ -8,7 +8,6 @@ interface User {
   last_sign_in_at: Date | null;
   created_at: Date;
   updated_at: Date;
-  legacy_user: boolean;
   email_verified: boolean;
   verify_email_token: string | null;
   verify_email_sent_at: Date | null;

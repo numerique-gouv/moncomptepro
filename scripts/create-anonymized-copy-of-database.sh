@@ -34,7 +34,6 @@ SELECT
   last_sign_in_at,
   created_at,
   updated_at,
-  legacy_user,
   email_verified,
   regexp_replace(verify_email_token, '.', '*', 'g') as verify_email_token,
   verify_email_sent_at,
