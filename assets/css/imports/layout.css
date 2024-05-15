@@ -79,6 +79,7 @@ main {
 
 @media all and (max-width: 768px) {
   .dashboard-container {
+    padding-top: 0;
     grid-template-columns: 100%;
     grid-template-areas:
       "nav"

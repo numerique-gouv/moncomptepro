@@ -1,35 +1,66 @@
-<header role="banner">
-  <div class="dashboard-header">
-    <div class="dashboard-header__container">
-        <div class="fr-header__brand-top">
-            <div class="fr-header__logo">
-                <p class="fr-logo">
-                    République
-                    <br aria-hidden="true">Française
-                </p>
+<header role="banner" class="fr-header">
+    <div class="fr-header__body">
+        <div class="fr-container">
+            <div class="fr-header__body-row">
+                <div class="fr-header__brand fr-enlarge-link">
+                    <div class="fr-header__brand-top">
+                        <div class="fr-header__logo">
+                            <p class="fr-logo">
+                                République
+                                <br>Française
+                            </p>
+                        </div>
+                        <div class="fr-header__navbar">
+                            <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="modal-499" aria-haspopup="menu" id="button-500" title="Menu">
+                                Menu
+                            </button>
+                        </div>
+                    </div>
+                    <div class="fr-header__service">
+                        <a href="/" title="Accueil - MonComptePro">
+                            <p class="fr-header__service-title">
+                                MonComptePro
+                            </p>    
+                        </a>
+                        <p class="fr-header__service-tagline">identifie les professionnels sur les sites de l'administration</p>
+                    </div>
+                </div>
+                <div class="fr-header__tools">
+                    <div class="fr-header__tools-links">
+                        <ul class="fr-btns-group">
+                            <li>
+                                <a
+                                    class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-question-fill fr-btn--icon-left"
+                                    href="https://moncomptepro.beta.gouv.fr/#faq"
+                                    aria-label="Aide"
+                                >
+                                    Aide
+                                </a>
+                            </li>
+                            <%if (locals.use_dashboard_header) { %>
+                                <li>
+                                    <a
+                                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-fi-logout-box-r-line fr-btn--icon-left"
+                                        href="/oauth/logout"
+                                        aria-label="Se déconnecter - <%= header_user_label; %>"
+                                    >
+                                        <%= header_user_label; %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="dashboard-header__link">
-            <% if (locals.header_user_label) { %>
-                <a
-                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-fi-logout-box-r-line fr-btn--icon-left"
-                        href="/oauth/logout"
-                        aria-label="Se déconnecter - <%= header_user_label; %>"
-                >
-                    <%= header_user_label; %>
-                </a>
-            <% } else { %>
-                <a
-                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-account-line fr-btn--icon-left"
-                        href="/users/start-sign-in"
-                >
-                    Se connecter
-                </a>
-            <% } %>
+    </div>
+    <div class="fr-header__menu fr-modal" id="modal-499" aria-labelledby="button-500">
+        <div class="fr-container">
+            <button class="fr-btn--close fr-btn" aria-controls="modal-499" title="Fermer">
+                Fermer
+            </button>
+            <div class="fr-header__menu-links">
+            </div>
         </div>
     </div>
-  </div>
-  <div class="dashboard-header__title">
-    <h1>MonComptePro</h1>
-  </div>
 </header>
