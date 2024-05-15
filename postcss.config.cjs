@@ -7,7 +7,9 @@ module.exports = {
       css: ["./assets/**/*.css"],
       variables: true,
       safelist: {
-        greedy: [/choices/,]
+        greedy: [/choices/, 
+        /fr-modal--opened/, // Useful for the responsive burger menu.
+      ]
       }
     }),
   ],
