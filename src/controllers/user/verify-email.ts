@@ -32,7 +32,11 @@ export const getVerifyEmailController = async (
 
     const { new_code_sent } = await schema.parseAsync(req.query);
 
-    const { id: user_id, email } = getUserFromLoggedInSession(req);
+    const {
+      id: user_id,
+      email,
+      needs_inclusionconnect_onboarding_help,
+    } = getUserFromLoggedInSession(req);
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email,
@@ -46,6 +50,7 @@ export const getVerifyEmailController = async (
       csrfToken: csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
+      needs_inclusionconnect_onboarding_help,
     });
   } catch (error) {
     if (error instanceof EmailVerifiedAlreadyError) {

@@ -3,6 +3,13 @@
     <h1 class="fr-h3">
         Renseigner son identité
     </h1>
+    <% if (locals.needs_inclusionconnect_onboarding_help) { %>
+        <div class="fr-callout fr-callout--blue-ecume fr-icon-lightbulb-line">
+            <p class="fr-callout__text">
+                Nous avons pré-rempli ces informations. Vous pouvez toujours les mettre à jour.
+            </p>
+        </div>
+    <% } %>
     <div>
         <p>
             Ces informations nous permettent d’authentifier votre compte.

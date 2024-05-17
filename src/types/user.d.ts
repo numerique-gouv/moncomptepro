@@ -20,4 +20,5 @@ interface User {
   email_verified_at: Date | null;
   current_challenge: string | null;
   needs_inclusionconnect_welcome_page: boolean;
+  needs_inclusionconnect_onboarding_help: boolean;
 }

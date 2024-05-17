@@ -18,13 +18,20 @@ export const getPersonalInformationsController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const {
+      given_name,
+      family_name,
+      phone_number,
+      job,
+      needs_inclusionconnect_onboarding_help,
+    } = getUserFromLoggedInSession(req);
     return res.render("user/personal-information", {
       pageTitle: "Renseigner votre identité",
-      given_name: user.given_name,
-      family_name: user.family_name,
-      phone_number: user.phone_number,
-      job: user.job,
+      given_name,
+      family_name,
+      phone_number,
+      job,
+      needs_inclusionconnect_onboarding_help,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
     });

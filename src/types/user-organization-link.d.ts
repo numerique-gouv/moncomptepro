@@ -8,12 +8,14 @@ interface BaseUserOrganizationLink {
     | "code_sent_to_official_contact_email"
     | "in_liste_dirigeants_rna"
     | "no_validation_means_available"
+    | "imported_from_inclusion_connect"
     | null;
   authentication_by_peers_type:
     | "all_members_notified"
     | "sponsored_by_member"
     | "is_the_only_active_member"
     | "deactivated_by_whitelist"
+    | "deactivated_by_import"
     | null;
   has_been_greeted: boolean;
   sponsor_id: number | null;
