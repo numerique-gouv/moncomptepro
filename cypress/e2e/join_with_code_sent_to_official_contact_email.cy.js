@@ -1,5 +1,7 @@
 //
 
+import { getVerificationWordsFromEmail } from "../support/get-from-email.js";
+
 describe("join organizations", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
@@ -34,7 +36,6 @@ describe("join organizations", () => {
 
     // Verify the email with the code received by email
     cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
           "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
@@ -43,16 +44,7 @@ describe("join organizations", () => {
         ),
       )
       // extract the verification code from the email subject
-      .then((email) => {
-        const matches =
-          /.*<span style="color: #000091; font-size: 18px;">([a-z]{2,25}-[a-z]{2,25})<\/span>.*/.exec(
-            email.body,
-          );
-        if (matches && matches.length > 0) {
-          return matches[1];
-        }
-        throw new Error("Could not find verification code in received email");
-      })
+      .then(getVerificationWordsFromEmail)
       // fill out the verification form and submit
       .then((code) => {
         cy.get('[name="official_contact_email_verification_token"]').type(code);

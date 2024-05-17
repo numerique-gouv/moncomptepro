@@ -1,7 +1,6 @@
-import session from "express-session";
-
 export interface LoggedOutSessionData {
   email?: string;
+  needsInclusionconnectWelcomePage?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
   referrerPath?: string;

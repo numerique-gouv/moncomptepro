@@ -1,5 +1,7 @@
 //
 
+import { getVerificationCodeFromEmail } from "../support/get-from-email.js";
+
 describe("Signup into new entreprise unipersonnelle", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
@@ -40,15 +42,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
         ),
       )
       // extract the verification code from the email subject
-      .then((email) => {
-        const matches = /.*<strong>(\s*(?:\d\s*){10})<\/strong>.*/.exec(
-          email.body,
-        );
-        if (matches && matches.length > 0) {
-          return matches[1];
-        }
-        throw new Error("Could not find verification code in received email");
-      })
+      .then(getVerificationCodeFromEmail)
       // fill out the verification form and submit
       .then((code) => {
         cy.get('[name="verify_email_token"]').type(code);

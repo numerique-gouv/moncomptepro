@@ -34,7 +34,6 @@ SELECT
   last_sign_in_at,
   created_at,
   updated_at,
-  legacy_user,
   email_verified,
   regexp_replace(verify_email_token, '.', '*', 'g') as verify_email_token,
   verify_email_sent_at,
@@ -44,7 +43,8 @@ SELECT
   job,
   regexp_replace(magic_link_token, '.', '*', 'g') as magic_link_token,
   magic_link_sent_at,
-  email_verified_at
+  email_verified_at,
+  needs_inclusionconnect_welcome_page
 FROM users"
 psql $SRC_DB_URL --command="ALTER TABLE tmp_users ADD PRIMARY KEY (id)"
 pg_dump --table=tmp_users $SRC_DB_URL | psql $DEST_DB_URL

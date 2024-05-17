@@ -1,0 +1,36 @@
+<div>
+    <h1 class="fr-h3">
+        C’est votre première connexion avec ProConnect
+    </h1>
+    <div>
+        <div class="fr-callout fr-callout--blue-ecume fr-icon-lightbulb-line">
+            <p class="fr-callout__text">
+                Pour les prochaines connexions, tapez simplement votre email et mot de passe !
+            </p>
+        </div>
+
+        <h2 class="fr-h4">
+            3 étapes pour vous connecter
+        </h2>
+
+        <ol class="fr-mb-2w">
+            <li>
+                Choisir un nouveau mot de passe
+            </li>
+            <li>
+                Confirmer votre adresse email
+            </li>
+            <li>
+                Complèter vos informations personnelles (elles seront pré-remplies pour vous faire gagner du temps)
+            </li>
+        </ol>
+
+        <form action="/users/inclusionconnect-welcome" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+
+            <button class="fr-btn fr-mb-2w btn--fullwidth" type="submit">
+                Continuer
+            </button>
+        </form>
+    </div>
+</div>

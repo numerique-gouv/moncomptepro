@@ -12,7 +12,12 @@ import {
   WeakPasswordError,
 } from "../../config/errors";
 import { emailSchema } from "../../services/custom-zod-schemas";
-import { createLoggedInSession } from "../../managers/session";
+import {
+  createLoggedInSession,
+  getEmailFromLoggedOutSession,
+  setPartialUserFromLoggedOutSession,
+  updatePartialUserFromLoggedOutSession,
+} from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
 import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
@@ -29,7 +34,7 @@ export const getStartSignInController = async (
 
     const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
 
-    const loginHint = req.session.email;
+    const loginHint = getEmailFromLoggedOutSession(req);
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
@@ -60,10 +65,26 @@ export const postStartSignInController = async (
 
     const { login } = await schema.parseAsync(req.body);
 
-    const { email, userExists } = await startLogin(login);
-    req.session.email = email;
+    const {
+      email,
+      userExists,
+      hasAPassword,
+      needsInclusionconnectWelcomePage,
+    } = await startLogin(login);
+    setPartialUserFromLoggedOutSession(req, {
+      email,
+      needsInclusionconnectWelcomePage,
+    });
 
-    return res.redirect(`/users/${userExists ? "sign-in" : "sign-up"}`);
+    if (needsInclusionconnectWelcomePage) {
+      return res.redirect(`/users/inclusionconnect-welcome`);
+    } else if (userExists && hasAPassword) {
+      return res.redirect(`/users/sign-in`);
+    } else if (userExists && !hasAPassword) {
+      return res.redirect(`/users/sign-up?notification=new_password_needed`);
+    } else {
+      return res.redirect("/users/sign-up");
+    }
   } catch (error) {
     if (error instanceof InvalidEmailError) {
       const didYouMeanQueryParam = error?.didYouMean
@@ -85,6 +106,37 @@ export const postStartSignInController = async (
   }
 };
 
+export const getInclusionconnectWelcomeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    return res.render("user/inclusionconnect-welcome", {
+      pageTitle: "Première connexion",
+      csrfToken: csrfToken(req),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postInclusionconnectWelcomeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await updatePartialUserFromLoggedOutSession(req, {
+      needs_inclusionconnect_welcome_page: false,
+    });
+
+    return res.redirect("/users/sign-up?notification=new_password_needed");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getSignInController = async (
   req: Request,
   res: Response,
@@ -95,7 +147,7 @@ export const getSignInController = async (
       pageTitle: "Accéder au compte",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
-      email: req.session.email,
+      email: getEmailFromLoggedOutSession(req),
     });
   } catch (error) {
     next(error);
@@ -114,7 +166,7 @@ export const postSignInMiddleware = async (
 
     const { password } = await schema.parseAsync(req.body);
 
-    const user = await login(req.session.email!, password);
+    const user = await login(getEmailFromLoggedOutSession(req)!, password);
     await createLoggedInSession(req, user);
 
     next();
@@ -143,7 +195,7 @@ export const getSignUpController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
-      email: req.session.email,
+      email: getEmailFromLoggedOutSession(req),
     });
   } catch (error) {
     next(error);
@@ -168,7 +220,7 @@ export const postSignUpController = async (
       body: req.body,
     });
 
-    const user = await signup(req.session.email!, password);
+    const user = await signup(getEmailFromLoggedOutSession(req)!, password);
     await createLoggedInSession(req, user);
 
     next();

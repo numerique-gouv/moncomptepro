@@ -1,9 +1,13 @@
 import { Request } from "express";
 import { isEmpty } from "lodash-es";
 import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
-import { UserNotLoggedInError } from "../config/errors";
+import {
+  NoEmailFoundInLoggedOutSessionError,
+  UserNotLoggedInError,
+  UserNotLoggedOutError,
+} from "../config/errors";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { update } from "../repositories/user";
+import { findByEmail, update } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
 import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
 
@@ -16,7 +20,7 @@ export const createLoggedInSession = async (
   user: User,
 ): Promise<null> => {
   // we store old session value to pass it to the new logged-in session
-  // email will not be passed to the new session as it is not useful within logged session
+  // email and needsInclusionconnectWelcomePage are not passed to the new session as it is not useful within logged session
   // csrfToken should not be passed to the new session for security reasons
   const { interactionId, mustReturnOneOrganizationInPayload, referrerPath } =
     req.session;
@@ -94,4 +98,65 @@ export const hasUserLoggedInRecently = (req: Request) => {
     req.session.user!.last_sign_in_at,
     RECENT_LOGIN_INTERVAL_IN_MINUTES,
   );
+};
+
+export const getEmailFromLoggedOutSession = (req: Request) => {
+  return req.session.email;
+};
+
+export const setEmailInLoggedOutSession = (req: Request, email: string) => {
+  req.session.email = email;
+
+  return email;
+};
+
+export const getPartialUserFromLoggedOutSession = (req: Request) => {
+  return {
+    email: req.session.email,
+    needsInclusionconnectWelcomePage:
+      req.session.needsInclusionconnectWelcomePage,
+  };
+};
+
+export const setPartialUserFromLoggedOutSession = (
+  req: Request,
+  {
+    email,
+    needsInclusionconnectWelcomePage,
+  }: { email: string; needsInclusionconnectWelcomePage: boolean },
+) => {
+  req.session.email = email;
+  req.session.needsInclusionconnectWelcomePage =
+    needsInclusionconnectWelcomePage;
+};
+
+export const updatePartialUserFromLoggedOutSession = async (
+  req: Request,
+  {
+    needs_inclusionconnect_welcome_page,
+  }: { needs_inclusionconnect_welcome_page: boolean },
+): Promise<null | {
+  email: string;
+  needs_inclusionconnect_welcome_page: boolean;
+}> => {
+  if (isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedOutError();
+  }
+
+  if (!req.session.email) {
+    throw new NoEmailFoundInLoggedOutSessionError();
+  }
+
+  req.session.needsInclusionconnectWelcomePage =
+    needs_inclusionconnect_welcome_page;
+
+  const user = await findByEmail(req.session.email);
+
+  if (isEmpty(user)) {
+    return null;
+  }
+
+  await update(user!.id, { needs_inclusionconnect_welcome_page });
+
+  return { email: req.session.email, needs_inclusionconnect_welcome_page };
 };

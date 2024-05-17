@@ -107,7 +107,6 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "content illu";
-  height: 100%;
   align-items: center;
   justify-items: center;
 }

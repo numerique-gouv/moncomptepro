@@ -11,6 +11,7 @@ import {
 import hasErrorFromField from "../../services/has-error-from-field";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
+  getEmailFromLoggedOutSession,
   getUserFromLoggedInSession,
   isWithinLoggedInSession,
 } from "../../managers/session";
@@ -28,7 +29,7 @@ export const getResetPasswordController = async (
       pageTitle: "Réinitialiser mon mot de passe",
       notifications: await getNotificationsFromRequest(req),
       loginHint:
-        req.session.email ||
+        getEmailFromLoggedOutSession(req) ||
         (isWithinLoggedInSession(req)
           ? getUserFromLoggedInSession(req).email
           : null),

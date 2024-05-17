@@ -55,6 +55,7 @@ jobs:
           - redirect_after_session_expiration
           - reset_password
           - join_must_confirm
+          - set_info_after_account_provisioning
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:

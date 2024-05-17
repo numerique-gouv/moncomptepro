@@ -13,6 +13,7 @@ import {
   rateLimiterMiddleware,
 } from "../middlewares/rate-limiter";
 import {
+  checkCredentialPromptRequirementsMiddleware,
   checkEmailInSessionMiddleware,
   checkIsUser,
   checkUserCanAccessAppMiddleware,
@@ -26,9 +27,11 @@ import {
   checkUserSignInRequirementsMiddleware,
 } from "../middlewares/user";
 import {
+  getInclusionconnectWelcomeController,
   getSignInController,
   getSignUpController,
   getStartSignInController,
+  postInclusionconnectWelcomeController,
   postSignInMiddleware,
   postSignUpController,
   postStartSignInController,
@@ -101,15 +104,27 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/sign-in",
+    "/inclusionconnect-welcome",
     checkEmailInSessionMiddleware,
+    csrfProtectionMiddleware,
+    getInclusionconnectWelcomeController,
+  );
+  userRouter.post(
+    "/inclusionconnect-welcome",
+    checkEmailInSessionMiddleware,
+    csrfProtectionMiddleware,
+    postInclusionconnectWelcomeController,
+  );
+  userRouter.get(
+    "/sign-in",
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     getSignInController,
   );
   userRouter.post(
     "/sign-in",
     rateLimiterMiddleware,
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     loginRateLimiterMiddleware,
     csrfProtectionMiddleware,
     postSignInMiddleware,
@@ -118,14 +133,14 @@ export const userRouter = () => {
   );
   userRouter.get(
     "/sign-up",
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     getSignUpController,
   );
   userRouter.post(
     "/sign-up",
     rateLimiterMiddleware,
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postSignUpController,
     checkUserSignInRequirementsMiddleware,
@@ -157,7 +172,7 @@ export const userRouter = () => {
   userRouter.post(
     "/send-magic-link",
     rateLimiterMiddleware,
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postSendMagicLinkController,
     checkUserSignInRequirementsMiddleware,
@@ -181,7 +196,7 @@ export const userRouter = () => {
   userRouter.get(
     "/sign-in-with-passkey",
     rateLimiterMiddleware,
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     getSignInWithPasskeyController,
     checkUserSignInRequirementsMiddleware,
@@ -191,7 +206,7 @@ export const userRouter = () => {
   userRouter.post(
     "/sign-in-with-passkey",
     rateLimiterMiddleware,
-    checkEmailInSessionMiddleware,
+    checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postVerifyAuthenticationController,
     checkUserSignInRequirementsMiddleware,

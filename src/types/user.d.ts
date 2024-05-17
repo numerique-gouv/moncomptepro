@@ -8,7 +8,6 @@ interface User {
   last_sign_in_at: Date | null;
   created_at: Date;
   updated_at: Date;
-  legacy_user: boolean;
   email_verified: boolean;
   verify_email_token: string | null;
   verify_email_sent_at: Date | null;
@@ -20,4 +19,5 @@ interface User {
   magic_link_sent_at: Date | null;
   email_verified_at: Date | null;
   current_challenge: string | null;
+  needs_inclusionconnect_welcome_page: boolean;
 }

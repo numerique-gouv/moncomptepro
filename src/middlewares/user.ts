@@ -15,6 +15,8 @@ import {
 } from "../managers/organization/main";
 import {
   destroyLoggedInSession,
+  getEmailFromLoggedOutSession,
+  getPartialUserFromLoggedOutSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
   isWithinLoggedInSession,
@@ -66,7 +68,7 @@ export const checkEmailInSessionMiddleware = async (
     try {
       if (error) return next(error);
 
-      if (isEmpty(req.session.email)) {
+      if (isEmpty(getEmailFromLoggedOutSession(req))) {
         return res.redirect(`/users/start-sign-in`);
       }
 
@@ -76,6 +78,32 @@ export const checkEmailInSessionMiddleware = async (
     }
   });
 };
+
+// redirect user to inclusionconnect welcome page if needed
+export const checkUserHasSeenInclusionconnectWelcomePage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  await checkEmailInSessionMiddleware(req, res, async (error) => {
+    try {
+      if (error) next(error);
+
+      if (
+        getPartialUserFromLoggedOutSession(req).needsInclusionconnectWelcomePage
+      ) {
+        return res.redirect(`/users/inclusionconnect-welcome`);
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+};
+
+export const checkCredentialPromptRequirementsMiddleware =
+  checkUserHasSeenInclusionconnectWelcomePage;
 
 // redirect user to login page if no active session is available
 export const checkUserIsConnectedMiddleware = async (
@@ -135,7 +163,9 @@ export const checkUserIsVerifiedMiddleware = (
       ) {
         let notification_param = "";
 
-        if (email_verified && needs_email_verification_renewal) {
+        if (!email_verified) {
+          notification_param = "";
+        } else if (needs_email_verification_renewal) {
           notification_param = "?notification=email_verification_renewal";
         } else if (!is_browser_trusted) {
           notification_param = "?notification=browser_not_trusted";
