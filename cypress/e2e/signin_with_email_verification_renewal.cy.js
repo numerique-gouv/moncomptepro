@@ -1,5 +1,7 @@
 //
 
+import { getVerificationCodeFromEmail } from "../support/get-from-email.js";
+
 describe("sign-in with email verification renewal", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
@@ -27,9 +29,7 @@ describe("sign-in with email verification renewal", () => {
       "pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
     );
 
-    // Verify the email with the code received by email
     cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
           "bad1b70d-e5cb-436c-9ff3-f83d4af5d198",
@@ -37,17 +37,7 @@ describe("sign-in with email verification renewal", () => {
           true,
         ),
       )
-      // extract the verification code from the email subject
-      .then((email) => {
-        const matches =
-          /.*<span style="color: #000091; font-size: 18px;"><strong>(\s*(?:\d\s*){10})<\/strong><\/span>.*/.exec(
-            email.body,
-          );
-        if (matches && matches.length > 0) {
-          return matches[1];
-        }
-        throw new Error("Could not find verification code in received email");
-      })
+      .then(getVerificationCodeFromEmail)
       // fill out the verification form and submit
       .then((code) => {
         cy.get('[name="verify_email_token"]').type(code);
