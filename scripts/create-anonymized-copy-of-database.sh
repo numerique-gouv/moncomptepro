@@ -44,7 +44,8 @@ SELECT
   regexp_replace(magic_link_token, '.', '*', 'g') as magic_link_token,
   magic_link_sent_at,
   email_verified_at,
-  needs_inclusionconnect_welcome_page
+  needs_inclusionconnect_welcome_page,
+  needs_inclusionconnect_onboarding_help
 FROM users"
 psql $SRC_DB_URL --command="ALTER TABLE tmp_users ADD PRIMARY KEY (id)"
 pg_dump --table=tmp_users $SRC_DB_URL | psql $DEST_DB_URL

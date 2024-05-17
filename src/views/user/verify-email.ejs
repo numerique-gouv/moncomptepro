@@ -3,6 +3,13 @@
     <h1 class="fr-h3">
         Vérifier votre email
     </h1>
+    <% if (locals.needs_inclusionconnect_onboarding_help) { %>
+        <div class="fr-callout fr-callout--blue-ecume fr-icon-lightbulb-line">
+            <p class="fr-callout__text">
+                Pour vérifier que vous avez bien accès à votre email, nous utilisons un code de confirmation.
+            </p>
+        </div>
+    <% } %>
     <div>
         <form id="verify-email" action="/users/verify-email" method="post" class="fr-mb-5w">
             <p>
@@ -33,7 +40,7 @@
             </div>
             <%- include('../partials/card-button-container.ejs', {label: 'Vérifier', showGoBackButton: true}) %>
         </form>
-    </div>  
+    </div>
     <div class="fr-card">
         <div class="fr-card__body">
             <div class="fr-card__content">
