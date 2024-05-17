@@ -1,5 +1,3 @@
-import session from "express-session";
-
 export interface LoggedOutSessionData {
   email?: string;
   needsInclusionconnectWelcomePage?: boolean;

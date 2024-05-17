@@ -163,7 +163,9 @@ export const checkUserIsVerifiedMiddleware = (
       ) {
         let notification_param = "";
 
-        if (email_verified && needs_email_verification_renewal) {
+        if (!email_verified) {
+          notification_param = "";
+        } else if (needs_email_verification_renewal) {
           notification_param = "?notification=email_verification_renewal";
         } else if (!is_browser_trusted) {
           notification_param = "?notification=browser_not_trusted";
