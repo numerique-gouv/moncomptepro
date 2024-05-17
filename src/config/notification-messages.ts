@@ -141,6 +141,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "success",
     description: "Votre compte a bien été supprimé.",
   },
+  new_password_needed: {
+    type: "info",
+    description:
+      "Pour des raisons de sécurité, nous vous invitons à définir un nouveau mot de passe.",
+  },
 };
 
 export default notificationMessages;

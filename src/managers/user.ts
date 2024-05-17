@@ -42,6 +42,7 @@ export const startLogin = async (
 ): Promise<{
   email: string;
   userExists: boolean;
+  hasAPassword: boolean;
   needsInclusionconnectWelcomePage: boolean;
 }> => {
   const user = await findByEmail(email);
@@ -51,6 +52,7 @@ export const startLogin = async (
     return {
       email,
       userExists: true,
+      hasAPassword: !!user.encrypted_password,
       needsInclusionconnectWelcomePage:
         user?.needs_inclusionconnect_welcome_page,
     };
@@ -67,7 +69,12 @@ export const startLogin = async (
     throw new InvalidEmailError(didYouMean);
   }
 
-  return { email, userExists: false, needsInclusionconnectWelcomePage: false };
+  return {
+    email,
+    userExists: false,
+    hasAPassword: false,
+    needsInclusionconnectWelcomePage: false,
+  };
 };
 
 export const login = async (email: string, password: string): Promise<User> => {
@@ -93,7 +100,7 @@ export const signup = async (
 ): Promise<User> => {
   const user = await findByEmail(email);
 
-  if (!isEmpty(user)) {
+  if (!isEmpty(user) && !isEmpty(user.encrypted_password)) {
     throw new EmailUnavailableError();
   }
 
@@ -106,6 +113,14 @@ export const signup = async (
   }
 
   const hashedPassword = await hashPassword(password);
+
+  if (!isEmpty(user)) {
+    // force email verification after setting a password for the first time for an existing user
+    return await update(user.id, {
+      email_verified: false,
+      encrypted_password: hashedPassword,
+    });
+  }
 
   return await create({
     email,

@@ -65,17 +65,23 @@ export const postStartSignInController = async (
 
     const { login } = await schema.parseAsync(req.body);
 
-    const { email, userExists, needsInclusionconnectWelcomePage } =
-      await startLogin(login);
+    const {
+      email,
+      userExists,
+      hasAPassword,
+      needsInclusionconnectWelcomePage,
+    } = await startLogin(login);
     setPartialUserFromLoggedOutSession(req, {
       email,
       needsInclusionconnectWelcomePage,
     });
 
-    if (userExists && needsInclusionconnectWelcomePage) {
+    if (needsInclusionconnectWelcomePage) {
       return res.redirect(`/users/inclusionconnect-welcome`);
-    } else if (userExists) {
+    } else if (userExists && hasAPassword) {
       return res.redirect(`/users/sign-in`);
+    } else if (userExists && !hasAPassword) {
+      return res.redirect(`/users/sign-up?notification=new_password_needed`);
     } else {
       return res.redirect("/users/sign-up");
     }
@@ -125,7 +131,7 @@ export const postInclusionconnectWelcomeController = async (
       needs_inclusionconnect_welcome_page: false,
     });
 
-    return res.redirect("/users/sign-in");
+    return res.redirect("/users/sign-up?notification=new_password_needed");
   } catch (error) {
     next(error);
   }
