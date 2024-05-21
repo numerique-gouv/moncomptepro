@@ -7,11 +7,11 @@
                         <div class="fr-header__logo">
                             <p class="fr-logo">
                                 République
-                                <br>Française
+                                <br aria-hidden="true">Française
                             </p>
                         </div>
                         <div class="fr-header__navbar">
-                            <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="modal-499" aria-haspopup="menu" id="button-500" title="Menu">
+                            <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="menu-modal" aria-haspopup="menu" id="open-menu-button" title="Menu">
                                 Menu
                             </button>
                         </div>
@@ -31,8 +31,7 @@
                             <li>
                                 <a
                                     class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-question-fill fr-btn--icon-left"
-                                    href="https://moncomptepro.beta.gouv.fr/#faq"
-                                    aria-label="Aide"
+                                    href="/help"
                                 >
                                     Aide
                                 </a>
@@ -54,9 +53,9 @@
             </div>
         </div>
     </div>
-    <div class="fr-header__menu fr-modal" id="modal-499" aria-labelledby="button-500">
+    <div class="fr-header__menu fr-modal" id="menu-modal" aria-labelledby="open-menu-button">
         <div class="fr-container">
-            <button class="fr-btn--close fr-btn" aria-controls="modal-499" title="Fermer">
+            <button class="fr-btn--close fr-btn" aria-controls="menu-modal" title="Fermer">
                 Fermer
             </button>
             <div class="fr-header__menu-links">
