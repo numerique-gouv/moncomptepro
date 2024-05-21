@@ -909,6 +909,19 @@ VALUES
    'openid email organization profile',
    'https://foo.bar',
    'L’application doit permettre a des établissements de l’enseignement secondaire et supérieur, publics et privés, d’envoyer au cnous des listes d’étudiants pouvant bénéficier de la LOI n° 2023-265 du 13 avril 2023 visant à favoriser l’accès de tous les étudiants à une offre de restauration à tarif modéré.',
+   null, null, null, null),
+  (35,
+   'ANSSI Lab Planka',
+   'u3VzsHg6qrQvcPmpCOTcWOQ0yoLzPr0G7nidvoxSYK0X7FS7HgNmBYnu9nY1QRNpXO5N28ISuqyWG8Hi0lQoU0CAwy7LC2I5F7nSBJbnWesSOx5MUqLbCayXsDYxKL73',
+   'kpzpifseEU5FzRJv38EmsDGNpMdb3SlQrHpXji3eXmAZsjk3ek7hd9vYgnBmKJV5hvZZKPeRXK1fxQ1kagPYNqvcaO98L74k9JWDnqGdMyyPta0qHZv2KIa43rfXBAIk',
+   ARRAY [
+      'https://lab-anssi-planka.cleverapps.io/oidc-callback'     ],
+   ARRAY [
+      'https://cyber.gouv.fr/'
+     ],
+   'openid email organization profile',
+   'https://lab-anssi-planka.cleverapps.io/',
+   'Le Planka du Lab de l’ANSSI',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
