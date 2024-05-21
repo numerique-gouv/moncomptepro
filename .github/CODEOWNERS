@@ -3,3 +3,4 @@
 *.ejs    @manuhabitela
 /assets/**/*.js @manuhabitela
 /assets/**/*.css @manuhabitela
+/migrations/*.cjs @douglasduteil
