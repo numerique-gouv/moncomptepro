@@ -1,8 +1,65 @@
-<header role="banner" class="header">
-  <img
-    src="/dist/logo_moncomptepro_label.svg"
-    width="179"
-    height="75"
-    alt="MonComptePro"
-  />
+<header role="banner" class="fr-header">
+    <div class="fr-header__body">
+        <div class="fr-container">
+            <div class="fr-header__body-row">
+                <div class="fr-header__brand fr-enlarge-link">
+                    <div class="fr-header__brand-top">
+                        <div class="fr-header__logo">
+                            <p class="fr-logo">
+                                République
+                                <br aria-hidden="true">Française
+                            </p>
+                        </div>
+                        <div class="fr-header__navbar">
+                            <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="menu-modal" aria-haspopup="menu" id="open-menu-button" title="Menu">
+                                Menu
+                            </button>
+                        </div>
+                    </div>
+                    <div class="fr-header__service">
+                        <a href="/" title="Accueil - MonComptePro">
+                            <p class="fr-header__service-title">
+                                MonComptePro
+                            </p>
+                        </a>
+                        <p class="fr-header__service-tagline">identifie les professionnels sur les sites de l'administration</p>
+                    </div>
+                </div>
+                <div class="fr-header__tools">
+                    <div class="fr-header__tools-links">
+                        <ul class="fr-btns-group">
+                            <li>
+                                <a
+                                    class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-question-fill fr-btn--icon-left"
+                                    href="/help"
+                                >
+                                    Aide
+                                </a>
+                            </li>
+                            <% if (locals.use_dashboard_header && locals.header_user_label) { %>
+                                <li>
+                                    <a
+                                        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-fi-logout-box-r-line fr-btn--icon-left"
+                                        href="/oauth/logout"
+                                        aria-label="Se déconnecter - <%= header_user_label; %>"
+                                    >
+                                        <%= header_user_label; %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fr-header__menu fr-modal" id="menu-modal" aria-labelledby="open-menu-button">
+        <div class="fr-container">
+            <button class="fr-btn--close fr-btn" aria-controls="menu-modal" title="Fermer">
+                Fermer
+            </button>
+            <div class="fr-header__menu-links">
+            </div>
+        </div>
+    </div>
 </header>

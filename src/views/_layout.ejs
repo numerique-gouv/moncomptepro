@@ -17,13 +17,12 @@
         </nav>
     </div>
     <div id="loader-bar"></div>
+    <%- include('partials/header.ejs'); %>
     <% if (locals.use_dashboard_header) { %>
-        <%- include('partials/dashboard-header.ejs'); %>
         <main id="main" tabindex="-1">
             <%- body; %>
         </main>
     <% } else { %>
-        <%- include('partials/header.ejs'); %>
         <main class="onboarding-container">
             <%- body; %>
             <div class="centered-container">
