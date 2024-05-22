@@ -20,7 +20,7 @@
                         <a href="/" title="Accueil - MonComptePro">
                             <p class="fr-header__service-title">
                                 MonComptePro
-                            </p>    
+                            </p>
                         </a>
                         <p class="fr-header__service-tagline">identifie les professionnels sur les sites de l'administration</p>
                     </div>
@@ -36,7 +36,7 @@
                                     Aide
                                 </a>
                             </li>
-                            <%if (locals.use_dashboard_header) { %>
+                            <% if (locals.use_dashboard_header && locals.header_user_label) { %>
                                 <li>
                                     <a
                                         class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-fi-logout-box-r-line fr-btn--icon-left"
