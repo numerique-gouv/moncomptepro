@@ -4,7 +4,6 @@ import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
 import {
   NoEmailFoundInLoggedOutSessionError,
   UserNotLoggedInError,
-  UserNotLoggedOutError,
 } from "../config/errors";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { findByEmail, update } from "../repositories/user";
@@ -139,10 +138,6 @@ export const updatePartialUserFromLoggedOutSession = async (
   email: string;
   needs_inclusionconnect_welcome_page: boolean;
 }> => {
-  if (isWithinLoggedInSession(req)) {
-    throw new UserNotLoggedOutError();
-  }
-
   if (!req.session.email) {
     throw new NoEmailFoundInLoggedOutSessionError();
   }
