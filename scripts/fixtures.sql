@@ -399,7 +399,8 @@ VALUES
    ARRAY [
      'https://keycloak.lab.aveyron.fr/realms/MCP/broker/oidc/endpoint',
      'https://keycloak.lab.aveyron.fr/realms/MCP/broker/moncomptepro/endpoint',
-     'https://keycloak.lab.aveyron.fr/realms/MCP/broker/moncomptepro-staging/endpoint'
+     'https://keycloak.lab.aveyron.fr/realms/MCP/broker/moncomptepro-staging/endpoint',
+     'https://auth-secure-dev.aveyron.fr/realms/a238-portail-essms/broker/moncomptepro/endpoint'
      ],
    ARRAY [
      'https://keycloak.lab.aveyron.fr'
