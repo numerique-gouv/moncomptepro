@@ -1,6 +1,3 @@
 # see format example on https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#example-of-a-codeowners-file
 
-*.ejs    @manuhabitela
-/assets/**/*.js @manuhabitela
-/assets/**/*.css @manuhabitela
 /migrations/*.cjs @douglasduteil
