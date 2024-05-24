@@ -57,7 +57,9 @@ export const getUserAuthenticators = async (email: string) => {
     }) => ({
       credential_id: encodeBase64URL(credential_id),
       usage_count,
-      display_name: display_name || encodeBase64URL(credential_id),
+      display_name:
+        display_name ||
+        `Clé ${encodeBase64URL(credential_id).substring(0, 10)}`,
       created_at: moment(created_at).tz("Europe/Paris").locale("fr").calendar(),
       last_used_at: last_used_at
         ? moment(last_used_at).tz("Europe/Paris").locale("fr").calendar()
