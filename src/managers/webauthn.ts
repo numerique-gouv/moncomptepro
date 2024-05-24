@@ -110,13 +110,14 @@ export const getRegistrationOptions = async (email: string) => {
       // Optional
       transports: authenticator.transports || [],
     })),
-    // See "Guiding use of authenticators via authenticatorSelection" below
     authenticatorSelection: {
-      // Defaults
+      // Will always generate synced passkeys on Android devices,
+      // but will consume discoverable credential slots on security keys.
       residentKey: "preferred",
+      // Will perform user verification when possible,
+      // but will skip any prompts for PIN or local login password when possible.
+      // In these instances, user verification can sometimes be false.
       userVerification: "preferred",
-      // Optional
-      authenticatorAttachment: "platform",
     },
   });
 
@@ -152,6 +153,9 @@ export const verifyRegistration = async ({
       expectedChallenge: current_challenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
+      // do not enforce user verification by the authenticator (via PIN, fingerprint, etc...)
+      // to authorize usage of fido u2f security keys
+      requireUserVerification: false,
     });
   } catch (error) {
     logger.error(error);
@@ -275,6 +279,9 @@ export const verifyAuthentication = async ({
         counter,
         transports,
       },
+      // do not enforce user verification by the authenticator (via PIN, fingerprint, etc...)
+      // to authorize usage of fido u2f security keys
+      requireUserVerification: false,
     });
   } catch (error) {
     logger.error(error);
