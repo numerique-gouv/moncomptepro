@@ -1,8 +1,8 @@
 import {
-  VerifiedAuthenticationResponse,
-  VerifiedRegistrationResponse,
   generateAuthenticationOptions,
   generateRegistrationOptions,
+  VerifiedAuthenticationResponse,
+  VerifiedRegistrationResponse,
   verifyAuthenticationResponse,
   verifyRegistrationResponse,
 } from "@simplewebauthn/server";
@@ -12,6 +12,7 @@ import type {
 } from "@simplewebauthn/types";
 import { isEmpty } from "lodash-es";
 import moment from "moment";
+import "moment-timezone";
 import { MONCOMPTEPRO_HOST } from "../config/env";
 import {
   NotFoundError,
@@ -57,9 +58,9 @@ export const getUserAuthenticators = async (email: string) => {
       credential_id: encodeBase64URL(credential_id),
       usage_count,
       display_name: display_name || encodeBase64URL(credential_id),
-      created_at: moment(created_at).locale("fr").calendar(),
+      created_at: moment(created_at).tz("Europe/Paris").locale("fr").calendar(),
       last_used_at: last_used_at
-        ? moment(last_used_at).locale("fr").calendar()
+        ? moment(last_used_at).tz("Europe/Paris").locale("fr").calendar()
         : "pas encore utilisée",
     }),
   );
