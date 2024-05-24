@@ -7,7 +7,6 @@ body {
 
 main {
   flex-grow: 1;
-  z-index: 1;
 }
 
 /* page layout container */
@@ -22,36 +21,6 @@ main {
     margin: 1.5rem;
     width: calc(100% - 3rem);
   }
-}
-
-/* dashboard header */
-.dashboard-header {
-  background-color: #fff;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 18, 0.16));
-}
-
-.dashboard-header .dashboard-header__container {
-  max-width: 78rem;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin: auto;
-}
-
-.dashboard-header__title {
-  max-width: 78rem;
-  margin: auto;
-  padding: 1.5rem 1.5rem 0;
-}
-
-.dashboard-header .dashboard-header__container .dashboard-header__link {
-  flex-shrink: 0;
-}
-
-.dashboard-header .dashboard-header__container .fr-header__brand-top {
-  margin: -1rem;
 }
 
 /* dashboard layout container */
@@ -150,4 +119,19 @@ main {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+/* Fix main overflow on footer on safari browser */
+/* https://stackoverflow.com/questions/62075401/safari-grid-in-flexbox-produces-height-overflow */
+/* selector for safari 9+ (see https://browserstrangeness.bitbucket.io/css_hacks.html#safari) */
+@supports (-webkit-hyphens: none) {
+  html,
+  body,
+  main {
+    height: 100%;
+  }
+
+  main {
+    z-index: 1;
+  }
 }
