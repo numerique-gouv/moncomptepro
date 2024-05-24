@@ -23,36 +23,6 @@ main {
   }
 }
 
-/* dashboard header */
-.dashboard-header {
-  background-color: #fff;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 18, 0.16));
-}
-
-.dashboard-header .dashboard-header__container {
-  max-width: 78rem;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin: auto;
-}
-
-.dashboard-header__title {
-  max-width: 78rem;
-  margin: auto;
-  padding: 1.5rem 1.5rem 0;
-}
-
-.dashboard-header .dashboard-header__container .dashboard-header__link {
-  flex-shrink: 0;
-}
-
-.dashboard-header .dashboard-header__container .fr-header__brand-top {
-  margin: -1rem;
-}
-
 /* dashboard layout container */
 .dashboard-container nav {
   grid-area: nav;
