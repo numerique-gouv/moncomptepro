@@ -14,6 +14,7 @@ import { ZodError } from "zod";
 import {
   ACCESS_LOG_PATH,
   DEPLOY_ENV,
+  DISABLE_SECURITY_RESPONSE_HEADERS,
   JWKS,
   LOG_LEVEL,
   MONCOMPTEPRO_HOST,
@@ -64,31 +65,33 @@ if (SENTRY_DSN) {
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
-app.use(
-  helmet({
-    hsts: false,
-    frameguard: false,
-  }),
-);
+if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
+  app.use(
+    helmet({
+      hsts: false,
+      frameguard: false,
+    }),
+  );
 
-app.use((req, res, next) => {
-  const cspConfig = {
-    directives: {
-      defaultSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "stats.data.gouv.fr"],
-      connectSrc: ["'self'", "stats.data.gouv.fr"],
-      scriptSrc: ["'self'", "stats.data.gouv.fr"],
-      styleSrc: ["'self'"],
-      fontSrc: ["'self'", "data:"],
-      // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
-      // and seems not useful for open id provider redirection.
-      // We bypass this security for now.
-      formAction: ["'self'", "*"],
-    },
-  };
+  app.use((req, res, next) => {
+    const cspConfig = {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "stats.data.gouv.fr"],
+        connectSrc: ["'self'", "stats.data.gouv.fr"],
+        scriptSrc: ["'self'", "stats.data.gouv.fr"],
+        styleSrc: ["'self'"],
+        fontSrc: ["'self'", "data:"],
+        // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
+        // and seems not useful for open id provider redirection.
+        // We bypass this security for now.
+        formAction: ["'self'", "*"],
+      },
+    };
 
-  helmet.contentSecurityPolicy(cspConfig)(req, res, next);
-});
+    helmet.contentSecurityPolicy(cspConfig)(req, res, next);
+  });
+}
 
 // Disable etag globally to avoid triggering invalid csrf token error
 // Note that express.static always sends weak ETags.

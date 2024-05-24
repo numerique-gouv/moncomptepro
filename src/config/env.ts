@@ -39,6 +39,8 @@ export const DISPLAY_TEST_ENV_WARNING =
   process.env.DISPLAY_TEST_ENV_WARNING === "True";
 export const DO_NOT_AUTHENTICATE_BROWSER =
   process.env.DO_NOT_AUTHENTICATE_BROWSER === "True";
+export const DISABLE_SECURITY_RESPONSE_HEADERS =
+  process.env.DISABLE_SECURITY_RESPONSE_HEADERS === "True";
 
 const getNumberFromEnv = (name: string, defaultValue: number) => {
   const value = process.env[name];
