@@ -23,12 +23,14 @@ document.addEventListener(
 
       // GET registration options from the endpoint that calls
       // @simplewebauthn/server -> generateRegistrationOptions()
-      const resp = await fetch("/api/webauthn/generate-authentication-options");
+      const authOptions = await fetch(
+        "/api/webauthn/generate-authentication-options",
+      );
 
       let asseResp;
       try {
         // Pass the options to the authenticator and wait for a response
-        asseResp = await startAuthentication(await resp.json());
+        asseResp = await startAuthentication(await authOptions.json());
       } catch (error) {
         errorElement.style.display = "block";
         if (error.name === "NotAllowedError") {
@@ -48,6 +50,31 @@ document.addEventListener(
     };
 
     beginElement.addEventListener("click", onAuthenticateClick);
+
+    const initiatingConditionalUI = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasNotification = urlParams.get("notification") !== null;
+
+      if (!hasNotification) {
+        const authOptions = await fetch(
+          "/api/webauthn/generate-authentication-options",
+        );
+        try {
+          let asseResp = await startAuthentication(
+            await authOptions.json(),
+            true,
+          );
+
+          authenticationResponseStringInputElement.value =
+            JSON.stringify(asseResp);
+          authenticationResponseForm.requestSubmit();
+        } catch (e) {
+          // fail silently
+        }
+      }
+    };
+
+    initiatingConditionalUI();
   },
   false,
 );
