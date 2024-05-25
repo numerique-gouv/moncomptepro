@@ -70,6 +70,23 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
   }
 
   req.session.user = user;
+  delete req.session.temporaryTotpKey;
+};
+
+export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  req.session.temporaryTotpKey = totpKey;
+};
+
+export const getTemporaryTotpKey = (req: Request) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return req.session.temporaryTotpKey;
 };
 
 export const destroyLoggedInSession = async (req: Request): Promise<null> => {

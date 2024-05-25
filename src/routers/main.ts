@@ -19,6 +19,11 @@ import {
   deletePasskeyController,
   postVerifyRegistrationController,
 } from "../controllers/webauthn";
+import {
+  getTotpConfigurationController,
+  postDeleteTotpConfigurationController,
+  postTotpConfigurationController,
+} from "../controllers/totp";
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
@@ -32,6 +37,33 @@ export const mainRouter = (app: Express) => {
     checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
     getConnectionAndAccountController,
+  );
+
+  mainRouter.get(
+    "/totp-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    getTotpConfigurationController,
+  );
+
+  mainRouter.post(
+    "/totp-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postTotpConfigurationController,
+  );
+
+  mainRouter.post(
+    "/delete-totp-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postDeleteTotpConfigurationController,
   );
 
   mainRouter.post(

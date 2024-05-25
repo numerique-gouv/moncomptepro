@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { isEmpty } from "lodash-es";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import { ForbiddenError, NotFoundError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { getOrganizationFromModeration } from "../managers/moderation";
@@ -17,6 +17,7 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
+import moment from "moment/moment";
 
 export const getHomeController = async (
   req: Request,
@@ -138,6 +139,12 @@ export const getConnectionAndAccountController = async (
       notifications: await getNotificationsFromRequest(req),
       email: getUserFromLoggedInSession(req).email,
       passkeys,
+      totpKeyVerifiedAt: user.totp_key_verified_at
+        ? moment(user.totp_key_verified_at)
+            .tz("Europe/Paris")
+            .locale("fr")
+            .calendar()
+        : null,
       csrfToken: csrfToken(req),
     });
   } catch (error) {

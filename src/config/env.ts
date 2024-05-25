@@ -24,6 +24,9 @@ export const {
   LOG_LEVEL = "info",
 } = process.env;
 
+export const MONCOMPTEPRO_LABEL = "MonComptePro";
+export const MONCOMPTEPRO_IDENTIFIER = new URL(MONCOMPTEPRO_HOST).hostname;
+
 export const DO_NOT_CHECK_EMAIL_DELIVERABILITY =
   process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === "True";
 export const CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE =

@@ -21,4 +21,6 @@ interface User {
   current_challenge: string | null;
   needs_inclusionconnect_welcome_page: boolean;
   needs_inclusionconnect_onboarding_help: boolean;
+  totp_key: string | null;
+  totp_key_verified_at: Date | null;
 }

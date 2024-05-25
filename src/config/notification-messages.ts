@@ -144,7 +144,24 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   new_password_needed: {
     type: "info",
     description:
-      "Pour des raisons de sécurité, nous vous invitons à définir un nouveau mot de passe.",
+      "Information : Pour des raisons de sécurité, nous vous invitons à définir un nouveau mot de passe.",
+  },
+  authenticator_added: {
+    type: "success",
+    description: "L’application d’authentification a été configurée.",
+  },
+  invalid_totp_token: {
+    type: "error",
+    description:
+      "Erreur : le code que vous avez utilisé est invalide. Merci de recommencer à la première étape.",
+  },
+  authenticator_successfully_deleted: {
+    type: "success",
+    description: "L’application d’authentification a bien été supprimée.",
+  },
+  authenticator_updated: {
+    type: "success",
+    description: "L’application d’authentification a été modifiée.",
   },
 };
 
