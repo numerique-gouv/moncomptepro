@@ -1,6 +1,9 @@
 import { Request } from "express";
 import { isEmpty } from "lodash-es";
-import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
+import {
+  RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  SYMMETRIC_ENCRYPTION_KEY,
+} from "../config/env";
 import {
   NoEmailFoundInLoggedOutSessionError,
   UserNotLoggedInError,
@@ -9,6 +12,10 @@ import { deleteSelectedOrganizationId } from "../repositories/redis/selected-org
 import { findByEmail, update } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
 import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
+import {
+  decryptSymmetric,
+  encryptSymmetric,
+} from "../services/symmetric-encryption";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session?.user);
@@ -70,7 +77,10 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
   }
 
   req.session.user = user;
-  delete req.session.temporaryTotpKey;
+
+  // according to https://datatracker.ietf.org/doc/html/rfc6238#section-5.1
+  // key should be exposed only when required to limit exposure
+  delete req.session.temporaryEncryptedTotpKey;
 };
 
 export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
@@ -78,7 +88,10 @@ export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
     throw new UserNotLoggedInError();
   }
 
-  req.session.temporaryTotpKey = totpKey;
+  req.session.temporaryEncryptedTotpKey = encryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    totpKey,
+  );
 };
 
 export const getTemporaryTotpKey = (req: Request) => {
@@ -86,7 +99,10 @@ export const getTemporaryTotpKey = (req: Request) => {
     throw new UserNotLoggedInError();
   }
 
-  return req.session.temporaryTotpKey;
+  return decryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    req.session.temporaryEncryptedTotpKey,
+  );
 };
 
 export const destroyLoggedInSession = async (req: Request): Promise<null> => {

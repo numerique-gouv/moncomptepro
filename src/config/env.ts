@@ -24,6 +24,20 @@ export const {
   LOG_LEVEL = "info",
 } = process.env;
 
+if (!process.env.SYMMETRIC_ENCRYPTION_KEY) {
+  throw new Error(
+    "The SYMMETRIC_ENCRYPTION_KEY environment variable is not set!",
+  );
+} else if (
+  Buffer.byteLength(process.env.SYMMETRIC_ENCRYPTION_KEY, "base64") !== 32
+) {
+  throw new Error(
+    "The SYMMETRIC_ENCRYPTION_KEY environment variable should be 32 bytes long! Use crypto.randomBytes(32).toString('base64') to generate one.",
+  );
+}
+export const SYMMETRIC_ENCRYPTION_KEY: string = process.env
+  .SYMMETRIC_ENCRYPTION_KEY as string;
+
 export const MONCOMPTEPRO_LABEL = "MonComptePro";
 export const MONCOMPTEPRO_IDENTIFIER = new URL(MONCOMPTEPRO_HOST).hostname;
 

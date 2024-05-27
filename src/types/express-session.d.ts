@@ -9,6 +9,6 @@ export interface LoggedOutSessionData {
 declare module "express-session" {
   export interface SessionData extends LoggedOutSessionData {
     user?: User;
-    temporaryTotpKey?: string;
+    temporaryEncryptedTotpKey?: string;
   }
 }

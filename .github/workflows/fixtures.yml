@@ -15,6 +15,7 @@ env:
   PGPORT: 5432
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
+  SYMMETRIC_ENCRYPTION_KEY: aTrueRandom32BytesLongBase64EncodedStringAA=
 
 jobs:
   test:

@@ -1,9 +1,14 @@
 import { generateSecret, generateUri, validateToken } from "@sunknudsen/totp";
-import { MONCOMPTEPRO_IDENTIFIER, MONCOMPTEPRO_LABEL } from "../config/env";
+import {
+  MONCOMPTEPRO_IDENTIFIER,
+  MONCOMPTEPRO_LABEL,
+  SYMMETRIC_ENCRYPTION_KEY,
+} from "../config/env";
 import qrcode from "qrcode";
 import { findById, update } from "../repositories/user";
 import { isEmpty } from "lodash-es";
 import { InvalidTotpTokenError, UserNotFoundError } from "../config/errors";
+import { encryptSymmetric } from "../services/symmetric-encryption";
 
 export const generateTotpRegistrationOptions = async (email: string) => {
   const totpKey = generateSecret(32);
@@ -49,8 +54,13 @@ export const confirmTotpRegistration = async (
     throw new InvalidTotpTokenError();
   }
 
+  const encrypted_totp_key = encryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    temporaryTotpKey,
+  );
+
   return await update(user_id, {
-    totp_key: temporaryTotpKey,
+    encrypted_totp_key,
     totp_key_verified_at: new Date(),
   });
 };
@@ -62,5 +72,8 @@ export const deleteTotpConfiguration = async (user_id: number) => {
     throw new UserNotFoundError();
   }
 
-  return await update(user_id, { totp_key: null, totp_key_verified_at: null });
+  return await update(user_id, {
+    encrypted_totp_key: null,
+    totp_key_verified_at: null,
+  });
 };
