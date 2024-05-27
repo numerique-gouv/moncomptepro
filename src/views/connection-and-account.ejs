@@ -137,7 +137,7 @@
                 >App Store iOS</a>.
             </p>
 
-            <% if (totpKeyVerifiedAt) { %>
+            <% if (isAuthenticatorConfigured) { %>
                 <div class="fr-grid-row fr-grid-row--gutters">
                     <div class="fr-col-12">
                         <div class="fr-tile fr-tile--horizontal">
@@ -148,12 +148,12 @@
                                 <div class="card-button-container">
                                     <a
                                             class="fr-btn fr-btn--secondary fr-btn--sm"
-                                            href="/totp-configuration"
+                                            href="/authenticator-configuration"
                                             type="submit"
                                     >
                                         Changer d’application d’authentification
                                     </a>
-                                    <form action="/delete-totp-configuration" method="post">
+                                    <form action="/delete-authenticator-configuration" method="post">
                                         <input
                                                 type="hidden"
                                                 name="_csrf"
@@ -192,7 +192,7 @@
                     </div>
                 </div>
             <% } else { %>
-                <a class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line" href="/totp-configuration">
+                <a class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line" href="/authenticator-configuration">
                     Configurer une application d’authentification
                 </a>
             <% } %>

@@ -2,7 +2,7 @@
     <%- include('partials/sidemenu.ejs', {activeLink: 'connection-and-account'}) %>
     <div class="dashboard-content fr-col-12 fr-col-lg-10 fr-col-xl-9 fr-col-offset-lg-1">
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
-        <% if (alreadyHasATotpKey) { %>
+        <% if (isAuthenticatorAlreadyConfigured) { %>
             <h2>Changer d’application d’authentification</h2>
             <p>
                 Vous ne pourrez pas vous connecter à votre compte MonComptePro avec votre ancienne
@@ -44,7 +44,7 @@
                 </p>
             </div>
         </div>
-        <form action="/totp-configuration" method="post" class="fr-mb-6w">
+        <form action="/authenticator-configuration" method="post" class="fr-mb-6w">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 
             <div class="fr-input-group">

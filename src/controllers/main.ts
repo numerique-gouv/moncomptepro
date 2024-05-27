@@ -18,6 +18,7 @@ import { idSchema } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 import moment from "moment/moment";
+import { isAuthenticatorConfiguredForUser } from "../managers/totp";
 
 export const getHomeController = async (
   req: Request,
@@ -130,17 +131,23 @@ export const getConnectionAndAccountController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const {
+      id: user_id,
+      email,
+      totp_key_verified_at,
+    } = getUserFromLoggedInSession(req);
 
-    const passkeys = await getUserAuthenticators(user.email);
+    const passkeys = await getUserAuthenticators(email);
 
     return res.render("connection-and-account", {
       pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
       email: getUserFromLoggedInSession(req).email,
       passkeys,
-      totpKeyVerifiedAt: user.totp_key_verified_at
-        ? moment(user.totp_key_verified_at)
+      isAuthenticatorConfigured:
+        await isAuthenticatorConfiguredForUser(user_id),
+      totpKeyVerifiedAt: totp_key_verified_at
+        ? moment(totp_key_verified_at)
             .tz("Europe/Paris")
             .locale("fr")
             .calendar()

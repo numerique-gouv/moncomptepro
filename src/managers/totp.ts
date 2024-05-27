@@ -8,9 +8,14 @@ import qrcode from "qrcode";
 import { findById, update } from "../repositories/user";
 import { isEmpty } from "lodash-es";
 import { InvalidTotpTokenError, UserNotFoundError } from "../config/errors";
-import { encryptSymmetric } from "../services/symmetric-encryption";
+import {
+  decryptSymmetric,
+  encryptSymmetric,
+} from "../services/symmetric-encryption";
 
-export const generateTotpRegistrationOptions = async (email: string) => {
+export const generateAuthenticatorRegistrationOptions = async (
+  email: string,
+) => {
   const totpKey = generateSecret(32);
 
   const uri = generateUri(
@@ -39,7 +44,7 @@ export const generateTotpRegistrationOptions = async (email: string) => {
   return { totpKey, humanReadableTotpKey, qrCodeDataUrl };
 };
 
-export const confirmTotpRegistration = async (
+export const confirmAuthenticatorRegistration = async (
   user_id: number,
   temporaryTotpKey: string | undefined,
   totpToken: string,
@@ -65,7 +70,7 @@ export const confirmTotpRegistration = async (
   });
 };
 
-export const deleteTotpConfiguration = async (user_id: number) => {
+export const deleteAuthenticatorConfiguration = async (user_id: number) => {
   const user = await findById(user_id);
 
   if (isEmpty(user)) {
@@ -76,4 +81,31 @@ export const deleteTotpConfiguration = async (user_id: number) => {
     encrypted_totp_key: null,
     totp_key_verified_at: null,
   });
+};
+
+export const isAuthenticatorConfiguredForUser = async (user_id: number) => {
+  const user = await findById(user_id);
+
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+
+  return !isEmpty(user.encrypted_totp_key);
+};
+
+export const isAuthenticatorTokenValid = async (
+  user_id: number,
+  token: string,
+) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+
+  const decryptedTotpKey = decryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    user.encrypted_totp_key,
+  );
+
+  return validateToken(decryptedTotpKey, token);
 };

@@ -20,9 +20,9 @@ import {
   postVerifyRegistrationController,
 } from "../controllers/webauthn";
 import {
-  getTotpConfigurationController,
-  postDeleteTotpConfigurationController,
-  postTotpConfigurationController,
+  getAuthenticatorConfigurationController,
+  postAuthenticatorConfigurationController,
+  postDeleteAuthenticatorConfigurationController,
 } from "../controllers/totp";
 
 export const mainRouter = (app: Express) => {
@@ -40,30 +40,30 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.get(
-    "/totp-configuration",
+    "/authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    getTotpConfigurationController,
+    getAuthenticatorConfigurationController,
   );
 
   mainRouter.post(
-    "/totp-configuration",
+    "/authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    postTotpConfigurationController,
+    postAuthenticatorConfigurationController,
   );
 
   mainRouter.post(
-    "/delete-totp-configuration",
+    "/delete-authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
-    postDeleteTotpConfigurationController,
+    postDeleteAuthenticatorConfigurationController,
   );
 
   mainRouter.post(

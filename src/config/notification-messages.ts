@@ -153,7 +153,7 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   invalid_totp_token: {
     type: "error",
     description:
-      "Erreur : le code que vous avez utilisé est invalide. Merci de recommencer à la première étape.",
+      "Erreur : le code que vous avez utilisé est invalide. Merci de recommencer.",
   },
   authenticator_successfully_deleted: {
     type: "success",
