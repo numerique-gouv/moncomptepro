@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { isEmpty } from "lodash-es";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import { ForbiddenError, NotFoundError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { getOrganizationFromModeration } from "../managers/moderation";
@@ -17,6 +17,8 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
+import moment from "moment/moment";
+import { isAuthenticatorConfiguredForUser } from "../managers/totp";
 
 export const getHomeController = async (
   req: Request,
@@ -129,15 +131,27 @@ export const getConnectionAndAccountController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const {
+      id: user_id,
+      email,
+      totp_key_verified_at,
+    } = getUserFromLoggedInSession(req);
 
-    const passkeys = await getUserAuthenticators(user.email);
+    const passkeys = await getUserAuthenticators(email);
 
     return res.render("connection-and-account", {
       pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
       email: getUserFromLoggedInSession(req).email,
       passkeys,
+      isAuthenticatorConfigured:
+        await isAuthenticatorConfiguredForUser(user_id),
+      totpKeyVerifiedAt: totp_key_verified_at
+        ? moment(totp_key_verified_at)
+            .tz("Europe/Paris")
+            .locale("fr")
+            .calendar()
+        : null,
       csrfToken: csrfToken(req),
     });
   } catch (error) {

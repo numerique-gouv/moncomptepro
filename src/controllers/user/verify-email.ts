@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
-import { optionalBooleanSchema } from "../../services/custom-zod-schemas";
+import {
+  codeSchema,
+  optionalBooleanSchema,
+} from "../../services/custom-zod-schemas";
 import {
   sendEmailAddressVerificationEmail,
   verifyEmail,
@@ -70,11 +73,7 @@ export const postVerifyEmailController = async (
 ) => {
   try {
     const schema = z.object({
-      verify_email_token: z
-        .string()
-        .trim()
-        .min(1)
-        .transform((val) => val.replace(/\s+/g, "")),
+      verify_email_token: codeSchema(),
     });
 
     const { verify_email_token } = await schema.parseAsync(req.body);

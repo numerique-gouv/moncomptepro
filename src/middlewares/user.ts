@@ -19,6 +19,7 @@ import {
   getPartialUserFromLoggedOutSession,
   getUserFromLoggedInSession,
   hasUserLoggedInRecently,
+  isTwoFactorVerifiedInSession,
   isWithinLoggedInSession,
 } from "../managers/session";
 import { needsEmailVerificationRenewal } from "../managers/user";
@@ -27,6 +28,7 @@ import { getSelectedOrganizationId } from "../repositories/redis/selected-organi
 import { getTrustedReferrerPath } from "../services/security";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
+import { isAuthenticatorConfiguredForUser } from "../managers/totp";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from
@@ -140,12 +142,38 @@ export const checkUserIsConnectedMiddleware = async (
   });
 };
 
+export const checkUserTwoFactorAuthMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  await checkUserIsConnectedMiddleware(req, res, async (error) => {
+    try {
+      if (error) next(error);
+
+      const { id: user_id } = getUserFromLoggedInSession(req);
+
+      if (!(await isAuthenticatorConfiguredForUser(user_id))) {
+        return next();
+      }
+
+      if (!isTwoFactorVerifiedInSession(req)) {
+        return res.redirect("/users/sign-in-with-authenticator");
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+};
+
 export const checkUserIsVerifiedMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) =>
-  checkUserIsConnectedMiddleware(req, res, async (error) => {
+  checkUserTwoFactorAuthMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 

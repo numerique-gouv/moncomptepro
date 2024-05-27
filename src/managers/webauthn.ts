@@ -13,7 +13,11 @@ import type {
 import { isEmpty } from "lodash-es";
 import moment from "moment";
 import "moment-timezone";
-import { MONCOMPTEPRO_HOST } from "../config/env";
+import {
+  MONCOMPTEPRO_HOST,
+  MONCOMPTEPRO_IDENTIFIER,
+  MONCOMPTEPRO_LABEL,
+} from "../config/env";
 import {
   NotFoundError,
   WebauthnAuthenticationFailedError,
@@ -32,9 +36,9 @@ import { encodeBase64URL } from "../services/base64";
 import { logger } from "../services/log";
 
 // Human-readable title for your website
-const rpName = "MonComptePro";
+const rpName = MONCOMPTEPRO_LABEL;
 // A unique identifier for your website
-const rpID = new URL(MONCOMPTEPRO_HOST).hostname;
+const rpID = MONCOMPTEPRO_IDENTIFIER;
 // The URL at which registrations and authentications should occur
 const origin = MONCOMPTEPRO_HOST;
 

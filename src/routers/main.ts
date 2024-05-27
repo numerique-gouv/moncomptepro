@@ -19,6 +19,11 @@ import {
   deletePasskeyController,
   postVerifyRegistrationController,
 } from "../controllers/webauthn";
+import {
+  getAuthenticatorConfigurationController,
+  postAuthenticatorConfigurationController,
+  postDeleteAuthenticatorConfigurationController,
+} from "../controllers/totp";
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();
@@ -32,6 +37,33 @@ export const mainRouter = (app: Express) => {
     checkUserHasLoggedInRecentlyMiddleware,
     csrfProtectionMiddleware,
     getConnectionAndAccountController,
+  );
+
+  mainRouter.get(
+    "/authenticator-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    getAuthenticatorConfigurationController,
+  );
+
+  mainRouter.post(
+    "/authenticator-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postAuthenticatorConfigurationController,
+  );
+
+  mainRouter.post(
+    "/delete-authenticator-configuration",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserHasLoggedInRecentlyMiddleware,
+    csrfProtectionMiddleware,
+    postDeleteAuthenticatorConfigurationController,
   );
 
   mainRouter.post(

@@ -1,6 +1,9 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { isEmpty } from "lodash-es";
-import { RECENT_LOGIN_INTERVAL_IN_MINUTES } from "../config/env";
+import {
+  RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  SYMMETRIC_ENCRYPTION_KEY,
+} from "../config/env";
 import {
   NoEmailFoundInLoggedOutSessionError,
   UserNotLoggedInError,
@@ -8,7 +11,14 @@ import {
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { findByEmail, update } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
-import { setIsTrustedBrowserFromLoggedInSession } from "./browser-authentication";
+import {
+  setBrowserAsTrustedForUser,
+  setIsTrustedBrowserFromLoggedInSession,
+} from "./browser-authentication";
+import {
+  decryptSymmetric,
+  encryptSymmetric,
+} from "../services/symmetric-encryption";
 
 export const isWithinLoggedInSession = (req: Request) => {
   return !isEmpty(req.session?.user);
@@ -44,6 +54,8 @@ export const createLoggedInSession = async (
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
         req.session.referrerPath = referrerPath;
+        // new session triggers 2FA
+        req.session.two_factor_verified = false;
 
         setIsTrustedBrowserFromLoggedInSession(req);
 
@@ -70,6 +82,53 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
   }
 
   req.session.user = user;
+
+  // according to https://datatracker.ietf.org/doc/html/rfc6238#section-5.1
+  // key should be exposed only when required to limit exposure
+  delete req.session.temporaryEncryptedTotpKey;
+};
+
+export const isTwoFactorVerifiedInSession = (req: Request) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return req.session.two_factor_verified;
+};
+
+export const markAsTwoFactorVerifiedInSession = (
+  req: Request,
+  res: Response,
+) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  setBrowserAsTrustedForUser(req, res, req.session.user!.id);
+
+  req.session.two_factor_verified = true;
+};
+
+export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  req.session.temporaryEncryptedTotpKey = encryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    totpKey,
+  );
+};
+
+export const getTemporaryTotpKey = (req: Request) => {
+  if (!isWithinLoggedInSession(req)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return decryptSymmetric(
+    SYMMETRIC_ENCRYPTION_KEY,
+    req.session.temporaryEncryptedTotpKey,
+  );
 };
 
 export const destroyLoggedInSession = async (req: Request): Promise<null> => {

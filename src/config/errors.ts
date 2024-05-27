@@ -89,6 +89,6 @@ export class WebauthnAuthenticationFailedError extends Error {}
 
 export class UserNotLoggedInError extends Error {}
 
-export class UserNotLoggedOutError extends Error {}
-
 export class NoEmailFoundInLoggedOutSessionError extends Error {}
+
+export class InvalidTotpTokenError extends Error {}

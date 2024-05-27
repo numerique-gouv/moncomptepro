@@ -25,6 +25,7 @@ import {
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
   checkUserSignInRequirementsMiddleware,
+  checkUserTwoFactorAuthMiddleware,
 } from "../middlewares/user";
 import {
   getInclusionconnectWelcomeController,
@@ -81,6 +82,10 @@ import {
   postVerifyAuthenticationController,
 } from "../controllers/webauthn";
 import { postDeleteUserController } from "../controllers/user/delete";
+import {
+  getAuthenticatorSignInController,
+  postAuthenticatorSignInController,
+} from "../controllers/totp";
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -148,15 +153,31 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/verify-email",
+    "/sign-in-with-authenticator",
     checkUserIsConnectedMiddleware,
+    csrfProtectionMiddleware,
+    getAuthenticatorSignInController,
+  );
+  userRouter.post(
+    "/sign-in-with-authenticator",
+    rateLimiterMiddleware,
+    checkUserIsConnectedMiddleware,
+    csrfProtectionMiddleware,
+    postAuthenticatorSignInController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController,
+  );
+
+  userRouter.get(
+    "/verify-email",
+    checkUserTwoFactorAuthMiddleware,
     csrfProtectionMiddleware,
     getVerifyEmailController,
   );
   userRouter.post(
     "/verify-email",
     rateLimiterMiddleware,
-    checkUserIsConnectedMiddleware,
+    checkUserTwoFactorAuthMiddleware,
     csrfProtectionMiddleware,
     postVerifyEmailController,
     checkUserSignInRequirementsMiddleware,
@@ -165,7 +186,7 @@ export const userRouter = () => {
   userRouter.post(
     "/send-email-verification",
     rateLimiterMiddleware,
-    checkUserIsConnectedMiddleware,
+    checkUserTwoFactorAuthMiddleware,
     csrfProtectionMiddleware,
     postSendEmailVerificationController,
   );

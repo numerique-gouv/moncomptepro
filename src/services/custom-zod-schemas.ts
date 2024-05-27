@@ -49,3 +49,10 @@ export const officialContactEmailVerificationTokenSchema = () =>
     .trim()
     .min(1)
     .transform((val) => normalizeOfficialContactEmailVerificationToken(val));
+
+export const codeSchema = () =>
+  z
+    .string()
+    .trim()
+    .min(1)
+    .transform((val) => val.replace(/\s+/g, ""));
