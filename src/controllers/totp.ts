@@ -155,7 +155,7 @@ export const postSignInWithAuthenticatorController = async (
 
     if (!(await isAuthenticatorTokenValid(user_id, totpToken))) {
       return res.redirect(
-        "/sign-in-with-authenticator?notification=invalid_totp_token",
+        "/users/sign-in-with-authenticator?notification=invalid_totp_token",
       );
     }
 
