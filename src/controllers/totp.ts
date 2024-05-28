@@ -126,10 +126,13 @@ export const getSignInWithAuthenticatorController = async (
   next: NextFunction,
 ) => {
   try {
+    const { email } = getUserFromLoggedInSession(req);
+
     return res.render("user/sign-in-with-authenticator", {
       pageTitle: "Se connecter avec application d’authentification",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
+      email,
     });
   } catch (error) {
     next(error);

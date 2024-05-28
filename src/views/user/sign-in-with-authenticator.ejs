@@ -3,29 +3,47 @@
     <h1 class="fr-h3">
         Valider en deux étapes
     </h1>
-    <form action="/users/sign-in-with-authenticator" method="post" class="fr-mb-5w">
-        <p>
-            Afin de protéger votre compte,
-            MonComptePro veut s’assurer que c’est bien vous qui essayez de vous connecter
-        </p>
-
-        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
-
-
-        <div class="fr-input-group">
-            <label class="fr-label" for="totpToken">
-                Obtenir un code de validation depuis l’application <b>FreeOTP Authenticator</b>
-            </label>
-            <input
-                    class="fr-input"
-                    type="text"
-                    name="totpToken"
-                    required
-                    pattern="^(\s*\d){6}$"
-                    title="code composé de 6 chiffres"
-                    autocomplete="off"
-            >
+    <div>
+        <div class="fr-notice fr-notice--info notice--change-email fr-mb-2w">
+            <div class="fr-container">
+                <p class="fr-notice__body">
+                    <span class="fr-sr-only">Votre email :</span>
+                    <strong><%= email; %></strong>
+                    <a
+                            class="fr-btn fr-btn--close"
+                            title="Changer d’adresse email"
+                            href="/users/start-sign-in"
+                    >
+                        Changer d’adresse email
+                    </a>
+                </p>
+            </div>
         </div>
-        <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
-    </form>
+        <form action="/users/sign-in-with-authenticator" method="post" class="fr-mb-5w">
+            <p>
+                Afin de protéger votre compte,
+                MonComptePro veut s’assurer que c’est bien vous qui essayez de vous connecter
+            </p>
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
+
+
+            <div class="fr-input-group">
+                <label class="fr-label" for="totpToken">
+                    Obtenir un code de validation depuis l’application <b>FreeOTP Authenticator</b>
+                </label>
+                <input
+                        class="fr-input"
+                        type="text"
+                        name="totpToken"
+                        required
+                        pattern="^(\s*\d){6}$"
+                        title="code composé de 6 chiffres"
+                        autocomplete="off"
+                        autofocus
+                >
+            </div>
+            <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+        </form>
+    </div>
 </div>
