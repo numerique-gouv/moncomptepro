@@ -15,8 +15,9 @@ import {
 
 export const generateAuthenticatorRegistrationOptions = async (
   email: string,
+  existingTotpKey: string | null,
 ) => {
-  const totpKey = generateSecret(32);
+  let totpKey = existingTotpKey ?? generateSecret(32);
 
   const uri = generateUri(
     MONCOMPTEPRO_LABEL,

@@ -82,10 +82,6 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
   }
 
   req.session.user = user;
-
-  // according to https://datatracker.ietf.org/doc/html/rfc6238#section-5.1
-  // key should be exposed only when required to limit exposure
-  delete req.session.temporaryEncryptedTotpKey;
 };
 
 export const isTwoFactorVerifiedInSession = (req: Request) => {
@@ -125,10 +121,18 @@ export const getTemporaryTotpKey = (req: Request) => {
     throw new UserNotLoggedInError();
   }
 
+  if (!req.session.temporaryEncryptedTotpKey) {
+    return null;
+  }
+
   return decryptSymmetric(
     SYMMETRIC_ENCRYPTION_KEY,
     req.session.temporaryEncryptedTotpKey,
   );
+};
+
+export const deleteTemporaryTotpKey = (req: Request) => {
+  delete req.session.temporaryEncryptedTotpKey;
 };
 
 export const destroyLoggedInSession = async (req: Request): Promise<null> => {

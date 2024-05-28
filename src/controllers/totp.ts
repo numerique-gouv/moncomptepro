@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  deleteTemporaryTotpKey,
   getTemporaryTotpKey,
   getUserFromLoggedInSession,
   markAsTwoFactorVerifiedInSession,
@@ -16,7 +17,7 @@ import {
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { z } from "zod";
-import { InvalidTotpTokenError } from "../config/errors";
+import { InvalidTotpTokenError, NotFoundError } from "../config/errors";
 import { codeSchema } from "../services/custom-zod-schemas";
 
 export const getAuthenticatorConfigurationController = async (
@@ -27,8 +28,13 @@ export const getAuthenticatorConfigurationController = async (
   try {
     const { id: user_id, email } = getUserFromLoggedInSession(req);
 
+    const existingTemporaryTotpKey = getTemporaryTotpKey(req);
+
     const { totpKey, humanReadableTotpKey, qrCodeDataUrl } =
-      await generateAuthenticatorRegistrationOptions(email);
+      await generateAuthenticatorRegistrationOptions(
+        email,
+        existingTemporaryTotpKey,
+      );
 
     setTemporaryTotpKey(req, totpKey);
 
@@ -55,21 +61,25 @@ export const postAuthenticatorConfigurationController = async (
     const schema = z.object({
       totpToken: codeSchema(),
     });
-
     const { totpToken } = await schema.parseAsync(req.body);
 
     const { id: user_id } = getUserFromLoggedInSession(req);
     const isAuthenticatorAlreadyConfigured =
       await isAuthenticatorConfiguredForUser(user_id);
-    const temporaryTotpSecret = getTemporaryTotpKey(req);
+    const temporaryTotpKey = getTemporaryTotpKey(req);
+
+    if (!temporaryTotpKey) {
+      throw new NotFoundError();
+    }
 
     const updatedUser = await confirmAuthenticatorRegistration(
       user_id,
-      temporaryTotpSecret,
+      temporaryTotpKey,
       totpToken,
     );
 
     updateUserInLoggedInSession(req, updatedUser);
+    deleteTemporaryTotpKey(req);
     markAsTwoFactorVerifiedInSession(req, res);
 
     return res.redirect(
