@@ -83,8 +83,8 @@ import {
 } from "../controllers/webauthn";
 import { postDeleteUserController } from "../controllers/user/delete";
 import {
-  getAuthenticatorSignInController,
-  postAuthenticatorSignInController,
+  getSignInWithAuthenticatorController,
+  postSignInWithAuthenticatorController,
 } from "../controllers/totp";
 
 export const userRouter = () => {
@@ -156,14 +156,14 @@ export const userRouter = () => {
     "/sign-in-with-authenticator",
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
-    getAuthenticatorSignInController,
+    getSignInWithAuthenticatorController,
   );
   userRouter.post(
     "/sign-in-with-authenticator",
-    rateLimiterMiddleware,
+    loginRateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
-    postAuthenticatorSignInController,
+    postSignInWithAuthenticatorController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
