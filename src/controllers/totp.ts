@@ -120,7 +120,7 @@ export const postDeleteAuthenticatorConfigurationController = async (
   }
 };
 
-export const getAuthenticatorSignInController = async (
+export const getSignInWithAuthenticatorController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -136,7 +136,7 @@ export const getAuthenticatorSignInController = async (
   }
 };
 
-export const postAuthenticatorSignInController = async (
+export const postSignInWithAuthenticatorController = async (
   req: Request,
   res: Response,
   next: NextFunction,
