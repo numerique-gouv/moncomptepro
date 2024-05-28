@@ -160,7 +160,7 @@ export const userRouter = () => {
   );
   userRouter.post(
     "/sign-in-with-authenticator",
-    rateLimiterMiddleware,
+    loginRateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
     postSignInWithAuthenticatorController,
