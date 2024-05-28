@@ -55,7 +55,7 @@ export const createLoggedInSession = async (
           mustReturnOneOrganizationInPayload;
         req.session.referrerPath = referrerPath;
         // new session triggers 2FA
-        req.session.two_factor_verified = false;
+        req.session.twoFactorVerified = false;
 
         setIsTrustedBrowserFromLoggedInSession(req);
 
@@ -93,7 +93,7 @@ export const isTwoFactorVerifiedInSession = (req: Request) => {
     throw new UserNotLoggedInError();
   }
 
-  return req.session.two_factor_verified;
+  return req.session.twoFactorVerified;
 };
 
 export const markAsTwoFactorVerifiedInSession = (
@@ -106,7 +106,7 @@ export const markAsTwoFactorVerifiedInSession = (
 
   setBrowserAsTrustedForUser(req, res, req.session.user!.id);
 
-  req.session.two_factor_verified = true;
+  req.session.twoFactorVerified = true;
 };
 
 export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
