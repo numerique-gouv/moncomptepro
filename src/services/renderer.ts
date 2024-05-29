@@ -123,7 +123,9 @@ export const ejsLayoutMiddlewareFactory = (
             css: viteCssPath,
             body: html,
             header_user_label: getUserLabel(req),
-            use_dashboard_header,
+            use_dashboard_layout:
+              // @ts-ignore
+              locals.use_dashboard_layout ?? use_dashboard_layout,
           });
         },
       );
