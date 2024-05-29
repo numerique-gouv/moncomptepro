@@ -106,7 +106,7 @@ const getUserLabel = (req: Request) => {
 // it looks for the _layout file and inject the targeted template in the body variable
 export const ejsLayoutMiddlewareFactory = (
   app: Application,
-  use_dashboard_header: boolean = false,
+  use_dashboard_layout: boolean = false,
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const orig = res.render;
@@ -123,7 +123,9 @@ export const ejsLayoutMiddlewareFactory = (
             css: viteCssPath,
             body: html,
             header_user_label: getUserLabel(req),
-            use_dashboard_header,
+            use_dashboard_layout:
+              // @ts-ignore
+              locals.use_dashboard_layout ?? use_dashboard_layout,
           });
         },
       );
