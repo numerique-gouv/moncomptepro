@@ -106,7 +106,7 @@ const getUserLabel = (req: Request) => {
 // it looks for the _layout file and inject the targeted template in the body variable
 export const ejsLayoutMiddlewareFactory = (
   app: Application,
-  use_dashboard_header: boolean = false,
+  use_dashboard_layout: boolean = false,
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const orig = res.render;

@@ -5,7 +5,7 @@
     <div class="fr-skiplinks">
         <nav class="fr-container" role="navigation" aria-label="Accès rapide">
             <ul class="fr-skiplinks__list">
-                <% if (locals.use_dashboard_header) { %>
+                <% if (locals.use_dashboard_layout) { %>
                     <li>
                         <a class="fr-link" href="#main">Contenu</a>
                     </li>
@@ -18,7 +18,7 @@
     </div>
     <div id="loader-bar"></div>
     <%- include('partials/header.ejs'); %>
-    <% if (locals.use_dashboard_header) { %>
+    <% if (locals.use_dashboard_layout) { %>
         <main id="main" tabindex="-1">
             <%- body; %>
         </main>
