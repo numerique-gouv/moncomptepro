@@ -269,6 +269,8 @@ let server: Server;
       if (err instanceof HttpErrors.HttpError) {
         if (err.statusCode === 404) {
           return res.status(404).render("not-found-error", {
+            // force not to use dashboard layout in case the error is shown within a dashboard page
+            use_dashboard_layout: false,
             illustration:
               "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
           });
@@ -276,6 +278,8 @@ let server: Server;
         return res.status(err.statusCode || 500).render("error", {
           error_code: err.statusCode || err,
           error_message: err.message,
+          // force not to use dashboard layout in case the error is shown within a dashboard page
+          use_dashboard_layout: false,
           illustration:
             "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
         });
@@ -285,6 +289,8 @@ let server: Server;
         return res.status(400).render("error", {
           error_code: 400,
           error_message: err.message,
+          // force not to use dashboard layout in case the error is shown within a dashboard page
+          use_dashboard_layout: false,
           illustration:
             "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
         });
@@ -293,6 +299,8 @@ let server: Server;
       return res.status(500).render("error", {
         error_code: err,
         error_message: err.message,
+        // force not to use dashboard layout in case the error is shown within a dashboard page
+        use_dashboard_layout: false,
         illustration:
           "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
       });
