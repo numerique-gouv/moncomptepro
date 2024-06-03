@@ -262,15 +262,15 @@ VALUES
      'https://sandbox.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://sandbox1.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://sandbox2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://sandbox.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://sandbox1.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://sandbox2.api-entreprise..v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging1.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://staging1.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://staging2.api-entreprise..v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
+     'https://sandbox.api-particulier.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.api-particulier.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox.hubee.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.hubee.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
