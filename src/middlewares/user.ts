@@ -6,6 +6,7 @@ import { UserNotFoundError } from "../config/errors";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 import {
   greetForJoiningOrganization,
+  markAsGouvFrDomain,
   markAsWhitelisted,
   notifyAllMembers,
 } from "../managers/organization/authentication-by-peers";
@@ -24,7 +25,10 @@ import { needsEmailVerificationRenewal } from "../managers/user";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { getTrustedReferrerPath } from "../services/security";
-import { getEmailDomain } from "../services/uses-a-free-email-provider";
+import {
+  getEmailDomain,
+  usesAGouvFrDomain,
+} from "../services/uses-a-free-email-provider";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import {
@@ -452,6 +456,8 @@ export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
 
           if (PAIR_AUTHENTICATION_WHITELIST.includes(getEmailDomain(email))) {
             await markAsWhitelisted({ user_id, organization_id });
+          } else if (usesAGouvFrDomain(email)) {
+            await markAsGouvFrDomain({ user_id, organization_id });
           } else if (otherInternalUsers.length > 0) {
             return res.redirect(`/users/choose-sponsor/${organization_id}`);
           } else {

@@ -15,6 +15,7 @@ interface BaseUserOrganizationLink {
     | "sponsored_by_member"
     | "is_the_only_active_member"
     | "deactivated_by_whitelist"
+    | "deactivated_by_gouv_fr_domain"
     | "deactivated_by_import"
     | null;
   has_been_greeted: boolean;
