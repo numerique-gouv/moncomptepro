@@ -266,7 +266,11 @@ VALUES
      'https://staging1.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://staging2.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
      'https://sandbox.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
-     'https://staging.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
+     'https://staging.api-entreprise.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox.api-particulier.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.api-particulier.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://sandbox.hubee.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback',
+     'https://staging.hubee.v2.datapass.api.gouv.fr/auth/mon_compte_pro/callback'
      ],
    ARRAY [
      'http://localhost:3000',
