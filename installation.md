@@ -71,3 +71,15 @@ MonComptePro is provided with a test client: https://github.com/betagouv/moncomp
 This container is launched within the MonComptePro `docker-compose.yml`.
 
 It's available at http://localhost:3001
+
+## Testing edge cases
+
+In our OIDC provider project,
+navigating through certain paths can be particularly challenging due to the diverse range of scenarios that may arise.
+
+Recognizing this complexity,
+we provide comprehensive datasets and associated configurations
+tailored for executing specific test cases.
+
+You can manually execute a Cypress end-to-end test
+to thoroughly explore these paths by following [this doc](./cypress/README.md).
