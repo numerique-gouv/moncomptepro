@@ -13,7 +13,7 @@ describe("getDidYouMeanSuggestion", () => {
   ];
 
   emailAddresses.forEach(([inputEmail, suggestedEmail]) => {
-    it("should return true for personal email address", () => {
+    it(`should suggest corrected email for ${inputEmail}`, () => {
       assert.equal(getDidYouMeanSuggestion(inputEmail), suggestedEmail);
     });
   });
