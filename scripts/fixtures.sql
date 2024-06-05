@@ -916,12 +916,13 @@ VALUES
    'u3VzsHg6qrQvcPmpCOTcWOQ0yoLzPr0G7nidvoxSYK0X7FS7HgNmBYnu9nY1QRNpXO5N28ISuqyWG8Hi0lQoU0CAwy7LC2I5F7nSBJbnWesSOx5MUqLbCayXsDYxKL73',
    'kpzpifseEU5FzRJv38EmsDGNpMdb3SlQrHpXji3eXmAZsjk3ek7hd9vYgnBmKJV5hvZZKPeRXK1fxQ1kagPYNqvcaO98L74k9JWDnqGdMyyPta0qHZv2KIa43rfXBAIk',
    ARRAY [
-      'https://lab-anssi-planka.cleverapps.io/oidc-callback'     ],
+     'https://localhost/oidc-callback'
+     ],
    ARRAY [
-      'https://cyber.gouv.fr/'
+     'https://localhost/'
      ],
    'openid email organization profile',
-   'https://lab-anssi-planka.cleverapps.io/',
+   'https://localhost/',
    'Le Planka du Lab de l’ANSSI',
    null, null, null, null)
 ON CONFLICT (id)
