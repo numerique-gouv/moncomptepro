@@ -133,7 +133,7 @@ describe("isNameValid", () => {
   ];
 
   invalidNames.forEach((invalidName) => {
-    it(`should return false for invalid names : ${invalidName}`, () => {
+    it(`should return false for invalid names: ${invalidName}`, () => {
       assert.equal(isNameValid(invalidName), false);
     });
   });
@@ -156,7 +156,7 @@ describe("isNameValid", () => {
   ];
 
   validNames.forEach((validName) => {
-    it(`should return true for valid names : ${validName}`, () => {
+    it(`should return true for valid names: ${validName}`, () => {
       assert.equal(isNameValid(validName), true);
     });
   });
