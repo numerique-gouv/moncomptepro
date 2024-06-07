@@ -9,7 +9,8 @@ import {
   postQuitUserOrganizationController,
 } from "../controllers/organization";
 import {
-  loginRateLimiterMiddleware,
+  authenticatorRateLimiterMiddleware,
+  passwordRateLimiterMiddleware,
   rateLimiterMiddleware,
 } from "../middlewares/rate-limiter";
 import {
@@ -130,7 +131,7 @@ export const userRouter = () => {
     "/sign-in",
     rateLimiterMiddleware,
     checkCredentialPromptRequirementsMiddleware,
-    loginRateLimiterMiddleware,
+    passwordRateLimiterMiddleware,
     csrfProtectionMiddleware,
     postSignInMiddleware,
     checkUserSignInRequirementsMiddleware,
@@ -160,7 +161,7 @@ export const userRouter = () => {
   );
   userRouter.post(
     "/sign-in-with-authenticator",
-    loginRateLimiterMiddleware,
+    authenticatorRateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
     postSignInWithAuthenticatorController,
