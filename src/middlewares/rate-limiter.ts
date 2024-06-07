@@ -14,14 +14,7 @@ const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
 });
 
-const rateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: "rate-limiter",
-  points: 20, // 20 requests
-  duration: 60, // per minute per IP
-});
-
-const rateLimiterMiddlewareFactory =
+const ipRateLimiterMiddlewareFactory =
   (rateLimiter: RateLimiterRedis) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -34,7 +27,38 @@ const rateLimiterMiddlewareFactory =
     }
   };
 
-export const rateLimiterMiddleware = rateLimiterMiddlewareFactory(rateLimiter);
+const emailRateLimiterMiddlewareFactory =
+  (rateLimiter: RateLimiterRedis) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (DO_NOT_RATE_LIMIT) {
+      } else if (isWithinLoggedInSession(req)) {
+        const { email } = getUserFromLoggedInSession(req);
+        await rateLimiter.consume(email);
+      } else if (getEmailFromLoggedOutSession(req)) {
+        await rateLimiter.consume(getEmailFromLoggedOutSession(req)!);
+      } else {
+        const err = new Error("Falling back to ip rate limiting.");
+        Sentry.captureException(err);
+        // Fall back to ip rate limiting to avoid security flaw
+        await defaultRateLimiter.consume(req.ip);
+      }
+
+      return next();
+    } catch (e) {
+      next(new HttpErrors.TooManyRequests());
+    }
+  };
+
+const defaultRateLimiter = new RateLimiterRedis({
+  storeClient: redisClient,
+  keyPrefix: "rate-limiter",
+  points: 20, // 20 requests
+  duration: 60, // per minute per IP
+});
+
+export const rateLimiterMiddleware =
+  ipRateLimiterMiddlewareFactory(defaultRateLimiter);
 
 const apiRateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
@@ -44,36 +68,24 @@ const apiRateLimiter = new RateLimiterRedis({
 });
 
 export const apiRateLimiterMiddleware =
-  rateLimiterMiddlewareFactory(apiRateLimiter);
+  ipRateLimiterMiddlewareFactory(apiRateLimiter);
 
-const loginRateLimiter = new RateLimiterRedis({
+const passwordRateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
-  keyPrefix: "rate-limiter-login",
+  keyPrefix: "rate-limiter-password",
   points: 10, // 10 requests
   duration: 5 * 60, // per 5 minutes per email
 });
 
-export const loginRateLimiterMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    if (DO_NOT_RATE_LIMIT) {
-    } else if (isWithinLoggedInSession(req)) {
-      const { email } = getUserFromLoggedInSession(req);
-      await loginRateLimiter.consume(email);
-    } else if (getEmailFromLoggedOutSession(req)) {
-      await loginRateLimiter.consume(getEmailFromLoggedOutSession(req)!);
-    } else {
-      const err = new Error("Falling back to ip rate limiting.");
-      Sentry.captureException(err);
-      // Fall back to ip rate limiting to avoid security flaw
-      await rateLimiter.consume(req.ip);
-    }
+export const passwordRateLimiterMiddleware =
+  emailRateLimiterMiddlewareFactory(passwordRateLimiter);
 
-    return next();
-  } catch (e) {
-    next(new HttpErrors.TooManyRequests());
-  }
-};
+const authenticatorRateLimiter = new RateLimiterRedis({
+  storeClient: redisClient,
+  keyPrefix: "rate-limiter-totp",
+  points: 5, // 5 requests
+  duration: 15 * 60, // per 15 minutes per email
+});
+
+export const authenticatorRateLimiterMiddleware =
+  emailRateLimiterMiddlewareFactory(authenticatorRateLimiter);

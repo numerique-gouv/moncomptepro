@@ -108,5 +108,5 @@ export const isAuthenticatorTokenValid = async (
     user.encrypted_totp_key,
   );
 
-  return validateToken(decryptedTotpKey, token);
+  return validateToken(decryptedTotpKey, token, 2);
 };
