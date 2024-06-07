@@ -4,7 +4,11 @@ import HttpErrors from "http-errors";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { DO_NOT_RATE_LIMIT } from "../config/env";
 import { getNewRedisClient } from "../connectors/redis";
-import { getEmailFromLoggedOutSession } from "../managers/session";
+import {
+  getEmailFromLoggedOutSession,
+  getUserFromLoggedInSession,
+  isWithinLoggedInSession,
+} from "../managers/session";
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -55,20 +59,20 @@ export const loginRateLimiterMiddleware = async (
   next: NextFunction,
 ) => {
   try {
-    if (!DO_NOT_RATE_LIMIT) {
-      const email = getEmailFromLoggedOutSession(req);
-      if (!email) {
-        // fail silently
-        const err = new Error(
-          "Email not defined in loginRateLimiterMiddleware. Ensure checkEmailInSessionMiddleware was used before this middleware.",
-        );
-        Sentry.captureException(err);
-        return next();
-      }
-
+    if (DO_NOT_RATE_LIMIT) {
+    } else if (isWithinLoggedInSession(req)) {
+      const { email } = getUserFromLoggedInSession(req);
       await loginRateLimiter.consume(email);
+    } else if (getEmailFromLoggedOutSession(req)) {
+      await loginRateLimiter.consume(getEmailFromLoggedOutSession(req)!);
+    } else {
+      const err = new Error("Falling back to ip rate limiting.");
+      Sentry.captureException(err);
+      // Fall back to ip rate limiting to avoid security flaw
+      await rateLimiter.consume(req.ip);
     }
-    next();
+
+    return next();
   } catch (e) {
     next(new HttpErrors.TooManyRequests());
   }
