@@ -7,9 +7,9 @@ import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
-  updateUserInLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../managers/session";
 import { updatePersonalInformations } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
@@ -26,7 +26,7 @@ export const getHomeController = async (
   next: NextFunction,
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
-    getUserFromLoggedInSession(req).id,
+    getUserFromAuthenticatedSession(req).id,
   );
 
   return res.render("home", {
@@ -42,7 +42,7 @@ export const getPersonalInformationsController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
     return res.render("personal-information", {
       pageTitle: "Informations personnelles",
       email: user.email,
@@ -68,7 +68,7 @@ export const postPersonalInformationsController = async (
       await getParamsForPostPersonalInformationsController(req);
 
     const updatedUser = await updatePersonalInformations(
-      getUserFromLoggedInSession(req).id,
+      getUserFromAuthenticatedSession(req).id,
       {
         given_name,
         family_name,
@@ -77,7 +77,7 @@ export const postPersonalInformationsController = async (
       },
     );
 
-    updateUserInLoggedInSession(req, updatedUser);
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.render("personal-information", {
       pageTitle: "Vos informations personnelles",
@@ -110,7 +110,7 @@ export const getManageOrganizationsController = async (
   try {
     const { userOrganizations, pendingUserOrganizations } =
       await getUserOrganizations({
-        user_id: getUserFromLoggedInSession(req).id,
+        user_id: getUserFromAuthenticatedSession(req).id,
       });
 
     return res.render("manage-organizations", {
@@ -135,14 +135,14 @@ export const getConnectionAndAccountController = async (
       id: user_id,
       email,
       totp_key_verified_at,
-    } = getUserFromLoggedInSession(req);
+    } = getUserFromAuthenticatedSession(req);
 
     const passkeys = await getUserAuthenticators(email);
 
     return res.render("connection-and-account", {
       pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
-      email: getUserFromLoggedInSession(req).email,
+      email: getUserFromAuthenticatedSession(req).email,
       passkeys,
       isAuthenticatorConfigured:
         await isAuthenticatorConfiguredForUser(user_id),
@@ -169,8 +169,8 @@ export const getHelpController = async (
     let user: User | undefined;
     let cached_libelle: string | null | undefined;
 
-    if (isWithinLoggedInSession(req)) {
-      user = getUserFromLoggedInSession(req);
+    if (isWithinAuthenticatedSession(req.session)) {
+      user = getUserFromAuthenticatedSession(req);
       email = user.email;
     }
 

@@ -6,10 +6,17 @@ export interface LoggedOutSessionData {
   referrerPath?: string;
 }
 
+export type AmrValue = "pwd" | "email" | "totp" | "pop" | "uv" | "mfa";
+
+export interface AuthenticatedSessionData {
+  user: User;
+  amr: AmrValue[];
+}
+
 declare module "express-session" {
   export interface SessionData extends LoggedOutSessionData {
     user?: User;
     temporaryEncryptedTotpKey?: string;
-    twoFactorVerified: boolean;
+    amr?: AmrValue[];
   }
 }

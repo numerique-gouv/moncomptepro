@@ -7,8 +7,8 @@ import {
   phoneNumberSchema,
 } from "../../services/custom-zod-schemas";
 import {
-  getUserFromLoggedInSession,
-  updateUserInLoggedInSession,
+  getUserFromAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 
@@ -24,7 +24,7 @@ export const getPersonalInformationsController = async (
       phone_number,
       job,
       needs_inclusionconnect_onboarding_help,
-    } = getUserFromLoggedInSession(req);
+    } = getUserFromAuthenticatedSession(req);
     return res.render("user/personal-information", {
       pageTitle: "Renseigner votre identité",
       given_name,
@@ -61,7 +61,7 @@ export const postPersonalInformationsController = async (
       await getParamsForPostPersonalInformationsController(req);
 
     const updatedUser = await updatePersonalInformations(
-      getUserFromLoggedInSession(req).id,
+      getUserFromAuthenticatedSession(req).id,
       {
         given_name,
         family_name,
@@ -70,7 +70,7 @@ export const postPersonalInformationsController = async (
       },
     );
 
-    updateUserInLoggedInSession(req, updatedUser);
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     next();
   } catch (error) {

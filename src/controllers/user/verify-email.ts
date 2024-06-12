@@ -14,14 +14,11 @@ import {
   InvalidTokenError,
 } from "../../config/errors";
 import {
-  getUserFromLoggedInSession,
-  updateUserInLoggedInSession,
+  addAuthenticationMethodReferenceInSession,
+  getUserFromAuthenticatedSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
-import {
-  isBrowserTrustedForUser,
-  setBrowserAsTrustedForUser,
-} from "../../managers/browser-authentication";
+import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
 
 export const getVerifyEmailController = async (
   req: Request,
@@ -39,7 +36,7 @@ export const getVerifyEmailController = async (
       id: user_id,
       email,
       needs_inclusionconnect_onboarding_help,
-    } = getUserFromLoggedInSession(req);
+    } = getUserFromAuthenticatedSession(req);
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email,
@@ -78,12 +75,11 @@ export const postVerifyEmailController = async (
 
     const { verify_email_token } = await schema.parseAsync(req.body);
 
-    const { id: user_id, email } = getUserFromLoggedInSession(req);
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 
     const updatedUser = await verifyEmail(email, verify_email_token);
 
-    updateUserInLoggedInSession(req, updatedUser);
-    setBrowserAsTrustedForUser(req, res, user_id);
+    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "email");
 
     next();
   } catch (error) {
@@ -103,7 +99,7 @@ export const postSendEmailVerificationController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id, email } = getUserFromLoggedInSession(req);
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 
     await sendEmailAddressVerificationEmail({
       email,

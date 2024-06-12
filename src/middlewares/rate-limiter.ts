@@ -6,8 +6,8 @@ import { DO_NOT_RATE_LIMIT } from "../config/env";
 import { getNewRedisClient } from "../connectors/redis";
 import {
   getEmailFromLoggedOutSession,
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
 } from "../managers/session";
 
 const redisClient = getNewRedisClient({
@@ -32,8 +32,8 @@ const emailRateLimiterMiddlewareFactory =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (DO_NOT_RATE_LIMIT) {
-      } else if (isWithinLoggedInSession(req)) {
-        const { email } = getUserFromLoggedInSession(req);
+      } else if (isWithinAuthenticatedSession(req.session)) {
+        const { email } = getUserFromAuthenticatedSession(req);
         await rateLimiter.consume(email);
       } else if (getEmailFromLoggedOutSession(req)) {
         await rateLimiter.consume(getEmailFromLoggedOutSession(req)!);

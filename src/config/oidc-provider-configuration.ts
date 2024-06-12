@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Configuration } from "oidc-provider";
-import { destroyLoggedInSession } from "../managers/session";
+import { destroyAuthenticatedSession } from "../managers/session";
 import epochTime from "../services/epoch-time";
 import { findAccount } from "../services/oidc-account-adapter";
 import policy from "../services/oidc-policy";
@@ -45,7 +45,7 @@ export const oidcProviderConfiguration = ({
       enabled: true,
       // @ts-ignore
       logoutSource: async (ctx, form) => {
-        await destroyLoggedInSession(ctx.req as Request);
+        await destroyAuthenticatedSession(ctx.req as Request);
         const csrfToken = /name="xsrf" value="([a-f0-9]*)"/.exec(form)![1];
 
         ctx.type = "html";
@@ -62,7 +62,7 @@ export const oidcProviderConfiguration = ({
         // If ctx.oidc.session is null (ie. koa session has ended or expired), logoutSource is not called.
         // If ctx.oidc.params.client_id is not null (ie. logout initiated from Relying Party), postLogoutSuccessSource is not called
         // Make sure the user is logged out from express.
-        await destroyLoggedInSession(ctx.req as Request);
+        await destroyAuthenticatedSession(ctx.req as Request);
         ctx.redirect("/users/start-sign-in/?notification=logout_success");
       },
     },

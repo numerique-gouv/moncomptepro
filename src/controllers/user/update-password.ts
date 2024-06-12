@@ -12,8 +12,8 @@ import hasErrorFromField from "../../services/has-error-from-field";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
   getEmailFromLoggedOutSession,
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
@@ -30,8 +30,8 @@ export const getResetPasswordController = async (
       notifications: await getNotificationsFromRequest(req),
       loginHint:
         getEmailFromLoggedOutSession(req) ||
-        (isWithinLoggedInSession(req)
-          ? getUserFromLoggedInSession(req).email
+        (isWithinAuthenticatedSession(req.session)
+          ? getUserFromAuthenticatedSession(req).email
           : null),
       csrfToken: csrfToken(req),
     });
@@ -47,8 +47,8 @@ export const postResetPasswordController = async (
 ) => {
   try {
     let email: string;
-    if (isWithinLoggedInSession(req)) {
-      const user = getUserFromLoggedInSession(req);
+    if (isWithinAuthenticatedSession(req.session)) {
+      const user = getUserFromAuthenticatedSession(req);
 
       email = user.email;
     } else {

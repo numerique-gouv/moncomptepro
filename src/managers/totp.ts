@@ -94,10 +94,7 @@ export const isAuthenticatorConfiguredForUser = async (user_id: number) => {
   return !isEmpty(user.encrypted_totp_key);
 };
 
-export const isAuthenticatorTokenValid = async (
-  user_id: number,
-  token: string,
-) => {
+export const authenticateWithTotp = async (user_id: number, token: string) => {
   const user = await findById(user_id);
   if (isEmpty(user)) {
     throw new UserNotFoundError();
@@ -108,5 +105,9 @@ export const isAuthenticatorTokenValid = async (
     user.encrypted_totp_key,
   );
 
-  return validateToken(decryptedTotpKey, token, 2);
+  if (!validateToken(decryptedTotpKey, token, 2)) {
+    throw new InvalidTotpTokenError();
+  }
+
+  return user;
 };

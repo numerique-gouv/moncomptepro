@@ -61,6 +61,7 @@ export const createAuthenticator = async ({
     display_name,
     last_used_at,
     usage_count,
+    user_verified,
   },
 }: {
   user_id: number;
@@ -81,9 +82,10 @@ export const createAuthenticator = async ({
              display_name,
              created_at,
              last_used_at,
-             usage_count)
+             usage_count,
+             user_verified)
         VALUES
-            ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10)
+            ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10, $11)
         RETURNING *;`,
     [
       user_id,
@@ -96,6 +98,7 @@ export const createAuthenticator = async ({
       display_name,
       last_used_at,
       usage_count,
+      user_verified,
     ],
   );
 

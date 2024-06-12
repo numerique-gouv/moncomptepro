@@ -6,6 +6,7 @@ import { MONCOMPTEPRO_HOST } from "../config/env";
 import notificationMessages from "../config/notification-messages";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
 import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
+import { AmrValue } from "../types/express-session";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -193,4 +194,46 @@ export const isNotificationLabelValid = (label: unknown): label is string => {
   }
 
   return hasIn(notificationMessages, label);
+};
+
+export const addAuthenticationMethodReference = (
+  amr: AmrValue[],
+  newAmrValue: AmrValue,
+) => {
+  const newAmr = [...amr];
+
+  if (!newAmr.includes(newAmrValue)) {
+    newAmr.push(newAmrValue);
+  }
+
+  if (isTwoFactorAuthenticated(newAmr) && !newAmr.includes("mfa")) {
+    newAmr.push("mfa");
+  }
+
+  return newAmr;
+};
+
+// https://www.w3.org/TR/webauthn/#sctn-authentication-factor-capability
+export const isTwoFactorAuthenticated = (
+  authenticationMethodsReferences: Array<AmrValue>,
+) => {
+  const hasPwdOrEmail =
+    authenticationMethodsReferences.includes("pwd") ||
+    authenticationMethodsReferences.includes("email");
+  const hasTotp = authenticationMethodsReferences.includes("totp");
+  const hasPop = authenticationMethodsReferences.includes("pop");
+  const hasUv = authenticationMethodsReferences.includes("uv");
+
+  return (
+    (hasPwdOrEmail && hasTotp) || (hasPwdOrEmail && hasPop) || (hasPop && hasUv)
+  );
+};
+
+export const isOneFactorAuthenticated = (
+  authenticationMethodsReferences: Array<AmrValue>,
+) => {
+  const hasPwd = authenticationMethodsReferences.includes("pwd");
+  const hasEmail = authenticationMethodsReferences.includes("email");
+  const hasPop = authenticationMethodsReferences.includes("pop");
+  return hasPwd || hasEmail || hasPop;
 };

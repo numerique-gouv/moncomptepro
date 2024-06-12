@@ -64,10 +64,17 @@
             </p>
             <% if (passkeys.length > 0) { %>
                 <div class="fr-grid-row fr-grid-row--gutters">
-                    <% passkeys.forEach(({ credential_id, usage_count, display_name, created_at, last_used_at }) => { %>
+                    <% passkeys.forEach(({ credential_id, usage_count, display_name, created_at, last_used_at, shows_second_factor_only_label }) => { %>
                         <div class="fr-col-12 fr-col-lg-10">
                             <div class="fr-tile fr-tile--horizontal">
                                 <div class="fr-tile__body">
+                                    <% if (shows_second_factor_only_label) { %>
+                                    <div class="fr-tile__start">
+                                        <p class="fr-badge fr-badge--sm fr-badge--yellow-tournesol">
+                                            Second facteur uniquement
+                                        </p>
+                                    </div>
+                                    <% } %>
                                     <h4 class="fr-tile__title">
                                         <%= display_name; %>
                                     </h4>

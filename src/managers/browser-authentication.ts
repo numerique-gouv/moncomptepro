@@ -21,16 +21,20 @@ export const trustedBrowserMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (req.headers.authorization) {
-    return next();
+  try {
+    if (req.headers.authorization) {
+      return next();
+    }
+    return cookieParser(SESSION_COOKIE_SECRET)(req, res, (e) => {
+      if (e) next(e);
+
+      setIsTrustedBrowserFromLoggedInSession(req);
+
+      next();
+    });
+  } catch (e) {
+    next(e);
   }
-  return cookieParser(SESSION_COOKIE_SECRET)(req, res, (e) => {
-    if (e) next(e);
-
-    setIsTrustedBrowserFromLoggedInSession(req);
-
-    next();
-  });
 };
 
 export const isBrowserTrustedForUser = (
