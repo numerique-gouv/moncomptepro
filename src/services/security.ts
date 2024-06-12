@@ -219,7 +219,7 @@ export const isTwoFactorAuthenticated = (
 ) => {
   const hasPwdOrEmail =
     authenticationMethodsReferences.includes("pwd") ||
-    authenticationMethodsReferences.includes("email");
+    authenticationMethodsReferences.includes("mail");
   const hasTotp = authenticationMethodsReferences.includes("totp");
   const hasPop = authenticationMethodsReferences.includes("pop");
   const hasUv = authenticationMethodsReferences.includes("uv");
@@ -233,7 +233,7 @@ export const isOneFactorAuthenticated = (
   authenticationMethodsReferences: Array<AmrValue>,
 ) => {
   const hasPwd = authenticationMethodsReferences.includes("pwd");
-  const hasEmail = authenticationMethodsReferences.includes("email");
+  const hasEmail = authenticationMethodsReferences.includes("mail");
   const hasPop = authenticationMethodsReferences.includes("pop");
   return hasPwd || hasEmail || hasPop;
 };

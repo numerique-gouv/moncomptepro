@@ -6,7 +6,7 @@ export interface LoggedOutSessionData {
   referrerPath?: string;
 }
 
-export type AmrValue = "pwd" | "email" | "totp" | "pop" | "uv" | "mfa";
+export type AmrValue = "pwd" | "mail" | "totp" | "pop" | "uv" | "mfa";
 
 export interface AuthenticatedSessionData {
   user: User;

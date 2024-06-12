@@ -82,7 +82,7 @@ export const createAuthenticatedSession = async (
         if (
           authenticationMethodReference === "pop" ||
           authenticationMethodReference === "totp" ||
-          authenticationMethodReference === "email"
+          authenticationMethodReference === "mail"
         ) {
           setBrowserAsTrustedForUser(req, res, user.id);
         }
@@ -112,7 +112,7 @@ export const addAuthenticationMethodReferenceInSession = (
 
   req.session.amr = addAuthenticationMethodReference(req.session.amr, amr);
 
-  if (amr === "pop" || amr === "totp" || amr === "email") {
+  if (amr === "pop" || amr === "totp" || amr === "mail") {
     setBrowserAsTrustedForUser(req, res, updatedUser.id);
   }
 };

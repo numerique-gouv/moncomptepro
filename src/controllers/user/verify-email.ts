@@ -79,7 +79,7 @@ export const postVerifyEmailController = async (
 
     const updatedUser = await verifyEmail(email, verify_email_token);
 
-    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "email");
+    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "mail");
 
     next();
   } catch (error) {
