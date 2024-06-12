@@ -41,7 +41,7 @@ const emailRateLimiterMiddlewareFactory =
         const err = new Error("Falling back to ip rate limiting.");
         Sentry.captureException(err);
         // Fall back to ip rate limiting to avoid security flaw
-        await defaultRateLimiter.consume(req.ip);
+        await rateLimiter.consume(req.ip);
       }
 
       return next();
