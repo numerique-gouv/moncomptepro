@@ -260,14 +260,13 @@ https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_i
 
 MonComptePro peut renvoyer une combinaison des valeurs suivantes :
 
-| valeur amr | description                                                                                                                                                                                                                                                                                                      |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| pwd        | Authentification par mot de passe. L’utilisation d’un mot de passe seul ne peux se faire uniquement si l’utilisateur a enrôlé le navigateur utilisé (cf. `mail`).                                                                                                                                                |
-| mail       | Authentification par lien magique ou enrôlement du navigateur avec un otp envoyé par mail ou encore vérification que l'utilisateur a toujours accès à sa boite mail dans le cas ou MonComptePro n'a pas fait cette vérification dans les 3 derniers mois.                                                        |
-| totp       | Authentification avec une application « authenticator » comme FreeOTP.                                                                                                                                                                                                                                           |
-| pop        | Authentification avec une clé d’accès (Passkey).                                                                                                                                                                                                                                                                 |
-| uv         | Authentification avec une clé d’accès qui a demandé une vérification de l'utilisateur (UserVerification) (code pin, empreinte digitale, etc.). Plus d’information sur [le site de yubico (en anglais)](https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/User_Presence_vs_User_Verification.html). |
-| mfa        | Authentification a deux facteurs.                                                                                                                                                                                                                                                                                |
+| valeur amr | description                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| pwd        | Authentification par mot de passe. En complément d’un mot de passe, l’utilisateur a authentifié son navigateur avec un otp envoyé par mail |
+| mail       | Authentification par lien de connexion « lien magique ».                                                                                   |
+| totp       | Authentification avec une application « authenticator » comme FreeOTP.                                                                     |
+| pop        | Authentification avec une clé d’accès (Passkey).                                                                                           |
+| mfa        | Authentification a deux facteurs.                                                                                                          |
 
 Vous trouverez de plus amples informations sur la [documentation de FranceConnect](https://docs.partenaires.franceconnect.gouv.fr/fs/fs-technique/fs-technique-amr/#quels-sont-les-differents-methodes-d-authentification-qui-peuvent-etre-utilisees).
 

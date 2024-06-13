@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
 import {
-  getSessionAuthenticationMethodsReferences,
+  getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
   setEmailInLoggedOutSession,
@@ -68,7 +68,7 @@ export const interactionEndControllerFactory =
         login: {
           accountId: user.id.toString(),
           acr: "eidas1",
-          amr: getSessionAuthenticationMethodsReferences(req),
+          amr: getSessionStandardizedAuthenticationMethodsReferences(req),
           ts: user.last_sign_in_at
             ? epochTime(user.last_sign_in_at)
             : undefined,

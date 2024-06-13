@@ -39,6 +39,12 @@ export const isWithinAuthenticatedSession = (
   );
 };
 
+const TRUSTED_AMR_VALUES: AmrValue[] = [
+  "pop",
+  "totp",
+  "email-link",
+  "email-otp",
+];
 export const createAuthenticatedSession = async (
   req: Request,
   res: Response,
@@ -79,11 +85,7 @@ export const createAuthenticatedSession = async (
           authenticationMethodReference,
         );
 
-        if (
-          authenticationMethodReference === "pop" ||
-          authenticationMethodReference === "totp" ||
-          authenticationMethodReference === "mail"
-        ) {
+        if (TRUSTED_AMR_VALUES.includes(authenticationMethodReference)) {
           setBrowserAsTrustedForUser(req, res, user.id);
         }
 
@@ -112,7 +114,7 @@ export const addAuthenticationMethodReferenceInSession = (
 
   req.session.amr = addAuthenticationMethodReference(req.session.amr, amr);
 
-  if (amr === "pop" || amr === "totp" || amr === "mail") {
+  if (TRUSTED_AMR_VALUES.includes(amr)) {
     setBrowserAsTrustedForUser(req, res, updatedUser.id);
   }
 };
@@ -163,12 +165,24 @@ export const hasUserAuthenticatedRecently = (req: Request) => {
   );
 };
 
-export const getSessionAuthenticationMethodsReferences = (req: Request) => {
+export const getSessionStandardizedAuthenticationMethodsReferences = (
+  req: Request,
+) => {
   if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
 
-  return req.session.amr;
+  let standardizedAmr: string[] = [...req.session.amr];
+
+  standardizedAmr = standardizedAmr.filter(
+    (amr) => amr !== "uv" && amr !== "email-otp",
+  );
+
+  standardizedAmr = standardizedAmr.map((amr) =>
+    amr === "email-link" ? "mail" : amr,
+  );
+
+  return standardizedAmr;
 };
 
 export const destroyAuthenticatedSession = async (

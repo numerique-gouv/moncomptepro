@@ -213,15 +213,19 @@ export const addAuthenticationMethodReference = (
   return newAmr;
 };
 
-// https://www.w3.org/TR/webauthn/#sctn-authentication-factor-capability
 export const isTwoFactorAuthenticated = (
   authenticationMethodsReferences: Array<AmrValue>,
 ) => {
   const hasPwdOrEmail =
     authenticationMethodsReferences.includes("pwd") ||
-    authenticationMethodsReferences.includes("mail");
+    authenticationMethodsReferences.includes("email-link");
   const hasTotp = authenticationMethodsReferences.includes("totp");
+  // Read more about the usage of "pop" to describe a passkey authentication:
+  // https://developer.okta.com/docs/guides/configure-amr-claims-mapping/main/#supported-amr-values-by-authenticator-type
   const hasPop = authenticationMethodsReferences.includes("pop");
+  // An authenticator that supports user verification is multi-factor capable.
+  // See: https://www.w3.org/TR/webauthn/#sctn-authentication-factor-capability
+  // More information on userVerification: https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/User_Presence_vs_User_Verification.html
   const hasUv = authenticationMethodsReferences.includes("uv");
 
   return (
@@ -233,7 +237,7 @@ export const isOneFactorAuthenticated = (
   authenticationMethodsReferences: Array<AmrValue>,
 ) => {
   const hasPwd = authenticationMethodsReferences.includes("pwd");
-  const hasEmail = authenticationMethodsReferences.includes("mail");
+  const hasEmail = authenticationMethodsReferences.includes("email-link");
   const hasPop = authenticationMethodsReferences.includes("pop");
   return hasPwd || hasEmail || hasPop;
 };

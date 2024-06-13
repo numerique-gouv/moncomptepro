@@ -111,7 +111,7 @@ export const postSignInWithMagicLinkController = async (
 
     const user = await loginWithMagicLink(magic_link_token);
 
-    await createAuthenticatedSession(req, res, user, "mail");
+    await createAuthenticatedSession(req, res, user, "email-link");
 
     next();
   } catch (error) {
