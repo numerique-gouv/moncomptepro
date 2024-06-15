@@ -47,3 +47,29 @@ On your host, run the tests
 export CYPRESS_MAILSLURP_API_KEY=ask_a_teammate
 npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration.cy.js"
 ```
+
+## Optional: run a test client
+
+Some tests require a test client to be running.
+You can use [moncomptepro-test-client](https://github.com/betagouv/moncomptepro-test-client/) for this purpose.
+
+To run the test client, use the following command:
+
+```
+docker run --rm --network host \
+-p 4001:4001 \
+-e PORT=4001 \
+-e SITE_TITLE="moncomptepro-agentconnect-client" \
+-e HOST="http://localhost:4001" \
+-e MCP_CLIENT_ID="agentconnect_client_id" \
+-e MCP_CLIENT_SECRET="agentconnect_client_secret" \
+-e MCP_PROVIDER="http://localhost:3000" \
+-e MCP_SCOPES="openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt" \
+-e MCP_ID_TOKEN_SIGNED_RESPONSE_ALG="ES256" \
+-e MCP_USERINFO_SIGNED_RESPONSE_ALG="ES256" \
+-e STYLESHEET_URL="" \
+-e LOGIN_HINT="unused1@yopmail.com" \
+ghcr.io/betagouv/moncomptepro-test-client
+```
+
+Ensure that you adjust the environment variables according to the specific test you are running.
