@@ -21,7 +21,7 @@
                 </p>
             </div>
         </div>
-        <form action="/users/mfa-sign-in-with-authenticator" method="post" class="fr-mb-5w">
+        <form action="/users/2fa-sign-in-with-authenticator" method="post" class="fr-mb-5w">
             <p>
                 Afin de protéger votre compte,
                 MonComptePro veut s’assurer que c’est bien vous qui essayez de vous connecter
@@ -81,7 +81,7 @@
                 Se connecter avec une clé d’accès
             </button>
         </div>
-        <form id="webauthn-authentication-response-form" action="/users/mfa-sign-in-with-passkey" method="post" hidden>
+        <form id="webauthn-authentication-response-form" action="/users/2fa-sign-in-with-passkey" method="post" hidden>
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
             <input type="hidden" name="webauthn_authentication_response_string" autocomplete="off">
             <button type="submit" class="fr-btn"></button>

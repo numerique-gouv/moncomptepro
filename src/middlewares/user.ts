@@ -157,7 +157,7 @@ export const checkUserTwoFactorAuthMiddleware = async (
         (await isAuthenticatorConfiguredForUser(user_id)) &&
         !isWithinTwoFactorAuthenticatedSession(req)
       ) {
-        return res.redirect("/users/mfa-sign-in");
+        return res.redirect("/users/2fa-sign-in");
       }
 
       return next();

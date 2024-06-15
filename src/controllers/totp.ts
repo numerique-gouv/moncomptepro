@@ -4,7 +4,6 @@ import {
   deleteTemporaryTotpKey,
   getTemporaryTotpKey,
   getUserFromAuthenticatedSession,
-  isPasskeyAuthenticatedSession,
   setTemporaryTotpKey,
   updateUserInAuthenticatedSession,
 } from "../managers/session";
@@ -120,30 +119,6 @@ export const postDeleteAuthenticatorConfigurationController = async (
   }
 };
 
-export const getMfaSignInController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { email } = getUserFromAuthenticatedSession(req);
-
-    return res.render("user/mfa-sign-in", {
-      pageTitle: "Se connecter en deux étapes",
-      notifications: await getNotificationsFromRequest(req),
-      csrfToken: csrfToken(req),
-      email,
-      // If a passkey has already been used for authentication in this session,
-      // we cannot use another passkey, or even the same one, for a second factor.
-      // To ensure proper security, we need to combine proof of possession with a different type of proof,
-      // such as inherent or knowledge.
-      showPasskeySection: !isPasskeyAuthenticatedSession(req),
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const postSignInWithAuthenticatorController = async (
   req: Request,
   res: Response,
@@ -165,7 +140,7 @@ export const postSignInWithAuthenticatorController = async (
     return next();
   } catch (error) {
     if (error instanceof InvalidTotpTokenError) {
-      return res.redirect("/users/mfa-sign-in?notification=invalid_totp_token");
+      return res.redirect("/users/2fa-sign-in?notification=invalid_totp_token");
     }
     next(error);
   }

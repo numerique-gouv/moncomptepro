@@ -14,7 +14,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
     const totp = generateToken("din5ncvbluqpx7xfzqcybmibmtjocnsf", Date.now());
     cy.get("[name=totpToken]").type(totp);
     cy.get(
-      '[action="/users/mfa-sign-in-with-authenticator"] [type="submit"]',
+      '[action="/users/2fa-sign-in-with-authenticator"] [type="submit"]',
     ).click();
 
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
@@ -34,14 +34,14 @@ describe("sign-in with TOTP on untrusted browser", () => {
     for (let i = 0; i < 4; i++) {
       cy.get("[name=totpToken]").type("123456");
       cy.get(
-        '[action="/users/mfa-sign-in-with-authenticator"] [type="submit"]',
+        '[action="/users/2fa-sign-in-with-authenticator"] [type="submit"]',
       ).click();
       cy.contains("le code que vous avez utilisé est invalide.");
     }
 
     cy.get("[name=totpToken]").type("123456");
     cy.get(
-      '[action="/users/mfa-sign-in-with-authenticator"] [type="submit"]',
+      '[action="/users/2fa-sign-in-with-authenticator"] [type="submit"]',
     ).click();
     cy.contains("Too Many Requests");
   });
