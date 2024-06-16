@@ -5,12 +5,14 @@ import {
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
+  postDisableForce2faController,
+  postEnableForce2faController,
   postPersonalInformationsController,
 } from "../controllers/main";
 import { ejsLayoutMiddlewareFactory } from "../services/renderer";
 import {
+  checkUserCanAccessAdminMiddleware,
   checkUserCanAccessAppMiddleware,
-  checkUserHasLoggedInRecentlyMiddleware,
 } from "../middlewares/user";
 import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
@@ -34,7 +36,7 @@ export const mainRouter = (app: Express) => {
     "/connection-and-account",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     getConnectionAndAccountController,
   );
@@ -43,7 +45,7 @@ export const mainRouter = (app: Express) => {
     "/authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     getAuthenticatorConfigurationController,
   );
@@ -52,7 +54,7 @@ export const mainRouter = (app: Express) => {
     "/authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postAuthenticatorConfigurationController,
   );
@@ -61,7 +63,7 @@ export const mainRouter = (app: Express) => {
     "/delete-authenticator-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postDeleteAuthenticatorConfigurationController,
   );
@@ -71,7 +73,7 @@ export const mainRouter = (app: Express) => {
     rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postVerifyRegistrationController,
   );
@@ -81,9 +83,29 @@ export const mainRouter = (app: Express) => {
     rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     deletePasskeyController,
+  );
+
+  mainRouter.post(
+    "/disable-force-2fa",
+    rateLimiterMiddleware,
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    csrfProtectionMiddleware,
+    postDisableForce2faController,
+  );
+
+  mainRouter.post(
+    "/enable-force-2fa",
+    rateLimiterMiddleware,
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    csrfProtectionMiddleware,
+    postEnableForce2faController,
   );
 
   mainRouter.get(

@@ -12,6 +12,7 @@ import {
   decryptSymmetric,
   encryptSymmetric,
 } from "../services/symmetric-encryption";
+import { enableForce2fa } from "./2fa";
 
 export const generateAuthenticatorRegistrationOptions = async (
   email: string,
@@ -65,10 +66,12 @@ export const confirmAuthenticatorRegistration = async (
     temporaryTotpKey,
   );
 
-  return await update(user_id, {
+  await update(user_id, {
     encrypted_totp_key,
     totp_key_verified_at: new Date(),
   });
+
+  return await enableForce2fa(user_id);
 };
 
 export const deleteAuthenticatorConfiguration = async (user_id: number) => {

@@ -34,6 +34,7 @@ import {
 import { findByEmail as findUserByEmail, update } from "../repositories/user";
 import { encodeBase64URL } from "../services/base64";
 import { logger } from "../services/log";
+import { enableForce2fa } from "./2fa";
 
 // Human-readable title for your website
 const rpName = MONCOMPTEPRO_LABEL;
@@ -189,7 +190,7 @@ export const verifyRegistration = async ({
   const display_name = await getAuthenticatorFriendlyName(aaguid);
 
   // Save the authenticator info so that we can get it by user ID later
-  return await createAuthenticator({
+  await createAuthenticator({
     user_id: user.id,
     authenticator: {
       credential_id,
@@ -206,6 +207,8 @@ export const verifyRegistration = async ({
       user_verified,
     },
   });
+
+  return await enableForce2fa(user.id);
 };
 
 export const getAuthenticationOptions = async (

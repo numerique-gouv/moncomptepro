@@ -74,6 +74,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       "Information : pour garantir la sécurité de votre compte, merci de vous identifier à nouveau.",
   },
+  "2fa_required": {
+    type: "info",
+    description:
+      "Information : pour garantir la sécurité de votre compte, merci de valider votre deuxième étape de connexion.",
+  },
   browser_not_trusted: {
     type: "info",
     description:
@@ -162,6 +167,14 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   authenticator_updated: {
     type: "success",
     description: "L’application d’authentification a été modifiée.",
+  },
+  "2fa_successfully_enabled": {
+    type: "success",
+    description: "La validation en deux étapes a bien été activée.",
+  },
+  "2fa_successfully_disabled": {
+    type: "success",
+    description: "La validation en deux étapes a bien été désactivée.",
   },
 };
 

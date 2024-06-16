@@ -99,10 +99,11 @@ export const postVerifyRegistrationController = async (
 
     const user = getUserFromAuthenticatedSession(req);
 
-    await verifyRegistration({
+    const updatedUser = await verifyRegistration({
       email: user.email,
       response,
     });
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,

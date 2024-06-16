@@ -1,6 +1,6 @@
-export const isExpired = (
+export const isExpiredInSeconds = (
   emittedDate: Date | null,
-  expirationDurationInMinutes: number,
+  expirationDurationInSeconds: number,
 ) => {
   if (!(emittedDate instanceof Date)) {
     return true;
@@ -10,6 +10,13 @@ export const isExpired = (
 
   return (
     nowDate.getTime() - emittedDate.getTime() >
-    expirationDurationInMinutes * 60e3
+    expirationDurationInSeconds * 1e3
   );
+};
+
+export const isExpired = (
+  emittedDate: Date | null,
+  expirationDurationInMinutes: number,
+) => {
+  return isExpiredInSeconds(emittedDate, expirationDurationInMinutes * 60);
 };

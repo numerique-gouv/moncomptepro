@@ -28,7 +28,7 @@ import { getSelectedOrganizationId } from "../repositories/redis/selected-organi
 import { getTrustedReferrerPath } from "../services/security";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
-import { isAuthenticatorConfiguredForUser } from "../managers/totp";
+import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from
@@ -154,7 +154,7 @@ export const checkUserTwoFactorAuthMiddleware = async (
       const { id: user_id } = getUserFromAuthenticatedSession(req);
 
       if (
-        (await isAuthenticatorConfiguredForUser(user_id)) &&
+        (await shouldForce2faForUser(user_id)) &&
         !isWithinTwoFactorAuthenticatedSession(req)
       ) {
         return res.redirect("/users/2fa-sign-in");
@@ -285,6 +285,35 @@ export const checkUserHasLoggedInRecentlyMiddleware = (
       next(error);
     }
   });
+
+export const checkUserTwoFactorAuthForAdminMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) =>
+  checkUserHasLoggedInRecentlyMiddleware(req, res, async (error) => {
+    try {
+      if (error) return next(error);
+
+      const { id: user_id } = getUserFromAuthenticatedSession(req);
+
+      if (
+        (await is2FACapable(user_id)) &&
+        !isWithinTwoFactorAuthenticatedSession(req)
+      ) {
+        req.session.referrerPath = getReferrerPath(req);
+
+        return res.redirect("/users/2fa-sign-in?notification=2fa_required");
+      }
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserCanAccessAdminMiddleware =
+  checkUserTwoFactorAuthForAdminMiddleware;
 
 export const checkUserHasSelectedAnOrganizationMiddleware = (
   req: Request,

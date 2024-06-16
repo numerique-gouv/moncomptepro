@@ -17,9 +17,9 @@ import {
   checkCredentialPromptRequirementsMiddleware,
   checkEmailInSessionMiddleware,
   checkIsUser,
+  checkUserCanAccessAdminMiddleware,
   checkUserCanAccessAppMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
-  checkUserHasLoggedInRecentlyMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserHasSelectedAnOrganizationMiddleware,
@@ -442,7 +442,7 @@ export const userRouter = () => {
   userRouter.post(
     "/delete",
     rateLimiterMiddleware,
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postDeleteUserController,
   );

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { isEmpty } from "lodash-es";
 import {
-  RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  RECENT_LOGIN_INTERVAL_IN_SECONDS,
   SYMMETRIC_ENCRYPTION_KEY,
 } from "../config/env";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../config/errors";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { findByEmail, update } from "../repositories/user";
-import { isExpired } from "../services/is-expired";
+import { isExpiredInSeconds } from "../services/is-expired";
 import {
   setBrowserAsTrustedForUser,
   setIsTrustedBrowserFromLoggedInSession,
@@ -159,9 +159,9 @@ export const hasUserAuthenticatedRecently = (req: Request) => {
     throw new UserNotLoggedInError();
   }
 
-  return !isExpired(
+  return !isExpiredInSeconds(
     req.session.user.last_sign_in_at,
-    RECENT_LOGIN_INTERVAL_IN_MINUTES,
+    RECENT_LOGIN_INTERVAL_IN_SECONDS,
   );
 };
 

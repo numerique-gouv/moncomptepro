@@ -92,3 +92,5 @@ export class UserNotLoggedInError extends Error {}
 export class NoEmailFoundInLoggedOutSessionError extends Error {}
 
 export class InvalidTotpTokenError extends Error {}
+
+export class UserIsNot2faCapableError extends Error {}
