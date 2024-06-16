@@ -12,7 +12,7 @@ import {
   notifyAllMembers,
 } from "../../managers/organization/authentication-by-peers";
 import { getOrganizationById } from "../../managers/organization/main";
-import { getUserFromLoggedInSession } from "../../managers/session";
+import { getUserFromAuthenticatedSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { idSchema } from "../../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../../services/get-notifications-from-request";
@@ -31,7 +31,7 @@ export const getChooseSponsorController = async (
     const { organization_id } = await schema.parseAsync(req.params);
 
     const sponsorOptions = await getSponsorOptions({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 
@@ -79,7 +79,7 @@ export const postChooseSponsorMiddleware = async (
     });
 
     await chooseSponsor({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
       sponsor_id,
     });
@@ -122,7 +122,7 @@ export const getNoSponsorFoundController = async (
 
     // we call this fonction only to ensure user is in organization
     await getOrganizationLabel({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 
@@ -153,7 +153,7 @@ export const postNoSponsorFoundMiddleware = async (
     const { organization_id } = await schema.parseAsync(req.params);
 
     await notifyAllMembers({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 

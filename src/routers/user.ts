@@ -17,9 +17,9 @@ import {
   checkCredentialPromptRequirementsMiddleware,
   checkEmailInSessionMiddleware,
   checkIsUser,
+  checkUserCanAccessAdminMiddleware,
   checkUserCanAccessAppMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
-  checkUserHasLoggedInRecentlyMiddleware,
   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserHasSelectedAnOrganizationMiddleware,
@@ -83,10 +83,8 @@ import {
   postVerifyAuthenticationController,
 } from "../controllers/webauthn";
 import { postDeleteUserController } from "../controllers/user/delete";
-import {
-  getSignInWithAuthenticatorController,
-  postSignInWithAuthenticatorController,
-} from "../controllers/totp";
+import { postSignInWithAuthenticatorController } from "../controllers/totp";
+import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 
 export const userRouter = () => {
   const userRouter = Router();
@@ -154,17 +152,26 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/sign-in-with-authenticator",
+    "/2fa-sign-in",
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
-    getSignInWithAuthenticatorController,
+    get2faSignInController,
   );
   userRouter.post(
-    "/sign-in-with-authenticator",
+    "/2fa-sign-in-with-authenticator",
     authenticatorRateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
     postSignInWithAuthenticatorController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController,
+  );
+  userRouter.post(
+    "/2fa-sign-in-with-passkey",
+    rateLimiterMiddleware,
+    checkUserIsConnectedMiddleware,
+    csrfProtectionMiddleware,
+    postVerifyAuthenticationController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
@@ -435,7 +442,7 @@ export const userRouter = () => {
   userRouter.post(
     "/delete",
     rateLimiterMiddleware,
-    checkUserHasLoggedInRecentlyMiddleware,
+    checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postDeleteUserController,
   );

@@ -26,7 +26,7 @@ import {
   quitOrganization,
   selectOrganization,
 } from "../managers/organization/main";
-import { getUserFromLoggedInSession } from "../managers/session";
+import { getUserFromAuthenticatedSession } from "../managers/session";
 import { csrfToken } from "../middlewares/csrf-protection";
 import {
   idSchema,
@@ -52,7 +52,7 @@ export const getJoinOrganizationController = async (
     const { notification, siret_hint, do_not_propose_suggestions } =
       await schema.parseAsync(req.query);
 
-    const { id: user_id, email } = getUserFromLoggedInSession(req);
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 
     if (
       !siret_hint &&
@@ -81,7 +81,7 @@ export const getOrganizationSuggestionsController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { id: user_id, email } = getUserFromLoggedInSession(req);
+  const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 
   const organizationSuggestions = await getOrganizationSuggestions({
     user_id,
@@ -110,13 +110,13 @@ export const postJoinOrganizationMiddleware = async (
 
     const userOrganizationLink = await joinOrganization({
       siret,
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       confirmed,
     });
 
     if (req.session.mustReturnOneOrganizationInPayload) {
       await selectOrganization({
-        user_id: getUserFromLoggedInSession(req).id,
+        user_id: getUserFromAuthenticatedSession(req).id,
         organization_id: userOrganizationLink.organization_id,
       });
     }
@@ -186,7 +186,7 @@ export const getJoinOrganizationConfirmController = async (
       pageTitle: "Confirmer le rattachement",
       csrfToken: csrfToken(req),
       organization_label: organization.cached_libelle,
-      email: getUserFromLoggedInSession(req).email,
+      email: getUserFromAuthenticatedSession(req).email,
       siret: organization.siret,
     });
   } catch (error) {
@@ -204,7 +204,7 @@ export const getUnableToAutoJoinOrganizationController = async (
       moderation_id: idSchema(),
     });
     const { moderation_id } = await schema.parseAsync(req.query);
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
 
     const { cached_libelle } = await getOrganizationFromModeration({
       user,
@@ -235,7 +235,7 @@ export const postCancelModerationAndRedirectControllerFactory =
         moderation_id: idSchema(),
       });
       const { moderation_id } = await schema.parseAsync(req.params);
-      const user = getUserFromLoggedInSession(req);
+      const user = getUserFromAuthenticatedSession(req);
 
       await cancelModeration({ user, moderation_id });
 
@@ -258,7 +258,7 @@ export const postQuitUserOrganizationController = async (
     const { id: organization_id } = await schema.parseAsync(req.params);
 
     await quitOrganization({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 

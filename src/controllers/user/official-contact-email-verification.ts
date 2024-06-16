@@ -15,7 +15,7 @@ import {
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
 } from "../../config/errors";
-import { getUserFromLoggedInSession } from "../../managers/session";
+import { getUserFromAuthenticatedSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { getOrganizationTypeLabel } from "../../services/organization";
 import { getOrganizationById } from "../../managers/organization/main";
@@ -45,7 +45,7 @@ export const getOfficialContactEmailVerificationController = async (
 
     const { codeSent, contactEmail, libelle } =
       await sendOfficialContactEmailVerificationEmail({
-        user_id: getUserFromLoggedInSession(req).id,
+        user_id: getUserFromAuthenticatedSession(req).id,
         organization_id,
         checkBeforeSend: true,
       });
@@ -106,7 +106,7 @@ export const postOfficialContactEmailVerificationMiddleware = async (
     });
 
     await verifyOfficialContactEmailToken({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
       token: official_contact_email_verification_token,
     });

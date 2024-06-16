@@ -77,7 +77,10 @@ export const startLogin = async (
   };
 };
 
-export const login = async (email: string, password: string): Promise<User> => {
+export const loginWithPassword = async (
+  email: string,
+  password: string,
+): Promise<User> => {
   const user = await findByEmail(email);
   if (isEmpty(user)) {
     // this is not a proper error name but this case should never happen
@@ -94,7 +97,7 @@ export const login = async (email: string, password: string): Promise<User> => {
   return user;
 };
 
-export const signup = async (
+export const signupWithPassword = async (
   email: string,
   password: string,
 ): Promise<User> => {

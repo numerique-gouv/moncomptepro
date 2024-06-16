@@ -5,7 +5,7 @@ import {
 } from "../../managers/organization/main";
 import { z } from "zod";
 import { idSchema } from "../../services/custom-zod-schemas";
-import { getUserFromLoggedInSession } from "../../managers/session";
+import { getUserFromAuthenticatedSession } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getSelectOrganizationController = async (
@@ -15,7 +15,7 @@ export const getSelectOrganizationController = async (
 ) => {
   try {
     const userOrganizations = await getOrganizationsByUserId(
-      getUserFromLoggedInSession(req).id,
+      getUserFromAuthenticatedSession(req).id,
     );
 
     return res.render("user/select-organization", {
@@ -40,7 +40,7 @@ export const postSelectOrganizationMiddleware = async (
     const { organization_id } = await schema.parseAsync(req.body);
 
     await selectOrganization({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { isEmpty } from "lodash-es";
 import {
-  RECENT_LOGIN_INTERVAL_IN_MINUTES,
+  RECENT_LOGIN_INTERVAL_IN_SECONDS,
   SYMMETRIC_ENCRYPTION_KEY,
 } from "../config/env";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../config/errors";
 import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { findByEmail, update } from "../repositories/user";
-import { isExpired } from "../services/is-expired";
+import { isExpiredInSeconds } from "../services/is-expired";
 import {
   setBrowserAsTrustedForUser,
   setIsTrustedBrowserFromLoggedInSession,
@@ -19,14 +19,37 @@ import {
   decryptSymmetric,
   encryptSymmetric,
 } from "../services/symmetric-encryption";
+import { AmrValue, AuthenticatedSessionData } from "../types/express-session";
+import {
+  addAuthenticationMethodReference,
+  isOneFactorAuthenticated,
+  isTwoFactorAuthenticated,
+} from "../services/security";
+import { Session, SessionData } from "express-session";
 
-export const isWithinLoggedInSession = (req: Request) => {
-  return !isEmpty(req.session?.user);
+export const isWithinAuthenticatedSession = (
+  session: Session & Partial<SessionData>,
+): session is Session & Partial<SessionData> & AuthenticatedSessionData => {
+  // testing req.session.amr should suffice, but as this is quite critical,
+  // we must be sure of what we are doing here
+  return (
+    !isEmpty(session?.user) &&
+    !isEmpty(session.amr) &&
+    isOneFactorAuthenticated(session.amr!)
+  );
 };
 
-export const createLoggedInSession = async (
+const TRUSTED_AMR_VALUES: AmrValue[] = [
+  "pop",
+  "totp",
+  "email-link",
+  "email-otp",
+];
+export const createAuthenticatedSession = async (
   req: Request,
+  res: Response,
   user: User,
+  authenticationMethodReference: AmrValue,
 ): Promise<null> => {
   // we store old session value to pass it to the new logged-in session
   // email and needsInclusionconnectWelcomePage are not passed to the new session as it is not useful within logged session
@@ -34,7 +57,7 @@ export const createLoggedInSession = async (
   const { interactionId, mustReturnOneOrganizationInPayload, referrerPath } =
     req.session;
 
-  // as selected org is not stored in session
+  // as selected org is not stored in session,
   // we delete this to avoid sync issues
   await deleteSelectedOrganizationId(user.id);
 
@@ -54,9 +77,21 @@ export const createLoggedInSession = async (
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
         req.session.referrerPath = referrerPath;
-        // new session triggers 2FA
-        req.session.twoFactorVerified = false;
+        // new session reset amr
+        req.session.amr = [];
 
+        req.session.amr = addAuthenticationMethodReference(
+          req.session.amr,
+          authenticationMethodReference,
+        );
+
+        if (TRUSTED_AMR_VALUES.includes(authenticationMethodReference)) {
+          setBrowserAsTrustedForUser(req, res, user.id);
+        }
+
+        // as req.session.user has just been set,
+        // this might alter the isTrustedBrowser flag on the req object.
+        // We call this function to re-trigger the flag computation.
         setIsTrustedBrowserFromLoggedInSession(req);
 
         resolve(null);
@@ -65,18 +100,37 @@ export const createLoggedInSession = async (
   });
 };
 
-export const getUserFromLoggedInSession = (req: Request) => {
-  if (!isWithinLoggedInSession(req)) {
+export const addAuthenticationMethodReferenceInSession = (
+  req: Request,
+  res: Response,
+  updatedUser: User,
+  amr: AmrValue,
+) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
 
-  return req.session.user!;
+  updateUserInAuthenticatedSession(req, updatedUser);
+
+  req.session.amr = addAuthenticationMethodReference(req.session.amr, amr);
+
+  if (TRUSTED_AMR_VALUES.includes(amr)) {
+    setBrowserAsTrustedForUser(req, res, updatedUser.id);
+  }
 };
 
-export const updateUserInLoggedInSession = (req: Request, user: User) => {
+export const getUserFromAuthenticatedSession = (req: Request) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
+    throw new UserNotLoggedInError();
+  }
+
+  return req.session.user;
+};
+
+export const updateUserInAuthenticatedSession = (req: Request, user: User) => {
   if (
-    !isWithinLoggedInSession(req) ||
-    getUserFromLoggedInSession(req).id !== user.id
+    !isWithinAuthenticatedSession(req.session) ||
+    getUserFromAuthenticatedSession(req).id !== user.id
   ) {
     throw new UserNotLoggedInError();
   }
@@ -84,29 +138,73 @@ export const updateUserInLoggedInSession = (req: Request, user: User) => {
   req.session.user = user;
 };
 
-export const isTwoFactorVerifiedInSession = (req: Request) => {
-  if (!isWithinLoggedInSession(req)) {
-    throw new UserNotLoggedInError();
+export const isWithinTwoFactorAuthenticatedSession = (req: Request) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
+    return false;
   }
 
-  return req.session.twoFactorVerified;
+  return isTwoFactorAuthenticated(req.session.amr);
 };
 
-export const markAsTwoFactorVerifiedInSession = (
-  req: Request,
-  res: Response,
-) => {
-  if (!isWithinLoggedInSession(req)) {
+export const isPasskeyAuthenticatedSession = (req: Request) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
+    return false;
+  }
+
+  return req.session.amr.includes("pop");
+};
+
+export const hasUserAuthenticatedRecently = (req: Request) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
 
-  setBrowserAsTrustedForUser(req, res, req.session.user!.id);
+  return !isExpiredInSeconds(
+    req.session.user.last_sign_in_at,
+    RECENT_LOGIN_INTERVAL_IN_SECONDS,
+  );
+};
 
-  req.session.twoFactorVerified = true;
+export const getSessionStandardizedAuthenticationMethodsReferences = (
+  req: Request,
+) => {
+  if (!isWithinAuthenticatedSession(req.session)) {
+    throw new UserNotLoggedInError();
+  }
+
+  let standardizedAmr: string[] = [...req.session.amr];
+
+  standardizedAmr = standardizedAmr.filter(
+    (amr) => amr !== "uv" && amr !== "email-otp",
+  );
+
+  standardizedAmr = standardizedAmr.map((amr) =>
+    amr === "email-link" ? "mail" : amr,
+  );
+
+  return standardizedAmr;
+};
+
+export const destroyAuthenticatedSession = async (
+  req: Request,
+): Promise<null> => {
+  if (isWithinAuthenticatedSession(req.session)) {
+    await deleteSelectedOrganizationId(getUserFromAuthenticatedSession(req).id);
+  }
+
+  return await new Promise((resolve, reject) => {
+    req.session.destroy((err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(null);
+      }
+    });
+  });
 };
 
 export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
-  if (!isWithinLoggedInSession(req)) {
+  if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
 
@@ -117,7 +215,7 @@ export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
 };
 
 export const getTemporaryTotpKey = (req: Request) => {
-  if (!isWithinLoggedInSession(req)) {
+  if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
 
@@ -133,33 +231,6 @@ export const getTemporaryTotpKey = (req: Request) => {
 
 export const deleteTemporaryTotpKey = (req: Request) => {
   delete req.session.temporaryEncryptedTotpKey;
-};
-
-export const destroyLoggedInSession = async (req: Request): Promise<null> => {
-  if (isWithinLoggedInSession(req)) {
-    await deleteSelectedOrganizationId(getUserFromLoggedInSession(req).id);
-  }
-
-  return await new Promise((resolve, reject) => {
-    req.session.destroy((err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(null);
-      }
-    });
-  });
-};
-
-export const hasUserLoggedInRecently = (req: Request) => {
-  if (!isWithinLoggedInSession(req)) {
-    throw new UserNotLoggedInError();
-  }
-
-  return !isExpired(
-    req.session.user!.last_sign_in_at,
-    RECENT_LOGIN_INTERVAL_IN_MINUTES,
-  );
 };
 
 export const getEmailFromLoggedOutSession = (req: Request) => {

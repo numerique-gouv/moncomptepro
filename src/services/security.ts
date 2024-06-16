@@ -6,6 +6,7 @@ import { MONCOMPTEPRO_HOST } from "../config/env";
 import notificationMessages from "../config/notification-messages";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
 import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
+import { AmrValue } from "../types/express-session";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
@@ -193,4 +194,50 @@ export const isNotificationLabelValid = (label: unknown): label is string => {
   }
 
   return hasIn(notificationMessages, label);
+};
+
+export const addAuthenticationMethodReference = (
+  amr: AmrValue[],
+  newAmrValue: AmrValue,
+) => {
+  const newAmr = [...amr];
+
+  if (!newAmr.includes(newAmrValue)) {
+    newAmr.push(newAmrValue);
+  }
+
+  if (isTwoFactorAuthenticated(newAmr) && !newAmr.includes("mfa")) {
+    newAmr.push("mfa");
+  }
+
+  return newAmr;
+};
+
+export const isTwoFactorAuthenticated = (
+  authenticationMethodsReferences: Array<AmrValue>,
+) => {
+  const hasPwdOrEmail =
+    authenticationMethodsReferences.includes("pwd") ||
+    authenticationMethodsReferences.includes("email-link");
+  const hasTotp = authenticationMethodsReferences.includes("totp");
+  // Read more about the usage of "pop" to describe a passkey authentication:
+  // https://developer.okta.com/docs/guides/configure-amr-claims-mapping/main/#supported-amr-values-by-authenticator-type
+  const hasPop = authenticationMethodsReferences.includes("pop");
+  // An authenticator that supports user verification is multi-factor capable.
+  // See: https://www.w3.org/TR/webauthn/#sctn-authentication-factor-capability
+  // More information on userVerification: https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/User_Presence_vs_User_Verification.html
+  const hasUv = authenticationMethodsReferences.includes("uv");
+
+  return (
+    (hasPwdOrEmail && hasTotp) || (hasPwdOrEmail && hasPop) || (hasPop && hasUv)
+  );
+};
+
+export const isOneFactorAuthenticated = (
+  authenticationMethodsReferences: Array<AmrValue>,
+) => {
+  const hasPwd = authenticationMethodsReferences.includes("pwd");
+  const hasEmail = authenticationMethodsReferences.includes("email-link");
+  const hasPop = authenticationMethodsReferences.includes("pop");
+  return hasPwd || hasEmail || hasPop;
 };

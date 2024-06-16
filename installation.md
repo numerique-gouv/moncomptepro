@@ -83,3 +83,14 @@ tailored for executing specific test cases.
 
 You can manually execute a Cypress end-to-end test
 to thoroughly explore these paths by following [this doc](./cypress/README.md).
+
+## Connecting to local databases
+
+Docker Compose initializes both a PostgreSQL and a Redis database.
+
+To connect to these databases, use the following commands:
+
+```bash
+docker compose exec db psql postgres://username:password@db:5432/dbname
+docker compose exec redis redis-cli -h redis -p 6379
+```

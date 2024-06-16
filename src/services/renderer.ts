@@ -4,8 +4,8 @@ import fs from "fs";
 import path from "path";
 import { NODE_ENV } from "../config/env";
 import {
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
 } from "../managers/session";
 
 let manifest: Record<
@@ -90,11 +90,11 @@ export const render = (absolutePath: string, params: any) => {
 };
 
 const getUserLabel = (req: Request) => {
-  if (!isWithinLoggedInSession(req)) {
+  if (!isWithinAuthenticatedSession(req.session)) {
     //  do not display label when no session is found
     return null;
   }
-  const user = getUserFromLoggedInSession(req);
+  const user = getUserFromAuthenticatedSession(req);
   if (!user.given_name || !user.family_name) {
     //  display email when a name is missing
     return user.email;

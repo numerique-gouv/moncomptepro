@@ -23,4 +23,5 @@ interface User {
   needs_inclusionconnect_onboarding_help: boolean;
   encrypted_totp_key: string | null;
   totp_key_verified_at: Date | null;
+  force_2fa: boolean;
 }

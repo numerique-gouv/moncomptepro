@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
 import {
-  getUserFromLoggedInSession,
+  getSessionStandardizedAuthenticationMethodsReferences,
+  getUserFromAuthenticatedSession,
+  isWithinTwoFactorAuthenticatedSession,
   setEmailInLoggedOutSession,
 } from "../managers/session";
 import epochTime from "../services/epoch-time";
@@ -60,13 +62,13 @@ export const interactionEndControllerFactory =
   (oidcProvider: Provider) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = getUserFromLoggedInSession(req);
+      const user = getUserFromAuthenticatedSession(req);
 
       const result = {
         login: {
           accountId: user.id.toString(),
           acr: "eidas1",
-          amr: ["pwd"],
+          amr: getSessionStandardizedAuthenticationMethodsReferences(req),
           ts: user.last_sign_in_at
             ? epochTime(user.last_sign_in_at)
             : undefined,

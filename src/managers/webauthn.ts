@@ -34,6 +34,7 @@ import {
 import { findByEmail as findUserByEmail, update } from "../repositories/user";
 import { encodeBase64URL } from "../services/base64";
 import { logger } from "../services/log";
+import { enableForce2fa } from "./2fa";
 
 // Human-readable title for your website
 const rpName = MONCOMPTEPRO_LABEL;
@@ -58,6 +59,7 @@ export const getUserAuthenticators = async (email: string) => {
       display_name,
       created_at,
       last_used_at,
+      user_verified,
     }) => ({
       credential_id: encodeBase64URL(credential_id),
       usage_count,
@@ -68,6 +70,7 @@ export const getUserAuthenticators = async (email: string) => {
       last_used_at: last_used_at
         ? moment(last_used_at).tz("Europe/Paris").locale("fr").calendar()
         : "pas encore utilisée",
+      shows_second_factor_only_label: !user_verified,
     }),
   );
 };
@@ -149,7 +152,7 @@ export const verifyRegistration = async ({
   }
 
   const current_challenge = user.current_challenge;
-  // challenge must only be use a single time
+  // challenge must only be used once
   await update(user.id, { current_challenge: null });
 
   let verification: VerifiedRegistrationResponse;
@@ -181,12 +184,13 @@ export const verifyRegistration = async ({
     counter,
     credentialDeviceType: credential_device_type,
     credentialBackedUp: credential_backed_up,
+    userVerified: user_verified,
   } = registrationInfo;
 
   const display_name = await getAuthenticatorFriendlyName(aaguid);
 
   // Save the authenticator info so that we can get it by user ID later
-  return await createAuthenticator({
+  await createAuthenticator({
     user_id: user.id,
     authenticator: {
       credential_id,
@@ -200,11 +204,17 @@ export const verifyRegistration = async ({
       display_name,
       last_used_at: null,
       usage_count: 0,
+      user_verified,
     },
   });
+
+  return await enableForce2fa(user.id);
 };
 
-export const getAuthenticationOptions = async (email: string | undefined) => {
+export const getAuthenticationOptions = async (
+  email: string | undefined,
+  isOneFactorAuthenticated: boolean,
+) => {
   if (!email) {
     throw new NotFoundError();
   }
@@ -215,18 +225,18 @@ export const getAuthenticationOptions = async (email: string | undefined) => {
     throw new NotFoundError();
   }
 
-  // Retrieve any of the user's previously-registered authenticators
+  // Retrieve any of the user's previously registered authenticators
   const userAuthenticators = await getAuthenticatorsByUserId(user.id);
 
   const authenticationOptions = await generateAuthenticationOptions({
     rpID,
-    // Require users to use a previously-registered authenticator
+    // Require users to use a previously registered authenticator
     allowCredentials: userAuthenticators.map((authenticator) => ({
       id: authenticator.credential_id,
       type: "public-key",
       transports: authenticator.transports || [],
     })),
-    userVerification: "preferred",
+    userVerification: isOneFactorAuthenticated ? "discouraged" : "required",
   });
 
   // Remember the challenge for this user
@@ -240,9 +250,11 @@ export const getAuthenticationOptions = async (email: string | undefined) => {
 export const verifyAuthentication = async ({
   email,
   response,
+  isOneFactorAuthenticated,
 }: {
   email: string | undefined;
   response: AuthenticationResponseJSON;
+  isOneFactorAuthenticated: boolean;
 }) => {
   if (!email) {
     throw new NotFoundError();
@@ -255,7 +267,7 @@ export const verifyAuthentication = async ({
   }
 
   const current_challenge = user.current_challenge;
-  // challenge must only be use a single time
+  // challenge must only be used once
   await update(user.id, { current_challenge: null });
 
   // Retrieve an authenticator from the DB that should match the `id` in the returned credential
@@ -286,8 +298,8 @@ export const verifyAuthentication = async ({
         transports,
       },
       // do not enforce user verification by the authenticator (via PIN, fingerprint, etc...)
-      // to authorize usage of fido u2f security keys
-      requireUserVerification: false,
+      // to authorize usage of fido u2f security keys for second factor authentication
+      requireUserVerification: !isOneFactorAuthenticated,
     });
   } catch (error) {
     logger.error(error);
@@ -300,7 +312,11 @@ export const verifyAuthentication = async ({
     throw new WebauthnAuthenticationFailedError();
   }
 
-  const { credentialID: newCredentialID, newCounter } = authenticationInfo;
+  const {
+    credentialID: newCredentialID,
+    newCounter,
+    userVerified,
+  } = authenticationInfo;
 
   await updateAuthenticator(newCredentialID, {
     // for some reason, newCounter is not incremented in authenticationInfo
@@ -309,5 +325,5 @@ export const verifyAuthentication = async ({
     usage_count: authenticator.usage_count + 1,
   });
 
-  return { verified, user };
+  return { userVerified, user };
 };

@@ -1,18 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  addAuthenticationMethodReferenceInSession,
   deleteTemporaryTotpKey,
   getTemporaryTotpKey,
-  getUserFromLoggedInSession,
-  markAsTwoFactorVerifiedInSession,
+  getUserFromAuthenticatedSession,
   setTemporaryTotpKey,
-  updateUserInLoggedInSession,
+  updateUserInAuthenticatedSession,
 } from "../managers/session";
 import {
+  authenticateWithTotp,
   confirmAuthenticatorRegistration,
   deleteAuthenticatorConfiguration,
   generateAuthenticatorRegistrationOptions,
   isAuthenticatorConfiguredForUser,
-  isAuthenticatorTokenValid,
 } from "../managers/totp";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { csrfToken } from "../middlewares/csrf-protection";
@@ -26,7 +26,7 @@ export const getAuthenticatorConfigurationController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id, email } = getUserFromLoggedInSession(req);
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 
     const existingTemporaryTotpKey = getTemporaryTotpKey(req);
 
@@ -63,7 +63,7 @@ export const postAuthenticatorConfigurationController = async (
     });
     const { totpToken } = await schema.parseAsync(req.body);
 
-    const { id: user_id } = getUserFromLoggedInSession(req);
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
     const isAuthenticatorAlreadyConfigured =
       await isAuthenticatorConfiguredForUser(user_id);
     const temporaryTotpKey = getTemporaryTotpKey(req);
@@ -78,9 +78,8 @@ export const postAuthenticatorConfigurationController = async (
       totpToken,
     );
 
-    updateUserInLoggedInSession(req, updatedUser);
     deleteTemporaryTotpKey(req);
-    markAsTwoFactorVerifiedInSession(req, res);
+    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "totp");
 
     return res.redirect(
       `/connection-and-account?notification=${
@@ -106,34 +105,15 @@ export const postDeleteAuthenticatorConfigurationController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id } = getUserFromLoggedInSession(req);
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
 
     const updatedUser = await deleteAuthenticatorConfiguration(user_id);
 
-    updateUserInLoggedInSession(req, updatedUser);
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.redirect(
       `/connection-and-account?notification=authenticator_successfully_deleted`,
     );
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getSignInWithAuthenticatorController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { email } = getUserFromLoggedInSession(req);
-
-    return res.render("user/sign-in-with-authenticator", {
-      pageTitle: "Se connecter avec application d’authentification",
-      notifications: await getNotificationsFromRequest(req),
-      csrfToken: csrfToken(req),
-      email,
-    });
   } catch (error) {
     next(error);
   }
@@ -151,18 +131,17 @@ export const postSignInWithAuthenticatorController = async (
 
     const { totpToken } = await schema.parseAsync(req.body);
 
-    const { id: user_id } = getUserFromLoggedInSession(req);
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
 
-    if (!(await isAuthenticatorTokenValid(user_id, totpToken))) {
-      return res.redirect(
-        "/users/sign-in-with-authenticator?notification=invalid_totp_token",
-      );
-    }
+    const user = await authenticateWithTotp(user_id, totpToken);
 
-    markAsTwoFactorVerifiedInSession(req, res);
+    addAuthenticationMethodReferenceInSession(req, res, user, "totp");
 
     return next();
   } catch (error) {
+    if (error instanceof InvalidTotpTokenError) {
+      return res.redirect("/users/2fa-sign-in?notification=invalid_totp_token");
+    }
     next(error);
   }
 };

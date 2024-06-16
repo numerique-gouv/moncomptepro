@@ -1,15 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import { isEmpty } from "lodash-es";
 import { z, ZodError } from "zod";
-import { ForbiddenError, NotFoundError } from "../config/errors";
+import {
+  ForbiddenError,
+  NotFoundError,
+  UserIsNot2faCapableError,
+} from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
-  updateUserInLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../managers/session";
 import { updatePersonalInformations } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
@@ -19,6 +23,8 @@ import getNotificationsFromRequest from "../services/get-notifications-from-requ
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 import moment from "moment/moment";
 import { isAuthenticatorConfiguredForUser } from "../managers/totp";
+import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
+import HttpErrors from "http-errors";
 
 export const getHomeController = async (
   req: Request,
@@ -26,7 +32,7 @@ export const getHomeController = async (
   next: NextFunction,
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
-    getUserFromLoggedInSession(req).id,
+    getUserFromAuthenticatedSession(req).id,
   );
 
   return res.render("home", {
@@ -42,7 +48,7 @@ export const getPersonalInformationsController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
     return res.render("personal-information", {
       pageTitle: "Informations personnelles",
       email: user.email,
@@ -68,7 +74,7 @@ export const postPersonalInformationsController = async (
       await getParamsForPostPersonalInformationsController(req);
 
     const updatedUser = await updatePersonalInformations(
-      getUserFromLoggedInSession(req).id,
+      getUserFromAuthenticatedSession(req).id,
       {
         given_name,
         family_name,
@@ -77,7 +83,7 @@ export const postPersonalInformationsController = async (
       },
     );
 
-    updateUserInLoggedInSession(req, updatedUser);
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.render("personal-information", {
       pageTitle: "Vos informations personnelles",
@@ -110,7 +116,7 @@ export const getManageOrganizationsController = async (
   try {
     const { userOrganizations, pendingUserOrganizations } =
       await getUserOrganizations({
-        user_id: getUserFromLoggedInSession(req).id,
+        user_id: getUserFromAuthenticatedSession(req).id,
       });
 
     return res.render("manage-organizations", {
@@ -135,14 +141,16 @@ export const getConnectionAndAccountController = async (
       id: user_id,
       email,
       totp_key_verified_at,
-    } = getUserFromLoggedInSession(req);
+      force_2fa: force2fa,
+    } = getUserFromAuthenticatedSession(req);
 
     const passkeys = await getUserAuthenticators(email);
+    const is2faCapable = await is2FACapable(user_id);
 
     return res.render("connection-and-account", {
       pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
-      email: getUserFromLoggedInSession(req).email,
+      email: email,
       passkeys,
       isAuthenticatorConfigured:
         await isAuthenticatorConfiguredForUser(user_id),
@@ -153,8 +161,52 @@ export const getConnectionAndAccountController = async (
             .calendar()
         : null,
       csrfToken: csrfToken(req),
+      is2faCapable,
+      force2fa,
     });
   } catch (error) {
+    next(error);
+  }
+};
+
+export const postDisableForce2faController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
+
+    const updatedUser = await disableForce2fa(user_id);
+    updateUserInAuthenticatedSession(req, updatedUser);
+
+    return res.redirect(
+      `/connection-and-account?notification=2fa_successfully_disabled`,
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const postEnableForce2faController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
+
+    const updatedUser = await enableForce2fa(user_id);
+    updateUserInAuthenticatedSession(req, updatedUser);
+
+    return res.redirect(
+      `/connection-and-account?notification=2fa_successfully_enabled`,
+    );
+  } catch (error) {
+    if (error instanceof UserIsNot2faCapableError) {
+      next(new HttpErrors.UnprocessableEntity());
+    }
+
     next(error);
   }
 };
@@ -169,8 +221,8 @@ export const getHelpController = async (
     let user: User | undefined;
     let cached_libelle: string | null | undefined;
 
-    if (isWithinLoggedInSession(req)) {
-      user = getUserFromLoggedInSession(req);
+    if (isWithinAuthenticatedSession(req.session)) {
+      user = getUserFromAuthenticatedSession(req);
       email = user.email;
     }
 

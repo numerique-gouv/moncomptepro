@@ -74,7 +74,12 @@ document.addEventListener(
       }
     };
 
-    initiatingConditionalUI();
+    if (
+      authenticationResponseStringInputElement.getAttribute("autocomplete") ===
+      "webauthn"
+    ) {
+      initiatingConditionalUI();
+    }
   },
   false,
 );

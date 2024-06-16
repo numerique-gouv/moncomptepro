@@ -12,6 +12,7 @@ interface BaseAuthenticator {
   display_name: string | null;
   last_used_at: Date | null;
   usage_count: number;
+  user_verified: boolean;
 }
 
 interface Authenticator extends BaseAuthenticator {

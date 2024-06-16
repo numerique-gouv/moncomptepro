@@ -4,8 +4,8 @@ import { idSchema } from "../../services/custom-zod-schemas";
 
 import { getSponsorLabel } from "../../managers/organization/authentication-by-peers";
 import {
-  getUserFromLoggedInSession,
-  updateUserInLoggedInSession,
+  getUserFromAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { update } from "../../repositories/user";
@@ -23,17 +23,17 @@ export const getWelcomeController = async (
     const { organization_id } = await schema.parseAsync(req.params);
 
     const sponsor_label = await getSponsorLabel({
-      user_id: getUserFromLoggedInSession(req).id,
+      user_id: getUserFromAuthenticatedSession(req).id,
       organization_id,
     });
 
-    let user = getUserFromLoggedInSession(req);
+    let user = getUserFromAuthenticatedSession(req);
     const showInclusionConnectOnboardingHelp =
       user.needs_inclusionconnect_onboarding_help;
     user = await update(user.id, {
       needs_inclusionconnect_onboarding_help: false,
     });
-    updateUserInLoggedInSession(req, user);
+    updateUserInAuthenticatedSession(req, user);
 
     return res.render("user/welcome", {
       pageTitle: "Compte créé",

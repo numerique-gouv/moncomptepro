@@ -248,8 +248,30 @@ Afin de s’assurer que l’utilisateur s’est bien ré-authentifié, il est im
 retournée dans l’ID token. Si la date est supérieure à 5 minutes, l’utilisateur ne s'est pas reconnecté récemment et vous
 devez recommencer la cinématique.
 
+### Connaître les méthodes d'authentification utilisées
+
+Pour éviter à un usager d’avoir à s’authentifier auprès de votre service avec un second facteur alors qu’il a déjà utilisé une authentification multi-facteur dans MonComptePro,
+il est possible de récupérer via le claim `amr` la liste des méthodes d’authentification et d’adapter votre parcours en fonction.
+
+Par défaut ce claim `amr` n’est pas retourné dans l’IdToken, il doit être demandé explicitement.
+Pour ce faire, vous devez passer les paramètres `prompt=login` et `claims={"id_token":{"auth_time":{"essential":true}}}` comme suit :
+
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&claims=%7B%22id_token%22%3A%7B%22amr%22%3A%7B%22essential%22%3Atrue%7D%7D%7D
+
+MonComptePro peut renvoyer une combinaison des valeurs suivantes :
+
+| valeur amr | description                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| pwd        | Authentification par mot de passe. En complément d’un mot de passe, l’utilisateur a authentifié son navigateur avec un otp envoyé par mail |
+| mail       | Authentification par lien de connexion « lien magique ».                                                                                   |
+| totp       | Authentification avec une application « authenticator » comme FreeOTP.                                                                     |
+| pop        | Authentification avec une clé d’accès (Passkey).                                                                                           |
+| mfa        | Authentification a deux facteurs.                                                                                                          |
+
+Vous trouverez de plus amples informations sur la [documentation de FranceConnect](https://docs.partenaires.franceconnect.gouv.fr/fs/fs-technique/fs-technique-amr/#quels-sont-les-differents-methodes-d-authentification-qui-peuvent-etre-utilisees).
+
 ## 👋 Contribuer à MonComptePro
 
-Pour contribuer à MonComptePro vous pouvez installer l'application localement.
+Pour contribuer à MonComptePro, vous pouvez installer l’application localement.
 
 Les instructions se trouvent sur [la page de doc dédiée](./installation.md).

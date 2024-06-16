@@ -7,11 +7,10 @@ import { InvalidEmailError, InvalidMagicLinkError } from "../../config/errors";
 import { z, ZodError } from "zod";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
-  createLoggedInSession,
+  createAuthenticatedSession,
   getEmailFromLoggedOutSession,
 } from "../../managers/session";
 import { csrfToken } from "../../middlewares/csrf-protection";
-import { setBrowserAsTrustedForUser } from "../../managers/browser-authentication";
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -111,8 +110,8 @@ export const postSignInWithMagicLinkController = async (
     const { magic_link_token } = await schema.parseAsync(req.body);
 
     const user = await loginWithMagicLink(magic_link_token);
-    await createLoggedInSession(req, user);
-    setBrowserAsTrustedForUser(req, res, user.id);
+
+    await createAuthenticatedSession(req, res, user, "email-link");
 
     next();
   } catch (error) {

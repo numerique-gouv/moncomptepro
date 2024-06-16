@@ -10,13 +10,13 @@ import {
   UserNotLoggedInError,
   WebauthnRegistrationFailedError,
 } from "../config/errors";
-import { setBrowserAsTrustedForUser } from "../managers/browser-authentication";
 import {
-  createLoggedInSession,
+  addAuthenticationMethodReferenceInSession,
+  createAuthenticatedSession,
   getEmailFromLoggedOutSession,
-  getUserFromLoggedInSession,
-  isWithinLoggedInSession,
-  updateUserInLoggedInSession,
+  getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../managers/session";
 import {
   deleteUserAuthenticator,
@@ -40,7 +40,7 @@ export const deletePasskeyController = async (
     });
     const { credential_id } = schema.parse(req.params);
 
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
 
     await deleteUserAuthenticator(user.email, credential_id);
 
@@ -58,12 +58,12 @@ export const getGenerateRegistrationOptionsController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
 
     const { updatedUser, registrationOptions } = await getRegistrationOptions(
       user.email,
     );
-    updateUserInLoggedInSession(req, updatedUser);
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.json(registrationOptions);
   } catch (e) {
@@ -97,12 +97,13 @@ export const postVerifyRegistrationController = async (
       registrationResponseJson,
     );
 
-    const user = getUserFromLoggedInSession(req);
+    const user = getUserFromAuthenticatedSession(req);
 
-    await verifyRegistration({
+    const updatedUser = await verifyRegistration({
       email: user.email,
       response,
     });
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,
@@ -141,8 +142,8 @@ export const getGenerateAuthenticationOptionsController = async (
   next: NextFunction,
 ) => {
   try {
-    const email = isWithinLoggedInSession(req)
-      ? getUserFromLoggedInSession(req).email
+    const email = isWithinAuthenticatedSession(req.session)
+      ? getUserFromAuthenticatedSession(req).email
       : getEmailFromLoggedOutSession(req);
 
     if (!email) {
@@ -150,10 +151,13 @@ export const getGenerateAuthenticationOptionsController = async (
     }
 
     const { updatedUser, authenticationOptions } =
-      await getAuthenticationOptions(email);
+      await getAuthenticationOptions(
+        email,
+        isWithinAuthenticatedSession(req.session),
+      );
 
-    if (isWithinLoggedInSession(req)) {
-      updateUserInLoggedInSession(req, updatedUser);
+    if (isWithinAuthenticatedSession(req.session)) {
+      updateUserInAuthenticatedSession(req, updatedUser);
     }
 
     return res.json(authenticationOptions);
@@ -184,17 +188,22 @@ export const postVerifyAuthenticationController = async (
       authenticationResponseJson,
     );
 
-    const email = isWithinLoggedInSession(req)
-      ? getUserFromLoggedInSession(req).email
+    const email = isWithinAuthenticatedSession(req.session)
+      ? getUserFromAuthenticatedSession(req).email
       : getEmailFromLoggedOutSession(req);
 
-    const { user, verified } = await verifyAuthentication({
+    const { user, userVerified } = await verifyAuthentication({
       email,
       response,
+      isOneFactorAuthenticated: isWithinAuthenticatedSession(req.session),
     });
 
-    await createLoggedInSession(req, user);
-    setBrowserAsTrustedForUser(req, res, user.id);
+    if (userVerified) {
+      await createAuthenticatedSession(req, res, user, "pop");
+      addAuthenticationMethodReferenceInSession(req, res, user, "uv");
+    } else {
+      addAuthenticationMethodReferenceInSession(req, res, user, "pop");
+    }
 
     next();
   } catch (e) {

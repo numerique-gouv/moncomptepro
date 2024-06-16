@@ -3,7 +3,11 @@ import getNotificationsFromRequest, {
   getNotificationLabelFromRequest,
 } from "../../services/get-notifications-from-request";
 import { z, ZodError } from "zod";
-import { login, signup, startLogin } from "../../managers/user";
+import {
+  loginWithPassword,
+  signupWithPassword,
+  startLogin,
+} from "../../managers/user";
 import {
   EmailUnavailableError,
   InvalidCredentialsError,
@@ -13,7 +17,7 @@ import {
 } from "../../config/errors";
 import { emailSchema } from "../../services/custom-zod-schemas";
 import {
-  createLoggedInSession,
+  createAuthenticatedSession,
   getEmailFromLoggedOutSession,
   setPartialUserFromLoggedOutSession,
   updatePartialUserFromLoggedOutSession,
@@ -166,8 +170,12 @@ export const postSignInMiddleware = async (
 
     const { password } = await schema.parseAsync(req.body);
 
-    const user = await login(getEmailFromLoggedOutSession(req)!, password);
-    await createLoggedInSession(req, user);
+    const user = await loginWithPassword(
+      getEmailFromLoggedOutSession(req)!,
+      password,
+    );
+
+    await createAuthenticatedSession(req, res, user, "pwd");
 
     next();
   } catch (error) {
@@ -220,8 +228,12 @@ export const postSignUpController = async (
       body: req.body,
     });
 
-    const user = await signup(getEmailFromLoggedOutSession(req)!, password);
-    await createLoggedInSession(req, user);
+    const user = await signupWithPassword(
+      getEmailFromLoggedOutSession(req)!,
+      password,
+    );
+
+    await createAuthenticatedSession(req, res, user, "pwd");
 
     next();
   } catch (error) {
