@@ -53,7 +53,23 @@ npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration.c
 Some tests require a test client to be running.
 You can use [moncomptepro-test-client](https://github.com/betagouv/moncomptepro-test-client/) for this purpose.
 
-To run the test client, use the following command:
+To run the standard-client, use the following command:
+
+```
+docker run --rm --network host \
+-p 4000:4000 \
+-e PORT=4000 \
+-e SITE_TITLE="moncomptepro-standard-client" \
+-e HOST="http://localhost:4000" \
+-e MCP_CLIENT_ID="standard_client_id" \
+-e MCP_CLIENT_SECRET="standard_client_secret" \
+-e MCP_PROVIDER="http://localhost:3000" \
+-e MCP_SCOPES="openid email profile organization" \
+-e STYLESHEET_URL="" \
+ghcr.io/betagouv/moncomptepro-test-client
+```
+
+To run the agentconnect-client, use the following command:
 
 ```
 docker run --rm --network host \
@@ -72,4 +88,20 @@ docker run --rm --network host \
 ghcr.io/betagouv/moncomptepro-test-client
 ```
 
-Ensure that you adjust the environment variables according to the specific test you are running.
+To run the legacy-client, use the following command:
+
+```
+docker run --rm --network host \
+-p 4002:4002 \
+-e PORT=4002 \
+-e SITE_TITLE="moncomptepro-legacy-client" \
+-e HOST="http://localhost:4002" \
+-e MCP_CLIENT_ID="legacy_client_id" \
+-e MCP_CLIENT_SECRET="legacy_client_secret" \
+-e MCP_PROVIDER="http://localhost:3000" \
+-e MCP_SCOPES="openid email profile phone organizations" \
+-e STYLESHEET_URL="" \
+ghcr.io/betagouv/moncomptepro-test-client
+```
+
+Ensure that you adjust the MCP_PROVIDER environment variable according to your configuration.
