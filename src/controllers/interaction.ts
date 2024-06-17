@@ -3,11 +3,13 @@ import Provider, { errors } from "oidc-provider";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
+  isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { postStartSignInController } from "./user/signin-signup";
 import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
+import { shouldTrigger2fa } from "../services/should-trigger-2fa";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -22,6 +24,9 @@ export const interactionStartControllerFactory =
       req.session.interactionId = interactionId;
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
+      if (shouldTrigger2fa(prompt)) {
+        req.session.mustUse2FA = true;
+      }
 
       if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
         if (login_hint) {
@@ -66,7 +71,9 @@ export const interactionEndControllerFactory =
       const result = {
         login: {
           accountId: user.id.toString(),
-          acr: "eidas1",
+          acr: isWithinTwoFactorAuthenticatedSession(req)
+            ? "https://refeds.org/profile/mfa"
+            : "eidas1",
           amr: getSessionStandardizedAuthenticationMethodsReferences(req),
           ts: user.last_sign_in_at
             ? epochTime(user.last_sign_in_at)
@@ -87,6 +94,7 @@ export const interactionEndControllerFactory =
 
       req.session.interactionId = undefined;
       req.session.mustReturnOneOrganizationInPayload = undefined;
+      req.session.mustUse2FA = undefined;
 
       await oidcProvider.interactionFinished(req, res, result);
     } catch (error) {

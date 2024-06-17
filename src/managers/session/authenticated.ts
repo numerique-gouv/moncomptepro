@@ -47,8 +47,12 @@ export const createAuthenticatedSession = async (
   // we store old session value to pass it to the new logged-in session
   // email and needsInclusionconnectWelcomePage are not passed to the new session as it is not useful within logged session
   // csrfToken should not be passed to the new session for security reasons
-  const { interactionId, mustReturnOneOrganizationInPayload, referrerPath } =
-    req.session;
+  const {
+    interactionId,
+    mustReturnOneOrganizationInPayload,
+    mustUse2FA,
+    referrerPath,
+  } = req.session;
 
   // as selected org is not stored in session,
   // we delete this to avoid sync issues
@@ -69,6 +73,7 @@ export const createAuthenticatedSession = async (
         req.session.interactionId = interactionId;
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
+        req.session.mustUse2FA = mustUse2FA;
         req.session.referrerPath = referrerPath;
         // new session reset amr
         req.session.amr = [];
