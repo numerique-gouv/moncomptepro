@@ -154,15 +154,10 @@ export const getGenerateAuthenticationOptionsController = async (
       return next(new HttpErrors.Unauthorized());
     }
 
-    const { updatedUser, authenticationOptions } =
-      await getAuthenticationOptions(
-        email,
-        isWithinAuthenticatedSession(req.session),
-      );
-
-    if (isWithinAuthenticatedSession(req.session)) {
-      updateUserInAuthenticatedSession(req, updatedUser);
-    }
+    const { authenticationOptions } = await getAuthenticationOptions(
+      email,
+      isWithinAuthenticatedSession(req.session),
+    );
 
     return res.json(authenticationOptions);
   } catch (e) {
