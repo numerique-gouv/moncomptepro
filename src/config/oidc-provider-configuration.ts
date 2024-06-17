@@ -11,7 +11,7 @@ export const oidcProviderConfiguration = ({
   shortTokenTtlInSeconds = 10 * 60,
   tokenTtlInSeconds = 60 * 60,
 }): Configuration => ({
-  acrValues: ["eidas1"],
+  acrValues: ["eidas1", "https://refeds.org/profile/mfa"],
   claims: {
     amr: null,
     // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims

@@ -3,6 +3,7 @@ export interface LoggedOutSessionData {
   needsInclusionconnectWelcomePage?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
+  mustUse2FA?: boolean;
   referrerPath?: string;
 }
 

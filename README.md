@@ -270,6 +270,22 @@ MonComptePro peut renvoyer une combinaison des valeurs suivantes :
 
 Vous trouverez de plus amples informations sur la [documentation de FranceConnect](https://docs.partenaires.franceconnect.gouv.fr/fs/fs-technique/fs-technique-amr/#quels-sont-les-differents-methodes-d-authentification-qui-peuvent-etre-utilisees).
 
+### Exiger une authentification double facteur
+
+Certaines fonctionnalités sensibles requièrent une authentification à double facteur pour réduire les risques
+d’usurpations d’identités liés aux attaques par _phishing_ par exemple.
+
+Vous pouvez tester la cinématique via le lien suivant : https://test.moncomptepro.beta.gouv.fr/#force-2fa
+
+Pour ce faire, vous devez passer les paramètres `claims={"id_token":{"acr":{"essential":true,value:"https://refeds.org/profile/mfa"}}}` comme suit :
+
+https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&claims=%7B%22id_token%22%3A%7B%22acr%22%3A%7B%22essential%22%3Atrue%2C%22value%22%3A%22https%3A%2F%2Frefeds.org%2Fprofile%2Fmfa%22%7D%7D%7D
+
+Les valeurs `acr` utilisées par MonComptePro sont les suivantes :
+
+- `eidas1` authentification simple facteur avec une identité de niveau faible.
+- `https://refeds.org/profile/mfa` authentification par double facteur sans preuve d’identité particulière.
+
 ## 👋 Contribuer à MonComptePro
 
 Pour contribuer à MonComptePro, vous pouvez installer l’application localement.
