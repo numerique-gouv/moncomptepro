@@ -20,6 +20,7 @@ import {
 } from "../config/env";
 import {
   NotFoundError,
+  UserNotFoundError,
   WebauthnAuthenticationFailedError,
   WebauthnRegistrationFailedError,
 } from "../config/errors";
@@ -31,7 +32,11 @@ import {
   getAuthenticatorsByUserId,
   updateAuthenticator,
 } from "../repositories/authenticator";
-import { findByEmail as findUserByEmail, update } from "../repositories/user";
+import {
+  findByEmail as findUserByEmail,
+  findById,
+  update,
+} from "../repositories/user";
 import { encodeBase64URL } from "../services/base64";
 import { logger } from "../services/log";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
@@ -42,6 +47,18 @@ const rpName = MONCOMPTEPRO_LABEL;
 const rpID = MONCOMPTEPRO_IDENTIFIER;
 // The URL at which registrations and authentications should occur
 const origin = MONCOMPTEPRO_HOST;
+
+export const isWebauthnConfiguredForUser = async (user_id: number) => {
+  const user = await findById(user_id);
+
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+
+  const authenticators = await getAuthenticatorsByUserId(user_id);
+
+  return !isEmpty(authenticators);
+};
 
 export const getUserAuthenticators = async (email: string) => {
   const user = await findUserByEmail(email);
@@ -226,7 +243,7 @@ export const getAuthenticationOptions = async (
   const user = await findUserByEmail(email);
 
   if (isEmpty(user)) {
-    throw new NotFoundError();
+    throw new UserNotFoundError();
   }
 
   // Retrieve any of the user's previously registered authenticators

@@ -1,7 +1,8 @@
 import { findById, update } from "../repositories/user";
 import { isEmpty } from "lodash-es";
 import { UserIsNot2faCapableError, UserNotFoundError } from "../config/errors";
-import { getAuthenticatorsByUserId } from "../repositories/authenticator";
+import { isAuthenticatorAppConfiguredForUser } from "./totp";
+import { isWebauthnConfiguredForUser } from "./webauthn";
 
 export const shouldForce2faForUser = async (user_id: number) => {
   const user = await findById(user_id);
@@ -13,16 +14,11 @@ export const shouldForce2faForUser = async (user_id: number) => {
 };
 
 export const is2FACapable = async (user_id: number) => {
-  const user = await findById(user_id);
-  if (isEmpty(user)) {
-    throw new UserNotFoundError();
-  }
-  if (!isEmpty(user.encrypted_totp_key)) {
+  if (await isAuthenticatorAppConfiguredForUser(user_id)) {
     return true;
   }
 
-  const authenticators = await getAuthenticatorsByUserId(user_id);
-  if (!isEmpty(authenticators)) {
+  if (await isWebauthnConfiguredForUser(user_id)) {
     return true;
   }
 
