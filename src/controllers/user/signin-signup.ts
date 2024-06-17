@@ -16,15 +16,15 @@ import {
   WeakPasswordError,
 } from "../../config/errors";
 import { emailSchema } from "../../services/custom-zod-schemas";
-import {
-  createAuthenticatedSession,
-  getEmailFromLoggedOutSession,
-  setPartialUserFromLoggedOutSession,
-  updatePartialUserFromLoggedOutSession,
-} from "../../managers/session";
+import { createAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
 import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
+import {
+  getEmailFromUnauthenticatedSession,
+  setPartialUserFromUnauthenticatedSession,
+  updatePartialUserFromUnauthenticatedSession,
+} from "../../managers/session/unauthenticated";
 
 export const getStartSignInController = async (
   req: Request,
@@ -38,7 +38,7 @@ export const getStartSignInController = async (
 
     const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
 
-    const loginHint = getEmailFromLoggedOutSession(req);
+    const loginHint = getEmailFromUnauthenticatedSession(req);
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
@@ -75,7 +75,7 @@ export const postStartSignInController = async (
       hasAPassword,
       needsInclusionconnectWelcomePage,
     } = await startLogin(login);
-    setPartialUserFromLoggedOutSession(req, {
+    setPartialUserFromUnauthenticatedSession(req, {
       email,
       needsInclusionconnectWelcomePage,
     });
@@ -131,7 +131,7 @@ export const postInclusionconnectWelcomeController = async (
   next: NextFunction,
 ) => {
   try {
-    await updatePartialUserFromLoggedOutSession(req, {
+    await updatePartialUserFromUnauthenticatedSession(req, {
       needs_inclusionconnect_welcome_page: false,
     });
 
@@ -151,7 +151,7 @@ export const getSignInController = async (
       pageTitle: "Accéder au compte",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
-      email: getEmailFromLoggedOutSession(req),
+      email: getEmailFromUnauthenticatedSession(req),
     });
   } catch (error) {
     next(error);
@@ -171,7 +171,7 @@ export const postSignInMiddleware = async (
     const { password } = await schema.parseAsync(req.body);
 
     const user = await loginWithPassword(
-      getEmailFromLoggedOutSession(req)!,
+      getEmailFromUnauthenticatedSession(req)!,
       password,
     );
 
@@ -203,7 +203,7 @@ export const getSignUpController = async (
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
-      email: getEmailFromLoggedOutSession(req),
+      email: getEmailFromUnauthenticatedSession(req),
     });
   } catch (error) {
     next(error);
@@ -229,7 +229,7 @@ export const postSignUpController = async (
     });
 
     const user = await signupWithPassword(
-      getEmailFromLoggedOutSession(req)!,
+      getEmailFromUnauthenticatedSession(req)!,
       password,
     );
 

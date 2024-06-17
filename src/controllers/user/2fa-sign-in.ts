@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   getUserFromAuthenticatedSession,
   isPasskeyAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import { csrfToken } from "../../middlewares/csrf-protection";
 

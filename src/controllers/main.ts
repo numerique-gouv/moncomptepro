@@ -14,7 +14,7 @@ import {
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import { updatePersonalInformations } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";

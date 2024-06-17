@@ -16,7 +16,7 @@ import {
 import {
   addAuthenticationMethodReferenceInSession,
   getUserFromAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
 

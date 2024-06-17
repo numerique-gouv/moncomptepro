@@ -6,7 +6,7 @@ import { getSponsorLabel } from "../../managers/organization/authentication-by-p
 import {
   getUserFromAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { update } from "../../repositories/user";
 

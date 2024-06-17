@@ -3,12 +3,11 @@ import Provider, { errors } from "oidc-provider";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
-  isWithinTwoFactorAuthenticatedSession,
-  setEmailInLoggedOutSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { postStartSignInController } from "./user/signin-signup";
+import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -26,7 +25,7 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
         if (login_hint) {
-          setEmailInLoggedOutSession(req, login_hint);
+          setEmailInUnauthenticatedSession(req, login_hint);
           req.body.login = login_hint;
           return postStartSignInController(req, res, next);
         }
@@ -36,7 +35,7 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
         if (login_hint) {
-          setEmailInLoggedOutSession(req, login_hint);
+          setEmailInUnauthenticatedSession(req, login_hint);
           req.body.login = login_hint;
           return postStartSignInController(req, res, next);
         }

@@ -1,12 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import {
   addAuthenticationMethodReferenceInSession,
-  deleteTemporaryTotpKey,
-  getTemporaryTotpKey,
   getUserFromAuthenticatedSession,
-  setTemporaryTotpKey,
   updateUserInAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import {
   authenticateWithTotp,
   confirmAuthenticatorRegistration,
@@ -19,6 +16,11 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import { z } from "zod";
 import { InvalidTotpTokenError, NotFoundError } from "../config/errors";
 import { codeSchema } from "../services/custom-zod-schemas";
+import {
+  deleteTemporaryTotpKey,
+  getTemporaryTotpKey,
+  setTemporaryTotpKey,
+} from "../managers/session/temporary-totp-key";
 
 export const getAuthenticatorConfigurationController = async (
   req: Request,

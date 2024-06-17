@@ -6,7 +6,7 @@ import { NODE_ENV } from "../config/env";
 import {
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 
 let manifest: Record<
   string,

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   destroyAuthenticatedSession,
   getUserFromAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import { deleteUser } from "../../repositories/user";
 import { logger } from "../../services/log";
 

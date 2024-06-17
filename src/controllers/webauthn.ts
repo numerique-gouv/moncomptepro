@@ -13,11 +13,10 @@ import {
 import {
   addAuthenticationMethodReferenceInSession,
   createAuthenticatedSession,
-  getEmailFromLoggedOutSession,
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import {
   deleteUserAuthenticator,
   getAuthenticationOptions,
@@ -28,6 +27,7 @@ import {
 import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
+import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
 
 export const deletePasskeyController = async (
   req: Request,
@@ -144,7 +144,7 @@ export const getGenerateAuthenticationOptionsController = async (
   try {
     const email = isWithinAuthenticatedSession(req.session)
       ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromLoggedOutSession(req);
+      : getEmailFromUnauthenticatedSession(req);
 
     if (!email) {
       return next(new HttpErrors.Unauthorized());
@@ -190,7 +190,7 @@ export const postVerifyAuthenticationController = async (
 
     const email = isWithinAuthenticatedSession(req.session)
       ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromLoggedOutSession(req);
+      : getEmailFromUnauthenticatedSession(req);
 
     const { user, userVerified } = await verifyAuthentication({
       email,

@@ -5,10 +5,10 @@ import { RateLimiterRedis } from "rate-limiter-flexible";
 import { DO_NOT_RATE_LIMIT } from "../config/env";
 import { getNewRedisClient } from "../connectors/redis";
 import {
-  getEmailFromLoggedOutSession,
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
+import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
 
 const redisClient = getNewRedisClient({
   enableOfflineQueue: false,
@@ -35,8 +35,8 @@ const emailRateLimiterMiddlewareFactory =
       } else if (isWithinAuthenticatedSession(req.session)) {
         const { email } = getUserFromAuthenticatedSession(req);
         await rateLimiter.consume(email);
-      } else if (getEmailFromLoggedOutSession(req)) {
-        await rateLimiter.consume(getEmailFromLoggedOutSession(req)!);
+      } else if (getEmailFromUnauthenticatedSession(req)) {
+        await rateLimiter.consume(getEmailFromUnauthenticatedSession(req)!);
       } else {
         const err = new Error("Falling back to ip rate limiting.");
         Sentry.captureException(err);
