@@ -100,11 +100,14 @@ export const postVerifyRegistrationController = async (
 
     const user = getUserFromAuthenticatedSession(req);
 
-    const updatedUser = await verifyRegistration({
+    const { userVerified, user: updatedUser } = await verifyRegistration({
       email: user.email,
       response,
     });
-    updateUserInAuthenticatedSession(req, updatedUser);
+    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "pop");
+    if (userVerified) {
+      addAuthenticationMethodReferenceInSession(req, res, updatedUser, "uv");
+    }
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,

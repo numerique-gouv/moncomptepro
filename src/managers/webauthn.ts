@@ -208,7 +208,7 @@ export const verifyRegistration = async ({
     },
   });
 
-  return await enableForce2fa(user.id);
+  return { userVerified: user_verified, user: await enableForce2fa(user.id) };
 };
 
 export const getAuthenticationOptions = async (
