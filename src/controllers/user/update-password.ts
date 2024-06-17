@@ -11,13 +11,13 @@ import {
 import hasErrorFromField from "../../services/has-error-from-field";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
-  getEmailFromLoggedOutSession,
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import * as Sentry from "@sentry/node";
 import { setBrowserAsTrustedForUser } from "../../managers/browser-authentication";
+import { getEmailFromUnauthenticatedSession } from "../../managers/session/unauthenticated";
 
 export const getResetPasswordController = async (
   req: Request,
@@ -29,7 +29,7 @@ export const getResetPasswordController = async (
       pageTitle: "Réinitialiser mon mot de passe",
       notifications: await getNotificationsFromRequest(req),
       loginHint:
-        getEmailFromLoggedOutSession(req) ||
+        getEmailFromUnauthenticatedSession(req) ||
         (isWithinAuthenticatedSession(req.session)
           ? getUserFromAuthenticatedSession(req).email
           : null),

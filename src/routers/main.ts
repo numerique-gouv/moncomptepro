@@ -22,9 +22,9 @@ import {
   postVerifyRegistrationController,
 } from "../controllers/webauthn";
 import {
-  getAuthenticatorConfigurationController,
-  postAuthenticatorConfigurationController,
-  postDeleteAuthenticatorConfigurationController,
+  getAuthenticatorAppConfigurationController,
+  postAuthenticatorAppConfigurationController,
+  postDeleteAuthenticatorAppConfigurationController,
 } from "../controllers/totp";
 
 export const mainRouter = (app: Express) => {
@@ -42,30 +42,30 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.get(
-    "/authenticator-configuration",
+    "/authenticator-app-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
-    getAuthenticatorConfigurationController,
+    getAuthenticatorAppConfigurationController,
   );
 
   mainRouter.post(
-    "/authenticator-configuration",
+    "/authenticator-app-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
-    postAuthenticatorConfigurationController,
+    postAuthenticatorAppConfigurationController,
   );
 
   mainRouter.post(
-    "/delete-authenticator-configuration",
+    "/delete-authenticator-app-configuration",
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
-    postDeleteAuthenticatorConfigurationController,
+    postDeleteAuthenticatorAppConfigurationController,
   );
 
   mainRouter.post(

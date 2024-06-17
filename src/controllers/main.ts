@@ -14,7 +14,7 @@ import {
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import { updatePersonalInformations } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
@@ -22,7 +22,7 @@ import { idSchema } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 import moment from "moment/moment";
-import { isAuthenticatorConfiguredForUser } from "../managers/totp";
+import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
 import HttpErrors from "http-errors";
 
@@ -153,7 +153,7 @@ export const getConnectionAndAccountController = async (
       email: email,
       passkeys,
       isAuthenticatorConfigured:
-        await isAuthenticatorConfiguredForUser(user_id),
+        await isAuthenticatorAppConfiguredForUser(user_id),
       totpKeyVerifiedAt: totp_key_verified_at
         ? moment(totp_key_verified_at)
             .tz("Europe/Paris")

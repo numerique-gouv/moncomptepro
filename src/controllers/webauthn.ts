@@ -8,16 +8,16 @@ import { z, ZodError } from "zod";
 import {
   NotFoundError,
   UserNotLoggedInError,
+  WebauthnAuthenticationFailedError,
   WebauthnRegistrationFailedError,
 } from "../config/errors";
 import {
   addAuthenticationMethodReferenceInSession,
   createAuthenticatedSession,
-  getEmailFromLoggedOutSession,
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import {
   deleteUserAuthenticator,
   getAuthenticationOptions,
@@ -28,6 +28,7 @@ import {
 import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
+import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
 
 export const deletePasskeyController = async (
   req: Request,
@@ -99,11 +100,14 @@ export const postVerifyRegistrationController = async (
 
     const user = getUserFromAuthenticatedSession(req);
 
-    const updatedUser = await verifyRegistration({
+    const { userVerified, user: updatedUser } = await verifyRegistration({
       email: user.email,
       response,
     });
-    updateUserInAuthenticatedSession(req, updatedUser);
+    addAuthenticationMethodReferenceInSession(req, res, updatedUser, "pop");
+    if (userVerified) {
+      addAuthenticationMethodReferenceInSession(req, res, updatedUser, "uv");
+    }
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,
@@ -144,21 +148,16 @@ export const getGenerateAuthenticationOptionsController = async (
   try {
     const email = isWithinAuthenticatedSession(req.session)
       ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromLoggedOutSession(req);
+      : getEmailFromUnauthenticatedSession(req);
 
     if (!email) {
       return next(new HttpErrors.Unauthorized());
     }
 
-    const { updatedUser, authenticationOptions } =
-      await getAuthenticationOptions(
-        email,
-        isWithinAuthenticatedSession(req.session),
-      );
-
-    if (isWithinAuthenticatedSession(req.session)) {
-      updateUserInAuthenticatedSession(req, updatedUser);
-    }
+    const { authenticationOptions } = await getAuthenticationOptions(
+      email,
+      isWithinAuthenticatedSession(req.session),
+    );
 
     return res.json(authenticationOptions);
   } catch (e) {
@@ -190,7 +189,7 @@ export const postVerifyAuthenticationController = async (
 
     const email = isWithinAuthenticatedSession(req.session)
       ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromLoggedOutSession(req);
+      : getEmailFromUnauthenticatedSession(req);
 
     const { user, userVerified } = await verifyAuthentication({
       email,
@@ -208,15 +207,18 @@ export const postVerifyAuthenticationController = async (
     next();
   } catch (e) {
     logger.error(e);
-    if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
+    if (
+      e instanceof ZodError ||
+      e instanceof WebauthnAuthenticationFailedError
+    ) {
       return res.redirect(
-        `/users/sign-in-with-passkey?notification=invalid_passkey`,
+        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=invalid_passkey`,
       );
     }
 
     if (e instanceof NotFoundError) {
       return res.redirect(
-        `/users/sign-in-with-passkey?notification=passkey_not_found`,
+        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=passkey_not_found`,
       );
     }
 

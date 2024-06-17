@@ -26,7 +26,7 @@ import {
   quitOrganization,
   selectOrganization,
 } from "../managers/organization/main";
-import { getUserFromAuthenticatedSession } from "../managers/session";
+import { getUserFromAuthenticatedSession } from "../managers/session/authenticated";
 import { csrfToken } from "../middlewares/csrf-protection";
 import {
   idSchema,

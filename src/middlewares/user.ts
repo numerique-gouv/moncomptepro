@@ -15,13 +15,11 @@ import {
 } from "../managers/organization/main";
 import {
   destroyAuthenticatedSession,
-  getEmailFromLoggedOutSession,
-  getPartialUserFromLoggedOutSession,
   getUserFromAuthenticatedSession,
   hasUserAuthenticatedRecently,
   isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
-} from "../managers/session";
+} from "../managers/session/authenticated";
 import { needsEmailVerificationRenewal } from "../managers/user";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
@@ -29,6 +27,10 @@ import { getTrustedReferrerPath } from "../services/security";
 import { getEmailDomain } from "../services/uses-a-free-email-provider";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
+import {
+  getEmailFromUnauthenticatedSession,
+  getPartialUserFromUnauthenticatedSession,
+} from "../managers/session/unauthenticated";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from
@@ -70,7 +72,7 @@ export const checkEmailInSessionMiddleware = async (
     try {
       if (error) return next(error);
 
-      if (isEmpty(getEmailFromLoggedOutSession(req))) {
+      if (isEmpty(getEmailFromUnauthenticatedSession(req))) {
         return res.redirect(`/users/start-sign-in`);
       }
 
@@ -92,7 +94,8 @@ export const checkUserHasSeenInclusionconnectWelcomePage = async (
       if (error) next(error);
 
       if (
-        getPartialUserFromLoggedOutSession(req).needsInclusionconnectWelcomePage
+        getPartialUserFromUnauthenticatedSession(req)
+          .needsInclusionconnectWelcomePage
       ) {
         return res.redirect(`/users/inclusionconnect-welcome`);
       }

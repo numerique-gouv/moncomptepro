@@ -9,7 +9,7 @@ import {
 import {
   getUserFromAuthenticatedSession,
   updateUserInAuthenticatedSession,
-} from "../../managers/session";
+} from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 
 export const getPersonalInformationsController = async (

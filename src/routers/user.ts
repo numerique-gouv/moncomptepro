@@ -83,7 +83,7 @@ import {
   postVerifyAuthenticationController,
 } from "../controllers/webauthn";
 import { postDeleteUserController } from "../controllers/user/delete";
-import { postSignInWithAuthenticatorController } from "../controllers/totp";
+import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 
 export const userRouter = () => {
@@ -158,11 +158,11 @@ export const userRouter = () => {
     get2faSignInController,
   );
   userRouter.post(
-    "/2fa-sign-in-with-authenticator",
+    "/2fa-sign-in-with-authenticator-app",
     authenticatorRateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
-    postSignInWithAuthenticatorController,
+    postSignInWithAuthenticatorAppController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );

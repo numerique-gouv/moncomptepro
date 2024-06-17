@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Configuration } from "oidc-provider";
-import { destroyAuthenticatedSession } from "../managers/session";
+import { destroyAuthenticatedSession } from "../managers/session/authenticated";
 import epochTime from "../services/epoch-time";
 import { findAccount } from "../services/oidc-account-adapter";
 import policy from "../services/oidc-policy";

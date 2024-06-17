@@ -6,11 +6,9 @@ import {
 import { InvalidEmailError, InvalidMagicLinkError } from "../../config/errors";
 import { z, ZodError } from "zod";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
-import {
-  createAuthenticatedSession,
-  getEmailFromLoggedOutSession,
-} from "../../managers/session";
+import { createAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
+import { getEmailFromUnauthenticatedSession } from "../../managers/session/unauthenticated";
 
 export const postSendMagicLinkController = async (
   req: Request,
@@ -19,7 +17,7 @@ export const postSendMagicLinkController = async (
 ) => {
   try {
     await sendSendMagicLinkEmail(
-      getEmailFromLoggedOutSession(req)!,
+      getEmailFromUnauthenticatedSession(req)!,
       MONCOMPTEPRO_HOST,
     );
 
@@ -39,7 +37,7 @@ export const getMagicLinkSentController = async (
   next: NextFunction,
 ) => {
   try {
-    const email = getEmailFromLoggedOutSession(req);
+    const email = getEmailFromUnauthenticatedSession(req);
     return res.render("user/magic-link-sent", {
       pageTitle: "Recevoir un lien d'identification",
       email,
@@ -61,7 +59,7 @@ export const getSignInWithMagicLinkController = async (
 
     const { magic_link_token } = await schema.parseAsync(req.query);
 
-    if (!getEmailFromLoggedOutSession(req)) {
+    if (!getEmailFromUnauthenticatedSession(req)) {
       // This is a robot protection mechanism.
       // There are 3 known reasons for email to be undefined in logged-out session:
       // 1. the user uses a different browser than the one he used to get the magic link

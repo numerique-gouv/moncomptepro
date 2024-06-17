@@ -1,30 +1,23 @@
 import { Request, Response } from "express";
 import { isEmpty } from "lodash-es";
-import {
-  RECENT_LOGIN_INTERVAL_IN_SECONDS,
-  SYMMETRIC_ENCRYPTION_KEY,
-} from "../config/env";
-import {
-  NoEmailFoundInLoggedOutSessionError,
-  UserNotLoggedInError,
-} from "../config/errors";
-import { deleteSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { findByEmail, update } from "../repositories/user";
-import { isExpiredInSeconds } from "../services/is-expired";
+import { RECENT_LOGIN_INTERVAL_IN_SECONDS } from "../../config/env";
+import { UserNotLoggedInError } from "../../config/errors";
+import { deleteSelectedOrganizationId } from "../../repositories/redis/selected-organization";
+import { update } from "../../repositories/user";
+import { isExpiredInSeconds } from "../../services/is-expired";
 import {
   setBrowserAsTrustedForUser,
   setIsTrustedBrowserFromLoggedInSession,
-} from "./browser-authentication";
+} from "../browser-authentication";
 import {
-  decryptSymmetric,
-  encryptSymmetric,
-} from "../services/symmetric-encryption";
-import { AmrValue, AuthenticatedSessionData } from "../types/express-session";
+  AmrValue,
+  AuthenticatedSessionData,
+} from "../../types/express-session";
 import {
   addAuthenticationMethodReference,
   isOneFactorAuthenticated,
   isTwoFactorAuthenticated,
-} from "../services/security";
+} from "../../services/security";
 import { Session, SessionData } from "express-session";
 
 export const isWithinAuthenticatedSession = (
@@ -201,91 +194,4 @@ export const destroyAuthenticatedSession = async (
       }
     });
   });
-};
-
-export const setTemporaryTotpKey = (req: Request, totpKey: string) => {
-  if (!isWithinAuthenticatedSession(req.session)) {
-    throw new UserNotLoggedInError();
-  }
-
-  req.session.temporaryEncryptedTotpKey = encryptSymmetric(
-    SYMMETRIC_ENCRYPTION_KEY,
-    totpKey,
-  );
-};
-
-export const getTemporaryTotpKey = (req: Request) => {
-  if (!isWithinAuthenticatedSession(req.session)) {
-    throw new UserNotLoggedInError();
-  }
-
-  if (!req.session.temporaryEncryptedTotpKey) {
-    return null;
-  }
-
-  return decryptSymmetric(
-    SYMMETRIC_ENCRYPTION_KEY,
-    req.session.temporaryEncryptedTotpKey,
-  );
-};
-
-export const deleteTemporaryTotpKey = (req: Request) => {
-  delete req.session.temporaryEncryptedTotpKey;
-};
-
-export const getEmailFromLoggedOutSession = (req: Request) => {
-  return req.session.email;
-};
-
-export const setEmailInLoggedOutSession = (req: Request, email: string) => {
-  req.session.email = email;
-
-  return email;
-};
-
-export const getPartialUserFromLoggedOutSession = (req: Request) => {
-  return {
-    email: req.session.email,
-    needsInclusionconnectWelcomePage:
-      req.session.needsInclusionconnectWelcomePage,
-  };
-};
-
-export const setPartialUserFromLoggedOutSession = (
-  req: Request,
-  {
-    email,
-    needsInclusionconnectWelcomePage,
-  }: { email: string; needsInclusionconnectWelcomePage: boolean },
-) => {
-  req.session.email = email;
-  req.session.needsInclusionconnectWelcomePage =
-    needsInclusionconnectWelcomePage;
-};
-
-export const updatePartialUserFromLoggedOutSession = async (
-  req: Request,
-  {
-    needs_inclusionconnect_welcome_page,
-  }: { needs_inclusionconnect_welcome_page: boolean },
-): Promise<null | {
-  email: string;
-  needs_inclusionconnect_welcome_page: boolean;
-}> => {
-  if (!req.session.email) {
-    throw new NoEmailFoundInLoggedOutSessionError();
-  }
-
-  req.session.needsInclusionconnectWelcomePage =
-    needs_inclusionconnect_welcome_page;
-
-  const user = await findByEmail(req.session.email);
-
-  if (isEmpty(user)) {
-    return null;
-  }
-
-  await update(user!.id, { needs_inclusionconnect_welcome_page });
-
-  return { email: req.session.email, needs_inclusionconnect_welcome_page };
 };

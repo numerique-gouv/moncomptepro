@@ -12,7 +12,7 @@ import {
   notifyAllMembers,
 } from "../../managers/organization/authentication-by-peers";
 import { getOrganizationById } from "../../managers/organization/main";
-import { getUserFromAuthenticatedSession } from "../../managers/session";
+import { getUserFromAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { idSchema } from "../../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../../services/get-notifications-from-request";

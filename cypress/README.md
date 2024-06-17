@@ -48,60 +48,7 @@ export CYPRESS_MAILSLURP_API_KEY=ask_a_teammate
 npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration.cy.js"
 ```
 
-## Optional: run a test client
+## About test client used in e2e test
 
 Some tests require a test client to be running.
-You can use [moncomptepro-test-client](https://github.com/betagouv/moncomptepro-test-client/) for this purpose.
-
-To run the standard-client, use the following command:
-
-```
-docker run --rm --network host \
--p 4000:4000 \
--e PORT=4000 \
--e SITE_TITLE="moncomptepro-standard-client" \
--e HOST="http://localhost:4000" \
--e MCP_CLIENT_ID="standard_client_id" \
--e MCP_CLIENT_SECRET="standard_client_secret" \
--e MCP_PROVIDER="http://localhost:3000" \
--e MCP_SCOPES="openid email profile organization" \
--e STYLESHEET_URL="" \
-ghcr.io/betagouv/moncomptepro-test-client
-```
-
-To run the agentconnect-client, use the following command:
-
-```
-docker run --rm --network host \
--p 4001:4001 \
--e PORT=4001 \
--e SITE_TITLE="moncomptepro-agentconnect-client" \
--e HOST="http://localhost:4001" \
--e MCP_CLIENT_ID="agentconnect_client_id" \
--e MCP_CLIENT_SECRET="agentconnect_client_secret" \
--e MCP_PROVIDER="http://localhost:3000" \
--e MCP_SCOPES="openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt" \
--e MCP_ID_TOKEN_SIGNED_RESPONSE_ALG="ES256" \
--e MCP_USERINFO_SIGNED_RESPONSE_ALG="ES256" \
--e STYLESHEET_URL="" \
--e LOGIN_HINT="unused1@yopmail.com" \
-ghcr.io/betagouv/moncomptepro-test-client
-```
-
-To run the legacy-client, use the following command:
-
-```
-docker run --rm --network host \
--p 4002:4002 \
--e PORT=4002 \
--e SITE_TITLE="moncomptepro-legacy-client" \
--e HOST="http://localhost:4002" \
--e MCP_CLIENT_ID="legacy_client_id" \
--e MCP_CLIENT_SECRET="legacy_client_secret" \
--e MCP_PROVIDER="http://localhost:3000" \
--e MCP_SCOPES="openid email profile phone organizations" \
--e STYLESHEET_URL="" \
-ghcr.io/betagouv/moncomptepro-test-client
-```
-
-Ensure that you adjust the MCP_PROVIDER environment variable according to your configuration.
+By default, the Docker Compose file is configured to launch enough test clients to execute the end-to-end (E2E) tests.

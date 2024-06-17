@@ -15,7 +15,7 @@ import {
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
 } from "../../config/errors";
-import { getUserFromAuthenticatedSession } from "../../managers/session";
+import { getUserFromAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { getOrganizationTypeLabel } from "../../services/organization";
 import { getOrganizationById } from "../../managers/organization/main";

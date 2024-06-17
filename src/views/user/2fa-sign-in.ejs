@@ -5,30 +5,28 @@
     <h1 class="fr-h3">
         Valider en deux étapes
     </h1>
-    <div>
-        <div class="fr-notice fr-notice--info notice--change-email fr-mb-2w">
-            <div class="fr-container">
-                <p class="fr-notice__body">
-                    <span class="fr-sr-only">Votre email :</span>
-                    <strong><%= email; %></strong>
-                    <a
-                            class="fr-btn fr-btn--close"
-                            title="Changer d’adresse email"
-                            href="/users/start-sign-in"
-                    >
-                        Changer d’adresse email
-                    </a>
-                </p>
-            </div>
-        </div>
-        <form action="/users/2fa-sign-in-with-authenticator" method="post" class="fr-mb-5w">
-            <p>
-                Afin de protéger votre compte,
-                MonComptePro veut s’assurer que c’est bien vous qui essayez de vous connecter
+    <div class="fr-notice fr-notice--info notice--change-email fr-mb-2w">
+        <div class="fr-container">
+            <p class="fr-notice__body">
+                <span class="fr-sr-only">Votre email :</span>
+                <strong><%= email; %></strong>
+                <a
+                        class="fr-btn fr-btn--close"
+                        title="Changer d’adresse email"
+                        href="/users/start-sign-in"
+                >
+                    Changer d’adresse email
+                </a>
             </p>
-
+        </div>
+    </div>
+    <p>
+        Afin de protéger votre compte,
+        MonComptePro veut s’assurer que c’est bien vous qui essayez de vous connecter
+    </p>
+    <% if (showsTotpSection) { %>
+        <form action="/users/2fa-sign-in-with-authenticator-app" method="post" class="fr-mb-5w">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
-
 
             <div class="fr-input-group">
                 <label class="fr-label" for="totpToken">
@@ -45,7 +43,7 @@
                         autofocus
                 >
             </div>
-            <% if (showPasskeySection) { %>
+            <% if (showsPasskeySection) { %>
                 <button class="fr-btn btn--fullwidth" type="submit">
                     Valider
                 </button>
@@ -64,11 +62,13 @@
                 </div>
             <% } %>
         </form>
-    </div>
+    <% } %>
 
-    <% if (showPasskeySection) { %>
+    <% if (showsTotpSection && showsPasskeySection) { %>
         <p class="fr-hr-or">ou</p>
+    <% } %>
 
+    <% if (showsPasskeySection) { %>
         <div class="fr-mb-5w">
             <p>
                 Votre appareil vous demandera d'utiliser votre empreinte, votre visage ou
@@ -94,8 +94,8 @@
         >
             retour
         </button>
+        <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
     <% } %>
 </div>
 
-<script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
 <script type="module" src="<%= js('go-back.js') %>"></script>

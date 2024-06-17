@@ -7,6 +7,7 @@ import {
   InvalidMagicLinkError,
   InvalidTokenError,
   LeakedPasswordError,
+  NotFoundError,
   UserNotFoundError,
   WeakPasswordError,
 } from "../config/errors";
@@ -83,9 +84,7 @@ export const loginWithPassword = async (
 ): Promise<User> => {
   const user = await findByEmail(email);
   if (isEmpty(user)) {
-    // this is not a proper error name but this case should never happen
-    // we throw a clean error as a mesure of defensive programming
-    throw new InvalidCredentialsError();
+    throw new NotFoundError();
   }
 
   const isMatch = await validatePassword(password, user.encrypted_password);
