@@ -12,7 +12,7 @@ import {
   decryptSymmetric,
   encryptSymmetric,
 } from "../services/symmetric-encryption";
-import { enableForce2fa } from "./2fa";
+import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
 
 export const generateAuthenticatorRegistrationOptions = async (
   email: string,
@@ -79,6 +79,10 @@ export const deleteAuthenticatorConfiguration = async (user_id: number) => {
 
   if (isEmpty(user)) {
     throw new UserNotFoundError();
+  }
+
+  if (!(await is2FACapable(user_id))) {
+    await disableForce2fa(user_id);
   }
 
   return await update(user_id, {

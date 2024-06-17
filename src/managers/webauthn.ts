@@ -34,7 +34,7 @@ import {
 import { findByEmail as findUserByEmail, update } from "../repositories/user";
 import { encodeBase64URL } from "../services/base64";
 import { logger } from "../services/log";
-import { enableForce2fa } from "./2fa";
+import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
 
 // Human-readable title for your website
 const rpName = MONCOMPTEPRO_LABEL;
@@ -89,6 +89,10 @@ export const deleteUserAuthenticator = async (
 
   if (!hasBeenDeleted) {
     throw new NotFoundError();
+  }
+
+  if (!(await is2FACapable(user.id))) {
+    await disableForce2fa(user.id);
   }
 
   return true;
