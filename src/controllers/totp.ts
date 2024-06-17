@@ -5,11 +5,11 @@ import {
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
 import {
-  authenticateWithTotp,
-  confirmAuthenticatorRegistration,
-  deleteAuthenticatorConfiguration,
-  generateAuthenticatorRegistrationOptions,
-  isAuthenticatorConfiguredForUser,
+  authenticateWithAuthenticatorApp,
+  confirmAuthenticatorAppRegistration,
+  deleteAuthenticatorAppConfiguration,
+  generateAuthenticatorAppRegistrationOptions,
+  isAuthenticatorAppConfiguredForUser,
 } from "../managers/totp";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { csrfToken } from "../middlewares/csrf-protection";
@@ -22,7 +22,7 @@ import {
   setTemporaryTotpKey,
 } from "../managers/session/temporary-totp-key";
 
-export const getAuthenticatorConfigurationController = async (
+export const getAuthenticatorAppConfigurationController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -33,19 +33,19 @@ export const getAuthenticatorConfigurationController = async (
     const existingTemporaryTotpKey = getTemporaryTotpKey(req);
 
     const { totpKey, humanReadableTotpKey, qrCodeDataUrl } =
-      await generateAuthenticatorRegistrationOptions(
+      await generateAuthenticatorAppRegistrationOptions(
         email,
         existingTemporaryTotpKey,
       );
 
     setTemporaryTotpKey(req, totpKey);
 
-    return res.render("authenticator-configuration", {
+    return res.render("authenticator-app-configuration", {
       pageTitle: "Configuration TOTP",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       isAuthenticatorAlreadyConfigured:
-        await isAuthenticatorConfiguredForUser(user_id),
+        await isAuthenticatorAppConfiguredForUser(user_id),
       humanReadableTotpKey,
       qrCodeDataUrl,
     });
@@ -54,7 +54,7 @@ export const getAuthenticatorConfigurationController = async (
   }
 };
 
-export const postAuthenticatorConfigurationController = async (
+export const postAuthenticatorAppConfigurationController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -67,14 +67,14 @@ export const postAuthenticatorConfigurationController = async (
 
     const { id: user_id } = getUserFromAuthenticatedSession(req);
     const isAuthenticatorAlreadyConfigured =
-      await isAuthenticatorConfiguredForUser(user_id);
+      await isAuthenticatorAppConfiguredForUser(user_id);
     const temporaryTotpKey = getTemporaryTotpKey(req);
 
     if (!temporaryTotpKey) {
       throw new NotFoundError();
     }
 
-    const updatedUser = await confirmAuthenticatorRegistration(
+    const updatedUser = await confirmAuthenticatorAppRegistration(
       user_id,
       temporaryTotpKey,
       totpToken,
@@ -93,7 +93,7 @@ export const postAuthenticatorConfigurationController = async (
   } catch (error) {
     if (error instanceof InvalidTotpTokenError) {
       return res.redirect(
-        "/authenticator-configuration?notification=invalid_totp_token",
+        "/authenticator-app-configuration?notification=invalid_totp_token",
       );
     }
 
@@ -101,7 +101,7 @@ export const postAuthenticatorConfigurationController = async (
   }
 };
 
-export const postDeleteAuthenticatorConfigurationController = async (
+export const postDeleteAuthenticatorAppConfigurationController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -109,7 +109,7 @@ export const postDeleteAuthenticatorConfigurationController = async (
   try {
     const { id: user_id } = getUserFromAuthenticatedSession(req);
 
-    const updatedUser = await deleteAuthenticatorConfiguration(user_id);
+    const updatedUser = await deleteAuthenticatorAppConfiguration(user_id);
 
     updateUserInAuthenticatedSession(req, updatedUser);
 
@@ -121,7 +121,7 @@ export const postDeleteAuthenticatorConfigurationController = async (
   }
 };
 
-export const postSignInWithAuthenticatorController = async (
+export const postSignInWithAuthenticatorAppController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -135,7 +135,7 @@ export const postSignInWithAuthenticatorController = async (
 
     const { id: user_id } = getUserFromAuthenticatedSession(req);
 
-    const user = await authenticateWithTotp(user_id, totpToken);
+    const user = await authenticateWithAuthenticatorApp(user_id, totpToken);
 
     addAuthenticationMethodReferenceInSession(req, res, user, "totp");
 

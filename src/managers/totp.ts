@@ -14,7 +14,7 @@ import {
 } from "../services/symmetric-encryption";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
 
-export const generateAuthenticatorRegistrationOptions = async (
+export const generateAuthenticatorAppRegistrationOptions = async (
   email: string,
   existingTotpKey: string | null,
 ) => {
@@ -46,7 +46,7 @@ export const generateAuthenticatorRegistrationOptions = async (
   return { totpKey, humanReadableTotpKey, qrCodeDataUrl };
 };
 
-export const confirmAuthenticatorRegistration = async (
+export const confirmAuthenticatorAppRegistration = async (
   user_id: number,
   temporaryTotpKey: string | undefined,
   totpToken: string,
@@ -74,7 +74,7 @@ export const confirmAuthenticatorRegistration = async (
   return await enableForce2fa(user_id);
 };
 
-export const deleteAuthenticatorConfiguration = async (user_id: number) => {
+export const deleteAuthenticatorAppConfiguration = async (user_id: number) => {
   const user = await findById(user_id);
 
   if (isEmpty(user)) {
@@ -91,7 +91,7 @@ export const deleteAuthenticatorConfiguration = async (user_id: number) => {
   });
 };
 
-export const isAuthenticatorConfiguredForUser = async (user_id: number) => {
+export const isAuthenticatorAppConfiguredForUser = async (user_id: number) => {
   const user = await findById(user_id);
 
   if (isEmpty(user)) {
@@ -101,7 +101,10 @@ export const isAuthenticatorConfiguredForUser = async (user_id: number) => {
   return !isEmpty(user.encrypted_totp_key);
 };
 
-export const authenticateWithTotp = async (user_id: number, token: string) => {
+export const authenticateWithAuthenticatorApp = async (
+  user_id: number,
+  token: string,
+) => {
   const user = await findById(user_id);
   if (isEmpty(user)) {
     throw new UserNotFoundError();
