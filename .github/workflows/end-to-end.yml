@@ -123,7 +123,7 @@ jobs:
       - run: npm run fixtures:load-ci -- cypress/fixtures/${{ matrix.e2e_test }}.sql
       - run: npm run update-organization-info -- 2000
       - name: Dotenv Action
-        uses: falti/dotenv-action@d1cd55661714e830a6e26f608f81d36e23424fed # v1.1.2
+        uses: falti/dotenv-action@e22ec9ae3efcba9537cde40659b13c2103c41ff0 # v1.1.3
         with:
           path: cypress/env/${{ matrix.e2e_test }}.conf
           export-variables: true
