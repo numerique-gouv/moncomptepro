@@ -8,6 +8,7 @@ import { z, ZodError } from "zod";
 import {
   NotFoundError,
   UserNotLoggedInError,
+  WebauthnAuthenticationFailedError,
   WebauthnRegistrationFailedError,
 } from "../config/errors";
 import {
@@ -208,15 +209,18 @@ export const postVerifyAuthenticationController = async (
     next();
   } catch (e) {
     logger.error(e);
-    if (e instanceof ZodError || e instanceof WebauthnRegistrationFailedError) {
+    if (
+      e instanceof ZodError ||
+      e instanceof WebauthnAuthenticationFailedError
+    ) {
       return res.redirect(
-        `/users/sign-in-with-passkey?notification=invalid_passkey`,
+        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=invalid_passkey`,
       );
     }
 
     if (e instanceof NotFoundError) {
       return res.redirect(
-        `/users/sign-in-with-passkey?notification=passkey_not_found`,
+        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=passkey_not_found`,
       );
     }
 
