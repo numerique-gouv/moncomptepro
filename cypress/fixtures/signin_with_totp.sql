@@ -7,6 +7,12 @@ VALUES
    'Jean', 'Jean', '0123456789', 'Sbire',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
    CURRENT_TIMESTAMP, true
+  ),
+  (2, 'unused2@yopmail.com', true, CURRENT_TIMESTAMP,
+   '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+   'Jean', 'Jean', '0123456789', 'Sbire',
+   'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
+   CURRENT_TIMESTAMP, false
   );
 
 INSERT INTO organizations
@@ -17,7 +23,8 @@ VALUES
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
 VALUES
-  (1, 1, false, 'verified_email_domain', 'all_members_notified', true);
+  (1, 1, false, 'verified_email_domain', 'all_members_notified', true),
+  (2, 1, false, 'verified_email_domain', 'all_members_notified', true);
 
 INSERT INTO oidc_clients
   (client_name, client_id, client_secret, redirect_uris,
@@ -25,15 +32,14 @@ INSERT INTO oidc_clients
    userinfo_signed_response_alg, id_token_signed_response_alg,
    authorization_signed_response_alg, introspection_signed_response_alg)
 VALUES
-  (
-    'AgentConnect',
-    'agentconnect_client_id',
-    'agentconnect_client_secret',
-    ARRAY [
-      'http://localhost:4001/login-callback'
-      ],
-    ARRAY []::varchar[],
-    'openid uid given_name usual_name email phone siret',
-    'http://localhost:4001/',
-    'Dispositif d’identification des agents de la fonction publique.',
-    'ES256', 'ES256', 'ES256', 'ES256');
+  ('Oidc Test Client',
+   'standard_client_id',
+   'standard_client_secret',
+   ARRAY [
+     'http://localhost:4000/login-callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email profile organization',
+   'http://localhost:4000/',
+   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
+   null, null, null, null);

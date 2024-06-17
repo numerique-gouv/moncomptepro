@@ -24,7 +24,6 @@ export const interactionStartControllerFactory =
       req.session.interactionId = interactionId;
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
-
       if (shouldTrigger2fa(prompt)) {
         req.session.mustUse2FA = true;
       }
