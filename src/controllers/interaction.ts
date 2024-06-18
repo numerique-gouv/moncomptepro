@@ -10,6 +10,7 @@ import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-
 import { postStartSignInController } from "./user/signin-signup";
 import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { shouldTrigger2fa } from "../services/should-trigger-2fa";
+import { ENABLE_FIXED_ACR } from "../config/env";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -71,9 +72,10 @@ export const interactionEndControllerFactory =
       const result = {
         login: {
           accountId: user.id.toString(),
-          acr: isWithinTwoFactorAuthenticatedSession(req)
-            ? "https://refeds.org/profile/mfa"
-            : "eidas1",
+          acr:
+            isWithinTwoFactorAuthenticatedSession(req) && !ENABLE_FIXED_ACR
+              ? "https://refeds.org/profile/mfa"
+              : "eidas1",
           amr: getSessionStandardizedAuthenticationMethodsReferences(req),
           ts: user.last_sign_in_at
             ? epochTime(user.last_sign_in_at)
