@@ -58,7 +58,6 @@ export const DO_NOT_AUTHENTICATE_BROWSER =
   process.env.DO_NOT_AUTHENTICATE_BROWSER === "True";
 export const DISABLE_SECURITY_RESPONSE_HEADERS =
   process.env.DISABLE_SECURITY_RESPONSE_HEADERS === "True";
-export const ENABLE_FIXED_AMR = process.env.ENABLE_FIXED_AMR === "True";
 
 const getNumberFromEnv = (name: string, defaultValue: number) => {
   const value = process.env[name];
