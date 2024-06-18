@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { isEmpty } from "lodash-es";
-import { RECENT_LOGIN_INTERVAL_IN_SECONDS } from "../../config/env";
+import {
+  ENABLE_FIXED_AMR,
+  RECENT_LOGIN_INTERVAL_IN_SECONDS,
+} from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
 import { deleteSelectedOrganizationId } from "../../repositories/redis/selected-organization";
 import { update } from "../../repositories/user";
@@ -166,6 +169,10 @@ export const hasUserAuthenticatedRecently = (req: Request) => {
 export const getSessionStandardizedAuthenticationMethodsReferences = (
   req: Request,
 ) => {
+  if (ENABLE_FIXED_AMR) {
+    return ["pwd"];
+  }
+
   if (!isWithinAuthenticatedSession(req.session)) {
     throw new UserNotLoggedInError();
   }
