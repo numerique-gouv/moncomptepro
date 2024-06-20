@@ -1,14 +1,15 @@
 -- This script:
 -- - override data at specified id without deleting database
 -- - is idempotent.
+DELETE FROM users WHERE id IN (21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55);
 
 INSERT INTO users
   (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
-   phone_number, job)
+   phone_number, job, encrypted_totp_key, totp_key_verified_at, needs_inclusionconnect_welcome_page, needs_inclusionconnect_onboarding_help)
 VALUES
   (1,
    'user@yopmail.com', -- keep these emails synchronised with the corresponding emails in signup-back/test/fixtures/users.yml
-   'true',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$5oxACsw3NngPAXALyB2G3u/C0Ej0CFUyPJhPtyyHP737Xn3lW1Mv.', -- password is 'user@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -16,10 +17,11 @@ VALUES
    'Jean',
    'User',
    '0123456789',
-   'International knowledge practice leader'),
+   'International knowledge practice leader',
+   null, null, false, false),
   (2,
    'api-particulier@yopmail.com',
-   'true',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$lciw8zIj7f46yqINJUkWUe1ZeZQRwLym/v7bO9Vza6w0Jtxzd6u5m', -- password is 'api-particulier@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -27,10 +29,11 @@ VALUES
    'Jean',
    'Particulier',
    '0123456789',
-   'Key operation squad leader'),
+   'Key operation squad leader',
+   null, null, false, false),
   (3,
-   'franceconnect@yopmail.com',
-   'true',
+   'franceconnect@yopmail.com, null, null',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$dHC3xdeOc8BuXwmF/nD7R.8TWAj2tU/hyybXr3VzIxrBg9Lynt5WK', -- password is 'franceconnect@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -38,10 +41,11 @@ VALUES
    'Jean',
    'FranceConnect',
    '0123456789',
-   'Executive talent developer'),
+   'Executive talent developer',
+   null, null, false, false),
   (4,
-   'api-entreprise@yopmail.com',
-   'true',
+   'api-entreprise@yopmail.com, null, null',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$K92VjN/bxsU3PEdK.McpIe7VO7XC.ESse4Lk2BPLmR4QwkcHKLt7K', -- password is 'api-entreprise@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -49,10 +53,11 @@ VALUES
    'Jean',
    'API Entreprise',
    '0123456789',
-   'Chief account entrepreneur'),
+   'Chief account entrepreneur',
+   null, null, false, false),
   (5,
-   'api-impot-particulier@yopmail.com',
-   'true',
+   'api-impot-particulier@yopmail.com, null, null',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$24hdVRIbS6swY.zQy6wNXeeOCPOj.efXsBWfvGSqyvXaMsFC.fltq', -- password is 'api-impot-particulier@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -60,10 +65,11 @@ VALUES
    'Jean',
    'API Impôt particulier',
    '0123456789',
-   'International career development developer'),
+   'International career development developer',
+   null, null, false, false),
   (6,
-   'datapass@yopmail.com',
-   'true',
+   'datapass@yopmail.com, null, null',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$P/M19MBC3b/k64X2QX4tQeMnvYUIkGPKhSx7CP9g02xoiA.ZRFg9C', -- password is 'datapass@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -71,10 +77,11 @@ VALUES
    'Jean',
    'Administrateur',
    '0123456789',
-   'Senior costumer experience squad leader'),
+   'Senior costumer experience squad leader',
+   null, null, false, false),
   (7,
-   'editeur@yopmail.com',
-   'true',
+   'editeur@yopmail.com, null, null',
+   true,
    CURRENT_TIMESTAMP,
    '$2a$10$L6m/QdGQI4.DuS46Dv7q0OK0V5vfwgHi7ClkrNSUIYn5q5o4K3uDm', -- password is 'editeur@yopmail.com'
    CURRENT_TIMESTAMP,
@@ -82,19 +89,55 @@ VALUES
    'Jean',
    'Éditeur',
    '0123456789',
-   'Président des affaires, gère beaucoup de business'),
+   'Président des affaires, gère beaucoup de business',
+   null, null, false, false),
   -- password for the following user is 'password123'
-  (10, 'user10@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User10', '0123456789', 'Sbire'),
-  (11, 'user11@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User11', '0123456789', 'Sbire'),
-  (12, 'user12@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User12', '0123456789', 'Sbire'),
-  (13, 'user13@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User13', '0123456789', 'Sbire'),
-  (14, 'user14@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User14', '0123456789', 'Sbire'),
-  (15, 'user15@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User15', '0123456789', 'Sbire'),
-  (16, 'user16@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User16', '0123456789', 'Sbire'),
-  (17, 'user17@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User17', '0123456789', 'Sbire'),
-  (18, 'user18@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User18', '0123456789', 'Sbire'),
-  (19, 'user19@yopmail.com', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User19', '0123456789', 'Sbire'),
-  (20, 'wanajoin@beta.gouv.fr', 'true', CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Wanajoin', '0123456789', 'Sbire')
+  (10, 'user10@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User10', '0123456789', 'Sbire', null, null, false, false),
+  (11, 'user11@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User11', '0123456789', 'Sbire', null, null, false, false),
+  (12, 'user12@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User12', '0123456789', 'Sbire', null, null, false, false),
+  (13, 'user13@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User13', '0123456789', 'Sbire', null, null, false, false),
+  (14, 'user14@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User14', '0123456789', 'Sbire', null, null, false, false),
+  (15, 'user15@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User15', '0123456789', 'Sbire', null, null, false, false),
+  (16, 'user16@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User16', '0123456789', 'Sbire', null, null, false, false),
+  (17, 'user17@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User17', '0123456789', 'Sbire', null, null, false, false),
+  (18, 'user18@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User18', '0123456789', 'Sbire', null, null, false, false),
+  (19, 'user19@yopmail.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'User19', '0123456789', 'Sbire', null, null, false, false),
+  (20, 'wanajoin@beta.gouv.fr', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Wanajoin', '0123456789', 'Sbire', null, null, false, false),
+  (21, 'onboardingic_invalide1@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (22, 'onboardingic_invalide2@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (23, 'onboardingic_invalide3@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (24, 'onboardingic_invalide4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (25, 'onboardingic_invalide5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (26, 'onboardingic_invalide6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (27, 'onboardingic_invalide7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (28, 'onboardingic_nosiret1@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (29, 'onboardingic_nosiret2@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (30, 'onboardingic_nosiret3@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (31, 'onboardingic_nosiret4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (32, 'onboardingic_nosiret5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (33, 'onboardingic_nosiret6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (34, 'onboardingic_nosiret7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (35, 'onboardingic_valide1@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (36, 'onboardingic_valide2@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (37, 'onboardingic_valide3@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (38, 'onboardingic_valide4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (39, 'onboardingic_valide5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (40, 'onboardingic_valide6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (41, 'onboardingic_valide7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (42, 'onboardingic_2valides1@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (43, 'onboardingic_2valides2@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (44, 'onboardingic_2valides3@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (45, 'onboardingic_2valides4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (46, 'onboardingic_2valides5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (47, 'onboardingic_2valides6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (48, 'onboardingic_2valides7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (49, 'onboardingic_mix1@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (50, 'onboardingic_mix2@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (51, 'onboardingic_mix3@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (52, 'onboardingic_mix4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (53, 'onboardingic_mix5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (54, 'onboardingic_mix6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true),
+  (55, 'onboardingic_mix7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, true, true)
 ON CONFLICT (id)
   DO UPDATE
   SET (email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
@@ -110,6 +153,8 @@ SELECT setval(
         (SELECT last_value FROM users_id_seq)
       )
   );
+
+DELETE FROM authenticators WHERE user_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
 
 INSERT INTO organizations
   (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
@@ -158,7 +203,10 @@ VALUES
   (42, '81403721400016', '{"yeswehack.ninja"}', '{"yeswehack.ninja"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (43, '11006801200050', '{"beta.gouv.fr"}', '{"beta.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (44, '54205118000066', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (45, '31723624800017', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (45, '31723624800017', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (46, '77730636600058', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (47, '44137965800012', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (48, '22770001000555', '{"yopmail.com"}', '{"yopmail.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (id)
   DO UPDATE
   SET (siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
@@ -229,7 +277,35 @@ VALUES
   (16, 2, 'verified_email_domain', 'all_members_notified', true),
   (17, 2, 'verified_email_domain', 'all_members_notified', true),
   (18, 2, 'verified_email_domain', 'all_members_notified', true),
-  (19, 2, 'verified_email_domain', 'all_members_notified', true)
+  (19, 2, 'verified_email_domain', 'all_members_notified', true),
+  (35, 46, 'verified_email_domain', 'all_members_notified', true),
+  (36, 46, 'verified_email_domain', 'all_members_notified', true),
+  (37, 46, 'verified_email_domain', 'all_members_notified', true),
+  (38, 46, 'verified_email_domain', 'all_members_notified', true),
+  (39, 46, 'verified_email_domain', 'all_members_notified', true),
+  (40, 46, 'verified_email_domain', 'all_members_notified', true),
+  (41, 46, 'verified_email_domain', 'all_members_notified', true),
+  (42, 46, 'verified_email_domain', 'all_members_notified', true),
+  (43, 46, 'verified_email_domain', 'all_members_notified', true),
+  (44, 46, 'verified_email_domain', 'all_members_notified', true),
+  (45, 46, 'verified_email_domain', 'all_members_notified', true),
+  (46, 46, 'verified_email_domain', 'all_members_notified', true),
+  (47, 46, 'verified_email_domain', 'all_members_notified', true),
+  (48, 46, 'verified_email_domain', 'all_members_notified', true),
+  (42, 47, 'verified_email_domain', 'all_members_notified', true),
+  (43, 47, 'verified_email_domain', 'all_members_notified', true),
+  (44, 47, 'verified_email_domain', 'all_members_notified', true),
+  (45, 47, 'verified_email_domain', 'all_members_notified', true),
+  (46, 47, 'verified_email_domain', 'all_members_notified', true),
+  (47, 47, 'verified_email_domain', 'all_members_notified', true),
+  (48, 47, 'verified_email_domain', 'all_members_notified', true),
+  (49, 48, 'verified_email_domain', 'all_members_notified', true),
+  (50, 48, 'verified_email_domain', 'all_members_notified', true),
+  (51, 48, 'verified_email_domain', 'all_members_notified', true),
+  (52, 48, 'verified_email_domain', 'all_members_notified', true),
+  (53, 48, 'verified_email_domain', 'all_members_notified', true),
+  (54, 48, 'verified_email_domain', 'all_members_notified', true),
+  (55, 48, 'verified_email_domain', 'all_members_notified', true)
 ON CONFLICT (user_id, organization_id)
   DO UPDATE
   SET (verification_type, authentication_by_peers_type, has_been_greeted)
