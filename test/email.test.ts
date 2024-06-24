@@ -3,7 +3,7 @@ import {
   getEmailDomain,
   usesAFreeEmailProvider,
   usesAGouvFrDomain,
-} from "../src/services/uses-a-free-email-provider";
+} from "../src/services/email";
 
 describe("getEmailDomain", () => {
   const data = [

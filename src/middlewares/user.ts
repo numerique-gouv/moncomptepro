@@ -25,10 +25,7 @@ import { needsEmailVerificationRenewal } from "../managers/user";
 import { getInternalActiveUsers } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { getTrustedReferrerPath } from "../services/security";
-import {
-  getEmailDomain,
-  usesAGouvFrDomain,
-} from "../services/uses-a-free-email-provider";
+import { getEmailDomain, usesAGouvFrDomain } from "../services/email";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import {

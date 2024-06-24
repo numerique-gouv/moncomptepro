@@ -44,7 +44,7 @@ import {
   getEmailDomain,
   isAFreeEmailProvider,
   usesAFreeEmailProvider,
-} from "../../services/uses-a-free-email-provider";
+} from "../../services/email";
 import { markDomainAsVerified } from "./main";
 
 export const doSuggestOrganizations = async ({

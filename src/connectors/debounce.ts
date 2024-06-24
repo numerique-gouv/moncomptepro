@@ -5,7 +5,7 @@ import {
   EMAIL_DELIVERABILITY_WHITELIST,
   HTTP_CLIENT_TIMEOUT,
 } from "../config/env";
-import { getEmailDomain } from "../services/uses-a-free-email-provider";
+import { getEmailDomain } from "../services/email";
 import { logger } from "../services/log";
 
 // documentation: https://developers.debounce.io/reference/single-validation#response-parameters
