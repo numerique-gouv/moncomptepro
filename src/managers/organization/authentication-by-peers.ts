@@ -98,6 +98,27 @@ export const markAsWhitelisted = async ({
   });
 };
 
+export const markAsGouvFrDomain = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const organizationUsers = await getUsers(organization_id);
+  const user = organizationUsers.find(({ id }) => id === user_id);
+  const organization = await findOrganizationById(organization_id);
+
+  // The user should be in the organization already
+  if (isEmpty(user) || isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  return await updateUserOrganizationLink(organization_id, user_id, {
+    authentication_by_peers_type: "deactivated_by_gouv_fr_domain",
+  });
+};
+
 export const greetForJoiningOrganization = async ({
   user_id,
   organization_id,
