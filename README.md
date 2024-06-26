@@ -35,6 +35,12 @@ Voici 3 scénarios que vous pouvez tester sur cet environnement :
 
 ## 🖱️ Installer le bouton de connexion MonComptePro sur votre service en ligne
 
+### ⚠⚠ On ne donne plus de tokens
+
+DISCLAIMER : Avec [la future fusion d'AgentConnect et MonComptePro](https://agentconnect.gouv.fr/feuille-de-route), les équipes de MonComptePro ne distribuent plus de tokens. Si vous voulez connecter des pros du public, passez par [AgentConnect](https://agentconnect.gouv.fr/). Pour les pros du privé, il faudra attendre la fusion d'AgentConnect et MonComptePro.
+
+Nous laissons les étapes d'installation pour les applications en cours d'installation.
+
 ### Les étapes de l’installation
 
 - [ ] Je me familiarise avec la cinématique OpenId Connect : voir [Connaissances préalables](#connaissances-préalables)
