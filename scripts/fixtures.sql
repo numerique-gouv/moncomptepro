@@ -32,7 +32,7 @@ VALUES
    'Key operation squad leader',
    null, null, false, false, false),
   (3,
-   'franceconnect@yopmail.com, null, null',
+   'franceconnect@yopmail.com',
    true,
    CURRENT_TIMESTAMP,
    '$2a$10$dHC3xdeOc8BuXwmF/nD7R.8TWAj2tU/hyybXr3VzIxrBg9Lynt5WK', -- password is 'franceconnect@yopmail.com'
@@ -44,7 +44,7 @@ VALUES
    'Executive talent developer',
    null, null, false, false, false),
   (4,
-   'api-entreprise@yopmail.com, null, null',
+   'api-entreprise@yopmail.com',
    true,
    CURRENT_TIMESTAMP,
    '$2a$10$K92VjN/bxsU3PEdK.McpIe7VO7XC.ESse4Lk2BPLmR4QwkcHKLt7K', -- password is 'api-entreprise@yopmail.com'
@@ -56,7 +56,7 @@ VALUES
    'Chief account entrepreneur',
    null, null, false, false, false),
   (5,
-   'api-impot-particulier@yopmail.com, null, null',
+   'api-impot-particulier@yopmail.com',
    true,
    CURRENT_TIMESTAMP,
    '$2a$10$24hdVRIbS6swY.zQy6wNXeeOCPOj.efXsBWfvGSqyvXaMsFC.fltq', -- password is 'api-impot-particulier@yopmail.com'
@@ -68,7 +68,7 @@ VALUES
    'International career development developer',
    null, null, false, false, false),
   (6,
-   'datapass@yopmail.com, null, null',
+   'datapass@yopmail.com',
    true,
    CURRENT_TIMESTAMP,
    '$2a$10$P/M19MBC3b/k64X2QX4tQeMnvYUIkGPKhSx7CP9g02xoiA.ZRFg9C', -- password is 'datapass@yopmail.com'
@@ -80,7 +80,7 @@ VALUES
    'Senior costumer experience squad leader',
    null, null, false, false, false),
   (7,
-   'editeur@yopmail.com, null, null',
+   'editeur@yopmail.com',
    true,
    CURRENT_TIMESTAMP,
    '$2a$10$L6m/QdGQI4.DuS46Dv7q0OK0V5vfwgHi7ClkrNSUIYn5q5o4K3uDm', -- password is 'editeur@yopmail.com'
