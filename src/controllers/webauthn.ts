@@ -165,63 +165,67 @@ export const getGenerateAuthenticationOptionsController = async (
   }
 };
 
-export const postVerifyAuthenticationController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const schema = z.object({
-      webauthn_authentication_response_string: z.string(),
-    });
-    const { webauthn_authentication_response_string } = await schema.parseAsync(
-      req.body,
-    );
+export const postVerifyAuthenticationController =
+  (isSecondFactorVerification: boolean) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const schema = z.object({
+        webauthn_authentication_response_string: z.string(),
+      });
+      const { webauthn_authentication_response_string } =
+        await schema.parseAsync(req.body);
 
-    const authenticationResponseJson = JSON.parse(
-      webauthn_authentication_response_string,
-    );
-    const authenticationResponseSchema = z.custom<AuthenticationResponseJSON>();
-
-    const response = await authenticationResponseSchema.parseAsync(
-      authenticationResponseJson,
-    );
-
-    const email = isWithinAuthenticatedSession(req.session)
-      ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromUnauthenticatedSession(req);
-
-    const { user, userVerified } = await verifyAuthentication({
-      email,
-      response,
-      isOneFactorAuthenticated: isWithinAuthenticatedSession(req.session),
-    });
-
-    if (userVerified) {
-      await createAuthenticatedSession(req, res, user, "pop");
-      addAuthenticationMethodReferenceInSession(req, res, user, "uv");
-    } else {
-      addAuthenticationMethodReferenceInSession(req, res, user, "pop");
-    }
-
-    next();
-  } catch (e) {
-    logger.error(e);
-    if (
-      e instanceof ZodError ||
-      e instanceof WebauthnAuthenticationFailedError
-    ) {
-      return res.redirect(
-        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=invalid_passkey`,
+      const authenticationResponseJson = JSON.parse(
+        webauthn_authentication_response_string,
       );
-    }
+      const authenticationResponseSchema =
+        z.custom<AuthenticationResponseJSON>();
 
-    if (e instanceof NotFoundError) {
-      return res.redirect(
-        `/users/${isWithinAuthenticatedSession(req.session) ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=passkey_not_found`,
+      const response = await authenticationResponseSchema.parseAsync(
+        authenticationResponseJson,
       );
-    }
 
-    next(e);
-  }
-};
+      const email = isSecondFactorVerification
+        ? getUserFromAuthenticatedSession(req).email
+        : getEmailFromUnauthenticatedSession(req);
+
+      const { user } = await verifyAuthentication({
+        email,
+        response,
+        isSecondFactorVerification,
+      });
+
+      if (isSecondFactorVerification) {
+        addAuthenticationMethodReferenceInSession(req, res, user, "pop");
+      } else {
+        await createAuthenticatedSession(req, res, user, "pop");
+        addAuthenticationMethodReferenceInSession(req, res, user, "uv");
+      }
+
+      next();
+    } catch (e) {
+      logger.error(e);
+      if (
+        e instanceof ZodError ||
+        e instanceof WebauthnAuthenticationFailedError
+      ) {
+        return res.redirect(
+          `/users/${isSecondFactorVerification ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=invalid_passkey`,
+        );
+      }
+
+      if (e instanceof NotFoundError) {
+        return res.redirect(
+          `/users/${isSecondFactorVerification ? "2fa-sign-in" : "sign-in-with-passkey"}?notification=passkey_not_found`,
+        );
+      }
+
+      next(e);
+    }
+  };
+
+export const postVerifyFirstFactorAuthenticationController =
+  postVerifyAuthenticationController(false);
+
+export const postVerifySecondFactorAuthenticationController =
+  postVerifyAuthenticationController(true);

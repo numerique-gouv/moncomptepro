@@ -80,7 +80,8 @@ import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import nocache from "nocache";
 import {
   getSignInWithPasskeyController,
-  postVerifyAuthenticationController,
+  postVerifyFirstFactorAuthenticationController,
+  postVerifySecondFactorAuthenticationController,
 } from "../controllers/webauthn";
 import { postDeleteUserController } from "../controllers/user/delete";
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
@@ -171,7 +172,7 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
-    postVerifyAuthenticationController,
+    postVerifySecondFactorAuthenticationController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
@@ -237,7 +238,7 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
-    postVerifyAuthenticationController,
+    postVerifyFirstFactorAuthenticationController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
