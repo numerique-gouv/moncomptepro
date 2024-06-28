@@ -135,7 +135,7 @@ jobs:
         uses: cypress-io/github-action@v6.6.1
         with:
           wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
-          build: npm run build
+          build: npm run build:assets
           start: npm start
           install: false
           spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
