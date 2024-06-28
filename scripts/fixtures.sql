@@ -647,7 +647,7 @@ VALUES
    ARRAY [
      'https://fca.integ01.dev-agentconnect.fr/api/v2/client/logout-callback'
      ],
-   'openid uid given_name usual_name email phone siret is_service_public',
+   'openid uid given_name usual_name email phone siret is_service_public is_public_service',
    'https://agentconnect.gouv.fr/',
    'Dispositif d’identification des agents de la fonction publique.',
    'ES256', 'ES256', 'ES256', 'ES256'),

@@ -4,7 +4,7 @@ import {
   isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
-  isServicePublic,
+  isPublicService,
   isWasteManagementOrganization,
 } from "../src/services/organization";
 
@@ -124,37 +124,37 @@ const trackdechets_public_org_info: Organization = {
   cached_libelle_categorie_juridique: "Syndicat mixte fermé",
 };
 
-describe("isServicePublic", () => {
+describe("isPublicService", () => {
   it("should return false for bad call", () => {
-    assert.equal(isServicePublic({}), false);
+    assert.equal(isPublicService({}), false);
   });
 
   it("should return true for collectivite territoriale", () => {
-    assert.equal(isServicePublic(lamalou_org_info), true);
+    assert.equal(isPublicService(lamalou_org_info), true);
   });
 
   it("should return true for administration centrale", () => {
-    assert.equal(isServicePublic(dinum_org_info), true);
+    assert.equal(isPublicService(dinum_org_info), true);
   });
 
   it("should return false for unipersonnelle organization", () => {
-    assert.equal(isServicePublic(entreprise_unipersonnelle_org_info), false);
+    assert.equal(isPublicService(entreprise_unipersonnelle_org_info), false);
   });
 
   it("should return false for association", () => {
-    assert.equal(isServicePublic(association_org_info), false);
+    assert.equal(isPublicService(association_org_info), false);
   });
 
   it("should return true for établissement public à caractère industriel et commercial", () => {
-    assert.equal(isServicePublic(onf_org_info), true);
+    assert.equal(isPublicService(onf_org_info), true);
   });
 
   it("should return true for whitelisted établissement", () => {
-    assert.equal(isServicePublic(whitelisted_org_info), true);
+    assert.equal(isPublicService(whitelisted_org_info), true);
   });
 
   it("should return true for public etablissement", () => {
-    assert.equal(isServicePublic(trackdechets_public_org_info), true);
+    assert.equal(isPublicService(trackdechets_public_org_info), true);
   });
 });
 

@@ -24,6 +24,8 @@ export const oidcProviderConfiguration = ({
       "siret",
       "is_commune",
       "is_external",
+      "is_public_service",
+      // This claim will be deprecated
       "is_service_public",
     ],
     // This scope will be deprecated
@@ -33,6 +35,8 @@ export const oidcProviderConfiguration = ({
     given_name: ["given_name"],
     usual_name: ["usual_name"],
     siret: ["siret"],
+    is_public_service: ["is_public_service"],
+    // This scope will be deprecated
     is_service_public: ["is_service_public"],
   },
   features: {
@@ -132,6 +136,8 @@ export const oidcProviderConfiguration = ({
     "given_name",
     "usual_name",
     "siret",
+    "is_public_service",
+    // This scope will be deprecated
     "is_service_public",
   ],
   subjectTypes: ["public"],

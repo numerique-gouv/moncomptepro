@@ -42,7 +42,7 @@ export const isCommune = (
 };
 
 // inspired from https://github.com/etalab/annuaire-entreprises-search-infra/blob/c86bdb34ff6359de3a740ae2f1fa49133ddea362/data_enrichment.py#L104
-export const isServicePublic = ({
+export const isPublicService = ({
   cached_categorie_juridique,
   siret,
 }: Organization): boolean => {
@@ -141,7 +141,7 @@ export const getOrganizationTypeLabel = (organization: Organization) => {
       return "mairie";
     }
 
-    if (isServicePublic(organization)) {
+    if (isPublicService(organization)) {
       return "service";
     }
   }
