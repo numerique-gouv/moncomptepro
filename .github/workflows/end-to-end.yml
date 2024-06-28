@@ -141,7 +141,6 @@ jobs:
           spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
         env:
           NODE_ENV: production
-      - run: npm run delete-database
       # Store tests runs in case of failure
       - uses: actions/upload-artifact@v4
         if: failure()
