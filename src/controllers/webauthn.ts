@@ -15,7 +15,6 @@ import {
   addAuthenticationMethodReferenceInSession,
   createAuthenticatedSession,
   getUserFromAuthenticatedSession,
-  isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
 import {
@@ -140,30 +139,34 @@ export const getSignInWithPasskeyController = async (
   }
 };
 
-export const getGenerateAuthenticationOptionsController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const email = isWithinAuthenticatedSession(req.session)
-      ? getUserFromAuthenticatedSession(req).email
-      : getEmailFromUnauthenticatedSession(req);
+export const getGenerateAuthenticationOptions =
+  (isSecondFactorAuthentication: boolean) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const email = isSecondFactorAuthentication
+        ? getUserFromAuthenticatedSession(req).email
+        : getEmailFromUnauthenticatedSession(req);
 
-    if (!email) {
-      return next(new HttpErrors.Unauthorized());
+      if (!email) {
+        return next(new HttpErrors.Unauthorized());
+      }
+
+      const { authenticationOptions } = await getAuthenticationOptions(
+        email,
+        isSecondFactorAuthentication,
+      );
+
+      return res.json(authenticationOptions);
+    } catch (e) {
+      next(e);
     }
+  };
 
-    const { authenticationOptions } = await getAuthenticationOptions(
-      email,
-      isWithinAuthenticatedSession(req.session),
-    );
+export const getGenerateAuthenticationOptionsForFirstFactorController =
+  getGenerateAuthenticationOptions(false);
 
-    return res.json(authenticationOptions);
-  } catch (e) {
-    next(e);
-  }
-};
+export const getGenerateAuthenticationOptionsForSecondFactorController =
+  getGenerateAuthenticationOptions(true);
 
 export const postVerifyAuthenticationController =
   (isSecondFactorVerification: boolean) =>

@@ -234,7 +234,7 @@ export const verifyRegistration = async ({
 
 export const getAuthenticationOptions = async (
   email: string | undefined,
-  isOneFactorAuthenticated: boolean,
+  isSecondFactorAuthentication: boolean,
 ) => {
   if (!email) {
     throw new NotFoundError();
@@ -257,7 +257,7 @@ export const getAuthenticationOptions = async (
       type: "public-key",
       transports: authenticator.transports || [],
     })),
-    userVerification: isOneFactorAuthenticated ? "discouraged" : "required",
+    userVerification: isSecondFactorAuthentication ? "discouraged" : "required",
   });
 
   // Remember the challenge for this user
