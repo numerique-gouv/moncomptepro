@@ -192,7 +192,7 @@ export const postVerifyAuthenticationController =
         ? getUserFromAuthenticatedSession(req).email
         : getEmailFromUnauthenticatedSession(req);
 
-      const { user } = await verifyAuthentication({
+      const { user, userVerified } = await verifyAuthentication({
         email,
         response,
         isSecondFactorVerification,
@@ -202,6 +202,9 @@ export const postVerifyAuthenticationController =
         addAuthenticationMethodReferenceInSession(req, res, user, "pop");
       } else {
         await createAuthenticatedSession(req, res, user, "pop");
+      }
+
+      if (userVerified) {
         addAuthenticationMethodReferenceInSession(req, res, user, "uv");
       }
 
