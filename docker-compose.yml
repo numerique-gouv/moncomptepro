@@ -47,7 +47,7 @@ services:
       MCP_CLIENT_ID: agentconnect_client_id
       MCP_CLIENT_SECRET: agentconnect_client_secret
       MCP_PROVIDER: http://localhost:3000
-      MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt
+      MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
       MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
       MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
       STYLESHEET_URL:

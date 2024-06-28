@@ -6,7 +6,7 @@ import { getSelectedOrganizationId } from "../repositories/redis/selected-organi
 import { findById as findUserById } from "../repositories/user";
 import { logger } from "./log";
 import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
-import { isCommune, isServicePublic } from "./organization";
+import { isCommune, isPublicService } from "./organization";
 
 export const findAccount: FindAccount = async (ctx, sub, token) => {
   const user = await findUserById(parseInt(sub, 10));
@@ -78,7 +78,8 @@ export const findAccount: FindAccount = async (ctx, sub, token) => {
           siret: organization.siret,
           is_commune: isCommune(organization),
           is_external: organization.is_external,
-          is_service_public: isServicePublic(organization),
+          is_service_public: isPublicService(organization),
+          is_public_service: isPublicService(organization),
         };
       } else {
         return {
@@ -97,7 +98,8 @@ export const findAccount: FindAccount = async (ctx, sub, token) => {
               is_external,
               label,
               is_commune: isCommune(organization),
-              is_service_public: isServicePublic(organization),
+              is_service_public: isPublicService(organization),
+              is_public_service: isPublicService(organization),
             };
           }),
         };

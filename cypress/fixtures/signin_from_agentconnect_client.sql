@@ -29,7 +29,7 @@ VALUES
       'http://localhost:4001/login-callback'
       ],
     ARRAY []::varchar[],
-    'openid uid given_name usual_name email phone siret',
+    'openid uid given_name usual_name email phone siret is_service_public is_public_service',
     'http://localhost:4001/',
     'Dispositif d’identification des agents de la fonction publique.',
     'ES256', 'ES256', 'ES256', 'ES256');

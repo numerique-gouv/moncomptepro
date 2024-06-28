@@ -5,6 +5,7 @@ export const organizationClaims = [
   "siret",
   "is_commune",
   "is_external",
+  "is_public_service",
   "is_service_public",
 ];
 
