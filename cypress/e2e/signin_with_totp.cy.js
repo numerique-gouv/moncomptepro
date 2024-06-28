@@ -32,8 +32,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("moncomptepro-standard-client");
-    // cy.contains("Vérifier votre email");
+    cy.contains("Vérifier votre email");
   });
 
   it("should sign-in with password and TOTP when forced by SP", function () {
@@ -57,28 +56,28 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
 
-  // it("should trigger totp rate limiting", function () {
-  //   cy.visit(`/users/start-sign-in`);
-  //
-  //   cy.get('[name="login"]').type("unused1@yopmail.com");
-  //   cy.get('[type="submit"]').click();
-  //   cy.get('[name="password"]').type("password123");
-  //   cy.get('[action="/users/sign-in"]  [type="submit"]')
-  //     .contains("S’identifier")
-  //     .click();
-  //
-  //   for (let i = 0; i < 4; i++) {
-  //     cy.get("[name=totpToken]").type("123456");
-  //     cy.get(
-  //       '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
-  //     ).click();
-  //     cy.contains("le code que vous avez utilisé est invalide.");
-  //   }
-  //
-  //   cy.get("[name=totpToken]").type("123456");
-  //   cy.get(
-  //     '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
-  //   ).click();
-  //   cy.contains("Too Many Requests");
-  // });
+  it("should trigger totp rate limiting", function () {
+    cy.visit(`/users/start-sign-in`);
+
+    cy.get('[name="login"]').type("unused1@yopmail.com");
+    cy.get('[type="submit"]').click();
+    cy.get('[name="password"]').type("password123");
+    cy.get('[action="/users/sign-in"]  [type="submit"]')
+      .contains("S’identifier")
+      .click();
+
+    for (let i = 0; i < 4; i++) {
+      cy.get("[name=totpToken]").type("123456");
+      cy.get(
+        '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
+      ).click();
+      cy.contains("le code que vous avez utilisé est invalide.");
+    }
+
+    cy.get("[name=totpToken]").type("123456");
+    cy.get(
+      '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
+    ).click();
+    cy.contains("Too Many Requests");
+  });
 });
