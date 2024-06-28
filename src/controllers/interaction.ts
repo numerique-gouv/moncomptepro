@@ -69,17 +69,22 @@ export const interactionEndControllerFactory =
     try {
       const user = getUserFromAuthenticatedSession(req);
 
+      const acr =
+        (!ENABLE_FIXED_ACR && isWithinTwoFactorAuthenticatedSession(req)) ||
+        (ENABLE_FIXED_ACR && req.session.mustUse2FA)
+          ? "https://refeds.org/profile/mfa"
+          : "eidas1";
+      const amr = getSessionStandardizedAuthenticationMethodsReferences(req);
+      const ts = user.last_sign_in_at
+        ? epochTime(user.last_sign_in_at)
+        : undefined;
+
       const result = {
         login: {
           accountId: user.id.toString(),
-          acr:
-            isWithinTwoFactorAuthenticatedSession(req) && !ENABLE_FIXED_ACR
-              ? "https://refeds.org/profile/mfa"
-              : "eidas1",
-          amr: getSessionStandardizedAuthenticationMethodsReferences(req),
-          ts: user.last_sign_in_at
-            ? epochTime(user.last_sign_in_at)
-            : undefined,
+          acr,
+          amr,
+          ts,
         },
         select_organization: false,
         update_userinfo: false,
