@@ -8,11 +8,12 @@ on:
 
 env:
   ACCESS_LOG_PATH:
-  PGUSER: api-auth
-  PGPASSWORD: api-auth
-  PGDATABASE: api-auth
+  PGUSER: moncomptepro
+  PGPASSWORD: moncomptepro
+  PGDATABASE: moncomptepro
   PGHOST: 127.0.0.1
   PGPORT: 5432
+  DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
   SYMMETRIC_ENCRYPTION_KEY: aTrueRandom32BytesLongBase64EncodedStringAA=
@@ -36,6 +37,6 @@ jobs:
           cache: "npm"
           node-version-file: package.json
       - run: npm ci --omit=dev
-      - run: npm run fixtures:load
-        env:
-          DATABASE_URL: postgres://${{ env.PGUSER }}:${{ env.PGPASSWORD }}@127.0.0.1:${{ env.PGPORT }}/${{ env.PGDATABASE }}
+      - run: npm run migrate up
+      - run: npm run fixtures:load-ci -- scripts/fixtures.sql
+      - run: npm run update-organization-info -- 500
