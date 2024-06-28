@@ -28,7 +28,7 @@ DO_NOT_RATE_LIMIT=True
 Note that this will delete your database. Load the specific fixtures in the database:
 
 ```bash
-ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/redirect_after_session_expiration.sql" "update-organization-info 2000"
+ENABLE_DATABASE_DELETION=True npx run-s delete-database "migrate up" "fixtures:load-ci cypress/fixtures/redirect_after_session_expiration.sql" "update-organization-info 2000"
 ```
 
 ### Start MonComptePro with the test configuration

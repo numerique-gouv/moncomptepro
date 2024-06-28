@@ -154,7 +154,7 @@ if [ -z "$(docker compose ps -q)" ]; then
 fi
 
 echo_important "Emptying database and applying fixtures…"
-ENABLE_DATABASE_DELETION=True npx run-s delete-database "fixtures:load-ci cypress/fixtures/$test_name.sql" "update-organization-info 2000"
+ENABLE_DATABASE_DELETION=True npx run-s delete-database "migrate up" "fixtures:load-ci cypress/fixtures/$test_name.sql" "update-organization-info 2000"
 
 echo_important "Starting local server with testing env…"
 env $(grep -v '^#' cypress/env/$test_name.conf | xargs) DO_NOT_SEND_MAIL=False DO_NOT_RATE_LIMIT=True MONCOMPTEPRO_HOST=$host PORT=$port npm run dev &
@@ -180,4 +180,3 @@ else
     wait $pid_server
   fi
 fi
-

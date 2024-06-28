@@ -17,7 +17,7 @@
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
     "migrate": "node-pg-migrate",
     "fixtures:load": "node-pg-migrate up && tsx scripts/run-sql-script.ts scripts/fixtures.sql && npm run update-organization-info 2000",
-    "fixtures:load-ci": "node-pg-migrate up && tsx scripts/run-sql-script.ts",
+    "fixtures:load-ci": "tsx scripts/run-sql-script.ts",
     "delete-database": "if [ \"$ENABLE_DATABASE_DELETION\" = \"True\" ]; then tsx scripts/run-sql-script.ts scripts/delete_all.sql; fi",
     "test": "run-s test:*",
     "test:lint": "prettier */*.ts --list-different",
