@@ -38,6 +38,8 @@ env:
 jobs:
   test:
     strategy:
+      # don't fail the entire matrix on failure
+      fail-fast: false
       matrix:
         e2e_test:
           - join_collectivite_territoriale_official_contact_domain
