@@ -1,12 +1,12 @@
 import { isEmpty } from "lodash-es";
 import {
   EmailUnavailableError,
-  EmailVerifiedAlreadyError,
   InvalidCredentialsError,
   InvalidEmailError,
   InvalidMagicLinkError,
   InvalidTokenError,
   LeakedPasswordError,
+  NoNeedVerifyEmailAddressError,
   NotFoundError,
   UserNotFoundError,
   WeakPasswordError,
@@ -154,7 +154,7 @@ export const sendEmailAddressVerificationEmail = async ({
   );
 
   if (isBrowserTrusted && user.email_verified && !renewalNeeded) {
-    throw new EmailVerifiedAlreadyError();
+    throw new NoNeedVerifyEmailAddressError();
   }
 
   const isTokenExpired = isExpired(

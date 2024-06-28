@@ -10,8 +10,8 @@ import {
 } from "../../managers/user";
 import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import {
-  EmailVerifiedAlreadyError,
   InvalidTokenError,
+  NoNeedVerifyEmailAddressError,
 } from "../../config/errors";
 import {
   addAuthenticationMethodReferenceInSession,
@@ -53,9 +53,9 @@ export const getVerifyEmailController = async (
       needs_inclusionconnect_onboarding_help,
     });
   } catch (error) {
-    if (error instanceof EmailVerifiedAlreadyError) {
+    if (error instanceof NoNeedVerifyEmailAddressError) {
       return res.redirect(
-        `/users/personal-information?notification=email_verified_already`,
+        `/users/personal-information?notification=no_need_to_verify_email_address`,
       );
     }
 
@@ -114,9 +114,9 @@ export const postSendEmailVerificationController = async (
 
     return res.redirect(`/users/verify-email?new_code_sent=true`);
   } catch (error) {
-    if (error instanceof EmailVerifiedAlreadyError) {
+    if (error instanceof NoNeedVerifyEmailAddressError) {
       return res.redirect(
-        `/users/personal-information?notification=email_verified_already`,
+        `/users/personal-information?notification=no_need_to_verify_email_address`,
       );
     }
 
