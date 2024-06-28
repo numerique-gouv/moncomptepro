@@ -55,9 +55,9 @@ Veuillez vous connecter avec votre nouveau mot de passe.`,
 
 Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ? ».`,
   },
-  email_verified_already: {
+  no_need_to_verify_email_address: {
     type: "error",
-    description: `Erreur : votre email a déjà été vérifié.`,
+    description: `Erreur : nous n’avons plus besoin de vérifier votre adresse email.`,
   },
   invalid_verify_email_code: {
     type: "error",

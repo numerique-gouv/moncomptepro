@@ -12,7 +12,8 @@ import expressBasicAuth from "express-basic-auth";
 import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from "../config/env";
 import nocache from "nocache";
 import {
-  getGenerateAuthenticationOptionsController,
+  getGenerateAuthenticationOptionsForFirstFactorController,
+  getGenerateAuthenticationOptionsForSecondFactorController,
   getGenerateRegistrationOptionsController,
 } from "../controllers/webauthn";
 import { logger } from "../services/log";
@@ -43,9 +44,15 @@ export const apiRouter = () => {
   );
 
   apiRouter.get(
-    "/webauthn/generate-authentication-options",
+    "/webauthn/generate-authentication-options-for-first-factor",
     apiRateLimiterMiddleware,
-    getGenerateAuthenticationOptionsController,
+    getGenerateAuthenticationOptionsForFirstFactorController,
+  );
+
+  apiRouter.get(
+    "/webauthn/generate-authentication-options-for-second-factor",
+    apiRateLimiterMiddleware,
+    getGenerateAuthenticationOptionsForSecondFactorController,
   );
 
   const apiAdminRouter = Router();

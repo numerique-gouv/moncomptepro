@@ -234,7 +234,7 @@ export const verifyRegistration = async ({
 
 export const getAuthenticationOptions = async (
   email: string | undefined,
-  isOneFactorAuthenticated: boolean,
+  isSecondFactorAuthentication: boolean,
 ) => {
   if (!email) {
     throw new NotFoundError();
@@ -257,7 +257,7 @@ export const getAuthenticationOptions = async (
       type: "public-key",
       transports: authenticator.transports || [],
     })),
-    userVerification: isOneFactorAuthenticated ? "discouraged" : "required",
+    userVerification: isSecondFactorAuthentication ? "discouraged" : "required",
   });
 
   // Remember the challenge for this user
@@ -271,11 +271,11 @@ export const getAuthenticationOptions = async (
 export const verifyAuthentication = async ({
   email,
   response,
-  isOneFactorAuthenticated,
+  isSecondFactorVerification,
 }: {
   email: string | undefined;
   response: AuthenticationResponseJSON;
-  isOneFactorAuthenticated: boolean;
+  isSecondFactorVerification: boolean;
 }) => {
   if (!email) {
     throw new NotFoundError();
@@ -320,7 +320,7 @@ export const verifyAuthentication = async ({
       },
       // do not enforce user verification by the authenticator (via PIN, fingerprint, etc...)
       // to authorize usage of fido u2f security keys for second factor authentication
-      requireUserVerification: !isOneFactorAuthenticated,
+      requireUserVerification: !isSecondFactorVerification,
     });
   } catch (error) {
     logger.error(error);

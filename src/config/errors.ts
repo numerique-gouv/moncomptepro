@@ -54,7 +54,7 @@ export class WeakPasswordError extends Error {}
 
 export class LeakedPasswordError extends Error {}
 
-export class EmailVerifiedAlreadyError extends Error {}
+export class NoNeedVerifyEmailAddressError extends Error {}
 
 export class InvalidTokenError extends Error {}
 

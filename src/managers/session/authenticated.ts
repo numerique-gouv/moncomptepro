@@ -85,12 +85,12 @@ export const createAuthenticatedSession = async (
 
         if (TRUSTED_AMR_VALUES.includes(authenticationMethodReference)) {
           setBrowserAsTrustedForUser(req, res, user.id);
+        } else {
+          // as req.session.user has just been set,
+          // this might alter the isTrustedBrowser flag on the req object.
+          // We call this function to re-trigger the flag computation.
+          setIsTrustedBrowserFromLoggedInSession(req);
         }
-
-        // as req.session.user has just been set,
-        // this might alter the isTrustedBrowser flag on the req object.
-        // We call this function to re-trigger the flag computation.
-        setIsTrustedBrowserFromLoggedInSession(req);
 
         resolve(null);
       }
