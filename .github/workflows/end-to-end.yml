@@ -8,12 +8,12 @@ on:
 
 env:
   ACCESS_LOG_PATH:
-  PGUSER: api-auth
-  PGPASSWORD: api-auth
-  PGDATABASE: api-auth-test
+  PGUSER: moncomptepro
+  PGPASSWORD: moncomptepro
+  PGDATABASE: moncomptepro
   PGHOST: 127.0.0.1
   PGPORT: 5432
-  DATABASE_URL: postgres://api-auth:api-auth@127.0.0.1:5432/api-auth-test
+  DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
   MONCOMPTEPRO_HOST: http://172.18.0.1:3000
   CYPRESS_BASE_URL: http://172.18.0.1:3000
