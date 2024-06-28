@@ -36,7 +36,7 @@ ENABLE_DATABASE_DELETION=True npx run-s delete-database "migrate up" "fixtures:l
 Then run the app with the specific env vars:
 
 ```bash
-env $(grep -v '^#' cypress/env/redirect_after_session_expiration.conf | xargs) npm run dev
+npx dotenvx run -f cypress/env/redirect_after_session_expiration.conf -- npm run dev
 ```
 
 ## Run Cypress

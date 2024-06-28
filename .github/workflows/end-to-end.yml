@@ -125,18 +125,12 @@ jobs:
       - run: npm run migrate up
       - run: npm run fixtures:load-ci -- cypress/fixtures/${{ matrix.e2e_test }}.sql
       - run: npm run update-organization-info -- 500
-      - name: Dotenv Action
-        uses: falti/dotenv-action@d1cd55661714e830a6e26f608f81d36e23424fed # v1.1.2
-        with:
-          path: cypress/env/${{ matrix.e2e_test }}.conf
-          export-variables: true
-          keys-case: bypass
       - name: Cypress run
         uses: cypress-io/github-action@v6.6.1
         with:
           wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
           build: npm run build:assets
-          start: npm start
+          start: npx dotenvx run -f cypress/env/${{ matrix.e2e_test }}.conf --overload -- npm start
           install: false
           spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
         env:
