@@ -136,7 +136,8 @@ export const greetForJoiningOrganization = async ({
   }
 
   const { given_name, family_name, email } = (await findUserById(user_id))!;
-  const { cached_libelle, is_external } = organization;
+  const { cached_libelle, is_external, authentication_by_peers_type } =
+    organization;
 
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
@@ -152,7 +153,20 @@ export const greetForJoiningOrganization = async ({
     ({ email: e, authentication_by_peers_type }) =>
       e !== email && !!authentication_by_peers_type,
   );
-  if (!is_external && otherUsers.length > 0) {
+
+  if (!authentication_by_peers_type) {
+    throw new Error("User should be authenticated by peer.");
+  }
+
+  if (
+    !is_external &&
+    ![
+      "is_the_only_active_member",
+      "deactivated_by_whitelist",
+      "deactivated_by_gouv_fr_domain",
+    ].includes(authentication_by_peers_type) &&
+    otherUsers.length > 0
+  ) {
     await sendMail({
       to: [email],
       subject: "Votre organisation sur MonComptePro",
