@@ -12,6 +12,11 @@ describe("join organizations", () => {
         inboxId: "ba97e7a6-e603-465e-b2a5-236489ee0bb2",
       }),
     );
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: "fbcbc4b0-40de-44ad-935e-26dd7ff2adb7",
+      }),
+    );
   });
 
   it("join organisation via sponsorship", function () {
@@ -104,7 +109,10 @@ describe("join organizations", () => {
   });
 
   it("should not see sponsorship screen when whitelisted", () => {
-    cy.login("unused@fakedomain.com", "password123");
+    cy.login(
+      "fbcbc4b0-40de-44ad-935e-26dd7ff2adb7@mailslurp.biz",
+      "password123",
+    );
 
     cy.visit(`/users/join-organization`);
 
@@ -113,5 +121,35 @@ describe("join organizations", () => {
 
     // should not see sponsorship screen
     cy.contains("Votre compte est créé");
+
+    // should not receive the list of existing user
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp
+        .waitForMatchingEmails(
+          {
+            matches: [
+              {
+                field: "SUBJECT",
+                should: "EQUAL",
+                value: "Votre organisation sur MonComptePro",
+              },
+            ],
+          },
+          1,
+          "fbcbc4b0-40de-44ad-935e-26dd7ff2adb7",
+          5000,
+          true,
+        )
+        .then((emails) => {
+          expect(emails).to.be.empty;
+        })
+        .catch((error) => {
+          if (error.name === "AssertionError") {
+            throw error;
+          }
+
+          expect(error.errorClass).to.equal("GetMessagesRetryException");
+        }),
+    );
   });
 });
