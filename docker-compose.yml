@@ -16,17 +16,17 @@ services:
       - "6379:6379"
 
   oidc-test-client:
-    image: ghcr.io/betagouv/moncomptepro-test-client
+    image: ghcr.io/numerique-gouv/moncomptepro-test-client
     environment:
       PORT: 3001
-      # default env var can be found at https://github.com/betagouv/moncomptepro-test-client/blob/master/.env
+      # default env var can be found at https://github.com/numerique-gouv/moncomptepro-test-client/blob/master/.env
       HOST: http://localhost:3001
       MCP_CLIENT_ID: client_id
       MCP_PROVIDER: http://localhost:3000/
     network_mode: "host"
 
   moncomptepro-standard-client:
-    image: ghcr.io/betagouv/moncomptepro-test-client
+    image: ghcr.io/numerique-gouv/moncomptepro-test-client
     environment:
       PORT: 4000
       SITE_TITLE: moncomptepro-standard-client
@@ -39,7 +39,7 @@ services:
     network_mode: "host"
 
   moncomptepro-agentconnect-client:
-    image: ghcr.io/betagouv/moncomptepro-test-client
+    image: ghcr.io/numerique-gouv/moncomptepro-test-client
     environment:
       PORT: 4001
       SITE_TITLE: moncomptepro-agentconnect-client
@@ -55,7 +55,7 @@ services:
     network_mode: "host"
 
   moncomptepro-legacy-client:
-    image: ghcr.io/betagouv/moncomptepro-test-client
+    image: ghcr.io/numerique-gouv/moncomptepro-test-client
     environment:
       PORT: 4002
       SITE_TITLE: moncomptepro-legacy-client

@@ -32,7 +32,7 @@ VALUES
    ARRAY []::varchar[],
    'openid email profile phone organizations',
    'http://localhost:4002/',
-   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
+   'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
    null, null, null, null),
   ('Oidc Test Client',
    'standard_client_id',
@@ -43,5 +43,5 @@ VALUES
    ARRAY []::varchar[],
    'openid email profile organization',
    'http://localhost:4000/',
-   'MonComptePro test client. More info: https://github.com/betagouv/moncomptepro-test-client.',
+   'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
    null, null, null, null);

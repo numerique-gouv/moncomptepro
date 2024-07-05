@@ -187,13 +187,13 @@ La documentation détaillée ce trouve ici : [https://components.react-dsfr.code
 
 À toutes fins utiles, voici quelques ressources graphiques supplémentaires :
 
-- [dossier contenant le logo et le bouton au format SVG](https://github.com/betagouv/moncomptepro/tree/master/assets)
+- [dossier contenant le logo et le bouton au format SVG](https://github.com/numerique-gouv/moncomptepro/tree/master/assets)
 - [exemple d’implémentation avec React et TypeScript](https://github.com/betagouv/datapass/tree/master/frontend/src/components/atoms/MonComptePro)
-- [exemple d’implementation en HTML + CSS](https://github.com/betagouv/moncomptepro-landing-page/blob/master/public/bouton.html) ainsi que [le rendu associé](https://moncomptepro.beta.gouv.fr/bouton)
+- [exemple d’implementation en HTML + CSS](https://github.com/numerique-gouv/moncomptepro-landing-page/blob/master/public/bouton.html) ainsi que [le rendu associé](https://moncomptepro.beta.gouv.fr/bouton)
 
 ### Configuration de l’environnement de test
 
-Vous pouvez configurer votre client OpenId de test directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/betagouv/moncomptepro/blob/master/scripts/fixtures.sql#L225-L241
+Vous pouvez configurer votre client OpenId de test directement en nous soumettant une [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) en ligne sur le fichier suivant : https://github.com/numerique-gouv/moncomptepro/blob/master/scripts/fixtures.sql#L225-L241
 
 La nouvelle configuration sera déployée en environment de test dès que la pull request sera validée.
 

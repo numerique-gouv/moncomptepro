@@ -66,7 +66,7 @@ Emails are not sent but printed in the console.
 
 ## Testing the Connection with a Test Client
 
-MonComptePro is provided with a test client: https://github.com/betagouv/moncomptepro-test-client
+MonComptePro is provided with a test client: https://github.com/numerique-gouv/moncomptepro-test-client
 
 This container is launched within the MonComptePro `docker-compose.yml`.
 

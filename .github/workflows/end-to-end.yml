@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
+        image: ghcr.io/numerique-gouv/moncomptepro-test-client
         ports:
           - 4000:3000
         env:
@@ -77,7 +77,7 @@ jobs:
           MCP_SCOPES: openid email profile organization
           STYLESHEET_URL: ""
       moncomptepro-agentconnect-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
+        image: ghcr.io/numerique-gouv/moncomptepro-test-client
         ports:
           - 4001:3000
         env:
@@ -92,7 +92,7 @@ jobs:
           STYLESHEET_URL: ""
           LOGIN_HINT: unused1@yopmail.com
       moncomptepro-legacy-client:
-        image: ghcr.io/betagouv/moncomptepro-test-client
+        image: ghcr.io/numerique-gouv/moncomptepro-test-client
         ports:
           - 4002:3000
         env:
