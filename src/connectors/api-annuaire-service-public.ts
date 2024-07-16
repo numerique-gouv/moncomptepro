@@ -56,6 +56,33 @@ type ApiAnnuaireServicePublicReponse = {
   }[];
 };
 
+type TestApiAnnuaireServicePublicReponse = {
+  total_count: number;
+  results: {
+    site_internet: {
+      valeur: string;
+    }[];
+    nom: string;
+    adresse_courriel?: string;
+    pivot: {
+      type_service_local: string;
+    }[];
+    id: string;
+    telephone: {
+      valeur: string;
+    }[];
+    code_insee_commune: string;
+    adresse: {
+      type_adresse: "Adresse";
+      numero_voie: string;
+      code_postal: string;
+      nom_commune: string;
+      longitude: string;
+      latitude: string;
+    }[];
+  }[];
+};
+
 export const getAnnuaireServicePublicContactEmail = async (
   codeOfficielGeographique: string | null,
   codePostal: string | null,
@@ -64,19 +91,21 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let features: ApiAnnuaireServicePublicReponse["features"] = [];
+  let features: TestApiAnnuaireServicePublicReponse["results"] = [];
   try {
-    const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
+    const { data }: AxiosResponse<TestApiAnnuaireServicePublicReponse> =
       await axios({
         method: "get",
-        url: `https://etablissements-publics.api.gouv.fr/v3/communes/${codeOfficielGeographique}/mairie`,
+        // url: `https://etablissements-publics.api.gouv.fr/v3/communes/${codeOfficielGeographique}/mairie`,
+        url: `https://api-lannuaire.service-public.fr/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE ${codeOfficielGeographique} and pivot LIKE "mairie"`,
         headers: {
           accept: "application/json",
         },
         timeout: HTTP_CLIENT_TIMEOUT,
       });
+    console.log(data, "🔥🔥🔥🔥");
 
-    features = data.features;
+    features = data.results;
   } catch (e) {
     if (
       e instanceof AxiosError &&
@@ -90,7 +119,7 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw e;
   }
 
-  let feature: ApiAnnuaireServicePublicReponse["features"][0] | undefined;
+  let feature: TestApiAnnuaireServicePublicReponse["results"][0] | undefined;
 
   if (features.length === 1) {
     feature = features[0];
@@ -104,11 +133,8 @@ export const getAnnuaireServicePublicContactEmail = async (
 
     // Take the first match
     feature = features.find(
-      ({
-        properties: {
-          adresses: [{ codePostal: codePostalMairie }],
-        },
-      }) => codePostalMairie === codePostal,
+      ({ adresse: [{ code_postal: codePostalMairie }] }) =>
+        codePostalMairie === codePostal,
     );
   }
 
@@ -116,15 +142,13 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw new ApiAnnuaireNotFoundError();
   }
 
-  const {
-    properties: { email },
-  } = feature;
+  const { adresse_courriel } = feature;
 
-  if (!isString(email)) {
+  if (!isString(adresse_courriel)) {
     throw new ApiAnnuaireInvalidEmailError();
   }
 
-  const formattedEmail = email.toLowerCase().trim();
+  const formattedEmail = adresse_courriel.toLowerCase().trim();
 
   if (!isEmailValid(formattedEmail)) {
     throw new ApiAnnuaireInvalidEmailError();
