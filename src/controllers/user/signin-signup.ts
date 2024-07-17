@@ -22,6 +22,7 @@ import * as Sentry from "@sentry/node";
 import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 import {
   getEmailFromUnauthenticatedSession,
+  setEmailInUnauthenticatedSession,
   setPartialUserFromUnauthenticatedSession,
   updatePartialUserFromUnauthenticatedSession,
 } from "../../managers/session/unauthenticated";
@@ -95,15 +96,15 @@ export const postStartSignInController = async (
         ? `&did_you_mean=${error.didYouMean}`
         : "";
 
+      setEmailInUnauthenticatedSession(req, req.body.login);
       return res.redirect(
-        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}${didYouMeanQueryParam}`,
+        `/users/start-sign-in?notification=invalid_email${didYouMeanQueryParam}`,
       );
     }
 
     if (error instanceof ZodError) {
-      return res.redirect(
-        `/users/start-sign-in?notification=invalid_email&login_hint=${req.body.login}`,
-      );
+      setEmailInUnauthenticatedSession(req, req.body.login);
+      return res.redirect(`/users/start-sign-in?notification=invalid_email`);
     }
 
     next(error);

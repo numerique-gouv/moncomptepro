@@ -62,6 +62,7 @@ jobs:
           - set_info_after_account_provisioning
           - signin_with_totp
           - reauthenticate_on_admin_page
+          - check_email_deliverability
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
