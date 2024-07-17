@@ -57,6 +57,7 @@ type ApiAnnuaireServicePublicReponse = {
 };
 
 type TestApiAnnuaireServicePublicReponse = {
+  type: "FeatureCollection";
   total_count: number;
   results: {
     site_internet: {
