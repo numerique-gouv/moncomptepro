@@ -10,7 +10,7 @@ describe("getAnnuaireServicePublicContactEmail", () => {
   it("should throw an error for invalid cog", async () => {
     nock("https://api-lannuaire.service-public.fr")
       .get(
-        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE 00000 and pivot LIKE "mairie"`,
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "00000" and pivot LIKE "mairie"`,
       )
       .reply(200, invalidCogData);
     await assert.isRejected(
@@ -21,7 +21,7 @@ describe("getAnnuaireServicePublicContactEmail", () => {
   it("should return a valid email", async () => {
     nock("https://api-lannuaire.service-public.fr")
       .get(
-        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE 15014 and pivot LIKE "mairie"`,
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "15014" and pivot LIKE "mairie"`,
       )
       .reply(200, oneMairieData);
     await assert.eventually.equal(
@@ -32,7 +32,7 @@ describe("getAnnuaireServicePublicContactEmail", () => {
   it("should return valid email for two mairies with the same Code Officiel Geographique", async () => {
     nock("https://api-lannuaire.service-public.fr")
       .get(
-        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE 38253 and pivot LIKE "mairie"`,
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "38253" and pivot LIKE "mairie"`,
       )
       .reply(200, twoMairiesData);
     await assert.eventually.equal(

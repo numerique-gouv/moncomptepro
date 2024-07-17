@@ -14,49 +14,9 @@ import {
 import { logger } from "../services/log";
 import { isEmailValid } from "../services/security";
 
-// more info at https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
-// the API used is more up to date than the official one: https://etablissements-publics.api.gouv.fr/v3/definitions.yaml
-type ApiAnnuaireServicePublicReponse = {
-  type: "FeatureCollection";
-  features: {
-    type: "Feature";
-    geometry: {
-      type: "Point";
-      coordinates: [number, number];
-    };
-    properties: {
-      // ex: "4b3bd44a-f249-4a3c-8c54-b3479c3a2f92"
-      id: string;
-      // ex: "74056"
-      codeInsee: string;
-      // ex: "mairie
-      pivotLocal: string;
-      // ex: "Mairie - Chamonix-Mont-Blanc"
-      nom: string;
-      adresses: {
-        type: "Adresse";
-        // ex: ["38 place de l'Église"]
-        lignes: string[];
-        // ex: '74402'
-        codePostal: string;
-        // ex: 'Chamonix Cedex'
-        commune: string;
-      }[];
-      // ex: 'sg@chamonix.fr'
-      email?: string;
-      // ex: '04 50 53 11 13'
-      telephone: string;
-      // ex: 'http://www.chamonix-mont-blanc.fr'
-      url: string;
-      zonage: {
-        // ex: ['74056 Chamonix-Mont-Blanc']
-        communes: string[];
-      };
-    };
-  }[];
-};
+// more info at https://api-lannuaire.service-public.fr/api/explore/v2.1/console
 
-type TestApiAnnuaireServicePublicReponse = {
+type ApiAnnuaireServicePublicReponse = {
   type: "FeatureCollection";
   total_count: number;
   results: {
@@ -92,19 +52,17 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw new ApiAnnuaireNotFoundError();
   }
 
-  let features: TestApiAnnuaireServicePublicReponse["results"] = [];
+  let features: ApiAnnuaireServicePublicReponse["results"] = [];
   try {
-    const { data }: AxiosResponse<TestApiAnnuaireServicePublicReponse> =
+    const { data }: AxiosResponse<ApiAnnuaireServicePublicReponse> =
       await axios({
         method: "get",
-        // url: `https://etablissements-publics.api.gouv.fr/v3/communes/${codeOfficielGeographique}/mairie`,
-        url: `https://api-lannuaire.service-public.fr/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE ${codeOfficielGeographique} and pivot LIKE "mairie"`,
+        url: `https://api-lannuaire.service-public.fr/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "${codeOfficielGeographique}" and pivot LIKE "mairie"`,
         headers: {
           accept: "application/json",
         },
         timeout: HTTP_CLIENT_TIMEOUT,
       });
-    console.log(data, "🔥🔥🔥🔥");
 
     features = data.results;
   } catch (e) {
@@ -120,7 +78,7 @@ export const getAnnuaireServicePublicContactEmail = async (
     throw e;
   }
 
-  let feature: TestApiAnnuaireServicePublicReponse["results"][0] | undefined;
+  let feature: ApiAnnuaireServicePublicReponse["results"][0] | undefined;
 
   if (features.length === 1) {
     feature = features[0];
