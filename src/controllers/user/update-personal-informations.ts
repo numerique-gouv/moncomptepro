@@ -46,7 +46,14 @@ export const getParamsForPostPersonalInformationsController = async (
     given_name: nameSchema(),
     family_name: nameSchema(),
     phone_number: phoneNumberSchema(),
-    job: z.string().trim().min(1),
+    job: z
+      .string()
+      .trim()
+      .min(1)
+      .refine((value) => !/^\d+$/.test(value), {
+        message:
+          "Merci d’inscrire une profession existante pour que votre compte soit validé",
+      }),
   });
 
   return await schema.parseAsync(req.body);

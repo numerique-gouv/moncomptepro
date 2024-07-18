@@ -71,6 +71,8 @@
                 </label>
                 <input
                         class="fr-input" required type="text" name="job" id="job"
+                        pattern="^(?!\d+$).*"
+                        title="Merci d’inscrire une profession existante pour que votre compte soit validé"
                 <% if (job) { %> value="<%= job; %>"
                         <% } %>
                 >
