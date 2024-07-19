@@ -25,18 +25,18 @@ const positions = [
 ];
 
 const init = () => {
-  const loader = document.getElementById('loader-bar');
+  const loader = document.getElementById("loader-bar");
 
   if (!loader) {
     return null;
   }
 
-  loader.style.position = 'fixed';
+  loader.style.position = "fixed";
 
   // if (loader.style.backgroundColor === 'transparent') {
   // loader.style.background = '#000091';
   loader.style.background =
-    'linear-gradient(90deg, rgba(0,0,145,1), rgb(0, 159, 255))';
+    "linear-gradient(90deg, rgba(0,0,145,1), rgb(0, 159, 255))";
   // }
 
   document.body.appendChild(loader);
@@ -45,7 +45,7 @@ const init = () => {
 
 const loadBarFactory = () => {
   return {
-    run: async function() {
+    run: async function () {
       const jobId = Math.random().toString(16).substring(7);
       this._currentJobId = jobId;
       if (!this._loader) {
@@ -71,6 +71,6 @@ const loadBarFactory = () => {
 
 const loadBar = loadBarFactory();
 
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', loadBar.run);
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", loadBar.run);
 }

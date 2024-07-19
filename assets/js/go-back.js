@@ -1,9 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
-  var goBackLink = document.getElementById("go-back-link");
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+    var goBackLink = document.getElementById("go-back-link");
 
-  function goBack() {
-    history.back();
-  }
+    function goBack() {
+      history.back();
+    }
 
-  goBackLink.addEventListener("click", goBack);
-}, false);
+    goBackLink.addEventListener("click", goBack);
+  },
+  false,
+);

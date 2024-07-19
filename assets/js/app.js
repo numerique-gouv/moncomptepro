@@ -4,7 +4,7 @@ import "@gouvfr/dsfr/dist/component/modal/modal.module";
 import "@gouvfr/dsfr/dist/component/header/header.module";
 import { explainExternalLinks } from "./modules/sr-external-links";
 import { disableFormsOnSubmit } from "./modules/disable-on-submit";
-import './modules/load-bar';
+import "./modules/load-bar";
 
 document.addEventListener("DOMContentLoaded", () => {
   explainExternalLinks();
