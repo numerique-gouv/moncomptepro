@@ -8,8 +8,10 @@ import { ApiAnnuaireNotFoundError } from "../src/config/errors";
 
 describe("getAnnuaireServicePublicContactEmail", () => {
   it("should throw an error for invalid cog", async () => {
-    nock("https://etablissements-publics.api.gouv.fr")
-      .get("/v3/communes/00000/mairie")
+    nock("https://api-lannuaire.service-public.fr")
+      .get(
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "00000" and pivot LIKE "mairie"`,
+      )
       .reply(200, invalidCogData);
     await assert.isRejected(
       getAnnuaireServicePublicContactEmail("00000", "00000"),
@@ -17,17 +19,21 @@ describe("getAnnuaireServicePublicContactEmail", () => {
     );
   });
   it("should return a valid email", async () => {
-    nock("https://etablissements-publics.api.gouv.fr")
-      .get("/v3/communes/74056/mairie")
+    nock("https://api-lannuaire.service-public.fr")
+      .get(
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "15014" and pivot LIKE "mairie"`,
+      )
       .reply(200, oneMairieData);
     await assert.eventually.equal(
-      getAnnuaireServicePublicContactEmail("74056", "74400"),
-      "sg@chamonix.fr",
+      getAnnuaireServicePublicContactEmail("15014", "15000"),
+      "administration@aurillac.fr",
     );
   });
   it("should return valid email for two mairies with the same Code Officiel Geographique", async () => {
-    nock("https://etablissements-publics.api.gouv.fr")
-      .get("/v3/communes/38253/mairie")
+    nock("https://api-lannuaire.service-public.fr")
+      .get(
+        `/api/explore/v2.1/catalog/datasets/api-lannuaire-administration/records?where=code_insee_commune LIKE "38253" and pivot LIKE "mairie"`,
+      )
       .reply(200, twoMairiesData);
     await assert.eventually.equal(
       getAnnuaireServicePublicContactEmail("38253", "38860"),
