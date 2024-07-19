@@ -265,23 +265,15 @@ VALUES
   (38, 38, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
   (39, 39, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
   (40, 40, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (41, 41, 'moncourrier.fr.nf', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (42, 42, 'yeswehack.ninja', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (43, 43, 'beta.gouv.fr', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (44, 44, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (45, 45, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (46, 46, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (47, 47, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
-  (48, 48, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),
   -- Verified email domains
-  (49, 41, 'moncourrier.fr.nf', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (50, 42, 'yeswehack.ninja', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (51, 43, 'beta.gouv.fr', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (52, 44, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (53, 45, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (54, 46, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (55, 47, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (56, 48, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (41, 41, 'moncourrier.fr.nf', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (42, 42, 'yeswehack.ninja', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (43, 43, 'beta.gouv.fr', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (44, 44, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (45, 45, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (46, 46, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (47, 47, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (48, 48, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
   SET (organization_id, domain, type, created_at, updated_at, verified_at)
