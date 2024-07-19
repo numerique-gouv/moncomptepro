@@ -24,7 +24,7 @@ env:
   DO_NOT_USE_ANNUAIRE_EMAILS: "True"
   DO_NOT_AUTHENTICATE_BROWSER: "True"
   SESSION_COOKIE_SECRET: secret
-  DEBOUNCE_API_KEY:
+  DEBOUNCE_API_KEY: ${{ secrets.DEBOUNCE_API_KEY }}
   SENTRY_DSN:
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
@@ -62,6 +62,7 @@ jobs:
           - set_info_after_account_provisioning
           - signin_with_totp
           - reauthenticate_on_admin_page
+          - check_email_deliverability
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:

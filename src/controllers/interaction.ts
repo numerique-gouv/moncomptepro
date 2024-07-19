@@ -41,7 +41,6 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
         if (login_hint) {
-          setEmailInUnauthenticatedSession(req, login_hint);
           req.body.login = login_hint;
           return postStartSignInController(req, res, next);
         }

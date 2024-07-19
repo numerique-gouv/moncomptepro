@@ -12,7 +12,7 @@ The script will error out if it doesn’t find the necessary env vars. Ask a tea
 
 ### Setup env vars
 
-You will need to set `BREVO_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
+You will need to set `BREVO_API_KEY`, `DEBOUNCE_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
 
 Ask a teammate for them and put the values in your `.env`.
 
