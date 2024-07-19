@@ -1,4 +1,4 @@
-@import 'choices.js/public/assets/styles/choices.css';
+@import "choices.js/public/assets/styles/choices.css";
 
 .choices {
   margin-top: 0.5rem;
@@ -8,7 +8,7 @@
   z-index: 2 !important;
 }
 
-.choices[data-type*=select-one]:after {
+.choices[data-type*="select-one"]:after {
   display: none !important;
 }
 
