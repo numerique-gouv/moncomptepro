@@ -3,6 +3,7 @@ import getNotificationsFromRequest from "../../services/get-notifications-from-r
 import { z, ZodError } from "zod";
 import { updatePersonalInformations } from "../../managers/user";
 import {
+  jobSchema,
   nameSchema,
   phoneNumberSchema,
 } from "../../services/custom-zod-schemas";
@@ -46,14 +47,7 @@ export const getParamsForPostPersonalInformationsController = async (
     given_name: nameSchema(),
     family_name: nameSchema(),
     phone_number: phoneNumberSchema(),
-    job: z
-      .string()
-      .trim()
-      .min(1)
-      .refine((value) => !/^\d+$/.test(value), {
-        message:
-          "Merci d’inscrire une profession existante pour que votre compte soit validé",
-      }),
+    job: jobSchema(),
   });
 
   return await schema.parseAsync(req.body);
