@@ -26,6 +26,14 @@ export const phoneNumberSchema = () =>
     z.literal("").transform(() => null),
   ]);
 
+const pattern = /^(?![\d\s]+$).*/;
+export const jobSchema = () =>
+  z
+    .string()
+    .trim()
+    .min(1)
+    .refine((value) => pattern.test(value));
+
 export const idSchema = () =>
   z
     .string()
