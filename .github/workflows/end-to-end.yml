@@ -140,10 +140,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-${{ matrix.e2e_test }}-screenshots
           path: cypress/screenshots
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-videos
+          name: cypress-${{ matrix.e2e_test }}-videos
           path: cypress/videos
