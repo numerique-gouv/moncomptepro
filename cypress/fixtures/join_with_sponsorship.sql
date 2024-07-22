@@ -62,10 +62,17 @@ VALUES
   (57, 'fbcbc4b0-40de-44ad-935e-26dd7ff2adb7@mailslurp.biz', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'FakeDomain', '0123456789', 'Sbire');
 
 INSERT INTO organizations
-  (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
+  (id, siret, created_at, updated_at)
 VALUES
   -- DIRECTION INTERMINISTERIELLE DU NUMERIQUE (DINUM)
-  (1, '13002526500013', '{"mailslurp.com","mailslurp.biz"}', '{"mailslurp.com","fakedomain.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '13002526500013', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO email_domains
+(id, organization_id, domain, type, verified_at)
+VALUES
+  (1, 1, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
+  (2, 1, 'mailslurp.biz', 'verified', CURRENT_TIMESTAMP),
+  (3, 1, 'fakedomain.com', 'authorized', CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, needs_official_contact_email_verification, has_been_greeted)

@@ -7,9 +7,9 @@ VALUES
 
 
 INSERT INTO organizations
-  (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
+  (id, siret, created_at, updated_at)
 VALUES
-  (1, '19750663700010', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '19750663700010', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
