@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es";
+import { isEmpty, some } from "lodash-es";
 import { NotFoundError } from "../../config/errors";
 import {
   findById as findOrganizationById,
@@ -7,13 +7,15 @@ import {
   getUsers,
 } from "../../repositories/organization/getters";
 import {
-  addAuthorizedDomain,
-  addVerifiedDomain,
   deleteUserOrganization,
   updateUserOrganizationLink,
 } from "../../repositories/organization/setters";
 import { setSelectedOrganizationId } from "../../repositories/redis/selected-organization";
 import { getEmailDomain } from "../../services/email";
+import {
+  addDomain,
+  findEmailDomainsByOrganizationId,
+} from "../../repositories/email-domain";
 
 export const getOrganizationsByUserId = findByUserId;
 export const getOrganizationById = findOrganizationById;
@@ -55,22 +57,16 @@ export const markDomainAsVerified = async ({
 }: {
   organization_id: number;
   domain: string;
-  verification_type: UserOrganizationLink["verification_type"];
+  verification_type: EmailDomain["type"];
 }) => {
   const organization = await findOrganizationById(organization_id);
   if (isEmpty(organization)) {
     throw new NotFoundError();
   }
+  const emailDomains = await findEmailDomainsByOrganizationId(organization_id);
 
-  const { siret, verified_email_domains, authorized_email_domains } =
-    organization;
-
-  if (!verified_email_domains.includes(domain)) {
-    await addVerifiedDomain({ siret, domain });
-  }
-
-  if (!authorized_email_domains.includes(domain)) {
-    await addAuthorizedDomain({ siret, domain });
+  if (!some(emailDomains, { domain, type: verification_type })) {
+    await addDomain({ organization_id, domain, type: verification_type });
   }
 
   const usersInOrganization = await getUsers(organization_id);

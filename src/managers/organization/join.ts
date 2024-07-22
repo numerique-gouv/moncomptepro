@@ -26,7 +26,6 @@ import {
   findByVerifiedEmailDomain,
 } from "../../repositories/organization/getters";
 import {
-  addAuthorizedDomain,
   linkUserToOrganization,
   upsert,
 } from "../../repositories/organization/setters";
@@ -46,6 +45,10 @@ import {
   usesAFreeEmailProvider,
 } from "../../services/email";
 import { markDomainAsVerified } from "./main";
+import {
+  addDomain,
+  findEmailDomainsByOrganizationId,
+} from "../../repositories/email-domain";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -149,20 +152,15 @@ export const joinOrganization = async ({
     throw new UserAlreadyAskedToJoinOrganizationError(moderation_id);
   }
 
-  const {
-    id: organization_id,
-    cached_libelle,
-    authorized_email_domains,
-    verified_email_domains,
-    trackdechets_email_domains,
-    external_authorized_email_domains,
-  } = organization;
-  const { email, given_name, family_name } = user;
+  const { id: organization_id, cached_libelle } = organization;
+  const { email } = user;
   const domain = getEmailDomain(email);
+  const organizationEmailDomains =
+    await findEmailDomainsByOrganizationId(organization_id);
 
   if (isEntrepriseUnipersonnelle(organization)) {
     if (!usesAFreeEmailProvider(email)) {
-      await addAuthorizedDomain({ siret, domain });
+      await addDomain({ organization_id, domain, type: "authorized" });
     }
 
     return await linkUserToOrganization({
@@ -202,7 +200,7 @@ export const joinOrganization = async ({
         await markDomainAsVerified({
           organization_id,
           domain: contactDomain,
-          verification_type: "official_contact_domain",
+          verification_type: "official_contact",
         });
       }
 
@@ -264,7 +262,7 @@ export const joinOrganization = async ({
     }
   }
 
-  if (verified_email_domains.includes(domain)) {
+  if (some(organizationEmailDomains, { domain, type: "verified" })) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -272,7 +270,7 @@ export const joinOrganization = async ({
     });
   }
 
-  if (external_authorized_email_domains.includes(domain)) {
+  if (some(organizationEmailDomains, { domain, type: "external" })) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -281,7 +279,9 @@ export const joinOrganization = async ({
     });
   }
 
-  if (trackdechets_email_domains.includes(domain)) {
+  if (
+    some(organizationEmailDomains, { domain, type: "trackdechets_postal_mail" })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -289,7 +289,7 @@ export const joinOrganization = async ({
     });
   }
 
-  if (authorized_email_domains.includes(domain)) {
+  if (some(organizationEmailDomains, { domain, type: "authorized" })) {
     await createModeration({
       user_id,
       organization_id,
@@ -336,22 +336,20 @@ export const forceJoinOrganization = async ({
     throw new NotFoundError();
   }
   const { email } = user;
-  const {
-    verified_email_domains,
-    external_authorized_email_domains,
-    trackdechets_email_domains,
-  } = organization;
-
   const domain = getEmailDomain(email);
+  const organizationEmailDomains =
+    await findEmailDomainsByOrganizationId(organization_id);
 
   let verification_type: BaseUserOrganizationLink["verification_type"];
   if (
-    verified_email_domains.includes(domain) ||
-    external_authorized_email_domains.includes(domain)
+    some(organizationEmailDomains, { domain, type: "verified" }) ||
+    some(organizationEmailDomains, {
+      domain,
+      type: "trackdechets_postal_mail",
+    }) ||
+    some(organizationEmailDomains, { domain, type: "external" })
   ) {
-    verification_type = "verified_email_domain";
-  } else if (trackdechets_email_domains.includes(domain)) {
-    verification_type = "trackdechets_email_domain";
+    verification_type = "domain";
   } else {
     verification_type = null;
   }
