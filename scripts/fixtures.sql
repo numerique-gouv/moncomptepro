@@ -222,7 +222,7 @@ SELECT setval(
   );
 
 INSERT INTO email_domains
-(id, organization_id, domain, type, created_at, updated_at, verified_at)
+(id, organization_id, domain, verification_type, created_at, updated_at, verified_at)
 VALUES
   -- Authorized email domains
   (1, 1, 'yopmail.com', 'authorized', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL),

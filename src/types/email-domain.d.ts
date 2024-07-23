@@ -2,7 +2,7 @@ interface EmailDomain {
   id: number;
   organization_id: number;
   domain: string;
-  type:
+  verification_type:
     | "verified"
     | "blacklisted"
     | "official_contact"

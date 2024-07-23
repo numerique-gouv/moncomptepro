@@ -21,20 +21,20 @@ export const findEmailDomainsByOrganizationId = async (
 export const addDomain = async ({
   organization_id,
   domain,
-  type,
+  verification_type,
 }: {
   organization_id: number;
   domain: string;
-  type: EmailDomain["type"];
+  verification_type: EmailDomain["verification_type"];
 }) => {
   const connection = getDatabaseConnection();
 
   const emailDomain = {
     organization_id,
     domain,
-    type,
+    verification_type,
     can_be_suggested: true,
-    verified_at: type === "authorized" ? null : new Date(),
+    verified_at: verification_type === "authorized" ? null : new Date(),
     created_at: new Date(),
     updated_at: new Date(),
   };

@@ -164,7 +164,7 @@ export const postMarkDomainAsVerified = async (
     await markDomainAsVerified({
       organization_id,
       domain,
-      type: "verified",
+      domain_verification_type: "verified",
     });
 
     return res.json({});

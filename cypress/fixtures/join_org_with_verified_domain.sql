@@ -21,7 +21,7 @@ VALUES
   (3, '45334017600024', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO email_domains
-(id, organization_id, domain, type, verified_at)
+(id, organization_id, domain, verification_type, verified_at)
 VALUES
   (1, 1, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
   (2, 2, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),

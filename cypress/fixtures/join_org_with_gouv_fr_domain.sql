@@ -12,7 +12,7 @@ VALUES
   (1, '13002526500013', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO email_domains
-  (id, organization_id, domain, type, verified_at)
+  (id, organization_id, domain, verification_type, verified_at)
 VALUES
   (1, 1, 'fake.gouv.fr', 'trackdechets_postal_mail', CURRENT_TIMESTAMP);
 

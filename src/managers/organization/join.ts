@@ -160,7 +160,11 @@ export const joinOrganization = async ({
 
   if (isEntrepriseUnipersonnelle(organization)) {
     if (!usesAFreeEmailProvider(email)) {
-      await addDomain({ organization_id, domain, type: "authorized" });
+      await addDomain({
+        organization_id,
+        domain,
+        verification_type: "authorized",
+      });
     }
 
     return await linkUserToOrganization({
@@ -200,7 +204,7 @@ export const joinOrganization = async ({
         await markDomainAsVerified({
           organization_id,
           domain: contactDomain,
-          type: "official_contact",
+          domain_verification_type: "official_contact",
         });
       }
 
@@ -262,7 +266,9 @@ export const joinOrganization = async ({
     }
   }
 
-  if (some(organizationEmailDomains, { domain, type: "verified" })) {
+  if (
+    some(organizationEmailDomains, { domain, verification_type: "verified" })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -270,7 +276,9 @@ export const joinOrganization = async ({
     });
   }
 
-  if (some(organizationEmailDomains, { domain, type: "external" })) {
+  if (
+    some(organizationEmailDomains, { domain, verification_type: "external" })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -280,7 +288,10 @@ export const joinOrganization = async ({
   }
 
   if (
-    some(organizationEmailDomains, { domain, type: "trackdechets_postal_mail" })
+    some(organizationEmailDomains, {
+      domain,
+      verification_type: "trackdechets_postal_mail",
+    })
   ) {
     return await linkUserToOrganization({
       organization_id,
@@ -289,7 +300,9 @@ export const joinOrganization = async ({
     });
   }
 
-  if (some(organizationEmailDomains, { domain, type: "authorized" })) {
+  if (
+    some(organizationEmailDomains, { domain, verification_type: "authorized" })
+  ) {
     await createModeration({
       user_id,
       organization_id,
@@ -341,24 +354,24 @@ export const forceJoinOrganization = async ({
   const organizationEmailDomains =
     await findEmailDomainsByOrganizationId(organization_id);
 
-  let verification_type: BaseUserOrganizationLink["verification_type"];
+  let link_verification_type: BaseUserOrganizationLink["verification_type"];
   if (
-    some(organizationEmailDomains, { domain, type: "verified" }) ||
+    some(organizationEmailDomains, { domain, verification_type: "verified" }) ||
     some(organizationEmailDomains, {
       domain,
-      type: "trackdechets_postal_mail",
+      verification_type: "trackdechets_postal_mail",
     }) ||
-    some(organizationEmailDomains, { domain, type: "external" })
+    some(organizationEmailDomains, { domain, verification_type: "external" })
   ) {
-    verification_type = "domain";
+    link_verification_type = "domain";
   } else {
-    verification_type = null;
+    link_verification_type = null;
   }
 
   return await linkUserToOrganization({
     organization_id,
     user_id,
     is_external,
-    verification_type,
+    verification_type: link_verification_type,
   });
 };

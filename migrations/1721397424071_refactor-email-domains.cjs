@@ -4,42 +4,42 @@ exports.up = async (pgm) => {
   await pgm.db.query(`
     CREATE TABLE email_domains
     (
-      id               SERIAL PRIMARY KEY,
-      organization_id  INTEGER NOT NULL,
-      domain           VARCHAR(255) NOT NULL,
-      type             VARCHAR(255) NOT NULL,
-      can_be_suggested BOOLEAN NOT NULL DEFAULT true,
-      verified_at      TIMESTAMP WITH TIME ZONE,
-      created_at       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      id                SERIAL PRIMARY KEY,
+      organization_id   INTEGER NOT NULL,
+      domain            VARCHAR(255) NOT NULL,
+      verification_type VARCHAR(255) NOT NULL,
+      can_be_suggested  BOOLEAN NOT NULL DEFAULT true,
+      verified_at       TIMESTAMP WITH TIME ZONE,
+      created_at        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (organization_id) REFERENCES organizations (id) ON DELETE CASCADE
     );
   `);
 
   await pgm.db.query(`
     INSERT INTO email_domains
-      (organization_id, domain, type, created_at, updated_at, verified_at)
+      (organization_id, domain, verification_type, created_at, updated_at, verified_at)
     SELECT id, unnest(verified_email_domains), 'verified', created_at, updated_at, updated_at
     FROM organizations;
   `);
 
   await pgm.db.query(`
     INSERT INTO email_domains
-      (organization_id, domain, type, created_at, updated_at)
+      (organization_id, domain, verification_type, created_at, updated_at)
     SELECT id, unnest(authorized_email_domains), 'authorized', created_at, updated_at
     FROM organizations;
   `);
 
   await pgm.db.query(`
     INSERT INTO email_domains
-      (organization_id, domain, type, created_at, updated_at, verified_at)
+      (organization_id, domain, verification_type, created_at, updated_at, verified_at)
     SELECT id, unnest(external_authorized_email_domains), 'external', created_at, updated_at, updated_at
     FROM organizations;
   `);
 
   await pgm.db.query(`
     INSERT INTO email_domains
-      (organization_id, domain, type, created_at, updated_at, verified_at)
+      (organization_id, domain, verification_type, created_at, updated_at, verified_at)
     SELECT id, unnest(trackdechets_email_domains), 'trackdechets_postal_mail', created_at, updated_at, updated_at
     FROM organizations;
   `);
@@ -68,7 +68,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND type = 'verified')
+        AND verification_type = 'verified')
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);
@@ -79,7 +79,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND type = 'authorized')
+        AND verification_type = 'authorized')
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);
@@ -90,7 +90,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND type = 'external')
+        AND verification_type = 'external')
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);
@@ -101,7 +101,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND type = 'trackdechets_postal_mail')
+        AND verification_type = 'trackdechets_postal_mail')
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);

@@ -53,11 +53,11 @@ export const quitOrganization = async ({
 export const markDomainAsVerified = async ({
   organization_id,
   domain,
-  type,
+  domain_verification_type,
 }: {
   organization_id: number;
   domain: string;
-  type: EmailDomain["type"];
+  domain_verification_type: EmailDomain["verification_type"];
 }) => {
   const organization = await findOrganizationById(organization_id);
   if (isEmpty(organization)) {
@@ -65,30 +65,38 @@ export const markDomainAsVerified = async ({
   }
   const emailDomains = await findEmailDomainsByOrganizationId(organization_id);
 
-  if (!some(emailDomains, { domain, type })) {
-    await addDomain({ organization_id, domain, type });
+  if (
+    !some(emailDomains, { domain, verification_type: domain_verification_type })
+  ) {
+    await addDomain({
+      organization_id,
+      domain,
+      verification_type: domain_verification_type,
+    });
   }
 
   const usersInOrganization = await getUsers(organization_id);
 
   await Promise.all(
-    usersInOrganization.map(({ id, email, verification_type }) => {
-      const userDomain = getEmailDomain(email);
-      if (
-        userDomain === domain &&
-        [
-          null,
-          "no_verification_means_available",
-          "no_verification_means_for_entreprise_unipersonnelle",
-        ].includes(verification_type)
-      ) {
-        return updateUserOrganizationLink(organization_id, id, {
-          verification_type: "domain",
-        });
-      }
+    usersInOrganization.map(
+      ({ id, email, verification_type: link_verification_type }) => {
+        const userDomain = getEmailDomain(email);
+        if (
+          userDomain === domain &&
+          [
+            null,
+            "no_verification_means_available",
+            "no_verification_means_for_entreprise_unipersonnelle",
+          ].includes(link_verification_type)
+        ) {
+          return updateUserOrganizationLink(organization_id, id, {
+            verification_type: "domain",
+          });
+        }
 
-      return null;
-    }),
+        return null;
+      },
+    ),
   );
 };
 
