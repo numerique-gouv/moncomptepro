@@ -26,7 +26,7 @@ exports.up = async (pgm) => {
   await pgm.db.query(`
     INSERT INTO email_domains
       (organization_id, domain, verification_type, created_at, updated_at)
-    SELECT id, unnest(authorized_email_domains), 'authorized', created_at, updated_at
+    SELECT id, unnest(authorized_email_domains), 'temporary', created_at, updated_at
     FROM organizations;
   `);
 
@@ -79,7 +79,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND verification_type = 'authorized')
+        AND verification_type = 'temporary')
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);

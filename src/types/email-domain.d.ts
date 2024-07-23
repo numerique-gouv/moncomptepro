@@ -6,7 +6,7 @@ interface EmailDomain {
     | "verified"
     | "blacklisted"
     | "official_contact"
-    | "authorized"
+    | "temporary"
     | "external"
     | "trackdechets_postal_mail";
   can_be_suggested: boolean;

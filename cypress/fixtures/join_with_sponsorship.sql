@@ -72,7 +72,7 @@ INSERT INTO email_domains
 VALUES
   (1, 1, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
   (2, 1, 'mailslurp.biz', 'verified', CURRENT_TIMESTAMP),
-  (3, 1, 'fakedomain.com', 'authorized', CURRENT_TIMESTAMP);
+  (3, 1, 'fakedomain.com', 'temporary', CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, needs_official_contact_email_verification, has_been_greeted)

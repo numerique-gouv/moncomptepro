@@ -163,7 +163,7 @@ export const joinOrganization = async ({
       await addDomain({
         organization_id,
         domain,
-        verification_type: "authorized",
+        verification_type: "temporary",
       });
     }
 
@@ -301,7 +301,7 @@ export const joinOrganization = async ({
   }
 
   if (
-    some(organizationEmailDomains, { domain, verification_type: "authorized" })
+    some(organizationEmailDomains, { domain, verification_type: "temporary" })
   ) {
     await createModeration({
       user_id,
