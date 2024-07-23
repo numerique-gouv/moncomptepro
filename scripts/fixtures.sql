@@ -279,6 +279,13 @@ VALUES
   SET (organization_id, domain, verification_type, created_at, updated_at, verified_at)
     = (EXCLUDED.organization_id, EXCLUDED.domain, EXCLUDED.verification_type, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.verified_at);
 
+SELECT setval(
+   'email_domains_id_seq',
+   GREATEST(
+     (SELECT MAX(id) FROM email_domains),
+     (SELECT last_value FROM email_domains_id_seq)
+   )
+ );
 
 INSERT INTO users_organizations
   (user_id, organization_id, verification_type, authentication_by_peers_type, has_been_greeted)
