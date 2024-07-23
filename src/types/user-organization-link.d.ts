@@ -10,6 +10,7 @@ interface BaseUserOrganizationLink {
     | "official_contact_email"
     | "verified_contact_email"
     | null;
+  // updated when verification_type is changed
   verified_at: Date | null;
   authentication_by_peers_type:
     | "all_members_notified"
