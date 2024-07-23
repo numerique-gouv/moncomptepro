@@ -43,7 +43,7 @@ export const addDomain = async ({
     hashToPostgresParams<EmailDomain>(emailDomain);
 
   const { rows }: QueryResult<EmailDomain> = await connection.query(
-    `INSERT INTO users ${paramsString} VALUES ${valuesString} RETURNING *;`,
+    `INSERT INTO email_domains ${paramsString} VALUES ${valuesString} RETURNING *;`,
     values,
   );
 

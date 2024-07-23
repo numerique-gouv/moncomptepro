@@ -58,8 +58,8 @@ exports.down = async (pgm) => {
     let old_verification_type = null;
     if (emailDomainRows.length === 1) {
       const newDomainVerificationToOldLinkVerification = {
-        verified: "verified_contact_email",
-        external: "verified_contact_email",
+        verified: "verified_email_domain",
+        external: "verified_email_domain",
         trackdechets_postal_mail: "trackdechets_email_domain",
         official_contact: "official_contact_domain",
       };
