@@ -74,8 +74,8 @@ FULL OUTER JOIN (
 ) org_with_count on org_with_count.id = o.id
 WHERE cached_est_active = 'true'
   AND (
-    $1 = ANY (SELECT domain FROM email_domains WHERE organization_id = o.id AND type = 'verified')
-      OR $1 = ANY (SELECT domain FROM email_domains WHERE organization_id = o.id AND type = 'trackdechets_postal_mail')
+    $1 = ANY (SELECT domain FROM email_domains WHERE organization_id = o.id AND verification_type = 'verified')
+      OR $1 = ANY (SELECT domain FROM email_domains WHERE organization_id = o.id AND verification_type = 'trackdechets_postal_mail')
     )
 ORDER BY member_count desc NULLS LAST;`,
     [email_domain],
