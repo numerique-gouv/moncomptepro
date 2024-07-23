@@ -21,11 +21,11 @@ VALUES
   (3, '45334017600024', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO email_domains
-(id, organization_id, domain, verification_type, verified_at)
+(organization_id, domain, verification_type, verified_at)
 VALUES
-  (1, 1, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
-  (2, 2, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
-  (3, 3, 'randomain.fr', 'verified', CURRENT_TIMESTAMP);
+  (1, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
+  (2, 'mailslurp.com', 'verified', CURRENT_TIMESTAMP),
+  (3, 'randomain.fr', 'verified', CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
