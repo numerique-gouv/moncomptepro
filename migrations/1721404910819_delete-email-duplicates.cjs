@@ -3,7 +3,7 @@ exports.shorthands = undefined;
 exports.up = async (pgm) => {
   await pgm.db.query(`
     DELETE FROM email_domains ed
-    WHERE ed.verification_type = 'temporary'
+    WHERE ed.verification_type IS NULL
       AND EXISTS (
       SELECT 1
       FROM email_domains ed_verified
@@ -17,7 +17,7 @@ exports.up = async (pgm) => {
 exports.down = async (pgm) => {
   await pgm.db.query(`
     INSERT INTO email_domains (organization_id, domain, verification_type, created_at, updated_at)
-    SELECT organization_id, domain, 'temporary', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    SELECT organization_id, domain, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
     FROM email_domains
     WHERE verification_type = 'verified';
   `);

@@ -7,7 +7,7 @@ exports.up = async (pgm) => {
       id                SERIAL PRIMARY KEY,
       organization_id   INTEGER NOT NULL,
       domain            VARCHAR(255) NOT NULL,
-      verification_type VARCHAR(255) NOT NULL,
+      verification_type VARCHAR(255),
       can_be_suggested  BOOLEAN NOT NULL DEFAULT true,
       verified_at       TIMESTAMP WITH TIME ZONE,
       created_at        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,7 +26,7 @@ exports.up = async (pgm) => {
   await pgm.db.query(`
     INSERT INTO email_domains
       (organization_id, domain, verification_type, created_at, updated_at)
-    SELECT id, unnest(authorized_email_domains), 'temporary', created_at, updated_at
+    SELECT id, unnest(authorized_email_domains), NULL, created_at, updated_at
     FROM organizations;
   `);
 
@@ -79,7 +79,7 @@ exports.down = async (pgm) => {
       SELECT domain
       FROM email_domains
       WHERE o.id = organization_id
-        AND verification_type = 'temporary')
+        AND verification_type IS NULL)
     FROM email_domains ed
     WHERE o.id = ed.organization_id;
   `);

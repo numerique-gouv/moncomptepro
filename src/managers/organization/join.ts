@@ -45,10 +45,7 @@ import {
   usesAFreeEmailProvider,
 } from "../../services/email";
 import { markDomainAsVerified } from "./main";
-import {
-  addDomain,
-  findEmailDomainsByOrganizationId,
-} from "../../repositories/email-domain";
+import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -159,14 +156,6 @@ export const joinOrganization = async ({
     await findEmailDomainsByOrganizationId(organization_id);
 
   if (isEntrepriseUnipersonnelle(organization)) {
-    if (!usesAFreeEmailProvider(email)) {
-      await addDomain({
-        organization_id,
-        domain,
-        verification_type: "temporary",
-      });
-    }
-
     return await linkUserToOrganization({
       organization_id,
       user_id,
@@ -300,9 +289,7 @@ export const joinOrganization = async ({
     });
   }
 
-  if (
-    some(organizationEmailDomains, { domain, verification_type: "temporary" })
-  ) {
+  if (some(organizationEmailDomains, { domain, verification_type: null })) {
     await createModeration({
       user_id,
       organization_id,
@@ -312,7 +299,6 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      // A value of null indicates that the process is pending verification in hyyypertool and is currently unverified.
       verification_type: null,
     });
   }
@@ -365,7 +351,7 @@ export const forceJoinOrganization = async ({
   ) {
     link_verification_type = "domain";
   } else {
-    link_verification_type = null;
+    link_verification_type = "no_validation_means_available";
   }
 
   return await linkUserToOrganization({

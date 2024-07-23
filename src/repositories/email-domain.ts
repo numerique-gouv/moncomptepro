@@ -34,7 +34,7 @@ export const addDomain = async ({
     domain,
     verification_type,
     can_be_suggested: true,
-    verified_at: verification_type === "temporary" ? null : new Date(),
+    verified_at: new Date(),
     created_at: new Date(),
     updated_at: new Date(),
   };
