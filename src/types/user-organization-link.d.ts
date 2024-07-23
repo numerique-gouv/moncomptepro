@@ -8,7 +8,6 @@ interface BaseUserOrganizationLink {
     | "no_validation_means_available"
     | "no_verification_means_for_entreprise_unipersonnelle"
     | "official_contact_email"
-    | "verified_contact_email"
     | null;
   // updated when verification_type is changed
   verified_at: Date | null;
