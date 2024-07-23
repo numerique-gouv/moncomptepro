@@ -30,11 +30,11 @@ VALUES
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
 VALUES
-  (2, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (7, 1, true, 'verified_email_domain', 'all_members_notified', true),
-  (8, 1, false, 'verified_email_domain', null, false),
-  (2, 2, false, 'verified_email_domain', 'all_members_notified', true),
-  (3, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (4, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (5, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (6, 1, false, 'verified_email_domain', 'all_members_notified', true);
+  (2, 1, false, 'domain', 'all_members_notified', true),
+  (7, 1, true, 'domain', 'all_members_notified', true),
+  (8, 1, false, 'domain', null, false),
+  (2, 2, false, 'domain', 'all_members_notified', true),
+  (3, 1, false, 'domain', 'all_members_notified', true),
+  (4, 1, false, 'domain', 'all_members_notified', true),
+  (5, 1, false, 'domain', 'all_members_notified', true),
+  (6, 1, false, 'domain', 'all_members_notified', true);

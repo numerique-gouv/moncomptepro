@@ -14,8 +14,8 @@ VALUES
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
 VALUES
-  (1, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (1, 2, false, 'verified_email_domain', 'all_members_notified', true);
+  (1, 1, false, 'domain', 'all_members_notified', true),
+  (1, 2, false, 'domain', 'all_members_notified', true);
 
 INSERT INTO oidc_clients
   (client_name, client_id, client_secret, redirect_uris,

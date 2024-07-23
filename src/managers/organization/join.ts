@@ -166,7 +166,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: null,
+      verification_type: "no_verification_means_for_entreprise_unipersonnelle",
     });
   }
 
@@ -200,7 +200,7 @@ export const joinOrganization = async ({
         await markDomainAsVerified({
           organization_id,
           domain: contactDomain,
-          verification_type: "official_contact",
+          type: "official_contact",
         });
       }
 
@@ -216,7 +216,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: "official_contact_domain",
+          verification_type: "domain",
         });
       }
 
@@ -228,7 +228,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: null,
+          verification_type: "code_sent_to_official_contact_email",
           needs_official_contact_email_verification: true,
         });
       }
@@ -256,7 +256,7 @@ export const joinOrganization = async ({
       return await linkUserToOrganization({
         organization_id,
         user_id,
-        verification_type: null,
+        verification_type: "code_sent_to_official_contact_email",
         needs_official_contact_email_verification: true,
       });
     }
@@ -266,7 +266,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: "verified_email_domain",
+      verification_type: "domain",
     });
   }
 
@@ -275,7 +275,7 @@ export const joinOrganization = async ({
       organization_id,
       user_id,
       is_external: true,
-      verification_type: "verified_email_domain",
+      verification_type: "domain",
     });
   }
 
@@ -285,7 +285,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: "trackdechets_email_domain",
+      verification_type: "domain",
     });
   }
 
@@ -299,6 +299,7 @@ export const joinOrganization = async ({
     return await linkUserToOrganization({
       organization_id,
       user_id,
+      // A value of null indicates that the process is pending verification in hyyypertool and is currently unverified.
       verification_type: null,
     });
   }
