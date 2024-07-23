@@ -276,8 +276,8 @@ VALUES
   (48, 48, 'yopmail.com', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
-  SET (organization_id, domain, type, created_at, updated_at, verified_at)
-    = (EXCLUDED.organization_id, EXCLUDED.domain, EXCLUDED.type, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.verified_at);
+  SET (organization_id, domain, verification_type, created_at, updated_at, verified_at)
+    = (EXCLUDED.organization_id, EXCLUDED.domain, EXCLUDED.verification_type, EXCLUDED.created_at, EXCLUDED.updated_at, EXCLUDED.verified_at);
 
 
 INSERT INTO users_organizations
