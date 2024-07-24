@@ -4,6 +4,8 @@ ProConnect - Identité est un fournisseur d'identité "OpenId Connect" géré pa
 
 Il sert de solution de repli pour les professionnels du public et du privé dont l'organisation n'a pas encore intégré son propre fournisseur d'identité à la fédération ProConnect (anciennement AgentConnect). Ainsi, toute personne affiliée à une organisation enregistrée à l'INSEE, c'est-à-dire ayant un SIRET, peut utiliser une identité fournie par la DINUM au sein de la fédération ProConnect.
 
+Pour vous intégrer la fédération ProConnect, vous pouvez vous interfacer directement à notre brique Fédération via ce Lien de documentation. ProConnect - Identité n'est pas utilisable directement autrement que via la Fédération.
+
 ## 🗺️ Tester le parcours
 
 Pour tester le parcours de connexion MonComptePro, vous pouvez utiliser notre plateforme dédiée : https://test.moncomptepro.beta.gouv.fr/.
