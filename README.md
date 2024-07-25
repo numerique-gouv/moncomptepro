@@ -1,14 +1,10 @@
-# 🔑 MonComptePro
+# 🔑 ProConnect - Identité (ex-MonComptePro)
 
-[![](./illustration.png)](https://moncomptepro.beta.gouv.fr/partenaire)
+ProConnect - Identité est un fournisseur d'identité "OpenId Connect" géré par la DINUM.
 
-Nous identifions les utilisateurs professionnels du privé ou du public sur les plateformes suivantes :
+Il sert de solution de repli pour les professionnels du public et du privé dont l'organisation n'a pas encore intégré son propre fournisseur d'identité à la fédération ProConnect (anciennement AgentConnect). Ainsi, toute personne affiliée à une organisation enregistrée à l'INSEE, c'est-à-dire ayant un SIRET, peut utiliser une identité fournie par la DINUM au sein de la fédération ProConnect.
 
-- DataPass : https://datapass.api.gouv.fr
-- L’API Manager API Particulier : https://particulier.api.gouv.fr/
-- L’API Manager API Entreprise : https://entreprise.api.gouv.fr/
-- HubEE : https://hubee.numerique.gouv.fr/
-- catalogue.data.gouv : https://catalogue.data.gouv.fr/
+Pour vous intégrer la fédération ProConnect, vous pouvez vous interfacer directement à notre brique Fédération via ce Lien de documentation. ProConnect - Identité n'est pas utilisable directement autrement que via la Fédération.
 
 ## 🗺️ Tester le parcours
 
