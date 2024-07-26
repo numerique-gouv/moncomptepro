@@ -1,18 +1,10 @@
 import { getNewRedisClient } from "../../connectors/redis";
 import { SESSION_MAX_AGE_IN_SECONDS } from "../../config/env";
-import Redis from "ioredis";
 
-let redisClient: Redis | null = null;
-
-const getRedisClient = () => {
-  if (!redisClient) {
-    redisClient = getNewRedisClient({
-      keyPrefix: "mcp:selected-organization:",
-    });
-  }
-
-  return redisClient;
-};
+const getRedisClient = () =>
+  getNewRedisClient({
+    keyPrefix: "mcp:selected-organization:",
+  });
 
 export const getSelectedOrganizationId = async (user_id: number) => {
   const rawResult = await getRedisClient().get(user_id.toString());

@@ -2,9 +2,10 @@
 import { isEmpty } from "lodash-es";
 import { getNewRedisClient } from "../../connectors/redis";
 
-const client = getNewRedisClient({
-  keyPrefix: "oidc:",
-});
+const getClient = () =>
+  getNewRedisClient({
+    keyPrefix: "oidc:",
+  });
 
 const grantable = new Set([
   "AccessToken",
@@ -49,7 +50,7 @@ class RedisAdapter {
       ? { payload: JSON.stringify(payload) }
       : JSON.stringify(payload);
 
-    const multi = client.multi();
+    const multi = getClient().multi();
     // @ts-ignore
     multi[consumable.has(this.name) ? "hmset" : "set"](key, store);
 
@@ -62,7 +63,7 @@ class RedisAdapter {
       multi.rpush(grantKey, key);
       // if you're seeing grant key lists growing out of acceptable proportions consider using LTRIM
       // here to trim the list to an appropriate length
-      const ttl = await client.ttl(grantKey);
+      const ttl = await getClient().ttl(grantKey);
       if (expiresIn > ttl) {
         multi.expire(grantKey, expiresIn);
       }
@@ -85,8 +86,8 @@ class RedisAdapter {
 
   async find(id: any) {
     const data = consumable.has(this.name)
-      ? await client.hgetall(this.key(id))
-      : await client.get(this.key(id));
+      ? await getClient().hgetall(this.key(id))
+      : await getClient().get(this.key(id));
 
     if (isEmpty(data)) {
       return undefined;
@@ -104,30 +105,34 @@ class RedisAdapter {
   }
 
   async findByUid(uid: any) {
-    const id = await client.get(uidKeyFor(uid));
+    const id = await getClient().get(uidKeyFor(uid));
     return this.find(id);
   }
 
   async findByUserCode(userCode: any) {
-    const id = await client.get(userCodeKeyFor(userCode));
+    const id = await getClient().get(userCodeKeyFor(userCode));
     return this.find(id);
   }
 
   async destroy(id: any) {
     const key = this.key(id);
-    await client.del(key);
+    await getClient().del(key);
   }
 
   async revokeByGrantId(grantId: any) {
-    const multi = client.multi();
-    const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
+    const multi = getClient().multi();
+    const tokens = await getClient().lrange(grantKeyFor(grantId), 0, -1);
     tokens.forEach((token: any) => multi.del(token));
     multi.del(grantKeyFor(grantId));
     await multi.exec();
   }
 
   async consume(id: any) {
-    await client.hset(this.key(id), "consumed", Math.floor(Date.now() / 1000));
+    await getClient().hset(
+      this.key(id),
+      "consumed",
+      Math.floor(Date.now() / 1000),
+    );
   }
 
   key(id: any) {
