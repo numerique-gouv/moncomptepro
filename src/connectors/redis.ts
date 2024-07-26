@@ -1,12 +1,21 @@
-import RedisClient, { RedisOptions } from "ioredis";
+import RedisClient from "ioredis";
+import Redis, { RedisOptions } from "ioredis";
 import { REDIS_URL } from "../config/env";
 import { logger } from "../services/log";
 
-export const getNewRedisClient = (params: RedisOptions = {}) => {
-  const redisClient = new RedisClient(REDIS_URL, params);
-  redisClient.on("connect", () =>
-    logger.debug(`Connected to database : ${REDIS_URL}`),
-  );
+const redisClients: { [key: string]: Redis } = {};
 
-  return redisClient;
+export const getNewRedisClient = (options: RedisOptions = {}) => {
+  const clientKey = JSON.stringify(options);
+  if (!redisClients[clientKey]) {
+    const redisClient = new RedisClient(REDIS_URL, options);
+    redisClient.on("connect", () =>
+      logger.debug(
+        `Connected to database : ${REDIS_URL} with options: ${clientKey}`,
+      ),
+    );
+    redisClients[clientKey] = redisClient;
+  }
+
+  return redisClients[clientKey];
 };
