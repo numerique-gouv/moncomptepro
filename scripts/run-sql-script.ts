@@ -11,6 +11,7 @@ const runScript = async (filePath: string): Promise<void> => {
     console.log(`Successfully ran script: ${filePath}`);
   } catch (error) {
     console.error(`Error running script: ${filePath}`, error);
+    process.exit(1);
   } finally {
     if (connection) {
       await connection.end();

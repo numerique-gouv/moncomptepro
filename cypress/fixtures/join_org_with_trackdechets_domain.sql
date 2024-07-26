@@ -5,12 +5,19 @@ VALUES
   (1, '0c5b976c-b6b0-406e-a7ed-08ddae8d2d81@mailslurp.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Nouveau', '0123456789', 'Sbire');
 
 INSERT INTO organizations
-  (id, siret, trackdechets_email_domains, created_at, updated_at)
+  (id, siret, created_at, updated_at)
 VALUES
-  (1, '66204244933106', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (2, '66204244914742', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (3, '66204244905476', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
---   (4, '66204244923982', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
---   (5, '66204244917307', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
---   (6, '66204244908819', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
---   (7, '66204244908579', '{"mailslurp.com"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '66204244933106', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, '66204244914742', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, '66204244905476', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+--   (4, '66204244923982', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+--   (5, '66204244917307', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+--   (6, '66204244908819', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+--   (7, '66204244908579', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO email_domains
+(id, organization_id, domain, verification_type, verified_at)
+VALUES
+  (1, 1, 'mailslurp.com', 'trackdechets_postal_mail', CURRENT_TIMESTAMP),
+  (2, 2, 'mailslurp.com', 'trackdechets_postal_mail', CURRENT_TIMESTAMP),
+  (3, 3, 'mailslurp.com', 'trackdechets_postal_mail', CURRENT_TIMESTAMP);

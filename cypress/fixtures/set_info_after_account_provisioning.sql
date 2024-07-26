@@ -5,9 +5,9 @@ VALUES
   (1, 'ea2f1539-9675-4384-ab28-4dcecd0bd411@mailslurp.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Jean', null, null, true, true);
 
 INSERT INTO organizations
-  (id, siret, verified_email_domains, authorized_email_domains, created_at, updated_at)
+  (id, siret, created_at, updated_at)
 VALUES
-  (1, '21340126800130', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '21340126800130', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)

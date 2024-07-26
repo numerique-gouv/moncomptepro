@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import {
   InseeConnectionError,
   InseeNotFoundError,
@@ -164,7 +164,7 @@ export const postMarkDomainAsVerified = async (
     await markDomainAsVerified({
       organization_id,
       domain,
-      verification_type: "verified_email_domain",
+      domain_verification_type: "verified",
     });
 
     return res.json({});

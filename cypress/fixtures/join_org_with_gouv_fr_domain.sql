@@ -7,11 +7,16 @@ VALUES
   (2, 'membre@fake.gouv.fr', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Membre', '0123456789', 'Sbire');
 
 INSERT INTO organizations
-  (id, siret, trackdechets_email_domains, created_at, updated_at)
+  (id, siret, created_at, updated_at)
 VALUES
-  (1, '13002526500013', '{"fake.gouv.fr"}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+  (1, '13002526500013', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO email_domains
+  (id, organization_id, domain, verification_type, verified_at)
+VALUES
+  (1, 1, 'fake.gouv.fr', 'trackdechets_postal_mail', CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
 VALUES
-  (2, 1, false, 'verified_email_domain', 'is_the_only_active_member', true);
+  (2, 1, false, 'domain', 'is_the_only_active_member', true);

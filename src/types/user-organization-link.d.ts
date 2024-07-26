@@ -1,15 +1,16 @@
 interface BaseUserOrganizationLink {
   is_external: boolean;
   verification_type:
-    | "verified_email_domain"
-    | "trackdechets_email_domain"
-    | "official_contact_email"
-    | "official_contact_domain"
     | "code_sent_to_official_contact_email"
+    | "domain"
+    | "imported_from_inclusion_connect"
     | "in_liste_dirigeants_rna"
     | "no_validation_means_available"
-    | "imported_from_inclusion_connect"
+    | "no_verification_means_for_entreprise_unipersonnelle"
+    | "official_contact_email"
     | null;
+  // updated when verification_type is changed
+  verified_at: Date | null;
   authentication_by_peers_type:
     | "all_members_notified"
     | "sponsored_by_member"

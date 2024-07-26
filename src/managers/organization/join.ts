@@ -26,7 +26,6 @@ import {
   findByVerifiedEmailDomain,
 } from "../../repositories/organization/getters";
 import {
-  addAuthorizedDomain,
   linkUserToOrganization,
   upsert,
 } from "../../repositories/organization/setters";
@@ -46,6 +45,7 @@ import {
   usesAFreeEmailProvider,
 } from "../../services/email";
 import { markDomainAsVerified } from "./main";
+import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -149,26 +149,17 @@ export const joinOrganization = async ({
     throw new UserAlreadyAskedToJoinOrganizationError(moderation_id);
   }
 
-  const {
-    id: organization_id,
-    cached_libelle,
-    authorized_email_domains,
-    verified_email_domains,
-    trackdechets_email_domains,
-    external_authorized_email_domains,
-  } = organization;
-  const { email, given_name, family_name } = user;
+  const { id: organization_id, cached_libelle } = organization;
+  const { email } = user;
   const domain = getEmailDomain(email);
+  const organizationEmailDomains =
+    await findEmailDomainsByOrganizationId(organization_id);
 
   if (isEntrepriseUnipersonnelle(organization)) {
-    if (!usesAFreeEmailProvider(email)) {
-      await addAuthorizedDomain({ siret, domain });
-    }
-
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: null,
+      verification_type: "no_verification_means_for_entreprise_unipersonnelle",
     });
   }
 
@@ -202,7 +193,7 @@ export const joinOrganization = async ({
         await markDomainAsVerified({
           organization_id,
           domain: contactDomain,
-          verification_type: "official_contact_domain",
+          domain_verification_type: "official_contact",
         });
       }
 
@@ -218,7 +209,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: "official_contact_domain",
+          verification_type: "domain",
         });
       }
 
@@ -230,7 +221,7 @@ export const joinOrganization = async ({
         return await linkUserToOrganization({
           organization_id,
           user_id,
-          verification_type: null,
+          verification_type: "code_sent_to_official_contact_email",
           needs_official_contact_email_verification: true,
         });
       }
@@ -258,38 +249,47 @@ export const joinOrganization = async ({
       return await linkUserToOrganization({
         organization_id,
         user_id,
-        verification_type: null,
+        verification_type: "code_sent_to_official_contact_email",
         needs_official_contact_email_verification: true,
       });
     }
   }
 
-  if (verified_email_domains.includes(domain)) {
+  if (
+    some(organizationEmailDomains, { domain, verification_type: "verified" })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: "verified_email_domain",
+      verification_type: "domain",
     });
   }
 
-  if (external_authorized_email_domains.includes(domain)) {
+  if (
+    some(organizationEmailDomains, { domain, verification_type: "external" })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
       is_external: true,
-      verification_type: "verified_email_domain",
+      verification_type: "domain",
     });
   }
 
-  if (trackdechets_email_domains.includes(domain)) {
+  if (
+    some(organizationEmailDomains, {
+      domain,
+      verification_type: "trackdechets_postal_mail",
+    })
+  ) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: "trackdechets_email_domain",
+      verification_type: "domain",
     });
   }
 
-  if (authorized_email_domains.includes(domain)) {
+  if (some(organizationEmailDomains, { domain, verification_type: null })) {
     await createModeration({
       user_id,
       organization_id,
@@ -336,30 +336,28 @@ export const forceJoinOrganization = async ({
     throw new NotFoundError();
   }
   const { email } = user;
-  const {
-    verified_email_domains,
-    external_authorized_email_domains,
-    trackdechets_email_domains,
-  } = organization;
-
   const domain = getEmailDomain(email);
+  const organizationEmailDomains =
+    await findEmailDomainsByOrganizationId(organization_id);
 
-  let verification_type: BaseUserOrganizationLink["verification_type"];
+  let link_verification_type: BaseUserOrganizationLink["verification_type"];
   if (
-    verified_email_domains.includes(domain) ||
-    external_authorized_email_domains.includes(domain)
+    some(organizationEmailDomains, { domain, verification_type: "verified" }) ||
+    some(organizationEmailDomains, {
+      domain,
+      verification_type: "trackdechets_postal_mail",
+    }) ||
+    some(organizationEmailDomains, { domain, verification_type: "external" })
   ) {
-    verification_type = "verified_email_domain";
-  } else if (trackdechets_email_domains.includes(domain)) {
-    verification_type = "trackdechets_email_domain";
+    link_verification_type = "domain";
   } else {
-    verification_type = null;
+    link_verification_type = "no_validation_means_available";
   }
 
   return await linkUserToOrganization({
     organization_id,
     user_id,
     is_external,
-    verification_type,
+    verification_type: link_verification_type,
   });
 };
