@@ -79,9 +79,9 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
   let unexpected_error_count = 0;
   let success_count = 0;
 
-  // 50ms is an estimated additional delay from insee API
+  // 100ms is the benchmarked response time from INSEE API
   const estimatedExecutionTimeInMilliseconds =
-    (maxInseeCallRateInMs + 50) * input_file_lines;
+    Math.max(maxInseeCallRateInMs, 100) * input_file_lines;
 
   logger.info("");
   logger.info(
@@ -136,6 +136,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
         const sirets: string[] = rawSirets
           .split(",")
+          .filter((s: string) => !!s)
           .map((s: string) => s.trim());
         if (sirets.length > 0 && sirets.some((s) => !isSiretValid(s))) {
           i++;
