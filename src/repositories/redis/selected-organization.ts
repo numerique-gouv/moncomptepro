@@ -1,12 +1,21 @@
 import { getNewRedisClient } from "../../connectors/redis";
 import { SESSION_MAX_AGE_IN_SECONDS } from "../../config/env";
+import Redis from "ioredis";
 
-const redisClient = getNewRedisClient({
-  keyPrefix: "mcp:selected-organization:",
-});
+let redisClient: Redis | null = null;
+
+const getRedisClient = () => {
+  if (!redisClient) {
+    redisClient = getNewRedisClient({
+      keyPrefix: "mcp:selected-organization:",
+    });
+  }
+
+  return redisClient;
+};
 
 export const getSelectedOrganizationId = async (user_id: number) => {
-  const rawResult = await redisClient.get(user_id.toString());
+  const rawResult = await getRedisClient().get(user_id.toString());
   return rawResult === null ? null : parseInt(rawResult, 10);
 };
 
@@ -14,7 +23,7 @@ export const setSelectedOrganizationId = async (
   user_id: number,
   selectedOrganization: number,
 ) => {
-  await redisClient.setex(
+  await getRedisClient().setex(
     user_id.toString(),
     SESSION_MAX_AGE_IN_SECONDS,
     selectedOrganization,
@@ -22,5 +31,5 @@ export const setSelectedOrganizationId = async (
 };
 
 export const deleteSelectedOrganizationId = async (user_id: number) => {
-  await redisClient.del(user_id.toString());
+  await getRedisClient().del(user_id.toString());
 };
