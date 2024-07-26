@@ -10,10 +10,7 @@ import {
   markAsWhitelisted,
   notifyAllMembers,
 } from "../managers/organization/authentication-by-peers";
-import {
-  getOrganizationsByUserId,
-  selectOrganization,
-} from "../managers/organization/main";
+import { getOrganizationsByUserId } from "../managers/organization/main";
 import {
   destroyAuthenticatedSession,
   getUserFromAuthenticatedSession,
@@ -32,6 +29,7 @@ import {
   getEmailFromUnauthenticatedSession,
   getPartialUserFromUnauthenticatedSession,
 } from "../managers/session/unauthenticated";
+import { selectOrganization } from "../managers/organization/selected-organization";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from

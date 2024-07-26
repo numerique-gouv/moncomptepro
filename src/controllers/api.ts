@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
-import { ZodError, z } from "zod";
+import { z, ZodError } from "zod";
 import {
   InseeConnectionError,
   InseeNotFoundError,
@@ -11,7 +11,6 @@ import { getOrganizationInfo } from "../connectors/api-sirene";
 import { sendModerationProcessedEmail } from "../managers/moderation";
 import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
 import { forceJoinOrganization } from "../managers/organization/join";
-import { markDomainAsVerified } from "../managers/organization/main";
 import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   idSchema,
@@ -19,6 +18,7 @@ import {
   siretSchema,
 } from "../services/custom-zod-schemas";
 import { logger } from "../services/log";
+import { markDomainAsVerified } from "../managers/organization/email-domain";
 
 export const getPingApiSireneController = async (
   req: Request,

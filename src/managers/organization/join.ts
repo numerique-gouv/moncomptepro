@@ -45,7 +45,8 @@ import {
   isAFreeEmailProvider,
   usesAFreeEmailProvider,
 } from "../../services/email";
-import { markDomainAsVerified } from "./main";
+
+import { markDomainAsVerified } from "./email-domain";
 
 export const doSuggestOrganizations = async ({
   user_id,

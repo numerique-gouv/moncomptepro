@@ -24,7 +24,6 @@ import {
 import {
   getOrganizationById,
   quitOrganization,
-  selectOrganization,
 } from "../managers/organization/main";
 import { getUserFromAuthenticatedSession } from "../managers/session/authenticated";
 import { csrfToken } from "../middlewares/csrf-protection";
@@ -36,6 +35,7 @@ import {
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import hasErrorFromField from "../services/has-error-from-field";
 import { getEmailDomain } from "../services/email";
+import { selectOrganization } from "../managers/organization/selected-organization";
 
 export const getJoinOrganizationController = async (
   req: Request,
