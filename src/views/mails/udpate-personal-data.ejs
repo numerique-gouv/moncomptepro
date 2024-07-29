@@ -1,0 +1,27 @@
+Bonjour <%= given_name %> <%= family_name %>,<br /><br />
+Nous vous informons que vos données personnelles ont été mises à jour avec
+succès.
+<br /><br />
+Les données modifiées sont les suivantes :
+<ul>
+    <% if (changes.email) { %> <li>Email : <%= changes.email %></li> <% } %>
+    <% if (changes.phone) { %> <li>Téléphone : <%= changes.phone %></li> <% } %>
+    <% if (changes.address) { %> <li>Adresse : <%= changes.address %></li> <% } %>
+    <% if (changes.given_name) { %> <li>Prénom : <%= changes.given_name %></li> <% } %>
+    <% if (changes.family_name) { %> <li>Nom de famille : <%= changes.family_name %></li> <% } %>
+</ul>
+<strong>
+    <a
+      href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Erreur%20-%20Mon%20organisation"
+      style="text-decoration: underline; color: rgb(0, 0, 145)"
+    >
+      <u>
+        Si vous n'êtes pas à l'origine de ce changement, quelqu'un utilise peut-être
+        votre compte. Faites-le nous savoir en répondant à cet email.
+      </u>
+    </a>
+  </strong>
+  <br /><br />
+  Cordialement,
+  <br /><br />
+  L’équipe MonComptePro
