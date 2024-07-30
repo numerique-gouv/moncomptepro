@@ -26,6 +26,7 @@ import {
   findByEmail,
   findByMagicLinkToken,
   findByResetPasswordToken,
+  findById,
   update,
 } from "../repositories/user";
 import { getDidYouMeanSuggestion } from "../services/did-you-mean";
@@ -183,6 +184,21 @@ export const sendEmailAddressVerificationEmail = async ({
   });
 
   return true;
+};
+
+export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Suppression de compte",
+    template: "delete-account",
+    params: { given_name, family_name },
+  });
 };
 
 export const verifyEmail = async (
