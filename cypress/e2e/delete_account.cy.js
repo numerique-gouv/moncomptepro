@@ -23,19 +23,13 @@ describe("delete account", () => {
       .contains("S’identifier")
       .click();
 
-    // start resetting account
-    cy.visit("/connection-and-account").contains("Suppression").click();
+    cy.contains("Connexion et compte").click();
 
-    cy.get('[action="/users/delete"] [type="submit"]').click();
+    cy.contains("Suppression");
 
-    cy.contains(
-      "Si vous n’utilisez plus MonComptePro avec cette adresse email",
-    );
+    cy.contains("Supprimer mon compte").click();
 
-    cy.url().should(
-      "include",
-      "/users/start-sign-in?notification=user_successfully_deleted",
-    );
+    cy.contains("Votre compte a bien été supprimé.");
 
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
