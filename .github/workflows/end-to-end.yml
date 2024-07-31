@@ -64,6 +64,7 @@ jobs:
           - reauthenticate_on_admin_page
           - check_email_deliverability
           - delete_account
+          - delete_totp
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
