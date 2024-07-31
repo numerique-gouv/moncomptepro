@@ -18,7 +18,8 @@ type LocalTemplateSlug =
   | "unable-to-auto-join-organization"
   | "welcome"
   | "moderation-processed"
-  | "delete-account";
+  | "delete-account"
+  | "delete-free-totp";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
 const remoteTemplateSlugToBrevoTemplateId: {
@@ -37,6 +38,7 @@ const localTemplateSlugs: LocalTemplateSlug[] = [
   "welcome",
   "moderation-processed",
   "delete-account",
+  "delete-free-totp",
 ];
 const defaultBrevoTemplateId = 7;
 
