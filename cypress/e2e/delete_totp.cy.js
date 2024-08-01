@@ -62,7 +62,7 @@ describe("delete TOTP connexion", () => {
     cy.visit(`/users/start-sign-in`);
 
     cy.get('[name="login"]').type(
-      "eab4ab97-875d-4ec7-bdcc-04323948ee63@mailslurp.com",
+      "c9fabb94-9274-4ece-a3d0-54b1987c8588@mailslurp.com",
     );
     cy.get('[type="submit"]').click();
 
@@ -90,7 +90,7 @@ describe("delete TOTP connexion", () => {
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
-          "eab4ab97-875d-4ec7-bdcc-04323948ee63",
+          "c9fabb94-9274-4ece-a3d0-54b1987c8588",
           60000,
           true,
         ),
