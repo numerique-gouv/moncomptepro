@@ -21,7 +21,10 @@ import {
   getTemporaryTotpKey,
   setTemporaryTotpKey,
 } from "../managers/session/temporary-totp-key";
-import { sendDeleteFreeTOTPApplicationEmail } from "../managers/user";
+import {
+  sendDeleteFreeTOTPApplicationEmail,
+  sendAddFreeTOTPEmail,
+} from "../managers/user";
 
 export const getAuthenticatorAppConfigurationController = async (
   req: Request,
@@ -83,7 +86,9 @@ export const postAuthenticatorAppConfigurationController = async (
 
     deleteTemporaryTotpKey(req);
     addAuthenticationMethodReferenceInSession(req, res, updatedUser, "totp");
-
+    if (!isAuthenticatorAlreadyConfigured) {
+      sendAddFreeTOTPEmail({ user_id });
+    }
     return res.redirect(
       `/connection-and-account?notification=${
         isAuthenticatorAlreadyConfigured
