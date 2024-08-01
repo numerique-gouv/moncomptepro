@@ -15,7 +15,10 @@ import {
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
-import { updatePersonalInformations } from "../managers/user";
+import {
+  sendDisable2faMail,
+  updatePersonalInformations,
+} from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
@@ -179,7 +182,7 @@ export const postDisableForce2faController = async (
 
     const updatedUser = await disableForce2fa(user_id);
     updateUserInAuthenticatedSession(req, updatedUser);
-
+    sendDisable2faMail({ user_id });
     return res.redirect(
       `/connection-and-account?notification=2fa_successfully_disabled`,
     );
