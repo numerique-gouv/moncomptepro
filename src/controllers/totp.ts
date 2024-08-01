@@ -21,6 +21,7 @@ import {
   getTemporaryTotpKey,
   setTemporaryTotpKey,
 } from "../managers/session/temporary-totp-key";
+import { sendDeleteFreeTOTPEmail } from "../managers/user";
 
 export const getAuthenticatorAppConfigurationController = async (
   req: Request,
@@ -112,6 +113,8 @@ export const postDeleteAuthenticatorAppConfigurationController = async (
     const updatedUser = await deleteAuthenticatorAppConfiguration(user_id);
 
     updateUserInAuthenticatedSession(req, updatedUser);
+
+    sendDeleteFreeTOTPEmail({ user_id });
 
     return res.redirect(
       `/connection-and-account?notification=authenticator_successfully_deleted`,
