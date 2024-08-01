@@ -201,7 +201,7 @@ export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
   });
 };
 
-export const sendDeleteFreeTOTPEmail = async ({
+export const sendDeleteFreeTOTPApplicationEmail = async ({
   user_id,
 }: {
   user_id: number;
@@ -214,8 +214,24 @@ export const sendDeleteFreeTOTPEmail = async ({
 
   return sendMail({
     to: [email],
-    subject: "Suppression d'authentification à double facteur",
+    subject:
+      "Suppression d'une application d'authentification à double facteur",
     template: "delete-free-totp",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Désactivation de la validation en deux étapes",
+    template: "delete-2fa-protection",
     params: { given_name, family_name },
   });
 };

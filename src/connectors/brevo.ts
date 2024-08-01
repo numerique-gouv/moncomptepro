@@ -19,7 +19,8 @@ type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed"
   | "delete-account"
-  | "delete-free-totp";
+  | "delete-free-totp"
+  | "delete-2fa-protection";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
 const remoteTemplateSlugToBrevoTemplateId: {
