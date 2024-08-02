@@ -30,11 +30,17 @@ describe("add 2fa authentication", () => {
 
     cy.contains("Configurer une application d’authentification");
 
-    const totp = generateToken("din5ncvbluqpx7xfzqcybmibmtjocnsf", Date.now());
-    cy.get("[name=totpToken]").type(totp);
-    cy.get(
-      '[action="/authenticator-app-configuration"] [type="submit"]',
-    ).click();
+    // Extract the code from the front to generate the TOTP key
+    cy.get("#humanReadableTotpKey")
+      .invoke("text")
+      .then((text) => {
+        const humanReadableTotpKey = text.trim().replace(/\s+/g, "");
+        const totp = generateToken(humanReadableTotpKey, Date.now());
+        cy.get("[name=totpToken]").type(totp);
+        cy.get(
+          '[action="/authenticator-app-configuration"] [type="submit"]',
+        ).click();
+      });
 
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
