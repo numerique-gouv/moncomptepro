@@ -28,7 +28,10 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
 import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
-import { sendDeleteAccessKeyMail } from "../managers/user";
+import {
+  sendDeleteAccessKeyMail,
+  sendActivateAccessKeyMail,
+} from "../managers/user";
 
 export const deletePasskeyController = async (
   req: Request,
@@ -59,11 +62,10 @@ export const getGenerateRegistrationOptionsController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = getUserFromAuthenticatedSession(req);
+    const { email } = getUserFromAuthenticatedSession(req);
 
-    const { updatedUser, registrationOptions } = await getRegistrationOptions(
-      user.email,
-    );
+    const { updatedUser, registrationOptions } =
+      await getRegistrationOptions(email);
     updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.json(registrationOptions);
@@ -71,7 +73,6 @@ export const getGenerateRegistrationOptionsController = async (
     if (e instanceof UserNotLoggedInError) {
       return next(new HttpErrors.Unauthorized());
     }
-
     next(e);
   }
 };
@@ -98,16 +99,17 @@ export const postVerifyRegistrationController = async (
       registrationResponseJson,
     );
 
-    const user = getUserFromAuthenticatedSession(req);
+    const { email, id: user_id } = getUserFromAuthenticatedSession(req);
 
     const { userVerified, user: updatedUser } = await verifyRegistration({
-      email: user.email,
+      email: email,
       response,
     });
     addAuthenticationMethodReferenceInSession(req, res, updatedUser, "pop");
     if (userVerified) {
       addAuthenticationMethodReferenceInSession(req, res, updatedUser, "uv");
     }
+    sendActivateAccessKeyMail({ user_id });
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,

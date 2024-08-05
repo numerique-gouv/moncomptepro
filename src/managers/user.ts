@@ -255,6 +255,25 @@ export const sendDeleteAccessKeyMail = async ({
   });
 };
 
+export const sendActivateAccessKeyMail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Alerte de sécurité",
+    template: "add-access-key",
+    params: { given_name, family_name },
+  });
+};
+
 export const verifyEmail = async (
   email: string,
   token: string,
