@@ -19,6 +19,7 @@ import {
   isTwoFactorAuthenticated,
 } from "../../services/security";
 import { Session, SessionData } from "express-session";
+import { sendUpdatePersonalInformationEmail } from "../user";
 
 export const isWithinAuthenticatedSession = (
   session: Session & Partial<SessionData>,
@@ -132,6 +133,12 @@ export const updateUserInAuthenticatedSession = (req: Request, user: User) => {
   ) {
     throw new UserNotLoggedInError();
   }
+
+  sendUpdatePersonalInformationEmail({
+    user_id: user.id,
+    previousInformations: req.session.user,
+    newInformation: user,
+  });
 
   req.session.user = user;
 };

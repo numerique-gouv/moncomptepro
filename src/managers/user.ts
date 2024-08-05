@@ -236,6 +236,46 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
   });
 };
 
+export const sendUpdatePersonalInformationEmail = async ({
+  user_id,
+  previousInformations,
+  newInformation,
+}: {
+  user_id: number;
+  previousInformations: Record<string, any>;
+  newInformation: Record<string, any>;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  const getUpdatedFields = (
+    prev: Record<string, any>,
+    current: Record<string, any>,
+  ) => {
+    const allowedKeys = ["given_name", "family_name", "phone_number", "job"];
+    const changes: Record<string, { new: any; old: any }> = {};
+    for (const key of allowedKeys) {
+      changes[key] = {
+        new: current[key],
+        old: prev[key],
+      };
+    }
+    return changes;
+  };
+
+  const updatedFields = getUpdatedFields(previousInformations, newInformation);
+
+  return sendMail({
+    to: [email],
+    subject: "Mise à jour de vos données personnelles",
+    template: "update-personal-data",
+    params: { given_name, family_name, updatedFields },
+  });
+};
+
 export const verifyEmail = async (
   email: string,
   token: string,
