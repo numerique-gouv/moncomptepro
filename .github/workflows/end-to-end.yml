@@ -65,6 +65,7 @@ jobs:
           - check_email_deliverability
           - delete_account
           - delete_totp
+          - update_totp_application
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
