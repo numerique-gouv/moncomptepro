@@ -28,6 +28,7 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
 import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
+import { sendDeleteAccessKeyMail } from "../managers/user";
 
 export const deletePasskeyController = async (
   req: Request,
@@ -40,10 +41,10 @@ export const deletePasskeyController = async (
     });
     const { credential_id } = schema.parse(req.params);
 
-    const user = getUserFromAuthenticatedSession(req);
+    const { email, id: user_id } = getUserFromAuthenticatedSession(req);
 
-    await deleteUserAuthenticator(user.email, credential_id);
-
+    await deleteUserAuthenticator(email, credential_id);
+    sendDeleteAccessKeyMail({ user_id });
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_deleted`,
     );
