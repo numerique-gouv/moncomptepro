@@ -349,12 +349,14 @@ export const sendUpdatePersonalInformationEmail = async ({
     return;
   }
 
-  return sendMail({
-    to: [email],
-    subject: "Mise à jour de vos données personnelles",
-    template: "update-personal-data",
-    params: { given_name, family_name, updatedFields },
-  });
+  if (previousInformations !== newInformation) {
+    return sendMail({
+      to: [email],
+      subject: "Mise à jour de vos données personnelles",
+      template: "update-personal-data",
+      params: { given_name, family_name, updatedFields },
+    });
+  }
 };
 
 export const verifyEmail = async (
