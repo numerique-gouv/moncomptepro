@@ -1,5 +1,9 @@
 import { generateToken } from "@sunknudsen/totp";
 
+before(() => {
+  cy.seed();
+});
+
 describe("add 2fa authentication", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>

@@ -2,6 +2,10 @@
 
 import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email";
 
+before(() => {
+  cy.seed();
+});
+
 describe("join organizations", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>

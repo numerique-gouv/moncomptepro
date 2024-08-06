@@ -15,20 +15,10 @@ DO_NOT_SEND_MAIL=False
 DO_NOT_RATE_LIMIT=True
 ```
 
-### Load test fixtures in the database
-
-Note that this will delete your database. Load the specific fixtures in the database:
+### Warm up the containers
 
 ```bash
-ENABLE_DATABASE_DELETION=True npm run delete-database ; npx run-s "migrate up" "fixtures:load-ci cypress/e2e/redirect_after_session_expiration/fixtures.sql" "update-organization-info 2000"
-```
-
-### Start MonComptePro with the test configuration
-
-Then run the app with the specific env vars:
-
-```bash
-npx dotenvx run -f cypress/e2e/redirect_after_session_expiration/env.conf -- npm run dev
+$ docker compose --project-directory cypress/e2e/activate_totp up --build --detach
 ```
 
 ## Run Cypress
@@ -37,7 +27,7 @@ On your host, run the tests
 
 ```bash
 export CYPRESS_MAILSLURP_API_KEY=ask_a_teammate
-npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration/index.cy.ts"
+npx cypress run --headed --spec cypress/e2e/activate_totp/index.cy.ts
 ```
 
 ## About test client used in e2e test

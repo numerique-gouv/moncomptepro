@@ -5,6 +5,12 @@ import {
   getVerificationCodeFromEmail,
 } from "#cypress/support/get-from-email";
 
+//
+
+before(() => {
+  cy.seed();
+});
+
 describe("sign-in with magic link", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>

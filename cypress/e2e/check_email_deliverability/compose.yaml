@@ -1,0 +1,48 @@
+name: numeriquegouv_moncomptepro
+
+services:
+  moncomptepro:
+    extends:
+      file: ../../compose.yaml
+      service: moncomptepro
+    #
+    depends_on:
+      db:
+        condition: service_healthy
+      migrated-db:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      moncomptepro-agentconnect-client:
+        condition: service_started
+    env_file:
+      - ./env.conf
+
+  db:
+    extends:
+      file: ../../../docker-compose.yml
+      service: db
+
+  migrated-db:
+    extends:
+      file: ../../compose.yaml
+      service: migrated-db
+    #
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./fixtures.sql:/app/seed.sql:ro
+
+  moncomptepro-agentconnect-client:
+    extends:
+      file: ../../../docker-compose.yml
+      service: moncomptepro-agentconnect-client
+
+  redis:
+    extends:
+      file: ../../../docker-compose.yml
+      service: redis
+
+volumes:
+  db-data:
