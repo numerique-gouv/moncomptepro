@@ -24,9 +24,9 @@ import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
   findByEmail,
+  findById,
   findByMagicLinkToken,
   findByResetPasswordToken,
-  findById,
   update,
 } from "../repositories/user";
 import { getDidYouMeanSuggestion } from "../services/did-you-mean";
@@ -276,6 +276,62 @@ export const sendUpdatePersonalInformationEmail = async ({
       params: { given_name, family_name, updatedFields },
     });
   }
+};
+
+export const sendChangeAppliTotpEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+  return sendMail({
+    to: [email],
+    subject: "Changement d'application d’authentification",
+    template: "update-totp-application",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendDeleteAccessKeyMail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Alerte de sécurité",
+    template: "delete-access-key",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendActivateAccessKeyMail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Alerte de sécurité",
+    template: "add-access-key",
+    params: { given_name, family_name },
+  });
 };
 
 export const verifyEmail = async (
