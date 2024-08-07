@@ -236,6 +236,24 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
   });
 };
 
+export const sendChangeAppliTotpEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+  return sendMail({
+    to: [email],
+    subject: "Changement d'application d’authentification",
+    template: "update-totp-application",
+    params: { given_name, family_name },
+  });
+};
+
 export const sendDeleteAccessKeyMail = async ({
   user_id,
 }: {
