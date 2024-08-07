@@ -236,46 +236,52 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
   });
 };
 
+const allowedUpdatedKeys = [
+  "given_name",
+  "family_name",
+  "phone_number",
+  "job",
+] as const;
+
 export const sendUpdatePersonalInformationEmail = async ({
   user_id,
   previousInformations,
   newInformation,
 }: {
   user_id: number;
-  previousInformations: Record<string, any>;
-  newInformation: Record<string, any>;
+  previousInformations: User;
+  newInformation: User;
 }) => {
-  const user = await findById(user_id);
-  if (isEmpty(user)) {
-    throw new UserNotFoundError();
-  }
-  const { given_name, family_name, email } = user;
+  const { given_name, family_name, email } = previousInformations;
 
-  const getUpdatedFields = (
-    prev: Record<string, any>,
-    current: Record<string, any>,
-  ) => {
-    const allowedKeys = ["given_name", "family_name", "phone_number", "job"];
-    const changes: Record<string, { new: any; old: any }> = {};
-    for (const key of allowedKeys) {
-      changes[key] = {
-        new: current[key],
-        old: prev[key],
+  const updatedFields = allowedUpdatedKeys.reduce(
+    (acc, key) => {
+      if (previousInformations[key] === newInformation[key]) {
+        return acc;
+      }
+      return {
+        ...acc,
+        [key]: { new: newInformation[key], old: previousInformations[key] },
       };
-    }
-    return changes;
-  };
+    },
+    {} as {
+      [$Key in (typeof allowedUpdatedKeys)[number]]: {
+        new: User[$Key];
+        old: User[$Key];
+      };
+    },
+  );
 
-  const updatedFields = getUpdatedFields(previousInformations, newInformation);
-
-  if (previousInformations !== newInformation) {
-    return sendMail({
-      to: [email],
-      subject: "Mise à jour de vos données personnelles",
-      template: "update-personal-data",
-      params: { given_name, family_name, updatedFields },
-    });
+  if (isEmpty(updatedFields)) {
+    return;
   }
+
+  return sendMail({
+    to: [email],
+    subject: "Mise à jour de vos données personnelles",
+    template: "update-personal-data",
+    params: { given_name, family_name, updatedFields },
+  });
 };
 
 export const sendChangeAppliTotpEmail = async ({

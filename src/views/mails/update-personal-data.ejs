@@ -4,16 +4,16 @@ succès.
 <br /><br />
 Les données modifiées sont les suivantes :
 <ul>
-  <% if (updatedFields.given_name.old !== updatedFields.given_name.new) { %>
+<% if (updatedFields.given_name) { %>
     <li>Prénom : <%= updatedFields.given_name.new %></li>
 <% } %>
-  <% if (updatedFields.family_name.old !== updatedFields.family_name.new) { %>
+<% if (updatedFields.family_name) { %>
    <li>Nom de famille : <%= updatedFields.family_name.new %></li>
 <% } %>
-  <% if (updatedFields.phone_number.old !== updatedFields.phone_number.new) { %>
+<% if (updatedFields.phone_number) { %>
     <li>Numéro de téléphone : <%= updatedFields.phone_number.new %></li>
 <% } %>
-  <% if (updatedFields.job.old !== updatedFields.job.new) { %>
+<% if (updatedFields.job) { %>
     <li>Prénom : <%= updatedFields.job.new %></li>
 <% } %>
 </ul>
