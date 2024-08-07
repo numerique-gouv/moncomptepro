@@ -24,6 +24,7 @@ import {
 import {
   sendDeleteFreeTOTPApplicationEmail,
   sendAddFreeTOTPEmail,
+  sendChangeAppliTotpEmail,
 } from "../managers/user";
 
 export const getAuthenticatorAppConfigurationController = async (
@@ -86,8 +87,11 @@ export const postAuthenticatorAppConfigurationController = async (
 
     deleteTemporaryTotpKey(req);
     addAuthenticationMethodReferenceInSession(req, res, updatedUser, "totp");
+
     if (!isAuthenticatorAlreadyConfigured) {
       sendAddFreeTOTPEmail({ user_id });
+    } else {
+      sendChangeAppliTotpEmail({ user_id });
     }
     return res.redirect(
       `/connection-and-account?notification=${

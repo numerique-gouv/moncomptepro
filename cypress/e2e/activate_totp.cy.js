@@ -42,6 +42,8 @@ describe("add 2fa authentication", () => {
         ).click();
       });
 
+    cy.contains("L’application d’authentification a été configurée.");
+
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
