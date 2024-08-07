@@ -13,6 +13,7 @@ import {
   encryptSymmetric,
 } from "../services/symmetric-encryption";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
+import { sendChangeAppliTotpEmail } from "./user";
 
 export const generateAuthenticatorAppRegistrationOptions = async (
   email: string,
@@ -70,7 +71,6 @@ export const confirmAuthenticatorAppRegistration = async (
     encrypted_totp_key,
     totp_key_verified_at: new Date(),
   });
-
   return await enableForce2fa(user_id);
 };
 

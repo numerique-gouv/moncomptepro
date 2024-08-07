@@ -26,6 +26,7 @@ import {
   findByEmail,
   findByMagicLinkToken,
   findByResetPasswordToken,
+  findById,
   update,
 } from "../repositories/user";
 import { getDidYouMeanSuggestion } from "../services/did-you-mean";
@@ -183,6 +184,131 @@ export const sendEmailAddressVerificationEmail = async ({
   });
 
   return true;
+};
+
+export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Suppression de compte",
+    template: "delete-account",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendDeleteFreeTOTPApplicationEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject:
+      "Suppression d'une application d'authentification à double facteur",
+    template: "delete-free-totp",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Désactivation de la validation en deux étapes",
+    template: "delete-2fa-protection",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendChangeAppliTotpEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+  return sendMail({
+    to: [email],
+    subject: "Changement d'application d’authentification",
+    template: "update-totp-application",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendDeleteAccessKeyMail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Alerte de sécurité",
+    template: "delete-access-key",
+    params: { given_name, family_name },
+  });
+};
+
+export const sendAddFreeTOTPEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Validation en deux étapes activée",
+    template: "add-2fa",
+    params: { given_name, family_name, email },
+  });
+};
+
+export const sendActivateAccessKeyMail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Alerte de sécurité",
+    template: "add-access-key",
+    params: { given_name, family_name },
+  });
 };
 
 export const verifyEmail = async (
