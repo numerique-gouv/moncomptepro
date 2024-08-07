@@ -12,7 +12,6 @@ type RemoteTemplateSlug =
   | "reset-password"
   | "magic-link"
   | "join-organization"
-  | "verify-email"
   | "verify-email";
 type LocalTemplateSlug =
   | "organization-welcome"
