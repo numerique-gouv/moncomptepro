@@ -71,9 +71,6 @@ export const confirmAuthenticatorAppRegistration = async (
     encrypted_totp_key,
     totp_key_verified_at: new Date(),
   });
-
-  sendChangeAppliTotpEmail({ user_id });
-
   return await enableForce2fa(user_id);
 };
 

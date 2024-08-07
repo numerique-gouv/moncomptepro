@@ -23,7 +23,8 @@ type LocalTemplateSlug =
   | "delete-2fa-protection"
   | "delete-access-key"
   | "add-access-key"
-  | "update-totp-application";
+  | "update-totp-application"
+  | "add-2fa";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
 const remoteTemplateSlugToBrevoTemplateId: {
@@ -46,6 +47,7 @@ const localTemplateSlugs: LocalTemplateSlug[] = [
   "delete-access-key",
   "add-access-key",
   "update-totp-application",
+  "add-2fa",
 ];
 const defaultBrevoTemplateId = 7;
 

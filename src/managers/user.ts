@@ -273,6 +273,25 @@ export const sendDeleteAccessKeyMail = async ({
   });
 };
 
+export const sendAddFreeTOTPEmail = async ({
+  user_id,
+}: {
+  user_id: number;
+}) => {
+  const user = await findById(user_id);
+  if (isEmpty(user)) {
+    throw new UserNotFoundError();
+  }
+  const { given_name, family_name, email } = user;
+
+  return sendMail({
+    to: [email],
+    subject: "Validation en deux étapes activée",
+    template: "add-2fa",
+    params: { given_name, family_name, email },
+  });
+};
+
 export const sendActivateAccessKeyMail = async ({
   user_id,
 }: {
