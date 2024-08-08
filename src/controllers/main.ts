@@ -17,6 +17,7 @@ import {
 } from "../managers/session/authenticated";
 import {
   sendDisable2faMail,
+  sendUpdatePersonalInformationEmail,
   updatePersonalInformations,
 } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
@@ -85,6 +86,11 @@ export const postPersonalInformationsController = async (
         job,
       },
     );
+
+    sendUpdatePersonalInformationEmail({
+      previousInformations: getUserFromAuthenticatedSession(req),
+      newInformation: updatedUser,
+    });
 
     updateUserInAuthenticatedSession(req, updatedUser);
 
@@ -181,6 +187,8 @@ export const postDisableForce2faController = async (
     const { id: user_id } = getUserFromAuthenticatedSession(req);
 
     const updatedUser = await disableForce2fa(user_id);
+
+    console.log("postDisableForce2faController.ts");
     updateUserInAuthenticatedSession(req, updatedUser);
     sendDisable2faMail({ user_id });
     return res.redirect(
@@ -200,6 +208,7 @@ export const postEnableForce2faController = async (
     const { id: user_id } = getUserFromAuthenticatedSession(req);
 
     const updatedUser = await enableForce2fa(user_id);
+    console.log("postDisableForce2faController.ts");
     updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.redirect(
