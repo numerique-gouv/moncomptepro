@@ -67,6 +67,7 @@ jobs:
           - delete_totp
           - update_totp_application
           - activate_totp
+          - update_personal_information
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
