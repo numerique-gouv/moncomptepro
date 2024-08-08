@@ -71,7 +71,7 @@
     "morgan": "^1.10.0",
     "nanoid": "^3.3.6",
     "nocache": "^4.0.0",
-    "node-pg-migrate": "^6.2.2",
+    "node-pg-migrate": "^7.6.1",
     "npm-run-all2": "^6.1.2",
     "oidc-provider": "^8.4.6",
     "pg": "^8.11.5",
