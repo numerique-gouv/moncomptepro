@@ -244,11 +244,9 @@ const allowedUpdatedKeys = [
 ] as const;
 
 export const sendUpdatePersonalInformationEmail = async ({
-  user_id,
   previousInformations,
   newInformation,
 }: {
-  user_id: number;
   previousInformations: User;
   newInformation: User;
 }) => {

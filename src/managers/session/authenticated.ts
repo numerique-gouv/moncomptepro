@@ -133,13 +133,6 @@ export const updateUserInAuthenticatedSession = (req: Request, user: User) => {
   ) {
     throw new UserNotLoggedInError();
   }
-
-  sendUpdatePersonalInformationEmail({
-    user_id: user.id,
-    previousInformations: req.session.user,
-    newInformation: user,
-  });
-
   req.session.user = user;
 };
 
