@@ -65,7 +65,9 @@ exports.down = async (pgm) => {
       };
 
       old_verification_type =
-        newDomainVerificationToOldLinkVerification[emailDomainRows[0].verification_type];
+        newDomainVerificationToOldLinkVerification[
+          emailDomainRows[0].verification_type
+        ];
     }
 
     if (emailDomainRows.length !== 1 || !old_verification_type) {
