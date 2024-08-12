@@ -1,12 +1,4 @@
 describe("Signup into new entreprise unipersonnelle", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "716fc7c8-8828-48d5-b748-57dd4e78e55a",
-      }),
-    );
-  });
-
   it("Should send email when user updates personal information", function () {
     // Visit the signup page
     cy.visit(`/users/start-sign-in`);
@@ -31,20 +23,13 @@ describe("Signup into new entreprise unipersonnelle", () => {
 
     cy.contains("Vos informations ont été mises à jour.");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "716fc7c8-8828-48d5-b748-57dd4e78e55a",
-          60000,
-          true,
-        ),
-      )
-      // check subject of deletion email
-      .then((email) => {
-        expect(email.subject).to.include(
-          "Mise à jour de vos données personnelles",
-        );
-      });
+    cy.maildevGetLastMessage().then((email) => {
+      expect(email.subject).to.equal("Mise à jour de vos données personnelles");
+      cy.maildevVisitMessageById(email.id);
+      cy.contains(
+        "Nous vous informons que vos données personnelles ont été mises à jour avec succès.",
+      );
+      cy.maildevDeleteMessageById(email.id);
+    });
   });
 });

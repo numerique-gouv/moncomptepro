@@ -22,6 +22,7 @@ export const {
   MODERATION_TAG = "moderation",
   // "trace" | "debug" | "info" | "warn" | "error" | "fatal"
   LOG_LEVEL = "info",
+  SMTP_URL = "smtp://localhost:1025",
 } = process.env;
 
 if (!process.env.SYMMETRIC_ENCRYPTION_KEY) {

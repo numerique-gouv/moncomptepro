@@ -7,6 +7,8 @@ import {
 } from "../repositories/moderation";
 import { findById as findOrganizationById } from "../repositories/organization/getters";
 import { findById as findUserById } from "../repositories/user";
+import { send } from "../connectors/mail";
+import { moderation_processed_mail } from "./user/email/moderation-processed";
 
 export const sendModerationProcessedEmail = async ({
   organization_id,
@@ -31,13 +33,12 @@ export const sendModerationProcessedEmail = async ({
 
   const { cached_libelle, siret } = organization;
 
-  await sendMail({
-    to: [email],
+  await send({
+    to: email,
     subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: "moderation-processed",
-    params: {
+    html: moderation_processed_mail({
       libelle: cached_libelle || siret,
-    },
+    }).toString(),
   });
 
   return { emailSent: true };

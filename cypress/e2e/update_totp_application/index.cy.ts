@@ -1,13 +1,6 @@
 import { generateToken } from "@sunknudsen/totp";
 
 describe("update TOTP application", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "d2469f84-9547-4190-b989-014876fd54ae",
-      }),
-    );
-  });
   it("should update TOTP application, and replace old app with new", function () {
     // Visit the signup page
     cy.visit(`/users/start-sign-in`);
@@ -52,20 +45,16 @@ describe("update TOTP application", () => {
       });
 
     cy.contains("L’application d’authentification a été modifiée.");
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "d2469f84-9547-4190-b989-014876fd54ae",
-          60000,
-          true,
-        ),
-      )
-      // check subject of deletion email
-      .then((email) => {
-        expect(email.subject).to.include(
-          "Changement d'application d’authentification",
-        );
-      });
+
+    cy.maildevGetLastMessage().then((email) => {
+      expect(email.subject).to.equal(
+        "Changement d'application d’authentification",
+      );
+      cy.maildevVisitMessageById(email.id);
+      cy.contains(
+        "Le changement d'application d'authentification a bien été prise en compte.",
+      );
+      cy.maildevDeleteMessageById(email.id);
+    });
   });
 });

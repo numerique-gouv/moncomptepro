@@ -87,7 +87,7 @@ export const postPersonalInformationsController = async (
       },
     );
 
-    sendUpdatePersonalInformationEmail({
+    await sendUpdatePersonalInformationEmail({
       previousInformations: getUserFromAuthenticatedSession(req),
       newInformation: updatedUser,
     });
@@ -189,7 +189,7 @@ export const postDisableForce2faController = async (
     const updatedUser = await disableForce2fa(user_id);
 
     updateUserInAuthenticatedSession(req, updatedUser);
-    sendDisable2faMail({ user_id });
+    await sendDisable2faMail({ user_id });
     return res.redirect(
       `/connection-and-account?notification=2fa_successfully_disabled`,
     );

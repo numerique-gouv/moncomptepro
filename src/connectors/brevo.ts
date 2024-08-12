@@ -17,10 +17,7 @@ type LocalTemplateSlug =
   | "organization-welcome"
   | "unable-to-auto-join-organization"
   | "welcome"
-  | "moderation-processed"
   | "delete-account"
-  | "delete-free-totp"
-  | "delete-2fa-protection"
   | "delete-access-key"
   | "add-access-key"
   | "update-totp-application"
@@ -42,9 +39,7 @@ const localTemplateSlugs: LocalTemplateSlug[] = [
   "organization-welcome",
   "unable-to-auto-join-organization",
   "welcome",
-  "moderation-processed",
   "delete-account",
-  "delete-free-totp",
   "delete-access-key",
   "add-access-key",
   "update-totp-application",

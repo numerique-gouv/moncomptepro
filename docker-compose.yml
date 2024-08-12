@@ -67,5 +67,9 @@ services:
       STYLESHEET_URL:
     network_mode: "host"
 
+  maildev:
+    image: soulteary/maildev
+    network_mode: "host"
+
 volumes:
   db-data:

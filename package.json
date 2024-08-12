@@ -22,6 +22,7 @@
     "test": "run-s test:*",
     "test:lint": "prettier */*.ts --list-different",
     "test:unit": "CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=False DO_NOT_USE_ANNUAIRE_EMAILS=False DO_NOT_CHECK_EMAIL_DELIVERABILITY=False SYMMETRIC_ENCRYPTION_KEY=aTrueRandom32BytesLongBase64EncodedStringAA= mocha --require tsx test/*.ts",
+    "test:xss": "xss-scan",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
@@ -31,6 +32,8 @@
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@gouvfr/dsfr": "^1.12.1",
+    "@kitajs/html": "^4.2.1",
+    "@kitajs/ts-html-plugin": "^4.0.2",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.112.2",
     "@sentry/tracing": "^7.112.2",
@@ -61,6 +64,7 @@
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.18.0",
     "helmet": "^7.1.0",
+    "html-to-text": "^9.0.5",
     "http-errors": "^2.0.0",
     "ioredis": "^5.4.1",
     "is-disposable-email-domain": "^1.0.7",
@@ -72,6 +76,7 @@
     "nanoid": "^3.3.6",
     "nocache": "^4.0.0",
     "node-pg-migrate": "^7.6.1",
+    "nodemailer": "^6.9.14",
     "npm-run-all2": "^6.1.2",
     "oidc-provider": "^8.4.6",
     "pg": "^8.11.5",
@@ -89,11 +94,13 @@
     "@sinonjs/fake-timers": "^11.2.2",
     "@types/chai": "^4.3.17",
     "@types/chai-as-promised": "^7.1.8",
+    "@types/html-to-text": "^9.0.4",
     "@types/http-errors": "^2.0.4",
     "@types/lodash": "^4.17.0",
     "@types/lodash-es": "^4.17.12",
     "@types/mocha": "^10.0.7",
     "@types/node": "^22.1.0",
+    "@types/nodemailer": "^6.4.15",
     "@types/oidc-provider": "^8.4.4",
     "@types/qrcode": "^1.5.5",
     "@types/sinonjs__fake-timers": "^8.1.5",
@@ -105,13 +112,20 @@
     "csv": "^6.3.9",
     "cypress": "^13.13.2",
     "cypress-axe": "^1.5.0",
+    "cypress-maildev": "^1.3.2",
     "cypress-mailslurp": "^1.10.0",
     "mocha": "^10.7.3",
     "nock": "^13.5.4",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prettier-plugin-embed": "^0.4.15"
   },
   "packageManager": "npm@10.8.2+sha512.c7f0088c520a46596b85c6f8f1da943400199748a0f7ea8cb8df75469668dc26f6fb3ba26df87e2884a5ebe91557292d0f3db7d0929cdb4f14910c3032ac81fb",
   "engines": {
     "node": "20.12.2"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-embed"
+    ]
   }
 }
