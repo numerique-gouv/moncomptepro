@@ -15,7 +15,6 @@ type RemoteTemplateSlug =
   | "verify-email";
 type LocalTemplateSlug =
   | "organization-welcome"
-  | "unable-to-auto-join-organization"
   | "welcome"
   | "delete-account"
   | "delete-access-key"
@@ -37,7 +36,6 @@ const remoteTemplateSlugToBrevoTemplateId: {
 };
 const localTemplateSlugs: LocalTemplateSlug[] = [
   "organization-welcome",
-  "unable-to-auto-join-organization",
   "welcome",
   "delete-account",
   "delete-access-key",

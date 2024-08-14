@@ -3,6 +3,12 @@ import "dotenv/config";
 
 export const {
   NODE_ENV,
+  CRISP_BASE_URL = "https://api.crisp.chat",
+  CRISP_IDENTIFIER,
+  CRISP_KEY,
+  CRISP_PLUGIN_URN,
+  CRISP_USER_NICKNAME = "MonComptePro",
+  CRISP_WEBSITE_ID,
   DEPLOY_ENV = "preview",
   PORT = 3000,
   MONCOMPTEPRO_HOST = `http://localhost:${PORT}`,

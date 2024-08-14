@@ -1,6 +1,9 @@
 import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
-import { MAX_SUGGESTED_ORGANIZATIONS } from "../../config/env";
+import {
+  CRISP_WEBSITE_ID,
+  MAX_SUGGESTED_ORGANIZATIONS,
+} from "../../config/env";
 import {
   InseeConnectionError,
   InseeNotActiveError,
@@ -15,7 +18,6 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
-import { sendZammadMail } from "../../connectors/send-zammad-mail";
 import {
   createModeration,
   findPendingModeration,
@@ -46,6 +48,12 @@ import {
 } from "../../services/email";
 import { markDomainAsVerified } from "./main";
 import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
+import { start_crips_conversation } from "../../connectors/crisp";
+import {
+  unable_to_auto_join_organization_mail,
+  unable_to_auto_join_organization_md,
+} from "../user/email/unable-to-auto-join-organization";
+import { send } from "../../connectors/mail";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -150,7 +158,7 @@ export const joinOrganization = async ({
   }
 
   const { id: organization_id, cached_libelle } = organization;
-  const { email } = user;
+  const { email, given_name, family_name } = user;
   const domain = getEmailDomain(email);
   const organizationEmailDomains =
     await findEmailDomainsByOrganizationId(organization_id);
@@ -303,20 +311,32 @@ export const joinOrganization = async ({
     });
   }
 
-  const ticket = await sendZammadMail({
-    to: email,
-    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: "unable-to-auto-join-organization",
-    params: {
-      libelle: cached_libelle || siret,
-    },
-  });
+  let ticket;
+  if (CRISP_WEBSITE_ID) {
+    ticket = await start_crips_conversation({
+      content: unable_to_auto_join_organization_md({
+        libelle: cached_libelle || siret,
+      }),
+      email,
+      nickname: `${given_name} ${family_name}`,
+      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    });
+  } else {
+    await send({
+      to: email,
+      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+      html: unable_to_auto_join_organization_mail({
+        libelle: cached_libelle || siret,
+      }).toString(),
+    });
+    ticket = null;
+  }
 
   const { id: moderation_id } = await createModeration({
     user_id,
     organization_id,
     type: "organization_join_block",
-    ticket_id: ticket.id,
+    ticket_id: null,
   });
 
   throw new UnableToAutoJoinOrganizationError(moderation_id);
