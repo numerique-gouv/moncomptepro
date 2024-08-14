@@ -8,6 +8,8 @@ import {
 import { findById as findOrganizationById } from "../repositories/organization/getters";
 import { findById as findUserById } from "../repositories/user";
 
+//
+
 export const sendModerationProcessedEmail = async ({
   organization_id,
   user_id,
