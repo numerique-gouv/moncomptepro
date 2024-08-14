@@ -3,7 +3,7 @@
 import {
   getMagicLinkFromEmail,
   getVerificationCodeFromEmail,
-} from "../support/get-from-email.js";
+} from "#cypress/support/get-from-email.js";
 
 describe("sign-in with magic link", () => {
   before(() => {
