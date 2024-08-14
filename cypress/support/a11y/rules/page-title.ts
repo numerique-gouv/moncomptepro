@@ -3,7 +3,7 @@
  *
  * @link https://github.com/dequelabs/axe-core/blob/develop/lib/rules/document-title.json
  */
-export const config = (defaultTitle) => ({
+export const config = (defaultTitle: string) => ({
   id: "mcp-page-title",
   impact: "serious",
   selector: "html",

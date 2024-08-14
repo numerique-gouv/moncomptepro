@@ -1,6 +1,6 @@
 //
 
-import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email.js";
+import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email";
 
 describe("Signup into new entreprise unipersonnelle", () => {
   before(() => {

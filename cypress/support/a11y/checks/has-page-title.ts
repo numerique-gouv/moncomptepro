@@ -18,7 +18,7 @@ const hasPageTitle = (ruleNode, { defaultTitle, win }) => {
   return title !== defaultTitle && title.includes(defaultTitle);
 };
 
-export const config = (defaultTitle, win) => ({
+export const config = (defaultTitle: string, win: Window) => ({
   id: "mcp-has-page-title",
   evaluate: hasPageTitle,
   options: {

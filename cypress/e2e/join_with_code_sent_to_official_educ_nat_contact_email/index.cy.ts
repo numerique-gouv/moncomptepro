@@ -1,6 +1,6 @@
 //
 
-import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email.js";
+import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email";
 
 describe("join organizations", () => {
   before(() => {

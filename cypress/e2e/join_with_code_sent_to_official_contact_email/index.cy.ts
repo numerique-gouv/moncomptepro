@@ -1,6 +1,6 @@
 //
 
-import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email.js";
+import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email";
 
 describe("join organizations", () => {
   before(() => {
@@ -44,7 +44,7 @@ describe("join organizations", () => {
         ),
       )
       // extract the verification code from the email subject
-      .then(getVerificationWordsFromEmail)
+      .then((email) => getVerificationWordsFromEmail(email))
       // fill out the verification form and submit
       .then((code) => {
         cy.get('[name="official_contact_email_verification_token"]').type(code);

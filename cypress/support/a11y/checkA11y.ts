@@ -1,5 +1,10 @@
+//
+
+import type { NodeResult, Result, UnlabelledFrameSelector } from "axe-core";
 import { config as hasPageTitleCheck } from "./checks/has-page-title";
 import { config as pageTitleRule } from "./rules/page-title";
+
+//
 
 /**
  * add custom rules to our axe instance
@@ -23,7 +28,9 @@ const configureAxe = (win) => {
  * - improve both UI logs and console logs
  * - removes default cypress-axe logs that are not as useful as ours
  */
-export const checkA11y = (
+export const checkA11y: Parameters<
+  typeof Cypress.Commands.overwrite<"checkA11y">
+>[1] = (
   originalCheckA11y,
   context,
   options,
@@ -85,7 +92,7 @@ const injectAxeIfNeeded = () => {
  * @param violations array of results returned by Axe
  * @link https://github.com/jonoliver/cypress-axe-demo/blob/after-a11y-fixes/cypress/support/commands.js
  */
-const cypressLog = (violations) => {
+const cypressLog = (violations: Result[]) => {
   violations.forEach((violation) => {
     const targets = violation.nodes.map(({ target }) => target);
     const domElements = Cypress.$(targets.join(","));
@@ -104,10 +111,7 @@ const cypressLog = (violations) => {
       Cypress.log({
         $el: el,
         consoleProps,
-        message: getElementString(
-          el.get(0),
-          Array.isArray(target) ? target[0] : target,
-        ),
+        message: getElementString(el.get(0), target),
         name: "dom element:",
       });
     });
@@ -120,7 +124,7 @@ const cypressLog = (violations) => {
  * @param violations array of results returned by Axe
  * @link https://github.com/component-driven/cypress-axe#in-your-spec-file
  */
-const terminalLog = (violations) => {
+const terminalLog = (violations: Result[]) => {
   if (!violations?.length) {
     return;
   }
@@ -154,12 +158,12 @@ const terminalLog = (violations) => {
  *
  * @param violations array of results returned by Axe
  */
-const displayViolations = (violations) => {
+const displayViolations = (violations: Result[]) => {
   terminalLog(violations);
   cypressLog(violations);
 };
 
-const getTerminalViolationElements = ({ nodes }) => {
+const getTerminalViolationElements = ({ nodes }: { nodes: NodeResult[] }) => {
   const targets = nodes.map(({ target }) => target);
   const domElements = Cypress.$(targets.join(","));
   return domElements
@@ -169,7 +173,10 @@ const getTerminalViolationElements = ({ nodes }) => {
     .get();
 };
 
-const getElementString = (el, defaultSelector) => {
+const getElementString = (
+  el: HTMLElement,
+  defaultSelector: UnlabelledFrameSelector,
+) => {
   const selector = el.id ? `#${el.id}` : defaultSelector;
   if (el.textContent && !["html", "body"].includes(el.tagName.toLowerCase())) {
     let content = el.textContent.replace(/\n/g, " ").trim();
