@@ -138,7 +138,7 @@ jobs:
           build: npm run build:assets
           start: npx dotenvx run -f cypress/e2e/${{ matrix.e2e_test }}/env.conf --overload -- npm start
           install: false
-          spec: cypress/e2e/${{ matrix.e2e_test }}/index.cy.js
+          spec: cypress/e2e/${{ matrix.e2e_test }}/index.cy.ts
         env:
           NODE_ENV: production
       # Store tests runs in case of failure

@@ -1,29 +1,27 @@
 //
 
+import { MatchOptionFieldEnum, MatchOptionShouldEnum } from "mailslurp-client";
+
+//
+
 describe("join organizations", () => {
   before(() => {
-    return cy
-      .mailslurp()
-      .then((mailslurp) =>
+    return cy.mailslurp().then((mailslurp) =>
+      Promise.all([
         mailslurp.inboxController.deleteAllInboxEmails({
           inboxId: "c6c64542-5601-43e0-b320-b20da72f6edc",
         }),
-      )
-      .then((mailslurp) =>
         mailslurp.inboxController.deleteAllInboxEmails({
           inboxId: "34c5063f-81c0-4d09-9d0b-a7502f844cdf",
         }),
-      )
-      .then((mailslurp) =>
         mailslurp.inboxController.deleteAllInboxEmails({
           inboxId: "04972db5-2c62-460e-8a88-848317acfe34",
         }),
-      )
-      .then((mailslurp) =>
         mailslurp.inboxController.deleteAllInboxEmails({
           inboxId: "869c78e6-196d-4e95-9662-44d25f801b06",
         }),
-      );
+      ]),
+    );
   });
   beforeEach(() => {
     cy.login(
@@ -69,8 +67,8 @@ describe("join organizations", () => {
             {
               matches: [
                 {
-                  field: "SUBJECT",
-                  should: "EQUAL",
+                  field: MatchOptionFieldEnum.SUBJECT,
+                  should: MatchOptionShouldEnum.EQUAL,
                   value: "Votre organisation sur MonComptePro",
                 },
               ],

@@ -37,7 +37,7 @@ On your host, run the tests
 
 ```bash
 export CYPRESS_MAILSLURP_API_KEY=ask_a_teammate
-npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration/index.cy.js"
+npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration/index.cy.ts"
 ```
 
 ## About test client used in e2e test

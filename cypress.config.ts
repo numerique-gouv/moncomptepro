@@ -1,4 +1,10 @@
-export default {
+//
+
+import { defineConfig } from "cypress";
+
+//
+
+export default defineConfig({
   chromeWebSecurity: false,
   defaultCommandTimeout: 60000,
   pageLoadTimeout: 60000,
@@ -17,4 +23,4 @@ export default {
       return config;
     },
   },
-};
+});

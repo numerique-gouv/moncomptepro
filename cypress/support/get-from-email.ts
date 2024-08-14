@@ -1,7 +1,13 @@
-export const getVerificationCodeFromEmail = (email) => {
+//
+
+import { Email } from "mailslurp-client";
+
+//
+
+export const getVerificationCodeFromEmail = (email: Email) => {
   const matches =
     /.*<span style="color: #000091; font-size: 18px;"><strong>(\s*(?:\d\s*){10})<\/strong><\/span>.*/.exec(
-      email.body,
+      email.body ?? "",
     );
   if (matches && matches.length > 0) {
     return matches[1];
@@ -9,10 +15,10 @@ export const getVerificationCodeFromEmail = (email) => {
   throw new Error("Could not find verification code in received email");
 };
 
-export const getVerificationWordsFromEmail = (email) => {
+export const getVerificationWordsFromEmail = (email: Email) => {
   const matches =
     /.*<span style="color: #000091; font-size: 18px;">([a-z]{2,25}-[a-z]{2,25})<\/span>.*/.exec(
-      email.body,
+      email.body ?? "",
     );
   if (matches && matches.length > 0) {
     return matches[1];
@@ -20,9 +26,9 @@ export const getVerificationWordsFromEmail = (email) => {
   throw new Error("Could not find verification code in received email");
 };
 
-export const getMagicLinkFromEmail = (email) => {
+export const getMagicLinkFromEmail = (email: Email) => {
   const matches = /.*<a href="([^"]+)" class="r13-r default-button".*/.exec(
-    email.body,
+    email.body ?? "",
   );
   if (matches && matches.length > 0) {
     return matches[1];

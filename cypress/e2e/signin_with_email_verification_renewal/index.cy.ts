@@ -1,6 +1,6 @@
 //
 
-import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email.js";
+import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email";
 
 describe("sign-in with email verification renewal", () => {
   before(() => {

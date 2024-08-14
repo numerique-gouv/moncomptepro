@@ -1,5 +1,9 @@
 //
 
+import { MatchOptionFieldEnum, MatchOptionShouldEnum } from "mailslurp-client";
+
+//
+
 describe("join organizations", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
@@ -129,8 +133,8 @@ describe("join organizations", () => {
           {
             matches: [
               {
-                field: "SUBJECT",
-                should: "EQUAL",
+                field: MatchOptionFieldEnum.SUBJECT,
+                should: MatchOptionShouldEnum.EQUAL,
                 value: "Votre organisation sur MonComptePro",
               },
             ],
