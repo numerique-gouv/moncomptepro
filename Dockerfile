@@ -3,12 +3,14 @@ RUN corepack enable npm
 WORKDIR /app
 
 FROM base AS prod-deps
+RUN corepack enable
 RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
   --mount=type=cache,target=/root/.npm \
   npm ci --omit=dev
 
 FROM base AS build
+RUN corepack enable
 ENV CYPRESS_INSTALL_BINARY=0
 RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
