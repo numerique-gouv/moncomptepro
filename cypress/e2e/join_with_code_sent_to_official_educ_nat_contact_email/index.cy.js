@@ -1,44 +1,45 @@
 //
 
-import { getVerificationWordsFromEmail } from "../support/get-from-email.js";
+import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email.js";
 
 describe("join organizations", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
       mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
+        inboxId: "01714bdb-c5d7-48c9-93ab-73dc78c13609",
       }),
     );
     cy.mailslurp().then((mailslurp) =>
       mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "c348a2c3-bf54-4f15-bb12-a2d7047c832f",
+        inboxId: "10efdabd-deb0-4d19-a521-6772ca27acf8",
       }),
     );
   });
 
   it("join collectivité territoriale with code send to official contact email", function () {
     cy.login(
-      "c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp.com",
+      "10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com",
       "password123",
     );
 
     cy.visit(`/users/join-organization`);
-    cy.get('[name="siret"]').type("21340126800130");
+    cy.get('[name="siret"]').type("19750663700010");
     cy.get('[type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
     cy.contains(
-      "nous avons envoyé un code secret à l’adresse email de votre mairie",
+      "nous avons envoyé un code secret à l’adresse email de votre établissement scolaire",
     );
     cy.get("#email-badge-lowercase").contains(
-      "26ccc0fa-0dc3-4f12-9335-7bb00282920c@mailslurp.com",
+      "01714bdb-c5d7-48c9-93ab-73dc78c13609@mailslurp.com",
     );
 
     // Verify the email with the code received by email
     cy.mailslurp()
+      // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
-          "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
+          "01714bdb-c5d7-48c9-93ab-73dc78c13609",
           60000,
           true,
         ),
@@ -62,7 +63,7 @@ describe("join organizations", () => {
     cy.mailslurp()
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
-          "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
+          "01714bdb-c5d7-48c9-93ab-73dc78c13609",
           60000,
           true,
         ),
@@ -70,7 +71,7 @@ describe("join organizations", () => {
       // assert reception of notification email
       .then((email) => {
         expect(email.body).to.match(
-          /.*Jean Nouveau.*\(c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp\.com\) a rejoint votre organisation.*Commune de lamalou-les-bains - Mairie.*sur .*MonComptePro/,
+          /.*Jean Nouveau.*\(10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp\.com\) a rejoint votre organisation.*Lycee general et technologique chaptal.*sur .*MonComptePro/,
         );
       });
   });

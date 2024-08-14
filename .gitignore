@@ -11,8 +11,10 @@ moncomptepro.conf
 .idea
 .vscode
 
+cypress/downloads
 cypress/screenshots
 cypress/videos
+!cypress/e2e/*/fixtures.sql
 
 /build/*
 !/build/.keep

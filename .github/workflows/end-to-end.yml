@@ -42,32 +42,32 @@ jobs:
       fail-fast: false
       matrix:
         e2e_test:
+          - activate_totp
+          - check_email_deliverability
+          - delete_account
+          - delete_totp
           - join_collectivite_territoriale_official_contact_domain
-          - join_org_with_verified_domain
+          - join_must_confirm
           - join_org_with_gouv_fr_domain
           - join_org_with_trackdechets_domain
+          - join_org_with_verified_domain
           - join_with_code_sent_to_official_contact_email
           - join_with_code_sent_to_official_educ_nat_contact_email
           - join_with_official_contact_email
           - join_with_sponsorship
+          - reauthenticate_on_admin_page
+          - redirect_after_session_expiration
+          - reset_password
+          - set_info_after_account_provisioning
           - signin_from_agentconnect_client
           - signin_from_legacy_client
           - signin_from_standard_client
           - signin_with_email_verification_renewal
           - signin_with_magic_link
-          - signup_entreprise_unipersonnelle
-          - redirect_after_session_expiration
-          - reset_password
-          - join_must_confirm
-          - set_info_after_account_provisioning
           - signin_with_totp
-          - reauthenticate_on_admin_page
-          - check_email_deliverability
-          - delete_account
-          - delete_totp
-          - update_totp_application
-          - activate_totp
+          - signup_entreprise_unipersonnelle
           - update_personal_information
+          - update_totp_application
     runs-on: ubuntu-22.04
     services:
       moncomptepro-standard-client:
@@ -129,16 +129,16 @@ jobs:
           node-version-file: package.json
       - run: npm ci --include=dev
       - run: npm run migrate up
-      - run: npm run fixtures:load-ci -- cypress/fixtures/${{ matrix.e2e_test }}.sql
+      - run: npm run fixtures:load-ci -- cypress/e2e/${{ matrix.e2e_test }}/fixtures.sql
       - run: npm run update-organization-info -- 500
       - name: Cypress run
         uses: cypress-io/github-action@v6.7.2
         with:
           wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
           build: npm run build:assets
-          start: npx dotenvx run -f cypress/env/${{ matrix.e2e_test }}.conf --overload -- npm start
+          start: npx dotenvx run -f cypress/e2e/${{ matrix.e2e_test }}/env.conf --overload -- npm start
           install: false
-          spec: cypress/e2e/${{ matrix.e2e_test }}.cy.js
+          spec: cypress/e2e/${{ matrix.e2e_test }}/index.cy.js
         env:
           NODE_ENV: production
       # Store tests runs in case of failure

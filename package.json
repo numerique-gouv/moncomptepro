@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "AGPL-3.0",
   "type": "module",
+  "imports": {
+    "#cypress/*": "./cypress/*"
+  },
   "main": "src/index.js",
   "scripts": {
     "build": "run-s build:**",
