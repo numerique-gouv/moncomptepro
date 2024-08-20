@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
-    "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "./build",
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "module": "Preserve"
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@kitajs/html",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "outDir": "./build",
+    "plugins": [{ "name": "@kitajs/ts-html-plugin" }],
+    "resolveJsonModule": true,
+    "rootDir": "./src"
   },
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": ["./src/**/*"]

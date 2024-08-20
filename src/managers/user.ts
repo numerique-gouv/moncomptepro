@@ -11,6 +11,7 @@ import {
   UserNotFoundError,
   WeakPasswordError,
 } from "../config/errors";
+import { send } from "../connectors/mail";
 import { sendMail } from "../connectors/brevo";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 
@@ -38,6 +39,10 @@ import {
   isPasswordSecure,
   validatePassword,
 } from "../services/security";
+import { delete_free_totp_mail } from "./user/email/delete-free-totp";
+import { delete_2fa_protection_mail } from "./user/email/delete-2fa-protection";
+import { update_personal_data_mail } from "./user/email/update-personal-data";
+import { update_totp_application_mail } from "./user/email/update-totp-application";
 
 export const startLogin = async (
   email: string,
@@ -212,12 +217,11 @@ export const sendDeleteFreeTOTPApplicationEmail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
-    to: [email],
+  return send({
+    to: email,
     subject:
       "Suppression d'une application d'authentification à double facteur",
-    template: "delete-free-totp",
-    params: { given_name, family_name },
+    html: delete_free_totp_mail({ given_name, family_name }).toString(),
   });
 };
 
@@ -228,11 +232,10 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
-    to: [email],
+  return send({
+    to: email,
     subject: "Désactivation de la validation en deux étapes",
-    template: "delete-2fa-protection",
-    params: { given_name, family_name },
+    html: delete_2fa_protection_mail({ given_name, family_name }).toString(),
   });
 };
 
@@ -246,11 +249,10 @@ export const sendChangeAppliTotpEmail = async ({
     throw new UserNotFoundError();
   }
   const { given_name, family_name, email } = user;
-  return sendMail({
-    to: [email],
+  return send({
+    to: email,
     subject: "Changement d'application d’authentification",
-    template: "update-totp-application",
-    params: { given_name, family_name },
+    html: update_totp_application_mail({ given_name, family_name }).toString(),
   });
 };
 
@@ -349,14 +351,15 @@ export const sendUpdatePersonalInformationEmail = async ({
     return;
   }
 
-  if (previousInformations !== newInformation) {
-    return sendMail({
-      to: [email],
-      subject: "Mise à jour de vos données personnelles",
-      template: "update-personal-data",
-      params: { given_name, family_name, updatedFields },
-    });
-  }
+  return send({
+    to: email,
+    subject: "Mise à jour de vos données personnelles",
+    html: update_personal_data_mail({
+      given_name,
+      family_name,
+      updatedFields,
+    }).toString(),
+  });
 };
 
 export const verifyEmail = async (
