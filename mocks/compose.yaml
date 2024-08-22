@@ -1,0 +1,25 @@
+#
+
+services:
+  api.crisp.chat:
+    # image: mockoon/cli:latest
+    # command: -d data -p 3000
+    # environment:
+    #   MOCKSERVER_LOG_LEVEL: DEBUG
+    #   MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mockserverInitialization.json
+    # volumes:
+    #   - ./api.crisp.chat/data-file.json:/data:ro
+    # ports:
+    #   - 6100:3000
+
+    # services:
+    #   auth.agentconnect.gouv.fr:
+    image: mockserver/mockserver:5.15.0
+    command: -proxyRemoteHost api.crisp.chat -proxyRemotePort 443
+    environment:
+      MOCKSERVER_LOG_LEVEL: DEBUG
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mockserverInitialization.json
+    volumes:
+      - ./auth.agentconnect.gouv.fr/mockserverInitialization.json:/config/mockserverInitialization.json:ro
+    ports:
+      - 6100:1080

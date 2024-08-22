@@ -1,0 +1,16 @@
+{
+  "name": "Crisp Chat",
+  "routes": [
+    {
+      "method": "get",
+      "endpoint": "/v1/website/:website_id/conversation",
+      "responses": [
+        {
+          "status": 200,
+          "headers": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\"session_id\":\"1234567890\"}"
+        }
+      ]
+    }
+  ]
+}
