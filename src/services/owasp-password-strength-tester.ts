@@ -52,7 +52,7 @@ const tests = {
       password.length > config.maxLength ? "failedMaxLength" : null,
 
     // forbid repeating characters
-    (password: string, config: Config): errorCode | null =>
+    (password: string, _config: Config): errorCode | null =>
       /(.)\1{2,}/.test(password) ? "failedThreeRepeatedChars" : null,
   ],
 
@@ -67,19 +67,19 @@ const tests = {
   //    number of these optional tests in order to be considered strong.
   optional: [
     // require at least one lowercase letter
-    (password: string, config: Config): errorCode | null =>
+    (password: string, _config: Config): errorCode | null =>
       !/[a-z]/.test(password) ? "optionalLowercaseRequired" : null,
 
     // require at least one uppercase letter
-    (password: string, config: Config): errorCode | null =>
+    (password: string, _config: Config): errorCode | null =>
       !/[A-Z]/.test(password) ? "optionalUppercaseRequired" : null,
 
     // require at least one number
-    (password: string, config: Config): errorCode | null =>
+    (password: string, _config: Config): errorCode | null =>
       !/[0-9]/.test(password) ? "optionalNumberRequired" : null,
 
     // require at least one special character
-    (password: string, config: Config): errorCode | null =>
+    (password: string, _config: Config): errorCode | null =>
       !/[^A-Za-z0-9]/.test(password) ? "optionalSpecialCharRequired" : null,
   ],
 };

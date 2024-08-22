@@ -40,7 +40,7 @@ export const getVerifyEmailController = async (
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email,
-      isBrowserTrusted: isBrowserTrustedForUser(req, user_id),
+      isBrowserTrusted: isBrowserTrustedForUser(req),
     });
 
     return res.render("user/verify-email", {
@@ -108,7 +108,7 @@ export const postSendEmailVerificationController = async (
 
     await sendEmailAddressVerificationEmail({
       email,
-      isBrowserTrusted: isBrowserTrustedForUser(req, user_id),
+      isBrowserTrusted: isBrowserTrustedForUser(req),
       force: true,
     });
 
