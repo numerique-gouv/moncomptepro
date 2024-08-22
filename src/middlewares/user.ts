@@ -197,7 +197,7 @@ export const checkUserIsVerifiedMiddleware = (
       const needs_email_verification_renewal =
         await needsEmailVerificationRenewal(email);
 
-      const is_browser_trusted = isBrowserTrustedForUser(req, id);
+      const is_browser_trusted = isBrowserTrustedForUser(req);
 
       if (
         !email_verified ||

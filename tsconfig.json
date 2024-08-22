@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
-    "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "./build",
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "module": "Preserve"
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "outDir": "./build",
+    "resolveJsonModule": true,
+    "rootDir": "./src"
   },
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": ["./src/**/*"]

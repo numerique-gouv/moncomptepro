@@ -21,6 +21,7 @@
     "start": "tsx src/index.ts",
     "test": "run-s test:*",
     "test:lint": "prettier */*.ts --list-different",
+    "test:type-check": " tsc --noEmit",
     "test:unit": "CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=False DO_NOT_USE_ANNUAIRE_EMAILS=False DO_NOT_CHECK_EMAIL_DELIVERABILITY=False SYMMETRIC_ENCRYPTION_KEY=aTrueRandom32BytesLongBase64EncodedStringAA= mocha --require tsx test/*.ts",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",

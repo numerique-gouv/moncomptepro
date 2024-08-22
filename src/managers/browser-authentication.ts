@@ -37,10 +37,7 @@ export const trustedBrowserMiddleware = (
   }
 };
 
-export const isBrowserTrustedForUser = (
-  req: Request,
-  user_id: number,
-): boolean => {
+export const isBrowserTrustedForUser = (req: Request): boolean => {
   return DO_NOT_AUTHENTICATE_BROWSER || req.isTrustedBrowser;
 };
 
