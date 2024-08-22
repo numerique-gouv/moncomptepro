@@ -10,7 +10,7 @@ export const createModeration = async ({
   user_id: number;
   organization_id: number;
   type: Moderation["type"];
-  ticket_id: number | null;
+  ticket_id: string | null;
 }) => {
   const connection = getDatabaseConnection();
 
