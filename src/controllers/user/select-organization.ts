@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
 import {
   getOrganizationsByUserId,
   selectOrganization,
 } from "../../managers/organization/main";
-import { z } from "zod";
-import { idSchema } from "../../services/custom-zod-schemas";
 import { getUserFromAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
+import { idSchema } from "../../services/custom-zod-schemas";
 
 export const getSelectOrganizationController = async (
   req: Request,

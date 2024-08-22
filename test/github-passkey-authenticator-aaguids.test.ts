@@ -1,7 +1,6 @@
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import nock from "nock";
-import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { getAuthenticatorFriendlyName } from "../src/connectors/github-passkey-authenticator-aaguids";
 
 chai.use(chaiAsPromised);

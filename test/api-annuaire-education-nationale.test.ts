@@ -1,9 +1,9 @@
+import { assert } from "chai";
 import nock from "nock";
+import { ApiAnnuaireNotFoundError } from "../src/config/errors";
+import { getAnnuaireEducationNationaleContactEmail } from "../src/connectors/api-annuaire-education-nationale";
 import noResult from "./api-annuaire-education-nationale-data/no-result.json";
 import twoEtablissementsData from "./api-annuaire-education-nationale-data/two-etablissements.json";
-import { assert } from "chai";
-import { getAnnuaireEducationNationaleContactEmail } from "../src/connectors/api-annuaire-education-nationale";
-import { ApiAnnuaireNotFoundError } from "../src/config/errors";
 
 describe("getAnnuaireEducationNationaleContactEmail", () => {
   it("should throw an error when no result is found", async () => {

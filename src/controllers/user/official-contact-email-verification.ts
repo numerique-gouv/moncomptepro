@@ -1,24 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import {
-  idSchema,
-  officialContactEmailVerificationTokenSchema,
-  optionalBooleanSchema,
-} from "../../services/custom-zod-schemas";
-import {
-  sendOfficialContactEmailVerificationEmail,
-  verifyOfficialContactEmailToken,
-} from "../../managers/organization/official-contact-email-verification";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
-import {
   ApiAnnuaireError,
   InvalidTokenError,
   OfficialContactEmailVerificationNotNeededError,
 } from "../../config/errors";
+import { getOrganizationById } from "../../managers/organization/main";
+import {
+  sendOfficialContactEmailVerificationEmail,
+  verifyOfficialContactEmailToken,
+} from "../../managers/organization/official-contact-email-verification";
 import { getUserFromAuthenticatedSession } from "../../managers/session/authenticated";
 import { csrfToken } from "../../middlewares/csrf-protection";
+import {
+  idSchema,
+  officialContactEmailVerificationTokenSchema,
+  optionalBooleanSchema,
+} from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import { getOrganizationTypeLabel } from "../../services/organization";
-import { getOrganizationById } from "../../managers/organization/main";
 
 export const getOfficialContactEmailVerificationController = async (
   req: Request,

@@ -1,10 +1,10 @@
 import { Request } from "express";
+import { SYMMETRIC_ENCRYPTION_KEY } from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
 import {
   decryptSymmetric,
   encryptSymmetric,
 } from "../../services/symmetric-encryption";
-import { SYMMETRIC_ENCRYPTION_KEY } from "../../config/env";
 import { isWithinAuthenticatedSession } from "./authenticated";
 
 export const setTemporaryTotpKey = (req: Request, totpKey: string) => {

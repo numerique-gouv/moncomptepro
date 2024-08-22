@@ -1,6 +1,6 @@
+import FakeTimers, { InstalledClock } from "@sinonjs/fake-timers";
 import { assert } from "chai";
 import { isExpired } from "../src/services/is-expired";
-import FakeTimers, { InstalledClock } from "@sinonjs/fake-timers";
 
 describe("isExpired", () => {
   let clock: InstalledClock;

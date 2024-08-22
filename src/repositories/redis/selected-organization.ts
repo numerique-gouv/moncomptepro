@@ -1,5 +1,5 @@
-import { getNewRedisClient } from "../../connectors/redis";
 import { SESSION_MAX_AGE_IN_SECONDS } from "../../config/env";
+import { getNewRedisClient } from "../../connectors/redis";
 
 const getRedisClient = () =>
   getNewRedisClient({

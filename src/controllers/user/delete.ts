@@ -3,10 +3,9 @@ import {
   destroyAuthenticatedSession,
   getUserFromAuthenticatedSession,
 } from "../../managers/session/authenticated";
+import { sendDeleteUserEmail } from "../../managers/user";
 import { deleteUser } from "../../repositories/user";
 import { logger } from "../../services/log";
-import { sendMail } from "../../connectors/brevo";
-import { sendDeleteUserEmail } from "../../managers/user";
 
 export const postDeleteUserController = async (
   req: Request,

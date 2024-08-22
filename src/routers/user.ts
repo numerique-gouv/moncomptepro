@@ -1,4 +1,5 @@
 import { Router, urlencoded } from "express";
+import nocache from "nocache";
 import {
   getJoinOrganizationConfirmController,
   getJoinOrganizationController,
@@ -8,6 +9,63 @@ import {
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from "../controllers/organization";
+import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
+import { get2faSignInController } from "../controllers/user/2fa-sign-in";
+import {
+  getChooseSponsorController,
+  getNoSponsorFoundController,
+  getSponsorValidationController,
+  postChooseSponsorMiddleware,
+  postNoSponsorFoundMiddleware,
+} from "../controllers/user/choose-sponsor";
+import { postDeleteUserController } from "../controllers/user/delete";
+import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
+import {
+  getMagicLinkSentController,
+  getSignInWithMagicLinkController,
+  postSendMagicLinkController,
+  postSignInWithMagicLinkController,
+} from "../controllers/user/magic-link";
+import {
+  getOfficialContactEmailVerificationController,
+  postOfficialContactEmailVerificationMiddleware,
+} from "../controllers/user/official-contact-email-verification";
+import {
+  getSelectOrganizationController,
+  postSelectOrganizationMiddleware,
+} from "../controllers/user/select-organization";
+import {
+  getInclusionconnectWelcomeController,
+  getSignInController,
+  getSignUpController,
+  getStartSignInController,
+  postInclusionconnectWelcomeController,
+  postSignInMiddleware,
+  postSignUpController,
+  postStartSignInController,
+} from "../controllers/user/signin-signup";
+import {
+  getChangePasswordController,
+  getResetPasswordController,
+  postChangePasswordController,
+  postResetPasswordController,
+} from "../controllers/user/update-password";
+import {
+  getPersonalInformationsController,
+  postPersonalInformationsController,
+} from "../controllers/user/update-personal-informations";
+import {
+  getVerifyEmailController,
+  postSendEmailVerificationController,
+  postVerifyEmailController,
+} from "../controllers/user/verify-email";
+import { getWelcomeController } from "../controllers/user/welcome";
+import {
+  getSignInWithPasskeyController,
+  postVerifyFirstFactorAuthenticationController,
+  postVerifySecondFactorAuthenticationController,
+} from "../controllers/webauthn";
+import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
 import {
   authenticatorRateLimiterMiddleware,
   passwordRateLimiterMiddleware,
@@ -28,64 +86,6 @@ import {
   checkUserSignInRequirementsMiddleware,
   checkUserTwoFactorAuthMiddleware,
 } from "../middlewares/user";
-import {
-  getInclusionconnectWelcomeController,
-  getSignInController,
-  getSignUpController,
-  getStartSignInController,
-  postInclusionconnectWelcomeController,
-  postSignInMiddleware,
-  postSignUpController,
-  postStartSignInController,
-} from "../controllers/user/signin-signup";
-import {
-  getVerifyEmailController,
-  postSendEmailVerificationController,
-  postVerifyEmailController,
-} from "../controllers/user/verify-email";
-import {
-  getMagicLinkSentController,
-  getSignInWithMagicLinkController,
-  postSendMagicLinkController,
-  postSignInWithMagicLinkController,
-} from "../controllers/user/magic-link";
-import {
-  getChangePasswordController,
-  getResetPasswordController,
-  postChangePasswordController,
-  postResetPasswordController,
-} from "../controllers/user/update-password";
-import {
-  getPersonalInformationsController,
-  postPersonalInformationsController,
-} from "../controllers/user/update-personal-informations";
-import { getWelcomeController } from "../controllers/user/welcome";
-import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
-import {
-  getChooseSponsorController,
-  getNoSponsorFoundController,
-  getSponsorValidationController,
-  postChooseSponsorMiddleware,
-  postNoSponsorFoundMiddleware,
-} from "../controllers/user/choose-sponsor";
-import {
-  getOfficialContactEmailVerificationController,
-  postOfficialContactEmailVerificationMiddleware,
-} from "../controllers/user/official-contact-email-verification";
-import {
-  getSelectOrganizationController,
-  postSelectOrganizationMiddleware,
-} from "../controllers/user/select-organization";
-import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
-import nocache from "nocache";
-import {
-  getSignInWithPasskeyController,
-  postVerifyFirstFactorAuthenticationController,
-  postVerifySecondFactorAuthenticationController,
-} from "../controllers/webauthn";
-import { postDeleteUserController } from "../controllers/user/delete";
-import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
-import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 
 export const userRouter = () => {
   const userRouter = Router();

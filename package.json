@@ -16,11 +16,11 @@
     "dev": "NODE_ENV=development concurrently \"npm:watch:*\"",
     "fixtures:load": "node-pg-migrate up && tsx scripts/run-sql-script.ts scripts/fixtures.sql && npm run update-organization-info 2000",
     "fixtures:load-ci": "tsx scripts/run-sql-script.ts",
-    "lint": "prettier --write */*.ts",
+    "lint": "prettier --write '**/*.ts'",
     "migrate": "node-pg-migrate",
     "start": "tsx src/index.ts",
     "test": "run-s test:*",
-    "test:lint": "prettier */*.ts --list-different",
+    "test:lint": "prettier '**/*.ts' --list-different",
     "test:type-check": " tsc --noEmit",
     "test:unit": "CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE=False DO_NOT_USE_ANNUAIRE_EMAILS=False DO_NOT_CHECK_EMAIL_DELIVERABILITY=False SYMMETRIC_ENCRYPTION_KEY=aTrueRandom32BytesLongBase64EncodedStringAA= mocha --require tsx test/*.ts",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
@@ -28,6 +28,11 @@
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
     "watch:js": "tsc --watch --preserveWatchOutput",
     "watch:node": "tsx --watch src/index.ts"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ]
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^5.0.0",
@@ -109,7 +114,8 @@
     "cypress-mailslurp": "^1.10.0",
     "mocha": "^10.7.3",
     "nock": "^13.5.4",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.0.0"
   },
   "packageManager": "npm@10.8.2+sha512.c7f0088c520a46596b85c6f8f1da943400199748a0f7ea8cb8df75469668dc26f6fb3ba26df87e2884a5ebe91557292d0f3db7d0929cdb4f14910c3032ac81fb",
   "engines": {

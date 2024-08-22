@@ -1,6 +1,6 @@
 import log, { LogLevelNames } from "console-log-level";
-import { LOG_LEVEL } from "../config/env";
 import moment from "moment";
+import { LOG_LEVEL } from "../config/env";
 
 const getLogLevelName = (level: string): LogLevelNames => {
   const levels: LogLevelNames[] = [

@@ -24,9 +24,9 @@ import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
   findByEmail,
+  findById,
   findByMagicLinkToken,
   findByResetPasswordToken,
-  findById,
   update,
 } from "../repositories/user";
 import { getDidYouMeanSuggestion } from "../services/did-you-mean";

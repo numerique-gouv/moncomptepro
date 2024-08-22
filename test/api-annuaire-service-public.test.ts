@@ -1,10 +1,10 @@
-import nock from "nock";
-import oneMairieData from "./api-annuaire-service-public-data/one-mairie.json";
-import invalidCogData from "./api-annuaire-service-public-data/invalid-cog.json";
-import twoMairiesData from "./api-annuaire-service-public-data/two-mairies.json";
 import { assert } from "chai";
-import { getAnnuaireServicePublicContactEmail } from "../src/connectors/api-annuaire-service-public";
+import nock from "nock";
 import { ApiAnnuaireNotFoundError } from "../src/config/errors";
+import { getAnnuaireServicePublicContactEmail } from "../src/connectors/api-annuaire-service-public";
+import invalidCogData from "./api-annuaire-service-public-data/invalid-cog.json";
+import oneMairieData from "./api-annuaire-service-public-data/one-mairie.json";
+import twoMairiesData from "./api-annuaire-service-public-data/two-mairies.json";
 
 describe("getAnnuaireServicePublicContactEmail", () => {
   it("should throw an error for invalid cog", async () => {

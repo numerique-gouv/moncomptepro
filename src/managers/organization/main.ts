@@ -1,8 +1,12 @@
 import { isEmpty, some } from "lodash-es";
 import { NotFoundError } from "../../config/errors";
 import {
-  findById as findOrganizationById,
+  addDomain,
+  findEmailDomainsByOrganizationId,
+} from "../../repositories/email-domain";
+import {
   findByUserId,
+  findById as findOrganizationById,
   findPendingByUserId,
   getUsers,
 } from "../../repositories/organization/getters";
@@ -12,10 +16,6 @@ import {
 } from "../../repositories/organization/setters";
 import { setSelectedOrganizationId } from "../../repositories/redis/selected-organization";
 import { getEmailDomain } from "../../services/email";
-import {
-  addDomain,
-  findEmailDomainsByOrganizationId,
-} from "../../repositories/email-domain";
 
 export const getOrganizationsByUserId = findByUserId;
 export const getOrganizationById = findOrganizationById;

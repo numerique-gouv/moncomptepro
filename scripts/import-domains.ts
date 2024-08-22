@@ -1,12 +1,19 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
+import { AxiosError } from "axios";
+import { parse, stringify, transform } from "csv";
 import fs from "fs";
 import { isEmpty, some, toInteger } from "lodash-es";
+import { InseeNotFoundError } from "../src/config/errors";
 import {
   getInseeAccessToken,
   getOrganizationInfo,
 } from "../src/connectors/api-sirene";
+import {
+  addDomain,
+  findEmailDomainsByOrganizationId,
+} from "../src/repositories/email-domain";
 import { upsert } from "../src/repositories/organization/setters";
-import { AxiosError } from "axios";
+import { isAFreeEmailProvider } from "../src/services/email";
 import { logger } from "../src/services/log";
 import {
   getNumberOfLineInFile,
@@ -16,13 +23,6 @@ import {
   throttleApiCall,
 } from "../src/services/script-helpers";
 import { isDomainValid, isSiretValid } from "../src/services/security";
-import {
-  addDomain,
-  findEmailDomainsByOrganizationId,
-} from "../src/repositories/email-domain";
-import { isAFreeEmailProvider } from "../src/services/email";
-import { parse, stringify, transform } from "csv";
-import { InseeNotFoundError } from "../src/config/errors";
 
 const INPUT_FILE = process.env.INPUT_FILE ?? "./input.csv";
 const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "./output.csv";

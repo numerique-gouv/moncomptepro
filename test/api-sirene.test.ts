@@ -1,11 +1,11 @@
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import nock from "nock";
+import { InseeNotFoundError } from "../src/config/errors";
+import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import diffusible from "./api-sirene-data/diffusible.json";
 import partiallyNonDiffusible from "./api-sirene-data/partially-non-diffusible.json";
 import searchBySiren from "./api-sirene-data/search-by-siren.json";
-import { getOrganizationInfo } from "../src/connectors/api-sirene";
-import { InseeNotFoundError } from "../src/config/errors";
 
 chai.use(chaiAsPromised);
 const assert = chai.assert;

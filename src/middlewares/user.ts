@@ -3,6 +3,7 @@ import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
 import { PAIR_AUTHENTICATION_WHITELIST } from "../config/env";
 import { UserNotFoundError } from "../config/errors";
+import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
 import {
   greetForJoiningOrganization,
@@ -21,17 +22,16 @@ import {
   isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
-import { needsEmailVerificationRenewal } from "../managers/user";
-import { getInternalActiveUsers } from "../repositories/organization/getters";
-import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { getTrustedReferrerPath } from "../services/security";
-import { getEmailDomain, usesAGouvFrDomain } from "../services/email";
-import { usesAuthHeaders } from "../services/uses-auth-headers";
-import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import {
   getEmailFromUnauthenticatedSession,
   getPartialUserFromUnauthenticatedSession,
 } from "../managers/session/unauthenticated";
+import { needsEmailVerificationRenewal } from "../managers/user";
+import { getInternalActiveUsers } from "../repositories/organization/getters";
+import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import { getEmailDomain, usesAGouvFrDomain } from "../services/email";
+import { getTrustedReferrerPath } from "../services/security";
+import { usesAuthHeaders } from "../services/uses-auth-headers";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from

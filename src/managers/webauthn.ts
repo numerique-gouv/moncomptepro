@@ -33,8 +33,8 @@ import {
   updateAuthenticator,
 } from "../repositories/authenticator";
 import {
-  findByEmail as findUserByEmail,
   findById,
+  findByEmail as findUserByEmail,
   update,
 } from "../repositories/user";
 import { encodeBase64URL } from "../services/base64";

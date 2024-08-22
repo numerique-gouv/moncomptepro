@@ -1,7 +1,7 @@
-import { KoaContextWithOIDC } from "oidc-provider";
-import { NextFunction } from "express";
-import { recordNewConnection } from "../managers/oidc-client";
 import * as Sentry from "@sentry/node";
+import { NextFunction } from "express";
+import { KoaContextWithOIDC } from "oidc-provider";
+import { recordNewConnection } from "../managers/oidc-client";
 import { logger } from "../services/log";
 
 // this is not an express middleware but an oidc-provider middleware as described here:
