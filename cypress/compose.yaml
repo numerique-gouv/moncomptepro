@@ -1,0 +1,42 @@
+include:
+  - ../docker-compose.yml
+
+services:
+  moncomptepro:
+    build:
+      cache_from:
+        - type=registry,ref=ghcr.io/betagouv/moncomptepro:buildcache
+        - type=gha
+      cache_to:
+        - type=inline
+      context: ../
+    env_file:
+      - ../.env
+    network_mode: "host"
+
+  migrated-db:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm run delete-database
+        npm run migrate up
+        npm run fixtures:load-ci -- /app/seed.sql
+        npm run update-organization-info -- 2000
+    build:
+      cache_from:
+        - type=registry,ref=ghcr.io/betagouv/moncomptepro:buildcache
+        - type=gha
+      context: ../
+      target: build
+    env_file:
+      - ../.env
+    environment:
+      ENABLE_DATABASE_DELETION: "True"
+      OUTPUT_FILE: "/tmp/output.csv"
+      DATABASE_URL: "postgresql://username:password@db:5432/dbname"
+    volumes:
+      - ../migrations:/app/migrations:ro
+      - ../scripts:/app/scripts:ro
+      - ../src:/app/src:ro
+      - ../tsconfig.json:/app/tsconfig.json:ro

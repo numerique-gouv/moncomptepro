@@ -1,5 +1,6 @@
-//
+/// <reference types="cypress" />
 
+import { basename, dirname } from "path";
 import { checkA11y } from "./a11y/checkA11y";
 
 //
@@ -8,6 +9,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(email: string, password: string): Chainable<void>;
+      seed(): Chainable<void>;
     }
   }
 }
@@ -30,4 +32,19 @@ Cypress.Commands.add("login", (email, password) => {
       .contains("S’identifier")
       .click();
   });
+});
+
+Cypress.Commands.add("seed", () => {
+  cy.log(Cypress.spec.relative);
+  const scope = basename(dirname(Cypress.spec.relative));
+
+  {
+    const command = `docker compose --project-directory cypress/e2e/${scope} up --wait`;
+    cy.task("log", `$ ${command}`);
+    cy.exec(command, {
+      env: {
+        COMPTEPRO_ENV_FILE: `cypress/fixtures/${scope}.sql`,
+      },
+    }).then((result) => cy.task("log", result.stdout));
+  }
 });

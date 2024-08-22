@@ -1,4 +1,12 @@
+//
+
 import { generateToken } from "@sunknudsen/totp";
+
+//
+
+before(() => {
+  cy.seed();
+});
 
 describe("update TOTP application", () => {
   before(() => {
