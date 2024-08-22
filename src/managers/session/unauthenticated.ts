@@ -1,7 +1,7 @@
 import { Request } from "express";
+import { isEmpty } from "lodash-es";
 import { NoEmailFoundInLoggedOutSessionError } from "../../config/errors";
 import { findByEmail, update } from "../../repositories/user";
-import { isEmpty } from "lodash-es";
 
 export const getEmailFromUnauthenticatedSession = (req: Request) => {
   return req.session.email;

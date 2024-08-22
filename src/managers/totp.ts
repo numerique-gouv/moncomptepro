@@ -1,19 +1,18 @@
 import { generateSecret, generateUri, validateToken } from "@sunknudsen/totp";
+import { isEmpty } from "lodash-es";
+import qrcode from "qrcode";
 import {
   MONCOMPTEPRO_IDENTIFIER,
   MONCOMPTEPRO_LABEL,
   SYMMETRIC_ENCRYPTION_KEY,
 } from "../config/env";
-import qrcode from "qrcode";
-import { findById, update } from "../repositories/user";
-import { isEmpty } from "lodash-es";
 import { InvalidTotpTokenError, UserNotFoundError } from "../config/errors";
+import { findById, update } from "../repositories/user";
 import {
   decryptSymmetric,
   encryptSymmetric,
 } from "../services/symmetric-encryption";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
-import { sendChangeAppliTotpEmail } from "./user";
 
 export const generateAuthenticatorAppRegistrationOptions = async (
   email: string,

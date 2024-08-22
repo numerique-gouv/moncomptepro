@@ -1,11 +1,11 @@
-import { getDatabaseConnection } from "../connectors/postgres";
 import { QueryResult } from "pg";
+import { getDatabaseConnection } from "../connectors/postgres";
+import { decodeBase64URL, encodeBase64URL } from "../services/base64";
 import {
   Authenticator,
   BaseAuthenticator,
   SerializedAuthenticator,
 } from "../types/authenticator";
-import { decodeBase64URL, encodeBase64URL } from "../services/base64";
 
 const deserializeAuthenticator = (
   rows: SerializedAuthenticator[],

@@ -1,4 +1,5 @@
 import { assert } from "chai";
+import { MONCOMPTEPRO_HOST } from "../src/config/env";
 import {
   getTrustedReferrerPath,
   isEmailValid,
@@ -6,7 +7,6 @@ import {
   isPasswordSecure,
   isSiretValid,
 } from "../src/services/security";
-import { MONCOMPTEPRO_HOST } from "../src/config/env";
 
 describe("isEmailValid", () => {
   it("should return false for undefined value", () => {

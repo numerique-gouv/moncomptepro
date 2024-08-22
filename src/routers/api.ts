@@ -1,4 +1,8 @@
 import { NextFunction, Request, Response, Router, urlencoded } from "express";
+import expressBasicAuth from "express-basic-auth";
+import { HttpError } from "http-errors";
+import nocache from "nocache";
+import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from "../config/env";
 import {
   getOrganizationInfoController,
   getPingApiSireneController,
@@ -6,16 +10,12 @@ import {
   postMarkDomainAsVerified,
   postSendModerationProcessedEmail,
 } from "../controllers/api";
-import { apiRateLimiterMiddleware } from "../middlewares/rate-limiter";
-import { HttpError } from "http-errors";
-import expressBasicAuth from "express-basic-auth";
-import { API_AUTH_PASSWORD, API_AUTH_USERNAME } from "../config/env";
-import nocache from "nocache";
 import {
   getGenerateAuthenticationOptionsForFirstFactorController,
   getGenerateAuthenticationOptionsForSecondFactorController,
   getGenerateRegistrationOptionsController,
 } from "../controllers/webauthn";
+import { apiRateLimiterMiddleware } from "../middlewares/rate-limiter";
 import { logger } from "../services/log";
 
 export const apiRouter = () => {

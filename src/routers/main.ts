@@ -1,4 +1,5 @@
 import { Express, Router, urlencoded } from "express";
+import nocache from "nocache";
 import {
   getConnectionAndAccountController,
   getHelpController,
@@ -9,23 +10,22 @@ import {
   postEnableForce2faController,
   postPersonalInformationsController,
 } from "../controllers/main";
-import { ejsLayoutMiddlewareFactory } from "../services/renderer";
-import {
-  checkUserCanAccessAdminMiddleware,
-  checkUserCanAccessAppMiddleware,
-} from "../middlewares/user";
-import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
-import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
-import nocache from "nocache";
-import {
-  deletePasskeyController,
-  postVerifyRegistrationController,
-} from "../controllers/webauthn";
 import {
   getAuthenticatorAppConfigurationController,
   postAuthenticatorAppConfigurationController,
   postDeleteAuthenticatorAppConfigurationController,
 } from "../controllers/totp";
+import {
+  deletePasskeyController,
+  postVerifyRegistrationController,
+} from "../controllers/webauthn";
+import { csrfProtectionMiddleware } from "../middlewares/csrf-protection";
+import { rateLimiterMiddleware } from "../middlewares/rate-limiter";
+import {
+  checkUserCanAccessAdminMiddleware,
+  checkUserCanAccessAppMiddleware,
+} from "../middlewares/user";
+import { ejsLayoutMiddlewareFactory } from "../services/renderer";
 
 export const mainRouter = (app: Express) => {
   const mainRouter = Router();

@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
 import {
   isEmailValid,
   isNameValid,
@@ -5,8 +7,6 @@ import {
   isPhoneNumberValid,
   isSiretValid,
 } from "./security";
-import { z } from "zod";
-import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
 
 export const siretSchema = () =>
   z

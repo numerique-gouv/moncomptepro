@@ -1,11 +1,16 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
+import { AxiosError } from "axios";
 import fs from "fs";
 import { isEmpty, some, toInteger } from "lodash-es";
 import {
   getInseeAccessToken,
   getOrganizationInfo,
 } from "../src/connectors/api-sirene";
-import { AxiosError } from "axios";
+import {
+  linkUserToOrganization,
+  updateUserOrganizationLink,
+  upsert,
+} from "../src/repositories/organization/setters";
 import { create, findByEmail, update } from "../src/repositories/user";
 import { logger } from "../src/services/log";
 import {
@@ -20,11 +25,6 @@ import {
   isNameValid,
   isSiretValid,
 } from "../src/services/security";
-import {
-  linkUserToOrganization,
-  updateUserOrganizationLink,
-  upsert,
-} from "../src/repositories/organization/setters";
 
 import { parse, stringify, transform } from "csv";
 import { findByUserId } from "../src/repositories/organization/getters";

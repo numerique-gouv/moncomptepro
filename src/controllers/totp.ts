@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+import { InvalidTotpTokenError, NotFoundError } from "../config/errors";
 import {
   addAuthenticationMethodReferenceInSession,
   getUserFromAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
+import {
+  deleteTemporaryTotpKey,
+  getTemporaryTotpKey,
+  setTemporaryTotpKey,
+} from "../managers/session/temporary-totp-key";
 import {
   authenticateWithAuthenticatorApp,
   confirmAuthenticatorAppRegistration,
@@ -11,21 +18,14 @@ import {
   generateAuthenticatorAppRegistrationOptions,
   isAuthenticatorAppConfiguredForUser,
 } from "../managers/totp";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
-import { csrfToken } from "../middlewares/csrf-protection";
-import { z } from "zod";
-import { InvalidTotpTokenError, NotFoundError } from "../config/errors";
-import { codeSchema } from "../services/custom-zod-schemas";
 import {
-  deleteTemporaryTotpKey,
-  getTemporaryTotpKey,
-  setTemporaryTotpKey,
-} from "../managers/session/temporary-totp-key";
-import {
-  sendDeleteFreeTOTPApplicationEmail,
   sendAddFreeTOTPEmail,
   sendChangeAppliTotpEmail,
+  sendDeleteFreeTOTPApplicationEmail,
 } from "../managers/user";
+import { csrfToken } from "../middlewares/csrf-protection";
+import { codeSchema } from "../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../services/get-notifications-from-request";
 
 export const getAuthenticatorAppConfigurationController = async (
   req: Request,

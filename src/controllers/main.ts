@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
+import moment from "moment/moment";
 import { z, ZodError } from "zod";
 import {
   ForbiddenError,
@@ -7,6 +9,7 @@ import {
   UserIsNot2faCapableError,
 } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
+import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
 import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
@@ -15,6 +18,7 @@ import {
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
+import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
 import {
   sendDisable2faMail,
   sendUpdatePersonalInformationEmail,
@@ -25,10 +29,6 @@ import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
-import moment from "moment/moment";
-import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
-import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
-import HttpErrors from "http-errors";
 
 export const getHomeController = async (
   req: Request,

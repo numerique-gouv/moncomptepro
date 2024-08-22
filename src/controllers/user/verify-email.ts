@@ -1,24 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import {
-  codeSchema,
-  optionalBooleanSchema,
-} from "../../services/custom-zod-schemas";
-import {
-  sendEmailAddressVerificationEmail,
-  verifyEmail,
-} from "../../managers/user";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
-import {
   InvalidTokenError,
   NoNeedVerifyEmailAddressError,
 } from "../../config/errors";
+import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
 import {
   addAuthenticationMethodReferenceInSession,
   getUserFromAuthenticatedSession,
 } from "../../managers/session/authenticated";
+import {
+  sendEmailAddressVerificationEmail,
+  verifyEmail,
+} from "../../managers/user";
 import { csrfToken } from "../../middlewares/csrf-protection";
-import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
+import {
+  codeSchema,
+  optionalBooleanSchema,
+} from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 
 export const getVerifyEmailController = async (
   req: Request,

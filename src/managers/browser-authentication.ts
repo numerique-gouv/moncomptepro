@@ -1,11 +1,11 @@
 import cookieParser from "cookie-parser";
+import { NextFunction, Request, Response } from "express";
 import {
   DO_NOT_AUTHENTICATE_BROWSER,
   SECURE_COOKIES,
   SESSION_COOKIE_SECRET,
   TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS,
 } from "../config/env";
-import { NextFunction, Request, Response } from "express";
 
 export const setIsTrustedBrowserFromLoggedInSession = (req: Request) => {
   const parsedCookieValue = parseInt(

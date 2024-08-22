@@ -1,23 +1,23 @@
+import * as Sentry from "@sentry/node";
 import { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
-import { emailSchema } from "../../services/custom-zod-schemas";
-import { changePassword, sendResetPasswordEmail } from "../../managers/user";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
+import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
   InvalidTokenError,
   LeakedPasswordError,
   WeakPasswordError,
 } from "../../config/errors";
-import hasErrorFromField from "../../services/has-error-from-field";
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { setBrowserAsTrustedForUser } from "../../managers/browser-authentication";
 import {
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
 } from "../../managers/session/authenticated";
-import { csrfToken } from "../../middlewares/csrf-protection";
-import * as Sentry from "@sentry/node";
-import { setBrowserAsTrustedForUser } from "../../managers/browser-authentication";
 import { getEmailFromUnauthenticatedSession } from "../../managers/session/unauthenticated";
+import { changePassword, sendResetPasswordEmail } from "../../managers/user";
+import { csrfToken } from "../../middlewares/csrf-protection";
+import { emailSchema } from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
+import hasErrorFromField from "../../services/has-error-from-field";
 
 export const getResetPasswordController = async (
   req: Request,

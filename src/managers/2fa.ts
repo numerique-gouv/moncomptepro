@@ -1,6 +1,6 @@
-import { findById, update } from "../repositories/user";
 import { isEmpty } from "lodash-es";
 import { UserIsNot2faCapableError, UserNotFoundError } from "../config/errors";
+import { findById, update } from "../repositories/user";
 import { isAuthenticatorAppConfiguredForUser } from "./totp";
 import { isWebauthnConfiguredForUser } from "./webauthn";
 

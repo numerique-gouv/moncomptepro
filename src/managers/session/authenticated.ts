@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Session, SessionData } from "express-session";
 import { isEmpty } from "lodash-es";
 import { RECENT_LOGIN_INTERVAL_IN_SECONDS } from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
@@ -6,20 +7,18 @@ import { deleteSelectedOrganizationId } from "../../repositories/redis/selected-
 import { update } from "../../repositories/user";
 import { isExpiredInSeconds } from "../../services/is-expired";
 import {
-  setBrowserAsTrustedForUser,
-  setIsTrustedBrowserFromLoggedInSession,
-} from "../browser-authentication";
+  addAuthenticationMethodReference,
+  isOneFactorAuthenticated,
+  isTwoFactorAuthenticated,
+} from "../../services/security";
 import {
   AmrValue,
   AuthenticatedSessionData,
 } from "../../types/express-session";
 import {
-  addAuthenticationMethodReference,
-  isOneFactorAuthenticated,
-  isTwoFactorAuthenticated,
-} from "../../services/security";
-import { Session, SessionData } from "express-session";
-import { sendUpdatePersonalInformationEmail } from "../user";
+  setBrowserAsTrustedForUser,
+  setIsTrustedBrowserFromLoggedInSession,
+} from "../browser-authentication";
 
 export const isWithinAuthenticatedSession = (
   session: Session & Partial<SessionData>,

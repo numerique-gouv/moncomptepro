@@ -1,5 +1,5 @@
-import { assert } from "chai";
 import FakeTimers, { InstalledClock } from "@sinonjs/fake-timers";
+import { assert } from "chai";
 import epochTime from "../src/services/epoch-time";
 
 describe("epochTime", () => {

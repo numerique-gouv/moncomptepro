@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
+import { ENABLE_FIXED_ACR } from "../config/env";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
+import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
-import { postStartSignInController } from "./user/signin-signup";
-import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { shouldTrigger2fa } from "../services/should-trigger-2fa";
-import { ENABLE_FIXED_ACR } from "../config/env";
+import { postStartSignInController } from "./user/signin-signup";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>

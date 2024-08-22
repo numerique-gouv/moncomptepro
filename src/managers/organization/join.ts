@@ -16,6 +16,7 @@ import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
 import { sendZammadMail } from "../../connectors/send-zammad-mail";
+import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 import {
   createModeration,
   findPendingModeration,
@@ -30,6 +31,11 @@ import {
   upsert,
 } from "../../repositories/organization/setters";
 import { findById as findUserById } from "../../repositories/user";
+import {
+  getEmailDomain,
+  isAFreeEmailProvider,
+  usesAFreeEmailProvider,
+} from "../../services/email";
 import { logger } from "../../services/log";
 import {
   hasLessThanFiftyEmployees,
@@ -39,13 +45,7 @@ import {
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
 import { isEmailValid } from "../../services/security";
-import {
-  getEmailDomain,
-  isAFreeEmailProvider,
-  usesAFreeEmailProvider,
-} from "../../services/email";
 import { markDomainAsVerified } from "./main";
-import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 
 export const doSuggestOrganizations = async ({
   user_id,

@@ -1,13 +1,7 @@
+import * as Sentry from "@sentry/node";
 import { NextFunction, Request, Response } from "express";
-import getNotificationsFromRequest, {
-  getNotificationLabelFromRequest,
-} from "../../services/get-notifications-from-request";
 import { z, ZodError } from "zod";
-import {
-  loginWithPassword,
-  signupWithPassword,
-  startLogin,
-} from "../../managers/user";
+import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 import {
   EmailUnavailableError,
   InvalidCredentialsError,
@@ -15,17 +9,23 @@ import {
   LeakedPasswordError,
   WeakPasswordError,
 } from "../../config/errors";
-import { emailSchema } from "../../services/custom-zod-schemas";
 import { createAuthenticatedSession } from "../../managers/session/authenticated";
-import { csrfToken } from "../../middlewares/csrf-protection";
-import * as Sentry from "@sentry/node";
-import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 import {
   getEmailFromUnauthenticatedSession,
   setEmailInUnauthenticatedSession,
   setPartialUserFromUnauthenticatedSession,
   updatePartialUserFromUnauthenticatedSession,
 } from "../../managers/session/unauthenticated";
+import {
+  loginWithPassword,
+  signupWithPassword,
+  startLogin,
+} from "../../managers/user";
+import { csrfToken } from "../../middlewares/csrf-protection";
+import { emailSchema } from "../../services/custom-zod-schemas";
+import getNotificationsFromRequest, {
+  getNotificationLabelFromRequest,
+} from "../../services/get-notifications-from-request";
 
 export const getStartSignInController = async (
   req: Request,

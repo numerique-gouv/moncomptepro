@@ -17,6 +17,11 @@ import {
   getUserFromAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
+import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
+import {
+  sendActivateAccessKeyMail,
+  sendDeleteAccessKeyMail,
+} from "../managers/user";
 import {
   deleteUserAuthenticator,
   getAuthenticationOptions,
@@ -27,11 +32,6 @@ import {
 import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import { logger } from "../services/log";
-import { getEmailFromUnauthenticatedSession } from "../managers/session/unauthenticated";
-import {
-  sendDeleteAccessKeyMail,
-  sendActivateAccessKeyMail,
-} from "../managers/user";
 
 export const deletePasskeyController = async (
   req: Request,

@@ -33,9 +33,9 @@ import {
   optionalBooleanSchema,
   siretSchema,
 } from "../services/custom-zod-schemas";
+import { getEmailDomain } from "../services/email";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import hasErrorFromField from "../services/has-error-from-field";
-import { getEmailDomain } from "../services/email";
 
 export const getJoinOrganizationController = async (
   req: Request,

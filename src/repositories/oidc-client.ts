@@ -1,5 +1,5 @@
-import { getDatabaseConnection } from "../connectors/postgres";
 import { QueryResult } from "pg";
+import { getDatabaseConnection } from "../connectors/postgres";
 
 export const getClients = async () => {
   const connection = getDatabaseConnection();

@@ -1,5 +1,5 @@
-import { UnknownObject } from "oidc-provider";
 import { get, isArray } from "lodash-es";
+import { UnknownObject } from "oidc-provider";
 
 interface EssentialAcrPromptDetail {
   name: "login" | "consent" | string;

@@ -3,10 +3,10 @@ import {
   getUserFromAuthenticatedSession,
   isPasskeyAuthenticatedSession,
 } from "../../managers/session/authenticated";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
-import { csrfToken } from "../../middlewares/csrf-protection";
-import { isWebauthnConfiguredForUser } from "../../managers/webauthn";
 import { isAuthenticatorAppConfiguredForUser } from "../../managers/totp";
+import { isWebauthnConfiguredForUser } from "../../managers/webauthn";
+import { csrfToken } from "../../middlewares/csrf-protection";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 
 export const get2faSignInController = async (
   req: Request,

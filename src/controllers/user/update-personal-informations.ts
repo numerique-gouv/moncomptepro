@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 import { z, ZodError } from "zod";
+import {
+  getUserFromAuthenticatedSession,
+  updateUserInAuthenticatedSession,
+} from "../../managers/session/authenticated";
 import { updatePersonalInformations } from "../../managers/user";
+import { csrfToken } from "../../middlewares/csrf-protection";
 import {
   jobSchema,
   nameSchema,
   phoneNumberSchema,
 } from "../../services/custom-zod-schemas";
-import {
-  getUserFromAuthenticatedSession,
-  updateUserInAuthenticatedSession,
-} from "../../managers/session/authenticated";
-import { csrfToken } from "../../middlewares/csrf-protection";
+import getNotificationsFromRequest from "../../services/get-notifications-from-request";
 
 export const getPersonalInformationsController = async (
   req: Request,
