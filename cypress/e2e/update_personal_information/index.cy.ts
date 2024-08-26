@@ -27,7 +27,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>
         mailslurp.waitForLatestEmail(
-          "716fc7c8-8828-48d5-b748-57dd4e78e55a",
+          "9023e9f4-4e54-4ba0-9558-3cb61e7608c6",
           60000,
           true,
         ),
