@@ -123,11 +123,13 @@ export const isPhoneNumberValid = (
   return true;
 };
 
-export const isNameValid = (name: unknown): name is string => {
-  if (!isString(name) || isEmpty(name)) {
-    return false;
-  }
+export const isVisibleString = (input: string) => {
+  const visibleCharRegex = /[^\s\p{Cf}\p{Cc}\p{Zl}\p{Zp}]/u;
 
+  return visibleCharRegex.test(input);
+};
+
+export const isNameValid = (name: string) => {
   return !!name.match(/^[^$&+:;=?@#|<>.^*()%!\d_\[\]{}\\\/"`~]*$/);
 };
 
@@ -159,7 +161,7 @@ export const isSiretValid = (siret: unknown): siret is string => {
 
   const siretNoSpaces = siret.replace(/\s/g, "");
 
-  return !!siretNoSpaces.match(/^\d{14}$/);
+  return /^\d{14}$/.test(siretNoSpaces);
 };
 
 export const getTrustedReferrerPath = (referrer: unknown): string | null => {
