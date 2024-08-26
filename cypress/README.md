@@ -4,7 +4,7 @@
 
 ### Setup env vars
 
-You will need to set `BREVO_API_KEY`, `DEBOUNCE_API_KEY`, `ZAMMAD_URL` and `ZAMMAD_TOKEN`.
+You will need to set `BREVO_API_KEY`, `DEBOUNCE_API_KEY`, `ZAMMAD_URL`, `ZAMMAD_TOKEN` and `CYPRESS_MAILSLURP_API_KEY`.
 
 Ask a teammate for them and put the values in your `.env`.
 
@@ -36,8 +36,7 @@ npx dotenvx run -f cypress/e2e/redirect_after_session_expiration/env.conf -- npm
 On your host, run the tests
 
 ```bash
-export CYPRESS_MAILSLURP_API_KEY=ask_a_teammate
-npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration/index.cy.ts"
+npx dotenvx run -- npx cypress run --headed --spec "cypress/e2e/redirect_after_session_expiration/index.cy.ts"
 ```
 
 ## About test client used in e2e test
