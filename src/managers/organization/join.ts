@@ -340,6 +340,7 @@ export const forceJoinOrganization = async ({
   const organizationEmailDomains =
     await findEmailDomainsByOrganizationId(organization_id);
 
+  // TODO verification_type should come from parameter, if null, the following apply
   let link_verification_type: BaseUserOrganizationLink["verification_type"];
   if (
     some(organizationEmailDomains, { domain, verification_type: "verified" }) ||

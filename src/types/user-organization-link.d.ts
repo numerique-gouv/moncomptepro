@@ -5,6 +5,7 @@ interface BaseUserOrganizationLink {
     | "domain"
     | "imported_from_inclusion_connect"
     | "in_liste_dirigeants_rna"
+    // TODO no_verification_means_available
     | "no_validation_means_available"
     | "no_verification_means_for_entreprise_unipersonnelle"
     | "official_contact_email"

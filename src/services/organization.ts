@@ -13,11 +13,13 @@ export const isEntrepriseUnipersonnelle = ({
   // check that the organization has the right catégorie juridique
   const cat_jur_ok = [
     "Entrepreneur individuel",
+    // TODO delete these 2
     "Société à responsabilité limitée (sans autre indication)",
     "SAS, société par actions simplifiée",
   ].includes(cached_libelle_categorie_juridique || "");
 
   // check that the organization has the right tranche effectifs
+  // TODO check on production database if "01" can be used with SAS or SARL
   const tra_eff_ok = [null, "NN", "00", "01"].includes(
     cached_tranche_effectifs,
   );
