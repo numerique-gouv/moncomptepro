@@ -109,6 +109,7 @@ describe("isSiretValid", () => {
 describe("isVisibleString", () => {
   const nonVisibleStrings = [
     "",
+    "\n",
     " ",
     "​", // zero width space character
     "‎", // left to right mark character
