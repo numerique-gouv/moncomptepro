@@ -8,6 +8,7 @@
     "moduleResolution": "Bundler",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "./build",
     "resolveJsonModule": true,
     "rootDir": "./src"
