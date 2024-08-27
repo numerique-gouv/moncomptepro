@@ -2,7 +2,7 @@ INSERT INTO users
   (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
    phone_number, job)
 VALUES
-  (1, '716fc7c8-8828-48d5-b748-57dd4e78e55a@mailslurp.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Rebibi', 'Dumama', '0123456789', 'Sbirette');
+  (1, '9023e9f4-4e54-4ba0-9558-3cb61e7608c6@mailslurp.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Rebibi', 'Dumama', '0123456789', 'Sbirette');
 
 INSERT INTO organizations
   (id, siret, created_at, updated_at)

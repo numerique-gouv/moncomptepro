@@ -6,6 +6,7 @@ import {
   isNameValid,
   isPasswordSecure,
   isSiretValid,
+  isVisibleString,
 } from "../src/services/security";
 
 describe("isEmailValid", () => {
@@ -88,7 +89,6 @@ describe("isSiretValid", () => {
   it("should return false if it contains characters other than number", () => {
     assert.equal(isSiretValid("a2345678901234"), false);
   });
-
   it("should return false if it contains more that 14 numbers", () => {
     assert.equal(isSiretValid("123456789012345"), false);
   });
@@ -106,10 +106,33 @@ describe("isSiretValid", () => {
   });
 });
 
+describe("isVisibleString", () => {
+  const nonVisibleStrings = [
+    "",
+    "\n",
+    " ",
+    "​", // zero width space character
+    "‎", // left to right mark character
+    " ​‎",
+  ];
+
+  nonVisibleStrings.forEach((nonVisibleString) => {
+    it(`should return false for non-visible string: ${nonVisibleString}`, () => {
+      assert.equal(isVisibleString(nonVisibleString), false);
+    });
+  });
+
+  const visibleStrings = ["​a", "a"];
+
+  visibleStrings.forEach((visibleString) => {
+    it(`should return true for visible string: ${visibleString}`, () => {
+      assert.equal(isVisibleString(visibleString), true);
+    });
+  });
+});
+
 describe("isNameValid", () => {
   const invalidNames = [
-    null,
-    "",
     "jean@domaine.fr",
     "dsi_etudes_applications",
     "R2 - Sebastien",

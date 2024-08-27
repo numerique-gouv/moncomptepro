@@ -6,6 +6,7 @@ import {
   isNotificationLabelValid,
   isPhoneNumberValid,
   isSiretValid,
+  isVisibleString,
 } from "./security";
 
 export const siretSchema = () =>
@@ -18,7 +19,8 @@ export const siretSchema = () =>
 export const emailSchema = () =>
   z.string().trim().toLowerCase().refine(isEmailValid);
 
-export const nameSchema = () => z.string().trim().min(1).refine(isNameValid);
+export const nameSchema = () =>
+  z.string().trim().min(1).refine(isVisibleString).refine(isNameValid);
 
 export const phoneNumberSchema = () =>
   z.union([
@@ -32,6 +34,7 @@ export const jobSchema = () =>
     .string()
     .trim()
     .min(1)
+    .refine(isVisibleString)
     .refine((value) => pattern.test(value));
 
 export const idSchema = () =>
