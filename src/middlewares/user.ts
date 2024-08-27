@@ -191,8 +191,7 @@ export const checkUserIsVerifiedMiddleware = (
     try {
       if (error) return next(error);
 
-      const { id, email, email_verified } =
-        getUserFromAuthenticatedSession(req);
+      const { email, email_verified } = getUserFromAuthenticatedSession(req);
 
       const needs_email_verification_renewal =
         await needsEmailVerificationRenewal(email);
@@ -238,7 +237,7 @@ export const checkUserHasPersonalInformationsMiddleware = (
     try {
       if (error) return next(error);
 
-      const { given_name, family_name, phone_number, job } =
+      const { given_name, family_name, job } =
         getUserFromAuthenticatedSession(req);
       if (isEmpty(given_name) || isEmpty(family_name) || isEmpty(job)) {
         return res.redirect("/users/personal-information");

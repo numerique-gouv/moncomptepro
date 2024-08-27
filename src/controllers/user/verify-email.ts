@@ -32,11 +32,8 @@ export const getVerifyEmailController = async (
 
     const { new_code_sent } = await schema.parseAsync(req.query);
 
-    const {
-      id: user_id,
-      email,
-      needs_inclusionconnect_onboarding_help,
-    } = getUserFromAuthenticatedSession(req);
+    const { email, needs_inclusionconnect_onboarding_help } =
+      getUserFromAuthenticatedSession(req);
 
     const codeSent: boolean = await sendEmailAddressVerificationEmail({
       email,
@@ -75,7 +72,7 @@ export const postVerifyEmailController = async (
 
     const { verify_email_token } = await schema.parseAsync(req.body);
 
-    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
+    const { email } = getUserFromAuthenticatedSession(req);
 
     const updatedUser = await verifyEmail(email, verify_email_token);
 
@@ -104,7 +101,7 @@ export const postSendEmailVerificationController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
+    const { email } = getUserFromAuthenticatedSession(req);
 
     await sendEmailAddressVerificationEmail({
       email,
