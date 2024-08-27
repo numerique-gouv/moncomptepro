@@ -38,29 +38,12 @@ const remoteTemplateSlugToBrevoTemplateId: {
   "join-organization": 4,
   "verify-email": 6,
 };
-const localTemplateSlugs: LocalTemplateSlug[] = [
-  "organization-welcome",
-  "unable-to-auto-join-organization",
-  "welcome",
-  "moderation-processed",
-  "delete-account",
-  "delete-free-totp",
-  "delete-access-key",
-  "add-access-key",
-  "update-totp-application",
-  "add-2fa",
-  "update-personal-data",
-];
 const defaultBrevoTemplateId = 7;
 
 const hasRemoteTemplate = (
   template: RemoteTemplateSlug | LocalTemplateSlug,
 ): template is RemoteTemplateSlug =>
   remoteTemplateSlugToBrevoTemplateId.hasOwnProperty(template);
-
-const isLocalTemplateSlug = (value: string): value is LocalTemplateSlug => {
-  return localTemplateSlugs.includes(value as LocalTemplateSlug);
-};
 
 export const sendMail = async ({
   to = [],
