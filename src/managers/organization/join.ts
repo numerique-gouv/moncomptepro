@@ -316,7 +316,7 @@ export const joinOrganization = async ({
     user_id,
     organization_id,
     type: "organization_join_block",
-    ticket_id: ticket.id,
+    ticket_id: String(ticket.id),
   });
 
   throw new UnableToAutoJoinOrganizationError(moderation_id);
