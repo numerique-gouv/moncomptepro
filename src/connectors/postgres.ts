@@ -23,15 +23,15 @@ export const getDatabaseConnection = () => {
 
   pool = new Pool({ connectionString: DATABASE_URL });
 
-  pool.on("connect", (client) => {
+  pool.on("connect", (_client) => {
     logger.debug(`Connected to database : ${obfuscatedConnectionString}`);
   });
 
-  pool.on("remove", (client) => {
+  pool.on("remove", (_client) => {
     logger.debug(`Disconnected from database : ${obfuscatedConnectionString}`);
   });
 
-  pool.on("error", (error, client) => {
+  pool.on("error", (error, _client) => {
     logger.error(`Database error: ${error}`);
   });
 

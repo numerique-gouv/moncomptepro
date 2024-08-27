@@ -8,7 +8,7 @@ import { logger } from "./log";
 import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
 import { isCommune, isPublicService } from "./organization";
 
-export const findAccount: FindAccount = async (ctx, sub, token) => {
+export const findAccount: FindAccount = async (_ctx, sub) => {
   const user = await findUserById(parseInt(sub, 10));
 
   if (isEmpty(user)) {
@@ -17,7 +17,7 @@ export const findAccount: FindAccount = async (ctx, sub, token) => {
 
   return {
     accountId: sub,
-    async claims(use: any, scope: string, claims: any, rejected: any) {
+    async claims(_use: any, scope: string) {
       const {
         id,
         email,

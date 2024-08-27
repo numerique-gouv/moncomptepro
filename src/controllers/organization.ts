@@ -79,7 +79,7 @@ export const getJoinOrganizationController = async (
 export const getOrganizationSuggestionsController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   const { id: user_id, email } = getUserFromAuthenticatedSession(req);
 

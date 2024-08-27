@@ -21,9 +21,9 @@ import {
 import { logger } from "../services/log";
 
 export const getPingApiSireneController = async (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   try {
     await getOrganizationInfo("13002526500013"); // we use DINUM siret for the ping route

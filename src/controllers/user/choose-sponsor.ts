@@ -57,7 +57,7 @@ export const getChooseSponsorController = async (
 
 export const postChooseSponsorMiddleware = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {
@@ -95,7 +95,7 @@ export const postChooseSponsorMiddleware = async (
 };
 
 export const getSponsorValidationController = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction,
 ) => {
@@ -142,7 +142,7 @@ export const getNoSponsorFoundController = async (
 
 export const postNoSponsorFoundMiddleware = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {
