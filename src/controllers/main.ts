@@ -33,7 +33,7 @@ import { getParamsForPostPersonalInformationsController } from "./user/update-pe
 export const getHomeController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   const oidc_clients = await getClientsOrderedByConnectionCount(
     getUserFromAuthenticatedSession(req).id,

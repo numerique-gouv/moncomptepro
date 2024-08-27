@@ -219,7 +219,7 @@ let server: Server;
       maxAge: NODE_ENV === "development" ? undefined : 7 * 24 * 60 * 60 * 1000,
     }),
   );
-  app.get("/favicon.ico", function (req, res, next) {
+  app.get("/favicon.ico", function (_req, res, _next) {
     return res.sendFile("favicons/favicon.ico", {
       root: "public",
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -235,7 +235,7 @@ let server: Server;
   app.use("/users", ejsLayoutMiddlewareFactory(app), userRouter());
   app.use("/api", apiRouter());
 
-  app.use((req, res, next) => {
+  app.use((req, _res, next) => {
     if (req.url === "/.well-known/openid-configuration") {
       req.url = "/oauth/.well-known/openid-configuration";
     }
@@ -243,7 +243,7 @@ let server: Server;
   });
   app.use("/oauth", oidcProvider.callback());
 
-  app.use(async (req, res, next) => {
+  app.use(async (_req, res, _next) => {
     res.setHeader("Content-Type", "text/html");
     res.status(404).send(
       await renderWithEjsLayout("not-found-error", {
@@ -260,9 +260,9 @@ let server: Server;
   app.use(
     (
       err: HttpErrors.HttpError | ZodError | Error,
-      req: Request,
+      _req: Request,
       res: Response,
-      next: NextFunction,
+      _next: NextFunction,
     ) => {
       logger.error(err);
 

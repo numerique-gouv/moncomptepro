@@ -18,7 +18,7 @@ export const hashToPostgresParams = <T>(
       // { email: 'email@xy.z', encrypted_password: 'hash' }
       .toPairs()
       // [[ 'email', 'email@xy.z'], ['encrypted_password', 'hash' ]]
-      .map((value, index) => `$${index + 1}`)
+      .map((_value, index) => `$${index + 1}`)
       // [ '$1', '$2' ]
       .join(", ")
       // '$1, $2'

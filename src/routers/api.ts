@@ -79,7 +79,12 @@ export const apiRouter = () => {
   apiRouter.use("/admin", apiAdminRouter);
 
   apiRouter.use(
-    async (err: HttpError, req: Request, res: Response, next: NextFunction) => {
+    async (
+      err: HttpError,
+      _req: Request,
+      res: Response,
+      _next: NextFunction,
+    ) => {
       logger.error(err);
 
       const statusCode = err.statusCode || 500;

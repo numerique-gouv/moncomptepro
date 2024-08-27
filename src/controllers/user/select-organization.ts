@@ -30,7 +30,7 @@ export const getSelectOrganizationController = async (
 
 export const postSelectOrganizationMiddleware = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {

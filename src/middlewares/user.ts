@@ -45,7 +45,7 @@ const getReferrerPath = (req: Request) => {
 
 export const checkIsUser = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {
@@ -493,7 +493,7 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
         );
       } else {
         organizationThatNeedsGreetings = userOrganisations.find(
-          ({ id, has_been_greeted }) => !has_been_greeted,
+          ({ has_been_greeted }) => !has_been_greeted,
         );
       }
 
