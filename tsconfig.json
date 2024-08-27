@@ -6,6 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "Preserve",
     "moduleResolution": "Bundler",
+    "noFallthroughCasesInSwitch": true,
     "outDir": "./build",
     "resolveJsonModule": true,
     "rootDir": "./src"
