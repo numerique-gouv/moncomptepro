@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { Request, Response } from "express";
 import { Session, SessionData } from "express-session";
 import { isEmpty } from "lodash-es";
@@ -122,6 +123,12 @@ export const getUserFromAuthenticatedSession = (req: Request) => {
     throw new UserNotLoggedInError();
   }
 
+  Sentry.setUser({
+    email: req.session.user.email,
+    id: req.session.user.id,
+    ip_address: req.ip,
+    username: `${req.session.user.given_name} ${req.session.user.family_name}`,
+  });
   return req.session.user;
 };
 
@@ -132,6 +139,13 @@ export const updateUserInAuthenticatedSession = (req: Request, user: User) => {
   ) {
     throw new UserNotLoggedInError();
   }
+
+  Sentry.setUser({
+    email: req.session.user.email,
+    id: req.session.user.id,
+    ip_address: req.ip,
+    username: `${req.session.user.given_name} ${req.session.user.family_name}`,
+  });
   req.session.user = user;
 };
 
