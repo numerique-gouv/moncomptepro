@@ -1,6 +1,12 @@
 import { interactionPolicy } from "oidc-provider";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
+import type {
+  OIDCContextParams,
+  OidcInteractionResults,
+} from "../types/oidc-provider";
 import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
+
+//
 
 const { Prompt, Check, base } = interactionPolicy;
 
@@ -26,11 +32,9 @@ policy.add(
           ) &&
           !selectedOrganizationId
         ) {
-          // @ts-ignore
           return Check.REQUEST_PROMPT;
         }
 
-        // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
       },
     ),
@@ -47,15 +51,15 @@ policy.add(
       "interaction_required",
       async (ctx) => {
         const { oidc } = ctx;
+        const oidcContextParams = ctx.oidc.params as OIDCContextParams;
+        const oidcContextResult = oidc.result as OidcInteractionResults;
         if (
-          ctx.params.prompt === "select_organization" &&
-          !oidc.result?.select_organization
+          oidcContextParams.prompt === "select_organization" &&
+          !oidcContextResult?.select_organization
         ) {
-          // @ts-ignore
           return Check.REQUEST_PROMPT;
         }
 
-        // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
       },
     ),
@@ -72,15 +76,15 @@ policy.add(
       "interaction_required",
       async (ctx) => {
         const { oidc } = ctx;
+        const oidcContextParams = oidc.params as OIDCContextParams;
+        const oidcContextResult = oidc.result as OidcInteractionResults;
         if (
-          ctx.params.prompt === "update_userinfo" &&
-          !oidc.result?.update_userinfo
+          oidcContextParams.prompt === "update_userinfo" &&
+          !oidcContextResult?.update_userinfo
         ) {
-          // @ts-ignore
           return Check.REQUEST_PROMPT;
         }
 
-        // @ts-ignore
         return Check.NO_NEED_TO_PROMPT;
       },
     ),

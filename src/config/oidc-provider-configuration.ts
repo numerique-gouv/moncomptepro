@@ -5,6 +5,9 @@ import epochTime from "../services/epoch-time";
 import { findAccount } from "../services/oidc-account-adapter";
 import policy from "../services/oidc-policy";
 import { renderWithEjsLayout } from "../services/renderer";
+import type { OIDCContextParams } from "../types/oidc-provider";
+
+//
 
 export const oidcProviderConfiguration = ({
   sessionTtlInSeconds = 14 * 24 * 60 * 60,
@@ -85,6 +88,7 @@ export const oidcProviderConfiguration = ({
     if (!ctx.oidc.session || !ctx.oidc.client || !ctx.oidc.params) {
       return undefined;
     }
+    const oidcContextParams = ctx.oidc.params as OIDCContextParams;
     const grantId = ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
     let grant;
@@ -111,7 +115,7 @@ export const oidcProviderConfiguration = ({
 
     // event existing grant should be updated, as requested scopes might
     // be different
-    grant.addOIDCScope(ctx.oidc.params.scope as string);
+    grant.addOIDCScope(oidcContextParams.scope);
     await grant.save();
     return grant;
   },

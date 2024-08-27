@@ -3,6 +3,7 @@ import { NextFunction } from "express";
 import { KoaContextWithOIDC } from "oidc-provider";
 import { recordNewConnection } from "../managers/oidc-client";
 import { logger } from "../services/log";
+import type { OIDCContextParams } from "../types/oidc-provider";
 
 // this is not an express middleware but an oidc-provider middleware as described here:
 // https://github.com/panva/node-oidc-provider/blob/v7.x/docs/README.md#pre--and-post-middlewares
@@ -39,7 +40,7 @@ export const connectionCountMiddleware = async (
         await recordNewConnection({
           accountId: ctx.oidc.session.accountId,
           client: ctx.oidc.client,
-          params: ctx.oidc.params,
+          params: ctx.oidc.params as OIDCContextParams,
         });
       } else {
         // This is unexpected, we log it in sentry

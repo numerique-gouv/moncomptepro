@@ -10,6 +10,7 @@ import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenti
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { shouldTrigger2fa } from "../services/should-trigger-2fa";
+import type { OidcInteractionResults } from "../types/oidc-provider";
 import { postStartSignInController } from "./user/signin-signup";
 
 export const interactionStartControllerFactory =
@@ -78,7 +79,7 @@ export const interactionEndControllerFactory =
         ? epochTime(user.last_sign_in_at)
         : undefined;
 
-      const result = {
+      const result: OidcInteractionResults = {
         login: {
           accountId: user.id.toString(),
           acr,

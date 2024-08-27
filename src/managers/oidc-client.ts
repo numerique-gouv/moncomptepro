@@ -10,6 +10,7 @@ import {
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { logger } from "../services/log";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
+import type { OIDCContextParams } from "../types/oidc-provider";
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number,
@@ -25,7 +26,7 @@ export const recordNewConnection = async ({
   accountId: string;
   // tricky way to get the non exported Client type
   client: NonNullable<KoaContextWithOIDC["oidc"]["client"]>;
-  params: KoaContextWithOIDC["oidc"]["params"];
+  params: OIDCContextParams;
 }): Promise<Connection> => {
   const user_id = parseInt(accountId, 10);
 

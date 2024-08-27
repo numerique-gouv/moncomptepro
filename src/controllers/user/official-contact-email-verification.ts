@@ -116,7 +116,7 @@ export const postOfficialContactEmailVerificationMiddleware = async (
 
     if (error instanceof InvalidTokenError) {
       return res.redirect(
-        `/users/official-contact-email-verification/${req.params.organization_id}?notification=invalid_verify_email_code`,
+        `/users/official-contact-email-verification/${organization_id}?notification=invalid_verify_email_code`,
       );
     } else if (error) {
       return next(error);
