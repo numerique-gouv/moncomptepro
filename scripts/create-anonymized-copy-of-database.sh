@@ -17,6 +17,7 @@ echo "$(logPrefix) Cleaning anonymized database in correct order..."
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS users_organizations"
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS users_oidc_clients"
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS moderations"
+psql $DEST_DB_URL --command="DROP TABLE IF EXISTS email_domains"
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS organizations"
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS users"
 psql $DEST_DB_URL --command="DROP TABLE IF EXISTS oidc_clients"
@@ -44,8 +45,12 @@ SELECT
   regexp_replace(magic_link_token, '.', '*', 'g') as magic_link_token,
   magic_link_sent_at,
   email_verified_at,
+  regexp_replace(current_challenge, '.', '*', 'g') as current_challenge,
   needs_inclusionconnect_welcome_page,
-  needs_inclusionconnect_onboarding_help
+  needs_inclusionconnect_onboarding_help,
+  regexp_replace(encrypted_totp_key, '.', '*', 'g') as encrypted_totp_key,
+  totp_key_verified_at,
+  force_2fa
 FROM users"
 psql $SRC_DB_URL --command="ALTER TABLE tmp_users ADD PRIMARY KEY (id)"
 pg_dump --table=tmp_users $SRC_DB_URL | psql $DEST_DB_URL
@@ -54,6 +59,9 @@ psql $SRC_DB_URL --command="DROP TABLE IF EXISTS tmp_users"
 
 echo "$(logPrefix) Creating anonymized copy of table organizations..."
 pg_dump --table=organizations $SRC_DB_URL | psql $DEST_DB_URL
+
+echo "$(logPrefix) Creating anonymized copy of table email_domains..."
+pg_dump --table=email_domains $SRC_DB_URL | psql $DEST_DB_URL
 
 echo "$(logPrefix) Creating anonymized copy of table moderations..."
 pg_dump --table=moderations $SRC_DB_URL | psql $DEST_DB_URL
@@ -72,7 +80,11 @@ SELECT
   post_logout_redirect_uris,
   scope,
   client_uri,
-  client_description
+  client_description,
+  userinfo_signed_response_alg,
+  id_token_signed_response_alg,
+  authorization_signed_response_alg,
+  introspection_signed_response_alg
 FROM oidc_clients"
 psql $SRC_DB_URL --command="ALTER TABLE tmp_oidc_clients ADD PRIMARY KEY (id)"
 pg_dump --table=tmp_oidc_clients $SRC_DB_URL | psql $DEST_DB_URL
