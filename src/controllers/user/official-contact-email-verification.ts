@@ -1,5 +1,6 @@
+import { to } from "await-to-js";
 import { NextFunction, Request, Response } from "express";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
@@ -105,23 +106,24 @@ export const postOfficialContactEmailVerificationMiddleware = async (
       params: req.params,
     });
 
-    await verifyOfficialContactEmailToken({
-      user_id: getUserFromAuthenticatedSession(req).id,
-      organization_id,
-      token: official_contact_email_verification_token,
-    });
+    const [error] = await to(
+      verifyOfficialContactEmailToken({
+        user_id: getUserFromAuthenticatedSession(req).id,
+        organization_id,
+        token: official_contact_email_verification_token,
+      }),
+    );
 
-    return next();
-  } catch (error) {
-    if (
-      req.params?.organization_id &&
-      (error instanceof InvalidTokenError || error instanceof ZodError)
-    ) {
+    if (error instanceof InvalidTokenError) {
       return res.redirect(
         `/users/official-contact-email-verification/${req.params.organization_id}?notification=invalid_verify_email_code`,
       );
+    } else if (error) {
+      return next(error);
     }
 
+    return next();
+  } catch (error) {
     next(error);
   }
 };
