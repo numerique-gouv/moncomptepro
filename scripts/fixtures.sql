@@ -437,7 +437,9 @@ VALUES
      'https://staging2.api-entreprise.v2.datapass.api.gouv.fr',
      'https://staging.v2.datapass.api.gouv.fr',
      'https://staging1.v2.datapass.api.gouv.fr',
-     'https://staging2.v2.datapass.api.gouv.fr'
+     'https://staging2.v2.datapass.api.gouv.fr',
+     'https://sandbox.hubee.v2.datapass.api.gouv.fr',
+     'https://staging.hubee.v2.datapass.api.gouv.fr'
      ],
    'openid email profile phone organization organizations',
    'https://datapass-development.api.gouv.fr',
