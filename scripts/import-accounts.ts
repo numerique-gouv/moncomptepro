@@ -173,6 +173,9 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
                 user_id: user.id,
                 verification_type: "imported_from_inclusion_connect",
               });
+              await updateUserOrganizationLink(organization.id, user.id, {
+                authentication_by_peers_type: "deactivated_by_import",
+              });
             }
           } catch (error) {
             logger.error(`unexpected error for siret: ${siret}`);
