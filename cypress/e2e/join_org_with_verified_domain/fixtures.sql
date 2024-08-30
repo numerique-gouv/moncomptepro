@@ -28,13 +28,13 @@ VALUES
   (3, 'randomain.fr', 'verified', CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
-  (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
+  (user_id, organization_id, is_external, verification_type, has_been_greeted)
 VALUES
-  (2, 1, false, 'domain', 'all_members_notified', true),
-  (7, 1, true, 'domain', 'all_members_notified', true),
+  (2, 1, false, 'domain', true),
+  (7, 1, true, 'domain', true),
   (8, 1, false, 'domain', null, false),
-  (2, 2, false, 'domain', 'all_members_notified', true),
-  (3, 1, false, 'domain', 'all_members_notified', true),
-  (4, 1, false, 'domain', 'all_members_notified', true),
-  (5, 1, false, 'domain', 'all_members_notified', true),
-  (6, 1, false, 'domain', 'all_members_notified', true);
+  (2, 2, false, 'domain', true),
+  (3, 1, false, 'domain', true),
+  (4, 1, false, 'domain', true),
+  (5, 1, false, 'domain', true),
+  (6, 1, false, 'domain', true);
