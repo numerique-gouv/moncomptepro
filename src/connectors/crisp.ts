@@ -67,7 +67,9 @@ export async function start_crips_conversation({
       origin: `urn:${config.website_id}`,
       from: "operator",
       content,
-      user: {},
+      user: {
+        nickname: config.user_nickname,
+      },
     },
   });
 
