@@ -36,7 +36,10 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
    cp .env.sample .env
    ```
 
-   This will create a local copy of the .env file containing the environnement variables to run MonComptePro.
+   This will create a local copy of the `.env` file containing the environnement variables to run MonComptePro.
+
+   We set the defaults in `.env` (all environments) and, following the `NODE_ENV` environment variable, the `.env.development` (development environment), `.env.production` (production environment) or `.env.test` (test environment).
+   We recommend to use the `.env*.local` to override the defaults variables. `.env.<NODE_ENV>.local` will take precedence over `.env.local` and `.env.<NODE_ENV>`.
 
 3. **Get your own INSEE api credential**: or use the one of your teammates.
 
