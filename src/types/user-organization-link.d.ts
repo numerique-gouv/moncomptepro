@@ -11,16 +11,7 @@ interface BaseUserOrganizationLink {
     | null;
   // updated when verification_type is changed
   verified_at: Date | null;
-  authentication_by_peers_type:
-    | "all_members_notified"
-    | "sponsored_by_member"
-    | "is_the_only_active_member"
-    | "deactivated_by_whitelist"
-    | "deactivated_by_gouv_fr_domain"
-    | "deactivated_by_import"
-    | null;
   has_been_greeted: boolean;
-  sponsor_id: number | null;
   needs_official_contact_email_verification: boolean;
   official_contact_email_verification_token: string | null;
   official_contact_email_verification_sent_at: Date | null;

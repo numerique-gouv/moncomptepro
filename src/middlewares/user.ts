@@ -1,15 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
-// import { PAIR_AUTHENTICATION_WHITELIST } from "../config/env";
 import { UserNotFoundError } from "../config/errors";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
-// import {
-//   markAsGouvFrDomain,
-//   markAsWhitelisted,
-//   notifyAllMembers,
-// } from "../managers/organization/authentication-by-peers";
 import {
   getOrganizationsByUserId,
   selectOrganization,
@@ -407,110 +401,3 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
       next(error);
     }
   });
-
-// export const checkUserHasBeenAuthenticatedByPeersMiddleware = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ) =>
-//   checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
-//     req,
-//     res,
-//     async (error) => {
-//       try {
-//         if (error) return next(error);
-
-//         const { id: user_id, email } = getUserFromAuthenticatedSession(req);
-
-//         const userOrganisations = await getOrganizationsByUserId(user_id);
-
-//         let organizationThatNeedsAuthenticationByPeers;
-//         if (req.session.mustReturnOneOrganizationInPayload) {
-//           const selectedOrganizationId =
-//             await getSelectedOrganizationId(user_id);
-
-//           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
-//             ({ id, authentication_by_peers_type }) =>
-//               !authentication_by_peers_type && id === selectedOrganizationId,
-//           );
-//         } else {
-//           organizationThatNeedsAuthenticationByPeers = userOrganisations.find(
-//             ({ authentication_by_peers_type }) => !authentication_by_peers_type,
-//           );
-//         }
-
-//         if (!isEmpty(organizationThatNeedsAuthenticationByPeers)) {
-//           const organization_id = organizationThatNeedsAuthenticationByPeers.id;
-//           const internalActiveUsers =
-//             await getInternalActiveUsers(organization_id);
-//           const otherInternalUsers = internalActiveUsers.filter(
-//             ({ email: e }) => e !== email,
-//           );
-
-//           if (PAIR_AUTHENTICATION_WHITELIST.includes(getEmailDomain(email))) {
-//             await markAsWhitelisted({ user_id, organization_id });
-//           } else if (usesAGouvFrDomain(email)) {
-//             await markAsGouvFrDomain({ user_id, organization_id });
-//           } else if (otherInternalUsers.length > 0) {
-//             return res.redirect(`/users/choose-sponsor/${organization_id}`);
-//           } else {
-//             await notifyAllMembers({ user_id, organization_id });
-//           }
-//         }
-
-//         return next();
-//       } catch (error) {
-//         next(error);
-//       }
-//     },
-//   );
-
-// export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ) =>
-//   checkUserHasBeenAuthenticatedByPeersMiddleware(req, res, async (error) => {
-//     try {
-//       if (error) return next(error);
-
-//       const userOrganisations = await getOrganizationsByUserId(
-//         getUserFromAuthenticatedSession(req).id,
-//       );
-
-//       let organizationThatNeedsGreetings;
-//       if (req.session.mustReturnOneOrganizationInPayload) {
-//         const selectedOrganizationId = await getSelectedOrganizationId(
-//           getUserFromAuthenticatedSession(req).id,
-//         );
-
-//         organizationThatNeedsGreetings = userOrganisations.find(
-//           ({ id, has_been_greeted }) =>
-//             !has_been_greeted && id === selectedOrganizationId,
-//         );
-//       } else {
-//         organizationThatNeedsGreetings = userOrganisations.find(
-//           ({ has_been_greeted }) => !has_been_greeted,
-//         );
-//       }
-
-//       if (!isEmpty(organizationThatNeedsGreetings)) {
-//         await greetForJoiningOrganization({
-//           user_id: getUserFromAuthenticatedSession(req).id,
-//           organization_id: organizationThatNeedsGreetings.id,
-//         });
-
-//         return res.redirect(
-//           `/users/welcome/${organizationThatNeedsGreetings.id}`,
-//         );
-//       }
-
-//       return next();
-//     } catch (error) {
-//       next(error);
-//     }
-//   });
-
-// // check that user go through all requirements before issuing a session
-// export const checkUserSignInRequirementsMiddleware =
-//   checkUserHasBeenGreetedForJoiningOrganizationMiddleware;
