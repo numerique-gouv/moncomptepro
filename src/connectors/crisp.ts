@@ -73,6 +73,10 @@ export async function startCripsConversation({
     },
   });
 
+  // HACK(douglasduteil): Wait for the message to be sent
+  // Crisp seems to have a delay between the message being sent and the state being updated
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
   await fetch_crisp<UpdateConversationStateRoute>(config, {
     endpoint: `/v1/website/${config.website_id}/conversation/${session_id}/state`,
     method: "PATCH",
