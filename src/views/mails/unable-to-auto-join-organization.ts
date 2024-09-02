@@ -1,12 +1,16 @@
 //
 
+import { MONCOMPTEPRO_HOST } from "../../config/env";
+
+//
+
 export function unable_to_auto_join_organization_md({
   libelle,
 }: {
   libelle: string;
 }) {
   return `
-![Mon Compte Pro](https://img.mailinblue.com/2842821/images/rnb/original/63b58e65a1bf3a5d3868c6ce.png)
+![Mon Compte Pro](${MONCOMPTEPRO_HOST}/dist/mail-banner.png)
 
 Bonjour,
 
