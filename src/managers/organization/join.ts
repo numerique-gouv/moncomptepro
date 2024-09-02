@@ -307,30 +307,24 @@ export const joinOrganization = async ({
     });
   }
 
-  if (!CRISP_WEBSITE_ID) {
+  let ticket_id = null;
+  if (CRISP_WEBSITE_ID) {
+    ticket_id = await startCripsConversation({
+      content: unableToAutoJoinOrganizationMd({
+        libelle: cached_libelle || siret,
+      }),
+      email,
+      nickname: `${given_name} ${family_name}`,
+      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    });
+  } else {
     logger.info(
       `unable_to_auto_join_organization_md mail not send to ${email}:`,
     );
     logger.info({
       libelle: cached_libelle || siret,
     });
-
-    const { id: moderation_id } = await createModeration({
-      user_id,
-      organization_id,
-      type: "organization_join_block",
-      ticket_id: null,
-    });
-    throw new UnableToAutoJoinOrganizationError(moderation_id);
   }
-  const ticket_id = await startCripsConversation({
-    content: unableToAutoJoinOrganizationMd({
-      libelle: cached_libelle || siret,
-    }),
-    email,
-    nickname: `${given_name} ${family_name}`,
-    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
-  });
 
   const { id: moderation_id } = await createModeration({
     user_id,
