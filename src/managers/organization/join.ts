@@ -18,7 +18,7 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
-import { start_crips_conversation } from "../../connectors/crisp";
+import { startCripsConversation } from "../../connectors/crisp";
 import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 import {
   createModeration,
@@ -48,7 +48,7 @@ import {
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
 import { isEmailValid } from "../../services/security";
-import { unable_to_auto_join_organization_md } from "../../views/mails/unable-to-auto-join-organization";
+import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
 import { markDomainAsVerified } from "./main";
 
 export const doSuggestOrganizations = async ({
@@ -323,8 +323,8 @@ export const joinOrganization = async ({
     });
     throw new UnableToAutoJoinOrganizationError(moderation_id);
   }
-  const ticket_id = await start_crips_conversation({
-    content: unable_to_auto_join_organization_md({
+  const ticket_id = await startCripsConversation({
+    content: unableToAutoJoinOrganizationMd({
       libelle: cached_libelle || siret,
     }),
     email,

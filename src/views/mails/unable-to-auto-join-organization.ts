@@ -4,7 +4,7 @@ import { MONCOMPTEPRO_HOST } from "../../config/env";
 
 //
 
-export function unable_to_auto_join_organization_md({
+export function unableToAutoJoinOrganizationMd({
   libelle,
 }: {
   libelle: string;

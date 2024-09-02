@@ -29,7 +29,7 @@ const config: Config = {
 };
 //
 
-export async function start_crips_conversation({
+export async function startCripsConversation({
   content,
   email,
   nickname,
