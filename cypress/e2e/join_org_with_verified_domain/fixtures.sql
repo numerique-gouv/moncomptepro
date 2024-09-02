@@ -32,7 +32,7 @@ INSERT INTO users_organizations
 VALUES
   (2, 1, false, 'domain', true),
   (7, 1, true, 'domain', true),
-  (8, 1, false, 'domain', null, false),
+  (8, 1, false, 'domain', false),
   (2, 2, false, 'domain', true),
   (3, 1, false, 'domain', true),
   (4, 1, false, 'domain', true),
