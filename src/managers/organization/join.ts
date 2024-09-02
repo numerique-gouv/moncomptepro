@@ -18,6 +18,7 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
+import { sendMail } from "../../connectors/brevo";
 import { startCripsConversation } from "../../connectors/crisp";
 import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 import {
@@ -331,6 +332,14 @@ export const joinOrganization = async ({
     organization_id,
     type: "organization_join_block",
     ticket_id,
+  });
+
+  // Welcome the user when he joins is first organization as he may now be able to connect
+  await sendMail({
+    to: [email],
+    subject: "Votre compte MonComptePro a bien été créé",
+    template: "welcome",
+    params: { given_name, family_name, email },
   });
 
   throw new UnableToAutoJoinOrganizationError(moderation_id);
