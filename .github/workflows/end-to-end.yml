@@ -55,7 +55,6 @@ jobs:
           - join_with_code_sent_to_official_contact_email
           - join_with_code_sent_to_official_educ_nat_contact_email
           - join_with_official_contact_email
-          - join_with_sponsorship
           - reauthenticate_on_admin_page
           - redirect_after_session_expiration
           - reset_password

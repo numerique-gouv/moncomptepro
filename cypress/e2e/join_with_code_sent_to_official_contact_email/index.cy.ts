@@ -51,27 +51,6 @@ describe("join organizations", () => {
         cy.get('[type="submit"]').click();
       });
 
-    // Click on "Je ne connais aucune des personnes proposées"
-    cy.get('[href="/users/no-sponsor-found/1"]').click();
-
-    // Click on the confirmation button
-    cy.get('[type="submit"]').contains("Personne ne peut me parrainer").click();
-
     cy.contains("Votre compte est créé");
-
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
-          60000,
-          true,
-        ),
-      )
-      // assert reception of notification email
-      .then((email) => {
-        expect(email.body).to.match(
-          /.*Jean Nouveau.*\(c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp\.com\) a rejoint votre organisation.*Commune de lamalou-les-bains - Mairie.*sur .*MonComptePro/,
-        );
-      });
   });
 });
