@@ -16,6 +16,7 @@ env:
   DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
+  NODE_ENV: test
   SYMMETRIC_ENCRYPTION_KEY: aTrueRandom32BytesLongBase64EncodedStringAA=
 
 jobs:

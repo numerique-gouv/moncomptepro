@@ -29,7 +29,7 @@ env:
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
   CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
-  SECURE_COOKIES: "false"
+  SECURE_COOKIES: "False"
   ZAMMAD_URL: ${{ secrets.ZAMMAD_URL }}
   ZAMMAD_TOKEN: ${{ secrets.ZAMMAD_TOKEN }}
   MODERATION_TAG: "github-action-e2e-test"
