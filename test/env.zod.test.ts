@@ -23,6 +23,7 @@ test("default sample env", () => {
     CRISP_IDENTIFIER: "",
     CRISP_KEY: "",
     CRISP_PLUGIN_URN: "",
+    CRISP_RESOLVE_DELAY: 1000,
     CRISP_USER_NICKNAME: "MonComptePro",
     CRISP_WEBSITE_ID: "",
     DATABASE_URL: "postgres://username:password@localhost:5432/dbname",
