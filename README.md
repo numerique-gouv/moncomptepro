@@ -110,7 +110,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 
 Voici à quoi ressemble le bouton MonComptePro :
 
-![](/assets/button-moncomptepro.svg)
+![](/public/button-moncomptepro.svg)
 
 Pour intègrer ce bouton sur votre service, 3 options s’offrent à vous.
 

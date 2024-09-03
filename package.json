@@ -61,6 +61,7 @@
     "connect-redis": "^7.1.1",
     "console-log-level": "^1.4.1",
     "cookie-parser": "^1.4.6",
+    "@numerique-gouv/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
     "csrf-sync": "^4.0.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
