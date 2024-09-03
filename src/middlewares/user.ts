@@ -4,6 +4,7 @@ import { isEmpty } from "lodash-es";
 import { UserNotFoundError } from "../config/errors";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
+import { greetForJoiningOrganization } from "../managers/organization/join";
 import {
   getOrganizationsByUserId,
   selectOrganization,
@@ -401,3 +402,59 @@ export const checkUserHasNoPendingOfficialContactEmailVerificationMiddleware = (
       next(error);
     }
   });
+
+///
+
+export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) =>
+  checkUserHasNoPendingOfficialContactEmailVerificationMiddleware(
+    req,
+    res,
+    async (error) => {
+      try {
+        if (error) return next(error);
+
+        const userOrganisations = await getOrganizationsByUserId(
+          getUserFromAuthenticatedSession(req).id,
+        );
+
+        let organizationThatNeedsGreetings;
+        if (req.session.mustReturnOneOrganizationInPayload) {
+          const selectedOrganizationId = await getSelectedOrganizationId(
+            getUserFromAuthenticatedSession(req).id,
+          );
+
+          organizationThatNeedsGreetings = userOrganisations.find(
+            ({ id, has_been_greeted }) =>
+              !has_been_greeted && id === selectedOrganizationId,
+          );
+        } else {
+          organizationThatNeedsGreetings = userOrganisations.find(
+            ({ has_been_greeted }) => !has_been_greeted,
+          );
+        }
+
+        if (!isEmpty(organizationThatNeedsGreetings)) {
+          await greetForJoiningOrganization({
+            user_id: getUserFromAuthenticatedSession(req).id,
+            organization_id: organizationThatNeedsGreetings.id,
+          });
+
+          return res.redirect(
+            `/users/welcome/${organizationThatNeedsGreetings.id}`,
+          );
+        }
+
+        return next();
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+// check that user go through all requirements before issuing a session
+export const checkUserSignInRequirementsMiddleware =
+  checkUserHasBeenGreetedForJoiningOrganizationMiddleware;

@@ -32,6 +32,7 @@ import {
 } from "../../repositories/organization/getters";
 import {
   linkUserToOrganization,
+  updateUserOrganizationLink,
   upsert,
 } from "../../repositories/organization/setters";
 import { findById as findUserById } from "../../repositories/user";
@@ -50,7 +51,7 @@ import {
 } from "../../services/organization";
 import { isEmailValid } from "../../services/security";
 import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
-import { markDomainAsVerified } from "./main";
+import { getOrganizationsByUserId, markDomainAsVerified } from "./main";
 
 export const doSuggestOrganizations = async ({
   user_id,
@@ -334,14 +335,6 @@ export const joinOrganization = async ({
     ticket_id,
   });
 
-  // Welcome the user when he joins is first organization as he may now be able to connect
-  await sendMail({
-    to: [email],
-    subject: "Votre compte MonComptePro a bien été créé",
-    template: "welcome",
-    params: { given_name, family_name, email },
-  });
-
   throw new UnableToAutoJoinOrganizationError(moderation_id);
 };
 export const forceJoinOrganization = async ({
@@ -382,5 +375,36 @@ export const forceJoinOrganization = async ({
     user_id,
     is_external,
     verification_type: link_verification_type,
+  });
+};
+
+export const greetForJoiningOrganization = async ({
+  user_id,
+  organization_id,
+}: {
+  user_id: number;
+  organization_id: number;
+}) => {
+  const userOrganisations = await getOrganizationsByUserId(user_id);
+  const organization = userOrganisations.find(
+    ({ id }) => id === organization_id,
+  );
+
+  if (isEmpty(organization)) {
+    throw new NotFoundError();
+  }
+
+  const { given_name, family_name, email } = (await findUserById(user_id))!;
+
+  // Welcome the user when he joins is first organization as he may now be able to connect
+  await sendMail({
+    to: [email],
+    subject: "Votre compte MonComptePro a bien été créé",
+    template: "welcome",
+    params: { given_name, family_name, email },
+  });
+
+  return await updateUserOrganizationLink(organization_id, user_id, {
+    has_been_greeted: true,
   });
 };
