@@ -28,7 +28,7 @@ export const envSchema = z
       zodTrueFalseBoolean().default("False"),
     DATABASE_URL: z.string().url(),
     DEBOUNCE_API_KEY: z.string().optional(),
-    DEPLOY_ENV: z.enum(["preview", "production"]).default("preview"),
+    DEPLOY_ENV: z.enum(["preview", "production", "sandbox"]).default("preview"),
     DISABLE_SECURITY_RESPONSE_HEADERS: zodTrueFalseBoolean().default("False"),
     DISPLAY_TEST_ENV_WARNING: zodTrueFalseBoolean().default("False"),
     DO_NOT_AUTHENTICATE_BROWSER: zodTrueFalseBoolean().default("False"),
