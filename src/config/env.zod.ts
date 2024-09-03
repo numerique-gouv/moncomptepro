@@ -12,6 +12,7 @@ export const crispEnvSchema = z.object({
   CRISP_IDENTIFIER: z.string().default(""),
   CRISP_KEY: z.string().default(""),
   CRISP_PLUGIN_URN: z.string().default(""),
+  CRISP_RESOLVE_DELAY: z.coerce.number().int().nonnegative().default(1_000), // 1 second
   CRISP_USER_NICKNAME: z.string().default("MonComptePro"),
   CRISP_WEBSITE_ID: z.string().default(""),
 });

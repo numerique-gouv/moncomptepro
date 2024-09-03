@@ -12,6 +12,7 @@ import {
   CRISP_IDENTIFIER,
   CRISP_KEY,
   CRISP_PLUGIN_URN,
+  CRISP_RESOLVE_DELAY,
   CRISP_USER_NICKNAME,
   CRISP_WEBSITE_ID,
 } from "../config/env";
@@ -75,7 +76,7 @@ export async function startCripsConversation({
 
   // HACK(douglasduteil): Wait for the message to be sent
   // Crisp seems to have a delay between the message being sent and the state being updated
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, CRISP_RESOLVE_DELAY));
 
   await fetch_crisp<UpdateConversationStateRoute>(config, {
     endpoint: `/v1/website/${config.website_id}/conversation/${session_id}/state`,
