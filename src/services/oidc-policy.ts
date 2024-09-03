@@ -1,9 +1,5 @@
 import { interactionPolicy } from "oidc-provider";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import type {
-  OIDCContextParams,
-  OidcInteractionResults,
-} from "../types/oidc-provider";
 import { mustReturnOneOrganizationInPayload } from "./must-return-one-organization-in-payload";
 
 //

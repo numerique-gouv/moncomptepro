@@ -10,7 +10,6 @@ import {
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { logger } from "../services/log";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
-import type { OIDCContextParams } from "../types/oidc-provider";
 
 export const getClientsOrderedByConnectionCount = async (
   user_id: number,
