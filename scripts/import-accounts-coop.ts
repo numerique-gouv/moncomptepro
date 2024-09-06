@@ -105,12 +105,11 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           prenom: given_name,
           nom: family_name,
           téléphone: phone_number,
-          email: personnal_email,
           coordinateur,
           "email professionnel secondaire": professional_email,
           "SIRET structure": siret,
         } = data;
-        const email = professional_email || personnal_email;
+        const email = professional_email;
         logger.info(`${i}: processing ${email}...`);
         // 0. params validation
         if (!isEmailValid(email)) {
