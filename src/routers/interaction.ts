@@ -5,6 +5,7 @@ import {
   interactionEndControllerFactory,
   interactionStartControllerFactory,
 } from "../controllers/interaction";
+import { checkUserSignInRequirementsMiddleware } from "../middlewares/user";
 
 export const interactionRouter = (oidcProvider: Provider) => {
   const interactionRouter = Router();
@@ -19,6 +20,7 @@ export const interactionRouter = (oidcProvider: Provider) => {
   );
   interactionRouter.get(
     "/:grant/login",
+    checkUserSignInRequirementsMiddleware,
     interactionEndControllerFactory(oidcProvider),
   );
 

@@ -75,6 +75,7 @@ import {
   checkUserHasSelectedAnOrganizationMiddleware,
   checkUserIsConnectedMiddleware,
   checkUserIsVerifiedMiddleware,
+  checkUserSignInRequirementsMiddleware,
   checkUserTwoFactorAuthMiddleware,
 } from "../middlewares/user";
 
@@ -124,6 +125,7 @@ export const userRouter = () => {
     passwordRateLimiterMiddleware,
     csrfProtectionMiddleware,
     postSignInMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.get(
@@ -138,6 +140,7 @@ export const userRouter = () => {
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postSignUpController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -153,6 +156,7 @@ export const userRouter = () => {
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
     postSignInWithAuthenticatorAppController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.post(
@@ -161,6 +165,7 @@ export const userRouter = () => {
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
     postVerifySecondFactorAuthenticationController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -176,6 +181,7 @@ export const userRouter = () => {
     checkUserTwoFactorAuthMiddleware,
     csrfProtectionMiddleware,
     postVerifyEmailController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.post(
@@ -191,6 +197,7 @@ export const userRouter = () => {
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postSendMagicLinkController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.get("/magic-link-sent", getMagicLinkSentController);
@@ -213,6 +220,7 @@ export const userRouter = () => {
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     getSignInWithPasskeyController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -222,6 +230,7 @@ export const userRouter = () => {
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
     postVerifyFirstFactorAuthenticationController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.get(
@@ -259,6 +268,7 @@ export const userRouter = () => {
     checkUserIsVerifiedMiddleware,
     csrfProtectionMiddleware,
     postPersonalInformationsController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -281,6 +291,7 @@ export const userRouter = () => {
     checkUserHasPersonalInformationsMiddleware,
     csrfProtectionMiddleware,
     postJoinOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -330,6 +341,7 @@ export const userRouter = () => {
     checkUserHasAtLeastOneOrganizationMiddleware,
     csrfProtectionMiddleware,
     postSelectOrganizationMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
@@ -347,17 +359,20 @@ export const userRouter = () => {
     checkUserHasSelectedAnOrganizationMiddleware,
     csrfProtectionMiddleware,
     postOfficialContactEmailVerificationMiddleware,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
 
   userRouter.get(
     "/welcome/:organization_id",
+    checkUserSignInRequirementsMiddleware,
     csrfProtectionMiddleware,
     getWelcomeController,
   );
   userRouter.post(
     "/welcome",
     rateLimiterMiddleware,
+    checkUserSignInRequirementsMiddleware,
     csrfProtectionMiddleware,
     issueSessionOrRedirectController,
   );
