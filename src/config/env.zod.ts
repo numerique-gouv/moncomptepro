@@ -70,8 +70,6 @@ export const envSchema = z
     NODE_ENV: z
       .enum(["production", "development", "test"])
       .default("development"),
-    NOTIFY_ALL_MEMBER_LIMIT: z.coerce.number().int().nonnegative().default(50),
-    PAIR_AUTHENTICATION_WHITELIST: zCoerceArray(z.string()).default(""),
     PORT: z.coerce.number().int().nonnegative().default(3000),
     RECENT_LOGIN_INTERVAL_IN_SECONDS: z.coerce
       .number()
