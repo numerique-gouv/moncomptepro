@@ -1,5 +1,4 @@
 import { QueryResult } from "pg";
-import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from "../../config/env";
 import { getDatabaseConnection } from "../../connectors/postgres";
 
 export const findById = async (id: number) => {
@@ -113,28 +112,6 @@ ${additionalWhereClause}`,
 
 export const getUsers = (organization_id: number) =>
   getUsersByOrganization(organization_id);
-
-const inactiveThresholdDate = new Date(
-  new Date().getTime() -
-    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES * 60e3,
-);
-
-export const getActiveUsers = (organization_id: number) =>
-  getUsersByOrganization(
-    organization_id,
-    `
-  AND u.email_verified_at >= $2`,
-    [inactiveThresholdDate],
-  );
-
-export const getInternalActiveUsers = (organization_id: number) =>
-  getUsersByOrganization(
-    organization_id,
-    `
-  AND uo.is_external = FALSE
-  AND u.email_verified_at >= $2`,
-    [inactiveThresholdDate],
-  );
 
 export const getUserOrganizationLink = async (
   organization_id: number,
