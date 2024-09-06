@@ -4,6 +4,7 @@ interface BaseUserOrganizationLink {
     | "code_sent_to_official_contact_email"
     | "domain"
     | "imported_from_inclusion_connect"
+    | "imported_from_coop_mediation_numerique"
     | "in_liste_dirigeants_rna"
     | "no_validation_means_available"
     | "no_verification_means_for_entreprise_unipersonnelle"
