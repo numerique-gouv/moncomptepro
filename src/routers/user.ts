@@ -364,7 +364,7 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/welcome/:organization_id",
+    "/welcome",
     checkUserSignInRequirementsMiddleware,
     csrfProtectionMiddleware,
     getWelcomeController,

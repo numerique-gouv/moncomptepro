@@ -443,9 +443,7 @@ export const checkUserHasBeenGreetedForJoiningOrganizationMiddleware = (
             organization_id: organizationThatNeedsGreetings.id,
           });
 
-          return res.redirect(
-            `/users/welcome/${organizationThatNeedsGreetings.id}`,
-          );
+          return res.redirect(`/users/welcome`);
         }
 
         return next();
