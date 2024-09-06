@@ -1,9 +1,5 @@
-import { assert, expect } from "chai";
-import {
-  getEmailDomain,
-  usesAFreeEmailProvider,
-  usesAGouvFrDomain,
-} from "../src/services/email";
+import { assert } from "chai";
+import { getEmailDomain, usesAFreeEmailProvider } from "../src/services/email";
 
 describe("getEmailDomain", () => {
   const data = [
@@ -50,44 +46,6 @@ describe("usesAFreeEmailProvider", () => {
   professionalEmailAddresses.forEach((professionalEmailAddress) => {
     it("should return false for non free provider email address", () => {
       assert.equal(usesAFreeEmailProvider(professionalEmailAddress), false);
-    });
-  });
-});
-
-describe("usesAGouvFrDomain", () => {
-  const emailAddressesThatUseGouvFrDomain = [
-    "user@beta.gouv.fr",
-    "user@interieur.gouv.fr",
-    "user@pm.gouv.fr",
-    "user@sub.domain.gouv.fr",
-  ];
-
-  emailAddressesThatUseGouvFrDomain.forEach((email) => {
-    it("should return true for email that uses gouv.fr domains", () => {
-      assert.equal(usesAGouvFrDomain(email), true);
-    });
-  });
-
-  const nonGouvFrEmailAddresses = [
-    "user@beta.agouv.fr",
-    "user@beta.gouv.fr.co",
-    "user@gouv.fr",
-    "user@paris.fr",
-  ];
-
-  nonGouvFrEmailAddresses.forEach((nonGouvFrEmailAddress) => {
-    it("should return false for non gouv.fr email address", () => {
-      assert.equal(usesAGouvFrDomain(nonGouvFrEmailAddress), false);
-    });
-  });
-
-  const nonValidEmailAddresses = ["user@beta.gouv.fra"];
-
-  nonValidEmailAddresses.forEach((nonValidEmailAddress) => {
-    it("should return false for non gouv.fr email address", () => {
-      expect(() => usesAGouvFrDomain(nonValidEmailAddress)).to.throw(
-        'Invalid TLD {"parts":["beta","gouv","fra"],"tld_level":-1,"allowUnknownTLD":false}',
-      );
     });
   });
 });

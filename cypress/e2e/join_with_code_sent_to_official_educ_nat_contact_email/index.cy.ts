@@ -52,27 +52,6 @@ describe("join organizations", () => {
         cy.get('[type="submit"]').click();
       });
 
-    // Click on "Je ne connais aucune des personnes proposées"
-    cy.get('[href="/users/no-sponsor-found/1"]').click();
-
-    // Click on the confirmation button
-    cy.get('[type="submit"]').contains("Personne ne peut me parrainer").click();
-
     cy.contains("Votre compte est créé");
-
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "01714bdb-c5d7-48c9-93ab-73dc78c13609",
-          60000,
-          true,
-        ),
-      )
-      // assert reception of notification email
-      .then((email) => {
-        expect(email.body).to.match(
-          /.*Jean Nouveau.*\(10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp\.com\) a rejoint votre organisation.*Lycee general et technologique chaptal.*sur .*MonComptePro/,
-        );
-      });
   });
 });

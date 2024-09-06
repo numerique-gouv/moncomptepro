@@ -31,9 +31,3 @@ export const usesAFreeEmailProvider = (email: string) => {
 
   return isAFreeEmailProvider(domain);
 };
-
-export const usesAGouvFrDomain = (email: string) => {
-  const domain = getEmailDomain(email);
-
-  return domain.endsWith(".gouv.fr");
-};

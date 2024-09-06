@@ -8,7 +8,6 @@ import {
 } from "../src/connectors/api-sirene";
 import {
   linkUserToOrganization,
-  updateUserOrganizationLink,
   upsert,
 } from "../src/repositories/organization/setters";
 import { create, findByEmail, update } from "../src/repositories/user";
@@ -172,9 +171,6 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
                 organization_id: organization.id,
                 user_id: user.id,
                 verification_type: "imported_from_inclusion_connect",
-              });
-              await updateUserOrganizationLink(organization.id, user.id, {
-                authentication_by_peers_type: "deactivated_by_import",
               });
             }
           } catch (error) {

@@ -1,8 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { z } from "zod";
-import { idSchema } from "../../services/custom-zod-schemas";
-
-import { getSponsorLabel } from "../../managers/organization/authentication-by-peers";
 import {
   getUserFromAuthenticatedSession,
   updateUserInAuthenticatedSession,
@@ -16,17 +12,6 @@ export const getWelcomeController = async (
   next: NextFunction,
 ) => {
   try {
-    const schema = z.object({
-      organization_id: idSchema(),
-    });
-
-    const { organization_id } = await schema.parseAsync(req.params);
-
-    const sponsor_label = await getSponsorLabel({
-      user_id: getUserFromAuthenticatedSession(req).id,
-      organization_id,
-    });
-
     let user = getUserFromAuthenticatedSession(req);
     const showInclusionConnectOnboardingHelp =
       user.needs_inclusionconnect_onboarding_help;
@@ -38,7 +23,6 @@ export const getWelcomeController = async (
     return res.render("user/welcome", {
       pageTitle: "Compte créé",
       csrfToken: csrfToken(req),
-      sponsor_label,
       illustration: "welcome.svg",
       showInclusionConnectOnboardingHelp,
     });
