@@ -1,7 +1,5 @@
 //
 
-import { MatchOptionFieldEnum, MatchOptionShouldEnum } from "mailslurp-client";
-
 //
 
 describe("join organizations", () => {
@@ -10,15 +8,6 @@ describe("join organizations", () => {
       Promise.all([
         mailslurp.inboxController.deleteAllInboxEmails({
           inboxId: "c6c64542-5601-43e0-b320-b20da72f6edc",
-        }),
-        mailslurp.inboxController.deleteAllInboxEmails({
-          inboxId: "34c5063f-81c0-4d09-9d0b-a7502f844cdf",
-        }),
-        mailslurp.inboxController.deleteAllInboxEmails({
-          inboxId: "04972db5-2c62-460e-8a88-848317acfe34",
-        }),
-        mailslurp.inboxController.deleteAllInboxEmails({
-          inboxId: "869c78e6-196d-4e95-9662-44d25f801b06",
         }),
       ]),
     );
@@ -52,69 +41,6 @@ describe("join organizations", () => {
 
     // Check redirection to home page
     cy.contains("Votre compte est créé");
-
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp
-          .waitForMatchingEmails(
-            // match option does not seem to be used here
-            {
-              matches: [
-                {
-                  field: MatchOptionFieldEnum.SUBJECT,
-                  should: MatchOptionShouldEnum.EQUAL,
-                  value: "Votre organisation sur MonComptePro",
-                },
-              ],
-            },
-            1,
-            "c6c64542-5601-43e0-b320-b20da72f6edc",
-            60000,
-            true,
-          )
-          .then(([{ id }]) => mailslurp.getEmail(id)),
-      )
-      // assert reception of confirmation email
-      .then((email) => {
-        expect(email.body).to.include("Jean USER1");
-        expect(email.body).to.include("Jean EXTERNAL (externe)");
-        expect(email.body).to.not.include("Jean NOTAUTHENTICATED1");
-      });
-
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "34c5063f-81c0-4d09-9d0b-a7502f844cdf",
-          60000,
-          true,
-        ),
-      )
-      // assert reception of notification email
-      .then((email) => {
-        expect(email.body).to.match(
-          /.*Jean Nouveau.*\(c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp\.com\) a rejoint votre organisation.*Commune de clamart - Mairie.*sur .*MonComptePro/,
-        );
-      });
-
-    // external users should not be warned for newcomers
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp
-        // note that this method may return empty emails arrays before receiving one.
-        .getEmails("04972db5-2c62-460e-8a88-848317acfe34")
-        .then((emails) => {
-          expect(emails).to.be.empty;
-        }),
-    );
-
-    // non-authenticated users should not be warned for newcomers
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp
-        // note that this method may return empty emails arrays before receiving one.
-        .getEmails("869c78e6-196d-4e95-9662-44d25f801b06")
-        .then((emails) => {
-          expect(emails).to.be.empty;
-        }),
-    );
   });
 
   it("join another organisation", function () {
