@@ -212,6 +212,7 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     csrfProtectionMiddleware,
     postSignInWithMagicLinkController,
+    checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
   userRouter.get(
