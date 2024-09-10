@@ -4,15 +4,14 @@
 
 ### Setup env vars
 
-You will need to set `BREVO_API_KEY`, `DEBOUNCE_API_KEY`, `ZAMMAD_URL`, `ZAMMAD_TOKEN` and `CYPRESS_MAILSLURP_API_KEY`.
+You will need to set `BREVO_API_KEY`, `CYPRESS_MAILSLURP_API_KEY`, `DEBOUNCE_API_KEY`, and `ZAMMAD_TOKEN`.
 
 Ask a teammate for them and put the values in your `.env`.
 
-Also in your .env put the following values :
+Also in your `.env` put the following values :
 
 ```dotenv
 DO_NOT_SEND_MAIL=False
-DO_NOT_RATE_LIMIT=True
 ```
 
 ### Load test fixtures in the database
