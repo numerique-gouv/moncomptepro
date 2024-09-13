@@ -7,6 +7,11 @@ describe("delete TOTP connexion", () => {
         inboxId: "eab4ab97-875d-4ec7-bdcc-04323948ee63",
       }),
     );
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: "c9fabb94-9274-4ece-a3d0-54b1987c8588",
+      }),
+    );
   });
 
   it("should delete TOTP application", function () {
@@ -57,6 +62,21 @@ describe("delete TOTP connexion", () => {
       });
   });
 
+  it("should not be ask to sign with TOTP", function () {
+    cy.visit(`http://localhost:4000`);
+    cy.get("button.moncomptepro-button").click();
+    cy.get('[name="login"]').type(
+      "eab4ab97-875d-4ec7-bdcc-04323948ee63@mailslurp.com",
+    );
+    cy.get('[type="submit"]').click();
+    cy.get('[name="password"]').type("password123");
+    cy.get('[action="/users/sign-in"]  [type="submit"]')
+      .contains("S’identifier")
+      .click();
+
+    cy.contains('"amr": [\n    "pwd"\n  ],');
+  });
+
   it("should disable TOTP", function () {
     // Visit the signup page
     cy.visit(`/users/start-sign-in`);
@@ -101,5 +121,20 @@ describe("delete TOTP connexion", () => {
           "Désactivation de la validation en deux étapes",
         );
       });
+  });
+
+  it("should not be ask to sign with TOTP", function () {
+    cy.visit(`http://localhost:4000`);
+    cy.get("button.moncomptepro-button").click();
+    cy.get('[name="login"]').type(
+      "c9fabb94-9274-4ece-a3d0-54b1987c8588@mailslurp.com",
+    );
+    cy.get('[type="submit"]').click();
+    cy.get('[name="password"]').type("password123");
+    cy.get('[action="/users/sign-in"]  [type="submit"]')
+      .contains("S’identifier")
+      .click();
+
+    cy.contains('"amr": [\n    "pwd"\n  ],');
   });
 });
