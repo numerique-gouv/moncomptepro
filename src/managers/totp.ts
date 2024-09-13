@@ -74,20 +74,22 @@ export const confirmAuthenticatorAppRegistration = async (
 };
 
 export const deleteAuthenticatorAppConfiguration = async (user_id: number) => {
-  const user = await findById(user_id);
+  let user = await findById(user_id);
 
   if (isEmpty(user)) {
     throw new UserNotFoundError();
   }
 
-  if (!(await is2FACapable(user_id))) {
-    await disableForce2fa(user_id);
-  }
-
-  return await update(user_id, {
+  user = await update(user_id, {
     encrypted_totp_key: null,
     totp_key_verified_at: null,
   });
+
+  if (!(await is2FACapable(user_id))) {
+    user = await disableForce2fa(user_id);
+  }
+
+  return user;
 };
 
 export const isAuthenticatorAppConfiguredForUser = async (user_id: number) => {
