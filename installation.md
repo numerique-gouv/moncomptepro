@@ -22,8 +22,6 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 
 1. **Install Node.js Dependencies**:
 
-   > If you don’t want to run end-to-end tests locally, you can prevent the installation script to download the (somewhat big) cypress binary by running `CYPRESS_INSTALL_BINARY=0 npm install` instead of the following command.
-
    Inside the project’s root directory, run:
 
    ```bash
@@ -38,14 +36,11 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
 
    This will create a local copy of the `.env` file containing the environnement variables to run MonComptePro.
 
-   We set the defaults in `.env` (all environments) and, following the `NODE_ENV` environment variable, the `.env.development` (development environment), `.env.production` (production environment) or `.env.test` (test environment).
-   We recommend to use the `.env*.local` to override the defaults variables. `.env.<NODE_ENV>.local` will take precedence over `.env.local` and `.env.<NODE_ENV>`.
-
 3. **Get your own INSEE api credential**: or use the one of your teammates.
 
    Fetch them at https://api.gouv.fr/les-api/sirene_v3.
 
-   Then fill your local .env file with them.
+   Then fill your `.env` file with them.
 
 4. **Database Initialization**: The database will be automatically initialized with data from `scripts/fixtures.sql`.
 
@@ -97,3 +92,19 @@ To connect to these databases, use the following commands:
 docker compose exec db psql postgres://username:password@db:5432/dbname
 docker compose exec redis redis-cli -h redis -p 6379
 ```
+
+## Configuring different environment variables
+
+The default environment variables are defined in the `.env` file, which applies to all environments. Based on the `NODE_ENV` variable, the corresponding file is selected: `.env.development` for the development environment, `.env.production` for production, or `.env.test` for testing.
+
+To customize or override these defaults, we recommend using the `.env*.local` files. The file `.env.<NODE_ENV>.local` will have higher priority over both `.env.local` and `.env.<NODE_ENV>`.
+
+## Skipping Cypress Binary Installation for Local Setup
+
+If you prefer not to run end-to-end tests locally and want to avoid downloading the large Cypress binary, you can prevent it during the installation process. To do this, run the following command:
+
+```bash
+CYPRESS_INSTALL_BINARY=0 npm install
+```
+
+This command ensures that the Cypress binary is not downloaded, saving time and disk space during the installation process.
