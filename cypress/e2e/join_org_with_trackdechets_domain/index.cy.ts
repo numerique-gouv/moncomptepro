@@ -12,16 +12,10 @@ describe("join organizations", () => {
       }),
     );
   });
-  beforeEach(() => {
-    cy.login(
-      "0c5b976c-b6b0-406e-a7ed-08ddae8d2d81@mailslurp.com",
-      "password123",
-    );
-  });
 
   it("join suggested organisation", function () {
-    // Visit the signup page
     cy.visit(`/`);
+    cy.login("0c5b976c-b6b0-406e-a7ed-08ddae8d2d81@mailslurp.com");
 
     // The user gets this suggestion because it as mailslurp.com as trackdechets domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(

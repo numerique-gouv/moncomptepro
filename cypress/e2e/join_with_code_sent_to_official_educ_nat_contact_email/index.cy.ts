@@ -17,12 +17,9 @@ describe("join organizations", () => {
   });
 
   it("join collectivité territoriale with code send to official contact email", function () {
-    cy.login(
-      "10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com",
-      "password123",
-    );
-
     cy.visit(`/users/join-organization`);
+    cy.login("10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com");
+
     cy.get('[name="siret"]').type("19750663700010");
     cy.get('[type="submit"]').click();
 

@@ -10,20 +10,9 @@ describe("delete account", () => {
   });
 
   it("should delete account", function () {
-    // Visit the signup page
-    cy.visit(`/users/start-sign-in`);
+    cy.visit(`/connection-and-account`);
 
-    cy.get('[name="login"]').type(
-      "4cec922b-ecbe-4a46-8511-fc9478c1efd0@mailslurp.com",
-    );
-    cy.get('[type="submit"]').click();
-
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
-
-    cy.contains("Connexion et compte").click();
+    cy.login("4cec922b-ecbe-4a46-8511-fc9478c1efd0@mailslurp.com");
 
     cy.contains("Suppression");
 

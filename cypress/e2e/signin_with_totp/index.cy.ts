@@ -1,23 +1,9 @@
-import { generateToken } from "@sunknudsen/totp";
-
 describe("sign-in with TOTP on untrusted browser", () => {
   it("should sign-in with password and TOTP", function () {
     cy.visit(`http://localhost:4000`);
     cy.get("button.moncomptepro-button").click();
-    cy.get('[name="login"]').type("unused1@yopmail.com");
-    cy.get('[type="submit"]').click();
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
 
-    cy.contains("Valider en deux étapes");
-
-    const totp = generateToken("din5ncvbluqpx7xfzqcybmibmtjocnsf", Date.now());
-    cy.get("[name=totpToken]").type(totp);
-    cy.get(
-      '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
-    ).click();
+    cy.mfaLogin("unused1@yopmail.com");
 
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
@@ -25,12 +11,8 @@ describe("sign-in with TOTP on untrusted browser", () => {
   it("should sign-in with password and no TOTP", function () {
     cy.visit(`http://localhost:4000`);
     cy.get("button.moncomptepro-button").click();
-    cy.get('[name="login"]').type("unused2@yopmail.com");
-    cy.get('[type="submit"]').click();
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
+
+    cy.login("unused2@yopmail.com");
 
     cy.contains("Vérifier votre email");
   });
@@ -38,20 +20,8 @@ describe("sign-in with TOTP on untrusted browser", () => {
   it("should sign-in with password and TOTP when forced by SP", function () {
     cy.visit(`http://localhost:4000`);
     cy.get("button#force-2fa").click();
-    cy.get('[name="login"]').type("unused2@yopmail.com");
-    cy.get('[type="submit"]').click();
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
 
-    cy.contains("Valider en deux étapes");
-
-    const totp = generateToken("din5ncvbluqpx7xfzqcybmibmtjocnsf", Date.now());
-    cy.get("[name=totpToken]").type(totp);
-    cy.get(
-      '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
-    ).click();
+    cy.mfaLogin("unused2@yopmail.com");
 
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
@@ -59,12 +29,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
   it("should trigger totp rate limiting", function () {
     cy.visit(`/users/start-sign-in`);
 
-    cy.get('[name="login"]').type("unused1@yopmail.com");
-    cy.get('[type="submit"]').click();
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
+    cy.login("unused1@yopmail.com");
 
     for (let i = 0; i < 4; i++) {
       cy.get("[name=totpToken]").type("123456");

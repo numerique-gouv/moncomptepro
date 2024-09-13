@@ -89,7 +89,7 @@ Docker Compose initializes both a PostgreSQL and a Redis database.
 To connect to these databases, use the following commands:
 
 ```bash
-docker compose exec db psql postgres://username:password@db:5432/dbname
+docker compose exec db psql postgres://moncomptepro:moncomptepro@db:5432/moncomptepro
 docker compose exec redis redis-cli -h redis -p 6379
 ```
 

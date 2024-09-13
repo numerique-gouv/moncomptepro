@@ -1,20 +1,9 @@
-//
-
-const login = (cy) => {
-  cy.get('[name="login"]').type("unused1@yopmail.com");
-  cy.get('[type="submit"]').click();
-
-  cy.get('[name="password"]').type("password123");
-  cy.get('[action="/users/sign-in"]  [type="submit"]')
-    .contains("S’identifier")
-    .click();
-};
-
 describe("redirect after session expiration", () => {
   it("should be redirected to organization management page", function () {
     cy.visit(`/manage-organizations`);
 
-    login(cy);
+    cy.login("unused1@yopmail.com");
+
     cy.contains("Vos organisations de rattachement");
     cy.contains("Commune de lamalou-les-bains - Mairie");
 
@@ -24,7 +13,8 @@ describe("redirect after session expiration", () => {
       .contains("Organisations")
       .click();
 
-    login(cy);
+    cy.login("unused1@yopmail.com");
+
     cy.contains("Vos organisations de rattachement");
 
     // Wait for session to expire
@@ -33,7 +23,8 @@ describe("redirect after session expiration", () => {
     // click on delete organization
     cy.get('[action="/users/quit-organization/1"]').submit();
 
-    login(cy);
+    cy.login("unused1@yopmail.com");
+
     // should not redirect on the delete route but on the org management page
     cy.contains("Vos organisations de rattachement");
     // delete action should not have been triggered

@@ -10,19 +10,9 @@ describe("add 2fa authentication", () => {
   });
 
   it("should add 2fa authentication on account user", function () {
-    cy.visit(`/users/start-sign-in`);
+    cy.visit(`/connection-and-account`);
 
-    cy.get('[name="login"]').type(
-      "64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com",
-    );
-    cy.get('[type="submit"]').click();
-
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
-
-    cy.contains("Connexion et compte").click();
+    cy.login("64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com");
 
     cy.contains("Application FreeOTP Authenticator");
 

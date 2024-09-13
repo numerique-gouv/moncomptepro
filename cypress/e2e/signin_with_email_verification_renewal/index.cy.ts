@@ -15,15 +15,7 @@ describe("sign-in with email verification renewal", () => {
     // Visit the signup page
     cy.visit(`/users/start-sign-in`);
 
-    cy.get('[name="login"]').type(
-      "bad1b70d-e5cb-436c-9ff3-f83d4af5d198@mailslurp.com",
-    );
-    cy.get('[type="submit"]').click();
-
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
+    cy.login("bad1b70d-e5cb-436c-9ff3-f83d4af5d198@mailslurp.com");
 
     cy.contains(
       "pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",

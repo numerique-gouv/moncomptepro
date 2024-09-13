@@ -216,6 +216,7 @@ export const postDisableForce2faController = async (
 
     updateUserInAuthenticatedSession(req, updatedUser);
     sendDisable2faMail({ user_id });
+
     return res.redirect(
       `/connection-and-account?notification=2fa_successfully_disabled`,
     );

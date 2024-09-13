@@ -11,15 +11,11 @@ describe("join and moderation", () => {
     );
   });
 
-  beforeEach(() => {
-    cy.login(
-      "86983334-028f-48b5-881d-8b05d738bec5@mailslurp.net",
-      "password123",
-    );
-  });
-
   it("will be moderated", function () {
     cy.visit(`/`);
+
+    cy.login("86983334-028f-48b5-881d-8b05d738bec5@mailslurp.net");
+
     cy.get('[name="siret"]').type("66204244933106");
     cy.get('[type="submit"]').click();
 

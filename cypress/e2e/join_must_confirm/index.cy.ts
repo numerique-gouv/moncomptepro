@@ -2,7 +2,9 @@
 
 describe("join organizations", () => {
   it("join big company with free email provider", function () {
-    cy.login("unused1@yopmail.com", "password123");
+    cy.visit(`/users/start-sign-in`);
+
+    cy.login("unused1@yopmail.com");
 
     cy.visit(`/users/join-organization`);
     cy.get('[name="siret"]').type("54205118000066");
@@ -16,13 +18,7 @@ describe("join organizations", () => {
       .contains("Corriger l’email")
       .click();
 
-    cy.get('[name="login"]').type("unused2@yopmail.com");
-    cy.get('[type="submit"]').click();
-
-    cy.get('[name="password"]').type("password123");
-    cy.get('[action="/users/sign-in"]  [type="submit"]')
-      .contains("S’identifier")
-      .click();
+    cy.login("unused2@yopmail.com");
 
     cy.get('[name="siret"]').type("54205118000066");
     cy.get('[type="submit"]').click();
