@@ -32,6 +32,8 @@ test("default sample env with configured INSEE secrets", () => {
     DATABASE_URL:
       "postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro",
     DEPLOY_ENV: "preview",
+    DIRTY_DS_REDIRECTION_URL:
+      "https://www.demarches-simplifiees.fr/agent_connect/logout_from_mcp",
     DISABLE_SECURITY_RESPONSE_HEADERS: true,
     DISPLAY_TEST_ENV_WARNING: false,
     DO_NOT_AUTHENTICATE_BROWSER: true,
