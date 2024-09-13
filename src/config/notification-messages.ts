@@ -181,6 +181,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     description:
       "Attention : le service auquel vous souhaitez accéder requiert une validation en deux étapes. Merci de configurer soit une clé d’accès soit l’application FreeOTP Authenticator.",
   },
+  "2fa_not_configured_for_ds": {
+    type: "warning",
+    description:
+      "Attention : pour accéder à Démarches Simplifiées vous devez configurer soit une clé d’accès soit l’application FreeOTP Authenticator.",
+  },
 };
 
 export default notificationMessages;
