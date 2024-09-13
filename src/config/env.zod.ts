@@ -56,6 +56,13 @@ export const secretEnvSchema = z.object({
 export const paramsEnvSchema = z.object({
   ACCESS_LOG_PATH: z.string().optional(),
   DEPLOY_ENV: z.enum(["preview", "production", "sandbox"]).default("preview"),
+  DIRTY_DS_REDIRECTION_URL: z
+    .string()
+    .url()
+    .optional()
+    .default(
+      "https://www.demarches-simplifiees.fr/agent_connect/logout_from_mcp",
+    ),
   EMAIL_DELIVERABILITY_WHITELIST: zCoerceArray(z.string()).default(""),
   HTTP_CLIENT_TIMEOUT: z.coerce
     .number()
