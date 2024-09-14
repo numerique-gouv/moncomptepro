@@ -73,7 +73,10 @@ export const markDomainAsVerified = async ({
       domain,
       verification_type: domain_verification_type,
     });
+    //   TODO delete old domain
   }
+
+  // TODO remove existing moderation
 
   const usersInOrganization = await getUsers(organization_id);
 

@@ -25,6 +25,7 @@ export const is2FACapable = async (user_id: number) => {
   return false;
 };
 
+// TODO not triggered on simon.l account when deleting OTP app
 export const disableForce2fa = async (user_id: number) => {
   const user = await findById(user_id);
 

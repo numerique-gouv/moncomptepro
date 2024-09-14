@@ -26,6 +26,7 @@ export const connectorEnvSchema = z.object({
   SENTRY_DSN: z.string().default(""),
 });
 
+// TODO turn the variable name positively and prefix with FEATURE_
 export const featureTogglesEnvSchema = z.object({
   CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE: zodTrueFalseBoolean().default("False"),
   CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE: zodTrueFalseBoolean().default("True"),
