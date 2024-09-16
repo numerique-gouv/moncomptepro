@@ -14,7 +14,7 @@ describe("join organizations", () => {
   });
 
   it("join suggested organisation", function () {
-    cy.visit(`/`);
+    cy.visit("/");
     cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
 
     // The user gets this suggestion because it as mailslurp.com as verified domain
@@ -38,7 +38,7 @@ describe("join organizations", () => {
   });
 
   it("join another organisation", function () {
-    cy.visit(`/users/join-organization`);
+    cy.visit("/users/join-organization");
     cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
 
     cy.get('[name="siret"]').type("13002526500013");

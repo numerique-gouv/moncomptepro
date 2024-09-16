@@ -9,7 +9,7 @@ describe("update TOTP application", () => {
     );
   });
   it("should update TOTP application, and replace old app with new", function () {
-    cy.visit(`/connection-and-account`);
+    cy.visit("/connection-and-account");
 
     cy.mfaLogin("d2469f84-9547-4190-b989-014876fd54ae@mailslurp.com");
 

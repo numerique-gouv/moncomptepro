@@ -13,7 +13,7 @@ describe("sign-in with email verification renewal", () => {
 
   it("should sign-in with email verification needed", () => {
     // Visit the signup page
-    cy.visit(`/users/start-sign-in`);
+    cy.visit("/users/start-sign-in");
 
     cy.login("bad1b70d-e5cb-436c-9ff3-f83d4af5d198@mailslurp.com");
 
@@ -40,7 +40,7 @@ describe("sign-in with email verification renewal", () => {
   });
 
   it("should not show renewal notification for account creation", () => {
-    cy.visit(`/users/start-sign-in`);
+    cy.visit("/users/start-sign-in");
 
     cy.get('[name="login"]').type("unused1@yopmail.com");
     cy.get('[type="submit"]').click();

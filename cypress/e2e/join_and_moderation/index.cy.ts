@@ -12,7 +12,7 @@ describe("join and moderation", () => {
   });
 
   it("will be moderated", function () {
-    cy.visit(`/`);
+    cy.visit("/");
 
     cy.login("86983334-028f-48b5-881d-8b05d738bec5@mailslurp.net");
 

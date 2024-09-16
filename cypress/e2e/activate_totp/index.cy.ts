@@ -10,7 +10,7 @@ describe("add 2fa authentication", () => {
   });
 
   it("should add 2fa authentication on account user", function () {
-    cy.visit(`/connection-and-account`);
+    cy.visit("/connection-and-account");
 
     cy.login("64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com");
 

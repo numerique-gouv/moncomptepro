@@ -1,6 +1,6 @@
 describe("redirect after session expiration", () => {
   it("should be redirected to organization management page", function () {
-    cy.visit(`/manage-organizations`);
+    cy.visit("/manage-organizations");
 
     cy.login("unused1@yopmail.com");
 
