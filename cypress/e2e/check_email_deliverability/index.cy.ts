@@ -1,6 +1,6 @@
 describe("should suggest valid email address", () => {
   it("should sign-in", function () {
-    cy.visit(`http://localhost:4001`);
+    cy.visit("http://localhost:4001");
     cy.get("button.moncomptepro-button").click();
 
     cy.get('[name="login"]').should("have.value", "unused1@yopmail.com");

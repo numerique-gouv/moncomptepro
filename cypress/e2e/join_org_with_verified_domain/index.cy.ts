@@ -12,16 +12,10 @@ describe("join organizations", () => {
       ]),
     );
   });
-  beforeEach(() => {
-    cy.login(
-      "c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com",
-      "password123",
-    );
-  });
 
   it("join suggested organisation", function () {
-    // Visit the signup page
-    cy.visit(`/`);
+    cy.visit("/");
+    cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
 
     // The user gets this suggestion because it as mailslurp.com as verified domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
@@ -44,8 +38,9 @@ describe("join organizations", () => {
   });
 
   it("join another organisation", function () {
-    // Visit the join organization page
-    cy.visit(`/users/join-organization`);
+    cy.visit("/users/join-organization");
+    cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
+
     cy.get('[name="siret"]').type("13002526500013");
     cy.get('[type="submit"]').click();
 

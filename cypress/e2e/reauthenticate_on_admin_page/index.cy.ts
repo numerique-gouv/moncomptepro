@@ -1,28 +1,8 @@
-import { generateToken } from "@sunknudsen/totp";
-
-const login = (cy) => {
-  cy.get('[name="login"]').type("unused1@yopmail.com");
-  cy.get('[type="submit"]').click();
-
-  cy.get('[name="password"]').type("password123");
-  cy.get('[action="/users/sign-in"]  [type="submit"]')
-    .contains("S’identifier")
-    .click();
-};
-
-const tfaAuth = (cy) => {
-  const totp = generateToken("din5ncvbluqpx7xfzqcybmibmtjocnsf", Date.now());
-  cy.get("[name=totpToken]").type(totp);
-  cy.get(
-    '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
-  ).click();
-};
-
 describe("force recent connexion + 2FA on admin pages", () => {
   it("should be redirected after long connexion", function () {
     cy.visit("/");
 
-    login(cy);
+    cy.login("unused1@yopmail.com");
 
     cy.contains("Votre compte est créé");
 
@@ -30,7 +10,7 @@ describe("force recent connexion + 2FA on admin pages", () => {
 
     cy.contains("merci de valider votre deuxième étape de connexion");
 
-    tfaAuth(cy);
+    cy.fillTotpFields();
 
     cy.contains("Connexion et compte");
 
@@ -45,8 +25,7 @@ describe("force recent connexion + 2FA on admin pages", () => {
 
     cy.contains("merci de vous identifier à nouveau");
 
-    login(cy);
-    tfaAuth(cy);
+    cy.mfaLogin("unused1@yopmail.com");
 
     cy.contains("Connexion et compte");
   });

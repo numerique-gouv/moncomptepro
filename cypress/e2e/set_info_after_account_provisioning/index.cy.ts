@@ -13,7 +13,7 @@ describe("set info after account provisioning", () => {
 
   it("should show InclusionConnect welcome page on first visit", function () {
     // Visit the signup page
-    cy.visit(`/users/start-sign-in`);
+    cy.visit("/users/start-sign-in");
 
     // Sign in with the wrong password
     cy.get('[name="login"]').type(
@@ -63,7 +63,7 @@ describe("set info after account provisioning", () => {
 
   it("it should not show InclusionConnect welcome page on second visit", function () {
     // Visit the signup page
-    cy.visit(`/users/start-sign-in`);
+    cy.visit("/users/start-sign-in");
 
     // Sign in with the wrong password
     cy.get('[name="login"]').type(

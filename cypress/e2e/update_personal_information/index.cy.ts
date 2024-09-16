@@ -8,10 +8,9 @@ describe("Signup into new entreprise unipersonnelle", () => {
   });
 
   it("Should send email when user updates personal information", function () {
-    cy.login(
-      "9023e9f4-4e54-4ba0-9558-3cb61e7608c6@mailslurp.com",
-      "password123",
-    );
+    cy.visit("/personal-information");
+
+    cy.login("9023e9f4-4e54-4ba0-9558-3cb61e7608c6@mailslurp.com");
 
     cy.visit("/personal-information");
 
@@ -41,12 +40,9 @@ describe("Signup into new entreprise unipersonnelle", () => {
   });
 
   it("should show an error where putting invalid names or job", () => {
-    cy.login(
-      "9023e9f4-4e54-4ba0-9558-3cb61e7608c6@mailslurp.com",
-      "password123",
-    );
-
     cy.visit("/personal-information");
+
+    cy.login("9023e9f4-4e54-4ba0-9558-3cb61e7608c6@mailslurp.com");
 
     ["given_name", "family_name", "job"].forEach((inputName) => {
       cy.get(`input[name="${inputName}"]`).clear().type("​");

@@ -2,7 +2,7 @@
 
 describe("sign-in from agentconnect client", () => {
   it("should sign-in", function () {
-    cy.visit(`http://localhost:4001`);
+    cy.visit("http://localhost:4001");
     cy.get("button.moncomptepro-button").click();
 
     cy.get('[name="password"]').type("password123");
