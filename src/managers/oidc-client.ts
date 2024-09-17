@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import { isEmpty, isString } from "lodash-es";
-import { KoaContextWithOIDC } from "oidc-provider";
+import type { KoaContextWithOIDC } from "oidc-provider";
 import { NotFoundError } from "../config/errors";
 import {
   addConnection,

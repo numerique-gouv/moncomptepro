@@ -1,4 +1,4 @@
-import log, { LogLevelNames } from "console-log-level";
+import log, { type LogLevelNames } from "console-log-level";
 import moment from "moment";
 import { LOG_LEVEL } from "../config/env";
 

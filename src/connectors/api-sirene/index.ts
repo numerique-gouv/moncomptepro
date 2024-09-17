@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, type AxiosResponse } from "axios";
 import { cloneDeep, set } from "lodash-es";
 import {
   HTTP_CLIENT_TIMEOUT,

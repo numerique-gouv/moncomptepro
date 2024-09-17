@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 import { SYMMETRIC_ENCRYPTION_KEY } from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
 import {

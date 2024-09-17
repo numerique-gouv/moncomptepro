@@ -1,7 +1,7 @@
 //
 
 import { fetch_crisp, type Config } from "@numerique-gouv/crisp";
-import {
+import type {
   CreateConversationRoute,
   SendMessageInAConversationRoute,
   UpdateConversationMetaRoute,

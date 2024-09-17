@@ -1,5 +1,5 @@
 import { to } from "await-to-js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import {
   ApiAnnuaireError,

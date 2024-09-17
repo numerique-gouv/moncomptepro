@@ -1,5 +1,5 @@
 import ejs from "ejs";
-import { Application, NextFunction, Request, Response } from "express";
+import type { Application, NextFunction, Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import { NODE_ENV } from "../config/env";

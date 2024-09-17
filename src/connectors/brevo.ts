@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, type AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash-es";
 import path from "path";
 import { BREVO_API_KEY, DO_NOT_SEND_MAIL } from "../config/env";

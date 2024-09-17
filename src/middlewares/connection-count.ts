@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
-import { NextFunction } from "express";
-import { KoaContextWithOIDC } from "oidc-provider";
+import type { NextFunction } from "express";
+import type { KoaContextWithOIDC } from "oidc-provider";
 import { recordNewConnection } from "../managers/oidc-client";
 import { logger } from "../services/log";
 

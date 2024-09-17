@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 import {

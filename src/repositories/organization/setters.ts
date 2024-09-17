@@ -1,4 +1,4 @@
-import { QueryResult } from "pg";
+import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../../connectors/postgres";
 import { hashToPostgresParams } from "../../services/hash-to-postgres-params";
 

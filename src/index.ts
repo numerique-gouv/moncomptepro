@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/node";
 import RedisStore from "connect-redis";
-import express, { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import express from "express";
 import session from "express-session";
 import fs from "fs";
 import helmet from "helmet";
@@ -8,7 +9,7 @@ import { Server } from "http";
 import HttpErrors from "http-errors";
 import { isNull, omitBy } from "lodash-es";
 import morgan from "morgan";
-import Provider, { ClientMetadata, errors } from "oidc-provider";
+import Provider, { type ClientMetadata, errors } from "oidc-provider";
 import path from "path";
 import { ZodError } from "zod";
 import {

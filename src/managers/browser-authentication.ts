@@ -1,5 +1,5 @@
 import cookieParser from "cookie-parser";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import {
   DO_NOT_AUTHENTICATE_BROWSER,
   SECURE_COOKIES,

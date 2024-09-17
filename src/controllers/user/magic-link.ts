@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import { InvalidEmailError, InvalidMagicLinkError } from "../../config/errors";

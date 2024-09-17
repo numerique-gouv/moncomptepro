@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 import { z, ZodError } from "zod";
 import notificationMessages from "../config/notification-messages";
 import { notificationLabelSchema } from "./custom-zod-schemas";

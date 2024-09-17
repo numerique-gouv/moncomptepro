@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import axios, { AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { mapValues, memoize } from "lodash-es";
 import { HTTP_CLIENT_TIMEOUT } from "../config/env";
 import { logger } from "../services/log";
