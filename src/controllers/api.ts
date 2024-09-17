@@ -10,7 +10,7 @@ import notificationMessages from "../config/notification-messages";
 import { getOrganizationInfo } from "../connectors/api-sirene";
 import { sendModerationProcessedEmail } from "../managers/moderation";
 import { forceJoinOrganization } from "../managers/organization/join";
-import { markDomainAsVerified } from "../managers/organization/main";
+import { markDomainAsVerified } from "../managers/organization/markDomainAsVerified";
 import { getUserOrganizationLink } from "../repositories/organization/getters";
 import {
   idSchema,
