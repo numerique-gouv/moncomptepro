@@ -9,7 +9,6 @@ import {
 import notificationMessages from "../config/notification-messages";
 import { getOrganizationInfo } from "../connectors/api-sirene";
 import { sendModerationProcessedEmail } from "../managers/moderation";
-import { notifyAllMembers } from "../managers/organization/authentication-by-peers";
 import { forceJoinOrganization } from "../managers/organization/join";
 import { markDomainAsVerified } from "../managers/organization/main";
 import { getUserOrganizationLink } from "../repositories/organization/getters";
@@ -101,10 +100,6 @@ export const postForceJoinOrganizationController = async (
         user_id,
         is_external,
       });
-    }
-
-    if (!userOrganizationLink.authentication_by_peers_type) {
-      await notifyAllMembers({ user_id, organization_id });
     }
 
     return res.json({});

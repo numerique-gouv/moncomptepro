@@ -21,7 +21,25 @@ VALUES
   (1, '21340126800130', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO users_organizations
-  (user_id, organization_id, is_external, verification_type, authentication_by_peers_type, has_been_greeted)
+  (user_id, organization_id, is_external, verification_type, has_been_greeted)
 VALUES
-  (1, 1, false, 'verified_email_domain', 'all_members_notified', true),
-  (2, 1, false, 'verified_email_domain', 'all_members_notified', true);
+  (1, 1, false, 'verified_email_domain', true),
+  (2, 1, false, 'verified_email_domain', true);
+
+INSERT INTO oidc_clients
+  (client_name, client_id, client_secret, redirect_uris,
+   post_logout_redirect_uris, scope, client_uri, client_description,
+   userinfo_signed_response_alg, id_token_signed_response_alg,
+   authorization_signed_response_alg, introspection_signed_response_alg)
+VALUES
+  ('Oidc Test Client',
+   'standard_client_id',
+   'standard_client_secret',
+   ARRAY [
+     'http://localhost:4000/login-callback'
+     ],
+   ARRAY []::varchar[],
+   'openid email profile organization',
+   'http://localhost:4000/',
+   'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
+   null, null, null, null);

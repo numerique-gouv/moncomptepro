@@ -11,13 +11,6 @@ import {
 } from "../controllers/organization";
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
-import {
-  getChooseSponsorController,
-  getNoSponsorFoundController,
-  getSponsorValidationController,
-  postChooseSponsorMiddleware,
-  postNoSponsorFoundMiddleware,
-} from "../controllers/user/choose-sponsor";
 import { postDeleteUserController } from "../controllers/user/delete";
 import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
 import {
@@ -78,7 +71,6 @@ import {
   checkUserCanAccessAdminMiddleware,
   checkUserCanAccessAppMiddleware,
   checkUserHasAtLeastOneOrganizationMiddleware,
-  checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
   checkUserHasPersonalInformationsMiddleware,
   checkUserHasSelectedAnOrganizationMiddleware,
   checkUserIsConnectedMiddleware,
@@ -373,44 +365,7 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/choose-sponsor/:organization_id",
-    rateLimiterMiddleware,
-    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    csrfProtectionMiddleware,
-    getChooseSponsorController,
-  );
-
-  userRouter.post(
-    "/choose-sponsor/:organization_id",
-    rateLimiterMiddleware,
-    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    csrfProtectionMiddleware,
-    postChooseSponsorMiddleware,
-    checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController,
-  );
-
-  userRouter.get("/sponsor-validation", getSponsorValidationController);
-
-  userRouter.get(
-    "/no-sponsor-found/:organization_id",
-    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    csrfProtectionMiddleware,
-    getNoSponsorFoundController,
-  );
-
-  userRouter.post(
-    "/no-sponsor-found/:organization_id",
-    rateLimiterMiddleware,
-    checkUserHasNoPendingOfficialContactEmailVerificationMiddleware,
-    csrfProtectionMiddleware,
-    postNoSponsorFoundMiddleware,
-    checkUserSignInRequirementsMiddleware,
-    issueSessionOrRedirectController,
-  );
-
-  userRouter.get(
-    "/welcome/:organization_id",
+    "/welcome",
     checkUserSignInRequirementsMiddleware,
     csrfProtectionMiddleware,
     getWelcomeController,

@@ -13,13 +13,6 @@
         <p>
             Vous avez reçu un email de confirmation.
         </p>
-
-        <% if (sponsor_label) { %>
-            <p>
-                Votre parrain <b><%= sponsor_label %></b> a été informé que vous avez rejoint son organisation sur MonComptePro.
-            </p>
-        <% } %>
-
         <form action="/users/welcome" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
 

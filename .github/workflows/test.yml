@@ -6,6 +6,11 @@ on:
       - "**"
       - "!master"
 
+env:
+  DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
+  INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
+  INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
+
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -18,4 +23,4 @@ jobs:
       - run: CYPRESS_INSTALL_BINARY=0 npm ci --include=dev
       - run: npm run test:lint
       - run: npm run test:type-check
-      - run: npm test
+      - run: npm run test:unit

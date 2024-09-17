@@ -23,11 +23,10 @@ Ainsi, vous pouvez vous créer n’importe quel compte utilisateur en entrant n�
 
 À noter que les emails reçus sur les adresses en yopmail.com sont accessibles sur : http://yopmail.com/.
 
-Voici 3 scénarios que vous pouvez tester sur cet environnement :
+Voici 2 scénarios que vous pouvez tester sur cet environnement :
 
 - entreprise unipersonnelle : créer un compte avec une adresse email jetable, puis utiliser le SIRET d'une organisation unipersonnelle ;
 - petite mairie : créer un compte avec une adresse email qui n'ait pas comme nom de domaine `yopmail.com`, utiliser le siret d'une collectivité de moins de 50 employés, se connecter en restituant le code reçu à `mairie@yopmail.com` ;
-- parrainage : créer un compte avec une adresse email `yopmail.com`, sélectionner l'organisation Direction Interministérielle du Numérique, sélectionner un parrain parmi les utilisateurs proposés ;
 
 ## 🖱️ Installer le bouton de connexion MonComptePro sur votre service en ligne
 

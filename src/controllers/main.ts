@@ -3,6 +3,7 @@ import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
 import moment from "moment/moment";
 import { z, ZodError } from "zod";
+import { DIRTY_DS_REDIRECTION_URL } from "../config/env";
 import {
   ForbiddenError,
   NotFoundError,
@@ -18,6 +19,11 @@ import {
   isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
+import {
+  deleteNeedsDirtyDSRedirect,
+  getNeedsDirtyDSRedirect,
+  setNeedsDirtyDSRedirect,
+} from "../managers/session/dirty-ds-redirect";
 import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
 import {
   sendDisable2faMail,
@@ -27,7 +33,10 @@ import {
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { idSchema } from "../services/custom-zod-schemas";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import {
+  getNotificationLabelFromRequest,
+  getNotificationsFromRequest,
+} from "../services/get-notifications-from-request";
 import { getParamsForPostPersonalInformationsController } from "./user/update-personal-informations";
 
 export const getHomeController = async (
@@ -156,6 +165,23 @@ export const getConnectionAndAccountController = async (
     const passkeys = await getUserAuthenticators(email);
     const is2faCapable = await is2FACapable(user_id);
 
+    // Dirty ad hoc implementation waiting for complete acr support on ProConnect
+    const notificationLabel = await getNotificationLabelFromRequest(req);
+    if (notificationLabel === "2fa_not_configured_for_ds") {
+      setNeedsDirtyDSRedirect(req);
+    }
+    if (
+      notificationLabel &&
+      ["authenticator_added", "passkey_successfully_created"].includes(
+        notificationLabel,
+      ) &&
+      getNeedsDirtyDSRedirect(req)
+    ) {
+      deleteNeedsDirtyDSRedirect(req);
+
+      return res.redirect(DIRTY_DS_REDIRECTION_URL);
+    }
+
     return res.render("connection-and-account", {
       pageTitle: "Connexion et compte",
       notifications: await getNotificationsFromRequest(req),
@@ -190,6 +216,7 @@ export const postDisableForce2faController = async (
 
     updateUserInAuthenticatedSession(req, updatedUser);
     sendDisable2faMail({ user_id });
+
     return res.redirect(
       `/connection-and-account?notification=2fa_successfully_disabled`,
     );

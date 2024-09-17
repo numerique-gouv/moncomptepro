@@ -1,5 +1,4 @@
 import { QueryResult } from "pg";
-import { MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES } from "../../config/env";
 import { getDatabaseConnection } from "../../connectors/postgres";
 
 export const findById = async (id: number) => {
@@ -25,9 +24,7 @@ SELECT
     o.*,
     uo.is_external,
     uo.verification_type,
-    uo.authentication_by_peers_type,
     uo.has_been_greeted,
-    uo.sponsor_id,
     uo.needs_official_contact_email_verification,
     uo.official_contact_email_verification_token,
     uo.official_contact_email_verification_sent_at
@@ -99,9 +96,7 @@ SELECT
     u.*,
     uo.is_external,
     uo.verification_type,
-    uo.authentication_by_peers_type,
     uo.has_been_greeted,
-    uo.sponsor_id,
     uo.needs_official_contact_email_verification,
     uo.official_contact_email_verification_token,
     uo.official_contact_email_verification_sent_at
@@ -118,30 +113,6 @@ ${additionalWhereClause}`,
 export const getUsers = (organization_id: number) =>
   getUsersByOrganization(organization_id);
 
-const inactiveThresholdDate = new Date(
-  new Date().getTime() -
-    MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES * 60e3,
-);
-
-export const getActiveUsers = (organization_id: number) =>
-  getUsersByOrganization(
-    organization_id,
-    `
-  AND uo.authentication_by_peers_type IS NOT NULL
-  AND u.email_verified_at >= $2`,
-    [inactiveThresholdDate],
-  );
-
-export const getInternalActiveUsers = (organization_id: number) =>
-  getUsersByOrganization(
-    organization_id,
-    `
-  AND uo.is_external = FALSE
-  AND uo.authentication_by_peers_type IS NOT NULL
-  AND u.email_verified_at >= $2`,
-    [inactiveThresholdDate],
-  );
-
 export const getUserOrganizationLink = async (
   organization_id: number,
   user_id: number,
@@ -157,9 +128,7 @@ SELECT
   created_at,
   updated_at,
   verification_type,
-  authentication_by_peers_type,
   has_been_greeted,
-  sponsor_id,
   needs_official_contact_email_verification,
   official_contact_email_verification_token,
   official_contact_email_verification_sent_at

@@ -47,7 +47,9 @@ export const deletePasskeyController = async (
     const { email, id: user_id } = getUserFromAuthenticatedSession(req);
 
     await deleteUserAuthenticator(email, credential_id);
+
     sendDeleteAccessKeyMail({ user_id });
+
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_deleted`,
     );
