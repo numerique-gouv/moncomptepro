@@ -51,7 +51,6 @@ test("default sample env with configured INSEE secrets", () => {
     MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES: 60,
     MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES: 129600,
     MAX_SUGGESTED_ORGANIZATIONS: 3,
-    MODERATION_TAG: "github-action-e2e-test",
     MONCOMPTEPRO_HOST: "http://localhost:3000",
     MONCOMPTEPRO_LABEL: "MonComptePro",
     NODE_ENV: "development",
@@ -67,6 +66,5 @@ test("default sample env with configured INSEE secrets", () => {
     TEST_CONTACT_EMAIL: "mairie@yopmail.com",
     TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS: 7776000,
     VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES: 60,
-    ZAMMAD_URL: "https://support.etalab.gouv.fr",
   });
 });
