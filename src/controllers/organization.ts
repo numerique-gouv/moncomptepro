@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
 import { z, ZodError } from "zod";

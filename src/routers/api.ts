@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router, urlencoded } from "express";
+import type { NextFunction, Request, Response } from "express";
+import { Router, urlencoded } from "express";
 import expressBasicAuth from "express-basic-auth";
 import { HttpError } from "http-errors";
 import nocache from "nocache";

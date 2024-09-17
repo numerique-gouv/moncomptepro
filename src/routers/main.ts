@@ -1,4 +1,4 @@
-import { Express, Router, urlencoded } from "express";
+import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
   getConnectionAndAccountController,

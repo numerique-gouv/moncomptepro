@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 import { UserNotLoggedInError } from "../../config/errors";
 import { isWithinAuthenticatedSession } from "./authenticated";
 

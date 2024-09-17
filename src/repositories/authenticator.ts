@@ -1,7 +1,7 @@
-import { QueryResult } from "pg";
+import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../connectors/postgres";
 import { decodeBase64URL, encodeBase64URL } from "../services/base64";
-import {
+import type {
   Authenticator,
   BaseAuthenticator,
   SerializedAuthenticator,

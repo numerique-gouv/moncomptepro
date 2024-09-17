@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import { isEmpty } from "lodash-es";
-import { FindAccount } from "oidc-provider";
+import type { FindAccount } from "oidc-provider";
 import { findByUserId as getUsersOrganizations } from "../repositories/organization/getters";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
 import { findById as findUserById } from "../repositories/user";
