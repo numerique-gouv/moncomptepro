@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import {
   DEBOUNCE_API_KEY,
   DO_NOT_CHECK_EMAIL_DELIVERABILITY,

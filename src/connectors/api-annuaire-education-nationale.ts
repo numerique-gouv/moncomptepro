@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, type AxiosResponse } from "axios";
 import { isEmpty, isString } from "lodash-es";
 import {
   DO_NOT_USE_ANNUAIRE_EMAILS,

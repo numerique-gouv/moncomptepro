@@ -1,4 +1,4 @@
-import { QueryResult } from "pg";
+import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../connectors/postgres";
 
 export const createModeration = async ({

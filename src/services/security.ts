@@ -4,7 +4,7 @@ import { customAlphabet, nanoid } from "nanoid/async";
 import { parse_host } from "tld-extract";
 import { MONCOMPTEPRO_HOST } from "../config/env";
 import notificationMessages from "../config/notification-messages";
-import { AmrValue } from "../types/express-session";
+import type { AmrValue } from "../types/express-session";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
 import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 

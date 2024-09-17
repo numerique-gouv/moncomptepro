@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
 import { ENABLE_FIXED_ACR } from "../config/env";
 import {

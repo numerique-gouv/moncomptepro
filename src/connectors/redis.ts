@@ -1,7 +1,7 @@
 import {
   default as Redis,
   default as RedisClient,
-  RedisOptions,
+  type RedisOptions,
 } from "ioredis";
 import { REDIS_URL } from "../config/env";
 import { logger } from "../services/log";

@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { DO_NOT_RATE_LIMIT } from "../config/env";

@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
-import { Request, Response } from "express";
-import { Session, SessionData } from "express-session";
+import type { Request, Response } from "express";
+import { Session, type SessionData } from "express-session";
 import { isEmpty } from "lodash-es";
 import { RECENT_LOGIN_INTERVAL_IN_SECONDS } from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
@@ -12,7 +12,7 @@ import {
   isOneFactorAuthenticated,
   isTwoFactorAuthenticated,
 } from "../../services/security";
-import {
+import type {
   AmrValue,
   AuthenticatedSessionData,
 } from "../../types/express-session";
