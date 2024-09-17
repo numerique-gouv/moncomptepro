@@ -25,7 +25,7 @@ export const recordNewConnection = async ({
   accountId: string;
   // tricky way to get the non exported Client type
   client: NonNullable<KoaContextWithOIDC["oidc"]["client"]>;
-  params: KoaContextWithOIDC["oidc"]["params"];
+  params: OIDCContextParams;
 }): Promise<Connection> => {
   const user_id = parseInt(accountId, 10);
 

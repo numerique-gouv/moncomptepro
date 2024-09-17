@@ -92,7 +92,7 @@ export const apiRouter = () => {
 
       return res
         .status(statusCode)
-        .json({ message: err.message || err.statusMessage });
+        .json({ message: err.message || err["statusMessage"] });
     },
   );
 

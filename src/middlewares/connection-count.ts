@@ -39,7 +39,7 @@ export const connectionCountMiddleware = async (
         await recordNewConnection({
           accountId: ctx.oidc.session.accountId,
           client: ctx.oidc.client,
-          params: ctx.oidc.params,
+          params: ctx.oidc.params as OIDCContextParams,
         });
       } else {
         // This is unexpected, we log it in sentry

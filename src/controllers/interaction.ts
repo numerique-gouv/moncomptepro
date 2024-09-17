@@ -78,7 +78,7 @@ export const interactionEndControllerFactory =
         ? epochTime(user.last_sign_in_at)
         : undefined;
 
-      const result = {
+      const result: OidcInteractionResults = {
         login: {
           accountId: user.id.toString(),
           acr,
