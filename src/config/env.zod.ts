@@ -4,8 +4,6 @@ import { defaultJWKS } from "./default-jwks";
 export const emailEnvSchema = z.object({
   BREVO_API_KEY: z.string().optional(),
   DO_NOT_SEND_MAIL: zodTrueFalseBoolean().default("True"),
-  ZAMMAD_TOKEN: z.string().optional(),
-  ZAMMAD_URL: z.string().url().default("https://support.etalab.gouv.fr"),
 });
 
 export const connectorEnvSchema = z.object({
@@ -83,7 +81,6 @@ export const paramsEnvSchema = z.object({
     .nonnegative()
     .default(3 * 30 * 24 * 60), // 3 months in minutes
   MAX_SUGGESTED_ORGANIZATIONS: z.coerce.number().int().nonnegative().default(3),
-  MODERATION_TAG: z.string().default("github-action-e2e-test"),
   MONCOMPTEPRO_HOST: z.string().url().default("http://localhost:3000"),
   MONCOMPTEPRO_LABEL: z.string().default("MonComptePro"),
   NODE_ENV: z
