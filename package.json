@@ -6,6 +6,20 @@
   "imports": {
     "#cypress/*": "./cypress/*.ts"
   },
+  "exports": {
+    "./connectors/*": {
+      "default": "./build/connectors/*.js"
+    },
+    "./managers/*": {
+      "default": "./build/managers/*.js"
+    },
+    "./types": {
+      "default": "./src/types/index.d.ts"
+    },
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
   "main": "src/index.js",
   "scripts": {
     "build": "run-s build:**",
