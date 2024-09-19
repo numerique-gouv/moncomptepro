@@ -8,6 +8,8 @@ import {
 } from "@simplewebauthn/server";
 import type {
   AuthenticationResponseJSON,
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from "@simplewebauthn/types";
 import { isEmpty } from "lodash-es";
@@ -115,7 +117,10 @@ export const deleteUserAuthenticator = async (
   return true;
 };
 
-export const getRegistrationOptions = async (email: string) => {
+export const getRegistrationOptions: (email: string) => Promise<{
+  updatedUser: User;
+  registrationOptions: PublicKeyCredentialCreationOptionsJSON;
+}> = async (email) => {
   const user = await findUserByEmail(email);
 
   if (isEmpty(user)) {
@@ -232,10 +237,13 @@ export const verifyRegistration = async ({
   return { userVerified: user_verified, user: await enableForce2fa(user.id) };
 };
 
-export const getAuthenticationOptions = async (
+export const getAuthenticationOptions: (
   email: string | undefined,
   isSecondFactorAuthentication: boolean,
-) => {
+) => Promise<{
+  updatedUser: User;
+  authenticationOptions: PublicKeyCredentialRequestOptionsJSON;
+}> = async (email, isSecondFactorAuthentication) => {
   if (!email) {
     throw new NotFoundError();
   }
