@@ -56,5 +56,14 @@ describe("sign-in from standard client", () => {
     cy.contains("Commune de lamalou-les-bains - Mairie");
   });
 
-  it("should prompt for organization selection", function () {});
+  it("should not prompt for password if a session is already opened", () => {
+    cy.visit("/");
+    cy.login("unused1@yopmail.com");
+
+    cy.visit("http://localhost:4000");
+    cy.get("button.moncomptepro-button").click();
+
+    cy.contains("moncomptepro-standard-client");
+    cy.contains("unused1@yopmail.com");
+  });
 });

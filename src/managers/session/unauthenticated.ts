@@ -1,6 +1,6 @@
 import type { Request } from "express";
 import { isEmpty } from "lodash-es";
-import { NoEmailFoundInLoggedOutSessionError } from "../../config/errors";
+import { NoEmailFoundInUnauthenticatedSessionError } from "../../config/errors";
 import { findByEmail, update } from "../../repositories/user";
 
 export const getEmailFromUnauthenticatedSession = (req: Request) => {
@@ -42,7 +42,7 @@ export const updatePartialUserFromUnauthenticatedSession = async (
   needs_inclusionconnect_welcome_page: boolean;
 }> => {
   if (!req.session.email) {
-    throw new NoEmailFoundInLoggedOutSessionError();
+    throw new NoEmailFoundInUnauthenticatedSessionError();
   }
 
   req.session.needsInclusionconnectWelcomePage =

@@ -4,6 +4,7 @@ import { ENABLE_FIXED_ACR } from "../config/env";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
+  isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
 import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
@@ -41,8 +42,18 @@ export const interactionStartControllerFactory =
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
         if (login_hint) {
-          req.body.login = login_hint;
-          return postStartSignInController(req, res, next);
+          const isAuthenticated = isWithinAuthenticatedSession(req.session);
+          const authenticatedUserEmail = isAuthenticated
+            ? getUserFromAuthenticatedSession(req).email
+            : null;
+          const isDifferentEmail = authenticatedUserEmail !== login_hint;
+
+          if (!isAuthenticated || (isAuthenticated && isDifferentEmail)) {
+            setEmailInUnauthenticatedSession(req, login_hint);
+            req.body.login = login_hint;
+
+            return postStartSignInController(req, res, next);
+          }
         }
 
         return res.redirect(`/interaction/${interactionId}/login`);
