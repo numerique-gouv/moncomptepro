@@ -1,5 +1,6 @@
 export interface UnauthenticatedSessionData {
   email?: string;
+  loginHint?: string;
   needsInclusionconnectWelcomePage?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;

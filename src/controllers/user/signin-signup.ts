@@ -11,6 +11,7 @@ import {
 } from "../../config/errors";
 import { createAuthenticatedSession } from "../../managers/session/authenticated";
 import {
+  getAndRemoveLoginHintFromUnauthenticatedSession,
   getEmailFromUnauthenticatedSession,
   setEmailInUnauthenticatedSession,
   setPartialUserFromUnauthenticatedSession,
@@ -33,13 +34,22 @@ export const getStartSignInController = async (
   next: NextFunction,
 ) => {
   try {
+    // Bypass email submission when a login hint is provided in the interaction
+    const hintFromOidcInteraction =
+      getAndRemoveLoginHintFromUnauthenticatedSession(req);
+    if (hintFromOidcInteraction) {
+      setEmailInUnauthenticatedSession(req, hintFromOidcInteraction);
+      req.body.login = hintFromOidcInteraction;
+      return postStartSignInController(req, res, next);
+    }
+
     const schema = z.object({
       did_you_mean: z.string().trim().min(1).optional(),
     });
 
     const { did_you_mean: didYouMean } = await schema.parseAsync(req.query);
 
-    const loginHint = getEmailFromUnauthenticatedSession(req);
+    const hintFromSession = getEmailFromUnauthenticatedSession(req);
 
     const hasEmailError =
       (await getNotificationLabelFromRequest(req)) === "invalid_email";
@@ -49,7 +59,7 @@ export const getStartSignInController = async (
       notifications: !hasEmailError && (await getNotificationsFromRequest(req)),
       hasEmailError,
       didYouMean,
-      loginHint,
+      loginHint: hintFromSession,
       csrfToken: csrfToken(req),
       displayTestEnvWarning: DISPLAY_TEST_ENV_WARNING,
     });

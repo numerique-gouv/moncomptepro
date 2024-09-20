@@ -3,6 +3,21 @@ import { isEmpty } from "lodash-es";
 import { NoEmailFoundInUnauthenticatedSessionError } from "../../config/errors";
 import { findByEmail, update } from "../../repositories/user";
 
+export const getAndRemoveLoginHintFromUnauthenticatedSession = (
+  req: Request,
+) => {
+  const loginHint = req.session.loginHint;
+  delete req.session.loginHint;
+  return loginHint;
+};
+export const setLoginHintInUnauthenticatedSession = (
+  req: Request,
+  loginHint: string,
+) => {
+  req.session.loginHint = loginHint;
+
+  return loginHint;
+};
 export const getEmailFromUnauthenticatedSession = (req: Request) => {
   return req.session.email;
 };

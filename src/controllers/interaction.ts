@@ -7,11 +7,10 @@ import {
   isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
-import { setEmailInUnauthenticatedSession } from "../managers/session/unauthenticated";
+import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { shouldTrigger2fa } from "../services/should-trigger-2fa";
-import { postStartSignInController } from "./user/signin-signup";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -30,30 +29,21 @@ export const interactionStartControllerFactory =
         req.session.mustUse2FA = true;
       }
 
-      if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
-        if (login_hint) {
-          setEmailInUnauthenticatedSession(req, login_hint);
-          req.body.login = login_hint;
-          return postStartSignInController(req, res, next);
-        }
+      if (login_hint) {
+        setLoginHintInUnauthenticatedSession(req, login_hint);
+      }
 
+      if (prompt.name === "login" && prompt.reasons.includes("login_prompt")) {
         return res.redirect(`/users/start-sign-in`);
       }
 
       if (prompt.name === "login" || prompt.name === "choose_organization") {
-        if (login_hint) {
-          const isAuthenticated = isWithinAuthenticatedSession(req.session);
-          const authenticatedUserEmail = isAuthenticated
-            ? getUserFromAuthenticatedSession(req).email
-            : null;
-          const isDifferentEmail = authenticatedUserEmail !== login_hint;
-
-          if (!isAuthenticated || (isAuthenticated && isDifferentEmail)) {
-            setEmailInUnauthenticatedSession(req, login_hint);
-            req.body.login = login_hint;
-
-            return postStartSignInController(req, res, next);
-          }
+        if (
+          login_hint &&
+          isWithinAuthenticatedSession(req.session) &&
+          getUserFromAuthenticatedSession(req).email !== login_hint
+        ) {
+          return res.redirect(`/users/start-sign-in`);
         }
 
         return res.redirect(`/interaction/${interactionId}/login`);
