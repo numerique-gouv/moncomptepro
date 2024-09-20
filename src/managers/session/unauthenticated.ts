@@ -1,8 +1,23 @@
 import type { Request } from "express";
 import { isEmpty } from "lodash-es";
-import { NoEmailFoundInLoggedOutSessionError } from "../../config/errors";
+import { NoEmailFoundInUnauthenticatedSessionError } from "../../config/errors";
 import { findByEmail, update } from "../../repositories/user";
 
+export const getAndRemoveLoginHintFromUnauthenticatedSession = (
+  req: Request,
+) => {
+  const loginHint = req.session.loginHint;
+  delete req.session.loginHint;
+  return loginHint;
+};
+export const setLoginHintInUnauthenticatedSession = (
+  req: Request,
+  loginHint: string,
+) => {
+  req.session.loginHint = loginHint;
+
+  return loginHint;
+};
 export const getEmailFromUnauthenticatedSession = (req: Request) => {
   return req.session.email;
 };
@@ -42,7 +57,7 @@ export const updatePartialUserFromUnauthenticatedSession = async (
   needs_inclusionconnect_welcome_page: boolean;
 }> => {
   if (!req.session.email) {
-    throw new NoEmailFoundInLoggedOutSessionError();
+    throw new NoEmailFoundInUnauthenticatedSessionError();
   }
 
   req.session.needsInclusionconnectWelcomePage =

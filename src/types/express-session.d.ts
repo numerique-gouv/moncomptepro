@@ -1,5 +1,6 @@
-export interface LoggedOutSessionData {
+export interface UnauthenticatedSessionData {
   email?: string;
+  loginHint?: string;
   needsInclusionconnectWelcomePage?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
@@ -25,7 +26,7 @@ export interface AuthenticatedSessionData {
 }
 
 declare module "express-session" {
-  export interface SessionData extends LoggedOutSessionData {
+  export interface SessionData extends UnauthenticatedSessionData {
     user?: User;
     temporaryEncryptedTotpKey?: string;
     amr?: AmrValue[];
