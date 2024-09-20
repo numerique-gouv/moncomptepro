@@ -1,4 +1,4 @@
-import { isEmpty, some } from "lodash";
+import { isEmpty, some } from "lodash-es";
 import { NotFoundError } from "../../config/errors";
 import {
   addDomain,
