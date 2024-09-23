@@ -111,7 +111,7 @@
     "concurrently": "^8.2.2",
     "copy-and-watch": "^0.1.6",
     "csv": "^6.3.9",
-    "cypress": "^13.13.2",
+    "cypress": "^13.14.2",
     "cypress-axe": "^1.5.0",
     "cypress-mailslurp": "^1.10.0",
     "mocha": "^10.7.3",
