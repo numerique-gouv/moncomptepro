@@ -38,6 +38,7 @@ import {
   isPasswordSecure,
   validatePassword,
 } from "../services/security";
+import { isWebauthnConfiguredForUser } from "./webauthn";
 
 export const startLogin = async (
   email: string,
@@ -45,6 +46,7 @@ export const startLogin = async (
   email: string;
   userExists: boolean;
   hasAPassword: boolean;
+  hasWebauthnConfigured: boolean;
   needsInclusionconnectWelcomePage: boolean;
 }> => {
   const user = await findByEmail(email);
@@ -55,6 +57,7 @@ export const startLogin = async (
       email,
       userExists: true,
       hasAPassword: !!user.encrypted_password,
+      hasWebauthnConfigured: await isWebauthnConfiguredForUser(user.id),
       needsInclusionconnectWelcomePage:
         user?.needs_inclusionconnect_welcome_page,
     };
@@ -75,6 +78,7 @@ export const startLogin = async (
     email,
     userExists: false,
     hasAPassword: false,
+    hasWebauthnConfigured: false,
     needsInclusionconnectWelcomePage: false,
   };
 };

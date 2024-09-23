@@ -2,6 +2,7 @@ export interface UnauthenticatedSessionData {
   email?: string;
   loginHint?: string;
   needsInclusionconnectWelcomePage?: boolean;
+  hasWebauthnConfigured?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
   mustUse2FA?: boolean;
