@@ -9,6 +9,14 @@ describe("getDidYouMeanSuggestion", () => {
     ["agent@beta.gouvfr", "agent@beta.gouv.fr"],
     ["agent@beta.gov.fr", "agent@beta.gouv.fr"],
     ["agent@betagouv.rf", "agent@betagouv.fr"],
+    [
+      "agent@gendarmerie.interieure.gouv.fr",
+      "agent@gendarmerie.interieur.gouv.fr",
+    ],
+    [
+      "agent@gendarmerie.interieur.gouv.frl",
+      "agent@gendarmerie.interieur.gouv.fr",
+    ],
     ["agent@nomatch", ""],
   ];
 
