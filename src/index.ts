@@ -98,14 +98,12 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
 // Note that express.static always sends weak ETags.
 app.set("etag", false);
 
-let morganOption = {};
-
+let morganOption: morgan.Options<Request, Response> = {
+  skip: (req: Request, _res: Response) => req.baseUrl.startsWith("/dist"),
+};
 if (ACCESS_LOG_PATH) {
-  morganOption = {
-    stream: fs.createWriteStream(ACCESS_LOG_PATH, { flags: "a" }),
-  };
+  morganOption.stream = fs.createWriteStream(ACCESS_LOG_PATH, { flags: "a" });
 }
-
 const httpLogger = morgan("combined", morganOption);
 app.use(httpLogger);
 
