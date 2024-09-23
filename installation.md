@@ -1,12 +1,12 @@
-# MonComptePro - Installation Guide
+# ProConnect Identité - Installation Guide
 
-This guide provides steps to run the MonComptePro Node.js application locally while managing its dependencies in Docker containers.
+This guide provides steps to run the ProConnect Identité Node.js application locally while managing its dependencies in Docker containers.
 
 ## Prerequisites
 
 - Node.js (v20) installed locally (we suggest the usage of [nvm](https://github.com/nvm-sh/nvm))
 - Docker (>= v25) and Docker Compose (>= v2.24) installed ([doc](https://docs.docker.com/engine/install/))
-- Clone the MonComptePro repository
+- Clone the ProConnect Identité repository
 
 ## Setting Up Dependencies with Docker
 
@@ -34,7 +34,7 @@ This guide provides steps to run the MonComptePro Node.js application locally wh
    cp .env.sample .env
    ```
 
-   This will create a local copy of the `.env` file containing the environnement variables to run MonComptePro.
+   This will create a local copy of the `.env` file containing the environnement variables to run ProConnect Identité.
 
 3. **Get your own INSEE api credential**: or use the one of your teammates.
 
@@ -64,9 +64,9 @@ Emails are not sent but printed in the console.
 
 ## Testing the Connection with a Test Client
 
-MonComptePro is provided with a test client: https://github.com/numerique-gouv/moncomptepro-test-client
+ProConnect Identité is provided with a test client: https://github.com/numerique-gouv/moncomptepro-test-client
 
-This container is launched within the MonComptePro `docker-compose.yml`.
+This container is launched within the ProConnect Identité `docker-compose.yml`.
 
 It's available at http://localhost:3001
 

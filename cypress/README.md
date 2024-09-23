@@ -22,7 +22,7 @@ Note that this will delete your database. Load the specific fixtures in the data
 ENABLE_DATABASE_DELETION=True npm run delete-database ; npx run-s "migrate up" "fixtures:load-ci cypress/e2e/redirect_after_session_expiration/fixtures.sql" "update-organization-info 2000"
 ```
 
-### Start MonComptePro with the test configuration
+### Start ProConnect Identité with the test configuration
 
 Then run the app with the specific env vars:
 
