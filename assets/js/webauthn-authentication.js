@@ -14,24 +14,24 @@ document.addEventListener(
     );
     const errorElement = document.getElementById("webauthn-alert-error");
 
+    const actionAttribute = authenticationResponseForm.getAttribute("action");
+    let authOptionsUrl;
+    if (actionAttribute === "/users/2fa-sign-in-with-passkey") {
+      authOptionsUrl =
+        "/api/webauthn/generate-authentication-options-for-second-factor";
+    } else if (actionAttribute === "/users/sign-in-with-passkey") {
+      authOptionsUrl =
+        "/api/webauthn/generate-authentication-options-for-first-factor";
+    } else {
+      throw new Error("Webauthn page miss-configured!");
+    }
+
     // Start registration when the user clicks a button
     const onAuthenticateClick = async () => {
       // Reset success/error messages
       errorElement.style.display = "none";
       errorElement.innerText = "";
       beginElement.disabled = true;
-
-      const actionAttribute = authenticationResponseForm.getAttribute("action");
-      let authOptionsUrl;
-      if (actionAttribute === "/users/2fa-sign-in-with-passkey") {
-        authOptionsUrl =
-          "/api/webauthn/generate-authentication-options-for-second-factor";
-      } else if (actionAttribute === "/users/sign-in-with-passkey") {
-        authOptionsUrl =
-          "/api/webauthn/generate-authentication-options-for-first-factor";
-      } else {
-        throw new Error("Webauthn page miss-configured!");
-      }
 
       // GET registration options from the endpoint that calls
       // @simplewebauthn/server -> generateRegistrationOptions()
@@ -66,9 +66,7 @@ document.addEventListener(
       const hasNotification = urlParams.get("notification") !== null;
 
       if (!hasNotification) {
-        const authOptions = await fetch(
-          "/api/webauthn/generate-authentication-options",
-        );
+        const authOptions = await fetch(authOptionsUrl);
         try {
           let asseResp = await startAuthentication(
             await authOptions.json(),
