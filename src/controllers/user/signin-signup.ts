@@ -13,6 +13,7 @@ import { createAuthenticatedSession } from "../../managers/session/authenticated
 import {
   getAndRemoveLoginHintFromUnauthenticatedSession,
   getEmailFromUnauthenticatedSession,
+  getPartialUserFromUnauthenticatedSession,
   setEmailInUnauthenticatedSession,
   setPartialUserFromUnauthenticatedSession,
   updatePartialUserFromUnauthenticatedSession,
@@ -84,11 +85,13 @@ export const postStartSignInController = async (
       email,
       userExists,
       hasAPassword,
+      hasWebauthnConfigured,
       needsInclusionconnectWelcomePage,
     } = await startLogin(login);
     setPartialUserFromUnauthenticatedSession(req, {
       email,
       needsInclusionconnectWelcomePage,
+      hasWebauthnConfigured,
     });
 
     if (needsInclusionconnectWelcomePage) {
@@ -158,11 +161,15 @@ export const getSignInController = async (
   next: NextFunction,
 ) => {
   try {
+    const { email, hasWebauthnConfigured } =
+      getPartialUserFromUnauthenticatedSession(req);
+
     return res.render("user/sign-in", {
       pageTitle: "Accéder au compte",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
-      email: getEmailFromUnauthenticatedSession(req),
+      email,
+      showPasskeySection: hasWebauthnConfigured,
     });
   } catch (error) {
     next(error);

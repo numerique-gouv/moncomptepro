@@ -144,7 +144,7 @@ export const getSignInWithPasskeyController = async (
   }
 };
 
-export const getGenerateAuthenticationOptions =
+export const getGenerateAuthenticationOptionsControllerFactory =
   (isSecondFactorAuthentication: boolean) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -168,10 +168,10 @@ export const getGenerateAuthenticationOptions =
   };
 
 export const getGenerateAuthenticationOptionsForFirstFactorController =
-  getGenerateAuthenticationOptions(false);
+  getGenerateAuthenticationOptionsControllerFactory(false);
 
 export const getGenerateAuthenticationOptionsForSecondFactorController =
-  getGenerateAuthenticationOptions(true);
+  getGenerateAuthenticationOptionsControllerFactory(true);
 
 export const postVerifyAuthenticationController =
   (isSecondFactorVerification: boolean) =>

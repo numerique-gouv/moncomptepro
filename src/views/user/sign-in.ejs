@@ -57,6 +57,17 @@
                 <a href="/users/reset-password" class="fr-link">Mot de passe oublié ?</a>
             </p>
         </form>
+        <% if (showPasskeySection) { %>
+
+        <p class="fr-hr-or">ou</p>
+
+        <a
+            class="fr-btn fr-mb-2w btn--fullwidth fr-btn--secondary fr-btn--icon-left fr-icon-lock-unlock-line"
+            href="/users/sign-in-with-passkey"
+        >
+            Se connecter avec une clé d’accès
+        </a>
+        <% } %>
 
         <p class="fr-hr-or">ou</p>
 
@@ -70,15 +81,6 @@
                 Recevoir un lien d’identification
             </button>
         </form>
-
-        <p class="fr-hr-or">ou</p>
-
-        <a
-            class="fr-btn fr-mb-2w btn--fullwidth fr-btn--secondary fr-btn--icon-left fr-icon-lock-unlock-line"
-            href="/users/sign-in-with-passkey"
-        >
-            Se connecter avec une clé d’accès
-        </a>
 
         <div class="card-button-container fr-mt-2w">
             <span>
