@@ -10,7 +10,7 @@ Pour vous intégrer la fédération ProConnect, merci de vous référer à [notr
 
 ⚠️ ProConnect Identité n'est plus utilisable en dehors de [la fédération ProConnect](https://www.proconnect.gouv.fr/).
 
-## 🗺️ Tester le parcours
+## 1. 🗺️ 1. Tester le parcours
 
 Pour tester le parcours de connexion ProConnect Identité, vous pouvez utiliser notre plateforme dédiée : https://test.moncomptepro.beta.gouv.fr/.
 
@@ -33,9 +33,9 @@ Voici 2 scénarios que vous pouvez tester sur cet environnement :
 - petite mairie : créer un compte avec une adresse email qui n'ait pas comme nom de domaine `yopmail.com`, utiliser le siret d'une collectivité de moins de 50 employés, se connecter en restituant le code reçu à `mairie@yopmail.com` ;
 - [commune de Clarmart](https://annuaire-entreprises.data.gouv.fr/entreprise/commune-de-clamart-219200235) : vous pouvez directement rejoindre cette commune avec un compte utilisant un email sur le domaine `yopmail.com`.
 
-## Documentation technique
+## 2. 📚 Documentation technique
 
-### Périmètres de données disponibles (scopes)
+### 2.1. 🎯 Périmètres de données disponibles (scopes)
 
 Afin d'effectuer les développements sur votre service en ligne, nous fournissons un environnement de test pour vous permettre d'effectuer des tests de bout en bout.
 
@@ -49,7 +49,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 - `profile` (données : family_name, given_name, updated_at, job)
 - `organization` (données : label, siret, is_commune, is_external, is_public_service)
 
-### Exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID
+### 2.2. 🔚 Exemple des données retournées par l’endpoint GET /userinfo du serveur OpenID
 
 ```json
 {
@@ -72,7 +72,7 @@ Afin de configurer votre module ou votre client OpenId Connect, vous trouverez c
 > NB : si `is_commune` vaut `true` alors `is_public_service` vaut `true` également
 > NB : ProConnect Identité vérifie systématiquement les adresses emails, en conséquence `email_verified` vaut toujours `true`
 
-### Déconnexion
+### 2.3. 🔓 Déconnexion
 
 Lorsqu'un utilisateur se déconnecte de votre plateforme, il se peut qu'il soit toujours connecté à ProConnect Identité. Ainsi,
 si votre utilisateur utilise un poste partagé, une autre personne pourrait utiliser la session ProConnect Identité et récupérer
@@ -85,7 +85,7 @@ Afin d'effectuer une déconnexion simultanée, il faut rediriger l'utilisateur v
 
 https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/logout?post_logout_redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2F&client_id=client_id
 
-### Permettre à l'utilisateur de sélectionner une autre organisation
+### 2.4. 🏛️ Permettre à l'utilisateur de sélectionner une autre organisation
 
 Les utilisateurs peuvent représenter plusieurs organisations dans ProConnect Identité.
 Au moment de se connecter à votre service, ProConnect Identité demande à l'utilisateur de choisir l'organisation qu’il souhaite représenter.
@@ -99,7 +99,7 @@ Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec l
 
 https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin-callback&prompt=select_organization
 
-### Permettre à l'utilisateur de mettre à jour ses informations
+### 2.5. 🔎 Permettre à l'utilisateur de mettre à jour ses informations
 
 Les utilisateurs peuvent avoir commis des erreurs lors de la constitution de leur identité sur ProConnect Identité.
 
@@ -112,7 +112,7 @@ Pour ce faire, vous pouvez rediriger l'utilisateur sur la route authorize avec l
 
 https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_id&scope=openid%20email%20profile%20organization&response_type=code&redirect_uri=https%3A%2F%2Ftest.moncomptepro.beta.gouv.fr%2Flogin-callback&prompt=update_userinfo
 
-### Exiger une ré-authentification
+### 2.6. 🚪 Exiger une ré-authentification
 
 Certaines fonctionnalités sensibles requièrent d’authentifier l'utilisateur à nouveau pour réduire les risques
 d’usurpations d’identités liés à la durée de session de ProConnect Identité.
@@ -127,7 +127,7 @@ Afin de s’assurer que l’utilisateur s’est bien ré-authentifié, il est im
 retournée dans l’ID token. Si la date est supérieure à 5 minutes, l’utilisateur ne s'est pas reconnecté récemment et vous
 devez recommencer la cinématique.
 
-### Connaître les méthodes d'authentification utilisées
+### 2.7. 💡 Connaître les méthodes d'authentification utilisées
 
 Pour éviter à un usager d’avoir à s’authentifier auprès de votre service avec un second facteur alors qu’il a déjà utilisé une authentification multi-facteur dans ProConnect Identité,
 il est possible de récupérer via le claim `amr` la liste des méthodes d’authentification et d’adapter votre parcours en fonction.
@@ -149,7 +149,7 @@ ProConnect Identité peut renvoyer une combinaison des valeurs suivantes :
 
 Vous trouverez de plus amples informations sur la [documentation de FranceConnect](https://docs.partenaires.franceconnect.gouv.fr/fs/fs-technique/fs-technique-amr/#quels-sont-les-differents-methodes-d-authentification-qui-peuvent-etre-utilisees).
 
-### Exiger une authentification double facteur
+### 2.8. 📲 Exiger une authentification double facteur
 
 Certaines fonctionnalités sensibles requièrent une authentification à double facteur pour réduire les risques
 d’usurpations d’identités liés aux attaques par _phishing_ par exemple.
@@ -165,7 +165,7 @@ Les valeurs `acr` utilisées par ProConnect Identité sont les suivantes :
 - `eidas1` authentification simple facteur avec une identité de niveau faible.
 - `https://refeds.org/profile/mfa` authentification par double facteur sans preuve d’identité particulière.
 
-## 👋 Contribuer à ProConnect Identité
+## 3. 👋 3. Contribuer à ProConnect Identité
 
 Pour contribuer à ProConnect Identité, vous pouvez installer l’application localement.
 
