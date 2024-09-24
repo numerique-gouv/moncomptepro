@@ -14,7 +14,7 @@ describe("add 2fa authentication", () => {
 
     cy.login("64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com");
 
-    cy.contains("Application FreeOTP Authenticator");
+    cy.contains("Application Authenticator");
 
     cy.contains("Configurer une application d’authentification").click();
 

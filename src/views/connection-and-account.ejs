@@ -27,6 +27,89 @@
         </section>
 
         <section class="fr-mb-6w">
+            <h3>Application Authenticator</h3>
+            <p>
+                Recevez un code de validation via une appli d’authentification, même si votre téléphone est hors
+                connexion.
+            </p>
+            <p>
+                Téléchargez d’abord FreeOTP Authenticator sur le
+                <a
+                        class="fr-link" target="_blank" rel="noopener noreferrer"
+                        href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp&pcampaignid=web_share"
+                >Google Play Store</a>
+                ou l’
+                <a
+                        class="fr-link" target="_blank" rel="noopener noreferrer"
+                        href="https://apps.apple.com/us/app/freeotp-authenticator/id872559395"
+                >App Store iOS</a> ou un équivalent.
+            </p>
+
+            <% if (isAuthenticatorConfigured) { %>
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-12">
+                        <div class="fr-tile fr-tile--horizontal">
+                            <div class="fr-tile__body">
+                                <h4 class="fr-tile__title">Votre méthode d’authentification</h4>
+                                <p class="fr-tile__desc fr-pb-0">FreeOTP Authenticator</p>
+                                <p class="fr-tile__desc">Ajout : <%= totpKeyVerifiedAt; %></p>
+                                <div class="card-button-container">
+                                    <a
+                                            class="fr-btn fr-btn--secondary fr-btn--sm"
+                                            href="/authenticator-app-configuration"
+                                            type="submit"
+                                    >
+                                        Changer d’application d’authentification
+                                    </a>
+                                    <form action="/delete-authenticator-app-configuration" method="post">
+                                        <input
+                                                type="hidden"
+                                                name="_csrf"
+                                                value="<%= csrfToken; %>"
+                                                autocomplete="off"
+                                        >
+                                        <button
+                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
+                                                data-confirm="Cette action est irreversible."
+                                                type="submit"
+                                        >
+                                            Supprimer l’application d’authentification
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="fr-tile__header">
+                                <div class="fr-tile__pictogram">
+                                    <svg
+                                            aria-hidden="true"
+                                            class="fr-artwork"
+                                            viewBox="0 0 80 80"
+                                            width="80px"
+                                            height="80px"
+                                    >
+                                        <use
+                                                class="fr-artwork-decorative"
+                                                href="/dist/application.svg#artwork-decorative"
+                                        ></use>
+                                        <use class="fr-artwork-minor" href="/dist/application.svg#artwork-minor"></use>
+                                        <use class="fr-artwork-major" href="/dist/application.svg#artwork-major"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                <a
+                        class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
+                        href="/authenticator-app-configuration"
+                >
+                    Configurer une application d’authentification
+                </a>
+            <% } %>
+        </section>
+
+        <section class="fr-mb-6w">
             <h3>Clés d’accès</h3>
             <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
 
@@ -130,89 +213,6 @@
             </form>
 
             <script type="module" src="<%= js('webauthn-registration.js') %>"></script>
-        </section>
-
-        <section class="fr-mb-6w">
-            <h3>Application FreeOTP Authenticator</h3>
-            <p>
-                Recevez un code de validation via une appli d’authentification, même si votre téléphone est hors
-                connexion.
-            </p>
-            <p>
-                Téléchargez d’abord FreeOTP Authenticator sur le
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp&pcampaignid=web_share"
-                >Google Play Store</a>
-                ou l’
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        href="https://apps.apple.com/us/app/freeotp-authenticator/id872559395"
-                >App Store iOS</a>.
-            </p>
-
-            <% if (isAuthenticatorConfigured) { %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-12">
-                        <div class="fr-tile fr-tile--horizontal">
-                            <div class="fr-tile__body">
-                                <h4 class="fr-tile__title">Votre méthode d’authentification</h4>
-                                <p class="fr-tile__desc fr-pb-0">FreeOTP Authenticator</p>
-                                <p class="fr-tile__desc">Ajout : <%= totpKeyVerifiedAt; %></p>
-                                <div class="card-button-container">
-                                    <a
-                                            class="fr-btn fr-btn--secondary fr-btn--sm"
-                                            href="/authenticator-app-configuration"
-                                            type="submit"
-                                    >
-                                        Changer d’application d’authentification
-                                    </a>
-                                    <form action="/delete-authenticator-app-configuration" method="post">
-                                        <input
-                                                type="hidden"
-                                                name="_csrf"
-                                                value="<%= csrfToken; %>"
-                                                autocomplete="off"
-                                        >
-                                        <button
-                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
-                                                data-confirm="Cette action est irreversible."
-                                                type="submit"
-                                        >
-                                            Supprimer l’application d’authentification
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="fr-tile__header">
-                                <div class="fr-tile__pictogram">
-                                    <svg
-                                            aria-hidden="true"
-                                            class="fr-artwork"
-                                            viewBox="0 0 80 80"
-                                            width="80px"
-                                            height="80px"
-                                    >
-                                        <use
-                                                class="fr-artwork-decorative"
-                                                href="/dist/application.svg#artwork-decorative"
-                                        ></use>
-                                        <use class="fr-artwork-minor" href="/dist/application.svg#artwork-minor"></use>
-                                        <use class="fr-artwork-major" href="/dist/application.svg#artwork-major"></use>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <% } else { %>
-                <a
-                        class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
-                        href="/authenticator-app-configuration"
-                >
-                    Configurer une application d’authentification
-                </a>
-            <% } %>
         </section>
 
         <% if (locals.is2faCapable) { %>
