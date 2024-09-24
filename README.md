@@ -10,7 +10,7 @@ Pour vous intégrer la fédération ProConnect, merci de vous référer à [notr
 
 ⚠️ ProConnect Identité n'est plus utilisable en dehors de [la fédération ProConnect](https://www.proconnect.gouv.fr/).
 
-## 1. 🗺️ 1. Tester le parcours
+## 1. 🗺️ Tester le parcours
 
 Pour tester le parcours de connexion ProConnect Identité, vous pouvez utiliser notre plateforme dédiée : https://test.moncomptepro.beta.gouv.fr/.
 
@@ -165,7 +165,7 @@ Les valeurs `acr` utilisées par ProConnect Identité sont les suivantes :
 - `eidas1` authentification simple facteur avec une identité de niveau faible.
 - `https://refeds.org/profile/mfa` authentification par double facteur sans preuve d’identité particulière.
 
-## 3. 👋 3. Contribuer à ProConnect Identité
+## 3. 👋 Contribuer à ProConnect Identité
 
 Pour contribuer à ProConnect Identité, vous pouvez installer l’application localement.
 
