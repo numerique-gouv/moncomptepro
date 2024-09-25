@@ -13,7 +13,6 @@ env:
   PGDATABASE: moncomptepro
   PGHOST: 127.0.0.1
   PGPORT: 5432
-  DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
   NODE_ENV: test
