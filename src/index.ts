@@ -78,11 +78,39 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
     const cspConfig = {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", "data:", "stats.data.gouv.fr"],
-        connectSrc: ["'self'", "stats.data.gouv.fr"],
-        scriptSrc: ["'self'", "stats.data.gouv.fr"],
-        styleSrc: ["'self'"],
-        fontSrc: ["'self'", "data:"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "stats.data.gouv.fr",
+          "client.crisp.chat",
+          "image.crisp.chat",
+          "storage.crisp.chat",
+        ],
+        connectSrc: [
+          "'self'",
+          "stats.data.gouv.fr",
+          "wss://client.relay.crisp.chat",
+          "client.crisp.chat",
+          "storage.crisp.chat",
+          "wss://stream.relay.crisp.chat",
+        ],
+        scriptSrc: [
+          "'self'",
+          "settings.crisp.chat",
+          "blob:",
+        ],
+        styleSrc: ["'self'", "client.crisp.chat", "'unsafe-inline'"],
+        fontSrc: ["'self'", "data:", "client.crisp.chat"],
+        mediaSrc: ["'self'", "client.crisp.chat"],
+        frameSrc: ["'self'", "game.crisp.chat"],
+
+        scriptSrcElem: [
+          "'self'",
+          "client.crisp.chat",
+          "stats.data.gouv.fr",
+          "'sha256-RtdC0WqE+hX0MgZZk4QgMbkV1woYKbsuKQKKnWxsudI='",
+        ],
+        workerSrc: ["'self'", "blob:"],
         // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
         // and seems not useful for open id provider redirection.
         // We bypass this security for now.
