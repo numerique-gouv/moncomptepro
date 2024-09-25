@@ -100,6 +100,7 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
           "client.crisp.chat",
           "blob:",
           "cdn.crisp.chat",
+          "'unsafe-inline'"
         ],
         styleSrc: ["'self'", "client.crisp.chat", "'unsafe-inline'"],
         fontSrc: ["'self'", "data:", "client.crisp.chat"],
@@ -112,6 +113,7 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
           "stats.data.gouv.fr",
           "'sha256-RtdC0WqE+hX0MgZZk4QgMbkV1woYKbsuKQKKnWxsudI='",
           "'sha256-9mBXYlkOC54Ex+ybfMS80Rl1umuwdSZuGjRL5zmgouU='",
+          "'unsafe-inline'"
         ],
         workerSrc: ["'self'", "blob:"],
         // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
