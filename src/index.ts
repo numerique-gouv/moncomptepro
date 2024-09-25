@@ -98,6 +98,7 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
           "'self'",
           "settings.crisp.chat",
           "blob:",
+          "cdn.crisp.chat"
         ],
         styleSrc: ["'self'", "client.crisp.chat", "'unsafe-inline'"],
         fontSrc: ["'self'", "data:", "client.crisp.chat"],
