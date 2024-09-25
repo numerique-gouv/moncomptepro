@@ -97,6 +97,7 @@ if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
         scriptSrc: [
           "'self'",
           "settings.crisp.chat",
+          "client.crisp.chat",
           "blob:",
           "cdn.crisp.chat"
         ],
