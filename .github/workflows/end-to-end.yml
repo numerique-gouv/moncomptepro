@@ -15,6 +15,7 @@ env:
   BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
   CYPRESS_BASE_URL: http://172.18.0.1:3000
   CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+  DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   DEBOUNCE_API_KEY: ${{ secrets.DEBOUNCE_API_KEY }}
   DO_NOT_SEND_MAIL: "False"
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
