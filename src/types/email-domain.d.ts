@@ -3,11 +3,12 @@ interface EmailDomain {
   organization_id: number;
   domain: string;
   verification_type:
-    | "verified"
     | "blacklisted"
-    | "official_contact"
     | "external"
+    | "official_contact"
+    | "refused"
     | "trackdechets_postal_mail"
+    | "verified"
     | null;
   can_be_suggested: boolean;
   // updated when verification_type is changed
