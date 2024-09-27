@@ -44,7 +44,7 @@ export const createAuthenticatedSession = async (
   res: Response,
   user: User,
   authenticationMethodReference: AmrValue,
-): Promise<null> => {
+): Promise<User> => {
   // we store old session value to pass it to the new logged-in session
   // email and needsInclusionconnectWelcomePage are not passed to the new session as it is not useful within logged session
   // csrfToken should not be passed to the new session for security reasons
@@ -66,10 +66,11 @@ export const createAuthenticatedSession = async (
       if (err) {
         reject(err);
       } else {
-        req.session.user = await update(user.id, {
+        const updatedUser = await update(user.id, {
           sign_in_count: user.sign_in_count + 1,
           last_sign_in_at: new Date(),
         });
+        req.session.user = updatedUser;
         // we restore previous session navigation values
         req.session.interactionId = interactionId;
         req.session.mustReturnOneOrganizationInPayload =
@@ -93,7 +94,7 @@ export const createAuthenticatedSession = async (
           setIsTrustedBrowserFromLoggedInSession(req);
         }
 
-        resolve(null);
+        resolve(updatedUser);
       }
     });
   });
