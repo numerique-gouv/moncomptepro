@@ -1,4 +1,4 @@
-import FakeTimers, { InstalledClock } from "@sinonjs/fake-timers";
+import FakeTimers, { type InstalledClock } from "@sinonjs/fake-timers";
 import { assert } from "chai";
 import { isExpired } from "../src/services/is-expired";
 
