@@ -949,14 +949,30 @@ VALUES
      'https://mai-web-b2-astrea-qlf02.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
      'https://mai-web-b2-astrea-qlf03.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
      'https://mai-web-b2-astrea-qlf04.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
-     'https://mai-web-b2-patch.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri'
+     'https://mai-web-b2-patch.apps.ocp4.on-prem.innershift.ssghosting.net/redirect_uri',
+     'https://webb2.atr-i811.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.atr-i801.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.atr-i821.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.atr-ia01.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.atr-i831.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.atr-i301.nantes.preprod.ioc.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.formation.astrea.intranet.justice.gouv.fr/redirect_uri',
+     'https://webb2.preprod.astrea.intranet.justice.gouv.fr/redirect_uri'
     ],
     ARRAY [
      'https://mai-web-b2-astrea-qlf01.apps.ocp4.on-prem.innershift.ssghosting.net',
      'https://mai-web-b2-astrea-qlf02.apps.ocp4.on-prem.innershift.ssghosting.net',
      'https://mai-web-b2-astrea-qlf03.apps.ocp4.on-prem.innershift.ssghosting.net',
      'https://mai-web-b2-astrea-qlf04.apps.ocp4.on-prem.innershift.ssghosting.net',
-     'https://mai-web-b2-patch.apps.ocp4.on-prem.innershift.ssghosting.net'
+     'https://mai-web-b2-patch.apps.ocp4.on-prem.innershift.ssghosting.net',
+     'https://webb2.atr-i811.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.atr-i801.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.atr-i821.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.atr-ia01.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.atr-i831.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.atr-i301.nantes.preprod.ioc.intranet.justice.gouv.fr',
+     'https://webb2.formation.astrea.intranet.justice.gouv.fr',
+     'https://webb2.preprod.astrea.intranet.justice.gouv.fr'
     ],
     'openid email profile organization phone',
     'https://mai-web-b2-astrea-qlf01.apps.ocp-genmob.mtrl.fr.ssg',
