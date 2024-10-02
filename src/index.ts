@@ -67,64 +67,36 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
-  // app.use(
-  //   helmet({
-  //     hsts: false,
-  //     frameguard: false,
-  //   }),
-  // );
+  app.use(
+    helmet({
+      hsts: false,
+      frameguard: false,
+    }),
+  );
 
-  // app.use((req, res, next) => {
-  //   const cspConfig = {
-  //     directives: {
-  //       defaultSrc: ["'self'"],
-  //       imgSrc: [
-  //         "'self'",
-  //         "data:",
-  //         "stats.data.gouv.fr",
-  //         "client.crisp.chat",
-  //         "image.crisp.chat",
-  //         "storage.crisp.chat",
-  //       ],
-  //       connectSrc: [
-  //         "'self'",
-  //         "stats.data.gouv.fr",
-  //         "wss://client.relay.crisp.chat",
-  //         "client.crisp.chat",
-  //         "storage.crisp.chat",
-  //         "wss://stream.relay.crisp.chat",
-  //       ],
-  //       scriptSrc: [
-  //         "'self'",
-  //         "settings.crisp.chat",
-  //         "client.crisp.chat",
-  //         "blob:",
-  //         "cdn.crisp.chat",
-  //         "'unsafe-inline'"
-  //       ],
-  //       styleSrc: ["'self'", "client.crisp.chat", "'unsafe-inline'"],
-  //       fontSrc: ["'self'", "data:", "client.crisp.chat"],
-  //       mediaSrc: ["'self'", "client.crisp.chat"],
-  //       frameSrc: ["'self'", "game.crisp.chat"],
+  app.use((req, res, next) => {
+    const cspConfig = {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "stats.data.gouv.fr", "*.crisp.chat"],
+        connectSrc: [
+          "'self'",
+          "stats.data.gouv.fr",
+          "*.crisp.chat",
+          "wss://*.crisp.chat",
+        ],
+        scriptSrc: ["'self'", "stats.data.gouv.fr", "*.crisp.chat"],
+        styleSrc: ["'self'", "style-src", "*.crisp.chat"],
+        fontSrc: ["'self'", "data:", "*.crisp.chat"],
+        // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
+        // and seems not useful for open id provider redirection.
+        // We bypass this security for now.
+        formAction: ["'self'", "*"],
+      },
+    };
 
-  //       scriptSrcElem: [
-  //         "'self'",
-  //         "client.crisp.chat",
-  //         "stats.data.gouv.fr",
-  //         "'sha256-RtdC0WqE+hX0MgZZk4QgMbkV1woYKbsuKQKKnWxsudI='",
-  //         "'sha256-9mBXYlkOC54Ex+ybfMS80Rl1umuwdSZuGjRL5zmgouU='",
-  //         "'unsafe-inline'"
-  //       ],
-  //       workerSrc: ["'self'", "blob:"],
-  //       // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
-  //       // and seems not useful for open id provider redirection.
-  //       // We bypass this security for now.
-  //       formAction: ["'self'", "*"],
-  //     },
-  //   };
-
-  //   helmet.contentSecurityPolicy(cspConfig)(req, res, next);
-  // });
+    helmet.contentSecurityPolicy(cspConfig)(req, res, next);
+  });
 }
 
 // Disable etag globally to avoid triggering invalid csrf token error
