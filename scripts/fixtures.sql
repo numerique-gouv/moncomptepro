@@ -208,7 +208,9 @@ VALUES
   (45, '31723624800017', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (46, '77730636600058', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (47, '44137965800012', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- used in integration tests of ProConnect Federation
+  (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -372,7 +374,8 @@ VALUES
   (52, 48, 'verified_email_domain', true),
   (53, 48, 'verified_email_domain', true),
   (54, 48, 'verified_email_domain', true),
-  (55, 48, 'verified_email_domain', true)
+  (55, 48, 'verified_email_domain', true),
+  (1, 49, 'verified_email_domain', true)
 ON CONFLICT (user_id, organization_id)
   DO UPDATE
   SET (verification_type, has_been_greeted)
