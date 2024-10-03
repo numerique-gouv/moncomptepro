@@ -51,7 +51,8 @@ import {
 } from "../../services/organization";
 import { isEmailValid } from "../../services/security";
 import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
-import { getOrganizationsByUserId, markDomainAsVerified } from "./main";
+import { getOrganizationsByUserId } from "./main";
+import { markDomainAsVerified } from "./markDomainAsVerified";
 
 export const doSuggestOrganizations = async ({
   user_id,
