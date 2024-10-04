@@ -42,7 +42,7 @@ describe("delete TOTP connexion", () => {
 
   it("should not be ask to sign with TOTP", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
     cy.login("eab4ab97-875d-4ec7-bdcc-04323948ee63@mailslurp.com");
 
     cy.contains('"amr": [\n    "pwd"\n  ],');
@@ -76,7 +76,7 @@ describe("delete TOTP connexion", () => {
 
   it("should not be ask to sign with TOTP", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
     cy.login("c9fabb94-9274-4ece-a3d0-54b1987c8588@mailslurp.com");
 
     cy.contains('"amr": [\n    "pwd"\n  ],');

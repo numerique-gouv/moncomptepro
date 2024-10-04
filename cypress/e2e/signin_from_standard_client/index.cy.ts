@@ -3,7 +3,7 @@
 describe("sign-in from standard client", () => {
   it("should sign-in without org selection when having only one organization", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.login("unused1@yopmail.com");
 
@@ -30,7 +30,7 @@ describe("sign-in from standard client", () => {
 
   it("should sign-in with org selection when having two organization", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.login("unused2@yopmail.com");
 
@@ -61,7 +61,7 @@ describe("sign-in from standard client", () => {
     cy.login("unused1@yopmail.com");
 
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.contains("moncomptepro-standard-client");
     cy.contains("unused1@yopmail.com");

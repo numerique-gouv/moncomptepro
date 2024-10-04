@@ -3,7 +3,7 @@
 describe("sign-in from legacy client", () => {
   it("should sign-in", function () {
     cy.visit("http://localhost:4002");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.login("unused1@yopmail.com");
 
@@ -13,7 +13,7 @@ describe("sign-in from legacy client", () => {
 
     // then it should prompt for organization
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
     cy.contains("Votre organisation de rattachement");
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
     cy.contains("moncomptepro-standard-client");
