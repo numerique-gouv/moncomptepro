@@ -108,7 +108,7 @@
     "axe-core": "^4.8.4",
     "chai": "^5.1.1",
     "chai-as-promised": "^8.0.0",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.0.1",
     "copy-and-watch": "^0.1.6",
     "csv": "^6.3.9",
     "cypress": "^13.14.2",
