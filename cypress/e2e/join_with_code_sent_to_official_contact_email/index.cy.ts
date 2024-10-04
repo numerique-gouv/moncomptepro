@@ -23,6 +23,10 @@ describe("join organizations", () => {
     cy.get('[name="siret"]').type("21340126800130");
     cy.get('[type="submit"]').click();
 
+    // Check the choice of email
+
+    cy.contains("Continuer avec cet email").click();
+
     // Check that the website is waiting for the user to verify their email
     cy.contains(
       "nous avons envoyé un code secret à l’adresse email de votre mairie",
