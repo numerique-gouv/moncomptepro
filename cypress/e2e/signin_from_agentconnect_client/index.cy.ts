@@ -3,7 +3,7 @@
 describe("sign-in from agentconnect client", () => {
   it("should sign-in", () => {
     cy.visit("http://localhost:4001");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')
@@ -20,7 +20,7 @@ describe("sign-in from agentconnect client", () => {
     cy.login("unused1@yopmail.com");
 
     cy.visit("http://localhost:4001");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.contains("moncomptepro-agentconnect-client");
     cy.contains("unused1@yopmail.com");
@@ -31,7 +31,7 @@ describe("sign-in from agentconnect client", () => {
     cy.login("unused2@yopmail.com");
 
     cy.visit("http://localhost:4001");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.get('[name="password"]').type("password123");
     cy.get('[action="/users/sign-in"]  [type="submit"]')

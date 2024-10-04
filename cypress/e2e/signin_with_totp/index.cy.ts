@@ -1,7 +1,7 @@
 describe("sign-in with TOTP on untrusted browser", () => {
   it("should sign-in with password and TOTP", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.mfaLogin("unused1@yopmail.com");
 
@@ -10,7 +10,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
 
   it("should sign-in with password and no TOTP", function () {
     cy.visit("http://localhost:4000");
-    cy.get("button.moncomptepro-button").click();
+    cy.get("button.proconnect-button").click();
 
     cy.login("unused2@yopmail.com");
 
