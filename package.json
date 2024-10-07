@@ -35,7 +35,7 @@
     ]
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "@fullhuman/postcss-purgecss": "^6.0.0",
     "@gouvfr/dsfr": "^1.12.1",
     "@numerique-gouv/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
     "@panva/jose": "^1.9.3",
