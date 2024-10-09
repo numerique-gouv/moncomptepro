@@ -83,7 +83,7 @@
     "oidc-provider": "^8.5.1",
     "pg": "^8.13.0",
     "qrcode": "^1.5.3",
-    "rate-limiter-flexible": "^2.4.2",
+    "rate-limiter-flexible": "^5.0.3",
     "tld-extract": "^2.1.0",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4",
