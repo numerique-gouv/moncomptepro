@@ -81,7 +81,7 @@
     "node-pg-migrate": "^7.6.1",
     "npm-run-all2": "^6.1.2",
     "oidc-provider": "^8.5.1",
-    "pg": "^8.11.5",
+    "pg": "^8.13.0",
     "qrcode": "^1.5.3",
     "rate-limiter-flexible": "^2.4.2",
     "tld-extract": "^2.1.0",
