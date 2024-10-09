@@ -30,7 +30,6 @@ Ainsi, vous pouvez vous créer n’importe quel compte utilisateur en entrant n�
 Voici 2 scénarios que vous pouvez tester sur cet environnement :
 
 - entreprise unipersonnelle : créer un compte avec une adresse email jetable, puis utiliser le SIRET d'une organisation unipersonnelle ;
-- petite mairie : créer un compte avec une adresse email qui n'ait pas comme nom de domaine `yopmail.com`, utiliser le siret d'une collectivité de moins de 50 employés, se connecter en restituant le code reçu à `mairie@yopmail.com` ;
 - [commune de Clarmart](https://annuaire-entreprises.data.gouv.fr/entreprise/commune-de-clamart-219200235) : vous pouvez directement rejoindre cette commune avec un compte utilisant un email sur le domaine `yopmail.com`.
 
 ## 2. 📚 Documentation technique
