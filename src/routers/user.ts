@@ -329,6 +329,16 @@ export const userRouter = () => {
     ),
   );
 
+  userRouter.post(
+    "/cancel-moderation-and-redirect-to-personal-information/:moderation_id",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    postCancelModerationAndRedirectControllerFactory(
+      "/users/personal-information",
+    ),
+  );
+
   userRouter.get(
     "/select-organization",
     checkUserHasAtLeastOneOrganizationMiddleware,

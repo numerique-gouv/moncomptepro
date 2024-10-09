@@ -296,3 +296,51 @@ export const getHelpController = async (
     next(error);
   }
 };
+
+export const getEditModerationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    let email: string | undefined;
+    let user: User | undefined;
+    let cached_libelle: string | null | undefined;
+
+    if (isWithinAuthenticatedSession(req.session)) {
+      user = getUserFromAuthenticatedSession(req);
+      email = user.email;
+    }
+
+    const schema = z.object({
+      moderation_id: z.union([idSchema(), z.undefined()]),
+    });
+    let { moderation_id } = await schema.parseAsync(req.query);
+
+    if (!isEmpty(user) && moderation_id) {
+      try {
+        const organization = await getOrganizationFromModeration({
+          user,
+          moderation_id,
+        });
+        cached_libelle = organization.cached_libelle;
+      } catch (e) {
+        if (!(e instanceof NotFoundError || e instanceof ForbiddenError)) {
+          return next(e);
+        }
+
+        moderation_id = undefined;
+      }
+    }
+
+    return res.render("edit-moderation", {
+      pageTitle: "Modifier une demande de rattachement en cours",
+      email,
+      csrfToken: email && csrfToken(req),
+      organization_label: cached_libelle,
+      moderation_id,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
