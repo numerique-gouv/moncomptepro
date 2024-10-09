@@ -210,7 +210,9 @@ VALUES
   (47, '44137965800012', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- used in integration tests of ProConnect Federation
-  (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- back to the above category
+  (50, '81403721400016', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -279,7 +281,8 @@ VALUES
   (49, 2, 'agent1.tchap.incubateur.net', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (50, 2, 'agent2.tchap.incubateur.net', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (51, 2, 'tchap.beta.gouv.fr', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (52, 2, 'externe.tchap.incubateur.net', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (52, 2, 'externe.tchap.incubateur.net', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (53, 50, 'yeswehack.ninja', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
   SET (organization_id, domain, verification_type, created_at, updated_at, verified_at)
