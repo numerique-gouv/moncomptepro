@@ -1,0 +1,63 @@
+<div class="page-container">
+  <h1 class="fr-h1">Code de vérification</h2>
+    <div id="code-verification">
+        <h2 class="title-with-anchor fr-h3">
+            <span>Vous ne recevez pas le code de vérification</span>
+            <a
+                aria-label="Lien direct vers section Vous ne recevez pas le code de vérification"
+                class="fr-btn fr-btn--sm fr-icon-link  fr-btn--tertiary-no-outline"
+                href="#code-verification"
+            ></a>
+        </h3>
+        <p>Vous êtes peut-être dans l’une de ces situations :</p>
+        <ul>
+            <li class="fr-mb-3w">Votre code a expiré ou vous avez perdu l’email qui contenait le code<br>
+                💡 <b>
+                    <form
+                        class="inline-form" autocomplete="off"
+                        action="/users/send-email-verification"
+                        method="post"
+                    >
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                        <input
+                        style="font-weight: bold;"
+                        class="fr-link" type="submit"
+                        value="Cliquez ici pour recevoir un nouveau code"
+                        />
+                    </form>
+                </b>
+            </li>
+            <li class="fr-mb-3w">Vous avez fait une erreur de saisie dans votre adresse
+                <% if (locals.email) { %>
+                    <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                        <%= email; %>
+                    </span>
+                <% } else { %>
+                    email
+                <% } %>
+                <br>
+                💡 <b>
+                    <a class="fr-link" href="/users/start-sign-in" style="text-decoration: none;">
+                        Recréez un compte avec la bonne adresse
+                    </a>
+                </b>
+            </li>
+            <li class="fr-mb-3w">Le code est arrivé dans vos courriers indésirables<br>
+                💡 <b>Vérifiez vos spams</b>
+            </li>
+            <li class="fr-mb-3w">Votre organisation utilise une protection contre les spams (comme MailInBlack)<br>
+                💡<b> Contactez votre fournisseur de mail pour qu’il autorise les emails en provenance de
+                    <i>nepasrepondre@email.moncomptepro.beta.gouv.fr</i> (adresse IP : 172.246.41.163)
+                </b>
+            </li>
+        </ul>
+        <p>Vous n’êtes dans aucune de ces situations ? 
+            <a
+                class="fr-link"
+                href="mailto:contact@moncomptepro.beta.gouv.fr?subject=Je%20ne%20re%C3%A7ois%20pas%20le%20code%20de%20verification"
+            >
+            Contactez-nous
+            </a>.
+        </p>
+    </div>
+</div>

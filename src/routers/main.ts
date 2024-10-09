@@ -6,6 +6,7 @@ import {
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
+  getVerificationCodeController,
   postDisableForce2faController,
   postEnableForce2faController,
   postPersonalInformationsController,
@@ -150,6 +151,14 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     getHelpController,
+  );
+
+  mainRouter.get(
+    "/verification-code",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    csrfProtectionMiddleware,
+    getVerificationCodeController,
   );
 
   return mainRouter;
