@@ -12,9 +12,8 @@
     "noUnusedParameters": true,
     "outDir": "./build",
     "resolveJsonModule": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "verbatimModuleSyntax": true
   },
-  "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["./src/**/*"]
+  "extends": "@tsconfig/node20/tsconfig.json"
 }

@@ -1,11 +1,14 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
 import { AxiosError } from "axios";
+import { parse, stringify, transform } from "csv";
 import fs from "fs";
 import { isEmpty, some, toInteger } from "lodash-es";
+import { z } from "zod";
 import {
   getInseeAccessToken,
   getOrganizationInfo,
 } from "../src/connectors/api-sirene";
+import { findByUserId } from "../src/repositories/organization/getters";
 import {
   linkUserToOrganization,
   upsert,
@@ -26,11 +29,12 @@ import {
   isSiretValid,
 } from "../src/services/security";
 
-import { parse, stringify, transform } from "csv";
-import { findByUserId } from "../src/repositories/organization/getters";
-
-const INPUT_FILE = process.env.INPUT_FILE ?? "./input.csv";
-const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "./output.csv";
+const { INPUT_FILE, OUTPUT_FILE } = z
+  .object({
+    INPUT_FILE: z.string().default("./input.csv"),
+    OUTPUT_FILE: z.string().default("./output.csv"),
+  })
+  .parse(process.env);
 
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
@@ -95,6 +99,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
   logger.info("");
 
   const transformStream = transform(
+    { parallel: 1 }, // avoid messing with line orders
     async function (
       data: InputCsvData,
       done: (err: null | Error, data?: OutputCsvData) => void,
@@ -224,7 +229,6 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         return done(null, { ...data, error: "unexpected_error" });
       }
     },
-    { parallel: 1 }, // avoid messing with line orders
   ).on("end", () => {
     logger.info(`Import done! Import logs are recorded in ${OUTPUT_FILE}.`);
     logger.info("");

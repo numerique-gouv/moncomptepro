@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { isDate, isEmpty, toInteger } from "lodash-es";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { getDatabaseConnection } from "../src/connectors/postgres";
 import { upsert } from "../src/repositories/organization/setters";

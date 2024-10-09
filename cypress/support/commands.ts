@@ -8,7 +8,14 @@ import { checkA11y } from "./a11y/checkA11y";
 declare global {
   namespace Cypress {
     interface Chainable {
-      login(email: string, password: string): Chainable<void>;
+      fillLoginFields(options: {
+        email: string;
+        password?: string;
+        totpSecret?: string;
+      }): Chainable<void>;
+      fillTotpFields(totpSecret?: string): Chainable<void>;
+      login(email: string): Chainable<void>;
+      mfaLogin(email: string): Chainable<void>;
     }
   }
 }

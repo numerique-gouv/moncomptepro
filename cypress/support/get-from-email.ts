@@ -1,6 +1,6 @@
 //
 
-import { Email } from "mailslurp-client";
+import type { Email } from "mailslurp-client";
 
 //
 
