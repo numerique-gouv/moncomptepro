@@ -50,7 +50,7 @@ describe("join organizations", () => {
     );
 
     // Try to change org
-    cy.get('a[href^="/edit-moderation"]')
+    cy.get('a[href^="/users/edit-moderation"]')
       .contains("J’ai fait une erreur dans ma demande")
       .click();
     cy.get('[action^="/users/cancel-moderation-and-redirect-to-join-org/"]')
@@ -64,7 +64,7 @@ describe("join organizations", () => {
     cy.contains("Notre équipe étudie votre demande");
 
     // Try to change email
-    cy.get('a[href^="/edit-moderation"]')
+    cy.get('a[href^="/users/edit-moderation"]')
       .contains("J’ai fait une erreur dans ma demande")
       .click();
     cy.get('[action^="/users/cancel-moderation-and-redirect-to-sign-in/"]')
