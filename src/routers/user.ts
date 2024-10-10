@@ -12,6 +12,7 @@ import {
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 import { postDeleteUserController } from "../controllers/user/delete";
+import { getEditModerationController } from "../controllers/user/edit-moderation";
 import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
 import {
   getMagicLinkSentController,
@@ -44,7 +45,6 @@ import {
   postResetPasswordController,
 } from "../controllers/user/update-password";
 import {
-  getEditModerationController,
   getPersonalInformationsController,
   postPersonalInformationsController,
 } from "../controllers/user/update-personal-informations";
