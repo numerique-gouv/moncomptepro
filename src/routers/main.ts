@@ -6,7 +6,6 @@ import {
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
-  getVerificationCodeController,
   postDisableForce2faController,
   postEnableForce2faController,
   postPersonalInformationsController,
@@ -16,6 +15,7 @@ import {
   postAuthenticatorAppConfigurationController,
   postDeleteAuthenticatorAppConfigurationController,
 } from "../controllers/totp";
+import { getVerificationCodeController } from "../controllers/user/verification-code";
 import {
   deletePasskeyController,
   postVerifyRegistrationController,

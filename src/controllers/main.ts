@@ -296,29 +296,3 @@ export const getHelpController = async (
     next(error);
   }
 };
-
-export const getVerificationCodeController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    let email: string | undefined;
-    let user: User | undefined;
-    let cached_libelle: string | null | undefined;
-
-    if (isWithinAuthenticatedSession(req.session)) {
-      user = getUserFromAuthenticatedSession(req);
-      email = user.email;
-    }
-
-    return res.render("verification-code", {
-      pageTitle: "Renvoyer un code",
-      email,
-      csrfToken: email && csrfToken(req),
-      organization_label: cached_libelle,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
