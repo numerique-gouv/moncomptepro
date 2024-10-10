@@ -4,7 +4,10 @@ import { NotFoundError } from "../../config/errors";
 import { getUserFromAuthenticatedSession } from "../../managers/session/authenticated";
 
 import { z } from "zod";
-import { getOrganizationFromModeration } from "../../managers/moderation";
+import {
+  cancelModeration,
+  getOrganizationFromModeration,
+} from "../../managers/moderation";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { idSchema } from "../../services/custom-zod-schemas";
 
@@ -40,3 +43,24 @@ export const getEditModerationController = async (
     next(error);
   }
 };
+
+export const postCancelModerationAndRedirectControllerFactory =
+  (redirectUrl: string) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const schema = z.object({
+        moderation_id: idSchema(),
+      });
+      const { moderation_id } = await schema.parseAsync(req.params);
+      const user = getUserFromAuthenticatedSession(req);
+
+      await cancelModeration({ user, moderation_id });
+
+      return res.redirect(redirectUrl);
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return res.redirect(redirectUrl);
+      }
+      next(e);
+    }
+  };

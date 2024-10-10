@@ -12,10 +12,7 @@ import {
   UserInOrganizationAlreadyError,
   UserMustConfirmToJoinOrganizationError,
 } from "../config/errors";
-import {
-  cancelModeration,
-  getOrganizationFromModeration,
-} from "../managers/moderation";
+import { getOrganizationFromModeration } from "../managers/moderation";
 import {
   doSuggestOrganizations,
   getOrganizationSuggestions,
@@ -222,31 +219,9 @@ export const getUnableToAutoJoinOrganizationController = async (
     if (e instanceof NotFoundError) {
       next(new HttpErrors.NotFound());
     }
-
     next(e);
   }
 };
-
-export const postCancelModerationAndRedirectControllerFactory =
-  (redirectUrl: string) =>
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const schema = z.object({
-        moderation_id: idSchema(),
-      });
-      const { moderation_id } = await schema.parseAsync(req.params);
-      const user = getUserFromAuthenticatedSession(req);
-
-      await cancelModeration({ user, moderation_id });
-
-      return res.redirect(redirectUrl);
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        return res.redirect(redirectUrl);
-      }
-      next(e);
-    }
-  };
 
 export const postQuitUserOrganizationController = async (
   req: Request,
