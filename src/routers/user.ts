@@ -44,6 +44,7 @@ import {
   postResetPasswordController,
 } from "../controllers/user/update-password";
 import {
+  getEditModerationController,
   getPersonalInformationsController,
   postPersonalInformationsController,
 } from "../controllers/user/update-personal-informations";
@@ -309,6 +310,13 @@ export const userRouter = () => {
     checkUserHasPersonalInformationsMiddleware,
     csrfProtectionMiddleware,
     getUnableToAutoJoinOrganizationController,
+  );
+
+  userRouter.get(
+    "/edit-moderation",
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    getEditModerationController,
   );
 
   userRouter.post(

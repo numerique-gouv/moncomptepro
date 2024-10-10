@@ -2,7 +2,6 @@ import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
   getConnectionAndAccountController,
-  getEditModerationController,
   getHelpController,
   getHomeController,
   getManageOrganizationsController,
@@ -151,14 +150,6 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     getHelpController,
-  );
-
-  mainRouter.get(
-    "/edit-moderation",
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
-    getEditModerationController,
   );
 
   return mainRouter;
