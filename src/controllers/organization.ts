@@ -241,6 +241,9 @@ export const postCancelModerationAndRedirectControllerFactory =
 
       return res.redirect(redirectUrl);
     } catch (e) {
+      if (e instanceof NotFoundError) {
+        return res.redirect(redirectUrl);
+      }
       next(e);
     }
   };
