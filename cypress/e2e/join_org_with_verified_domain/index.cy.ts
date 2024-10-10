@@ -50,13 +50,11 @@ describe("join organizations", () => {
     );
 
     // Try to change org
-    cy.get('a[href^="/help"]')
+    cy.get('a[href^="/users/edit-moderation"]')
       .contains("J’ai fait une erreur dans ma demande")
       .click();
     cy.get('[action^="/users/cancel-moderation-and-redirect-to-join-org/"]')
-      .contains(
-        "Annuler la demande en cours et sélectionner une organisation différente",
-      )
+      .contains("Sélectionner une organisation différente")
       .click();
 
     cy.get('[name="siret"]').type("13002526500013");
@@ -64,13 +62,11 @@ describe("join organizations", () => {
     cy.contains("Notre équipe étudie votre demande");
 
     // Try to change email
-    cy.get('a[href^="/help"]')
+    cy.get('a[href^="/users/edit-moderation"]')
       .contains("J’ai fait une erreur dans ma demande")
       .click();
     cy.get('[action^="/users/cancel-moderation-and-redirect-to-sign-in/"]')
-      .contains(
-        "Annuler la demande en cours et utiliser une autre adresse email",
-      )
+      .contains("Utiliser une autre adresse email")
       .click();
     cy.contains("S’inscrire ou se connecter");
   });
