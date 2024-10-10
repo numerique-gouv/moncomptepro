@@ -7,7 +7,8 @@
     </p>
     <ul>
       <li class="fr-mb-3w">
-        Vous voulez utiliser une autre adresse email<br />
+        Vous voulez annuler la demande en cours et utiliser une autre adresse
+        email<br />
         💡 <b>
           <form
             class="inline-form"
@@ -25,13 +26,14 @@
               aria-label="Corriger l’email <%= email; %>"
               class="fr-link"
               type="submit"
-              value="Annuler la demande en cours et utiliser une autre adresse email"
+              value="Utiliser une autre adresse email"
             />
           </form>
         </b>
       </li>
       <li class="fr-mb-3w">
-        Vous voulez être rattaché à une autre organisation<br />
+        Vous voulez annuler la demande en cours et être rattaché à une autre
+        organisation<br />
         💡 <b>
           <form
             class="inline-form"
@@ -49,18 +51,19 @@
               aria-label="Corriger l’organisation <%= organization_label; %>"
               class="fr-link"
               type="submit"
-              value="Annuler la demande en cours et sélectionner une organisation différente"
+              value="Sélectionner une organisation différente"
             />
           </form>
         </b>
       </li>
       <li class="fr-mb-3w">
-        Vous voulez modifier vos informations personnelles<br />
+        Vous voulez annuler la demande en cours et modifier vos informations
+        personnelles<br />
         💡 <b>
           <form
             class="inline-form"
             autocomplete="off"
-            action="/cancel-moderation-and-redirect-to-personal-information/<%= moderation_id; %>"
+            action="/users/cancel-moderation-and-redirect-to-personal-information/<%= moderation_id; %>"
             method="post"
           >
             <input
@@ -73,7 +76,7 @@
               aria-label="Corriger ses informations personnelles"
               class="fr-link"
               type="submit"
-              value="Annuler la demande en cours et corriger ses informations personnelles"
+              value="Corriger ses informations personnelles"
             />
           </form>
         </b>
