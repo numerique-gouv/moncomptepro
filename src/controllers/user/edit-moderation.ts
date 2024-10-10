@@ -26,7 +26,7 @@ export const getEditModerationController = async (
       moderation_id,
     });
 
-    return res.render("edit-moderation", {
+    return res.render("user/edit-moderation", {
       pageTitle: "Modifier une demande de rattachement en cours",
       email: user.email,
       csrfToken: user.email && csrfToken(req),
