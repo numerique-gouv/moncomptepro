@@ -47,6 +47,7 @@ import {
   getPersonalInformationsController,
   postPersonalInformationsController,
 } from "../controllers/user/update-personal-informations";
+import { getVerificationCodeController } from "../controllers/user/verification-code";
 import {
   getVerifyEmailController,
   postSendEmailVerificationController,
@@ -142,6 +143,13 @@ export const userRouter = () => {
     postSignUpController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
+  );
+
+  userRouter.get(
+    "/verification-code",
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    getVerificationCodeController,
   );
 
   userRouter.get(

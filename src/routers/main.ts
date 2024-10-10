@@ -15,7 +15,6 @@ import {
   postAuthenticatorAppConfigurationController,
   postDeleteAuthenticatorAppConfigurationController,
 } from "../controllers/totp";
-import { getVerificationCodeController } from "../controllers/user/verification-code";
 import {
   deletePasskeyController,
   postVerifyRegistrationController,
@@ -151,14 +150,6 @@ export const mainRouter = (app: Express) => {
     ejsLayoutMiddlewareFactory(app, true),
     csrfProtectionMiddleware,
     getHelpController,
-  );
-
-  mainRouter.get(
-    "/verification-code",
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    csrfProtectionMiddleware,
-    getVerificationCodeController,
   );
 
   return mainRouter;
