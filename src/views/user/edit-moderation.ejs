@@ -1,0 +1,86 @@
+<div class="page-container">
+  <div>
+    <h1 class="fr-h2">Modifier une demande de rattachement en cours</h1>
+    <p>
+      Vous avez demandé à être rattaché à <%= organization_label; %> avec votre
+      adresse <%= email; %>&nbsp;:
+    </p>
+    <ul>
+      <li class="fr-mb-3w">
+        Vous voulez annuler la demande en cours et utiliser une autre adresse
+        email<br />
+        💡 <b>
+          <form
+            class="inline-form"
+            autocomplete="off"
+            action="/users/cancel-moderation-and-redirect-to-sign-in/<%= moderation_id; %>"
+            method="post"
+          >
+            <input
+              type="hidden"
+              name="_csrf"
+              value="<%= csrfToken; %>"
+              autocomplete="off"
+            />
+            <input
+              aria-label="Corriger l’email <%= email; %>"
+              class="fr-link"
+              type="submit"
+              value="Utiliser une autre adresse email"
+            />
+          </form>
+        </b>
+      </li>
+      <li class="fr-mb-3w">
+        Vous voulez annuler la demande en cours et être rattaché à une autre
+        organisation<br />
+        💡 <b>
+          <form
+            class="inline-form"
+            autocomplete="off"
+            action="/users/cancel-moderation-and-redirect-to-join-org/<%= moderation_id; %>"
+            method="post"
+          >
+            <input
+              type="hidden"
+              name="_csrf"
+              value="<%= csrfToken; %>"
+              autocomplete="off"
+            />
+            <input
+              aria-label="Corriger l’organisation <%= organization_label; %>"
+              class="fr-link"
+              type="submit"
+              value="Sélectionner une organisation différente"
+            />
+          </form>
+        </b>
+      </li>
+      <li class="fr-mb-3w">
+        Vous voulez annuler la demande en cours et modifier vos informations
+        personnelles<br />
+        💡 <b>
+          <form
+            class="inline-form"
+            autocomplete="off"
+            action="/users/cancel-moderation-and-redirect-to-personal-information/<%= moderation_id; %>"
+            method="post"
+          >
+            <input
+              type="hidden"
+              name="_csrf"
+              value="<%= csrfToken; %>"
+              autocomplete="off"
+            />
+            <input
+              aria-label="Corriger ses informations personnelles"
+              class="fr-link"
+              type="submit"
+              value="Corriger ses informations personnelles"
+            />
+          </form>
+        </b>
+      </li>
+    </ul>
+  </div>
+</div>

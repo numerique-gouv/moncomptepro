@@ -5,13 +5,16 @@ import {
   getJoinOrganizationController,
   getOrganizationSuggestionsController,
   getUnableToAutoJoinOrganizationController,
-  postCancelModerationAndRedirectControllerFactory,
   postJoinOrganizationMiddleware,
   postQuitUserOrganizationController,
 } from "../controllers/organization";
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 import { postDeleteUserController } from "../controllers/user/delete";
+import {
+  getEditModerationController,
+  postCancelModerationAndRedirectControllerFactory,
+} from "../controllers/user/edit-moderation";
 import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
 import {
   getMagicLinkSentController,
@@ -311,6 +314,13 @@ export const userRouter = () => {
     getUnableToAutoJoinOrganizationController,
   );
 
+  userRouter.get(
+    "/edit-moderation",
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    getEditModerationController,
+  );
+
   userRouter.post(
     "/cancel-moderation-and-redirect-to-sign-in/:moderation_id",
     rateLimiterMiddleware,
@@ -326,6 +336,16 @@ export const userRouter = () => {
     csrfProtectionMiddleware,
     postCancelModerationAndRedirectControllerFactory(
       "/users/join-organization",
+    ),
+  );
+
+  userRouter.post(
+    "/cancel-moderation-and-redirect-to-personal-information/:moderation_id",
+    rateLimiterMiddleware,
+    checkUserHasPersonalInformationsMiddleware,
+    csrfProtectionMiddleware,
+    postCancelModerationAndRedirectControllerFactory(
+      "/users/personal-information",
     ),
   );
 
