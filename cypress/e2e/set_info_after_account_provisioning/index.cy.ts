@@ -57,7 +57,7 @@ describe("set info after account provisioning", () => {
     cy.get('[name="job"]').type("Petit chef");
     cy.get('[type="submit"]').click();
 
-    cy.contains("Votre compte MonComptePro est à jour.");
+    cy.contains("Votre compte ProConnect est à jour.");
     cy.get('[type="submit"]').click();
   });
 

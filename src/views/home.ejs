@@ -4,7 +4,7 @@
         <%- include('partials/notifications.ejs', {notifications: notifications}) %>
         <h2>Services connectés</h2>
         <% if (oidc_clients.length > 0) { %>
-            <p>MonComptePro vous permet de vous connecter à :</p>
+            <p>ProConnect vous permet de vous connecter à :</p>
             <div class="fr-grid-row fr-grid-row--gutters">
                 <% oidc_clients.forEach(({ client_name, client_uri, client_description }) => { %>
                     <div class="fr-col-12 fr-col-lg-6">
