@@ -13,7 +13,6 @@ type RemoteTemplateSlug =
   | "join-organization"
   | "verify-email";
 type LocalTemplateSlug =
-  | "organization-welcome"
   | "welcome"
   | "moderation-processed"
   | "delete-account"
