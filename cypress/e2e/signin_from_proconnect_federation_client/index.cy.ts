@@ -1,6 +1,6 @@
 //
 
-describe("sign-in from agentconnect client", () => {
+describe("sign-in from proconnect federation client", () => {
   it("should sign-in", () => {
     cy.visit("http://localhost:4001");
     cy.get("button.proconnect-button").click();
@@ -10,7 +10,7 @@ describe("sign-in from agentconnect client", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("moncomptepro-agentconnect-client");
+    cy.contains("moncomptepro-proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
     cy.contains("21340126800130");
   });
@@ -22,7 +22,7 @@ describe("sign-in from agentconnect client", () => {
     cy.visit("http://localhost:4001");
     cy.get("button.proconnect-button").click();
 
-    cy.contains("moncomptepro-agentconnect-client");
+    cy.contains("moncomptepro-proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
   });
 
@@ -38,7 +38,7 @@ describe("sign-in from agentconnect client", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("moncomptepro-agentconnect-client");
+    cy.contains("moncomptepro-proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
   });
 });

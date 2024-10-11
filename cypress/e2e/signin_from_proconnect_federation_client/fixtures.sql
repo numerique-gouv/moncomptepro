@@ -24,9 +24,9 @@ INSERT INTO oidc_clients
    authorization_signed_response_alg, introspection_signed_response_alg)
 VALUES
   (
-    'AgentConnect',
-    'agentconnect_client_id',
-    'agentconnect_client_secret',
+    'ProConnect Federation',
+    'proconnect_federation_client_id',
+    'proconnect_federation_client_secret',
     ARRAY [
       'http://localhost:4001/login-callback'
       ],

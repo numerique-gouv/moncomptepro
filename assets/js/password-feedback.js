@@ -158,7 +158,8 @@ document.addEventListener(
         "mon compte pro",
         "agentconnect",
         "agent connect",
-        "cheval exact agrafe pile",
+        "proconnect",
+        "pro connect",
       ].forEach((blacklistedWord) => {
         if (inputValue.toLowerCase().includes(blacklistedWord)) {
           setError(passwordInputMessageBlacklistedWordElement);

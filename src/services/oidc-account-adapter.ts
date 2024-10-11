@@ -31,13 +31,13 @@ export const findAccount: FindAccount = async (_ctx, sub) => {
 
       const personalClaims = {
         sub: id.toString(), // it is essential to always return a sub claim
-        uid: id.toString(), // for AgentConnect use only
+        uid: id.toString(), // for ProConnect Federation use only
         email,
         email_verified,
         updated_at,
         given_name,
         family_name,
-        usual_name: family_name, // for AgentConnect use only
+        usual_name: family_name, // for ProConnect Federation use only
         phone_number,
         phone_number_verified: false,
         job,

@@ -38,14 +38,14 @@ services:
       STYLESHEET_URL:
     network_mode: "host"
 
-  moncomptepro-agentconnect-client:
+  moncomptepro-proconnect-federation-client:
     image: ghcr.io/numerique-gouv/moncomptepro-test-client
     environment:
       PORT: 4001
-      SITE_TITLE: moncomptepro-agentconnect-client
+      SITE_TITLE: moncomptepro-proconnect-federation-client
       HOST: http://localhost:4001
-      MCP_CLIENT_ID: agentconnect_client_id
-      MCP_CLIENT_SECRET: agentconnect_client_secret
+      MCP_CLIENT_ID: proconnect_federation_client_id
+      MCP_CLIENT_SECRET: proconnect_federation_client_secret
       MCP_PROVIDER: http://localhost:3000
       MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
       MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
