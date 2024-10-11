@@ -76,10 +76,10 @@ describe("Signup into new entreprise unipersonnelle", () => {
       // assert reception of confirmation email
       .then((email) => {
         // characters é can triggers this error:
-        // AssertionError: expected 'Votre compte MonComptePro a bien Ã©tÃ© crÃ©Ã©' to equal 'Votre compte MonComptePro a bien été créé'
+        // AssertionError: expected 'Votre compte ProConnect a bien Ã©tÃ© crÃ©Ã©' to equal 'Votre compte ProConnect a bien été créé'
         // we use a regexp to get around this issue.
         expect(email.subject).to.match(
-          /Votre compte MonComptePro a bien ..?t..? cr..?..?/,
+          /Votre compte ProConnect a bien ..?t..? cr..?..?/,
         );
       });
   });

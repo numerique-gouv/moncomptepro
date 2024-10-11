@@ -33,7 +33,7 @@ export const sendModerationProcessedEmail = async ({
 
   await sendMail({
     to: [email],
-    subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+    subject: `[ProConnect] Demande pour rejoindre ${cached_libelle || siret}`,
     template: "moderation-processed",
     params: {
       libelle: cached_libelle || siret,

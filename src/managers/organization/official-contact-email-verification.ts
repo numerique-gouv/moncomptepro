@@ -104,7 +104,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
 
   await sendMail({
     to: [contactEmail],
-    subject: `[MonComptePro] Authentifier un email sur MonComptePro`,
+    subject: `[ProConnect] Authentifier un email sur ProConnect`,
     template: "official-contact-email-verification",
     params: {
       given_name,

@@ -60,11 +60,11 @@ export const sendMail = async ({
   const data = {
     cc: undefined as { email: string }[] | undefined,
     sender: {
-      name: "L’équipe MonComptePro",
+      name: "L’équipe ProConnect",
       email: senderEmail || "nepasrepondre@email.moncomptepro.beta.gouv.fr",
     },
     replyTo: {
-      name: "L’équipe MonComptePro",
+      name: "L’équipe ProConnect",
       email: senderEmail || "support@moncomptepro.beta.gouv.fr",
     },
     // Brevo allow a maximum of 99 recipients

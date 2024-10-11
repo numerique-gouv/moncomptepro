@@ -38,7 +38,7 @@ describe("join organizations", () => {
                 {
                   field: MatchOptionFieldEnum.SUBJECT,
                   should: MatchOptionShouldEnum.EQUAL,
-                  value: "Votre compte MonComptePro a bien été créé",
+                  value: "Votre compte ProConnect a bien été créé",
                 },
               ],
             },
@@ -51,7 +51,7 @@ describe("join organizations", () => {
       )
       // assert reception of confirmation email
       .then((email) => {
-        expect(email.body).to.include("Votre compte MonComptePro est créé !");
+        expect(email.body).to.include("Votre compte ProConnect est créé !");
       });
   });
 });

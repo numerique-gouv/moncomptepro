@@ -1,34 +1,53 @@
 <head>
-    <title>
-      <% if (locals.error_code) { %>
-        Erreur <%= locals.error_code %> -
-      <% } else if (locals.notifications && locals.notifications.some(({ type }) => type === 'error')) { %>
-        Erreur -
-      <% } %>
-      <% if (locals.pageTitle) { %><%= locals.pageTitle %> - <% } %>MonComptePro
-    </title>
-    <meta charset="utf-8" />
-    <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="theme-color" content="#000000" />
-    <meta name="robots" content="noindex,nofollow" />
-    <meta name="googlebot" content="noindex,nofollow" />
-    <meta name="referrer" content="no-referrer-when-downgrade" />
+  <title>
+    <% if (locals.error_code) { %> Erreur <%= locals.error_code %> - <% } else
+    if (locals.notifications && locals.notifications.some(({ type }) => type ===
+    'error')) { %> Erreur - <% } %> <% if (locals.pageTitle) { %><%=
+    locals.pageTitle %> - <% } %>ProConnect
+  </title>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="theme-color" content="#000000" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="googlebot" content="noindex,nofollow" />
+  <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    <link rel="icon" type="image/x-icon" href="/dist/favicons/favicon.svg">
-    <link rel="shrotcut icon" type="image/x-icon" href="/dist/favicons/favicon.ico">
-    <link rel="apple-touch-icon" href="/dist/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/dist/favicons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/dist/favicons/android-chrome-512x512.png">
-    <link rel="stylesheet" href="<%= css('application.css') %>">
-    <link rel="stylesheet" href="<%= css('dsfr.css') %>">
-    <script type="module" src="<%= js('app.js') %>"></script>
-    <!-- Matomo Tag Manager -->
-    <script type="module" src="<%= js('matomo.js') %>"></script>
-    <noscript><p><img src="https://stats.data.gouv.fr/matomo.php?idsite=85&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-    <!-- End Matomo Tag Manager -->
-    <!-- Crisp -->
-    <script type="module" src="<%= js('crisp.js') %>"></script>
+  <link rel="icon" type="image/x-icon" href="/dist/favicons/favicon.svg" />
+  <link
+    rel="shrotcut icon"
+    type="image/x-icon"
+    href="/dist/favicons/favicon.ico"
+  />
+  <link rel="apple-touch-icon" href="/dist/favicons/apple-touch-icon.png" />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="/dist/favicons/android-chrome-192x192.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="512x512"
+    href="/dist/favicons/android-chrome-512x512.png"
+  />
+  <link rel="stylesheet" href="<%= css('application.css') %>" />
+  <link rel="stylesheet" href="<%= css('dsfr.css') %>" />
+  <script type="module" src="<%= js('app.js') %>"></script>
+  <!-- Matomo Tag Manager -->
+  <script type="module" src="<%= js('matomo.js') %>"></script>
+  <noscript
+    ><p>
+      <img
+        src="https://stats.data.gouv.fr/matomo.php?idsite=85&amp;rec=1"
+        style="border: 0"
+        alt=""
+      /></p
+  ></noscript>
+  <!-- End Matomo Tag Manager -->
+  <!-- Crisp -->
+  <script type="module" src="<%= js('crisp.js') %>"></script>
 </head>

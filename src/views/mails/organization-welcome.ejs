@@ -1,9 +1,9 @@
 Bonjour <%= given_name %> <%= family_name %>,
 <br /><br />
-Votre organisation <%= libelle %> utilise déjà MonComptePro.
+Votre organisation <%= libelle %> utilise déjà ProConnect.
 <br /><br />
 Nous tenions à vous informer que les personnes suivantes ont également la possibilité d’effectuer des démarches au nom de votre organisation sur les sites du service public qui utilisent
-<a href="https://moncomptepro.beta.gouv.fr/" style="text-decoration: underline; color: rgb(0, 0, 145);">MonComptePro</a> :
+<a href="https://www.proconnect.gouv.fr/" style="text-decoration: underline; color: rgb(0, 0, 145);">ProConnect</a> :
 <br /><br />
 <ul>
     <% otherUsers.map(function({ given_name, family_name, is_external }) { %>
@@ -21,4 +21,4 @@ Nous tenions à vous informer que les personnes suivantes ont également la poss
 <br /><br />
 Cordialement,
 <br /><br />
-L’équipe MonComptePro
+L’équipe ProConnect

@@ -317,7 +317,7 @@ export const joinOrganization = async ({
       }),
       email,
       nickname: `${given_name} ${family_name}`,
-      subject: `[MonComptePro] Demande pour rejoindre ${cached_libelle || siret}`,
+      subject: `[ProConnect] Demande pour rejoindre ${cached_libelle || siret}`,
     });
   } else {
     logger.info(
@@ -399,7 +399,7 @@ export const greetForJoiningOrganization = async ({
   // Welcome the user when he joins is first organization as he may now be able to connect
   await sendMail({
     to: [email],
-    subject: "Votre compte MonComptePro a bien été créé",
+    subject: "Votre compte ProConnect a bien été créé",
     template: "welcome",
     params: { given_name, family_name, email },
   });

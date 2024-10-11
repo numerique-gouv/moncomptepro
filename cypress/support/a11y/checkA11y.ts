@@ -15,8 +15,8 @@ import { config as pageTitleRule } from "./rules/page-title";
  */
 const configureAxe = (win) => {
   cy.configureAxe({
-    checks: [hasPageTitleCheck("MonComptePro", win)],
-    rules: [pageTitleRule("MonComptePro")],
+    checks: [hasPageTitleCheck("ProConnect", win)],
+    rules: [pageTitleRule("ProConnect")],
   });
 };
 

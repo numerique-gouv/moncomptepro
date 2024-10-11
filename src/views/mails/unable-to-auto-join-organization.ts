@@ -19,6 +19,6 @@ Vous recevrez un email pour accéder à votre démarche dès que nous aurons ter
 (délai moyen : 1 jour ouvré)
 
 Cordialement,
-L’équipe MonComptePro
+L’équipe ProConnect
 `.trim();
 }

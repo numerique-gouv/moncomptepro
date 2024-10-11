@@ -430,7 +430,7 @@ export const sendSendMagicLinkEmail = async (
 
   await sendMail({
     to: [user.email],
-    subject: "Lien de connexion à MonComptePro",
+    subject: "Lien de connexion à ProConnect",
     template: "magic-link",
     params: {
       magic_link: `${host}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
