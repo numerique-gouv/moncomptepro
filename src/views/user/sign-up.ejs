@@ -9,14 +9,24 @@
                 <p class="fr-notice__body">
                     <span class="fr-sr-only">Votre email :</span>
                     <strong><%= email; %></strong>
-                    <a
-                            class="fr-btn fr-btn--close"
-                            title="Changer d’adresse email"
-                            href="/users/start-sign-in"
-                            id="change-email-address"
-                    >
-                        Changer d’adresse email
-                    </a>
+                    <% if (changeEmailButtonMustReturnToPCF) { %>
+                        <button
+                                class="fr-btn fr-btn--close go-back-link"
+                                title="Changer d’adresse email"
+                                id="change-email-address"
+                        >
+                            Changer d’adresse email
+                        </button>
+                    <% } else { %>
+                        <a
+                                class="fr-btn fr-btn--close"
+                                title="Changer d’adresse email"
+                                href="/users/start-sign-in"
+                                id="change-email-address"
+                        >
+                            Changer d’adresse email
+                        </a>
+                    <% } %>
                 </p>
             </div>
         </div>

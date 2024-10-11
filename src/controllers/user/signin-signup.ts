@@ -170,6 +170,7 @@ export const getSignInController = async (
       csrfToken: csrfToken(req),
       email,
       showPasskeySection: hasWebauthnConfigured,
+      changeEmailButtonMustReturnToPCF: req.session.authForProconnectFederation,
     });
   } catch (error) {
     next(error);
@@ -218,10 +219,12 @@ export const getSignUpController = async (
     const { login_hint } = await schema.parseAsync(req.query);
 
     return res.render("user/sign-up", {
+      pageTitle: "Choisir votre mot de passe",
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
       loginHint: login_hint,
       email: getEmailFromUnauthenticatedSession(req),
+      changeEmailButtonMustReturnToPCF: req.session.authForProconnectFederation,
     });
   } catch (error) {
     next(error);

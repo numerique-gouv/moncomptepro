@@ -7,6 +7,7 @@ export interface UnauthenticatedSessionData {
   mustReturnOneOrganizationInPayload?: boolean;
   mustUse2FA?: boolean;
   referrerPath?: string;
+  authForProconnectFederation?: boolean;
 }
 
 export type AmrValue =
