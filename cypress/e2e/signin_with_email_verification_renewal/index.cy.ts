@@ -36,7 +36,7 @@ describe("sign-in with email verification renewal", () => {
         cy.get('[type="submit"]').click();
       });
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte ProConnect");
   });
 
   it("should not show renewal notification for account creation", () => {

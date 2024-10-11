@@ -63,7 +63,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.get('[type="submit"]').click();
 
     // Check redirection to home page
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte ProConnect");
     cy.mailslurp()
       // use inbox id and a timeout of 30 seconds
       .then((mailslurp) =>

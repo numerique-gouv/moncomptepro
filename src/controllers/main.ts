@@ -6,7 +6,6 @@ import { DIRTY_DS_REDIRECTION_URL } from "../config/env";
 import { UserIsNot2faCapableError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
-import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
   getUserFromAuthenticatedSession,
@@ -36,14 +35,9 @@ export const getHomeController = async (
   res: Response,
   _next: NextFunction,
 ) => {
-  const oidc_clients = await getClientsOrderedByConnectionCount(
-    getUserFromAuthenticatedSession(req).id,
-  );
-
   return res.render("home", {
-    pageTitle: "Services connectés",
+    pageTitle: "Accueil",
     notifications: await getNotificationsFromRequest(req),
-    oidc_clients,
   });
 };
 
@@ -96,7 +90,7 @@ export const postPersonalInformationsController = async (
     updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.render("personal-information", {
-      pageTitle: "Vos informations personnelles",
+      pageTitle: "Informations personnelles",
       email: updatedUser.email,
       given_name: updatedUser.given_name,
       family_name: updatedUser.family_name,
@@ -175,7 +169,7 @@ export const getConnectionAndAccountController = async (
     }
 
     return res.render("connection-and-account", {
-      pageTitle: "Connexion et compte",
+      pageTitle: "Compte et connexion",
       notifications: await getNotificationsFromRequest(req),
       email: email,
       passkeys,

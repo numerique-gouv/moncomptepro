@@ -16,6 +16,6 @@ describe("join organizations", () => {
     cy.get('[name="siret"]').type("21740056300011");
     cy.get('[type="submit"]').click();
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte est créé !");
   });
 });

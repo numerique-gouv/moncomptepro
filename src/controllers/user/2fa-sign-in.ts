@@ -33,6 +33,7 @@ export const get2faSignInController = async (
       email,
       showsTotpSection,
       showsPasskeySection,
+      illustration: "illu-password.svg",
     });
   } catch (error) {
     next(error);

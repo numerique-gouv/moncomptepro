@@ -13,7 +13,7 @@ describe("update TOTP application", () => {
 
     cy.mfaLogin("d2469f84-9547-4190-b989-014876fd54ae@mailslurp.com");
 
-    cy.contains("Connexion et compte").click();
+    cy.contains("Compte et connexion").click();
 
     cy.contains("Changer d’application d’authentification").click();
 

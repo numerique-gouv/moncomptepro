@@ -23,7 +23,7 @@ export const getWelcomeController = async (
     return res.render("user/welcome", {
       pageTitle: "Compte créé",
       csrfToken: csrfToken(req),
-      illustration: "welcome.svg",
+      illustration: "illu-support.svg",
       showInclusionConnectOnboardingHelp,
     });
   } catch (error) {

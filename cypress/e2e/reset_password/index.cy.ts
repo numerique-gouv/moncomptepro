@@ -80,6 +80,6 @@ describe("sign-in with magic link", () => {
     );
     cy.get('[action="/users/sign-in"] [type="submit"]').click();
 
-    cy.contains("Votre compte est créé !");
+    cy.contains("Votre compte ProConnect");
   });
 });
