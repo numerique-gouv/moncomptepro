@@ -48,8 +48,8 @@ import {
   postPersonalInformationsController,
 } from "../controllers/user/update-personal-informations";
 import {
-  getVerificationCodeController,
   getVerifyEmailController,
+  getVerifyEmailHelpController,
   postSendEmailVerificationController,
   postVerifyEmailController,
 } from "../controllers/user/verify-email";
@@ -190,7 +190,7 @@ export const userRouter = () => {
     "/verify-email-help",
     checkUserTwoFactorAuthMiddleware,
     csrfProtectionMiddleware,
-    getVerificationCodeController,
+    getVerifyEmailHelpController,
   );
 
   userRouter.post(

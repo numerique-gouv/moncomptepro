@@ -121,7 +121,7 @@ export const postSendEmailVerificationController = async (
   }
 };
 
-export const getVerificationCodeController = async (
+export const getVerifyEmailHelpController = async (
   req: Request,
   res: Response,
   next: NextFunction,
