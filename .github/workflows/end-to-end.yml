@@ -45,8 +45,8 @@ jobs:
           - redirect_after_session_expiration
           - reset_password
           - set_info_after_account_provisioning
-          - signin_from_agentconnect_client
           - signin_from_legacy_client
+          - signin_from_proconnect_federation_client
           - signin_from_standard_client
           - signin_with_email_verification_renewal
           - signin_with_magic_link
@@ -68,15 +68,15 @@ jobs:
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile organization
           STYLESHEET_URL: ""
-      moncomptepro-agentconnect-client:
+      moncomptepro-proconnect-federation-client:
         image: ghcr.io/numerique-gouv/moncomptepro-test-client
         ports:
           - 4001:3000
         env:
-          SITE_TITLE: moncomptepro-agentconnect-client
+          SITE_TITLE: moncomptepro-proconnect-federation-client
           HOST: http://localhost:4001
-          MCP_CLIENT_ID: agentconnect_client_id
-          MCP_CLIENT_SECRET: agentconnect_client_secret
+          MCP_CLIENT_ID: proconnect_federation_client_id
+          MCP_CLIENT_SECRET: proconnect_federation_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
           MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256

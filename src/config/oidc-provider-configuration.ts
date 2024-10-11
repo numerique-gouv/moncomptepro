@@ -32,7 +32,7 @@ export const oidcProviderConfiguration = ({
     ],
     // This scope will be deprecated
     organizations: ["organizations"],
-    // Additional scopes for AgentConnect use only
+    // Additional scopes for ProConnect Federation use only
     uid: ["uid"],
     given_name: ["given_name"],
     usual_name: ["usual_name"],
@@ -134,7 +134,7 @@ export const oidcProviderConfiguration = ({
     "organization",
     // This scope will be deprecated
     "organizations",
-    // Additional scopes for AgentConnect use only
+    // Additional scopes for ProConnect Federation use only
     "uid",
     "given_name",
     "usual_name",

@@ -41,7 +41,8 @@ export const isPasswordSecure = (plainPassword: string, email: string) => {
     "mon compte pro",
     "agentconnect",
     "agent connect",
-    "cheval exact agrafe pile",
+    "proconnect",
+    "pro connect",
   ];
 
   const containsBlacklistedWord = lowerCasedBlacklistedWords.some((word) =>

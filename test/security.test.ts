@@ -240,16 +240,14 @@ describe("isPasswordSecure", () => {
       true,
     );
   });
-  ["cheval exact agrafe pile", "MonComptePro-2023!"].forEach(
-    (blacklistedWord) => {
-      it("should not contains blacklisted word", () => {
-        assert.equal(
-          isPasswordSecure(blacklistedWord, "user1234567890@test.com"),
-          false,
-        );
-      });
-    },
-  );
+  ["Pro Connect forever", "MonComptePro-2023!"].forEach((blacklistedWord) => {
+    it("should not contains blacklisted word", () => {
+      assert.equal(
+        isPasswordSecure(blacklistedWord, "user1234567890@test.com"),
+        false,
+      );
+    });
+  });
   it("should not contains users email address", () => {
     assert.equal(
       isPasswordSecure("User1234567890@test.com!", "user1234567890@test.com"),
