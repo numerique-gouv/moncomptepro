@@ -120,3 +120,20 @@ export const postSendEmailVerificationController = async (
     next(error);
   }
 };
+
+export const getVerifyEmailHelpController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email } = getUserFromAuthenticatedSession(req);
+    return res.render("user/verify-email-help", {
+      pageTitle: "Renvoyer un code",
+      email,
+      csrfToken: email && csrfToken(req),
+    });
+  } catch (error) {
+    next(error);
+  }
+};

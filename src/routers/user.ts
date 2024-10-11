@@ -52,6 +52,7 @@ import {
 } from "../controllers/user/update-personal-informations";
 import {
   getVerifyEmailController,
+  getVerifyEmailHelpController,
   postSendEmailVerificationController,
   postVerifyEmailController,
 } from "../controllers/user/verify-email";
@@ -187,6 +188,14 @@ export const userRouter = () => {
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
+
+  userRouter.get(
+    "/verify-email-help",
+    checkUserTwoFactorAuthMiddleware,
+    csrfProtectionMiddleware,
+    getVerifyEmailHelpController,
+  );
+
   userRouter.post(
     "/send-email-verification",
     rateLimiterMiddleware,
