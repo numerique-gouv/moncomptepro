@@ -84,7 +84,8 @@ SELECT
   userinfo_signed_response_alg,
   id_token_signed_response_alg,
   authorization_signed_response_alg,
-  introspection_signed_response_alg
+  introspection_signed_response_alg,
+  is_proconnect_federation
 FROM oidc_clients"
 psql $SRC_DB_URL --command="ALTER TABLE tmp_oidc_clients ADD PRIMARY KEY (id)"
 pg_dump --table=tmp_oidc_clients $SRC_DB_URL | psql $DEST_DB_URL

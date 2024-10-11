@@ -8,6 +8,7 @@ import {
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
 import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
+import { findByClientId } from "../repositories/oidc-client";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import { shouldTrigger2fa } from "../services/should-trigger-2fa";
@@ -18,7 +19,7 @@ export const interactionStartControllerFactory =
     try {
       const {
         uid: interactionId,
-        params: { login_hint, scope },
+        params: { client_id, login_hint, scope },
         prompt,
       } = await oidcProvider.interactionDetails(req, res);
 
@@ -28,6 +29,10 @@ export const interactionStartControllerFactory =
       if (shouldTrigger2fa(prompt)) {
         req.session.mustUse2FA = true;
       }
+
+      const oidcClient = await findByClientId(client_id);
+      req.session.authForProconnectFederation =
+        oidcClient?.is_proconnect_federation;
 
       if (login_hint) {
         setLoginHintInUnauthenticatedSession(req, login_hint);
@@ -102,6 +107,7 @@ export const interactionEndControllerFactory =
       req.session.interactionId = undefined;
       req.session.mustReturnOneOrganizationInPayload = undefined;
       req.session.mustUse2FA = undefined;
+      req.session.authForProconnectFederation = undefined;
 
       await oidcProvider.interactionFinished(req, res, result);
     } catch (error) {

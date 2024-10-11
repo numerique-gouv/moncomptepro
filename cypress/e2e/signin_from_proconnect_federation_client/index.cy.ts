@@ -41,4 +41,13 @@ describe("sign-in from proconnect federation client", () => {
     cy.contains("moncomptepro-proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
   });
+
+  it("should go back to the Federation client when hitting the change email button", () => {
+    cy.visit("http://localhost:4001");
+    cy.get("button.proconnect-button").click();
+
+    cy.get("#change-email-address").click();
+
+    cy.contains("moncomptepro-proconnect-federation-client");
+  });
 });

@@ -1088,3 +1088,7 @@ SELECT setval(
         (SELECT last_value FROM oidc_clients_id_seq)
       )
   );
+
+UPDATE oidc_clients
+SET is_proconnect_federation = true
+WHERE id = 15;
