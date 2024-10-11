@@ -8,7 +8,6 @@ import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
 import {
   addAuthenticationMethodReferenceInSession,
   getUserFromAuthenticatedSession,
-  isWithinAuthenticatedSession,
 } from "../../managers/session/authenticated";
 import {
   sendEmailAddressVerificationEmail,
@@ -128,14 +127,7 @@ export const getVerificationCodeController = async (
   next: NextFunction,
 ) => {
   try {
-    let email: string | undefined;
-    let user: User | undefined;
-
-    if (isWithinAuthenticatedSession(req.session)) {
-      user = getUserFromAuthenticatedSession(req);
-      email = user.email;
-    }
-
+    const { email } = getUserFromAuthenticatedSession(req);
     return res.render("user/verify-email-help", {
       pageTitle: "Renvoyer un code",
       email,

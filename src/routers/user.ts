@@ -146,12 +146,6 @@ export const userRouter = () => {
   );
 
   userRouter.get(
-    "/verify-email-help",
-    csrfProtectionMiddleware,
-    getVerificationCodeController,
-  );
-
-  userRouter.get(
     "/2fa-sign-in",
     checkUserIsConnectedMiddleware,
     csrfProtectionMiddleware,
@@ -191,6 +185,14 @@ export const userRouter = () => {
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
   );
+
+  userRouter.get(
+    "/verify-email-help",
+    checkUserTwoFactorAuthMiddleware,
+    csrfProtectionMiddleware,
+    getVerificationCodeController,
+  );
+
   userRouter.post(
     "/send-email-verification",
     rateLimiterMiddleware,
