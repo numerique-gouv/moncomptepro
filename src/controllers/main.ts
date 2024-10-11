@@ -1,22 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
-import { isEmpty } from "lodash-es";
 import moment from "moment/moment";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 import { DIRTY_DS_REDIRECTION_URL } from "../config/env";
-import {
-  ForbiddenError,
-  NotFoundError,
-  UserIsNot2faCapableError,
-} from "../config/errors";
+import { UserIsNot2faCapableError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
-import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
   getUserFromAuthenticatedSession,
-  isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
 import {
@@ -32,7 +25,6 @@ import {
 } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
-import { idSchema } from "../services/custom-zod-schemas";
 import {
   getNotificationLabelFromRequest,
   getNotificationsFromRequest,
