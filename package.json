@@ -13,6 +13,7 @@
   "scripts": {
     "build": "run-s build:**",
     "build:assets": "vite build --clearScreen false",
+    "build:core": "npm run build --workspace=@numerique-gouv/moncomptepro.core",
     "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "build:db:migrate": "npm run --silent migrate -- up",
     "delete-database": "if [ \"$ENABLE_DATABASE_DELETION\" = \"True\" ]; then tsx scripts/run-sql-script.ts scripts/delete_all.sql; fi",
@@ -46,6 +47,7 @@
     "@kitajs/html": "^4.2.4",
     "@kitajs/ts-html-plugin": "^4.1.0",
     "@numerique-gouv/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
+    "@numerique-gouv/moncomptepro.core": "workspace:*",
     "@numerique-gouv/moncomptepro.email": "workspace:*",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.112.2",
@@ -54,7 +56,6 @@
     "@simplewebauthn/server": "^8.3.5",
     "@simplewebauthn/typescript-types": "^8.3.4",
     "@sunknudsen/totp": "^1.1.0",
-    "@tsconfig/node20": "^20.1.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/console-log-level": "^1.4.5",
     "@types/cookie-parser": "^1.4.7",
@@ -105,6 +106,7 @@
   "devDependencies": {
     "@simplewebauthn/types": "^10.0.0",
     "@sinonjs/fake-timers": "^11.2.2",
+    "@tsconfig/node22": "^22.0.0",
     "@types/chai": "^5.0.0",
     "@types/chai-as-promised": "^7.1.8",
     "@types/html-to-text": "^9.0.4",

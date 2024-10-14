@@ -1,0 +1,42 @@
+{
+  "name": "@numerique-gouv/moncomptepro.core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": {
+      "types": "./src/*",
+      "default": "./dist/*"
+    }
+  },
+  "exports": {
+    "./*": {
+      "require": {
+        "types": "./dist/*",
+        "default": "./dist/*"
+      },
+      "import": {
+        "types": "./dist/*",
+        "default": "./dist/*"
+      },
+      "types": "./dist/*",
+      "default": "./dist/*"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.lib.json",
+    "dev": "npm run build -- --watch --preserveWatchOutput",
+    "check": "npm run build -- --noEmit",
+    "test": "mocha --require tsx src/**/*.test.ts"
+  },
+  "dependencies": {
+    "is-disposable-email-domain": "^1.0.7"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/mocha": "^10.0.7",
+    "chai": "^5.1.1",
+    "tsx": "^4.17.0",
+    "mocha": "^10.7.3"
+  }
+}
