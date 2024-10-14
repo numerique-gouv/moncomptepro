@@ -17,7 +17,7 @@ describe("delete TOTP connexion", () => {
 
     cy.mfaLogin("eab4ab97-875d-4ec7-bdcc-04323948ee63@mailslurp.com");
 
-    cy.contains("Application Authenticator");
+    cy.contains("Configurer un code à usage unique");
 
     cy.contains("Supprimer l’application d’authentification").click();
 
