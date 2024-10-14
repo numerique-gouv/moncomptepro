@@ -1,22 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
-import { isEmpty } from "lodash-es";
 import moment from "moment/moment";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 import { DIRTY_DS_REDIRECTION_URL } from "../config/env";
-import {
-  ForbiddenError,
-  NotFoundError,
-  UserIsNot2faCapableError,
-} from "../config/errors";
+import { UserIsNot2faCapableError } from "../config/errors";
 import notificationMessages from "../config/notification-messages";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "../managers/2fa";
-import { getOrganizationFromModeration } from "../managers/moderation";
 import { getClientsOrderedByConnectionCount } from "../managers/oidc-client";
 import { getUserOrganizations } from "../managers/organization/main";
 import {
   getUserFromAuthenticatedSession,
-  isWithinAuthenticatedSession,
   updateUserInAuthenticatedSession,
 } from "../managers/session/authenticated";
 import {
@@ -32,7 +25,6 @@ import {
 } from "../managers/user";
 import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
-import { idSchema } from "../services/custom-zod-schemas";
 import {
   getNotificationLabelFromRequest,
   getNotificationsFromRequest,
@@ -245,54 +237,6 @@ export const postEnableForce2faController = async (
       next(new HttpErrors.UnprocessableEntity());
     }
 
-    next(error);
-  }
-};
-
-export const getHelpController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    let email: string | undefined;
-    let user: User | undefined;
-    let cached_libelle: string | null | undefined;
-
-    if (isWithinAuthenticatedSession(req.session)) {
-      user = getUserFromAuthenticatedSession(req);
-      email = user.email;
-    }
-
-    const schema = z.object({
-      moderation_id: z.union([idSchema(), z.undefined()]),
-    });
-    let { moderation_id } = await schema.parseAsync(req.query);
-
-    if (!isEmpty(user) && moderation_id) {
-      try {
-        const organization = await getOrganizationFromModeration({
-          user,
-          moderation_id,
-        });
-        cached_libelle = organization.cached_libelle;
-      } catch (e) {
-        if (!(e instanceof NotFoundError || e instanceof ForbiddenError)) {
-          return next(e);
-        }
-
-        moderation_id = undefined;
-      }
-    }
-
-    return res.render("help", {
-      pageTitle: "Aide",
-      email,
-      csrfToken: email && csrfToken(req),
-      organization_label: cached_libelle,
-      moderation_id,
-    });
-  } catch (error) {
     next(error);
   }
 };
