@@ -4,7 +4,7 @@ describe("force recent connexion + 2FA on admin pages", () => {
 
     cy.login("unused1@yopmail.com");
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte ProConnect");
 
     cy.visit("/connection-and-account");
 
@@ -12,7 +12,7 @@ describe("force recent connexion + 2FA on admin pages", () => {
 
     cy.fillTotpFields();
 
-    cy.contains("Connexion et compte");
+    cy.contains("Compte et connexion");
 
     // Wait for connexion to last
     cy.wait(5 * 1000);
@@ -27,6 +27,6 @@ describe("force recent connexion + 2FA on admin pages", () => {
 
     cy.mfaLogin("unused1@yopmail.com");
 
-    cy.contains("Connexion et compte");
+    cy.contains("Compte et connexion");
   });
 });

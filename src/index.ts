@@ -258,8 +258,7 @@ let server: Server;
     res.status(404).send(
       await renderWithEjsLayout("not-found-error", {
         pageTitle: "Page introuvable",
-        illustration:
-          "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
+        illustration: "connection-lost.svg",
       }),
     );
   });
@@ -281,8 +280,7 @@ let server: Server;
           return res.status(404).render("not-found-error", {
             // force not to use dashboard layout in case the error is shown within a dashboard page
             use_dashboard_layout: false,
-            illustration:
-              "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
+            illustration: "connection-lost.svg",
           });
         }
         return res.status(err.statusCode || 500).render("error", {
@@ -290,8 +288,7 @@ let server: Server;
           error_message: err.message,
           // force not to use dashboard layout in case the error is shown within a dashboard page
           use_dashboard_layout: false,
-          illustration:
-            "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
+          illustration: "connection-lost.svg",
         });
       }
 
@@ -301,8 +298,7 @@ let server: Server;
           error_message: err.message,
           // force not to use dashboard layout in case the error is shown within a dashboard page
           use_dashboard_layout: false,
-          illustration:
-            "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
+          illustration: "connection-lost.svg",
         });
       }
 
@@ -311,8 +307,7 @@ let server: Server;
         error_message: err.message,
         // force not to use dashboard layout in case the error is shown within a dashboard page
         use_dashboard_layout: false,
-        illustration:
-          "404_error_page_not_found_with_people_connecting_a_plug_rafiki_1.svg",
+        illustration: "connection-lost.svg",
       });
     },
   );

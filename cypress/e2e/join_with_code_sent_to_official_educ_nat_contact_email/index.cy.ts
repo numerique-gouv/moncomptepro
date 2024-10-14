@@ -49,6 +49,6 @@ describe("join organizations", () => {
         cy.get('[type="submit"]').click();
       });
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte est créé !");
   });
 });

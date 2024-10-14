@@ -26,7 +26,7 @@ describe("join organizations", () => {
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").click();
 
     // Check redirection to welcome page
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte est créé !");
 
     cy.mailslurp()
       .then((mailslurp) =>

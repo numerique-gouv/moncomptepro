@@ -34,7 +34,7 @@ describe("join organizations", () => {
     cy.get('[type="submit"]').click();
 
     // Check redirection to home page
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte ProConnect");
   });
 
   it("join another organisation", function () {

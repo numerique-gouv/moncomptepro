@@ -29,33 +29,6 @@ WHERE client_id = $1
   return rows.shift();
 };
 
-export const getByUserIdOrderedByConnectionCount = async (user_id: number) => {
-  const connection = getDatabaseConnection();
-
-  const { rows }: QueryResult<OidcClient> = await connection.query(
-    `
-SELECT
-    oc.*
-FROM (
-    SELECT
-        user_id,
-        oidc_client_id,
-        COUNT(*) as connection_count,
-        MIN(created_at) as created_at,
-        MAX(updated_at) as updated_at
-    FROM users_oidc_clients
-    WHERE user_id = $1
-    GROUP BY user_id, oidc_client_id
-) uoc
-INNER JOIN oidc_clients oc ON oc.id = uoc.oidc_client_id
-ORDER BY uoc.connection_count DESC, updated_at DESC
-`,
-    [user_id],
-  );
-
-  return rows;
-};
-
 export const addConnection = async ({
   user_id,
   oidc_client_id,

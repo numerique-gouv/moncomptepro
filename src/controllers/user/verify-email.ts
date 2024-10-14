@@ -48,6 +48,7 @@ export const getVerifyEmailController = async (
       newCodeSent: new_code_sent,
       codeSent,
       needs_inclusionconnect_onboarding_help,
+      illustration: "illu-password.svg",
     });
   } catch (error) {
     if (error instanceof NoNeedVerifyEmailAddressError) {
@@ -132,6 +133,7 @@ export const getVerifyEmailHelpController = async (
       pageTitle: "Renvoyer un code",
       email,
       csrfToken: email && csrfToken(req),
+      illustration: "illu-password.svg",
     });
   } catch (error) {
     next(error);

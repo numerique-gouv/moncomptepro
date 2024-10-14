@@ -20,7 +20,7 @@ describe("join organizations", () => {
 
     cy.contains("Continuer avec cet email").click();
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte est créé !");
   });
 
   it("join primary school with official contact email", function () {
@@ -30,6 +30,6 @@ describe("join organizations", () => {
     cy.get('[name="siret"]').type("21340126800049");
     cy.get('[type="submit"]').click();
 
-    cy.contains("Votre compte est créé");
+    cy.contains("Votre compte est créé !");
   });
 });

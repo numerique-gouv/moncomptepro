@@ -63,6 +63,7 @@ export const getStartSignInController = async (
       loginHint: hintFromSession,
       csrfToken: csrfToken(req),
       displayTestEnvWarning: DISPLAY_TEST_ENV_WARNING,
+      illustration: "illu-password.svg",
     });
   } catch (error) {
     next(error);
@@ -171,6 +172,7 @@ export const getSignInController = async (
       email,
       showPasskeySection: hasWebauthnConfigured,
       changeEmailButtonMustReturnToPCF: req.session.authForProconnectFederation,
+      illustration: "illu-password.svg",
     });
   } catch (error) {
     next(error);
