@@ -7,6 +7,9 @@
     "#cypress/*": "./cypress/*.ts"
   },
   "main": "src/index.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "run-s build:**",
     "build:assets": "vite build --clearScreen false",
@@ -38,6 +41,7 @@
     "@fullhuman/postcss-purgecss": "^6.0.0",
     "@gouvfr/dsfr": "^1.12.1",
     "@numerique-gouv/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
+    "@numerique-gouv/moncomptepro.free-email": "workspace:*",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.112.2",
     "@sentry/tracing": "^7.114.0",
