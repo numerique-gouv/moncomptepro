@@ -150,7 +150,8 @@ export const checkUserTwoFactorAuthMiddleware = async (
       const { id: user_id } = getUserFromAuthenticatedSession(req);
 
       if (
-        ((await shouldForce2faForUser(user_id)) || req.session.mustUse2FA) &&
+        ((await shouldForce2faForUser(user_id)) ||
+          req.session.twoFactorsAuthRequested) &&
         !isWithinTwoFactorAuthenticatedSession(req)
       ) {
         if (!(await is2FACapable(user_id))) {
@@ -158,7 +159,8 @@ export const checkUserTwoFactorAuthMiddleware = async (
 
           req.session.interactionId = undefined;
           req.session.mustReturnOneOrganizationInPayload = undefined;
-          req.session.mustUse2FA = undefined;
+          req.session.twoFactorsAuthRequested = undefined;
+          req.session.authForProconnectFederation = undefined;
           return res.redirect(
             "/connection-and-account?notification=2fa_not_configured",
           );

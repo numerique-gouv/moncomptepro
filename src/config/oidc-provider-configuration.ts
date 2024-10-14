@@ -5,6 +5,12 @@ import epochTime from "../services/epoch-time";
 import { findAccount } from "../services/oidc-account-adapter";
 import policy from "../services/oidc-policy";
 import { renderWithEjsLayout } from "../services/renderer";
+import {
+  ACR_VALUE_FOR_IAL1_AAL1,
+  ACR_VALUE_FOR_IAL1_AAL2,
+  ACR_VALUE_FOR_IAL2_AAL1,
+  ACR_VALUE_FOR_IAL2_AAL2,
+} from "./env";
 
 //
 
@@ -13,7 +19,13 @@ export const oidcProviderConfiguration = ({
   shortTokenTtlInSeconds = 10 * 60,
   tokenTtlInSeconds = 60 * 60,
 }): Configuration => ({
-  acrValues: ["eidas1", "https://refeds.org/profile/mfa"],
+  acrValues: [
+    "eidas1",
+    ACR_VALUE_FOR_IAL1_AAL1,
+    ACR_VALUE_FOR_IAL1_AAL2,
+    ACR_VALUE_FOR_IAL2_AAL1,
+    ACR_VALUE_FOR_IAL2_AAL2,
+  ],
   claims: {
     amr: null,
     // claims definitions can be found here: https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
