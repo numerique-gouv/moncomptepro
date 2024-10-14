@@ -1,25 +1,27 @@
 INSERT INTO users
-  (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at,
-   given_name, family_name, phone_number, job, encrypted_totp_key, totp_key_verified_at, force_2fa)
+(id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at,
+ given_name, family_name, phone_number, job, encrypted_totp_key, totp_key_verified_at, force_2fa)
 VALUES
-  (1, 'unused1@yopmail.com', true, CURRENT_TIMESTAMP,
+  (1, 'ial2-aal2@yopmail.com', true, CURRENT_TIMESTAMP,
    '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-   'Jean', 'Jean', '0123456789', 'Sbire',
-   'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
-   CURRENT_TIMESTAMP, true
-  ),
-  (2, '181eb568-ca3d-4995-8b06-a717a83421fd@mailslurp.com', true, CURRENT_TIMESTAMP,
-   '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-   'Jean', 'Jean', '0123456789', 'Sbire',
+   'Jean', 'IAL2 AAL2', '0123456789', 'Sbire',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
    CURRENT_TIMESTAMP, false
   ),
-  (3, 'unused3@yopmail.com', true, CURRENT_TIMESTAMP,
+  (2, 'ial1-aal2@yopmail.com', true, CURRENT_TIMESTAMP,
    '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-   'Jean', 'Jean', '0123456789', 'Sbire',
+   'Jean', 'IAL1 AAL2', '0123456789', 'Sbire',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
-   CURRENT_TIMESTAMP, true
-  );
+   CURRENT_TIMESTAMP, false
+  ),
+  (3, 'ial2-aal1@yopmail.com', true, CURRENT_TIMESTAMP,
+   '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+   'Jean', 'IAL2 AAL1', '0123456789', 'Sbire',
+   null, null, false),
+  (4, 'ial1-aal1@yopmail.com', true, CURRENT_TIMESTAMP,
+   '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+   'Jean', 'IAL1 AAL1', '0123456789', 'Sbire',
+   null, null, false);
 
 INSERT INTO organizations
   (id, siret, created_at, updated_at)
@@ -30,7 +32,9 @@ INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, has_been_greeted)
 VALUES
   (1, 1, false, 'domain', true),
-  (2, 1, false, 'domain', true);
+  (2, 1, false, null, true),
+  (3, 1, false, 'domain', true),
+  (4, 1, false, null, true);
 
 INSERT INTO oidc_clients
   (client_name, client_id, client_secret, redirect_uris,
@@ -39,13 +43,15 @@ INSERT INTO oidc_clients
    authorization_signed_response_alg, introspection_signed_response_alg)
 VALUES
   ('Oidc Test Client',
-   'standard_client_id',
-   'standard_client_secret',
+   'acr_client_id',
+   'acr_client_secret',
    ARRAY [
-     'http://localhost:4000/login-callback'
+     'http://localhost:4003/login-callback'
      ],
-   ARRAY []::varchar[],
+   ARRAY [
+     'http://localhost:4003/'
+     ],
    'openid email profile organization',
-   'http://localhost:4000/',
+   'http://localhost:4003/',
    'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
-   null, null, null, null);
+   null, 'RS256', null, null);

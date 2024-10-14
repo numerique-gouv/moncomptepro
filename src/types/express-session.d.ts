@@ -5,7 +5,7 @@ export interface UnauthenticatedSessionData {
   hasWebauthnConfigured?: boolean;
   interactionId?: string;
   mustReturnOneOrganizationInPayload?: boolean;
-  mustUse2FA?: boolean;
+  twoFactorsAuthRequested?: boolean;
   referrerPath?: string;
   authForProconnectFederation?: boolean;
 }

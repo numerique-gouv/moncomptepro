@@ -50,6 +50,7 @@ jobs:
           - signin_from_standard_client
           - signin_with_email_verification_renewal
           - signin_with_magic_link
+          - signin_with_right_acr
           - signin_with_totp
           - signup_entreprise_unipersonnelle
           - update_personal_information
@@ -67,6 +68,7 @@ jobs:
           MCP_CLIENT_SECRET: standard_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile organization
+          ACR_VALUE_FOR_2FA: urn:dinum:ac:classes:consistency-checked-2fa
           STYLESHEET_URL: ""
       moncomptepro-proconnect-federation-client:
         image: ghcr.io/numerique-gouv/moncomptepro-test-client
@@ -94,6 +96,19 @@ jobs:
           MCP_CLIENT_SECRET: legacy_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile phone organizations
+          STYLESHEET_URL: ""
+      moncomptepro-acr-client:
+        image: ghcr.io/numerique-gouv/moncomptepro-test-client
+        ports:
+          - 4003:3000
+        env:
+          SITE_TITLE: moncomptepro-acr-client
+          HOST: http://localhost:4003
+          MCP_CLIENT_ID: acr_client_id
+          MCP_CLIENT_SECRET: acr_client_secret
+          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          MCP_SCOPES: openid email profile organization
+          ACR_VALUE_FOR_2FA: urn:dinum:ac:classes:consistency-checked
           STYLESHEET_URL: ""
       redis:
         image: redis:7.2
