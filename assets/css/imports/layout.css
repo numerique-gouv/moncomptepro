@@ -74,6 +74,11 @@ main {
   background: #f6f6f6;
 }
 
+.onboarding-container > *:last-child img {
+  height: 20rem;
+  margin: 1.5rem 0 1.5rem ;
+}
+
 .onboarding-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
