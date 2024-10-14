@@ -7,11 +7,15 @@
     "#cypress/*": "./cypress/*.ts"
   },
   "main": "src/index.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "run-s build:**",
     "build:assets": "vite build --clearScreen false",
     "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "build:db:migrate": "node-pg-migrate up",
+    "build:workspaces": "npm run build --if-present --workspaces",
     "delete-database": "if [ \"$ENABLE_DATABASE_DELETION\" = \"True\" ]; then tsx scripts/run-sql-script.ts scripts/delete_all.sql; fi",
     "dev": "NODE_ENV=development concurrently \"npm:watch:*\"",
     "fixtures:load": "node-pg-migrate up && tsx scripts/run-sql-script.ts scripts/fixtures.sql && npm run update-organization-info 2000",
@@ -38,6 +42,7 @@
     "@fullhuman/postcss-purgecss": "^6.0.0",
     "@gouvfr/dsfr": "^1.12.1",
     "@numerique-gouv/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
+    "@numerique-gouv/moncomptepro.free-email": "workspace:*",
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.112.2",
     "@sentry/tracing": "^7.114.0",
