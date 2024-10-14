@@ -27,13 +27,14 @@
         </section>
 
         <section class="fr-mb-6w">
-            <h3>Application Authenticator</h3>
+            <h3>Configurer un code à usage unique</h3>
             <p>
-                Recevez un code de validation via une appli d’authentification, même si votre téléphone est hors
+                Recevez un code à usage unique via une appli d’authentification, même si votre téléphone est hors
                 connexion.
             </p>
             <p>
-                Téléchargez d’abord FreeOTP Authenticator sur le
+                Pour l’obtenir, vous devez utiliser une application mobile. Si vous n’avez pas encore d’application,
+                nous vous conseillons d’utiliser l’outil opensource FreeOTP Authenticator téléchargeable sur le
                 <a
                         class="fr-link" target="_blank" rel="noopener noreferrer"
                         href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp&pcampaignid=web_share"
@@ -42,7 +43,7 @@
                 <a
                         class="fr-link" target="_blank" rel="noopener noreferrer"
                         href="https://apps.apple.com/us/app/freeotp-authenticator/id872559395"
-                >App Store iOS</a> ou un équivalent.
+                >App Store iOS</a>.
             </p>
 
             <% if (isAuthenticatorConfigured) { %>
@@ -104,13 +105,13 @@
                         class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
                         href="/authenticator-app-configuration"
                 >
-                    Configurer une application d’authentification
+                    Configurer un code à usage unique
                 </a>
             <% } %>
         </section>
 
         <section class="fr-mb-6w">
-            <h3>Clés d’accès</h3>
+            <h3>Configurer vos clés d’accès</h3>
             <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
 
             <% if (passkeys.length <= 0) { %>

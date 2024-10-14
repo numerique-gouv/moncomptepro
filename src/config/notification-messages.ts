@@ -179,12 +179,12 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   "2fa_not_configured": {
     type: "warning",
     description:
-      "Attention : le service auquel vous souhaitez accéder requiert une validation en deux étapes. Merci de configurer soit une application Authenticator, soit une clé d’accès.",
+      "Attention : le site que vous voulez utiliser requiert la 2FA, qui réduit les risques de piratage. En plus de votre mot de passe, nous vous demanderons un code à usage unique ou une clé d’accès.",
   },
   "2fa_not_configured_for_ds": {
     type: "warning",
     description:
-      "Attention : pour accéder à Démarches Simplifiées vous devez configurer soit une application Authenticator, soit une clé d’accès.",
+      "Attention : en plus de votre mot de passe, vous devez configurer un code à usage unique ou une clé d’accès pour accéder à Démarches Simplifiées.",
   },
 };
 

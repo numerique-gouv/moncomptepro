@@ -14,11 +14,11 @@ describe("add 2fa authentication", () => {
 
     cy.login("64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com");
 
-    cy.contains("Application Authenticator");
+    cy.contains("Configurer un code à usage unique");
 
-    cy.contains("Configurer une application d’authentification").click();
-
-    cy.contains("Configurer une application d’authentification");
+    cy.get('[href="/authenticator-app-configuration"]')
+      .contains("Configurer un code à usage unique")
+      .click();
 
     // Extract the code from the front to generate the TOTP key
     cy.get("#humanReadableTotpKey")
