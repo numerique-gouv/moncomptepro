@@ -7,8 +7,6 @@
 jwks.json
 *.log
 
-moncomptepro.conf
-
 .idea
 .vscode
 
