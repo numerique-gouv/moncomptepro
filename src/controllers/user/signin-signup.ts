@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/node";
 import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
-import { DISPLAY_TEST_ENV_WARNING } from "../../config/env";
+import { FEATURE_DISPLAY_TEST_ENV_WARNING } from "../../config/env";
 import {
   EmailUnavailableError,
   InvalidCredentialsError,
@@ -62,7 +62,7 @@ export const getStartSignInController = async (
       didYouMean,
       loginHint: hintFromSession,
       csrfToken: csrfToken(req),
-      displayTestEnvWarning: DISPLAY_TEST_ENV_WARNING,
+      displayTestEnvWarning: FEATURE_DISPLAY_TEST_ENV_WARNING,
       illustration: "illu-password.svg",
     });
   } catch (error) {

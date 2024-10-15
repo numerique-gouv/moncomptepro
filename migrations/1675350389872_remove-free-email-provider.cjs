@@ -2,7 +2,7 @@ const { isFree } = require("is-disposable-email-domain");
 const { isEmpty } = require("lodash");
 
 const doNotValidateMail =
-  process.env.DO_NOT_CHECK_EMAIL_DELIVERABILITY === "True";
+  process.env.FEATURE_CHECK_EMAIL_DELIVERABILITY === "False";
 
 exports.shorthands = undefined;
 

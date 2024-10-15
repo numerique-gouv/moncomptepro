@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
-import { ENABLE_FIXED_ACR } from "../config/env";
+import { FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR } from "../config/env";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
@@ -75,8 +75,9 @@ export const interactionEndControllerFactory =
       const user = getUserFromAuthenticatedSession(req);
 
       const acr =
-        (!ENABLE_FIXED_ACR && isWithinTwoFactorAuthenticatedSession(req)) ||
-        (ENABLE_FIXED_ACR && req.session.mustUse2FA)
+        (!FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR &&
+          isWithinTwoFactorAuthenticatedSession(req)) ||
+        (FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR && req.session.mustUse2FA)
           ? "https://refeds.org/profile/mfa"
           : "eidas1";
       const amr = getSessionStandardizedAuthenticationMethodsReferences(req);

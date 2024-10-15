@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/node";
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { RateLimiterRedis } from "rate-limiter-flexible";
-import { DO_NOT_RATE_LIMIT } from "../config/env";
+import { FEATURE_RATE_LIMIT } from "../config/env";
 import { getNewRedisClient } from "../connectors/redis";
 import {
   getUserFromAuthenticatedSession,
@@ -18,7 +18,7 @@ const ipRateLimiterMiddlewareFactory =
   (rateLimiter: RateLimiterRedis) =>
   async (req: Request, _res: Response, next: NextFunction) => {
     try {
-      if (!DO_NOT_RATE_LIMIT) {
+      if (FEATURE_RATE_LIMIT) {
         await rateLimiter.consume(req.ip);
       }
       next();
@@ -31,7 +31,7 @@ const emailRateLimiterMiddlewareFactory =
   (rateLimiter: RateLimiterRedis) =>
   async (req: Request, _res: Response, next: NextFunction) => {
     try {
-      if (DO_NOT_RATE_LIMIT) {
+      if (!FEATURE_RATE_LIMIT) {
       } else if (isWithinAuthenticatedSession(req.session)) {
         const { email } = getUserFromAuthenticatedSession(req);
         await rateLimiter.consume(email);

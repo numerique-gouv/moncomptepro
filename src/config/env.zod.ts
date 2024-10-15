@@ -1,14 +1,10 @@
 import { z, type ZodTypeAny } from "zod";
 import { defaultJWKS } from "./default-jwks";
 
-export const emailEnvSchema = z.object({
-  BREVO_API_KEY: z.string().optional(),
-  DO_NOT_SEND_MAIL: zodTrueFalseBoolean().default("True"),
-});
-
 export const connectorEnvSchema = z.object({
   API_AUTH_PASSWORD: z.string().default("admin"),
   API_AUTH_USERNAME: z.string().default("admin"),
+  BREVO_API_KEY: z.string().optional(),
   CRISP_BASE_URL: z.string().url().default("https://api.crisp.chat"),
   CRISP_IDENTIFIER: z.string().default(""),
   CRISP_KEY: z.string().default(""),
@@ -25,16 +21,19 @@ export const connectorEnvSchema = z.object({
 });
 
 export const featureTogglesEnvSchema = z.object({
-  CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE: zodTrueFalseBoolean().default("False"),
-  CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE: zodTrueFalseBoolean().default("True"),
-  DISABLE_SECURITY_RESPONSE_HEADERS: zodTrueFalseBoolean().default("True"),
-  DISPLAY_TEST_ENV_WARNING: zodTrueFalseBoolean().default("False"),
-  DO_NOT_AUTHENTICATE_BROWSER: zodTrueFalseBoolean().default("True"),
-  DO_NOT_CHECK_EMAIL_DELIVERABILITY: zodTrueFalseBoolean().default("True"),
-  DO_NOT_RATE_LIMIT: zodTrueFalseBoolean().default("True"),
-  DO_NOT_USE_ANNUAIRE_EMAILS: zodTrueFalseBoolean().default("True"),
-  SECURE_COOKIES: zodTrueFalseBoolean().default("False"),
-  ENABLE_FIXED_ACR: zodTrueFalseBoolean().default("False"),
+  FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR: zodTrueFalseBoolean().default("False"),
+  FEATURE_AUTHENTICATE_BROWSER: zodTrueFalseBoolean().default("False"),
+  FEATURE_CHECK_EMAIL_DELIVERABILITY: zodTrueFalseBoolean().default("False"),
+  FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE:
+    zodTrueFalseBoolean().default("False"),
+  FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE:
+    zodTrueFalseBoolean().default("True"),
+  FEATURE_DISPLAY_TEST_ENV_WARNING: zodTrueFalseBoolean().default("False"),
+  FEATURE_RATE_LIMIT: zodTrueFalseBoolean().default("False"),
+  FEATURE_SEND_MAIL: zodTrueFalseBoolean().default("False"),
+  FEATURE_USE_ANNUAIRE_EMAILS: zodTrueFalseBoolean().default("False"),
+  FEATURE_USE_SECURE_COOKIES: zodTrueFalseBoolean().default("False"),
+  FEATURE_USE_SECURITY_RESPONSE_HEADERS: zodTrueFalseBoolean().default("False"),
 });
 
 export const secretEnvSchema = z.object({
@@ -117,7 +116,6 @@ export const paramsEnvSchema = z.object({
 
 export const envSchema = z
   .object({})
-  .merge(emailEnvSchema)
   .merge(connectorEnvSchema)
   .merge(featureTogglesEnvSchema)
   .merge(secretEnvSchema)
