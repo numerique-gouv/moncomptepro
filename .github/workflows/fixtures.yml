@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-22.04
     services:
       postgres:
-        image: postgres:12.12
+        image: postgres:14.3
         env:
           POSTGRES_USER: ${{ env.PGUSER }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
