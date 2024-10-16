@@ -37,7 +37,7 @@ jobs:
         with:
           cache: "npm"
           node-version-file: package.json
-      - run: npm ci --omit=dev
+      - run: npm ci --omit=dev # omit dev dependencies to simulate deployed environment
       - run: npm run migrate up
       - run: npm run fixtures:load-ci -- scripts/fixtures.sql
       - run: npm run update-organization-info -- 500
