@@ -51,7 +51,7 @@ export const createAuthenticatedSession = async (
   const {
     interactionId,
     mustReturnOneOrganizationInPayload,
-    mustUse2FA,
+    twoFactorsAuthRequested,
     referrerPath,
     authForProconnectFederation,
   } = req.session;
@@ -76,7 +76,7 @@ export const createAuthenticatedSession = async (
         req.session.interactionId = interactionId;
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
-        req.session.mustUse2FA = mustUse2FA;
+        req.session.twoFactorsAuthRequested = twoFactorsAuthRequested;
         req.session.referrerPath = referrerPath;
         req.session.authForProconnectFederation = authForProconnectFederation;
         // new session reset amr

@@ -14,7 +14,9 @@ describe("sign-in with TOTP on untrusted browser", () => {
 
     cy.login("unused2@yopmail.com");
 
-    cy.contains("Vérifier votre email");
+    // TODO get browser enrollment code
+
+    cy.contains("moncomptepro-standard-client");
   });
 
   it("should sign-in with password and TOTP when forced by SP", function () {
@@ -22,6 +24,25 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.get("button#force-2fa").click();
 
     cy.mfaLogin("unused2@yopmail.com");
+
+    cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
+  });
+
+  it("should only show totp step when already logged", function () {
+    cy.visit("http://localhost:4000");
+    cy.get("button.proconnect-button").click();
+
+    cy.login("unused2@yopmail.com");
+
+    // TODO get browser enrollment code
+
+    cy.contains("moncomptepro-standard-client");
+
+    cy.get("button#force-2fa").click();
+
+    cy.contains("merci de valider votre deuxième étape de connexion");
+
+    cy.fillTotpFields();
 
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
