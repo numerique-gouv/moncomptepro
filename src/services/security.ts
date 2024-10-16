@@ -4,9 +4,9 @@ import { customAlphabet, nanoid } from "nanoid/async";
 import { parse_host } from "tld-extract";
 import { MONCOMPTEPRO_HOST } from "../config/env";
 import notificationMessages from "../config/notification-messages";
+import dicewareWordlistFrAlt from "../data/diceware-wordlist-fr-alt";
 import type { AmrValue } from "../types/express-session";
 import { owaspPasswordStrengthTest } from "./owasp-password-strength-tester";
-import dicewareWordlistFrAlt from "./security/diceware-wordlist-fr-alt";
 
 // TODO compare to https://github.com/anandundavia/manage-users/blob/master/src/api/utils/security.js
 export const hashPassword = async (plainPassword: string): Promise<string> => {
