@@ -100,11 +100,11 @@ jobs:
         ports:
           - 6379:6379
       postgres:
-        image: postgres:14.3
         env:
           POSTGRES_USER: ${{ env.PGUSER }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
           POSTGRES_DB: ${{ env.PGDATABASE }}
+        image: postgres:15.8
         ports:
           - 5432:5432
     steps:
