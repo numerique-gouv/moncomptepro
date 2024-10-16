@@ -109,6 +109,9 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v4
+
+      - run: docker compose up --build --detach maildev
+
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
