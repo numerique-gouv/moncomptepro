@@ -41,7 +41,7 @@
     "@panva/jose": "^1.9.3",
     "@sentry/node": "^7.112.2",
     "@sentry/tracing": "^7.114.0",
-    "@simplewebauthn/browser": "^8.3.4",
+    "@simplewebauthn/browser": "^11.0.0",
     "@simplewebauthn/server": "^8.3.5",
     "@simplewebauthn/typescript-types": "^8.3.4",
     "@sunknudsen/totp": "^1.1.0",
