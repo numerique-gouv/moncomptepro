@@ -96,15 +96,15 @@ jobs:
           MCP_SCOPES: openid email profile phone organizations
           STYLESHEET_URL: ""
       redis:
-        image: redis:7.0
+        image: redis:7.2
         ports:
           - 6379:6379
       postgres:
+        image: postgres:15.8
         env:
           POSTGRES_USER: ${{ env.PGUSER }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
           POSTGRES_DB: ${{ env.PGDATABASE }}
-        image: postgres:15.8
         ports:
           - 5432:5432
     steps:
