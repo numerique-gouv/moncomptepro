@@ -15,13 +15,13 @@ import { ZodError } from "zod";
 import {
   ACCESS_LOG_PATH,
   DEPLOY_ENV,
-  DISABLE_SECURITY_RESPONSE_HEADERS,
+  FEATURE_USE_SECURE_COOKIES,
+  FEATURE_USE_SECURITY_RESPONSE_HEADERS,
   JWKS,
   LOG_LEVEL,
   MONCOMPTEPRO_HOST,
   NODE_ENV,
   PORT,
-  SECURE_COOKIES,
   SENTRY_DSN,
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
@@ -66,7 +66,7 @@ if (SENTRY_DSN) {
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
-if (!DISABLE_SECURITY_RESPONSE_HEADERS) {
+if (FEATURE_USE_SECURITY_RESPONSE_HEADERS) {
   app.use(
     helmet({
       hsts: false,
@@ -134,7 +134,7 @@ const sessionMiddleware =
     name: "session",
     cookie: {
       maxAge: SESSION_MAX_AGE_IN_SECONDS * 1000,
-      secure: SECURE_COOKIES,
+      secure: FEATURE_USE_SECURE_COOKIES,
       sameSite: "lax",
     },
     secret: SESSION_COOKIE_SECRET,
@@ -197,13 +197,13 @@ let server: Server;
       long: {
         overwrite: true,
         signed: true,
-        secure: SECURE_COOKIES,
+        secure: FEATURE_USE_SECURE_COOKIES,
         sameSite: "lax",
       },
       short: {
         overwrite: true,
         signed: true,
-        secure: SECURE_COOKIES,
+        secure: FEATURE_USE_SECURE_COOKIES,
         sameSite: "lax",
       },
       keys: SESSION_COOKIE_SECRET,

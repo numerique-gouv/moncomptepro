@@ -1,7 +1,7 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import { chain, isEmpty } from "lodash-es";
 import path from "path";
-import { BREVO_API_KEY, DO_NOT_SEND_MAIL } from "../config/env";
+import { BREVO_API_KEY, FEATURE_SEND_MAIL } from "../config/env";
 import { BrevoApiError } from "../config/errors";
 import { logger } from "../services/log";
 import { render } from "../services/renderer";
@@ -96,7 +96,7 @@ export const sendMail = async ({
     data.cc = cc.map((e) => ({ email: e }));
   }
 
-  if (DO_NOT_SEND_MAIL) {
+  if (!FEATURE_SEND_MAIL) {
     logger.info(`${template} mail not send to ${to}:`);
     logger.info(data);
     return;

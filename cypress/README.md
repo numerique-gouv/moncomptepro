@@ -11,7 +11,7 @@ Ask a teammate for them and put the values in your `.env`.
 Also in your `.env` put the following values :
 
 ```dotenv
-DO_NOT_SEND_MAIL=False
+FEATURE_SEND_MAIL=True
 ```
 
 ### Load test fixtures in the database
