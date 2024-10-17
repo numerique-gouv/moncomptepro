@@ -19,6 +19,12 @@ VALUES
    'Jean', 'Jean', '0123456789', 'Sbire',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
    CURRENT_TIMESTAMP, true
+  ),
+  (4, 'unused4@yopmail.com', true, CURRENT_TIMESTAMP,
+   '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+   'Jean', 'Jean', '0123456789', 'Sbire',
+   'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
+   CURRENT_TIMESTAMP, true
   );
 
 INSERT INTO organizations
@@ -30,7 +36,9 @@ INSERT INTO users_organizations
   (user_id, organization_id, is_external, verification_type, has_been_greeted)
 VALUES
   (1, 1, false, 'domain', true),
-  (2, 1, false, 'domain', true);
+  (2, 1, false, 'domain', true),
+  (3, 1, false, 'domain', true),
+  (4, 1, false, 'domain', true);
 
 INSERT INTO oidc_clients
   (client_name, client_id, client_secret, redirect_uris,
