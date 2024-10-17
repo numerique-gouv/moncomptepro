@@ -5,6 +5,7 @@ import {
   FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE,
   FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE,
 } from "../config/env";
+import mostUsedFreeEmailDomains from "../data/most-used-free-email-domains";
 
 export const isAFreeEmailProvider = (domain: string) => {
   if (FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE) {
@@ -15,7 +16,7 @@ export const isAFreeEmailProvider = (domain: string) => {
     return false;
   }
 
-  return isFree(domain);
+  return isFree(domain) || mostUsedFreeEmailDomains.includes(domain);
 };
 
 export const getEmailDomain = (email: string) => {

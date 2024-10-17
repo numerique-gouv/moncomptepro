@@ -1,4 +1,4 @@
-// arbitrary selection of free email provider domains used in municipalities
+// arbitrary selection of free email provider domains used by our users
 export default [
   "gmail.com",
   "orange.fr",
@@ -12,5 +12,6 @@ export default [
   "yahoo.com",
   "live.fr",
   "sfr.fr",
+  "9business.fr",
   "laposte.fr",
 ];

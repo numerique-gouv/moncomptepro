@@ -29,6 +29,7 @@ describe("usesAFreeEmailProvider", () => {
     "user@gmail.com",
     "collectivite@wanadoo.fr",
     "collectivite@orange.fr",
+    "serious@9business.fr",
   ];
 
   emailAddressesThatUsesFreeEmailProviders.forEach((email) => {
