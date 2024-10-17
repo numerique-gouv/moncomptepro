@@ -29,7 +29,7 @@
         <form action="/users/2fa-sign-in-with-authenticator-app" method="post" class="fr-mb-5w">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" />
 
-            <div class="fr-input-group">
+            <div class="fr-input-group<% if (locals.hasCodeError) { %>  fr-input-group--error<% } %>">
                 <label class="fr-label" for="totpToken">
                     Obtenir un code à usage unique depuis votre application mobile.
                 </label>
@@ -42,7 +42,22 @@
                         title="code composé de 6 chiffres"
                         autocomplete="off"
                         autofocus
+                        <% if (locals.hasCodeError) { %>
+                        aria-describedby="email-error"
+                        <% } %>
                 >
+                <% if (locals.hasCodeError) { %>
+                    <p class="fr-error-text" id="email-error">
+                        Code invalide. 
+                        <a href="#"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Page d'aide"
+                        >
+                            Aide
+                        </a>
+                    </p>
+                <% } %>
             </div>
             <% if (showsPasskeySection) { %>
                 <button class="fr-btn btn--fullwidth" type="submit">

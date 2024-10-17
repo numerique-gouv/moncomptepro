@@ -47,7 +47,7 @@
         <form action="/authenticator-app-configuration" method="post" class="fr-mb-6w">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
-            <div class="fr-input-group">
+            <div class="fr-input-group<% if (locals.hasCodeError) { %>  fr-input-group--error<% } %>">
                 <label class="fr-label" for="totpToken">
                     Saisissez le code à six chiffres affiché dans l’application
                 </label>
@@ -60,7 +60,23 @@
                         pattern="^(\s*\d){6}$"
                         title="code composé de 6 chiffres"
                         autocomplete="off"
+                        <% if (locals.hasCodeError) { %>
+                        autofocus
+                        aria-describedby="email-error"
+                        <% } %>
                 >
+                <% if (locals.hasCodeError) { %>
+                    <p class="fr-error-text" id="email-error">
+                        Code invalide. 
+                        <a href="#"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Page d'aide"
+                        >
+                            Aide
+                        </a>
+                    </p>
+                <% } %>
             </div>
 
 
