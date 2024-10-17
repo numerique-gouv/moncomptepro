@@ -16,5 +16,6 @@
     "rootDir": ".",
     "verbatimModuleSyntax": true
   },
+  "exclude": ["packages/*"],
   "extends": "@tsconfig/node20/tsconfig.json"
 }
