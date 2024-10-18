@@ -53,6 +53,7 @@ services:
       MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
       STYLESHEET_URL:
       LOGIN_HINT: unused1@yopmail.com
+      ACR_VALUES: eidas1
     network_mode: "host"
 
   moncomptepro-legacy-client:
@@ -65,20 +66,6 @@ services:
       MCP_CLIENT_SECRET: legacy_client_secret
       MCP_PROVIDER: http://localhost:3000
       MCP_SCOPES: openid email profile phone organizations
-      STYLESHEET_URL:
-    network_mode: "host"
-
-  moncomptepro-acr-client:
-    image: ghcr.io/numerique-gouv/moncomptepro-test-client
-    environment:
-      PORT: 4003
-      SITE_TITLE: moncomptepro-acr-client
-      HOST: http://localhost:4003
-      MCP_CLIENT_ID: acr_client_id
-      MCP_CLIENT_SECRET: acr_client_secret
-      MCP_PROVIDER: http://localhost:3000
-      MCP_SCOPES: openid email profile organization
-      ACR_VALUE_FOR_2FA: urn:dinum:ac:classes:consistency-checked
       STYLESHEET_URL:
     network_mode: "host"
 

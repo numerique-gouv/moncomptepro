@@ -16,6 +16,8 @@ declare global {
       fillTotpFields(totpSecret?: string): Chainable<void>;
       login(email: string): Chainable<void>;
       mfaLogin(email: string): Chainable<void>;
+      setCustomParams(customParams: any): Chainable<void>;
+      setRequestedAcrs(requestedAcrs?: string[]): Chainable<void>;
     }
   }
 }
@@ -66,4 +68,32 @@ Cypress.Commands.add("mfaLogin", (email) => {
     password: defaultPassword,
     totpSecret: defaultTotpSecret,
   });
+});
+
+Cypress.Commands.add("setCustomParams", (customParams) => {
+  cy.get('[name="custom-params"]')
+    .clear({ force: true })
+    .type(JSON.stringify(customParams), {
+      delay: 0,
+      parseSpecialCharSequences: false,
+      force: true,
+    });
+});
+
+Cypress.Commands.add("setRequestedAcrs", (requestedAcrs) => {
+  const customParams = {
+    claims: {
+      id_token: {
+        amr: { essential: true },
+        acr: { essential: true },
+      },
+    },
+  };
+
+  if (requestedAcrs) {
+    // @ts-ignore
+    customParams.claims.id_token.acr["values"] = requestedAcrs;
+  }
+
+  cy.setCustomParams(customParams);
 });

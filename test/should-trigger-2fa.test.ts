@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import {
   isAcrSatisfied,
-  isThereAnyRequestedAcrOtherThanEidas1,
+  isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
 } from "../src/services/should-trigger-2fa";
 
@@ -61,7 +61,6 @@ describe("twoFactorsAuthRequested", () => {
         acr: {
           essential: true,
           values: [
-            "eidas2",
             "urn:dinum:ac:classes:self-asserted-2fa",
             "urn:dinum:ac:classes:consistency-checked-2fa",
           ],
@@ -70,6 +69,39 @@ describe("twoFactorsAuthRequested", () => {
     };
 
     assert.equal(twoFactorsAuthRequested(prompt), true);
+  });
+
+  it("should return false if non 2fa acr are requested", () => {
+    const prompt = {
+      name: "login",
+      reasons: ["essential_acrs"],
+      details: {
+        acr: {
+          essential: true,
+          values: [
+            "urn:dinum:ac:classes:consistency-checked",
+            "urn:dinum:ac:classes:consistency-checked-2fa",
+          ],
+        },
+      },
+    };
+
+    assert.equal(twoFactorsAuthRequested(prompt), false);
+  });
+
+  it("should return false for unknown acr", () => {
+    const prompt = {
+      name: "login",
+      reasons: ["essential_acrs"],
+      details: {
+        acr: {
+          essential: true,
+          value: "eidas2",
+        },
+      },
+    };
+
+    assert.equal(twoFactorsAuthRequested(prompt), false);
   });
 });
 
@@ -132,7 +164,7 @@ describe("isAcrSatisfied", () => {
   });
 });
 
-describe("isThereAnyRequestedAcrOtherThanEidas1", () => {
+describe("isThereAnyRequestedAcr", () => {
   it("should return false for acr non-related prompt", () => {
     const prompt = {
       name: "random",
@@ -140,13 +172,43 @@ describe("isThereAnyRequestedAcrOtherThanEidas1", () => {
       details: { random: "random" },
     };
 
-    assert.equal(isThereAnyRequestedAcrOtherThanEidas1(prompt), false);
+    assert.equal(isThereAnyRequestedAcr(prompt), false);
   });
 
   it("should return true for prompt with no acr required", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
-    assert.equal(isThereAnyRequestedAcrOtherThanEidas1(prompt), false);
+    assert.equal(isThereAnyRequestedAcr(prompt), false);
+  });
+
+  it("should return false for legacy acr", () => {
+    const prompt = {
+      name: "login",
+      reasons: ["essential_acrs"],
+      details: {
+        acr: {
+          essential: true,
+          value: "eidas1",
+        },
+      },
+    };
+
+    assert.equal(isThereAnyRequestedAcr(prompt), false);
+  });
+
+  it("should return true for non legacy acr", () => {
+    const prompt = {
+      name: "login",
+      reasons: ["essential_acrs"],
+      details: {
+        acr: {
+          essential: true,
+          values: ["eidas1", "urn:dinum:ac:classes:consistency-checked-2fa"],
+        },
+      },
+    };
+
+    assert.equal(isThereAnyRequestedAcr(prompt), true);
   });
 
   it("should return true for mfa requested identity", () => {
@@ -164,6 +226,6 @@ describe("isThereAnyRequestedAcrOtherThanEidas1", () => {
       },
     };
 
-    assert.equal(isThereAnyRequestedAcrOtherThanEidas1(prompt), true);
+    assert.equal(isThereAnyRequestedAcr(prompt), true);
   });
 });

@@ -18,6 +18,18 @@ interface EssentialAcrPromptDetail {
     | UnknownObject;
 }
 
+const containsEssentialAcrs = (prompt: EssentialAcrPromptDetail) => {
+  if (
+    prompt.name === "login" &&
+    (prompt.reasons.includes("essential_acr") ||
+      prompt.reasons.includes("essential_acrs"))
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 const areAcrsRequestedInPrompt = ({
   prompt,
   acrs,
@@ -54,15 +66,20 @@ const areAcrsRequestedInPrompt = ({
 };
 
 export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
-  return areAcrsRequestedInPrompt({
-    prompt: prompt,
-    acrs: [ACR_VALUE_FOR_IAL1_AAL2, ACR_VALUE_FOR_IAL2_AAL2],
-  });
+  return (
+    containsEssentialAcrs(prompt) &&
+    areAcrsRequestedInPrompt({
+      prompt: prompt,
+      acrs: [ACR_VALUE_FOR_IAL1_AAL2, ACR_VALUE_FOR_IAL2_AAL2],
+    }) &&
+    !areAcrsRequestedInPrompt({
+      prompt: prompt,
+      acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
+    })
+  );
 };
 
-export const isThereAnyRequestedAcrOtherThanEidas1 = (
-  prompt: EssentialAcrPromptDetail,
-) => {
+export const isThereAnyRequestedAcr = (prompt: EssentialAcrPromptDetail) => {
   return areAcrsRequestedInPrompt({
     prompt: prompt,
     acrs: [
@@ -79,13 +96,7 @@ export const isAcrSatisfied = (
   currentAcr: string,
 ) => {
   // if no acr is required it is satisfied
-  if (
-    !(
-      prompt.name === "login" &&
-      (prompt.reasons.includes("essential_acr") ||
-        prompt.reasons.includes("essential_acrs"))
-    )
-  ) {
+  if (!containsEssentialAcrs(prompt)) {
     return true;
   }
 

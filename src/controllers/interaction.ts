@@ -22,7 +22,7 @@ import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import {
   isAcrSatisfied,
-  isThereAnyRequestedAcrOtherThanEidas1,
+  isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
 } from "../services/should-trigger-2fa";
 
@@ -132,7 +132,7 @@ export const interactionEndControllerFactory =
 
       if (
         FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR &&
-        !isThereAnyRequestedAcrOtherThanEidas1(prompt)
+        !isThereAnyRequestedAcr(prompt)
       ) {
         currentAcr = "eidas1";
       }
