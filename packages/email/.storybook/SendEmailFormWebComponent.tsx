@@ -14,8 +14,8 @@ type SendEmailOptions = {
 
 export class SendEmailFormWebComponent extends HTMLElement {
   static tag = "x-send-email-form" as const;
-  static define() {
-    customElements.define(SendEmailFormWebComponent.tag, this);
+  static {
+    customElements.define(this.tag, this);
   }
   static BREVO_API_KEY = import.meta.env["VITE_BREVO_API_KEY"];
 
@@ -138,5 +138,3 @@ export class SendEmailFormWebComponent extends HTMLElement {
     return element as HTMLInputElement;
   }
 }
-
-SendEmailFormWebComponent.define();
