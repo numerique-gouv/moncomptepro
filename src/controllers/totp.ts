@@ -123,7 +123,7 @@ export const postDeleteAuthenticatorAppConfigurationController = async (
 
     updateUserInAuthenticatedSession(req, updatedUser);
 
-    sendDeleteFreeTOTPApplicationEmail({ user_id });
+    await sendDeleteFreeTOTPApplicationEmail({ user_id });
 
     return res.redirect(
       `/connection-and-account?notification=authenticator_successfully_deleted`,
