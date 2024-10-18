@@ -2,9 +2,10 @@
 
 export class ChangeView extends HTMLElement {
   static tag = "x-change-view" as const;
-  static define() {
-    customElements.define(ChangeView.tag, this);
+  static {
+    customElements.define(this.tag, this);
   }
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -45,8 +46,6 @@ export class ChangeView extends HTMLElement {
     return this.shadowRoot.querySelectorAll("button");
   }
 }
-
-ChangeView.define();
 
 function ChangeViewUI({ view }: { view: string }) {
   return (
