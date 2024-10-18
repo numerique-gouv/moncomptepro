@@ -51,6 +51,7 @@ jobs:
           - signin_with_email_verification_renewal
           - signin_with_magic_link
           - signin_with_totp
+          - signin_with_webauthn
           - signup_entreprise_unipersonnelle
           - update_personal_information
           - update_totp_application
