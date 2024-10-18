@@ -37,21 +37,19 @@ VALUES
   (4, 1, false, null, true);
 
 INSERT INTO oidc_clients
-  (client_name, client_id, client_secret, redirect_uris,
-   post_logout_redirect_uris, scope, client_uri, client_description,
-   userinfo_signed_response_alg, id_token_signed_response_alg,
-   authorization_signed_response_alg, introspection_signed_response_alg)
+(client_name, client_id, client_secret, redirect_uris,
+ post_logout_redirect_uris, scope, client_uri, client_description,
+ userinfo_signed_response_alg, id_token_signed_response_alg,
+ authorization_signed_response_alg, introspection_signed_response_alg)
 VALUES
   ('Oidc Test Client',
-   'acr_client_id',
-   'acr_client_secret',
+   'standard_client_id',
+   'standard_client_secret',
    ARRAY [
-     'http://localhost:4003/login-callback'
+     'http://localhost:4000/login-callback'
      ],
-   ARRAY [
-     'http://localhost:4003/'
-     ],
+   ARRAY []::varchar[],
    'openid email profile organization',
-   'http://localhost:4003/',
+   'http://localhost:4000/',
    'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
-   null, 'RS256', null, null);
+   null, null, null, null);
