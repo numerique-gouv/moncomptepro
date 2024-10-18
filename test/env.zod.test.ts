@@ -70,6 +70,7 @@ test("default sample env with configured INSEE secrets", () => {
     SENTRY_DSN: "",
     SESSION_COOKIE_SECRET: ["moncompteprosecret"],
     SESSION_MAX_AGE_IN_SECONDS: 86400,
+    SMTP_URL: "smtp://localhost:1025",
     SYMMETRIC_ENCRYPTION_KEY: "aTrueRandom32BytesLongBase64EncodedStringAA=",
     TEST_CONTACT_EMAIL: "mairie@yopmail.com",
     TRUSTED_BROWSER_COOKIE_MAX_AGE_IN_SECONDS: 7776000,

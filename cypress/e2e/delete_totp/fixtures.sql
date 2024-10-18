@@ -2,15 +2,15 @@ INSERT INTO users
   (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at,
    given_name, family_name, phone_number, job, encrypted_totp_key, totp_key_verified_at, force_2fa)
 VALUES
-  (1, 'eab4ab97-875d-4ec7-bdcc-04323948ee63@mailslurp.com', true, CURRENT_TIMESTAMP,
+  (1, 'rogal.dorn@imperialfists.world', true, CURRENT_TIMESTAMP,
    '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-   'Jean', 'Jean', '0123456789', 'Sbire',
+   'Rogal', 'Dorn', 'VII', 'Primarque',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
    CURRENT_TIMESTAMP, true
   ),
-  (2, 'c9fabb94-9274-4ece-a3d0-54b1987c8588@mailslurp.com', true, CURRENT_TIMESTAMP,
+  (2, 'konrad.curze@nightlords.world', true, CURRENT_TIMESTAMP,
    '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-   'Jean2', 'Jean2', '0123456789', 'Sbire',
+   'Konrad', 'Curze', 'VIII', 'Primarque',
    'kuOSXGk68H2B3pYnph0uyXAHrmpbWaWyX/iX49xVaUc=.VMPBZSO+eAng7mjS.cI2kRY9rwhXchcKiiaMZIg==',
    CURRENT_TIMESTAMP, true
   );
