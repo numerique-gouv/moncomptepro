@@ -18,6 +18,7 @@ export const connectorEnvSchema = z.object({
   INSEE_CONSUMER_SECRET: z.string(),
   REDIS_URL: z.string().url().default("redis://:@127.0.0.1:6379"),
   SENTRY_DSN: z.string().default(""),
+  SMTP_URL: z.string().default("smtp://localhost:1025"),
 });
 
 export const featureTogglesEnvSchema = z.object({

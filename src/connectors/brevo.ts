@@ -16,8 +16,6 @@ type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed"
   | "delete-account"
-  | "delete-free-totp"
-  | "delete-2fa-protection"
   | "delete-access-key"
   | "add-access-key"
   | "update-totp-application"

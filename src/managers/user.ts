@@ -1,3 +1,7 @@
+import {
+  Delete2faProtection,
+  DeleteFreeTotpMail,
+} from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import {
   EmailUnavailableError,
@@ -11,12 +15,14 @@ import {
   UserNotFoundError,
   WeakPasswordError,
 } from "../config/errors";
-import { sendMail } from "../connectors/brevo";
+import { sendMail as legacySendMail } from "../connectors/brevo";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
+import { sendMail } from "../connectors/mail";
 
 import {
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
+  MONCOMPTEPRO_HOST,
   RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
 } from "../config/env";
@@ -178,7 +184,7 @@ export const sendEmailAddressVerificationEmail = async ({
     verify_email_sent_at: new Date(),
   });
 
-  await sendMail({
+  await legacySendMail({
     to: [user.email],
     subject: "Vérification de votre adresse email",
     template: "verify-email",
@@ -197,7 +203,7 @@ export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
+  return legacySendMail({
     to: [email],
     subject: "Suppression de compte",
     template: "delete-account",
@@ -220,8 +226,12 @@ export const sendDeleteFreeTOTPApplicationEmail = async ({
     to: [email],
     subject:
       "Suppression d'une application d'authentification à double facteur",
-    template: "delete-free-totp",
-    params: { given_name, family_name },
+    html: DeleteFreeTotpMail({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
   });
 };
 
@@ -235,8 +245,11 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
   return sendMail({
     to: [email],
     subject: "Désactivation de la validation en deux étapes",
-    template: "delete-2fa-protection",
-    params: { given_name, family_name },
+    html: Delete2faProtection({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+    }).toString(),
   });
 };
 
@@ -250,7 +263,7 @@ export const sendChangeAppliTotpEmail = async ({
     throw new UserNotFoundError();
   }
   const { given_name, family_name, email } = user;
-  return sendMail({
+  return legacySendMail({
     to: [email],
     subject: "Changement d'application d’authentification",
     template: "update-totp-application",
@@ -269,7 +282,7 @@ export const sendDeleteAccessKeyMail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
+  return legacySendMail({
     to: [email],
     subject: "Alerte de sécurité",
     template: "delete-access-key",
@@ -288,7 +301,7 @@ export const sendAddFreeTOTPEmail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
+  return legacySendMail({
     to: [email],
     subject: "Validation en deux étapes activée",
     template: "add-2fa",
@@ -307,7 +320,7 @@ export const sendActivateAccessKeyMail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return sendMail({
+  return legacySendMail({
     to: [email],
     subject: "Alerte de sécurité",
     template: "add-access-key",
@@ -354,7 +367,7 @@ export const sendUpdatePersonalInformationEmail = async ({
   }
 
   if (previousInformations !== newInformation) {
-    return sendMail({
+    return legacySendMail({
       to: [email],
       subject: "Mise à jour de vos données personnelles",
       template: "update-personal-data",
@@ -428,7 +441,7 @@ export const sendSendMagicLinkEmail = async (
     magic_link_sent_at: new Date(),
   });
 
-  await sendMail({
+  await legacySendMail({
     to: [user.email],
     subject: "Lien de connexion à ProConnect",
     template: "magic-link",
@@ -487,7 +500,7 @@ export const sendResetPasswordEmail = async (
     reset_password_sent_at: new Date(),
   });
 
-  await sendMail({
+  await legacySendMail({
     to: [user.email],
     subject: "Instructions pour la réinitialisation du mot de passe",
     template: "reset-password",

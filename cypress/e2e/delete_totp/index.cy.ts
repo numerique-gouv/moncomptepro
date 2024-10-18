@@ -1,17 +1,4 @@
 describe("delete TOTP connexion", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "eab4ab97-875d-4ec7-bdcc-04323948ee63",
-      }),
-    );
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "c9fabb94-9274-4ece-a3d0-54b1987c8588",
-      }),
-    );
-  });
-
   it("should delete TOTP application", function () {
     cy.visit("/connection-and-account");
 
@@ -23,21 +10,15 @@ describe("delete TOTP connexion", () => {
 
     cy.contains("L’application d’authentification a bien été supprimée.");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "eab4ab97-875d-4ec7-bdcc-04323948ee63",
-          60000,
-          true,
-        ),
-      )
-      // check subject of deletion email
-      .then((email) => {
-        expect(email.subject).to.include(
-          "Suppression d'une application d'authentification à double facteur",
-        );
-      });
+    cy.maildevGetMessageBySubject(
+      "Suppression d'une application d'authentification à double facteur",
+    ).then((email) => {
+      cy.maildevVisitMessageById(email.id);
+      cy.contains(
+        "L'application a été supprimée comme étape de connexion à deux facteurs.",
+      );
+      cy.maildevDeleteMessageById(email.id);
+    });
   });
 
   it("should not be ask to sign with TOTP", function () {
@@ -57,21 +38,15 @@ describe("delete TOTP connexion", () => {
 
     cy.contains("Désactiver la validation en deux étapes").click();
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "c9fabb94-9274-4ece-a3d0-54b1987c8588",
-          60000,
-          true,
-        ),
-      )
-      // check subject of deletion email
-      .then((email) => {
-        expect(email.subject).to.include(
-          "Désactivation de la validation en deux étapes",
-        );
-      });
+    cy.maildevGetMessageBySubject(
+      "Désactivation de la validation en deux étapes",
+    ).then((email) => {
+      cy.maildevVisitMessageById(email.id);
+      cy.contains(
+        "Votre compte ProConnect n'est plus protégé par la validation en deux étapes.",
+      );
+      cy.maildevDeleteMessageById(email.id);
+    });
   });
 
   it("should not be ask to sign with TOTP", function () {
