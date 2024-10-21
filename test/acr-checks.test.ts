@@ -3,9 +3,8 @@ import {
   isAcrSatisfied,
   isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
-} from "../src/services/should-trigger-2fa";
+} from "../src/services/acr-checks";
 
-// TODO rename this file
 describe("twoFactorsAuthRequested", () => {
   it("should return false for random prompt", () => {
     const prompt = {

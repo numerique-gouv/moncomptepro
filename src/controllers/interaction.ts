@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from "express";
-import { isEmpty } from "lodash-es";
 import Provider, { errors } from "oidc-provider";
 import {
   ACR_VALUE_FOR_IAL1_AAL1,
@@ -11,20 +10,19 @@ import {
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
+  isIdentityConsistencyChecked,
   isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
 import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { findByClientId } from "../repositories/oidc-client";
-import { getUserOrganizationLink } from "../repositories/organization/getters";
-import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import epochTime from "../services/epoch-time";
-import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 import {
   isAcrSatisfied,
   isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
-} from "../services/should-trigger-2fa";
+} from "../services/acr-checks";
+import epochTime from "../services/epoch-time";
+import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -85,41 +83,15 @@ export const interactionEndControllerFactory =
     try {
       const user = getUserFromAuthenticatedSession(req);
 
-      let isIdentityChecked = false;
-
       // TODO this check could be made in the user middleware after the user as selected an org
       // an error could be thrown and the redirect to sp link could end the interaction in a separate interaction controller
-      if (req.session.mustReturnOneOrganizationInPayload) {
-        // TODO move this in a separate function: isIdentityChecked
-        const selectedOrganizationId = await getSelectedOrganizationId(user.id);
-
-        if (selectedOrganizationId === null) {
-          const error = Error("selectedOrganizationId should be set");
-
-          return next(error);
-        }
-
-        const link = await getUserOrganizationLink(
-          selectedOrganizationId,
-          user.id,
-        );
-
-        if (isEmpty(link)) {
-          const error = Error("link should be set");
-
-          return next(error);
-        }
-
-        if (link?.verification_type !== null) {
-          isIdentityChecked = true;
-        }
-      }
+      const isConsistencyChecked = await isIdentityConsistencyChecked(req);
 
       let currentAcr = isWithinTwoFactorAuthenticatedSession(req)
-        ? isIdentityChecked
+        ? isConsistencyChecked
           ? ACR_VALUE_FOR_IAL2_AAL2
           : ACR_VALUE_FOR_IAL1_AAL2
-        : isIdentityChecked
+        : isConsistencyChecked
           ? ACR_VALUE_FOR_IAL2_AAL1
           : ACR_VALUE_FOR_IAL1_AAL1;
 

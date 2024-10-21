@@ -7,7 +7,6 @@ import {
   ACR_VALUE_FOR_IAL2_AAL2,
 } from "../config/env";
 
-// TODO rename this file
 interface EssentialAcrPromptDetail {
   name: "login" | "consent" | string;
   reasons: string[];

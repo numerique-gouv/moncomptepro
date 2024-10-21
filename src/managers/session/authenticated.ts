@@ -4,7 +4,11 @@ import { Session, type SessionData } from "express-session";
 import { isEmpty } from "lodash-es";
 import { RECENT_LOGIN_INTERVAL_IN_SECONDS } from "../../config/env";
 import { UserNotLoggedInError } from "../../config/errors";
-import { deleteSelectedOrganizationId } from "../../repositories/redis/selected-organization";
+import { getUserOrganizationLink } from "../../repositories/organization/getters";
+import {
+  deleteSelectedOrganizationId,
+  getSelectedOrganizationId,
+} from "../../repositories/redis/selected-organization";
 import { update } from "../../repositories/user";
 import { isExpiredInSeconds } from "../../services/is-expired";
 import {
@@ -215,4 +219,26 @@ export const destroyAuthenticatedSession = async (
       }
     });
   });
+};
+
+export const isIdentityConsistencyChecked = async (req: Request) => {
+  if (!req.session.mustReturnOneOrganizationInPayload) {
+    // identity is always considered as self-asserted for legacy payloads
+    return false;
+  }
+
+  const user = getUserFromAuthenticatedSession(req);
+  const selectedOrganizationId = await getSelectedOrganizationId(user.id);
+
+  if (selectedOrganizationId === null) {
+    throw new Error("selectedOrganizationId should be set");
+  }
+
+  const link = await getUserOrganizationLink(selectedOrganizationId, user.id);
+
+  if (isEmpty(link)) {
+    throw new Error("link should be set");
+  }
+
+  return link?.verification_type !== null;
 };
