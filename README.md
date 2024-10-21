@@ -161,7 +161,7 @@ https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/authorize?client_id=client_i
 
 Les valeurs `acr` utilisées par ProConnect Identité sont les suivantes :
 
-- `eidas1` authentification simple facteur avec une identité de niveau faible ;
+- `eidas1` niveau historique sans signification particulière qui sera remplacé par les valeurs plus détaillées qui suivent ;
 - `https://proconnect.gouv.fr/assurance/self-asserted` : identité déclarative ;
 - `https://proconnect.gouv.fr/assurance/self-asserted-2fa` : identité déclarative ;
 - `https://proconnect.gouv.fr/assurance/consistency-checked` : identité déclarative + un des tests de cohérence suivant :
