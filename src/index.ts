@@ -110,7 +110,7 @@ if (FEATURE_USE_SECURITY_RESPONSE_HEADERS) {
 app.set("etag", false);
 
 let morganOption: morgan.Options<Request, Response> = {
-  skip: (req: Request, _res: Response) => req.baseUrl.startsWith("/dist"),
+  skip: (req: Request, _res: Response) => req.baseUrl?.startsWith("/dist"),
 };
 if (ACCESS_LOG_PATH) {
   morganOption.stream = fs.createWriteStream(ACCESS_LOG_PATH, { flags: "a" });
