@@ -83,8 +83,6 @@ export const interactionEndControllerFactory =
     try {
       const user = getUserFromAuthenticatedSession(req);
 
-      // TODO this check could be made in the user middleware after the user as selected an org
-      // an error could be thrown and the redirect to sp link could end the interaction in a separate interaction controller
       const isConsistencyChecked = await isIdentityConsistencyChecked(req);
 
       let currentAcr = isWithinTwoFactorAuthenticatedSession(req)
@@ -128,7 +126,6 @@ export const interactionEndControllerFactory =
       }
 
       if (!isAcrSatisfied(prompt, currentAcr)) {
-        // TODO log the error like other 400 errors from oidc-provider
         result = {
           error: "access_denied",
           error_description: "none of the requested ACRs could be obtained",

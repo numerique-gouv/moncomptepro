@@ -286,8 +286,6 @@ let server: Server;
     ) => {
       logger.error(err);
 
-      // TODO if req.session.interactionId is set, we should put a redirectToSpUri in the call-to-action button
-
       if (err instanceof HttpErrors.HttpError) {
         if (err.statusCode === 404) {
           return res.status(404).render("not-found-error", {
