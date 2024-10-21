@@ -35,6 +35,7 @@ services:
       MCP_CLIENT_SECRET: standard_client_secret
       MCP_PROVIDER: http://localhost:3000
       MCP_SCOPES: openid email profile organization
+      ACR_VALUE_FOR_2FA: "https://proconnect.gouv.fr/assurance/consistency-checked-2fa"
       STYLESHEET_URL:
     network_mode: "host"
 
@@ -52,6 +53,7 @@ services:
       MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
       STYLESHEET_URL:
       LOGIN_HINT: unused1@yopmail.com
+      ACR_VALUES: eidas1
     network_mode: "host"
 
   moncomptepro-legacy-client:

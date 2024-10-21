@@ -51,3 +51,35 @@ describe("sign-in from proconnect federation client", () => {
     cy.contains("moncomptepro-proconnect-federation-client");
   });
 });
+
+describe("sign-in with a client requiring 2fa identity", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:4001");
+    cy.setCustomParams({
+      acr_values: null,
+      claims: {
+        id_token: {
+          amr: { essential: true },
+          acr: {
+            essential: true,
+            values: [
+              "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+              "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
+            ],
+          },
+        },
+      },
+    });
+  });
+
+  it("should sign-in an return the right acr value", function () {
+    cy.get("button#custom-connection").click({ force: true });
+
+    cy.get('[name="password"]').type("password123");
+    cy.get('[action="/users/sign-in"]  [type="submit"]')
+      .contains("S’identifier")
+      .click();
+
+    cy.contains("Attention : le site que vous voulez utiliser requiert la 2FA");
+  });
+});

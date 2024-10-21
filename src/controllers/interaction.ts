@@ -1,17 +1,28 @@
 import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
-import { FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR } from "../config/env";
+import {
+  ACR_VALUE_FOR_IAL1_AAL1,
+  ACR_VALUE_FOR_IAL1_AAL2,
+  ACR_VALUE_FOR_IAL2_AAL1,
+  ACR_VALUE_FOR_IAL2_AAL2,
+  FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR,
+} from "../config/env";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
+  isIdentityConsistencyChecked,
   isWithinAuthenticatedSession,
   isWithinTwoFactorAuthenticatedSession,
 } from "../managers/session/authenticated";
 import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { findByClientId } from "../repositories/oidc-client";
+import {
+  isAcrSatisfied,
+  isThereAnyRequestedAcr,
+  twoFactorsAuthRequested,
+} from "../services/acr-checks";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
-import { shouldTrigger2fa } from "../services/should-trigger-2fa";
 
 export const interactionStartControllerFactory =
   (oidcProvider: any) =>
@@ -26,9 +37,7 @@ export const interactionStartControllerFactory =
       req.session.interactionId = interactionId;
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
-      if (shouldTrigger2fa(prompt)) {
-        req.session.mustUse2FA = true;
-      }
+      req.session.twoFactorsAuthRequested = twoFactorsAuthRequested(prompt);
 
       const oidcClient = await findByClientId(client_id);
       req.session.authForProconnectFederation =
@@ -74,29 +83,40 @@ export const interactionEndControllerFactory =
     try {
       const user = getUserFromAuthenticatedSession(req);
 
-      const acr =
-        (!FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR &&
-          isWithinTwoFactorAuthenticatedSession(req)) ||
-        (FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR && req.session.mustUse2FA)
-          ? "https://refeds.org/profile/mfa"
-          : "eidas1";
+      const isConsistencyChecked = await isIdentityConsistencyChecked(req);
+
+      let currentAcr = isWithinTwoFactorAuthenticatedSession(req)
+        ? isConsistencyChecked
+          ? ACR_VALUE_FOR_IAL2_AAL2
+          : ACR_VALUE_FOR_IAL1_AAL2
+        : isConsistencyChecked
+          ? ACR_VALUE_FOR_IAL2_AAL1
+          : ACR_VALUE_FOR_IAL1_AAL1;
+
       const amr = getSessionStandardizedAuthenticationMethodsReferences(req);
       const ts = user.last_sign_in_at
         ? epochTime(user.last_sign_in_at)
         : undefined;
 
-      const result: OidcInteractionResults = {
+      const { prompt } = await oidcProvider.interactionDetails(req, res);
+
+      if (
+        FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR &&
+        !isThereAnyRequestedAcr(prompt)
+      ) {
+        currentAcr = "eidas1";
+      }
+
+      let result: OidcInteractionResults = {
         login: {
           accountId: user.id.toString(),
-          acr,
+          acr: currentAcr,
           amr,
           ts,
         },
         select_organization: false,
         update_userinfo: false,
       };
-
-      const { prompt } = await oidcProvider.interactionDetails(req, res);
       if (prompt.name === "select_organization") {
         result.select_organization = true;
       }
@@ -105,9 +125,16 @@ export const interactionEndControllerFactory =
         result.update_userinfo = true;
       }
 
+      if (!isAcrSatisfied(prompt, currentAcr)) {
+        result = {
+          error: "access_denied",
+          error_description: "none of the requested ACRs could be obtained",
+        };
+      }
+
       req.session.interactionId = undefined;
       req.session.mustReturnOneOrganizationInPayload = undefined;
-      req.session.mustUse2FA = undefined;
+      req.session.twoFactorsAuthRequested = undefined;
       req.session.authForProconnectFederation = undefined;
 
       await oidcProvider.interactionFinished(req, res, result);
