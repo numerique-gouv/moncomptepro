@@ -35,7 +35,7 @@ services:
       MCP_CLIENT_SECRET: standard_client_secret
       MCP_PROVIDER: http://localhost:3000
       MCP_SCOPES: openid email profile organization
-      ACR_VALUE_FOR_2FA: "urn:dinum:ac:classes:consistency-checked-2fa"
+      ACR_VALUE_FOR_2FA: "https://proconnect.gouv.fr/assurance/consistency-checked-2fa"
       STYLESHEET_URL:
     network_mode: "host"
 

@@ -30,7 +30,7 @@ describe("twoFactorsAuthRequested", () => {
       details: {
         acr: {
           essential: true,
-          value: "urn:dinum:ac:classes:consistency-checked-2fa",
+          value: "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
         },
       },
     };
@@ -45,7 +45,7 @@ describe("twoFactorsAuthRequested", () => {
       details: {
         acr: {
           essential: true,
-          value: "urn:dinum:ac:classes:self-asserted-2fa",
+          value: "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
         },
       },
     };
@@ -61,8 +61,8 @@ describe("twoFactorsAuthRequested", () => {
         acr: {
           essential: true,
           values: [
-            "urn:dinum:ac:classes:self-asserted-2fa",
-            "urn:dinum:ac:classes:consistency-checked-2fa",
+            "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+            "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
           ],
         },
       },
@@ -79,8 +79,8 @@ describe("twoFactorsAuthRequested", () => {
         acr: {
           essential: true,
           values: [
-            "urn:dinum:ac:classes:consistency-checked",
-            "urn:dinum:ac:classes:consistency-checked-2fa",
+            "https://proconnect.gouv.fr/assurance/consistency-checked",
+            "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
           ],
         },
       },
@@ -114,7 +114,10 @@ describe("isAcrSatisfied", () => {
     };
 
     assert.equal(
-      isAcrSatisfied(prompt, "urn:dinum:ac:classes:self-asserted"),
+      isAcrSatisfied(
+        prompt,
+        "https://proconnect.gouv.fr/assurance/self-asserted",
+      ),
       true,
     );
   });
@@ -123,7 +126,10 @@ describe("isAcrSatisfied", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
     assert.equal(
-      isAcrSatisfied(prompt, "urn:dinum:ac:classes:self-asserted"),
+      isAcrSatisfied(
+        prompt,
+        "https://proconnect.gouv.fr/assurance/self-asserted",
+      ),
       true,
     );
   });
@@ -135,13 +141,16 @@ describe("isAcrSatisfied", () => {
       details: {
         acr: {
           essential: true,
-          value: "urn:dinum:ac:classes:consistency-checked",
+          value: "https://proconnect.gouv.fr/assurance/consistency-checked",
         },
       },
     };
 
     assert.equal(
-      isAcrSatisfied(prompt, "urn:dinum:ac:classes:consistency-checked"),
+      isAcrSatisfied(
+        prompt,
+        "https://proconnect.gouv.fr/assurance/consistency-checked",
+      ),
       true,
     );
   });
@@ -152,13 +161,16 @@ describe("isAcrSatisfied", () => {
       details: {
         acr: {
           essential: true,
-          value: "urn:dinum:ac:classes:consistency-checked",
+          value: "https://proconnect.gouv.fr/assurance/consistency-checked",
         },
       },
     };
 
     assert.equal(
-      isAcrSatisfied(prompt, "urn:dinum:ac:classes:self-asserted"),
+      isAcrSatisfied(
+        prompt,
+        "https://proconnect.gouv.fr/assurance/self-asserted",
+      ),
       false,
     );
   });
@@ -203,7 +215,10 @@ describe("isThereAnyRequestedAcr", () => {
       details: {
         acr: {
           essential: true,
-          values: ["eidas1", "urn:dinum:ac:classes:consistency-checked-2fa"],
+          values: [
+            "eidas1",
+            "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
+          ],
         },
       },
     };
@@ -219,8 +234,8 @@ describe("isThereAnyRequestedAcr", () => {
         acr: {
           essential: true,
           values: [
-            "urn:dinum:ac:classes:self-asserted-2fa",
-            "urn:dinum:ac:classes:consistency-checked-2fa",
+            "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+            "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
           ],
         },
       },

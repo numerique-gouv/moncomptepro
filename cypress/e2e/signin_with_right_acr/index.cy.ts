@@ -9,7 +9,7 @@ describe("sign-in with a client not requiring any acr", () => {
 
     cy.login("ial1-aal1@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:self-asserted"');
+    cy.contains('"acr": "https://proconnect.gouv.fr/assurance/self-asserted"');
   });
 
   it("should sign-in an return the right acr value", function () {
@@ -17,7 +17,9 @@ describe("sign-in with a client not requiring any acr", () => {
 
     cy.login("ial2-aal1@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:consistency-checked"');
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/consistency-checked"',
+    );
   });
 
   it("should sign-in an return the right acr value", function () {
@@ -25,7 +27,7 @@ describe("sign-in with a client not requiring any acr", () => {
 
     cy.login("ial1-aal2@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:self-asserted"');
+    cy.contains('"acr": "https://proconnect.gouv.fr/assurance/self-asserted"');
   });
 
   it("should sign-in an return the right acr value", function () {
@@ -33,7 +35,9 @@ describe("sign-in with a client not requiring any acr", () => {
 
     cy.login("ial2-aal2@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:consistency-checked"');
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/consistency-checked"',
+    );
   });
 });
 
@@ -41,8 +45,8 @@ describe("sign-in with a client requiring consistency-checked identity", () => {
   beforeEach(() => {
     cy.visit("http://localhost:4000");
     cy.setRequestedAcrs([
-      "urn:dinum:ac:classes:consistency-checked",
-      "urn:dinum:ac:classes:consistency-checked-2fa",
+      "https://proconnect.gouv.fr/assurance/consistency-checked",
+      "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
     ]);
   });
 
@@ -51,7 +55,9 @@ describe("sign-in with a client requiring consistency-checked identity", () => {
 
     cy.login("ial2-aal1@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:consistency-checked"');
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/consistency-checked"',
+    );
   });
 
   it("should return an error with ial1", function () {
@@ -67,8 +73,8 @@ describe("sign-in with a client requiring 2fa identity", () => {
   beforeEach(() => {
     cy.visit("http://localhost:4000");
     cy.setRequestedAcrs([
-      "urn:dinum:ac:classes:self-asserted-2fa",
-      "urn:dinum:ac:classes:consistency-checked-2fa",
+      "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+      "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
     ]);
   });
 
@@ -77,7 +83,9 @@ describe("sign-in with a client requiring 2fa identity", () => {
 
     cy.mfaLogin("ial2-aal2@yopmail.com");
 
-    cy.contains('"acr": "urn:dinum:ac:classes:consistency-checked-2fa"');
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/consistency-checked-2fa"',
+    );
   });
 
   it("should return an error with ial1", function () {

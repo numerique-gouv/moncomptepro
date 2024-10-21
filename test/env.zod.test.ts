@@ -18,10 +18,14 @@ test("default sample env with configured INSEE secrets", () => {
   const env = envSchema.parse(sample_env);
 
   expect(env).to.deep.equal({
-    ACR_VALUE_FOR_IAL1_AAL1: "urn:dinum:ac:classes:self-asserted",
-    ACR_VALUE_FOR_IAL1_AAL2: "urn:dinum:ac:classes:self-asserted-2fa",
-    ACR_VALUE_FOR_IAL2_AAL1: "urn:dinum:ac:classes:consistency-checked",
-    ACR_VALUE_FOR_IAL2_AAL2: "urn:dinum:ac:classes:consistency-checked-2fa",
+    ACR_VALUE_FOR_IAL1_AAL1:
+      "https://proconnect.gouv.fr/assurance/self-asserted",
+    ACR_VALUE_FOR_IAL1_AAL2:
+      "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+    ACR_VALUE_FOR_IAL2_AAL1:
+      "https://proconnect.gouv.fr/assurance/consistency-checked",
+    ACR_VALUE_FOR_IAL2_AAL2:
+      "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
     API_AUTH_PASSWORD: "admin",
     API_AUTH_USERNAME: "admin",
     CRISP_BASE_URL: "https://api.crisp.chat",

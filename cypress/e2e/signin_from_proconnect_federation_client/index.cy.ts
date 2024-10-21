@@ -63,8 +63,8 @@ describe("sign-in with a client requiring 2fa identity", () => {
           acr: {
             essential: true,
             values: [
-              "urn:dinum:ac:classes:self-asserted-2fa",
-              "urn:dinum:ac:classes:consistency-checked-2fa",
+              "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+              "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
             ],
           },
         },

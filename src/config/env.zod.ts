@@ -54,16 +54,16 @@ export const paramsEnvSchema = z.object({
   ACCESS_LOG_PATH: z.string().optional(),
   ACR_VALUE_FOR_IAL1_AAL1: z
     .string()
-    .default("urn:dinum:ac:classes:self-asserted"),
+    .default("https://proconnect.gouv.fr/assurance/self-asserted"),
   ACR_VALUE_FOR_IAL1_AAL2: z
     .string()
-    .default("urn:dinum:ac:classes:self-asserted-2fa"),
+    .default("https://proconnect.gouv.fr/assurance/self-asserted-2fa"),
   ACR_VALUE_FOR_IAL2_AAL1: z
     .string()
-    .default("urn:dinum:ac:classes:consistency-checked"),
+    .default("https://proconnect.gouv.fr/assurance/consistency-checked"),
   ACR_VALUE_FOR_IAL2_AAL2: z
     .string()
-    .default("urn:dinum:ac:classes:consistency-checked-2fa"),
+    .default("https://proconnect.gouv.fr/assurance/consistency-checked-2fa"),
   DEPLOY_ENV: z.enum(["preview", "production", "sandbox"]).default("preview"),
   DIRTY_DS_REDIRECTION_URL: z
     .string()

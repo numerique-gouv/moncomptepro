@@ -68,7 +68,7 @@ jobs:
           MCP_CLIENT_SECRET: standard_client_secret
           MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
           MCP_SCOPES: openid email profile organization
-          ACR_VALUE_FOR_2FA: urn:dinum:ac:classes:consistency-checked-2fa
+          ACR_VALUE_FOR_2FA: https://proconnect.gouv.fr/assurance/consistency-checked-2fa
           STYLESHEET_URL: ""
       moncomptepro-proconnect-federation-client:
         image: ghcr.io/numerique-gouv/moncomptepro-test-client
