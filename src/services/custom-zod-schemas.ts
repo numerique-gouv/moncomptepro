@@ -67,3 +67,25 @@ export const codeSchema = () =>
     .trim()
     .min(1)
     .transform((val) => val.replace(/\s+/g, ""));
+
+export const oidcErrorSchema = () =>
+  z.enum([
+    // https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.2
+    "invalid_request",
+    "unauthorized_client",
+    "access_denied",
+    "unsupported_response_type",
+    "invalid_scope",
+    "server_error",
+    "temporarily_unavailable",
+    // https://openid.net/specs/openid-connect-core-1_0.html#AuthError
+    "interaction_required",
+    "login_required",
+    "account_selection_required",
+    "consent_required",
+    "invalid_request_uri",
+    "invalid_request_object",
+    "request_not_supported",
+    "request_uri_not_supported",
+    "registration_not_supported",
+  ]);

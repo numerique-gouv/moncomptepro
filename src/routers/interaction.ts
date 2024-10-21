@@ -3,6 +3,7 @@ import nocache from "nocache";
 import Provider from "oidc-provider";
 import {
   interactionEndControllerFactory,
+  interactionErrorControllerFactory,
   interactionStartControllerFactory,
 } from "../controllers/interaction";
 import { checkUserSignInRequirementsMiddleware } from "../middlewares/user";
@@ -22,6 +23,10 @@ export const interactionRouter = (oidcProvider: Provider) => {
     "/:grant/login",
     checkUserSignInRequirementsMiddleware,
     interactionEndControllerFactory(oidcProvider),
+  );
+  interactionRouter.get(
+    "/:grant/error",
+    interactionErrorControllerFactory(oidcProvider),
   );
 
   return interactionRouter;

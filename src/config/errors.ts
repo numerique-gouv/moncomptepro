@@ -92,3 +92,14 @@ export class NoEmailFoundInUnauthenticatedSessionError extends Error {}
 export class InvalidTotpTokenError extends Error {}
 
 export class UserIsNot2faCapableError extends Error {}
+
+export class OidcError extends Error {
+  constructor(
+    public error: string,
+    public error_description?: string,
+  ) {
+    super();
+    this.error = error;
+    this.error_description = error_description;
+  }
+}
