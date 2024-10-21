@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
+import { z } from "zod";
 import {
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
@@ -7,6 +8,7 @@ import {
   ACR_VALUE_FOR_IAL2_AAL2,
   FEATURE_ALWAYS_RETURN_EIDAS1_FOR_ACR,
 } from "../config/env";
+import { OidcError } from "../config/errors";
 import {
   getSessionStandardizedAuthenticationMethodsReferences,
   getUserFromAuthenticatedSession,
@@ -21,6 +23,7 @@ import {
   isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
 } from "../services/acr-checks";
+import { oidcErrorSchema } from "../services/custom-zod-schemas";
 import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 
@@ -126,10 +129,12 @@ export const interactionEndControllerFactory =
       }
 
       if (!isAcrSatisfied(prompt, currentAcr)) {
-        result = {
-          error: "access_denied",
-          error_description: "none of the requested ACRs could be obtained",
-        };
+        return next(
+          new OidcError(
+            "access_denied",
+            "none of the requested ACRs could be obtained",
+          ),
+        );
       }
 
       req.session.interactionId = undefined;
@@ -145,6 +150,27 @@ export const interactionEndControllerFactory =
         return res.redirect("/");
       }
 
+      next(error);
+    }
+  };
+
+export const interactionErrorControllerFactory =
+  (oidcProvider: Provider) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req.session.interactionId = undefined;
+      req.session.mustReturnOneOrganizationInPayload = undefined;
+      req.session.twoFactorsAuthRequested = undefined;
+      req.session.authForProconnectFederation = undefined;
+
+      const schema = z.object({
+        error: oidcErrorSchema(),
+      });
+
+      const { error } = await schema.parseAsync(req.query);
+
+      await oidcProvider.interactionFinished(req, res, { error });
+    } catch (error) {
       next(error);
     }
   };

@@ -65,7 +65,13 @@ describe("sign-in with a client requiring consistency-checked identity", () => {
 
     cy.login("ial1-aal1@yopmail.com");
 
-    cy.contains("access_denied (none of the requested ACRs could be obtained)");
+    cy.contains("Erreur access_denied");
+
+    cy.contains("none of the requested ACRs could be obtained");
+
+    cy.get("a.fr-btn").contains("Continuer").click();
+
+    cy.contains("OPError: access_denied");
   });
 });
 

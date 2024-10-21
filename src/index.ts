@@ -26,6 +26,7 @@ import {
   SESSION_COOKIE_SECRET,
   SESSION_MAX_AGE_IN_SECONDS,
 } from "./config/env";
+import { OidcError } from "./config/errors";
 import { oidcProviderConfiguration } from "./config/oidc-provider-configuration";
 import { getNewRedisClient } from "./connectors/redis";
 import { trustedBrowserMiddleware } from "./managers/browser-authentication";
@@ -264,12 +265,14 @@ let server: Server;
   });
   app.use("/oauth", oidcProvider.callback());
 
-  app.use(async (_req, res, _next) => {
+  app.use(async (req, res, _next) => {
     res.setHeader("Content-Type", "text/html");
     res.status(404).send(
       await renderWithEjsLayout("not-found-error", {
         pageTitle: "Page introuvable",
         illustration: "connection-lost.svg",
+        oidcError: "invalid_request",
+        interactionId: req.session.interactionId,
       }),
     );
   });
@@ -280,7 +283,7 @@ let server: Server;
   app.use(
     (
       err: HttpErrors.HttpError | ZodError | Error,
-      _req: Request,
+      req: Request,
       res: Response,
       _next: NextFunction,
     ) => {
@@ -292,6 +295,8 @@ let server: Server;
             // force not to use dashboard layout in case the error is shown within a dashboard page
             use_dashboard_layout: false,
             illustration: "connection-lost.svg",
+            oidcError: "invalid_request",
+            interactionId: req.session.interactionId,
           });
         }
         return res.status(err.statusCode || 500).render("error", {
@@ -300,6 +305,8 @@ let server: Server;
           // force not to use dashboard layout in case the error is shown within a dashboard page
           use_dashboard_layout: false,
           illustration: "connection-lost.svg",
+          oidcError: "server_error",
+          interactionId: req.session.interactionId,
         });
       }
 
@@ -310,6 +317,20 @@ let server: Server;
           // force not to use dashboard layout in case the error is shown within a dashboard page
           use_dashboard_layout: false,
           illustration: "connection-lost.svg",
+          oidcError: "invalid_request",
+          interactionId: req.session.interactionId,
+        });
+      }
+
+      if (err instanceof OidcError) {
+        return res.status(400).render("error", {
+          error_code: err.error,
+          error_message: err.error_description,
+          // force not to use dashboard layout in case the error is shown within a dashboard page
+          use_dashboard_layout: false,
+          illustration: "connection-lost.svg",
+          oidcError: err.error,
+          interactionId: req.session.interactionId,
         });
       }
 
@@ -319,6 +340,8 @@ let server: Server;
         // force not to use dashboard layout in case the error is shown within a dashboard page
         use_dashboard_layout: false,
         illustration: "connection-lost.svg",
+        oidcError: "server_error",
+        interactionId: req.session.interactionId,
       });
     },
   );
