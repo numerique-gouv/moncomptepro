@@ -24,24 +24,13 @@ INSERT INTO oidc_clients
    authorization_signed_response_alg, introspection_signed_response_alg)
 VALUES
   ('Oidc Test Client',
-   'legacy_client_id',
-   'legacy_client_secret',
-   ARRAY [
-     'http://localhost:4002/login-callback'
-     ],
-   ARRAY []::varchar[],
-   'openid email profile phone organizations',
-   'http://localhost:4002/',
-   'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
-   null, null, null, null),
-  ('Oidc Test Client',
    'standard_client_id',
    'standard_client_secret',
    ARRAY [
      'http://localhost:4000/login-callback'
      ],
    ARRAY []::varchar[],
-   'openid email profile organization',
+   'openid email profile phone organization organizations',
    'http://localhost:4000/',
    'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
    null, null, null, null);
