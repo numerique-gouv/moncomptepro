@@ -56,19 +56,6 @@ services:
       ACR_VALUES: eidas1
     network_mode: "host"
 
-  moncomptepro-legacy-client:
-    image: ghcr.io/numerique-gouv/moncomptepro-test-client
-    environment:
-      PORT: 4002
-      SITE_TITLE: moncomptepro-legacy-client
-      HOST: http://localhost:4002
-      MCP_CLIENT_ID: legacy_client_id
-      MCP_CLIENT_SECRET: legacy_client_secret
-      MCP_PROVIDER: http://localhost:3000
-      MCP_SCOPES: openid email profile phone organizations
-      STYLESHEET_URL:
-    network_mode: "host"
-
   maildev:
     image: soulteary/maildev
     network_mode: "host"

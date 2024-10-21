@@ -45,10 +45,10 @@ jobs:
           - redirect_after_session_expiration
           - reset_password
           - set_info_after_account_provisioning
-          - signin_from_legacy_client
           - signin_from_proconnect_federation_client
           - signin_from_standard_client
           - signin_with_email_verification_renewal
+          - signin_with_legacy_scope
           - signin_with_magic_link
           - signin_with_right_acr
           - signin_with_totp
@@ -86,18 +86,6 @@ jobs:
           STYLESHEET_URL: ""
           LOGIN_HINT: unused1@yopmail.com
           ACR_VALUES: eidas1
-      moncomptepro-legacy-client:
-        image: ghcr.io/numerique-gouv/moncomptepro-test-client
-        ports:
-          - 4002:3000
-        env:
-          SITE_TITLE: moncomptepro-legacy-client
-          HOST: http://localhost:4002
-          MCP_CLIENT_ID: legacy_client_id
-          MCP_CLIENT_SECRET: legacy_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid email profile phone organizations
-          STYLESHEET_URL: ""
       redis:
         image: redis:7.2
         ports:
