@@ -86,7 +86,7 @@
     "npm-run-all2": "^6.1.2",
     "oidc-provider": "^8.5.1",
     "pg": "^8.13.0",
-    "qrcode": "^1.5.3",
+    "qrcode": "^1.5.4",
     "rate-limiter-flexible": "^2.4.2",
     "tld-extract": "^2.1.0",
     "tsx": "^4.17.0",
