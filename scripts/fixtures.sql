@@ -137,7 +137,27 @@ VALUES
   (52, 'onboardingic_mix4@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, false, true, true),
   (53, 'onboardingic_mix5@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, false, true, true),
   (54, 'onboardingic_mix6@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, false, true, true),
-  (55, 'onboardingic_mix7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, false, true, true)
+  (55, 'onboardingic_mix7@yopmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'InclusionConnect', null, null, null, null, false, true, true),
+  (56, 'thponcet@grandlyon.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Thomas', 'Poncet', null, null, null, null, false, true, true),
+  (57, 'thomas.poncet@cpe.fr', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Thomas', 'Poncet', null, null, null, null, false, true, true),
+  (58, 'nadia.sebei@alcyor.fr', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Nadia', 'Sebei', null, null, null, null, false, true, true),
+  (59, 'mwillmann@grandlyon.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Mathilde', 'Willmann', null, null, null, null, false, true, true),
+  (60, 'mathilde.willmann@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Mathilde', 'Willmann', null, null, null, null, false, true, true),
+  (61, 'apoyen@grandlyon.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Alexis', 'Poyen', null, null, null, null, false, true, true),
+  (62, 'jerome.poirier.perso@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jérôme', 'Poirier', null, null, null, null, false, true, true),
+  (63, 'vhugovhugovhugo99+1@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (64, 'vhugovhugovhugo99+2@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (65, 'vhugovhugovhugo99+3@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (66, 'vhugovhugovhugo99+4@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (67, 'vhugovhugovhugo99+5@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (68, 'vhugovhugovhugo99+6@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (69, 'vhugovhugovhugo99+7@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (70, 'vhugovhugovhugo99+8@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (71, 'vhugovhugovhugo99+9@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (72, 'vhugovhugovhugo99+10@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (73, 'vhugovhugovhugo99+11@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (74, 'vhugovhugovhugo99+12@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (75, 'vhugovhugovhugo99@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true)
 ON CONFLICT (id)
   DO UPDATE
   SET (email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
@@ -210,7 +230,8 @@ VALUES
   (47, '44137965800012', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- used in integration tests of ProConnect Federation
-  (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -382,7 +403,27 @@ VALUES
   (53, 48, 'verified_email_domain', true),
   (54, 48, 'verified_email_domain', true),
   (55, 48, 'verified_email_domain', true),
-  (1, 49, 'verified_email_domain', true)
+  (1, 49, 'verified_email_domain', true),
+  (56, 50, 'verified_email_domain', true),
+  (57, 50, 'verified_email_domain', true),
+  (58, 50, 'verified_email_domain', true),
+  (59, 50, 'verified_email_domain', true),
+  (60, 50, 'verified_email_domain', true),
+  (61, 50, 'verified_email_domain', true),
+  (62, 50, 'verified_email_domain', true),
+  (63, 50, 'verified_email_domain', true),
+  (64, 50, 'verified_email_domain', true),
+  (65, 50, 'verified_email_domain', true),
+  (66, 50, 'verified_email_domain', true),
+  (67, 50, 'verified_email_domain', true),
+  (68, 50, 'verified_email_domain', true),
+  (69, 50, 'verified_email_domain', true),
+  (70, 50, 'verified_email_domain', true),
+  (71, 50, 'verified_email_domain', true),
+  (72, 50, 'verified_email_domain', true),
+  (73, 50, 'verified_email_domain', true),
+  (74, 50, 'verified_email_domain', true),
+  (75, 50, 'verified_email_domain', true)
 ON CONFLICT (user_id, organization_id)
   DO UPDATE
   SET (verification_type, has_been_greeted)
