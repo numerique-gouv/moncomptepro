@@ -35,21 +35,13 @@ export const connectionCountMiddleware = async (
     // There is no accountId in the session, we wait for a session to be open.
     // This happens when hitting the resume route.
     try {
+      // if the interaction resulted in a success accountId and clientId should be set
       if (ctx.oidc.session?.accountId && ctx.oidc.client?.clientId) {
         await recordNewConnection({
           accountId: ctx.oidc.session.accountId,
           client: ctx.oidc.client,
           params: ctx.oidc.params as OIDCContextParams,
         });
-      } else {
-        // This is unexpected, we log it in sentry
-        const err = new Error(
-          `Connection ignored in count! session: ${JSON.stringify(
-            ctx.oidc.session,
-          )}; client: ${JSON.stringify(ctx.oidc.client)}`,
-        );
-        logger.error(err);
-        Sentry.captureException(err);
       }
     } catch (err) {
       logger.error(err);
