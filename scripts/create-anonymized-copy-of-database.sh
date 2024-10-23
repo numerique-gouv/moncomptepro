@@ -6,6 +6,10 @@ logPrefix(){
   echo "$(date --iso-8601=seconds) -"
 }
 
+if [ -n "$(which dbclient-fetcher)" ]; then
+  dbclient-fetcher psql 15.8
+fi
+
 export SRC_DB_URL=$SCALINGO_POSTGRESQL_URL
 export DEST_DB_URL=$METABASE_DB_URL
 
