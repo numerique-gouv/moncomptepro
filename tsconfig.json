@@ -2,6 +2,8 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@kitajs/html",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -16,6 +18,5 @@
     "rootDir": ".",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["packages/*"],
   "extends": "@tsconfig/node20/tsconfig.json"
 }
