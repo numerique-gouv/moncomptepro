@@ -10,7 +10,6 @@ type RemoteTemplateSlug =
   | "official-contact-email-verification"
   | "reset-password"
   | "magic-link"
-  | "join-organization"
   | "verify-email";
 type LocalTemplateSlug =
   | "welcome"
@@ -29,7 +28,6 @@ const remoteTemplateSlugToBrevoTemplateId: {
   "official-contact-email-verification": 3,
   "reset-password": 5,
   "magic-link": 1,
-  "join-organization": 4,
   "verify-email": 6,
 };
 const defaultBrevoTemplateId = 7;
