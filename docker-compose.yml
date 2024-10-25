@@ -15,42 +15,42 @@ services:
     ports:
       - "6379:6379"
 
-  oidc-test-client:
-    image: ghcr.io/numerique-gouv/moncomptepro-test-client
+  demo-test-client:
+    image: ghcr.io/numerique-gouv/proconnect-test-client
     environment:
       PORT: 3001
-      # default env var can be found at https://github.com/numerique-gouv/moncomptepro-test-client/blob/master/.env
+      # default env var can be found at https://github.com/numerique-gouv/proconnect-test-client/blob/master/.env
       HOST: http://localhost:3001
-      MCP_CLIENT_ID: client_id
-      MCP_PROVIDER: http://localhost:3000/
+      PC_CLIENT_ID: client_id
+      PC_PROVIDER: http://localhost:3000/
     network_mode: "host"
 
-  moncomptepro-standard-client:
-    image: ghcr.io/numerique-gouv/moncomptepro-test-client
+  standard-client:
+    image: ghcr.io/numerique-gouv/proconnect-test-client
     environment:
       PORT: 4000
-      SITE_TITLE: moncomptepro-standard-client
+      SITE_TITLE: standard-client
       HOST: http://localhost:4000
-      MCP_CLIENT_ID: standard_client_id
-      MCP_CLIENT_SECRET: standard_client_secret
-      MCP_PROVIDER: http://localhost:3000
-      MCP_SCOPES: openid email profile organization
+      PC_CLIENT_ID: standard_client_id
+      PC_CLIENT_SECRET: standard_client_secret
+      PC_PROVIDER: http://localhost:3000
+      PC_SCOPES: openid email profile organization
       ACR_VALUE_FOR_2FA: "https://proconnect.gouv.fr/assurance/consistency-checked-2fa"
       STYLESHEET_URL:
     network_mode: "host"
 
-  moncomptepro-proconnect-federation-client:
-    image: ghcr.io/numerique-gouv/moncomptepro-test-client
+  proconnect-federation-client:
+    image: ghcr.io/numerique-gouv/proconnect-test-client
     environment:
       PORT: 4001
-      SITE_TITLE: moncomptepro-proconnect-federation-client
+      SITE_TITLE: proconnect-federation-client
       HOST: http://localhost:4001
-      MCP_CLIENT_ID: proconnect_federation_client_id
-      MCP_CLIENT_SECRET: proconnect_federation_client_secret
-      MCP_PROVIDER: http://localhost:3000
-      MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
-      MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
-      MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
+      PC_CLIENT_ID: proconnect_federation_client_id
+      PC_CLIENT_SECRET: proconnect_federation_client_secret
+      PC_PROVIDER: http://localhost:3000
+      PC_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
+      PC_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
+      PC_USERINFO_SIGNED_RESPONSE_ALG: ES256
       STYLESHEET_URL:
       LOGIN_HINT: unused1@yopmail.com
       ACR_VALUES: eidas1

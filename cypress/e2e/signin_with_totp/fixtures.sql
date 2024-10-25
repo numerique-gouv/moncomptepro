@@ -47,5 +47,5 @@ VALUES
    ARRAY []::varchar[],
    'openid email profile organization',
    'http://localhost:4000/',
-   'MonComptePro test client. More info: https://github.com/numerique-gouv/moncomptepro-test-client.',
+   'ProConnect test client. More info: https://github.com/numerique-gouv/proconnect-test-client.',
    null, null, null, null);
