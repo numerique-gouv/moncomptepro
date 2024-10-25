@@ -10,7 +10,7 @@ describe("sign-in from proconnect federation client", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("moncomptepro-proconnect-federation-client");
+    cy.contains("proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
     cy.contains("21340126800130");
   });
@@ -22,7 +22,7 @@ describe("sign-in from proconnect federation client", () => {
     cy.visit("http://localhost:4001");
     cy.get("button.proconnect-button").click();
 
-    cy.contains("moncomptepro-proconnect-federation-client");
+    cy.contains("proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
   });
 
@@ -38,7 +38,7 @@ describe("sign-in from proconnect federation client", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("moncomptepro-proconnect-federation-client");
+    cy.contains("proconnect-federation-client");
     cy.contains("unused1@yopmail.com");
   });
 
@@ -48,7 +48,7 @@ describe("sign-in from proconnect federation client", () => {
 
     cy.get("#change-email-address").click();
 
-    cy.contains("moncomptepro-proconnect-federation-client");
+    cy.contains("proconnect-federation-client");
   });
 });
 

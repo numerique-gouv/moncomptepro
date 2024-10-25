@@ -57,32 +57,32 @@ jobs:
           - update_totp_application
     runs-on: ubuntu-22.04
     services:
-      moncomptepro-standard-client:
-        image: ghcr.io/numerique-gouv/moncomptepro-test-client
+      standard-client:
+        image: ghcr.io/numerique-gouv/proconnect-test-client
         ports:
           - 4000:3000
         env:
-          SITE_TITLE: moncomptepro-standard-client
+          SITE_TITLE: standard-client
           HOST: http://localhost:4000
-          MCP_CLIENT_ID: standard_client_id
-          MCP_CLIENT_SECRET: standard_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid email profile organization
+          PC_CLIENT_ID: standard_client_id
+          PC_CLIENT_SECRET: standard_client_secret
+          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          PC_SCOPES: openid email profile organization
           ACR_VALUE_FOR_2FA: https://proconnect.gouv.fr/assurance/consistency-checked-2fa
           STYLESHEET_URL: ""
-      moncomptepro-proconnect-federation-client:
-        image: ghcr.io/numerique-gouv/moncomptepro-test-client
+      proconnect-federation-client:
+        image: ghcr.io/numerique-gouv/proconnect-test-client
         ports:
           - 4001:3000
         env:
-          SITE_TITLE: moncomptepro-proconnect-federation-client
+          SITE_TITLE: proconnect-federation-client
           HOST: http://localhost:4001
-          MCP_CLIENT_ID: proconnect_federation_client_id
-          MCP_CLIENT_SECRET: proconnect_federation_client_secret
-          MCP_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          MCP_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
-          MCP_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
-          MCP_USERINFO_SIGNED_RESPONSE_ALG: ES256
+          PC_CLIENT_ID: proconnect_federation_client_id
+          PC_CLIENT_SECRET: proconnect_federation_client_secret
+          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          PC_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
+          PC_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
+          PC_USERINFO_SIGNED_RESPONSE_ALG: ES256
           STYLESHEET_URL: ""
           LOGIN_HINT: unused1@yopmail.com
           ACR_VALUES: eidas1

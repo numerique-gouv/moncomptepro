@@ -64,7 +64,7 @@ Emails are not sent but printed in the console.
 
 ## Testing the Connection with a Test Client
 
-ProConnect Identité is provided with a test client: https://github.com/numerique-gouv/moncomptepro-test-client
+ProConnect Identité is provided with a test client: https://github.com/numerique-gouv/proconnect-test-client
 
 This container is launched within the ProConnect Identité `docker-compose.yml`.
 

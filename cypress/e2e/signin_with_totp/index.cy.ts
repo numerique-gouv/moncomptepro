@@ -42,7 +42,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
         cy.get('[type="submit"]').click();
       });
 
-    cy.contains("moncomptepro-standard-client");
+    cy.contains("standard-client");
   });
 
   it("should sign-in with password and TOTP when forced by SP", function () {
@@ -75,7 +75,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
         cy.get('[type="submit"]').click();
       });
 
-    cy.contains("moncomptepro-standard-client");
+    cy.contains("standard-client");
 
     cy.get("button#force-2fa").click();
 
