@@ -39,3 +39,19 @@ export const get2faSignInController = async (
     next(error);
   }
 };
+
+export const get2faConfigurationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    return res.render("user/2fa-configuration", {
+      pageTitle: "Configurer la connexion à deux facteurs (2FA)",
+      notifications: await getNotificationsFromRequest(req),
+      illustration: "illu-password.svg",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

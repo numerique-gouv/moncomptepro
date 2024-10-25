@@ -7,6 +7,11 @@ describe("add 2fa authentication", () => {
         inboxId: "64d9024b-d389-4b9d-948d-a504082c14fa",
       }),
     );
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: "f86d5310-fe21-4521-ae84-7f51534a0483",
+      }),
+    );
   });
 
   it("should add 2fa authentication on account user", function () {
@@ -47,5 +52,14 @@ describe("add 2fa authentication", () => {
       .then((email) => {
         expect(email.subject).to.include("Validation en deux étapes activée");
       });
+  });
+
+  it("should be forced by SP to configure TOTP on sign-in", function () {
+    cy.visit("http://localhost:4000");
+    cy.get("button#force-2fa").click();
+
+    cy.login("f86d5310-fe21-4521-ae84-7f51534a0483@mailslurp.com");
+
+    cy.contains("Configurer la connexion à deux facteurs (2FA)");
   });
 });

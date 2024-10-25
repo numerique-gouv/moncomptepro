@@ -155,15 +155,7 @@ export const checkUserTwoFactorAuthMiddleware = async (
         !isWithinTwoFactorAuthenticatedSession(req)
       ) {
         if (!(await is2FACapable(user_id))) {
-          // We break the connexion flow
-
-          req.session.interactionId = undefined;
-          req.session.mustReturnOneOrganizationInPayload = undefined;
-          req.session.twoFactorsAuthRequested = undefined;
-          req.session.authForProconnectFederation = undefined;
-          return res.redirect(
-            "/connection-and-account?notification=2fa_not_configured",
-          );
+          return res.redirect("/users/2fa-configuration");
         } else {
           return res.redirect("/users/2fa-sign-in");
         }
