@@ -17,7 +17,6 @@ type LocalTemplateSlug =
   | "delete-account"
   | "delete-access-key"
   | "add-access-key"
-  | "update-totp-application"
   | "add-2fa"
   | "update-personal-data";
 
