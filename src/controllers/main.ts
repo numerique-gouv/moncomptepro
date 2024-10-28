@@ -82,7 +82,7 @@ export const postPersonalInformationsController = async (
       },
     );
 
-    sendUpdatePersonalInformationEmail({
+    await sendUpdatePersonalInformationEmail({
       previousInformations: getUserFromAuthenticatedSession(req),
       newInformation: updatedUser,
     });
