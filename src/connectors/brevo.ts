@@ -6,7 +6,7 @@ import { BrevoApiError } from "../config/errors";
 import { logger } from "../services/log";
 import { render } from "../services/renderer";
 
-type RemoteTemplateSlug = "magic-link";
+type RemoteTemplateSlug = never;
 type LocalTemplateSlug = "moderation-processed";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates

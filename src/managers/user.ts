@@ -5,6 +5,7 @@ import {
   DeleteAccessKey,
   DeleteAccount,
   DeleteFreeTotpMail,
+  MagicLink,
   ResetPassword,
   UpdatePersonalDataMail,
   UpdateTotpApplication,
@@ -23,7 +24,6 @@ import {
   UserNotFoundError,
   WeakPasswordError,
 } from "../config/errors";
-import { sendMail as legacySendMail } from "../connectors/brevo";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
 
@@ -478,13 +478,13 @@ export const sendSendMagicLinkEmail = async (
     magic_link_sent_at: new Date(),
   });
 
-  await legacySendMail({
+  await sendMail({
     to: [user.email],
     subject: "Lien de connexion à ProConnect",
-    template: "magic-link",
-    params: {
+    html: MagicLink({
+      baseurl: host,
       magic_link: `${host}/users/sign-in-with-magic-link?magic_link_token=${magicLinkToken}`,
-    },
+    }).toString(),
   });
 
   return true;
