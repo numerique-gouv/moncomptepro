@@ -1,4 +1,5 @@
 import {
+  Add2fa,
   Delete2faProtection,
   DeleteFreeTotpMail,
 } from "@numerique-gouv/moncomptepro.email";
@@ -303,11 +304,16 @@ export const sendAddFreeTOTPEmail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Validation en deux étapes activée",
-    template: "add-2fa",
-    params: { given_name, family_name, email },
+    html: Add2fa({
+      baseurl: MONCOMPTEPRO_HOST,
+      email,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+    }).toString(),
+    tag: "add-2fa",
   });
 };
 
