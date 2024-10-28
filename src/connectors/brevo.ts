@@ -6,7 +6,7 @@ import { BrevoApiError } from "../config/errors";
 import { logger } from "../services/log";
 import { render } from "../services/renderer";
 
-type RemoteTemplateSlug = "magic-link" | "verify-email";
+type RemoteTemplateSlug = "magic-link";
 type LocalTemplateSlug = "moderation-processed";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
@@ -14,7 +14,6 @@ const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
   "magic-link": 1,
-  "verify-email": 6,
 };
 const defaultBrevoTemplateId = 7;
 

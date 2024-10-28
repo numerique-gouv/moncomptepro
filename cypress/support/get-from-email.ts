@@ -4,17 +4,6 @@ import type { Email } from "mailslurp-client";
 
 //
 
-export const getVerificationCodeFromEmail = (email: Email) => {
-  const matches =
-    /.*<span style="color: #000091; font-size: 18px;"><strong>(\s*(?:\d\s*){10})<\/strong><\/span>.*/.exec(
-      email.body ?? "",
-    );
-  if (matches && matches.length > 0) {
-    return matches[1];
-  }
-  throw new Error("Could not find verification code in received email");
-};
-
 export const getMagicLinkFromEmail = (email: Email) => {
   const matches = /.*<a href="([^"]+)" class="r13-r default-button".*/.exec(
     email.body ?? "",

@@ -1,16 +1,6 @@
 //
 
-import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email";
-
 describe("sign-in with email verification renewal", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "bad1b70d-e5cb-436c-9ff3-f83d4af5d198",
-      }),
-    );
-  });
-
   it("should sign-in with email verification needed", () => {
     // Visit the signup page
     cy.visit("/users/start-sign-in");
@@ -21,17 +11,19 @@ describe("sign-in with email verification renewal", () => {
       "pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
     );
 
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "bad1b70d-e5cb-436c-9ff3-f83d4af5d198",
-          60000,
-          true,
-        ),
-      )
-      .then(getVerificationCodeFromEmail)
-      // fill out the verification form and submit
+    cy.maildevGetMessageBySubject("Vérification de votre adresse email")
+      .then((email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.contains(
+          "Pour vérifier votre adresse e-mail, merci de de copier-coller ou de renseigner ce code dans l’interface de connexion ProConnect.",
+        );
+        cy.go("back");
+        cy.maildevDeleteMessageById(email.id);
+        return cy.maildevGetOTPCode(email.text, 10);
+      })
       .then((code) => {
+        if (!code)
+          throw new Error("Could not find verification code in received email");
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
       });

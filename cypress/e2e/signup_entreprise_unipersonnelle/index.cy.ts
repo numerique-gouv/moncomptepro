@@ -1,7 +1,5 @@
 //
 
-import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email";
-
 describe("Signup into new entreprise unipersonnelle", () => {
   before(() => {
     cy.mailslurp().then((mailslurp) =>
@@ -31,20 +29,14 @@ describe("Signup into new entreprise unipersonnelle", () => {
       "8b805202-b7b3-42ac-b047-f37bdc559211@mailslurp.com",
     );
 
-    // Verify the email with the code received by email
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "8b805202-b7b3-42ac-b047-f37bdc559211",
-          60000,
-          true,
-        ),
-      )
-      // extract the verification code from the email subject
-      .then(getVerificationCodeFromEmail)
-      // fill out the verification form and submit
+    cy.maildevGetMessageBySubject("Vérification de votre adresse email")
+      .then((email) => {
+        cy.maildevDeleteMessageById(email.id);
+        return cy.maildevGetOTPCode(email.text, 10);
+      })
       .then((code) => {
+        if (!code)
+          throw new Error("Could not find verification code in received email");
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
       });
