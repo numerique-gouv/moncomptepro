@@ -26,6 +26,7 @@
     "test:lint": "prettier '**/*.ts' --list-different",
     "test:type-check": "tsc --noEmit",
     "test:unit": "NODE_ENV=test mocha --require tsx test/*.ts",
+    "test:update-mocks": "UPDATE_MOCKS=true mocha --require tsx test/api-annuaire-service-public-data/*.ts",
     "test:workspaces": "npm run test --if-present --workspaces",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
