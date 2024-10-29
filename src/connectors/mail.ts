@@ -12,10 +12,16 @@ const transporter = createTransport({
 
 //
 
-export function sendMail(options: Omit<SendMailOptions, "from">) {
+interface SendMailBrevoOptions extends Omit<SendMailOptions, "from"> {
+  tag?: string;
+}
+export function sendMail(options: SendMailBrevoOptions) {
+  const tag = options.tag ? [{ key: "X-Mailin-Tag", value: options.tag }] : [];
+
   return transporter.sendMail({
     text:
       typeof options.html === "string" ? convert(options.html) : options.text,
+    headers: [...tag],
     ...options,
     from: "nepasrepondre@email.moncomptepro.beta.gouv.fr",
   });
