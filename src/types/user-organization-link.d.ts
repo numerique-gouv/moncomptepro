@@ -8,6 +8,7 @@ interface BaseUserOrganizationLink {
     | "in_liste_dirigeants_rna"
     | "no_validation_means_available"
     | "no_verification_means_for_entreprise_unipersonnelle"
+    | "no_verification_means_for_small_association"
     | "official_contact_email"
     | null;
   // updated when verification_type is changed
