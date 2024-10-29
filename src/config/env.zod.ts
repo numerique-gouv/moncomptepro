@@ -93,6 +93,11 @@ export const paramsEnvSchema = z.object({
     .nonnegative()
     .default(3 * 30 * 24 * 60), // 3 months in minutes
   MAX_SUGGESTED_ORGANIZATIONS: z.coerce.number().int().nonnegative().default(3),
+  MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS: z.coerce
+    .number()
+    .int()
+    .nonnegative()
+    .default(20 * 60), // 20 minutes in seconds,
   MONCOMPTEPRO_HOST: z.string().url().default("http://localhost:3000"),
   MONCOMPTEPRO_LABEL: z.string().default("MonComptePro"),
   NODE_ENV: z
