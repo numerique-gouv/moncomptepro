@@ -232,6 +232,7 @@ export const sendDeleteFreeTOTPApplicationEmail = async ({
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
     }).toString(),
+    tag: "delete-free-totp",
   });
 };
 
@@ -250,6 +251,7 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
       family_name: family_name ?? "",
       given_name: given_name ?? "",
     }).toString(),
+    tag: "delete-2fa-protection",
   });
 };
 
