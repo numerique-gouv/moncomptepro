@@ -104,13 +104,19 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     ) {
       const start = startDurationMesure();
       try {
-        const { first_name, last_name, sub, email, siret: rawSirets } = data;
-        logger.info(`${i}: processing ${email}...`);
+        const {
+          first_name,
+          last_name,
+          sub,
+          email: rawEmail,
+          siret: rawSirets,
+        } = data;
+        logger.info(`${i}: processing ${rawEmail}...`);
         // 0. params validation
-        if (!isEmailValid(email)) {
+        if (!isEmailValid(rawEmail)) {
           i++;
           rejected_invalid_email_address_count++;
-          logger.error(`invalid email address ${email}`);
+          logger.error(`invalid email address ${rawEmail}`);
           return done(null);
         }
         if (!isNameValid(first_name) || !isNameValid(last_name)) {
@@ -119,7 +125,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           logger.error(`invalid name ${first_name} ${last_name}`);
           return done(null);
         }
-        if (isEmpty(sub) && sub.length === 36) {
+        if (isEmpty(sub) && sub.length !== 36) {
           i++;
           rejected_invalid_sub_count++;
           logger.error(`invalid sub ${sub}`);
@@ -127,6 +133,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         }
 
         // 1. add user if it does not exist
+        const email = rawEmail.toLowerCase();
         let user = await findByEmail(email);
         if (isEmpty(user)) {
           user = await create({ email });
@@ -139,7 +146,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         }
 
         const sirets: string[] = rawSirets
-          .split(",")
+          .split(" ")
           .filter((s: string) => !!s)
           .map((s: string) => s.trim());
         if (sirets.length > 0 && sirets.some((s) => !isSiretValid(s))) {
