@@ -1,5 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
+import moment from "moment";
 import { z, ZodError } from "zod";
+import { MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS } from "../../config/env";
 import {
   InvalidTokenError,
   NoNeedVerifyEmailAddressError,
@@ -8,6 +10,7 @@ import { isBrowserTrustedForUser } from "../../managers/browser-authentication";
 import {
   addAuthenticationMethodReferenceInSession,
   getUserFromAuthenticatedSession,
+  updateUserInAuthenticatedSession,
 } from "../../managers/session/authenticated";
 import {
   sendEmailAddressVerificationEmail,
@@ -35,10 +38,12 @@ export const getVerifyEmailController = async (
     const { email, needs_inclusionconnect_onboarding_help } =
       getUserFromAuthenticatedSession(req);
 
-    const codeSent: boolean = await sendEmailAddressVerificationEmail({
+    const { codeSent, updatedUser } = await sendEmailAddressVerificationEmail({
       email,
       isBrowserTrusted: isBrowserTrustedForUser(req),
     });
+
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.render("user/verify-email", {
       pageTitle: "Vérifier votre email",
@@ -48,6 +53,14 @@ export const getVerifyEmailController = async (
       newCodeSent: new_code_sent,
       codeSent,
       needs_inclusionconnect_onboarding_help,
+      minDurationToWaitInMinutes: moment()
+        .add(
+          MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS,
+          "seconds",
+        )
+        .tz("Europe/Paris")
+        .locale("fr")
+        .toNow(true),
       illustration: "illu-password.svg",
     });
   } catch (error) {
@@ -104,11 +117,13 @@ export const postSendEmailVerificationController = async (
   try {
     const { email } = getUserFromAuthenticatedSession(req);
 
-    await sendEmailAddressVerificationEmail({
+    const { updatedUser } = await sendEmailAddressVerificationEmail({
       email,
       isBrowserTrusted: isBrowserTrustedForUser(req),
       force: true,
     });
+
+    updateUserInAuthenticatedSession(req, updatedUser);
 
     return res.redirect(`/users/verify-email?new_code_sent=true`);
   } catch (error) {
@@ -128,11 +143,17 @@ export const getVerifyEmailHelpController = async (
   next: NextFunction,
 ) => {
   try {
-    const { email } = getUserFromAuthenticatedSession(req);
+    const { email, verify_email_sent_at } =
+      getUserFromAuthenticatedSession(req);
 
     return res.render("user/verify-email-help", {
       pageTitle: "Aide code de vérification",
       email,
+      countdownEndDate: moment(verify_email_sent_at)
+        .add(MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS, "s")
+        .tz("Europe/Paris")
+        .locale("fr")
+        .format(),
       csrfToken: email && csrfToken(req),
       illustration: "illu-password.svg",
     });

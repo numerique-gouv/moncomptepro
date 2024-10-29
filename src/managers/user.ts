@@ -141,9 +141,6 @@ export const signupWithPassword = async (
   });
 };
 
-/**
- * @return true if a new verify token was sent, false otherwise.
- */
 export const sendEmailAddressVerificationEmail = async ({
   email,
   isBrowserTrusted,
@@ -152,7 +149,7 @@ export const sendEmailAddressVerificationEmail = async ({
   email: string;
   isBrowserTrusted: boolean;
   force?: boolean;
-}): Promise<boolean> => {
+}): Promise<{ codeSent: boolean; updatedUser: User }> => {
   const user = await findByEmail(email);
 
   if (isEmpty(user)) {
@@ -174,12 +171,12 @@ export const sendEmailAddressVerificationEmail = async ({
   );
 
   if (!(force || isTokenExpired)) {
-    return false;
+    return { codeSent: false, updatedUser: user };
   }
 
   const verify_email_token = await generatePinToken();
 
-  await update(user.id, {
+  const updatedUser = await update(user.id, {
     verify_email_token,
     verify_email_sent_at: new Date(),
   });
@@ -193,7 +190,7 @@ export const sendEmailAddressVerificationEmail = async ({
     },
   });
 
-  return true;
+  return { codeSent: true, updatedUser };
 };
 
 export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {

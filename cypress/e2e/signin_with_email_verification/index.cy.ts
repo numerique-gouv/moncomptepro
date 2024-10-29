@@ -56,10 +56,48 @@ describe("sign-in with email verification renewal", () => {
 
     cy.get('a[href="/users/verify-email-help"]')
       .contains(
-        "J'ai attendu 15 minutes et je ne reçois pas de code de vérification",
+        "J'ai attendu quelques secondes et je ne reçois pas de code de vérification",
       )
       .click();
 
     cy.contains("Vous ne recevez pas le code de vérification");
+
+    cy.get('[action="/users/send-email-verification"]  [type="submit"]')
+      .contains("Cliquez ici pour recevoir un nouveau code")
+      .should("be.disabled");
+
+    // Wait for countdown to last
+    cy.wait(10 * 1000);
+
+    cy.mailslurp().then((mailslurp) =>
+      mailslurp.inboxController.deleteAllInboxEmails({
+        inboxId: "b8a1959b-7034-433a-86d9-55dae207e185",
+      }),
+    );
+
+    cy.get('[action="/users/send-email-verification"]  [type="submit"]')
+      .contains("Cliquez ici pour recevoir un nouveau code")
+      .click();
+
+    cy.contains(
+      "Un nouveau code de vérification a été envoyé à b8a1959b-7034-433a-86d9-55dae207e185@mailslurp.com",
+    );
+
+    cy.mailslurp()
+      .then((mailslurp) =>
+        mailslurp.waitForLatestEmail(
+          "b8a1959b-7034-433a-86d9-55dae207e185",
+          60000,
+          true,
+        ),
+      )
+      .then(getVerificationCodeFromEmail)
+      // fill out the verification form and submit
+      .then((code) => {
+        cy.get('[name="verify_email_token"]').type(code);
+        cy.get('[type="submit"]').click();
+      });
+
+    cy.contains("Votre compte ProConnect");
   });
 });

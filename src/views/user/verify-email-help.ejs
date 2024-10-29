@@ -34,8 +34,9 @@
                 >
                     <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
                     <input
+                            data-countdown-end-date="<%= countdownEndDate %>"
                             style="font-weight: bold;"
-                            class="fr-link" type="submit"
+                            class="fr-link disabled-with-countdown" type="submit"
                             value="Cliquez ici pour recevoir un nouveau code"
                     />
                 </form>
@@ -51,3 +52,4 @@
         </a>.
     </p>
 </div>
+<script type="module" src="<%= js('disabled-with-countdown.js') %>"></script>
