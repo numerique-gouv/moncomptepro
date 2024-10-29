@@ -10,7 +10,7 @@ export function unableToAutoJoinOrganizationMd({
   libelle: string;
 }) {
   return `
-![MonComptePro](${MONCOMPTEPRO_HOST}/dist/mail-banner.png)
+![MonComptePro](${MONCOMPTEPRO_HOST}/dist/mail-proconnect.png)
 
 Bonjour,
 
