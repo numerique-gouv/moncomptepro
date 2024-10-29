@@ -129,8 +129,9 @@ export const getVerifyEmailHelpController = async (
 ) => {
   try {
     const { email } = getUserFromAuthenticatedSession(req);
+
     return res.render("user/verify-email-help", {
-      pageTitle: "Renvoyer un code",
+      pageTitle: "Aide code de vérification",
       email,
       csrfToken: email && csrfToken(req),
       illustration: "illu-password.svg",
