@@ -25,7 +25,9 @@ import {
 } from "../managers/user";
 import { csrfToken } from "../middlewares/csrf-protection";
 import { codeSchema } from "../services/custom-zod-schemas";
-import getNotificationsFromRequest from "../services/get-notifications-from-request";
+import getNotificationsFromRequest, {
+  getNotificationLabelFromRequest,
+} from "../services/get-notifications-from-request";
 
 export const getAuthenticatorAppConfigurationController = async (
   req: Request,
@@ -45,9 +47,13 @@ export const getAuthenticatorAppConfigurationController = async (
 
     setTemporaryTotpKey(req, totpKey);
 
+    const notificationLabel = await getNotificationLabelFromRequest(req);
+    const hasCodeError = notificationLabel === "invalid_totp_token";
+
     return res.render("authenticator-app-configuration", {
       pageTitle: "Configuration TOTP",
       notifications: await getNotificationsFromRequest(req),
+      hasCodeError,
       csrfToken: csrfToken(req),
       isAuthenticatorAlreadyConfigured:
         await isAuthenticatorAppConfiguredForUser(user_id),
