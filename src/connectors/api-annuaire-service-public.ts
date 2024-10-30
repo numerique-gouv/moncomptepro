@@ -64,7 +64,11 @@ export const getAnnuaireServicePublicContactEmail = async (
         timeout: HTTP_CLIENT_TIMEOUT,
       });
 
-    features = data.results;
+    features = data.results.map((feature) => ({
+      ...feature,
+      // HACK(douglasduteil): the API returns a string instead of a JSON object in the adresse field
+      adresse: JSON.parse(feature.adresse as any),
+    }));
   } catch (e) {
     if (
       e instanceof AxiosError &&
