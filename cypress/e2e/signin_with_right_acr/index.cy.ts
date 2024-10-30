@@ -99,6 +99,6 @@ describe("sign-in with a client requiring 2fa identity", () => {
 
     cy.login("ial2-aal1@yopmail.com");
 
-    cy.contains("Attention : le site que vous voulez utiliser requiert la 2FA");
+    cy.contains("Configurer la connexion à deux facteurs (2FA)");
   });
 });

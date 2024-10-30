@@ -80,6 +80,6 @@ describe("sign-in with a client requiring 2fa identity", () => {
       .contains("S’identifier")
       .click();
 
-    cy.contains("Attention : le site que vous voulez utiliser requiert la 2FA");
+    cy.contains("Configurer la connexion à deux facteurs (2FA)");
   });
 });

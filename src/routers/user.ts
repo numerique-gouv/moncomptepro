@@ -9,7 +9,10 @@ import {
   postQuitUserOrganizationController,
 } from "../controllers/organization";
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
-import { get2faSignInController } from "../controllers/user/2fa-sign-in";
+import {
+  get2faConfigurationController,
+  get2faSignInController,
+} from "../controllers/user/2fa-sign-in";
 import { postDeleteUserController } from "../controllers/user/delete";
 import {
   getEditModerationController,
@@ -171,6 +174,12 @@ export const userRouter = () => {
     postVerifySecondFactorAuthenticationController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
+  );
+
+  userRouter.get(
+    "/2fa-configuration",
+    checkUserIsConnectedMiddleware,
+    get2faConfigurationController,
   );
 
   userRouter.get(
