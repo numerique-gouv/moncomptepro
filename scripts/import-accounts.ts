@@ -2,7 +2,7 @@
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
-import { isEmpty, some, toInteger } from "lodash-es";
+import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
 import {
   getInseeAccessToken,
@@ -113,10 +113,17 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         } = data;
         logger.info(`${i}: processing ${rawEmail}...`);
         // 0. params validation
-        if (!isEmailValid(rawEmail)) {
+        if (!isString(rawEmail)) {
           i++;
           rejected_invalid_email_address_count++;
           logger.error(`invalid email address ${rawEmail}`);
+          return done(null);
+        }
+        const email = rawEmail.toLowerCase();
+        if (!isEmailValid(email)) {
+          i++;
+          rejected_invalid_email_address_count++;
+          logger.error(`invalid email address ${email}`);
           return done(null);
         }
         if (!isNameValid(first_name) || !isNameValid(last_name)) {
@@ -133,7 +140,6 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         }
 
         // 1. add user if it does not exist
-        const email = rawEmail.toLowerCase();
         let user = await findByEmail(email);
         if (isEmpty(user)) {
           user = await create({ email });
