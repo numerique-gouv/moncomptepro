@@ -2,6 +2,7 @@
 
 import { generateToken } from "@sunknudsen/totp";
 import { checkA11y } from "./a11y/checkA11y";
+import { seed } from "./commands/seed";
 
 //
 
@@ -18,6 +19,7 @@ declare global {
       mfaLogin(email: string): Chainable<void>;
       setCustomParams(customParams: any): Chainable<void>;
       setRequestedAcrs(requestedAcrs?: string[]): Chainable<void>;
+      seed: typeof seed;
     }
   }
 }
@@ -97,3 +99,5 @@ Cypress.Commands.add("setRequestedAcrs", (requestedAcrs) => {
 
   cy.setCustomParams(customParams);
 });
+
+Cypress.Commands.add("seed", seed);

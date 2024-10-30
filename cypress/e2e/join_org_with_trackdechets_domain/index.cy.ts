@@ -11,6 +11,10 @@ describe("join organizations", () => {
     );
   });
 
+  it("should seed the database once", function () {
+    cy.seed();
+  });
+
   it("join suggested organisation", function () {
     cy.visit("/");
     cy.login("0c5b976c-b6b0-406e-a7ed-08ddae8d2d81@mailslurp.com");

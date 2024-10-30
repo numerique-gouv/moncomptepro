@@ -9,6 +9,10 @@ describe("join organizations", () => {
     );
   });
 
+  it("should seed the database once", function () {
+    cy.seed();
+  });
+
   it("join collectivité territoriale with official contact domain", function () {
     cy.visit("/users/join-organization");
     cy.login("76450610-4dcc-4664-b9ab-1cea869b62b1@mailslurp.com");
