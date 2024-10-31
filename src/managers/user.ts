@@ -2,6 +2,7 @@ import {
   Add2fa,
   Delete2faProtection,
   DeleteFreeTotpMail,
+  UpdatePersonalDataMail,
   UpdateTotpApplication,
 } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
@@ -378,11 +379,16 @@ export const sendUpdatePersonalInformationEmail = async ({
   }
 
   if (previousInformations !== newInformation) {
-    return legacySendMail({
+    return sendMail({
       to: [email],
       subject: "Mise à jour de vos données personnelles",
-      template: "update-personal-data",
-      params: { given_name, family_name, updatedFields },
+      html: UpdatePersonalDataMail({
+        baseurl: MONCOMPTEPRO_HOST,
+        family_name,
+        given_name,
+        updatedFields: updatedFields,
+      }).toString(),
+      tag: "update-personal-data",
     });
   }
 };

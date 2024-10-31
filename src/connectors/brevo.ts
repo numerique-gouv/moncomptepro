@@ -16,8 +16,7 @@ type LocalTemplateSlug =
   | "moderation-processed"
   | "delete-account"
   | "delete-access-key"
-  | "add-access-key"
-  | "update-personal-data";
+  | "add-access-key";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
 const remoteTemplateSlugToBrevoTemplateId: {
