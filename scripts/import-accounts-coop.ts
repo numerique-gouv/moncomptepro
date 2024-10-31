@@ -2,7 +2,7 @@
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
-import { isEmpty, some, toInteger } from "lodash-es";
+import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
 import {
   getInseeAccessToken,
@@ -54,7 +54,6 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     columns: true,
     trim: true,
     cast: false,
-    delimiter: ";",
   }); // csv Stream is a read and write stream : it reads raw text in CSV and output untransformed records
   const outputCsvStream = stringify({
     quoted_empty: false,
@@ -114,9 +113,18 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           "email professionnel secondaire": professional_email,
           "SIRET structure": siret,
         } = data;
-        const email = professional_email;
-        logger.info(`${i}: processing ${email}...`);
+        logger.info(`${i}: processing ${professional_email}...`);
         // 0. params validation
+        if (!isString(professional_email)) {
+          i++;
+          rejected_invalid_email_address_count++;
+          logger.error(`invalid email address ${professional_email}`);
+          return done(null, {
+            ...data,
+            error: "rejected_invalid_email_address",
+          });
+        }
+        const email = professional_email.toLowerCase();
         if (!isEmailValid(email)) {
           i++;
           rejected_invalid_email_address_count++;

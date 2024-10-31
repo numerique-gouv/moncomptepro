@@ -5,6 +5,7 @@ import {
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
   isPublicService,
+  isSmallAssociation,
   isWasteManagementOrganization,
 } from "../src/services/organization";
 
@@ -17,6 +18,18 @@ const association_org_info = {
   cached_activite_principale: "81.21Z",
   cached_libelle_activite_principale:
     "81.21Z - Nettoyage courant des bâtiments",
+  cached_categorie_juridique: "9220",
+  cached_libelle_categorie_juridique: "Association déclarée",
+} as Organization;
+
+const small_association_org_info = {
+  siret: "39399933900046",
+  cached_tranche_effectifs: "12",
+  cached_tranche_effectifs_unite_legale: "12",
+  cached_libelle_tranche_effectif: "20 à 49 salariés, en 2022",
+  cached_activite_principale: "84.13Z",
+  cached_libelle_activite_principale:
+    "84.13Z - Administration publique (tutelle) des activités économiques",
   cached_categorie_juridique: "9220",
   cached_libelle_categorie_juridique: "Association déclarée",
 } as Organization;
@@ -46,6 +59,28 @@ describe("isEntrepriseUnipersonnelle", () => {
 
   it("should return false for association", () => {
     assert.equal(isEntrepriseUnipersonnelle(association_org_info), false);
+  });
+
+  it("should return false for small association", () => {
+    assert.equal(isEntrepriseUnipersonnelle(small_association_org_info), false);
+  });
+});
+
+describe("isSmallAssociation", () => {
+  it("should return false for bad call", () => {
+    assert.equal(isSmallAssociation({} as Organization), false);
+  });
+
+  it("should return false for unipersonnelle organization", () => {
+    assert.equal(isSmallAssociation(entreprise_unipersonnelle_org_info), false);
+  });
+
+  it("should return true for association", () => {
+    assert.equal(isSmallAssociation(association_org_info), true);
+  });
+
+  it("should return true for small association", () => {
+    assert.equal(isSmallAssociation(small_association_org_info), true);
   });
 });
 

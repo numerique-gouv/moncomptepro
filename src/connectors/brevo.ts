@@ -17,7 +17,6 @@ type LocalTemplateSlug =
   | "delete-account"
   | "delete-access-key"
   | "add-access-key"
-  | "add-2fa"
   | "update-personal-data";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
