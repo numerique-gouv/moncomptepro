@@ -91,7 +91,7 @@ export const postAuthenticatorAppConfigurationController = async (
     if (!isAuthenticatorAlreadyConfigured) {
       await sendAddFreeTOTPEmail({ user_id });
     } else {
-      sendChangeAppliTotpEmail({ user_id });
+      await sendChangeAppliTotpEmail({ user_id });
     }
     return res.redirect(
       `/connection-and-account?notification=${

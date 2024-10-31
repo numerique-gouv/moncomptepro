@@ -2,6 +2,7 @@ import {
   Add2fa,
   Delete2faProtection,
   DeleteFreeTotpMail,
+  UpdateTotpApplication,
 } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import {
@@ -263,11 +264,16 @@ export const sendChangeAppliTotpEmail = async ({
     throw new UserNotFoundError();
   }
   const { given_name, family_name, email } = user;
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Changement d'application d’authentification",
-    template: "update-totp-application",
-    params: { given_name, family_name },
+    html: UpdateTotpApplication({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
+    tag: "update-totp-application",
   });
 };
 
