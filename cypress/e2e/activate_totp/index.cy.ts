@@ -1,18 +1,10 @@
 import { generateToken } from "@sunknudsen/totp";
 
 describe("add 2fa authentication", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "64d9024b-d389-4b9d-948d-a504082c14fa",
-      }),
-    );
-  });
-
   it("should add 2fa authentication on account user", function () {
     cy.visit("/connection-and-account");
 
-    cy.login("64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.contains("Configurer un code à usage unique");
 
@@ -34,18 +26,14 @@ describe("add 2fa authentication", () => {
 
     cy.contains("L’application d’authentification a été configurée.");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "64d9024b-d389-4b9d-948d-a504082c14fa",
-          60000,
-          true,
-        ),
-      )
-      // check subject of deletion email
-      .then((email) => {
-        expect(email.subject).to.include("Validation en deux étapes activée");
-      });
+    cy.maildevGetMessageBySubject("Validation en deux étapes activée").then(
+      (email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.contains(
+          "Votre compte ProConnect lion.eljonson@darkangels.world est à présent protégé par la validation en deux étapes",
+        );
+        cy.maildevDeleteMessageById(email.id);
+      },
+    );
   });
 });

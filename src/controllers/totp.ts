@@ -89,9 +89,9 @@ export const postAuthenticatorAppConfigurationController = async (
     addAuthenticationMethodReferenceInSession(req, res, updatedUser, "totp");
 
     if (!isAuthenticatorAlreadyConfigured) {
-      sendAddFreeTOTPEmail({ user_id });
+      await sendAddFreeTOTPEmail({ user_id });
     } else {
-      sendChangeAppliTotpEmail({ user_id });
+      await sendChangeAppliTotpEmail({ user_id });
     }
     return res.redirect(
       `/connection-and-account?notification=${

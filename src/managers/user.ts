@@ -1,7 +1,9 @@
 import {
+  Add2fa,
   Delete2faProtection,
   DeleteFreeTotpMail,
   UpdatePersonalDataMail,
+  UpdateTotpApplication,
 } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import {
@@ -142,9 +144,6 @@ export const signupWithPassword = async (
   });
 };
 
-/**
- * @return true if a new verify token was sent, false otherwise.
- */
 export const sendEmailAddressVerificationEmail = async ({
   email,
   isBrowserTrusted,
@@ -153,7 +152,7 @@ export const sendEmailAddressVerificationEmail = async ({
   email: string;
   isBrowserTrusted: boolean;
   force?: boolean;
-}): Promise<boolean> => {
+}): Promise<{ codeSent: boolean; updatedUser: User }> => {
   const user = await findByEmail(email);
 
   if (isEmpty(user)) {
@@ -175,12 +174,12 @@ export const sendEmailAddressVerificationEmail = async ({
   );
 
   if (!(force || isTokenExpired)) {
-    return false;
+    return { codeSent: false, updatedUser: user };
   }
 
   const verify_email_token = await generatePinToken();
 
-  await update(user.id, {
+  const updatedUser = await update(user.id, {
     verify_email_token,
     verify_email_sent_at: new Date(),
   });
@@ -194,7 +193,7 @@ export const sendEmailAddressVerificationEmail = async ({
     },
   });
 
-  return true;
+  return { codeSent: true, updatedUser };
 };
 
 export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
@@ -266,11 +265,16 @@ export const sendChangeAppliTotpEmail = async ({
     throw new UserNotFoundError();
   }
   const { given_name, family_name, email } = user;
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Changement d'application d’authentification",
-    template: "update-totp-application",
-    params: { given_name, family_name },
+    html: UpdateTotpApplication({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
+    tag: "update-totp-application",
   });
 };
 
@@ -304,11 +308,16 @@ export const sendAddFreeTOTPEmail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Validation en deux étapes activée",
-    template: "add-2fa",
-    params: { given_name, family_name, email },
+    html: Add2fa({
+      baseurl: MONCOMPTEPRO_HOST,
+      email,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+    }).toString(),
+    tag: "add-2fa",
   });
 };
 

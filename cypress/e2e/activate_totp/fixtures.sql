@@ -1,7 +1,7 @@
 INSERT INTO users
   (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name, phone_number, job, force_2fa)
 VALUES
-  (1, '64d9024b-d389-4b9d-948d-a504082c14fa@mailslurp.com', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Rebibi', 'Dumama', '0123456789', 'Sbirette', false);
+  (1, 'lion.eljonson@darkangels.world', true, CURRENT_TIMESTAMP, '$2a$10$kzY3LINL6..50Fy9shWCcuNlRfYq0ft5lS.KCcJ5PzrhlWfKK4NIO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Lion', 'El''Jonson', 'I', 'Primarque', false);
 
 INSERT INTO organizations
   (id, siret, created_at, updated_at)

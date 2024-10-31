@@ -48,6 +48,7 @@ import {
   isEducationNationaleDomain,
   isEntrepriseUnipersonnelle,
   isEtablissementScolaireDuPremierEtSecondDegre,
+  isSmallAssociation,
 } from "../../services/organization";
 import { isEmailValid } from "../../services/security";
 import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
@@ -166,6 +167,14 @@ export const joinOrganization = async ({
       organization_id,
       user_id,
       verification_type: "no_verification_means_for_entreprise_unipersonnelle",
+    });
+  }
+
+  if (isSmallAssociation(organization)) {
+    return await linkUserToOrganization({
+      organization_id,
+      user_id,
+      verification_type: "no_verification_means_for_small_association",
     });
   }
 

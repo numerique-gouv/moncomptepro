@@ -2,7 +2,7 @@
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
-import { isEmpty, some, toInteger } from "lodash-es";
+import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
 import {
   getInseeAccessToken,
@@ -104,9 +104,22 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     ) {
       const start = startDurationMesure();
       try {
-        const { first_name, last_name, sub, email, siret: rawSirets } = data;
-        logger.info(`${i}: processing ${email}...`);
+        const {
+          first_name,
+          last_name,
+          sub,
+          email: rawEmail,
+          siret: rawSirets,
+        } = data;
+        logger.info(`${i}: processing ${rawEmail}...`);
         // 0. params validation
+        if (!isString(rawEmail)) {
+          i++;
+          rejected_invalid_email_address_count++;
+          logger.error(`invalid email address ${rawEmail}`);
+          return done(null);
+        }
+        const email = rawEmail.toLowerCase();
         if (!isEmailValid(email)) {
           i++;
           rejected_invalid_email_address_count++;
@@ -119,7 +132,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           logger.error(`invalid name ${first_name} ${last_name}`);
           return done(null);
         }
-        if (isEmpty(sub) && sub.length === 36) {
+        if (isEmpty(sub) && sub.length !== 36) {
           i++;
           rejected_invalid_sub_count++;
           logger.error(`invalid sub ${sub}`);
@@ -139,7 +152,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         }
 
         const sirets: string[] = rawSirets
-          .split(",")
+          .split(" ")
           .filter((s: string) => !!s)
           .map((s: string) => s.trim());
         if (sirets.length > 0 && sirets.some((s) => !isSiretValid(s))) {
