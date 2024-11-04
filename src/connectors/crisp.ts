@@ -16,7 +16,7 @@ import {
   CRISP_RESOLVE_DELAY,
   CRISP_USER_NICKNAME,
   CRISP_WEBSITE_ID,
-  MONCOMPTEPRO_HOST,
+  MONCOMPTEPRO_IDENTIFIER,
 } from "../config/env";
 
 //
@@ -56,7 +56,7 @@ export async function startCripsConversation({
     body: {
       email,
       nickname,
-      segments: ["email", ...CRISP_MODERATION_TAG, MONCOMPTEPRO_HOST],
+      segments: ["email", ...CRISP_MODERATION_TAG, MONCOMPTEPRO_IDENTIFIER],
       subject,
     },
   });
