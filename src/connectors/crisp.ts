@@ -11,10 +11,12 @@ import {
   CRISP_BASE_URL,
   CRISP_IDENTIFIER,
   CRISP_KEY,
+  CRISP_MODERATION_TAG,
   CRISP_PLUGIN_URN,
   CRISP_RESOLVE_DELAY,
   CRISP_USER_NICKNAME,
   CRISP_WEBSITE_ID,
+  MONCOMPTEPRO_HOST,
 } from "../config/env";
 
 //
@@ -54,7 +56,7 @@ export async function startCripsConversation({
     body: {
       email,
       nickname,
-      segments: ["email", "moderation"],
+      segments: ["email", ...CRISP_MODERATION_TAG, MONCOMPTEPRO_HOST],
       subject,
     },
   });
