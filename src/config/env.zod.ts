@@ -12,7 +12,7 @@ export const connectorEnvSchema = z.object({
   CRISP_RESOLVE_DELAY: z.coerce.number().int().nonnegative().default(1_000), // 1 second
   CRISP_USER_NICKNAME: z.string().default("MonComptePro"),
   CRISP_WEBSITE_ID: z.string().default(""),
-  CRISP_MODERATION_TAG: zCoerceArray(z.string()).default("moderation"),
+  CRISP_MODERATION_TAG: zCoerceArray(z.string()).default("identite,moderation"),
   DATABASE_URL: z.string().url(),
   DEBOUNCE_API_KEY: z.string().optional(),
   INSEE_CONSUMER_KEY: z.string(),
