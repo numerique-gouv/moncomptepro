@@ -31,7 +31,7 @@ test("default sample env with configured INSEE secrets", () => {
     CRISP_BASE_URL: "https://api.crisp.chat",
     CRISP_IDENTIFIER: "",
     CRISP_KEY: "",
-    CRISP_MODERATION_TAG: ["moderation"],
+    CRISP_MODERATION_TAG: ["identite", "moderation"],
     CRISP_PLUGIN_URN: "",
     CRISP_RESOLVE_DELAY: 1000,
     CRISP_USER_NICKNAME: "MonComptePro",
