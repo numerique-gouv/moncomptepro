@@ -18,5 +18,6 @@ cypress/videos
 /build/*
 !/build/.keep
 
-/dist/*
+dist
+tsconfig*.tsbuildinfo
 !/dist/.keep
