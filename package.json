@@ -26,13 +26,13 @@
     "test:lint": "prettier '**/*.ts' --list-different",
     "test:type-check": "tsc --noEmit",
     "test:unit": "NODE_ENV=test mocha --require tsx test/*.ts",
+    "test:unit:watch": "npm run test:unit -- --watch --watch-files src/**/*.ts,test/**/*.ts",
     "test:workspaces": "npm run test --if-present --workspaces",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
     "watch:js": "tsc --watch --preserveWatchOutput",
-    "watch:node": "tsx --watch src/index.ts",
-    "watch:test:unit": "npm run test:unit -- --watch --watch-files src/**/*.ts,test/**/*.ts"
+    "watch:node": "tsx --watch src/index.ts"
   },
   "prettier": {
     "plugins": [
