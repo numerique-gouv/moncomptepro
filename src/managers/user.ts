@@ -1,6 +1,7 @@
 import {
   Add2fa,
   Delete2faProtection,
+  DeleteAccount,
   DeleteFreeTotpMail,
   UpdatePersonalDataMail,
   UpdateTotpApplication,
@@ -203,11 +204,16 @@ export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
   }
   const { given_name, family_name, email } = user;
 
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Suppression de compte",
-    template: "delete-account",
-    params: { given_name, family_name },
+    html: DeleteAccount({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
+    tag: "delete-account",
   });
 };
 

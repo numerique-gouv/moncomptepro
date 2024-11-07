@@ -14,7 +14,6 @@ type RemoteTemplateSlug =
 type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed"
-  | "delete-account"
   | "delete-access-key"
   | "add-access-key";
 
