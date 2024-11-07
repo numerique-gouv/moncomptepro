@@ -1,14 +1,6 @@
 //
 
 describe("sign-in with magic link", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "8e79c68c-9ce1-4dfe-8e58-fa3763d4cff7",
-      }),
-    );
-  });
-
   it("should reset password then sign-in", function () {
     // Visit the signup page
     cy.visit("/users/start-sign-in");
@@ -37,29 +29,16 @@ describe("sign-in with magic link", () => {
 
     cy.contains("vous allez recevoir un lien de réinitialisation par e-mail.");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "8e79c68c-9ce1-4dfe-8e58-fa3763d4cff7",
-          60000,
-          true,
-        ),
-      )
-      // extract the connection link from the email subject
-      .then((email) => {
-        const matches =
-          /.*<a href="([^"]+)" class="r13-r default-button".*/.exec(
-            email.body ?? "",
-          );
-        if (matches && matches.length > 0) {
-          return matches[1];
-        }
-        throw new Error("Could not find connection link in received email");
-      })
-      .then((link) => {
-        cy.visit(link);
-      });
+    cy.maildevGetMessageBySubject(
+      "Instructions pour la réinitialisation du mot de passe",
+    ).then((email) => {
+      cy.maildevVisitMessageById(email.id);
+      cy.contains(
+        "Nous avons reçu une demande de réinitialisation de votre mot de passe.",
+      );
+      cy.contains("Réinitialiser le mot de passe").click();
+      cy.maildevDeleteMessageById(email.id);
+    });
 
     cy.contains("Changer votre mot de passe");
 

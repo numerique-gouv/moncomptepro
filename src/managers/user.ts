@@ -2,6 +2,7 @@ import {
   Add2fa,
   Delete2faProtection,
   DeleteFreeTotpMail,
+  ResetPassword,
   UpdatePersonalDataMail,
   UpdateTotpApplication,
 } from "@numerique-gouv/moncomptepro.email";
@@ -517,13 +518,14 @@ export const sendResetPasswordEmail = async (
     reset_password_sent_at: new Date(),
   });
 
-  await legacySendMail({
+  await sendMail({
     to: [user.email],
     subject: "Instructions pour la réinitialisation du mot de passe",
-    template: "reset-password",
-    params: {
+    html: ResetPassword({
+      baseurl: host,
       reset_password_link: `${host}/users/change-password?reset_password_token=${resetPasswordToken}`,
-    },
+    }).toString(),
+    tag: "reset-password",
   });
 
   return true;

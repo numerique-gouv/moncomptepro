@@ -8,7 +8,6 @@ import { render } from "../services/renderer";
 
 type RemoteTemplateSlug =
   | "official-contact-email-verification"
-  | "reset-password"
   | "magic-link"
   | "verify-email";
 type LocalTemplateSlug =
@@ -23,7 +22,6 @@ const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
   "official-contact-email-verification": 3,
-  "reset-password": 5,
   "magic-link": 1,
   "verify-email": 6,
 };
