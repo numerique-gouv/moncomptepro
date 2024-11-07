@@ -1,4 +1,6 @@
+import { OfficialContactEmailVerification } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
+import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
@@ -7,7 +9,7 @@ import {
 } from "../../config/errors";
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
-import { sendMail } from "../../connectors/brevo";
+import { sendMail } from "../../connectors/mail";
 import {
   findById as findOrganizationById,
   getUsers,
@@ -105,14 +107,15 @@ export const sendOfficialContactEmailVerificationEmail = async ({
   await sendMail({
     to: [contactEmail],
     subject: `[ProConnect] Authentifier un email sur ProConnect`,
-    template: "official-contact-email-verification",
-    params: {
-      given_name,
-      family_name,
+    html: OfficialContactEmailVerification({
+      baseurl: MONCOMPTEPRO_HOST,
+      given_name: given_name ?? "",
+      family_name: family_name ?? "",
       email,
-      libelle,
-      official_contact_email_verification_token,
-    },
+      libelle: libelle ?? "",
+      token: official_contact_email_verification_token,
+    }).toString(),
+    tag: "official-contact-email-verification",
   });
 
   return { codeSent: true, contactEmail, libelle };
