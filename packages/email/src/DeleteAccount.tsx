@@ -24,9 +24,8 @@ export default function DeleteAccount(props: Props) {
         <br />
         <br />
         <Link href={mailtoHref}>
-          Si vous n'avez pas supprimé cette application, quelqu'un utilise
-          peut-être votre compte. Faites-le nous savoir en répondant à cet
-          email.
+          Si vous avez des questions ou des préoccupations, n'hésitez pas à nous
+          contacter.
         </Link>
         <br />
         <br />
