@@ -48,7 +48,7 @@ export const deletePasskeyController = async (
 
     await deleteUserAuthenticator(email, credential_id);
 
-    sendDeleteAccessKeyMail({ user_id });
+    await sendDeleteAccessKeyMail({ user_id });
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_deleted`,
@@ -111,7 +111,7 @@ export const postVerifyRegistrationController = async (
     if (userVerified) {
       addAuthenticationMethodReferenceInSession(req, res, updatedUser, "uv");
     }
-    sendActivateAccessKeyMail({ user_id });
+    await sendActivateAccessKeyMail({ user_id });
 
     return res.redirect(
       `/connection-and-account?notification=passkey_successfully_created`,

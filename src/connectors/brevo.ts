@@ -7,7 +7,7 @@ import { logger } from "../services/log";
 import { render } from "../services/renderer";
 
 type RemoteTemplateSlug = "magic-link" | "verify-email";
-type LocalTemplateSlug = "welcome" | "moderation-processed" | "add-access-key";
+type LocalTemplateSlug = "welcome" | "moderation-processed";
 
 // active templates id are listed at https://app-smtp.brevo.com/templates
 const remoteTemplateSlugToBrevoTemplateId: {
