@@ -6,10 +6,7 @@ import { BrevoApiError } from "../config/errors";
 import { logger } from "../services/log";
 import { render } from "../services/renderer";
 
-type RemoteTemplateSlug =
-  | "official-contact-email-verification"
-  | "magic-link"
-  | "verify-email";
+type RemoteTemplateSlug = "magic-link" | "verify-email";
 type LocalTemplateSlug =
   | "welcome"
   | "moderation-processed"
@@ -20,7 +17,6 @@ type LocalTemplateSlug =
 const remoteTemplateSlugToBrevoTemplateId: {
   [k in RemoteTemplateSlug]: number;
 } = {
-  "official-contact-email-verification": 3,
   "magic-link": 1,
   "verify-email": 6,
 };

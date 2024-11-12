@@ -1,21 +1,6 @@
 //
 
-import { getVerificationWordsFromEmail } from "#cypress/support/get-from-email";
-
 describe("join organizations", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
-      }),
-    );
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "c348a2c3-bf54-4f15-bb12-a2d7047c832f",
-      }),
-    );
-  });
-
   it("join collectivité territoriale with code send to official contact email", function () {
     cy.visit("/users/join-organization");
     cy.login("c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp.com");
@@ -35,22 +20,28 @@ describe("join organizations", () => {
       "26ccc0fa-0dc3-4f12-9335-7bb00282920c@mailslurp.com",
     );
 
-    // Verify the email with the code received by email
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "26ccc0fa-0dc3-4f12-9335-7bb00282920c",
-          60000,
-          true,
-        ),
-      )
-      // extract the verification code from the email subject
-      .then((email) => getVerificationWordsFromEmail(email))
-      // fill out the verification form and submit
+    cy.maildevGetMessageBySubject(
+      "[ProConnect] Authentifier un email sur ProConnect",
+    )
+      .then((email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.maildevDeleteMessageById(email.id);
+        cy.contains(
+          "Jean Nouveau (c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp.com) souhaite rejoindre votre organisation « Commune de lamalou-les-bains - Mairie » sur ProConnect.",
+        );
+        return cy.get("em:nth-child(1)").invoke("text");
+      })
       .then((code) => {
-        cy.get('[name="official_contact_email_verification_token"]').type(code);
-        cy.get('[type="submit"]').click();
+        cy.wrap(code).as("code");
       });
+
+    cy.go("back");
+
+    cy.get<string>("@code").then((code) => {
+      cy.log(code);
+      cy.get('[name="official_contact_email_verification_token"]').type(code);
+      cy.get('[type="submit"]').click();
+    });
 
     cy.contains("Votre compte est créé !");
   });
