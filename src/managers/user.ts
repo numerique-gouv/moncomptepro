@@ -1,5 +1,6 @@
 import {
   Add2fa,
+  AddAccessKey,
   Delete2faProtection,
   DeleteAccessKey,
   DeleteAccount,
@@ -345,11 +346,16 @@ export const sendActivateAccessKeyMail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Alerte de sécurité",
-    template: "add-access-key",
-    params: { given_name, family_name },
+    html: AddAccessKey({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
+    tag: "add-access-key",
   });
 };
 
