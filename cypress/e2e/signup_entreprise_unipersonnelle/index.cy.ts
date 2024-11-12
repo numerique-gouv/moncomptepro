@@ -64,23 +64,13 @@ describe("Signup into new entreprise unipersonnelle", () => {
 
     // Check redirection to home page
     cy.contains("Votre compte ProConnect");
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "8b805202-b7b3-42ac-b047-f37bdc559211",
-          60000,
-          true,
-        ),
-      )
-      // assert reception of confirmation email
-      .then((email) => {
-        // characters é can triggers this error:
-        // AssertionError: expected 'Votre compte ProConnect a bien Ã©tÃ© crÃ©Ã©' to equal 'Votre compte ProConnect a bien été créé'
-        // we use a regexp to get around this issue.
-        expect(email.subject).to.match(
-          /Votre compte ProConnect a bien ..?t..? cr..?..?/,
-        );
-      });
+
+    cy.maildevGetMessageBySubject(
+      "Votre compte ProConnect a bien été créé",
+    ).then((email) => {
+      cy.maildevVisitMessageById(email.id);
+      cy.maildevDeleteMessageById(email.id);
+      cy.contains("Votre compte ProConnect est créé !");
+    });
   });
 });

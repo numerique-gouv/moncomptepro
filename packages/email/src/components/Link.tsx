@@ -14,7 +14,7 @@ export function Link(attributes: PropsWithChildren<JSX.HtmlAnchorTag>) {
       style={{
         color: "rgb(0, 0, 145)",
         fontFamily,
-        fontSize: "14px",
+        fontSize: "16px",
         lineHeight: "24px",
         margin: "16px 0",
         textDecoration: "underline",

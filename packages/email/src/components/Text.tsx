@@ -11,12 +11,12 @@ export function Text(attributes: PropsWithChildren<JSX.HtmlTag>) {
   return (
     <p
       style={{
-        margin: 0,
+        color: "#000",
         fontFamily,
+        fontSize: "16px",
         fontWeight: 400,
         lineHeight: "24px",
-        fontSize: "16px",
-        color: "#000",
+        margin: 0,
         ...(style as object),
       }}
       {...props}

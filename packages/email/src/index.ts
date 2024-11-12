@@ -10,3 +10,4 @@ export { default as OfficialContactEmailVerification } from "./OfficialContactEm
 export { default as ResetPassword } from "./ResetPassword";
 export { default as UpdatePersonalDataMail } from "./UpdatePersonalDataMail";
 export { default as UpdateTotpApplication } from "./UpdateTotpApplication";
+export { default as Welcome } from "./Welcome";
