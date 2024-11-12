@@ -1,8 +1,10 @@
+import { Welcome } from "@numerique-gouv/moncomptepro.email";
 import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
 import {
   CRISP_WEBSITE_ID,
   MAX_SUGGESTED_ORGANIZATIONS,
+  MONCOMPTEPRO_HOST,
 } from "../../config/env";
 import {
   InseeConnectionError,
@@ -18,8 +20,8 @@ import {
 import { getAnnuaireEducationNationaleContactEmail } from "../../connectors/api-annuaire-education-nationale";
 import { getAnnuaireServicePublicContactEmail } from "../../connectors/api-annuaire-service-public";
 import { getOrganizationInfo } from "../../connectors/api-sirene";
-import { sendMail } from "../../connectors/brevo";
 import { startCripsConversation } from "../../connectors/crisp";
+import { sendMail } from "../../connectors/mail";
 import { findEmailDomainsByOrganizationId } from "../../repositories/email-domain";
 import {
   createModeration,
@@ -409,8 +411,12 @@ export const greetForJoiningOrganization = async ({
   await sendMail({
     to: [email],
     subject: "Votre compte ProConnect a bien été créé",
-    template: "welcome",
-    params: { given_name, family_name, email },
+    html: Welcome({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+    }).toString(),
+    tag: "welcome",
   });
 
   return await updateUserOrganizationLink(organization_id, user_id, {

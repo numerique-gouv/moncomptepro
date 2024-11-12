@@ -1,7 +1,5 @@
 //
 
-import { MatchOptionFieldEnum, MatchOptionShouldEnum } from "mailslurp-client";
-
 //
 
 describe("join organizations", () => {
@@ -28,30 +26,12 @@ describe("join organizations", () => {
     // Check redirection to welcome page
     cy.contains("Votre compte est créé !");
 
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp
-          .waitForMatchingEmails(
-            // match option does not seem to be used here
-            {
-              matches: [
-                {
-                  field: MatchOptionFieldEnum.SUBJECT,
-                  should: MatchOptionShouldEnum.EQUAL,
-                  value: "Votre compte ProConnect a bien été créé",
-                },
-              ],
-            },
-            1,
-            "0c5b976c-b6b0-406e-a7ed-08ddae8d2d81",
-            60000,
-            true,
-          )
-          .then(([{ id }]) => mailslurp.getEmail(id)),
-      )
-      // assert reception of confirmation email
-      .then((email) => {
-        expect(email.body).to.include("Votre compte ProConnect est créé !");
-      });
+    cy.maildevGetMessageBySubject(
+      "Votre compte ProConnect a bien été créé",
+    ).then((email) => {
+      cy.maildevVisitMessageById(email.id);
+      cy.maildevDeleteMessageById(email.id);
+      cy.contains("Votre compte ProConnect est créé !");
+    });
   });
 });
