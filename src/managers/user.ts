@@ -1,6 +1,7 @@
 import {
   Add2fa,
   Delete2faProtection,
+  DeleteAccessKey,
   DeleteAccount,
   DeleteFreeTotpMail,
   ResetPassword,
@@ -296,11 +297,16 @@ export const sendDeleteAccessKeyMail = async ({
   }
   const { given_name, family_name, email } = user;
 
-  return legacySendMail({
+  return sendMail({
     to: [email],
     subject: "Alerte de sécurité",
-    template: "delete-access-key",
-    params: { given_name, family_name },
+    html: DeleteAccessKey({
+      baseurl: MONCOMPTEPRO_HOST,
+      family_name: family_name ?? "",
+      given_name: given_name ?? "",
+      support_email: "contact@moncomptepro.beta.gouv.fr",
+    }).toString(),
+    tag: "delete-access-key",
   });
 };
 
