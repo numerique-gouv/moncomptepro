@@ -1,6 +1,8 @@
+import { ModerationProcessed } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
+import { MONCOMPTEPRO_HOST } from "../config/env";
 import { ForbiddenError, NotFoundError } from "../config/errors";
-import { sendMail } from "../connectors/brevo";
+import { sendMail } from "../connectors/mail";
 import {
   deleteModeration,
   findModerationById,
@@ -34,10 +36,11 @@ export const sendModerationProcessedEmail = async ({
   await sendMail({
     to: [email],
     subject: `[ProConnect] Demande pour rejoindre ${cached_libelle || siret}`,
-    template: "moderation-processed",
-    params: {
+    html: ModerationProcessed({
+      baseurl: MONCOMPTEPRO_HOST,
       libelle: cached_libelle || siret,
-    },
+    }).toString(),
+    tag: "moderation-processed",
   });
 
   return { emailSent: true };
