@@ -196,6 +196,7 @@ export const sendEmailAddressVerificationEmail = async ({
       baseurl: MONCOMPTEPRO_HOST,
       token: verify_email_token,
     }).toString(),
+    tag: "verify-email",
   });
 
   return { codeSent: true, updatedUser };
