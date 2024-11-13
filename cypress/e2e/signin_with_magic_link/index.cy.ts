@@ -1,16 +1,6 @@
 //
 
-import { getMagicLinkFromEmail } from "#cypress/support/get-from-email";
-
 describe("sign-in with magic link", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "66ac0a4c-bd2d-490e-a277-1e7c2520100d",
-      }),
-    );
-  });
-
   it("should sign-up with magic link", function () {
     cy.visit("/users/start-sign-in");
 
@@ -25,20 +15,16 @@ describe("sign-in with magic link", () => {
 
     cy.contains("Votre lien vous attend à l’adresse...");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "66ac0a4c-bd2d-490e-a277-1e7c2520100d",
-          60000,
-          true,
-        ),
-      )
-      // extract the connection link from the email subject
-      .then(getMagicLinkFromEmail)
-      .then((link) => {
-        cy.visit(link);
-      });
+    cy.maildevGetMessageBySubject("Lien de connexion à ProConnect").then(
+      (email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.contains(
+          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+        );
+        cy.contains("Se connecter").click();
+        cy.maildevDeleteMessageById(email.id);
+      },
+    );
 
     cy.contains("Renseigner son identité");
   });
@@ -61,20 +47,16 @@ describe("sign-in with magic link", () => {
 
     cy.contains("Votre lien vous attend à l’adresse...");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "66ac0a4c-bd2d-490e-a277-1e7c2520100d",
-          60000,
-          true,
-        ),
-      )
-      // extract the connection link from the email subject
-      .then(getMagicLinkFromEmail)
-      .then((link) => {
-        cy.visit(link);
-      });
+    cy.maildevGetMessageBySubject("Lien de connexion à ProConnect").then(
+      (email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.contains(
+          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+        );
+        cy.contains("Se connecter").click();
+        cy.maildevDeleteMessageById(email.id);
+      },
+    );
 
     cy.contains("Renseigner son identité");
   });
@@ -125,21 +107,16 @@ describe("sign-in with magic link", () => {
 
     cy.contains("Votre lien vous attend à l’adresse...");
 
-    cy.mailslurp()
-      // use inbox id and a timeout of 30 seconds
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "66ac0a4c-bd2d-490e-a277-1e7c2520100d",
-          60000,
-          true,
-        ),
-      )
-      // extract the connection link from the email subject
-      .then(getMagicLinkFromEmail)
-      .then((link) => {
-        cy.visit(link);
-      });
-
+    cy.maildevGetMessageBySubject("Lien de connexion à ProConnect").then(
+      (email) => {
+        cy.maildevVisitMessageById(email.id);
+        cy.contains(
+          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+        );
+        cy.contains("Se connecter").click();
+        cy.maildevDeleteMessageById(email.id);
+      },
+    );
     cy.contains("Renseigner son identité");
   });
 });
