@@ -231,7 +231,9 @@ VALUES
   (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- used in integration tests of ProConnect Federation
   (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- back to normal organizations
+  (51, '13003013300016', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -303,7 +305,8 @@ VALUES
   (52, 2, 'externe.tchap.incubateur.net', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (53, 1, 'proton.me', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (54, 3, 'proton.me', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (55, 44, 'proton.me', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (55, 44, 'proton.me', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (56, 51, 'immersion-facile.beta.gouv.fr', 'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
   SET (organization_id, domain, verification_type, created_at, updated_at, verified_at)
