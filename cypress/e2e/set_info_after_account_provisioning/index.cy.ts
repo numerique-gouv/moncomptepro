@@ -1,16 +1,6 @@
 //
 
-import { getVerificationCodeFromEmail } from "#cypress/support/get-from-email";
-
 describe("set info after account provisioning", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "ea2f1539-9675-4384-ab28-4dcecd0bd411",
-      }),
-    );
-  });
-
   it("should show InclusionConnect welcome page on first visit", function () {
     // Visit the signup page
     cy.visit("/users/start-sign-in");
@@ -36,16 +26,15 @@ describe("set info after account provisioning", () => {
     cy.contains(
       "Pour vérifier que vous avez bien accès à votre email, nous utilisons un code de confirmation.",
     );
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "ea2f1539-9675-4384-ab28-4dcecd0bd411",
-          60000,
-          true,
-        ),
-      )
-      .then(getVerificationCodeFromEmail)
+
+    cy.maildevGetMessageBySubject("Vérification de votre adresse email")
+      .then((email) => {
+        cy.maildevDeleteMessageById(email.id);
+        return cy.maildevGetOTPCode(email.text, 10);
+      })
       .then((code) => {
+        if (!code)
+          throw new Error("Could not find verification code in received email");
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
       });

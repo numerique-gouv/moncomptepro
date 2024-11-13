@@ -8,6 +8,7 @@ import {
   ResetPassword,
   UpdatePersonalDataMail,
   UpdateTotpApplication,
+  VerifyEmail,
 } from "@numerique-gouv/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import {
@@ -188,13 +189,13 @@ export const sendEmailAddressVerificationEmail = async ({
     verify_email_sent_at: new Date(),
   });
 
-  await legacySendMail({
+  await sendMail({
     to: [user.email],
     subject: "Vérification de votre adresse email",
-    template: "verify-email",
-    params: {
-      verify_email_token,
-    },
+    html: VerifyEmail({
+      baseurl: MONCOMPTEPRO_HOST,
+      token: verify_email_token,
+    }).toString(),
   });
 
   return { codeSent: true, updatedUser };

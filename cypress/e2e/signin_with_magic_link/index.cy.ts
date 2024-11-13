@@ -1,9 +1,6 @@
 //
 
-import {
-  getMagicLinkFromEmail,
-  getVerificationCodeFromEmail,
-} from "#cypress/support/get-from-email";
+import { getMagicLinkFromEmail } from "#cypress/support/get-from-email";
 
 describe("sign-in with magic link", () => {
   before(() => {
@@ -95,16 +92,14 @@ describe("sign-in with magic link", () => {
     );
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
-    cy.mailslurp()
-      .then((mailslurp) =>
-        mailslurp.waitForLatestEmail(
-          "66ac0a4c-bd2d-490e-a277-1e7c2520100d",
-          60000,
-          true,
-        ),
-      )
-      .then(getVerificationCodeFromEmail)
+    cy.maildevGetMessageBySubject("Vérification de votre adresse email")
+      .then((email) => {
+        cy.maildevDeleteMessageById(email.id);
+        return cy.maildevGetOTPCode(email.text, 10);
+      })
       .then((code) => {
+        if (!code)
+          throw new Error("Could not find verification code in received email");
         cy.get('[name="verify_email_token"]').type(code);
         cy.get('[type="submit"]').click();
       });
