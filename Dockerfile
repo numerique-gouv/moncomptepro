@@ -31,5 +31,6 @@ COPY package.json ./
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 COPY --from=build /app/src /app/src
+COPY --from=build /app/packages /app/packages
 
 CMD [ "npm", "start" ]
