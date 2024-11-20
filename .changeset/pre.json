@@ -2,7 +2,7 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "@numerique-gouv/moncomptepro.email": "0.0.0"
+    "@gouvfr-lasuite/moncomptepro.email": "0.0.1-alpha.2"
   },
   "changesets": [
     "bright-geckos-prove",
