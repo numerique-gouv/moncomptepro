@@ -5,6 +5,7 @@
     "@numerique-gouv/moncomptepro.email": "0.0.0"
   },
   "changesets": [
-    "bright-geckos-prove"
+    "bright-geckos-prove",
+    "fresh-snails-destroy"
   ]
 }
