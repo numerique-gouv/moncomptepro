@@ -1,5 +1,5 @@
 {
-  "name": "@numerique-gouv/moncomptepro.email",
+  "name": "@gouvfr-lasuite/moncomptepro.email",
   "version": "0.0.1-alpha.2",
   "type": "module",
   "exports": {
