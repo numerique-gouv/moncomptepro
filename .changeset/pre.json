@@ -4,5 +4,7 @@
   "initialVersions": {
     "@numerique-gouv/moncomptepro.email": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "bright-geckos-prove"
+  ]
 }
