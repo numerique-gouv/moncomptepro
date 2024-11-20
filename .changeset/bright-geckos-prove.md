@@ -2,4 +2,4 @@
 "@numerique-gouv/moncomptepro.email": patch
 ---
 
-enter prerelease
+🦋 Utilisation de [changesets](https://github.com/changesets/changesets) pour versionner et générer un journal des modifications du code
