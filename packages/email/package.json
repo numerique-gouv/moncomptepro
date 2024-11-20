@@ -19,7 +19,8 @@
   },
   "scripts": {
     "build": "tsc --project ./tsconfig.lib.json",
-    "dev": "vite",
+    "dev": "npm run build -- --watch --preserveWatchOutput",
+    "storybook": "vite",
     "test": "tsc --noEmit"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "@kitajs/ts-html-plugin": "^4.1.0"
   },
   "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
     "@storybook/csf": "^0.1.11",
     "vite": "^5.4.8"
   }

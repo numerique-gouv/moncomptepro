@@ -17,6 +17,7 @@
     "build:db:migrate": "npm run --silent migrate -- up",
     "build:workspaces": "npm run build --if-present --workspaces",
     "delete-database": "if [ \"$ENABLE_DATABASE_DELETION\" = \"True\" ]; then tsx scripts/run-sql-script.ts scripts/delete_all.sql; fi",
+    "predev": "npm run build:workspaces",
     "dev": "NODE_ENV=development concurrently \"npm:watch:*\"",
     "fixtures:load": "npm run --silent build:db:migrate && tsx scripts/run-sql-script.ts scripts/fixtures.sql && npm run update-organization-info 2000",
     "fixtures:load-ci": "tsx scripts/run-sql-script.ts",
@@ -33,7 +34,9 @@
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
     "watch:js": "tsc --watch --preserveWatchOutput",
-    "watch:node": "tsx --watch src/index.ts"
+    "watch:node": "tsx --watch src/index.ts",
+    "watch:workspaces:core": "npm run dev --if-present --workspace=@numerique-gouv/moncomptepro.core",
+    "watch:workspaces:email": "npm run dev --if-present --workspace=@numerique-gouv/moncomptepro.email"
   },
   "prettier": {
     "plugins": [

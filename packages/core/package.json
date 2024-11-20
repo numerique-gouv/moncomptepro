@@ -25,8 +25,8 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.lib.json",
-    "dev": "npm run build -- --watch --preserveWatchOutput",
     "check": "npm run build -- --noEmit",
+    "dev": "npm run build -- --watch --preserveWatchOutput",
     "test": "mocha --require tsx src/**/*.test.ts"
   },
   "dependencies": {
