@@ -1,5 +1,11 @@
 # @numerique-gouv/moncomptepro.email
 
+## 0.0.1-alpha.2
+
+### Patch Changes
+
+- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`fc99d9a`](https://github.com/numerique-gouv/moncomptepro/commit/fc99d9a466ef61fe07430960eb17f8c499b3a542) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation de @numerique-gouv/moncomptepro.email comme package test
+
 ## 0.0.1-alpha.1
 
 ### Patch Changes
