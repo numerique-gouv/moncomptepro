@@ -1,0 +1,30 @@
+name: 🚢 Release It !
+
+on:
+  push:
+    branches:
+      - master
+      - alpha
+      - beta
+      - next
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: 🚢 Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@4
+
+      - uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          node-version-file: package.json
+
+      - run: npm ci --include=dev
+
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
