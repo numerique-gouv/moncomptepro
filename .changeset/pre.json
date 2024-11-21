@@ -5,6 +5,8 @@
     "@gouvfr-lasuite/moncomptepro.email": "0.0.1"
   },
   "changesets": [
-    "clean-pandas-carry"
+    "clean-pandas-carry",
+    "smart-hairs-jump",
+    "tough-pots-cough"
   ]
 }
