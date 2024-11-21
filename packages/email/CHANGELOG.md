@@ -1,5 +1,11 @@
 # @numerique-gouv/moncomptepro.email
 
+## 0.0.2-alpha.0
+
+### Patch Changes
+
+- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`1485472`](https://github.com/numerique-gouv/moncomptepro/commit/148547212ceddeda41f8bef96e09d585aee9922d) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation du scope gouvfr-lasuite
+
 ## 0.0.1
 
 ### Patch Changes
