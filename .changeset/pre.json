@@ -4,5 +4,7 @@
   "initialVersions": {
     "@gouvfr-lasuite/moncomptepro.email": "0.0.1"
   },
-  "changesets": []
+  "changesets": [
+    "clean-pandas-carry"
+  ]
 }
