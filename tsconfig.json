@@ -18,5 +18,5 @@
     "rootDir": ".",
     "verbatimModuleSyntax": true
   },
-  "extends": "@tsconfig/node20/tsconfig.json"
+  "extends": "@tsconfig/node22/tsconfig.json"
 }
