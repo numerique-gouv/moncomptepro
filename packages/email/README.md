@@ -33,7 +33,7 @@ const info = await transporter.sendMail({
 
 ```
 # In this directory launch the dev server
-$ npm run dev
+$ npm run storybook
 
   VITE vX.Y.Z  ready in X ms
 
@@ -46,5 +46,5 @@ $ npm run dev
 If you want to test with a real email service, you can use the `VITE_BREVO_API_KEY` environment variable:
 
 ```
-$ VITE_BREVO_API_KEY=xxx npm run dev
+$ VITE_BREVO_API_KEY=xxx npm run storybook
 ```
