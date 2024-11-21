@@ -3,14 +3,6 @@
 //
 
 describe("join and moderation", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "86983334-028f-48b5-881d-8b05d738bec5",
-      }),
-    );
-  });
-
   it("will be moderated", function () {
     cy.visit("/");
 

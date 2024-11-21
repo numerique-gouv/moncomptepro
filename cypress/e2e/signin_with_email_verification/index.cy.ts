@@ -1,19 +1,6 @@
 //
 
 describe("sign-in with email verification renewal", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "8c23383c-e1df-45d6-a3e9-94f207256c2a",
-      }),
-    );
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "b8a1959b-7034-433a-86d9-55dae207e185",
-      }),
-    );
-  });
-
   it("should sign-in with email verification needed", () => {
     cy.visit("/users/start-sign-in");
 

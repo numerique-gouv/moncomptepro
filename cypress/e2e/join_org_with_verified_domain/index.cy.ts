@@ -3,16 +3,6 @@
 //
 
 describe("join organizations", () => {
-  before(() => {
-    return cy.mailslurp().then((mailslurp) =>
-      Promise.all([
-        mailslurp.inboxController.deleteAllInboxEmails({
-          inboxId: "c6c64542-5601-43e0-b320-b20da72f6edc",
-        }),
-      ]),
-    );
-  });
-
   it("join suggested organisation", function () {
     cy.visit("/");
     cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
