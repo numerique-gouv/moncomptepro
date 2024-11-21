@@ -12,7 +12,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.visit("http://localhost:4000");
     cy.get("button.proconnect-button").click();
 
-    cy.login("181eb568-ca3d-4995-8b06-a717a83421fd@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.contains(
       "Information : pour garantir la sécurité de votre compte, nous avons besoin d’authentifier votre navigateur.",
@@ -37,7 +37,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.visit("http://localhost:4000");
     cy.get("button#force-2fa").click();
 
-    cy.mfaLogin("181eb568-ca3d-4995-8b06-a717a83421fd@mailslurp.com");
+    cy.mfaLogin("lion.eljonson@darkangels.world");
 
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
@@ -46,7 +46,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.visit("http://localhost:4000");
     cy.get("button.proconnect-button").click();
 
-    cy.login("181eb568-ca3d-4995-8b06-a717a83421fd@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.maildevGetMessageBySubject("Vérification de votre adresse email")
       .then((email) => {

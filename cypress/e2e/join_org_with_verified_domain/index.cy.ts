@@ -3,21 +3,11 @@
 //
 
 describe("join organizations", () => {
-  before(() => {
-    return cy.mailslurp().then((mailslurp) =>
-      Promise.all([
-        mailslurp.inboxController.deleteAllInboxEmails({
-          inboxId: "c6c64542-5601-43e0-b320-b20da72f6edc",
-        }),
-      ]),
-    );
-  });
-
   it("join suggested organisation", function () {
     cy.visit("/");
-    cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
-    // The user gets this suggestion because it as mailslurp.com as verified domain
+    // The user gets this suggestion because it as darkangels.world as verified domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
       "Commune de clamart - Mairie",
     );
@@ -39,14 +29,14 @@ describe("join organizations", () => {
 
   it("join another organisation", function () {
     cy.visit("/users/join-organization");
-    cy.login("c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.get('[name="siret"]').type("13002526500013");
     cy.get('[type="submit"]').click();
 
     // Check redirection to moderation block page
     cy.contains(
-      "Notre équipe étudie votre demande de rattachement à l’organisation Direction interministerielle du numerique (DINUM) avec l’adresse email c6c64542-5601-43e0-b320-b20da72f6edc@mailslurp.com",
+      "Notre équipe étudie votre demande de rattachement à l’organisation Direction interministerielle du numerique (DINUM) avec l’adresse email lion.eljonson@darkangels.world",
     );
 
     // Try to change org

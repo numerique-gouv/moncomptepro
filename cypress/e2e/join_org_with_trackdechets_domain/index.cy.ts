@@ -3,19 +3,11 @@
 //
 
 describe("join organizations", () => {
-  before(() => {
-    return cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "0c5b976c-b6b0-406e-a7ed-08ddae8d2d81",
-      }),
-    );
-  });
-
   it("join suggested organisation", function () {
     cy.visit("/");
-    cy.login("0c5b976c-b6b0-406e-a7ed-08ddae8d2d81@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
-    // The user gets this suggestion because it as mailslurp.com as trackdechets domain
+    // The user gets this suggestion because it as darkangels.world as trackdechets domain
     cy.get(".fr-grid-row .fr-col-12:first-child .fr-tile__link").contains(
       "Bnp paribas",
     );
