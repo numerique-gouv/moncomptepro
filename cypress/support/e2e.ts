@@ -15,6 +15,5 @@
 
 import "cypress-axe";
 import "cypress-maildev";
-import "cypress-mailslurp";
 
 import "./commands";
