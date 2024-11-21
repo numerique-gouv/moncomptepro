@@ -16,5 +16,9 @@
   "devDependencies": {
     "@storybook/csf": "^0.1.11",
     "vite": "^5.4.8"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
