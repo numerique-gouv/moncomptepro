@@ -1,12 +1,12 @@
 //
 
-import { fetch_crisp, type Config } from "@numerique-gouv/crisp";
+import { fetch_crisp, type Config } from "@gouvfr-lasuite/crisp";
 import type {
   CreateConversationRoute,
   SendMessageInAConversationRoute,
   UpdateConversationMetaRoute,
   UpdateConversationStateRoute,
-} from "@numerique-gouv/crisp/router/conversation";
+} from "@gouvfr-lasuite/crisp/router/conversation";
 import {
   CRISP_BASE_URL,
   CRISP_IDENTIFIER,

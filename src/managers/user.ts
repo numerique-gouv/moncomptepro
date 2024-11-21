@@ -10,7 +10,7 @@ import {
   UpdatePersonalDataMail,
   UpdateTotpApplication,
   VerifyEmail,
-} from "@numerique-gouv/moncomptepro.email";
+} from "@gouvfr-lasuite/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import {
   EmailUnavailableError,

@@ -1,4 +1,4 @@
-import { ModerationProcessed } from "@numerique-gouv/moncomptepro.email";
+import { ModerationProcessed } from "@gouvfr-lasuite/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import { MONCOMPTEPRO_HOST } from "../config/env";
 import { ForbiddenError, NotFoundError } from "../config/errors";

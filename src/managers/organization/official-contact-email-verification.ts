@@ -1,4 +1,4 @@
-import { OfficialContactEmailVerification } from "@numerique-gouv/moncomptepro.email";
+import { OfficialContactEmailVerification } from "@gouvfr-lasuite/moncomptepro.email";
 import { isEmpty } from "lodash-es";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
 import {

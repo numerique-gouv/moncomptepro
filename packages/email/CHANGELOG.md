@@ -1,4 +1,4 @@
-# @numerique-gouv/moncomptepro.email
+# @gouvfr-lasuite/moncomptepro.email
 
 ## 0.0.2-alpha.2
 
@@ -28,13 +28,13 @@
 
 - [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`9d709d3`](https://github.com/numerique-gouv/moncomptepro/commit/9d709d35dfcfd02f13fcf08ad7d5bc2758ae3a47) Thanks [@douglasduteil](https://github.com/douglasduteil)! - (Test de publication)
 
-- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`fc99d9a`](https://github.com/numerique-gouv/moncomptepro/commit/fc99d9a466ef61fe07430960eb17f8c499b3a542) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation de @numerique-gouv/moncomptepro.email comme package test
+- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`fc99d9a`](https://github.com/numerique-gouv/moncomptepro/commit/fc99d9a466ef61fe07430960eb17f8c499b3a542) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation de @gouvfr-lasuite/moncomptepro.email comme package test
 
 ## 0.0.1-alpha.2
 
 ### Patch Changes
 
-- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`fc99d9a`](https://github.com/numerique-gouv/moncomptepro/commit/fc99d9a466ef61fe07430960eb17f8c499b3a542) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation de @numerique-gouv/moncomptepro.email comme package test
+- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`fc99d9a`](https://github.com/numerique-gouv/moncomptepro/commit/fc99d9a466ef61fe07430960eb17f8c499b3a542) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Utilisation de @gouvfr-lasuite/moncomptepro.email comme package test
 
 ## 0.0.1-alpha.1
 
