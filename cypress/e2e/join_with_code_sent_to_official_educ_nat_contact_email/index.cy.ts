@@ -1,6 +1,10 @@
 //
 
 describe("join organizations", () => {
+  it("should seed the database once", function () {
+    cy.seed();
+  });
+
   it("join collectivité territoriale with code send to official contact email", function () {
     cy.visit("/users/join-organization");
     cy.login("10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com");
@@ -15,22 +19,6 @@ describe("join organizations", () => {
     cy.get("#email-badge-lowercase").contains(
       "01714bdb-c5d7-48c9-93ab-73dc78c13609@mailslurp.com",
     );
-
-    // cy.maildevGetMessageBySubject(
-    //   "[ProConnect] Authentifier un email sur ProConnect",
-    // ).then((email) => {
-    //   cy.maildevVisitMessageById(email.id);
-    //   cy.get("em:nth-child(1)")
-    //     .invoke("text")
-    //     .then((code) => {
-    //       cy.maildevDeleteMessageById(email.id);
-    //       cy.go("back");
-    //       cy.get('[name="official_contact_email_verification_token"]').type(
-    //         code,
-    //       );
-    //       cy.get('[type="submit"]').click();
-    //     });
-    // });
 
     cy.maildevGetMessageBySubject(
       "[ProConnect] Authentifier un email sur ProConnect",

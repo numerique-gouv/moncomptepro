@@ -1,6 +1,10 @@
 import { generateToken } from "@sunknudsen/totp";
 
 describe("update TOTP application", () => {
+  it("should seed the database once", function () {
+    cy.seed();
+  });
+
   it("should update TOTP application, and replace old app with new", function () {
     cy.visit("/connection-and-account");
 

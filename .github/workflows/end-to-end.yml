@@ -57,52 +57,10 @@ jobs:
           - update_personal_information
           - update_totp_application
     runs-on: ubuntu-22.04
-    services:
-      standard-client:
-        image: ghcr.io/numerique-gouv/proconnect-test-client
-        ports:
-          - 4000:3000
-        env:
-          SITE_TITLE: standard-client
-          HOST: http://localhost:4000
-          PC_CLIENT_ID: standard_client_id
-          PC_CLIENT_SECRET: standard_client_secret
-          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          PC_SCOPES: openid email profile organization
-          ACR_VALUE_FOR_2FA: https://proconnect.gouv.fr/assurance/consistency-checked-2fa
-          STYLESHEET_URL: ""
-      proconnect-federation-client:
-        image: ghcr.io/numerique-gouv/proconnect-test-client
-        ports:
-          - 4001:3000
-        env:
-          SITE_TITLE: proconnect-federation-client
-          HOST: http://localhost:4001
-          PC_CLIENT_ID: proconnect_federation_client_id
-          PC_CLIENT_SECRET: proconnect_federation_client_secret
-          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
-          PC_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
-          PC_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
-          PC_USERINFO_SIGNED_RESPONSE_ALG: ES256
-          STYLESHEET_URL: ""
-          LOGIN_HINT: unused1@yopmail.com
-          ACR_VALUES: eidas1
-      redis:
-        image: redis:7.2
-        ports:
-          - 6379:6379
-      postgres:
-        image: postgres:15.8
-        env:
-          POSTGRES_USER: ${{ env.PGUSER }}
-          POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
-          POSTGRES_DB: ${{ env.PGDATABASE }}
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v4
 
-      - run: docker compose up --build --detach maildev
+      - run: docker compose up --build --detach
 
       - uses: actions/setup-node@v4
         with:
@@ -110,8 +68,6 @@ jobs:
           node-version-file: package.json
       - run: npm ci --include=dev
       - run: npm run migrate up
-      - run: npm run fixtures:load-ci -- cypress/e2e/${{ matrix.e2e_test }}/fixtures.sql
-      - run: npm run update-organization-info -- 500
       - name: Cypress run
         uses: cypress-io/github-action@v6.7.7
         with:
