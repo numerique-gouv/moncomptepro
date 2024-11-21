@@ -1,5 +1,11 @@
 # @numerique-gouv/moncomptepro.email
 
+## 0.0.2-alpha.1
+
+### Patch Changes
+
+- [#831](https://github.com/numerique-gouv/moncomptepro/pull/831) [`ff8a534`](https://github.com/numerique-gouv/moncomptepro/commit/ff8a5344eb163bfe38e217d9d15e31c5d5a0261f) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Ajout de la provenance sur NPM
+
 ## 0.0.2-alpha.0
 
 ### Patch Changes
