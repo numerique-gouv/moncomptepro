@@ -2,6 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
@@ -14,7 +15,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./build",
     "plugins": [{ "name": "@kitajs/ts-html-plugin" }],
     "preserveSymlinks": true,
     "preserveWatchOutput": true,
@@ -26,5 +26,7 @@
     "types": ["vite/client"],
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".storybook/**/*.tsx"]
+  "files": [],
+  "include": ["src/**/*.ts", "src/**/*.tsx", ".storybook/**/*.tsx"],
+  "references": []
 }
