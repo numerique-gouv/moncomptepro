@@ -54,7 +54,7 @@
     "@simplewebauthn/server": "^8.3.5",
     "@simplewebauthn/typescript-types": "^8.3.4",
     "@sunknudsen/totp": "^1.1.0",
-    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/node22": "^22.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/console-log-level": "^1.4.5",
     "@types/cookie-parser": "^1.4.7",
