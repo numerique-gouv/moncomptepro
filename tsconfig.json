@@ -19,11 +19,11 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["packages/*", "build/*"],
-  "extends": "@tsconfig/node22/tsconfig.json",
   "references": [
     { "path": "./packages/core/tsconfig.lib.json" },
     {
       "path": "./packages/email/tsconfig.lib.json"
     }
-  ]
+  ],
+  "extends": "@tsconfig/node22/tsconfig.json"
 }

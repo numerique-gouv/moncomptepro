@@ -1,4 +1,4 @@
-FROM node:lts-slim AS base
+FROM node:22-slim AS base
 RUN corepack enable npm
 WORKDIR /app
 
