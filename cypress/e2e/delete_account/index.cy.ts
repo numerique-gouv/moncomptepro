@@ -4,7 +4,7 @@ describe("delete account", () => {
   it("should delete account", function () {
     cy.visit("/connection-and-account");
 
-    cy.login("4cec922b-ecbe-4a46-8511-fc9478c1efd0@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.contains("Suppression");
 

@@ -3,7 +3,7 @@
 describe("join organizations", () => {
   it("join collectivité territoriale with code send to official contact email", function () {
     cy.visit("/users/join-organization");
-    cy.login("c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp.com");
+    cy.login("magnus.the.red@prospero.world");
 
     cy.get('[name="siret"]').type("21340126800130");
     cy.get('[type="submit"]').click();
@@ -17,7 +17,7 @@ describe("join organizations", () => {
       "nous avons envoyé un code secret à l’adresse email de votre mairie",
     );
     cy.get("#email-badge-lowercase").contains(
-      "26ccc0fa-0dc3-4f12-9335-7bb00282920c@mailslurp.com",
+      "alpharius.omegon@alphalegion.world",
     );
 
     cy.maildevGetMessageBySubject(
@@ -27,7 +27,7 @@ describe("join organizations", () => {
         cy.maildevVisitMessageById(email.id);
         cy.maildevDeleteMessageById(email.id);
         cy.contains(
-          "Jean Nouveau (c348a2c3-bf54-4f15-bb12-a2d7047c832f@mailslurp.com) souhaite rejoindre votre organisation « Commune de lamalou-les-bains - Mairie » sur ProConnect.",
+          "Jean Nouveau (magnus.the.red@prospero.world) souhaite rejoindre votre organisation « Commune de lamalou-les-bains - Mairie » sur ProConnect.",
         );
         return cy.get("em:nth-child(1)").invoke("text");
       })

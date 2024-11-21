@@ -6,9 +6,7 @@ describe("set info after account provisioning", () => {
     cy.visit("/users/start-sign-in");
 
     // Sign in with the wrong password
-    cy.get('[name="login"]').type(
-      "ea2f1539-9675-4384-ab28-4dcecd0bd411@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.contains("C’est votre première connexion avec ProConnect");
@@ -55,9 +53,7 @@ describe("set info after account provisioning", () => {
     cy.visit("/users/start-sign-in");
 
     // Sign in with the wrong password
-    cy.get('[name="login"]').type(
-      "ea2f1539-9675-4384-ab28-4dcecd0bd411@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.contains("Accéder au compte");

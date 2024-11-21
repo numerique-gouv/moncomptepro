@@ -2,7 +2,7 @@ INSERT INTO users
   (id, email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
    phone_number, job, needs_inclusionconnect_welcome_page, needs_inclusionconnect_onboarding_help)
 VALUES
-  (1, 'ea2f1539-9675-4384-ab28-4dcecd0bd411@mailslurp.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Jean', null, null, true, true);
+  (1, 'lion.eljonson@darkangels.world', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Jean', 'Jean', null, null, true, true);
 
 INSERT INTO organizations
   (id, siret, created_at, updated_at)
