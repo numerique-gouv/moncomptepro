@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.0.3
+
+### Patch Changes
+
+- [#852](https://github.com/numerique-gouv/moncomptepro/pull/852) [`e8eddc8`](https://github.com/numerique-gouv/moncomptepro/commit/e8eddc802ed0fc56ecf127aa76730cc9bdb51089) Thanks [@douglasduteil](https://github.com/douglasduteil)! - Correction de bugs et amélioration des performances
+
 ## 0.0.2
 
 ### Patch Changes
