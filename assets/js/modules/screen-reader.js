@@ -10,6 +10,27 @@ export const explainExternalLinks = () => {
   });
 };
 
+/**
+ * we have a few cases where we must use <a> tags for DSFR styling reasons,
+ * on elements that actually behave like buttons.
+ *
+ * It's not ideal, but at least better match usual button behavior
+ * by allowing "space" key to trigger the link click.
+ */
+export const improveFakeButtons = () => {
+  window.addEventListener("keydown", (event) => {
+    if (
+      event.key === " " &&
+      document.activeElement &&
+      document.activeElement.tagName === "A" &&
+      document.activeElement.getAttribute("role") === "button"
+    ) {
+      event.preventDefault();
+      document.activeElement.click();
+    }
+  });
+};
+
 /** we use some trickery to be able to notify screen reader users in real time
  * by updating an aria-live region that is placed at the very bottom at the DOM.
  *
