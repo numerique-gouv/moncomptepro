@@ -29,6 +29,7 @@ jobs:
           node-version-file: package.json
 
       - run: npm ci --include=dev
+      - run: npm run build:workspaces
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
