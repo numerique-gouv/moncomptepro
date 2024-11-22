@@ -1,6 +1,6 @@
 //
 
-import { isAFreeDomain } from "@numerique-gouv/moncomptepro.core/services/email/isAFreeDomain.js";
+import { isAFreeDomain } from "@gouvfr-lasuite/moncomptepro.core/services/email/isAFreeDomain.js";
 import { parse_host } from "tld-extract";
 import {
   FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE,

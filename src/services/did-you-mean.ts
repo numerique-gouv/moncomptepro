@@ -1,4 +1,4 @@
-import mostUsedFreeEmailDomains from "@numerique-gouv/moncomptepro.core/data/most-used-free-email-domains.js";
+import mostUsedFreeEmailDomains from "@gouvfr-lasuite/moncomptepro.core/data/most-used-free-email-domains.js";
 import { run as spellCheckEmail } from "@zootools/email-spell-checker";
 import gouvfrDomains from "../data/gouvfr-domains";
 import otherGouvDomains from "../data/other-gouv-domains";

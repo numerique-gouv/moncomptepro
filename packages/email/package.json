@@ -1,8 +1,16 @@
 {
-  "name": "@numerique-gouv/moncomptepro.email",
-  "version": "0.0.0",
+  "name": "@gouvfr-lasuite/moncomptepro.email",
+  "version": "0.0.2",
   "private": true,
+  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/email#readme",
+  "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/numerique-gouv/moncomptepro.git",
+    "directory": "packages/email"
+  },
   "license": "MIT",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
@@ -32,5 +40,9 @@
     "@tsconfig/node22": "^22.0.0",
     "@storybook/csf": "^0.1.11",
     "vite": "^5.4.8"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
