@@ -157,7 +157,9 @@ VALUES
   (72, 'vhugovhugovhugo99+10@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
   (73, 'vhugovhugovhugo99+11@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
   (74, 'vhugovhugovhugo99+12@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
-  (75, 'vhugovhugovhugo99@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true)
+  (75, 'vhugovhugovhugo99@gmail.com', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (76, 'admin+playwright@immersion-facile.beta.gouv.fr', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true),
+  (77, 'recette+playwright@immersion-facile.beta.gouv.fr', false, null, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Victor', 'Hugo', null, null, null, null, false, true, true)
 ON CONFLICT (id)
   DO UPDATE
   SET (email, email_verified, email_verified_at, encrypted_password, created_at, updated_at, given_name, family_name,
@@ -231,7 +233,9 @@ VALUES
   (48, '22770001000555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- used in integration tests of ProConnect Federation
   (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  -- back to normal organizations
+  (51, '13003013300016', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -423,7 +427,9 @@ VALUES
   (72, 50, 'verified_email_domain', true),
   (73, 50, 'verified_email_domain', true),
   (74, 50, 'verified_email_domain', true),
-  (75, 50, 'verified_email_domain', true)
+  (75, 50, 'verified_email_domain', true),
+  (76, 51, 'verified_email_domain', true),
+  (77, 51, 'verified_email_domain', true)
 ON CONFLICT (user_id, organization_id)
   DO UPDATE
   SET (verification_type, has_been_greeted)
