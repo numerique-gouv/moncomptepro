@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-22.04
     services:
       standard-client:
-        image: ghcr.io/numerique-gouv/proconnect-test-client:5d7bd4f72dc7750e64aa56e49cceddf516ce57dc
+        image: ghcr.io/numerique-gouv/proconnect-test-client
         ports:
           - 4000:3000
         env:
@@ -72,7 +72,7 @@ jobs:
           ACR_VALUE_FOR_2FA: https://proconnect.gouv.fr/assurance/consistency-checked-2fa
           STYLESHEET_URL: ""
       proconnect-federation-client:
-        image: ghcr.io/numerique-gouv/proconnect-test-client:5d7bd4f72dc7750e64aa56e49cceddf516ce57dc
+        image: ghcr.io/numerique-gouv/proconnect-test-client
         ports:
           - 4001:3000
         env:
