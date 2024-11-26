@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/node";
 import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { FEATURE_DISPLAY_TEST_ENV_WARNING } from "../../config/env";
@@ -266,7 +265,6 @@ export const postSignUpController = async (
       );
     }
     if (error instanceof WeakPasswordError) {
-      Sentry.captureException(error);
       return res.redirect(`/users/sign-up?notification=weak_password`);
     }
     if (error instanceof LeakedPasswordError) {
