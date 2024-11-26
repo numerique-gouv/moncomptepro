@@ -5,12 +5,16 @@
     "declarationMap": true,
     "outDir": "./dist",
     "rootDir": "src",
-    "types": ["./types"],
+    "types": [
+      "./types"
+    ],
     "module": "Preserve",
     "moduleResolution": "Bundler",
     "verbatimModuleSyntax": true,
     "paths": {
-      "#src/*": ["./src/*"]
+      "#src/*": [
+        "./src/*"
+      ]
     }
   },
   "extends": "@tsconfig/node22/tsconfig.json",

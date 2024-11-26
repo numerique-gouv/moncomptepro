@@ -35,17 +35,25 @@
     "build": "tsc --project tsconfig.lib.json",
     "check": "npm run build -- --noEmit",
     "dev": "npm run build -- --watch --preserveWatchOutput",
-    "test": "mocha --require tsx src/**/*.test.ts"
+    "test": "mocha"
+  },
+  "mocha": {
+    "reporter": "spec",
+    "require": [
+      "tsx"
+    ],
+    "spec": "src/**/*.test.ts"
   },
   "dependencies": {
+    "@zootools/email-spell-checker": "^1.12.0",
     "is-disposable-email-domain": "^1.0.7"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/mocha": "^10.0.7",
     "chai": "^5.1.1",
-    "tsx": "^4.17.0",
-    "mocha": "^10.7.3"
+    "mocha": "^10.7.3",
+    "tsx": "^4.17.0"
   },
   "publishConfig": {
     "access": "public",

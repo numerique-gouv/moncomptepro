@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { getDidYouMeanSuggestion } from "../src/services/did-you-mean";
+import { getDidYouMeanSuggestion } from "./did-you-mean";
 
 describe("getDidYouMeanSuggestion", () => {
   const emailAddresses = [
