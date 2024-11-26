@@ -108,3 +108,19 @@ CYPRESS_INSTALL_BINARY=0 npm install
 ```
 
 This command ensures that the Cypress binary is not downloaded, saving time and disk space during the installation process.
+
+## Document your change
+
+We use changeset to manage our changelog. You can read more about it [here](https://github.com/changesets/changesets).
+
+To create a new changeset, run the following command:
+
+```bash
+npx changeset
+```
+
+You will be prompted to select the type of change you want to make.  
+As this changelog is for end frensh users, we recommend you write your change in french :fr:.
+
+Commit your changes and push them in your branch.  
+We will merge a "Version Packages" PR when we are ready to release :wink:
