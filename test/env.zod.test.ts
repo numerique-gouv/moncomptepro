@@ -48,6 +48,7 @@ test("default sample env with configured INSEE secrets", () => {
     FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE: false,
     FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE: true,
     FEATURE_DISPLAY_TEST_ENV_WARNING: false,
+    FEATURE_MODERATION_DRY_RUN: false,
     FEATURE_RATE_LIMIT: false,
     FEATURE_SEND_MAIL: false,
     FEATURE_USE_ANNUAIRE_EMAILS: false,
