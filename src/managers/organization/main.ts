@@ -80,7 +80,7 @@ export const markDomainAsVerified = async ({
   await Promise.all(
     usersInOrganization.map(
       ({ id, email, verification_type: link_verification_type }) => {
-        const userDomain = getEmailDomain(email);
+        const userDomain = getEmailDomain(email, { allowUnknownTLD: true });
         if (
           userDomain === domain &&
           [

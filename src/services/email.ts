@@ -19,10 +19,16 @@ export const isAFreeEmailProvider = (domain: string) => {
   return isAFreeDomain(domain);
 };
 
-export const getEmailDomain = (email: string) => {
+export const getEmailDomain = (
+  email: string,
+  { allowUnknownTLD } = { allowUnknownTLD: false },
+) => {
   const parts = email.split("@");
   const host = parts[parts.length - 1];
-  const { sub, domain } = parse_host(host, { allowDotlessTLD: true });
+  const { sub, domain } = parse_host(host, {
+    allowDotlessTLD: true,
+    allowUnknownTLD,
+  });
 
   return [sub, domain].filter((e) => !!e).join(".");
 };
