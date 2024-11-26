@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/node";
 import type { NextFunction } from "express";
 import type { KoaContextWithOIDC } from "oidc-provider";
+import { errors } from "oidc-provider";
 import { recordNewConnection } from "../managers/oidc-client";
 import { logger } from "../services/log";
 
@@ -19,7 +20,16 @@ export const connectionCountMiddleware = async (
 
   // We retro-engineered the oidcProvider behavior by logging variables as follows:
   // logger.info('pre middleware', ctx.method, ctx.path);
-  await next();
+
+  try {
+    await next();
+  } catch (err) {
+    if (err instanceof errors.InvalidRequest) {
+      logger.error(err);
+    } else {
+      throw err;
+    }
+  }
   // logger.info('post middleware', ctx.method, ctx.oidc.route);
   // logger.info(ctx.oidc.client?.clientId, 'ctx.oidc.client.clientId');
   // logger.info(ctx.oidc.session?.accountId, 'ctx.oidc.session.accountId');
