@@ -4,9 +4,7 @@ describe("sign-in with magic link", () => {
   it("should sign-up with magic link", function () {
     cy.visit("/users/start-sign-in");
 
-    cy.get('[name="login"]').type(
-      "66ac0a4c-bd2d-490e-a277-1e7c2520100d@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.get('[action="/users/send-magic-link"]  [type="submit"]')
@@ -32,9 +30,7 @@ describe("sign-in with magic link", () => {
   it("should sign-in with magic link without setting password", function () {
     cy.visit("/users/start-sign-in");
 
-    cy.get('[name="login"]').type(
-      "66ac0a4c-bd2d-490e-a277-1e7c2520100d@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.contains(
@@ -64,9 +60,7 @@ describe("sign-in with magic link", () => {
   it("should set a password", function () {
     cy.visit("/users/start-sign-in");
 
-    cy.get('[name="login"]').type(
-      "66ac0a4c-bd2d-490e-a277-1e7c2520100d@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.get('[name="password"]').type(
@@ -92,9 +86,7 @@ describe("sign-in with magic link", () => {
   it("should sign-in with magic link without set password prompt", function () {
     cy.visit("/users/start-sign-in");
 
-    cy.get('[name="login"]').type(
-      "66ac0a4c-bd2d-490e-a277-1e7c2520100d@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.contains(

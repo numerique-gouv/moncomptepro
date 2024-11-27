@@ -3,7 +3,7 @@
 describe("join organizations", () => {
   it("join collectivité territoriale with code send to official contact email", function () {
     cy.visit("/users/join-organization");
-    cy.login("10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com");
+    cy.login("konrad.curze@nightlords.world");
 
     cy.get('[name="siret"]').type("19750663700010");
     cy.get('[type="submit"]').click();
@@ -12,25 +12,7 @@ describe("join organizations", () => {
     cy.contains(
       "nous avons envoyé un code secret à l’adresse email de votre établissement scolaire",
     );
-    cy.get("#email-badge-lowercase").contains(
-      "01714bdb-c5d7-48c9-93ab-73dc78c13609@mailslurp.com",
-    );
-
-    // cy.maildevGetMessageBySubject(
-    //   "[ProConnect] Authentifier un email sur ProConnect",
-    // ).then((email) => {
-    //   cy.maildevVisitMessageById(email.id);
-    //   cy.get("em:nth-child(1)")
-    //     .invoke("text")
-    //     .then((code) => {
-    //       cy.maildevDeleteMessageById(email.id);
-    //       cy.go("back");
-    //       cy.get('[name="official_contact_email_verification_token"]').type(
-    //         code,
-    //       );
-    //       cy.get('[type="submit"]').click();
-    //     });
-    // });
+    cy.get("#email-badge-lowercase").contains("rogal.dorn@imperialfists.world");
 
     cy.maildevGetMessageBySubject(
       "[ProConnect] Authentifier un email sur ProConnect",
@@ -39,7 +21,7 @@ describe("join organizations", () => {
         cy.maildevVisitMessageById(email.id);
         cy.maildevDeleteMessageById(email.id);
         cy.contains(
-          "Jean Nouveau (10efdabd-deb0-4d19-a521-6772ca27acf8@mailslurp.com) souhaite rejoindre votre organisation « Lycee general et technologique chaptal » sur ProConnect.",
+          "Jean Nouveau (konrad.curze@nightlords.world) souhaite rejoindre votre organisation « Lycee general et technologique chaptal » sur ProConnect.",
         );
         return cy.get("em:nth-child(1)").invoke("text");
       })

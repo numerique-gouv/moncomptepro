@@ -1,21 +1,21 @@
-FROM node:lts-slim AS base
-RUN corepack enable npm
+FROM node:22-slim AS base
+RUN corepack enable
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN corepack enable
 RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
   --mount=type=bind,source=packages/email/package.json,target=packages/email/package.json \
+  --mount=type=bind,source=packages/core/package.json,target=packages/core/package.json \
   --mount=type=cache,target=/root/.npm \
   npm ci --omit=dev
 
 FROM base AS build
-RUN corepack enable
 ENV CYPRESS_INSTALL_BINARY=0
 RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
   --mount=type=bind,source=packages/email/package.json,target=packages/email/package.json \
+  --mount=type=bind,source=packages/core/package.json,target=packages/core/package.json \
   --mount=type=cache,target=/root/.npm \
   npm ci
 COPY tsconfig.json vite.config.mjs ./

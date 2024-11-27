@@ -1,22 +1,12 @@
 //
 
 describe("Signup into new entreprise unipersonnelle", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "8b805202-b7b3-42ac-b047-f37bdc559211",
-      }),
-    );
-  });
-
   it("creates a user", function () {
     // Visit the signup page
     cy.visit("/users/start-sign-in");
 
     // Sign up with the previously created inbox
-    cy.get('[name="login"]').type(
-      "8b805202-b7b3-42ac-b047-f37bdc559211@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.get('[name="password"]').type(
@@ -25,9 +15,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
-    cy.get("#verify-email > p").contains(
-      "8b805202-b7b3-42ac-b047-f37bdc559211@mailslurp.com",
-    );
+    cy.get("#verify-email > p").contains("lion.eljonson@darkangels.world");
 
     cy.maildevGetMessageBySubject("Vérification de votre adresse email")
       .then((email) => {

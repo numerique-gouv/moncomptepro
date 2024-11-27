@@ -71,7 +71,9 @@ describe("sign-in with a client requiring consistency-checked identity", () => {
 
     cy.get("a.fr-btn").contains("Continuer").click();
 
-    cy.contains("OPError: access_denied");
+    cy.contains(
+      "AuthorizationResponseError: authorization response from the server is an error",
+    );
   });
 });
 

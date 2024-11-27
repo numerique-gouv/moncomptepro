@@ -1,23 +1,10 @@
 //
 
 describe("sign-in with email verification renewal", () => {
-  before(() => {
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "8c23383c-e1df-45d6-a3e9-94f207256c2a",
-      }),
-    );
-    cy.mailslurp().then((mailslurp) =>
-      mailslurp.inboxController.deleteAllInboxEmails({
-        inboxId: "b8a1959b-7034-433a-86d9-55dae207e185",
-      }),
-    );
-  });
-
   it("should sign-in with email verification needed", () => {
     cy.visit("/users/start-sign-in");
 
-    cy.login("8c23383c-e1df-45d6-a3e9-94f207256c2a@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.contains("Vérifier votre email");
 
@@ -26,7 +13,7 @@ describe("sign-in with email verification renewal", () => {
     );
 
     cy.contains(
-      "Un code de vérification a été envoyé à 8c23383c-e1df-45d6-a3e9-94f207256c2a@mailslurp.com",
+      "Un code de vérification a été envoyé à lion.eljonson@darkangels.world",
     );
 
     cy.maildevGetMessageBySubject("Vérification de votre adresse email")
@@ -47,7 +34,7 @@ describe("sign-in with email verification renewal", () => {
   it("should be able to sign in after re-sending code", () => {
     cy.visit("/users/start-sign-in");
 
-    cy.login("b8a1959b-7034-433a-86d9-55dae207e185@mailslurp.com");
+    cy.login("rogal.dorn@imperialfists.world");
 
     cy.get('a[href="/users/verify-email-help"]')
       .contains(
@@ -71,7 +58,7 @@ describe("sign-in with email verification renewal", () => {
       .click();
 
     cy.contains(
-      "Un nouveau code de vérification a été envoyé à b8a1959b-7034-433a-86d9-55dae207e185@mailslurp.com",
+      "Un nouveau code de vérification a été envoyé à rogal.dorn@imperialfists.world",
     );
 
     cy.maildevGetMessageBySubject("Vérification de votre adresse email")

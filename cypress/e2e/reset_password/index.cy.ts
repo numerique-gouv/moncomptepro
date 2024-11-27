@@ -6,9 +6,7 @@ describe("sign-in with magic link", () => {
     cy.visit("/users/start-sign-in");
 
     // Sign in with the wrong password
-    cy.get('[name="login"]').type(
-      "8e79c68c-9ce1-4dfe-8e58-fa3763d4cff7@mailslurp.com",
-    );
+    cy.get('[name="login"]').type("lion.eljonson@darkangels.world");
     cy.get('[type="submit"]').click();
 
     cy.get('[action="/users/sign-in"] [name="password"]').type(

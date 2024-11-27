@@ -18,5 +18,12 @@
     "rootDir": ".",
     "verbatimModuleSyntax": true
   },
-  "extends": "@tsconfig/node20/tsconfig.json"
+  "exclude": ["packages/*", "build/*"],
+  "references": [
+    { "path": "./packages/core/tsconfig.lib.json" },
+    {
+      "path": "./packages/email/tsconfig.lib.json"
+    }
+  ],
+  "extends": "@tsconfig/node22/tsconfig.json"
 }

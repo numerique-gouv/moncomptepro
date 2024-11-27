@@ -267,7 +267,7 @@ let server: Server;
         pageTitle: "Page introuvable",
         illustration: "connection-lost.svg",
         oidcError: "invalid_request",
-        interactionId: req.session.interactionId,
+        interactionId: req.session?.interactionId,
       }),
     );
   });

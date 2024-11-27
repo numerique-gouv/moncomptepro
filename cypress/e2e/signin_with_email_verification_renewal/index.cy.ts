@@ -5,7 +5,7 @@ describe("sign-in with email verification renewal", () => {
     // Visit the signup page
     cy.visit("/users/start-sign-in");
 
-    cy.login("bad1b70d-e5cb-436c-9ff3-f83d4af5d198@mailslurp.com");
+    cy.login("lion.eljonson@darkangels.world");
 
     cy.contains(
       "pour garantir la sécurité de votre compte, votre adresse email doit être vérifiée régulièrement.",
