@@ -1,10 +1,10 @@
-import mostUsedFreeEmailDomains from "@gouvfr-lasuite/moncomptepro.core/data/most-used-free-email-domains.js";
+import gouvfrDomains from "#src/data/gouvfr-domains";
+import mostUsedFreeEmailDomains from "#src/data/most-used-free-email-domains.js";
+import otherGouvDomains from "#src/data/other-gouv-domains";
 import { run as spellCheckEmail } from "@zootools/email-spell-checker";
-import gouvfrDomains from "../data/gouvfr-domains";
-import otherGouvDomains from "../data/other-gouv-domains";
 
 // Display an email suggestion for most used public domains
-export const getDidYouMeanSuggestion = (email: string): string => {
+export function getDidYouMeanSuggestion(email: string): string {
   const suggestedEmail = spellCheckEmail({
     domains: [
       ...gouvfrDomains,
@@ -16,4 +16,4 @@ export const getDidYouMeanSuggestion = (email: string): string => {
   });
 
   return suggestedEmail?.full ? suggestedEmail.full : "";
-};
+}
