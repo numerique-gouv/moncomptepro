@@ -26,8 +26,8 @@ export const connectionCountMiddleware = async (
   // logger.info(ctx.oidc.session?.accountId, 'ctx.oidc.session.accountId');
 
   if (
-    (ctx.oidc.route === "authorization" && ctx.oidc.session?.accountId) ||
-    ctx.oidc.route === "resume"
+    (ctx.oidc?.route === "authorization" && ctx.oidc?.session?.accountId) ||
+    ctx.oidc?.route === "resume"
   ) {
     // we log a connection in 2 cases:
     // 1. a client ask for a connection and the oidcProvider answer back with an accountId
