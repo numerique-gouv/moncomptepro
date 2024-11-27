@@ -88,12 +88,7 @@ if (FEATURE_USE_SECURITY_RESPONSE_HEADERS) {
         ],
         frameSrc: ["'self'", "agentconnect.crisp.help"],
         scriptSrc: ["'self'", "stats.data.gouv.fr", "*.crisp.chat"],
-        styleSrc: [
-          "'self'",
-          "*.crisp.chat",
-          "'sha256-MKASWYfd3dGFQes9nQT5XnslE3xYlnUb4cHpxhk4fag='",
-          "'sha256-Ks+4bfA56EzWbsVt5/a+A7rCibdXWRQVb7y2dkDLIZM='",
-        ],
+        styleSrc: ["'self'", "*.crisp.chat", "'unsafe-inline'"],
         fontSrc: ["'self'", "data:", "*.crisp.chat"],
         // As for https://github.com/w3c/webappsec-csp/issues/8, the feature is debated
         // and seems not useful for open id provider redirection.
