@@ -173,13 +173,21 @@ let server: Server;
     adapter: oidcProviderRepository,
     jwks: JWKS,
     async renderError(ctx, { error, error_description }, err) {
-      logger.error(err);
-      Sentry.withScope((scope) => {
-        scope.addEventProcessor((event) => {
-          return Sentry.addRequestDataToEvent(event, ctx.request);
+      if (
+        !(
+          err instanceof errors.InvalidRequest ||
+          err instanceof errors.InvalidRequestUri ||
+          err instanceof errors.InvalidClient
+        )
+      ) {
+        logger.error(err);
+        Sentry.withScope((scope) => {
+          scope.addEventProcessor((event) => {
+            return Sentry.addRequestDataToEvent(event, ctx.request);
+          });
+          Sentry.captureException(err);
         });
-        Sentry.captureException(err);
-      });
+      }
 
       ctx.type = "html";
       ctx.body = await renderWithEjsLayout("error", {
