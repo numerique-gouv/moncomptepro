@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.1.0
+
+### Minor Changes
+
+- [#861](https://github.com/numerique-gouv/moncomptepro/pull/861) [`f00ff7b`](https://github.com/numerique-gouv/moncomptepro/commit/f00ff7bed2d79f53712793c98f3a171d2a666748) Thanks [@douglasduteil](https://github.com/douglasduteil)! - ✨ Ajout du service de suggestion
+
 ## 0.0.3
 
 ### Patch Changes
