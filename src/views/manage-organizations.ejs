@@ -38,7 +38,7 @@
                                 </p>
                                 <div class="card-button-container fr-mt-2w">
                                     <form action="/users/quit-organization/<%= id %>" method="post">
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
                                         <button
                                             class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
                                             type="submit"
@@ -80,7 +80,7 @@
                                 </p>
                                 <div class="card-button-container fr-mt-2w">
                                     <form action="/users/cancel-moderation/<%= moderation_id %>" method="post">
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
                                         <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
                                             Annuler ma demande de rattachement
                                         </button>

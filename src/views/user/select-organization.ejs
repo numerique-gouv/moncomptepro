@@ -19,8 +19,8 @@
                         </div>
                     </div>
                     <form id="form-join-organization-<%= id %>" hidden action="/users/select-organization" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                        <input type="hidden" name="organization_id" value="<%= id %>" autocomplete="off">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="organization_id" value="<%= id %>">
                     </form>
                 </div>
             <% }); %>
@@ -28,8 +28,8 @@
         <ul class="fr-btns-group">
             <li>
                 <form id="form-join-organization-default" action="/users/select-organization" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                    <input type="hidden" name="organization_id" value="<%= userOrganizations[0].id %>" autocomplete="off">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="organization_id" value="<%= userOrganizations[0].id %>">
                     <button
                         id="submit-join-organization-default"
                         class="fr-btn"

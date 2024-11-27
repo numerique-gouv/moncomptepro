@@ -18,8 +18,8 @@
                     </div>
                 </div>
                 <form id="form-join-organization-<%= id %>" hidden action="/users/join-organization" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" autocomplete="off">
-                    <input type="hidden" name="siret" value="<%= siret %>" autocomplete="off">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="siret" value="<%= siret %>">
                 </form>
             </div>
             <% }); %>

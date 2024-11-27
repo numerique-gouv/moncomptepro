@@ -8,7 +8,7 @@
         </div>
 
         <form action="/users/sign-in-with-magic-link" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <input type="hidden" name="magic_link_token" value="<%= magicLinkToken %>">
 
             <%- include('../partials/card-button-container.ejs', {label: 'Se connecter'}) %>

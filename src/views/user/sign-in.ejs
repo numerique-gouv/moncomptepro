@@ -32,7 +32,7 @@
         </div>
 
         <form action="/users/sign-in" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <div class="fr-input-group fr-password js-password-container">
                 <label class="fr-label" for="password-input">
                     Renseignez votre mot de passe
@@ -83,7 +83,7 @@
         <p class="fr-hr-or">ou</p>
 
         <form action="/users/send-magic-link" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
             <button
                 class="fr-btn fr-mb-2w btn--fullwidth fr-btn--secondary fr-btn--icon-left fr-icon-mail-open-line"

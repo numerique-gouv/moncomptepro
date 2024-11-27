@@ -27,7 +27,7 @@
     </p>
     <% if (showsTotpSection) { %>
         <form action="/users/2fa-sign-in-with-authenticator-app" method="post" class="fr-mb-5w">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off" />
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" />
 
             <div class="fr-input-group">
                 <label class="fr-label" for="totpToken">
@@ -82,8 +82,8 @@
             </button>
         </div>
         <form id="webauthn-authentication-response-form" action="/users/2fa-sign-in-with-passkey" method="post" hidden>
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-            <input type="hidden" name="webauthn_authentication_response_string" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
+            <input type="hidden" name="webauthn_authentication_response_string">
             <button type="submit" class="fr-btn"></button>
         </form>
 
