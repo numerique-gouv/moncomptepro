@@ -38,7 +38,7 @@ test("default sample env with configured INSEE secrets", () => {
     CRISP_WEBSITE_ID: "",
     DATABASE_URL:
       "postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro",
-    DEPLOY_ENV: "preview",
+    DEPLOY_ENV: "localhost",
     DIRTY_DS_REDIRECTION_URL:
       "https://www.demarches-simplifiees.fr/agent_connect/logout_from_mcp",
     EMAIL_DELIVERABILITY_WHITELIST: [],
