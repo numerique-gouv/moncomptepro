@@ -31,7 +31,7 @@ export const featureTogglesEnvSchema = z.object({
   FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_NON_FREE:
     zodTrueFalseBoolean().default("True"),
   FEATURE_DISPLAY_TEST_ENV_WARNING: zodTrueFalseBoolean().default("False"),
-  FEATURE_MODERATION_DRY_RUN: zodTrueFalseBoolean().default("False"),
+  FEATURE_BYPASS_MODERATION: zodTrueFalseBoolean().default("False"),
   FEATURE_RATE_LIMIT: zodTrueFalseBoolean().default("False"),
   FEATURE_SEND_MAIL: zodTrueFalseBoolean().default("False"),
   FEATURE_USE_ANNUAIRE_EMAILS: zodTrueFalseBoolean().default("False"),

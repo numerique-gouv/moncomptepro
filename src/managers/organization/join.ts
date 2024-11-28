@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
 import {
   CRISP_WEBSITE_ID,
-  FEATURE_MODERATION_DRY_RUN,
+  FEATURE_BYPASS_MODERATION,
   MAX_SUGGESTED_ORGANIZATIONS,
   MONCOMPTEPRO_HOST,
 } from "../../config/env";
@@ -307,11 +307,11 @@ export const joinOrganization = async ({
     });
   }
 
-  if (FEATURE_MODERATION_DRY_RUN) {
+  if (FEATURE_BYPASS_MODERATION) {
     return await linkUserToOrganization({
       organization_id,
       user_id,
-      verification_type: "no_validation_means_available",
+      verification_type: "bypassed",
     });
   }
 

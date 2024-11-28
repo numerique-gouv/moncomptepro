@@ -10,6 +10,7 @@ interface BaseUserOrganizationLink {
     | "no_verification_means_for_entreprise_unipersonnelle"
     | "no_verification_means_for_small_association"
     | "official_contact_email"
+    | "bypassed"
     | null;
   // updated when verification_type is changed
   verified_at: Date | null;
