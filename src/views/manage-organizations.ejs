@@ -21,7 +21,7 @@
                                             href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            aria-label="<%= cached_libelle; %> - détails sur l’Annuaire des Entreprises"
+                                            aria-label="<%= cached_libelle; %> - détails sur l’Annuaire des Entreprises (nouvelle fenêtre)"
                                     ><%= cached_libelle; %></a>
                                 </h3>
                                 <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
@@ -38,7 +38,7 @@
                                 </p>
                                 <div class="card-button-container fr-mt-2w">
                                     <form action="/users/quit-organization/<%= id %>" method="post">
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
                                         <button
                                             class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
                                             type="submit"
@@ -70,7 +70,7 @@
                                             href="https://annuaire-entreprises.data.gouv.fr/etablissement/<%= siret; %>?mtm_campaign=moncomptepro"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            aria-label="<%= cached_libelle; %> - détails sur l’Annuaire des Entreprises"
+                                            aria-label="<%= cached_libelle; %> - détails sur l’Annuaire des Entreprises (nouvelle fenêtre)"
                                     ><%= cached_libelle; %></a>
                                 </h3>
                                 <p class="fr-tile__desc fr-pb-0"><%= cached_adresse; %></p>
@@ -80,7 +80,7 @@
                                 </p>
                                 <div class="card-button-container fr-mt-2w">
                                     <form action="/users/cancel-moderation/<%= moderation_id %>" method="post">
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
                                         <button class="fr-btn fr-btn--secondary fr-btn--sm" type="submit">
                                             Annuler ma demande de rattachement
                                         </button>

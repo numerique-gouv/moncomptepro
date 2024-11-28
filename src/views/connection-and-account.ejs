@@ -18,7 +18,7 @@
                 Vous avez oublié votre mot de passe ou souhaitez en changer, merci de cliquer sur le bouton ci-après.
             </p>
             <form action="/users/reset-password" method="post">
-                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
                 <button class="fr-btn fr-btn--secondary" type="submit">
                     Recevoir un lien de réinitialisation de mot de passe
@@ -67,7 +67,6 @@
                                                 type="hidden"
                                                 name="_csrf"
                                                 value="<%= csrfToken; %>"
-                                                autocomplete="off"
                                         >
                                         <button
                                                 class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
@@ -180,7 +179,6 @@
                                                     type="hidden"
                                                     name="_csrf"
                                                     value="<%= csrfToken; %>"
-                                                    autocomplete="off"
                                             >
                                             <button
                                                     aria-label="Supprimer la clé d'accès <%= display_name; %>"
@@ -207,8 +205,8 @@
                 </div>
             <% } %>
             <form id="webauthn-registration-response-form" action="/passkeys/verify-registration" method="post" hidden>
-                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
-                <input type="hidden" name="webauthn_registration_response_string" autocomplete="off">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
+                <input type="hidden" name="webauthn_registration_response_string">
 
                 <button type="submit" class="fr-btn"></button>
             </form>
@@ -230,7 +228,7 @@
                     </p>
 
                     <form class="fr-mt-4w" action="/disable-force-2fa" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
                         <button
                                 class="fr-btn btn--danger js-confirm"
@@ -250,7 +248,7 @@
                     </p>
 
                     <form class="fr-mt-4w" action="/enable-force-2fa" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
                         <button
                                 class="fr-btn"
@@ -271,7 +269,7 @@
             </p>
 
             <form class="fr-mt-4w" action="/users/delete" method="post">
-                <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
                 <button
                         class="fr-btn btn--danger js-confirm"

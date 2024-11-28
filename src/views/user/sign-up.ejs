@@ -32,7 +32,7 @@
         </div>
 
         <form action="/users/sign-up" method="post" class="fr-mb-2w">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
             <div class="fr-input-group fr-password js-password-container">
                 <label class="fr-label" for="password-input">
@@ -79,7 +79,7 @@
                     <img src="/dist/magic-link.svg" alt="">
                 </div>
                 <form action="/users/send-magic-link" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
                     <%- include('../partials/card-button-container.ejs', {label: 'Envoyer le lien'}) %>
                 </form>

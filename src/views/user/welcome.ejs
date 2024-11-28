@@ -14,7 +14,7 @@
             Vous avez reçu un email de confirmation.
         </p>
         <form action="/users/welcome" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken; %>" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
             <%- include('../partials/card-button-container.ejs', {label: 'Continuer'}) %>
         </form>
