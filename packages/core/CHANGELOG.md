@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.2.0
+
+### Minor Changes
+
+- [#871](https://github.com/numerique-gouv/moncomptepro/pull/871) [`ea29c8d`](https://github.com/numerique-gouv/moncomptepro/commit/ea29c8d6f5f63d7affef692470e9ac03763d0835) Thanks [@douglasduteil](https://github.com/douglasduteil)! - 🚚 Renommage des paquets en ProConnect
+
 ## 0.1.0
 
 ### Minor Changes
