@@ -1,9 +1,9 @@
-# @gouvfr-lasuite/moncomptepro.email
+# @gouvfr-lasuite/proconnect.email
 
 ## Usage
 
 ```ts
-import { DeleteFreeTotpMail } from "@gouvfr-lasuite/moncomptepro.email";
+import { DeleteFreeTotpMail } from "@gouvfr-lasuite/proconnect.email";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.example.com",

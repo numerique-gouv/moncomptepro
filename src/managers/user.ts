@@ -10,7 +10,7 @@ import {
   UpdatePersonalDataMail,
   UpdateTotpApplication,
   VerifyEmail,
-} from "@gouvfr-lasuite/moncomptepro.email";
+} from "@gouvfr-lasuite/proconnect.email";
 import { isEmpty } from "lodash-es";
 import {
   EmailUnavailableError,
@@ -27,7 +27,7 @@ import {
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
 
-import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/moncomptepro.core/services/suggestion/did-you-mean.js";
+import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion/did-you-mean.js";
 import {
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
