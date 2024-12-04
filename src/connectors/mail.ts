@@ -36,13 +36,9 @@ function computeMailSubject(
     return undefined;
   }
 
-  switch (DEPLOY_ENV) {
-    case "localhost":
-      return `Local - ${initialSubject}`;
-    case "sandbox":
-      return `Test - ${initialSubject}`;
-    case "preview":
-      return `Test - ${initialSubject}`;
+  if (DEPLOY_ENV === "sandbox") {
+    return `Test - ${initialSubject}`;
   }
+
   return initialSubject;
 }
