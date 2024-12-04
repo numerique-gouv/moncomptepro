@@ -1,4 +1,4 @@
-import { Welcome } from "@gouvfr-lasuite/moncomptepro.email";
+import { Welcome } from "@gouvfr-lasuite/proconnect.email";
 import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
 import {
