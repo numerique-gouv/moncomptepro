@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/node";
 import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 import { MONCOMPTEPRO_HOST } from "../../config/env";
@@ -144,7 +143,6 @@ export const postChangePasswordController = async (
 
     if (error instanceof LeakedPasswordError) {
       const resetPasswordToken = req.body.reset_password_token;
-      Sentry.captureException(error);
       return res.redirect(
         `/users/change-password?reset_password_token=${resetPasswordToken}&notification=leaked_password`,
       );
