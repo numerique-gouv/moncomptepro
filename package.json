@@ -32,6 +32,7 @@
     "test:unit:watch": "npm run test:unit -- --watch --watch-files src/**/*.ts,test/**/*.ts",
     "test:workspaces": "npm run test --if-present --workspaces",
     "update-organization-info": "tsx scripts/update-organizations-info.ts",
+    "version": "changeset version && npm install --package-lock-only",
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
     "watch:js": "tsc --watch --preserveWatchOutput",

@@ -37,6 +37,7 @@ jobs:
           commit: "🔖 Version Packages"
           publish: npx changeset publish
           title: "🔖 Version Packages"
+          version: npm run version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
