@@ -168,9 +168,13 @@ export const checkUserTwoFactorAuthMiddleware = async (
           return res.redirect("/users/2fa-sign-in");
         }
       }
-
       return next();
     } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        // The user has an active session but is not in the database anymore
+        await destroyAuthenticatedSession(req);
+        next(new HttpErrors.Unauthorized());
+      }
       next(error);
     }
   });
