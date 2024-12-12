@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.2.1
+
+### Patch Changes
+
+- [#879](https://github.com/numerique-gouv/moncomptepro/pull/879) [`7a1aca3`](https://github.com/numerique-gouv/moncomptepro/commit/7a1aca395ed260ad77bd764e160eda48a66c54f9) Thanks [@douglasduteil](https://github.com/douglasduteil)! - :recycle: force la compatibilité avec Node.js
+
 ## 0.2.0
 
 ### Minor Changes
