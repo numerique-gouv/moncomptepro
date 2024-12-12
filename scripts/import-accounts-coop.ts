@@ -1,4 +1,5 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
+import { isEmailValid } from "@gouvfr-lasuite/proconnect.core/validators/is-email-valid.js";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
@@ -23,7 +24,6 @@ import {
   throttleApiCall,
 } from "../src/services/script-helpers";
 import {
-  isEmailValid,
   isNameValid,
   isPhoneNumberValid,
   isSiretValid,
