@@ -170,9 +170,10 @@ let server: Server;
     async renderError(ctx, { error, error_description }, err) {
       if (
         !(
+          err instanceof errors.InvalidClient ||
+          err instanceof errors.InvalidRedirectUri ||
           err instanceof errors.InvalidRequest ||
-          err instanceof errors.InvalidRequestUri ||
-          err instanceof errors.InvalidClient
+          err instanceof errors.InvalidRequestUri
         )
       ) {
         logger.error(err);
