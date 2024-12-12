@@ -1,3 +1,10 @@
+import {
+  generatePinToken,
+  generateToken,
+  hashPassword,
+  isPasswordSecure,
+  validatePassword,
+} from "@gouvfr-lasuite/proconnect.core/security";
 import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion";
 import {
   Add2fa,
@@ -14,6 +21,13 @@ import {
 } from "@gouvfr-lasuite/proconnect.email";
 import { isEmpty } from "lodash-es";
 import {
+  HOST,
+  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
+  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+} from "../config/env";
+import {
   EmailUnavailableError,
   InvalidCredentialsError,
   InvalidEmailError,
@@ -28,13 +42,6 @@ import {
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
 
-import {
-  HOST,
-  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
-  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-} from "../config/env";
 import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
@@ -45,13 +52,6 @@ import {
   update,
 } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
-import {
-  generatePinToken,
-  generateToken,
-  hashPassword,
-  isPasswordSecure,
-  validatePassword,
-} from "../services/security";
 import { isWebauthnConfiguredForUser } from "./webauthn";
 
 export const startLogin = async (
@@ -182,7 +182,7 @@ export const sendEmailAddressVerificationEmail = async ({
     return { codeSent: false, updatedUser: user };
   }
 
-  const verify_email_token = await generatePinToken();
+  const verify_email_token = generatePinToken();
 
   const updatedUser = await update(user.id, {
     verify_email_token,
@@ -472,7 +472,7 @@ export const sendSendMagicLinkEmail = async (
     });
   }
 
-  const magicLinkToken = await generateToken();
+  const magicLinkToken = generateToken();
 
   await update(user.id, {
     magic_link_token: magicLinkToken,
