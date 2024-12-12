@@ -1,7 +1,7 @@
+import { isEmailValid } from "@gouvfr-lasuite/proconnect.core/validators/is-email-valid.js";
 import { z } from "zod";
 import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
 import {
-  isEmailValid,
   isNameValid,
   isNotificationLabelValid,
   isPhoneNumberValid,
