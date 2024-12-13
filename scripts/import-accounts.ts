@@ -132,7 +132,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           logger.error(`invalid name ${first_name} ${last_name}`);
           return done(null);
         }
-        if (isEmpty(sub) && sub.length !== 36) {
+        if (isEmpty(sub)) {
           i++;
           rejected_invalid_sub_count++;
           logger.error(`invalid sub ${sub}`);
