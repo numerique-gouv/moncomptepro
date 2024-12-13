@@ -13,11 +13,7 @@ import type {
 import { isEmpty } from "lodash-es";
 import moment from "moment";
 import "moment-timezone";
-import {
-  MONCOMPTEPRO_HOST,
-  MONCOMPTEPRO_IDENTIFIER,
-  MONCOMPTEPRO_LABEL,
-} from "../config/env";
+import { APPLICATION_NAME, HOST, MONCOMPTEPRO_IDENTIFIER } from "../config/env";
 import {
   NotFoundError,
   UserNotFoundError,
@@ -42,11 +38,11 @@ import { logger } from "../services/log";
 import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
 
 // Human-readable title for your website
-const rpName = MONCOMPTEPRO_LABEL;
+const rpName = APPLICATION_NAME;
 // A unique identifier for your website
 const rpID = MONCOMPTEPRO_IDENTIFIER;
 // The URL at which registrations and authentications should occur
-const origin = MONCOMPTEPRO_HOST;
+const origin = HOST;
 
 export const isWebauthnConfiguredForUser = async (user_id: number) => {
   const user = await findById(user_id);

@@ -29,9 +29,9 @@ import { sendMail } from "../connectors/mail";
 
 import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion/did-you-mean.js";
 import {
+  HOST,
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
-  MONCOMPTEPRO_HOST,
   RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
 } from "../config/env";
@@ -193,7 +193,7 @@ export const sendEmailAddressVerificationEmail = async ({
     to: [user.email],
     subject: "Vérification de votre adresse email",
     html: VerifyEmail({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       token: verify_email_token,
     }).toString(),
     tag: "verify-email",
@@ -213,7 +213,7 @@ export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
     to: [email],
     subject: "Suppression de compte",
     html: DeleteAccount({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
@@ -238,7 +238,7 @@ export const sendDeleteFreeTOTPApplicationEmail = async ({
     subject:
       "Suppression d'une application d'authentification à double facteur",
     html: DeleteFreeTotpMail({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
@@ -258,7 +258,7 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
     to: [email],
     subject: "Désactivation de la validation en deux étapes",
     html: Delete2faProtection({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
     }).toString(),
@@ -280,7 +280,7 @@ export const sendChangeAppliTotpEmail = async ({
     to: [email],
     subject: "Changement d'application d’authentification",
     html: UpdateTotpApplication({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
@@ -304,7 +304,7 @@ export const sendDeleteAccessKeyMail = async ({
     to: [email],
     subject: "Alerte de sécurité",
     html: DeleteAccessKey({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
@@ -328,7 +328,7 @@ export const sendAddFreeTOTPEmail = async ({
     to: [email],
     subject: "Validation en deux étapes activée",
     html: Add2fa({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       email,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
@@ -352,7 +352,7 @@ export const sendActivateAccessKeyMail = async ({
     to: [email],
     subject: "Alerte de sécurité",
     html: AddAccessKey({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
       support_email: "contact@moncomptepro.beta.gouv.fr",
@@ -404,7 +404,7 @@ export const sendUpdatePersonalInformationEmail = async ({
       to: [email],
       subject: "Mise à jour de vos données personnelles",
       html: UpdatePersonalDataMail({
-        baseurl: MONCOMPTEPRO_HOST,
+        baseurl: HOST,
         family_name,
         given_name,
         updatedFields: updatedFields,

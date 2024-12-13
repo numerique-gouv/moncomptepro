@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { hasIn, isEmpty, isString } from "lodash-es";
 import { customAlphabet, nanoid } from "nanoid/async";
 import { parse_host } from "tld-extract";
-import { MONCOMPTEPRO_HOST } from "../config/env";
+import { HOST } from "../config/env";
 import notificationMessages from "../config/notification-messages";
 import dicewareWordlistFrAlt from "../data/diceware-wordlist-fr-alt";
 import type { AmrValue } from "../types/express-session";
@@ -171,18 +171,18 @@ export const getTrustedReferrerPath = (referrer: unknown): string | null => {
   }
 
   const isValidURL = URL.canParse(referrer);
-  const isValidRelativeURL = URL.canParse(referrer, MONCOMPTEPRO_HOST);
+  const isValidRelativeURL = URL.canParse(referrer, HOST);
   let parsedURL: URL;
   if (isValidURL) {
     parsedURL = new URL(referrer);
   } else if (isValidRelativeURL) {
     // referrer may be relative
-    parsedURL = new URL(referrer, MONCOMPTEPRO_HOST);
+    parsedURL = new URL(referrer, HOST);
   } else {
     return null;
   }
 
-  const moncompteproURL = new URL(MONCOMPTEPRO_HOST);
+  const moncompteproURL = new URL(HOST);
 
   if (moncompteproURL.origin !== parsedURL.origin) {
     return null;

@@ -1,6 +1,6 @@
 import { OfficialContactEmailVerification } from "@gouvfr-lasuite/proconnect.email";
 import { isEmpty } from "lodash-es";
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { HOST } from "../../config/env";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
@@ -108,7 +108,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     to: [contactEmail],
     subject: `[ProConnect] Authentifier un email sur ProConnect`,
     html: OfficialContactEmailVerification({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       given_name: given_name ?? "",
       family_name: family_name ?? "",
       email,

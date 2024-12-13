@@ -2,8 +2,8 @@ import { generateSecret, generateUri, validateToken } from "@sunknudsen/totp";
 import { isEmpty } from "lodash-es";
 import qrcode from "qrcode";
 import {
+  APPLICATION_NAME,
   MONCOMPTEPRO_IDENTIFIER,
-  MONCOMPTEPRO_LABEL,
   SYMMETRIC_ENCRYPTION_KEY,
 } from "../config/env";
 import { InvalidTotpTokenError, UserNotFoundError } from "../config/errors";
@@ -21,7 +21,7 @@ export const generateAuthenticatorAppRegistrationOptions = async (
   let totpKey = existingTotpKey ?? generateSecret(32);
 
   const uri = generateUri(
-    MONCOMPTEPRO_LABEL,
+    APPLICATION_NAME,
     email,
     totpKey,
     MONCOMPTEPRO_IDENTIFIER,

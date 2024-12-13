@@ -1,6 +1,6 @@
 //
 
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { HOST } from "../../config/env";
 
 //
 
@@ -10,7 +10,7 @@ export function unableToAutoJoinOrganizationMd({
   libelle: string;
 }) {
   return `
-![MonComptePro](${MONCOMPTEPRO_HOST}/dist/mail-proconnect.png)
+![MonComptePro](${HOST}/dist/mail-proconnect.png)
 
 Bonjour,
 

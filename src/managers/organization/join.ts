@@ -4,8 +4,8 @@ import { isEmpty, some } from "lodash-es";
 import {
   CRISP_WEBSITE_ID,
   FEATURE_BYPASS_MODERATION,
+  HOST,
   MAX_SUGGESTED_ORGANIZATIONS,
-  MONCOMPTEPRO_HOST,
 } from "../../config/env";
 import {
   InseeConnectionError,
@@ -421,7 +421,7 @@ export const greetForJoiningOrganization = async ({
     to: [email],
     subject: "Votre compte ProConnect a bien été créé",
     html: Welcome({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
     }).toString(),

@@ -20,7 +20,7 @@ env:
   FEATURE_SEND_MAIL: "True"
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
-  MONCOMPTEPRO_HOST: http://172.18.0.1:3000
+  HOST: http://172.18.0.1:3000
   ZAMMAD_TOKEN: ${{ secrets.ZAMMAD_TOKEN }}
 jobs:
   test:
@@ -67,7 +67,7 @@ jobs:
           HOST: http://localhost:4000
           PC_CLIENT_ID: standard_client_id
           PC_CLIENT_SECRET: standard_client_secret
-          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          PC_PROVIDER: ${{ env.HOST }}
           PC_SCOPES: openid email profile organization
           ACR_VALUE_FOR_2FA: https://proconnect.gouv.fr/assurance/consistency-checked-2fa
           STYLESHEET_URL: ""
@@ -80,7 +80,7 @@ jobs:
           HOST: http://localhost:4001
           PC_CLIENT_ID: proconnect_federation_client_id
           PC_CLIENT_SECRET: proconnect_federation_client_secret
-          PC_PROVIDER: ${{ env.MONCOMPTEPRO_HOST }}
+          PC_PROVIDER: ${{ env.HOST }}
           PC_SCOPES: openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt is_service_public is_public_service
           PC_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
           PC_USERINFO_SIGNED_RESPONSE_ALG: ES256
@@ -116,7 +116,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6.7.7
         with:
-          wait-on: ${{ env.MONCOMPTEPRO_HOST }}/users/start-sign-in
+          wait-on: ${{ env.HOST }}/users/start-sign-in
           build: npm run build:assets
           start: npx dotenvx run -f cypress/e2e/${{ matrix.e2e_test }}/env.conf --overload -- npm start
           install: false

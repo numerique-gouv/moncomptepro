@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { HOST } from "../../config/env";
 import { InvalidEmailError, InvalidMagicLinkError } from "../../config/errors";
 import { createAuthenticatedSession } from "../../managers/session/authenticated";
 import { getEmailFromUnauthenticatedSession } from "../../managers/session/unauthenticated";
@@ -18,7 +18,7 @@ export const postSendMagicLinkController = async (
   try {
     await sendSendMagicLinkEmail(
       getEmailFromUnauthenticatedSession(req)!,
-      MONCOMPTEPRO_HOST,
+      HOST,
     );
 
     return res.redirect(`/users/magic-link-sent`);
