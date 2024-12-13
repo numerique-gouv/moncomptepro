@@ -62,6 +62,7 @@ export const postResetPasswordController = async (
       email = parsedBody.login;
 
       // When the user is redirected to start of the sign-in process, the email value will be updated accordingly.
+      // The email rate limiter will rely on the email value set in the session here.
       setEmailInUnauthenticatedSession(req, email);
     }
 

@@ -67,6 +67,8 @@ import {
   authenticatorRateLimiterMiddleware,
   passwordRateLimiterMiddleware,
   rateLimiterMiddleware,
+  resetPasswordRateLimiterMiddleware,
+  sendMagicLinkRateLimiterMiddleware,
 } from "../middlewares/rate-limiter";
 import {
   checkCredentialPromptRequirementsMiddleware,
@@ -208,6 +210,7 @@ export const userRouter = () => {
     rateLimiterMiddleware,
     checkCredentialPromptRequirementsMiddleware,
     csrfProtectionMiddleware,
+    sendMagicLinkRateLimiterMiddleware,
     postSendMagicLinkController,
     checkUserSignInRequirementsMiddleware,
     issueSessionOrRedirectController,
@@ -255,6 +258,7 @@ export const userRouter = () => {
     "/reset-password",
     rateLimiterMiddleware,
     csrfProtectionMiddleware,
+    resetPasswordRateLimiterMiddleware,
     postResetPasswordController,
   );
   userRouter.get(
