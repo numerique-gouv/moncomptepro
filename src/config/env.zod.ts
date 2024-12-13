@@ -10,7 +10,7 @@ export const connectorEnvSchema = z.object({
   CRISP_KEY: z.string().default(""),
   CRISP_PLUGIN_URN: z.string().default(""),
   CRISP_RESOLVE_DELAY: z.coerce.number().int().nonnegative().default(1_000), // 1 second
-  CRISP_USER_NICKNAME: z.string().default("MonComptePro"),
+  CRISP_USER_NICKNAME: z.string().default("ProConnect"),
   CRISP_WEBSITE_ID: z.string().default(""),
   CRISP_MODERATION_TAG: zCoerceArray(z.string()).default("identite,moderation"),
   DATABASE_URL: z.string().url(),
@@ -103,7 +103,7 @@ export const paramsEnvSchema = z.object({
     .nonnegative()
     .default(20 * 60), // 20 minutes in seconds,
   HOST: z.string().url().default("http://localhost:3000"),
-  APPLICATION_NAME: z.string().default("MonComptePro"),
+  APPLICATION_NAME: z.string().default("ProConnect"),
   NODE_ENV: z
     .enum(["production", "development", "test"])
     .default("development"),

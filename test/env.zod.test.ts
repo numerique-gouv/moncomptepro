@@ -34,7 +34,7 @@ test("default sample env with configured INSEE secrets", () => {
     CRISP_MODERATION_TAG: ["identite", "moderation"],
     CRISP_PLUGIN_URN: "",
     CRISP_RESOLVE_DELAY: 1000,
-    CRISP_USER_NICKNAME: "MonComptePro",
+    CRISP_USER_NICKNAME: "ProConnect",
     CRISP_WEBSITE_ID: "",
     DATABASE_URL:
       "postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro",
@@ -64,7 +64,7 @@ test("default sample env with configured INSEE secrets", () => {
     MAX_SUGGESTED_ORGANIZATIONS: 3,
     MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS: 1200,
     HOST: "http://localhost:3000",
-    APPLICATION_NAME: "MonComptePro",
+    APPLICATION_NAME: "ProConnect",
     NODE_ENV: "development",
     PORT: 3000,
     RECENT_LOGIN_INTERVAL_IN_SECONDS: 900,
