@@ -12,7 +12,10 @@ import {
   getUserFromAuthenticatedSession,
   isWithinAuthenticatedSession,
 } from "../../managers/session/authenticated";
-import { getEmailFromUnauthenticatedSession } from "../../managers/session/unauthenticated";
+import {
+  getEmailFromUnauthenticatedSession,
+  setEmailInUnauthenticatedSession,
+} from "../../managers/session/unauthenticated";
 import { changePassword, sendResetPasswordEmail } from "../../managers/user";
 import { csrfToken } from "../../middlewares/csrf-protection";
 import { emailSchema } from "../../services/custom-zod-schemas";
@@ -28,11 +31,9 @@ export const getResetPasswordController = async (
     return res.render("user/reset-password", {
       pageTitle: "Réinitialiser mon mot de passe",
       notifications: await getNotificationsFromRequest(req),
-      loginHint:
-        getEmailFromUnauthenticatedSession(req) ||
-        (isWithinAuthenticatedSession(req.session)
-          ? getUserFromAuthenticatedSession(req).email
-          : null),
+      loginHint: isWithinAuthenticatedSession(req.session)
+        ? getUserFromAuthenticatedSession(req).email
+        : getEmailFromUnauthenticatedSession(req) || null,
       csrfToken: csrfToken(req),
     });
   } catch (error) {
@@ -59,6 +60,10 @@ export const postResetPasswordController = async (
       const parsedBody = await schema.parseAsync(req.body);
 
       email = parsedBody.login;
+
+      // When the user is redirected to start of the sign-in process, the email value will be updated accordingly.
+      // The email rate limiter will rely on the email value set in the session here.
+      setEmailInUnauthenticatedSession(req, email);
     }
 
     await sendResetPasswordEmail(email, MONCOMPTEPRO_HOST);

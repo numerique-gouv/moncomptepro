@@ -50,42 +50,59 @@ const emailRateLimiterMiddlewareFactory =
     }
   };
 
-const defaultRateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: "rate-limiter",
-  points: 20, // 20 requests
-  duration: 60, // per minute per IP
-});
+export const rateLimiterMiddleware = ipRateLimiterMiddlewareFactory(
+  new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: "rate-limiter",
+    points: 20, // 20 requests
+    duration: 60, // per minute per IP
+  }),
+);
 
-export const rateLimiterMiddleware =
-  ipRateLimiterMiddlewareFactory(defaultRateLimiter);
+export const apiRateLimiterMiddleware = ipRateLimiterMiddlewareFactory(
+  new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: "rate-limiter-api",
+    points: 42, // 42 API requests
+    duration: 1, // per second per IP
+  }),
+);
 
-const apiRateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: "rate-limiter-api",
-  points: 42, // 4 API requests
-  duration: 1, // per second per IP
-});
-
-export const apiRateLimiterMiddleware =
-  ipRateLimiterMiddlewareFactory(apiRateLimiter);
-
-const passwordRateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: "rate-limiter-password",
-  points: 10, // 10 requests
-  duration: 5 * 60, // per 5 minutes per email
-});
-
-export const passwordRateLimiterMiddleware =
-  emailRateLimiterMiddlewareFactory(passwordRateLimiter);
-
-const authenticatorRateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: "rate-limiter-totp",
-  points: 5, // 5 requests
-  duration: 15 * 60, // per 15 minutes per email
-});
+export const passwordRateLimiterMiddleware = emailRateLimiterMiddlewareFactory(
+  new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: "rate-limiter-password",
+    points: 10, // 10 requests
+    duration: 5 * 60, // per 5 minutes per email
+  }),
+);
 
 export const authenticatorRateLimiterMiddleware =
-  emailRateLimiterMiddlewareFactory(authenticatorRateLimiter);
+  emailRateLimiterMiddlewareFactory(
+    new RateLimiterRedis({
+      storeClient: redisClient,
+      keyPrefix: "rate-limiter-totp",
+      points: 5, // 5 requests
+      duration: 15 * 60, // per 15 minutes per email
+    }),
+  );
+
+export const resetPasswordRateLimiterMiddleware =
+  emailRateLimiterMiddlewareFactory(
+    new RateLimiterRedis({
+      storeClient: redisClient,
+      keyPrefix: "rate-limiter-reset-password",
+      points: 5, // 5 requests
+      duration: 15 * 60, // per 15 minutes per email
+    }),
+  );
+
+export const sendMagicLinkRateLimiterMiddleware =
+  emailRateLimiterMiddlewareFactory(
+    new RateLimiterRedis({
+      storeClient: redisClient,
+      keyPrefix: "rate-limiter-send-magic-link",
+      points: 5, // 5 requests
+      duration: 15 * 60, // per 15 minutes per email
+    }),
+  );
