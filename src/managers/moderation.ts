@@ -1,6 +1,6 @@
 import { ModerationProcessed } from "@gouvfr-lasuite/proconnect.email";
 import { isEmpty } from "lodash-es";
-import { MONCOMPTEPRO_HOST } from "../config/env";
+import { HOST } from "../config/env";
 import { ForbiddenError, NotFoundError } from "../config/errors";
 import { sendMail } from "../connectors/mail";
 import {
@@ -37,7 +37,7 @@ export const sendModerationProcessedEmail = async ({
     to: [email],
     subject: `[ProConnect] Demande pour rejoindre ${cached_libelle || siret}`,
     html: ModerationProcessed({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       libelle: cached_libelle || siret,
     }).toString(),
     tag: "moderation-processed",

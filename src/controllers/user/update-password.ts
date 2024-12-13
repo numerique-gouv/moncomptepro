@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/node";
 import type { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { HOST } from "../../config/env";
 import {
   InvalidTokenError,
   LeakedPasswordError,
@@ -61,7 +61,7 @@ export const postResetPasswordController = async (
       email = parsedBody.login;
     }
 
-    await sendResetPasswordEmail(email, MONCOMPTEPRO_HOST);
+    await sendResetPasswordEmail(email, HOST);
 
     return res.redirect(
       "/users/start-sign-in?notification=reset_password_email_sent",

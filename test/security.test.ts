@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { MONCOMPTEPRO_HOST } from "../src/config/env";
+import { HOST } from "../src/config/env";
 import {
   getTrustedReferrerPath,
   isEmailValid,
@@ -206,7 +206,7 @@ describe("isUrlTrusted", () => {
   });
   it("should trust absolute path on same domain", () => {
     assert.equal(
-      getTrustedReferrerPath(`${MONCOMPTEPRO_HOST}/users/join-organization`),
+      getTrustedReferrerPath(`${HOST}/users/join-organization`),
       "/users/join-organization",
     );
   });

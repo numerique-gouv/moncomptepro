@@ -47,7 +47,7 @@ export const secretEnvSchema = z.object({
         "The SYMMETRIC_ENCRYPTION_KEY environment variable should be 32 bytes long! Use crypto.randomBytes(32).toString('base64') to generate one.",
     })
     .default("aTrueRandom32BytesLongBase64EncodedStringAA="),
-  SESSION_COOKIE_SECRET: zCoerceArray(z.string()).default("moncompteprosecret"),
+  SESSION_COOKIE_SECRET: zCoerceArray(z.string()).default("proconnectsecret"),
   JWKS: zCoerceJson()
     .default(JSON.stringify(defaultJWKS))
     .pipe(z.object({ keys: z.array(z.any()) })),
@@ -102,8 +102,8 @@ export const paramsEnvSchema = z.object({
     .int()
     .nonnegative()
     .default(20 * 60), // 20 minutes in seconds,
-  MONCOMPTEPRO_HOST: z.string().url().default("http://localhost:3000"),
-  MONCOMPTEPRO_LABEL: z.string().default("MonComptePro"),
+  HOST: z.string().url().default("http://localhost:3000"),
+  APPLICATION_NAME: z.string().default("MonComptePro"),
   NODE_ENV: z
     .enum(["production", "development", "test"])
     .default("development"),
