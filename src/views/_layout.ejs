@@ -18,6 +18,34 @@
     </div>
     <div id="loader-bar"></div>
     <%- include('partials/header.ejs'); %>
+    <div class="ac-questionnaire">
+        <div class="ac-notice fr-notice fr-notice--info ac-notice--info fr-m-2w">
+          <div class="fr-container">
+            <div class="fr-notice__body">
+              <p>
+                <span class="fr-notice__title ac-notice__title">
+                  <a
+                    target="_blank"
+                    rel="noopener external"
+                    title="Questionnaire de satisfaction ProConnect"
+                    href="https://tally.so/r/mJkV0Y"
+                    class="fr-notice__link"
+                    >Quel est votre avis sur ProConnect ?</a
+                  >
+                </span>
+              </p>
+              <button
+                title="Masquer le message"
+                onclick="const notice = this.parentNode.parentNode.parentNode; notice.parentNode.removeChild(notice)"
+                id="button-1299"
+                class="fr-btn--close fr-btn"
+              >
+                Masquer le message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      
     <% if (locals.use_dashboard_layout) { %>
         <main role="main" id="main" tabindex="-1">
             <%- body; %>

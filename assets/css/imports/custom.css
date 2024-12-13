@@ -61,3 +61,40 @@
   z-index: 1000;
   position: absolute;
 }
+/* -----------------------------------------------------------------
+
+  CUSTOMISE ICON NOTICE COMPONENT - it's a temporary questionnaire for new PC service
+
+----------------------------------------------------------------- */
+
+.ac-notice--info
+  .ac-notice__title:not([class^="fr-icon-"]):not([class*=" fr-icon-"]):not(
+    [class^="fr-fi-"]
+  ):not([class*=" fr-fi-"]):before {
+  -webkit-mask-image: url("@gouvfr/dsfr/dist/icons/system/star-fill.svg") !important;
+  mask-image: url("@gouvfr/dsfr/dist/icons/system/star-fill.svg") !important;
+  mask-repeat: no-repeat;
+}
+
+.ac-notice {
+  border-style: solid;
+  border-width: 2px;
+  color: var(--text-action-high-blue-france) !important;
+}
+
+@media screen and (max-width: 993px) {
+  .ac-notice {
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .ac-questionnaire {
+    background-color: (to right, white 50%, pink 50%);
+    background: linear-gradient(
+      to right,
+      white 50%,
+      var(--background-default-grey-hover) 50%
+    );
+  }
+}
