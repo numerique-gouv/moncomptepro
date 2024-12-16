@@ -26,6 +26,8 @@ test("default sample env with configured INSEE secrets", () => {
       "https://proconnect.gouv.fr/assurance/consistency-checked",
     ACR_VALUE_FOR_IAL2_AAL2:
       "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
+    ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT:
+      "https://proconnect.gouv.fr/assurance/certification-dirigeant",
     API_AUTH_PASSWORD: "admin",
     API_AUTH_USERNAME: "admin",
     CRISP_BASE_URL: "https://api.crisp.chat",

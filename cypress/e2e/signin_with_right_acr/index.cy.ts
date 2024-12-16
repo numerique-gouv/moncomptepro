@@ -104,3 +104,22 @@ describe("sign-in with a client requiring 2fa identity", () => {
     cy.contains("Attention : le site que vous voulez utiliser requiert la 2FA");
   });
 });
+
+describe("sign-in with a client requiring certification dirigeant identity", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:4000");
+    cy.setRequestedAcrs([
+      "https://proconnect.gouv.fr/assurance/certification-dirigeant",
+    ]);
+  });
+
+  it.only("should sign-in an return the right acr value", function () {
+    cy.get("button#custom-connection").click({ force: true });
+
+    cy.login("certification-dirigeant@yopmail.com");
+
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/certification-dirigeant"',
+    );
+  });
+});
