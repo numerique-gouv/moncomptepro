@@ -1,3 +1,4 @@
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import * as Sentry from "@sentry/node";
 import type { Request, Response } from "express";
 import { Session, type SessionData } from "express-session";
@@ -24,7 +25,6 @@ import {
   setBrowserAsTrustedForUser,
   setIsTrustedBrowserFromLoggedInSession,
 } from "../browser-authentication";
-
 export const isWithinAuthenticatedSession = (
   session: Session & Partial<SessionData>,
 ): session is Session & Partial<SessionData> & AuthenticatedSessionData => {

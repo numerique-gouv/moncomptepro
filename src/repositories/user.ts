@@ -1,7 +1,7 @@
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../connectors/postgres";
 import { hashToPostgresParams } from "../services/hash-to-postgres-params";
-
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();
 

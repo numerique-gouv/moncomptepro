@@ -5,21 +5,26 @@ import {
   isPhoneNumberValid,
   isSiretValid,
 } from "@gouvfr-lasuite/proconnect.core/security";
+import { findByEmailFactory } from "@gouvfr-lasuite/proconnect.identite/user";
+import { getInseeAccessTokenFactory } from "@gouvfr-lasuite/proconnect.insee/token";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
 import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
 import {
-  getInseeAccessToken,
-  getOrganizationInfo,
-} from "../src/connectors/api-sirene";
+  HTTP_CLIENT_TIMEOUT,
+  INSEE_CONSUMER_KEY,
+  INSEE_CONSUMER_SECRET,
+} from "../src/config/env";
+import { getOrganizationInfo } from "../src/connectors/api-sirene";
+import { getDatabaseConnection } from "../src/connectors/postgres";
 import { findByUserId } from "../src/repositories/organization/getters";
 import {
   linkUserToOrganization,
   upsert,
 } from "../src/repositories/organization/setters";
-import { create, findByEmail, update } from "../src/repositories/user";
+import { create, update } from "../src/repositories/user";
 import { logger } from "../src/services/log";
 import {
   getNumberOfLineInFile,
@@ -28,6 +33,23 @@ import {
   startDurationMesure,
   throttleApiCall,
 } from "../src/services/script-helpers";
+
+//
+
+const getInseeAccessToken = getInseeAccessTokenFactory(
+  {
+    consumerKey: INSEE_CONSUMER_KEY,
+    consumerSecret: INSEE_CONSUMER_SECRET,
+  },
+  {
+    timeout: HTTP_CLIENT_TIMEOUT,
+  },
+);
+
+const pg = getDatabaseConnection();
+const findByEmail = findByEmailFactory({ pg });
+
+//
 
 const { INPUT_FILE, OUTPUT_FILE } = z
   .object({
@@ -107,10 +129,10 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
       const start = startDurationMesure();
       try {
         const {
+          coordinateur,
           prenom: given_name,
           nom: family_name,
           téléphone: phone_number,
-          coordinateur,
           "email professionnel secondaire": professional_email,
           "SIRET structure": siret,
         } = data;

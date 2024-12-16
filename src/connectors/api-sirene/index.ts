@@ -1,3 +1,4 @@
+import { getInseeAccessTokenFactory } from "@gouvfr-lasuite/proconnect.insee/token";
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import { cloneDeep, set } from "lodash-es";
 import {
@@ -168,13 +169,6 @@ type EtablissementSearchResponse = {
   etablissements: InseeEtablissement[];
 };
 
-type GetTokenReponse = {
-  access_token: string;
-  scope: "am_application_scope default";
-  token_type: "Bearer";
-  expires_in: number;
-};
-
 const hideNonDiffusibleData = (
   etablissement: EtablissementSearchBySiretResponse["etablissement"],
 ): EtablissementSearchBySiretResponse["etablissement"] => {
@@ -264,24 +258,15 @@ const hideNonDiffusibleData = (
   return hiddenEtablissement;
 };
 
-export const getInseeAccessToken = async () => {
-  const {
-    data: { access_token },
-  }: AxiosResponse<GetTokenReponse> = await axios.post(
-    "https://api.insee.fr/token",
-    "grant_type=client_credentials",
-    {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      auth: {
-        username: INSEE_CONSUMER_KEY!,
-        password: INSEE_CONSUMER_SECRET!,
-      },
-      timeout: HTTP_CLIENT_TIMEOUT,
-    },
-  );
-
-  return access_token;
-};
+export const getInseeAccessToken = getInseeAccessTokenFactory(
+  {
+    consumerKey: INSEE_CONSUMER_KEY,
+    consumerSecret: INSEE_CONSUMER_SECRET,
+  },
+  {
+    timeout: HTTP_CLIENT_TIMEOUT,
+  },
+);
 
 export const getOrganizationInfo = async (
   siretOrSiren: string,

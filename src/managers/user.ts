@@ -16,6 +16,7 @@ import {
   UpdateTotpApplication,
   VerifyEmail,
 } from "@gouvfr-lasuite/proconnect.email";
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty } from "lodash-es";
 import {
   HOST,
