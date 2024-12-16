@@ -1,17 +1,14 @@
 //
 
-import axios, { type AxiosResponse } from "axios";
+import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 
 //
 
-type GetInseeAccessTokenCradle = {
-  fetch: typeof globalThis.fetch;
-  username: string;
-  password: string;
-  timeout: number;
+export type InseeCredentials = {
+  consumerKey: string;
+  consumerSecret: string;
 };
-
-type GetTokenReponse = {
+export type GetTokenReponse = {
   access_token: string;
   scope: "am_application_scope default";
   token_type: "Bearer";
@@ -20,8 +17,10 @@ type GetTokenReponse = {
 
 //
 
-export function GetInseeAccessToken(cradle: GetInseeAccessTokenCradle) {
-  const { username, password, timeout } = cradle;
+export function getInseeAccessTokenFactory(
+  credentials: InseeCredentials,
+  config?: AxiosRequestConfig,
+) {
   return async function getInseeAccessToken() {
     const {
       data: { access_token },
@@ -31,10 +30,10 @@ export function GetInseeAccessToken(cradle: GetInseeAccessTokenCradle) {
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         auth: {
-          username,
-          password,
+          username: credentials.consumerKey,
+          password: credentials.consumerSecret,
         },
-        timeout,
+        ...config,
       },
     );
 

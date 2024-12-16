@@ -16,6 +16,7 @@ import {
   UpdateTotpApplication,
   VerifyEmail,
 } from "@gouvfr-lasuite/proconnect.email";
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty } from "lodash-es";
 import {
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,

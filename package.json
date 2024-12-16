@@ -38,7 +38,9 @@
     "watch:js": "tsc --watch --preserveWatchOutput",
     "watch:node": "tsx --watch src/index.ts",
     "watch:workspaces:core": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.core",
-    "watch:workspaces:email": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.email"
+    "watch:workspaces:email": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.email",
+    "watch:workspaces:insee": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.insee",
+    "watch:workspaces:identite": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.identite"
   },
   "prettier": {
     "plugins": [
@@ -51,6 +53,8 @@
     "@gouvfr-lasuite/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
     "@gouvfr-lasuite/proconnect.core": "workspace:*",
     "@gouvfr-lasuite/proconnect.email": "workspace:*",
+    "@gouvfr-lasuite/proconnect.identite": "workspace:*",
+    "@gouvfr-lasuite/proconnect.insee": "workspace:*",
     "@gouvfr/dsfr": "^1.12.1",
     "@kitajs/html": "^4.2.4",
     "@kitajs/ts-html-plugin": "^4.1.0",
