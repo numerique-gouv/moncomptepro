@@ -1,7 +1,7 @@
 // from https://ipirozhenko.com/blog/measuring-requests-duration-nodejs-express/
+import type { OrganizationInfo } from "@gouvfr-lasuite/proconnect.identite/types";
 import fs from "fs";
 import { isEmpty } from "lodash-es";
-import type { OrganizationInfo } from "../types/organization-info";
 
 export const startDurationMesure = () => {
   return process.hrtime();

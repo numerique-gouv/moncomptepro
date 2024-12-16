@@ -1,6 +1,10 @@
-import { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.insee/types";
+//
 
-interface Organization {
+import type { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.insee/types";
+
+//
+
+export interface Organization {
   id: number;
   siret: string;
   created_at: Date;

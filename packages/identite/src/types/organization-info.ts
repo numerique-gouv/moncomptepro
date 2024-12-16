@@ -1,8 +1,10 @@
 // source : https://www.sirene.fr/sirene/public/variable/trancheEffectifsEtablissement
 
-import { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.insee/types";
+import type { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.insee/types";
 
-interface OrganizationInfo {
+//
+
+export interface OrganizationInfo {
   siret: string;
   libelle: string;
   nomComplet: string;

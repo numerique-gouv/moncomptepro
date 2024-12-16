@@ -1,3 +1,4 @@
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import * as Sentry from "@sentry/node";
 import type { Request, Response } from "express";
 import { Session, type SessionData } from "express-session";
