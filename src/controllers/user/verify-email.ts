@@ -35,8 +35,11 @@ export const getVerifyEmailController = async (
 
     const { new_code_sent } = await schema.parseAsync(req.query);
 
-    const { email, needs_inclusionconnect_onboarding_help } =
-      getUserFromAuthenticatedSession(req);
+    const {
+      email,
+      needs_inclusionconnect_onboarding_help,
+      verify_email_sent_at,
+    } = getUserFromAuthenticatedSession(req);
 
     const { codeSent, updatedUser } = await sendEmailAddressVerificationEmail({
       email,
@@ -49,7 +52,12 @@ export const getVerifyEmailController = async (
       pageTitle: "Vérifier votre email",
       notifications: await getNotificationsFromRequest(req),
       email,
-      csrfToken: csrfToken(req),
+      countdownEndDate: moment(verify_email_sent_at)
+        .add(MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS, "s")
+        .tz("Europe/Paris")
+        .locale("fr")
+        .format(),
+      csrfToken: email && csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
       needs_inclusionconnect_onboarding_help,
@@ -133,31 +141,6 @@ export const postSendEmailVerificationController = async (
       );
     }
 
-    next(error);
-  }
-};
-
-export const getVerifyEmailHelpController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { email, verify_email_sent_at } =
-      getUserFromAuthenticatedSession(req);
-
-    return res.render("user/verify-email-help", {
-      pageTitle: "Aide code de vérification",
-      email,
-      countdownEndDate: moment(verify_email_sent_at)
-        .add(MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS, "s")
-        .tz("Europe/Paris")
-        .locale("fr")
-        .format(),
-      csrfToken: email && csrfToken(req),
-      illustration: "illu-password.svg",
-    });
-  } catch (error) {
     next(error);
   }
 };

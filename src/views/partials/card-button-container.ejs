@@ -1,6 +1,6 @@
 <div class="card-button-container">
-    <span>
-        <% if (locals.showGoBackButton) { %>
+    <% if (locals.showGoBackButton) { %>
+        <span>
             <button
                     type="button"
                     class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
@@ -8,9 +8,9 @@
                 retour
             </button>
             <script type="module" src="<%= js('go-back.js') %>"></script>
-        <% } %>
-    </span>
-    <button class="fr-btn" type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
+        </span>
+    <% } %>
+    <button class="fr-btn" <%- locals.button ? `style="${locals.button}"` : '' %>  type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
         <%= label; %>
     </button>
 </div>
