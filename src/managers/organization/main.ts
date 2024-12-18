@@ -1,3 +1,4 @@
+import type { Organization } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty, some } from "lodash-es";
 import { NotFoundError } from "../../config/errors";
 import {
