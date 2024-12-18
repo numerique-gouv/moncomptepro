@@ -1,3 +1,4 @@
+import type { Organization } from "@gouvfr-lasuite/proconnect.identite/types";
 import { assert } from "chai";
 import {
   isCommune,

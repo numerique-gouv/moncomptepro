@@ -1,5 +1,5 @@
 // source : https://www.sirene.fr/sirene/public/variable/trancheEffectifsEtablissement
-type TrancheEffectifs =
+export type TrancheEffectifs =
   // le champ peut être null bien que la documentation ne spécifie pas à quoi correspond ce cas
   | null
   // Etablissement non employeur (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)NN
@@ -34,24 +34,3 @@ type TrancheEffectifs =
   | "52"
   // 10 000 salariés et plus
   | "53";
-
-interface OrganizationInfo {
-  siret: string;
-  libelle: string;
-  nomComplet: string;
-  enseigne: string;
-  trancheEffectifs: TrancheEffectifs;
-  trancheEffectifsUniteLegale: TrancheEffectifs;
-  libelleTrancheEffectif: string;
-  etatAdministratif: string;
-  estActive: boolean;
-  statutDiffusion: string;
-  estDiffusible: boolean;
-  adresse: string;
-  codePostal: string;
-  codeOfficielGeographique: string;
-  activitePrincipale: string;
-  libelleActivitePrincipale: string;
-  categorieJuridique: string;
-  libelleCategorieJuridique: string;
-}

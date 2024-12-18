@@ -3,6 +3,7 @@ import {
   isDomainValid,
   isSiretValid,
 } from "@gouvfr-lasuite/proconnect.core/security";
+import type { Organization } from "@gouvfr-lasuite/proconnect.identite/types";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";

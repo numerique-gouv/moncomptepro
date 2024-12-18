@@ -1,3 +1,7 @@
+import type {
+  OrganizationInfo,
+  TrancheEffectifs,
+} from "@gouvfr-lasuite/proconnect.identite/types";
 import { getInseeAccessTokenFactory } from "@gouvfr-lasuite/proconnect.insee/token";
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import { cloneDeep, set } from "lodash-es";

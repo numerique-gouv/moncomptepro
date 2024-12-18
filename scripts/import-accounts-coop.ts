@@ -5,7 +5,11 @@ import {
   isPhoneNumberValid,
   isSiretValid,
 } from "@gouvfr-lasuite/proconnect.core/security";
-import { findByEmailFactory } from "@gouvfr-lasuite/proconnect.identite/user";
+import {
+  createUserFactory,
+  findByEmailFactory,
+  updateUserFactory,
+} from "@gouvfr-lasuite/proconnect.identite/user";
 import { getInseeAccessTokenFactory } from "@gouvfr-lasuite/proconnect.insee/token";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
@@ -24,7 +28,6 @@ import {
   linkUserToOrganization,
   upsert,
 } from "../src/repositories/organization/setters";
-import { create, update } from "../src/repositories/user";
 import { logger } from "../src/services/log";
 import {
   getNumberOfLineInFile,
@@ -48,6 +51,8 @@ const getInseeAccessToken = getInseeAccessTokenFactory(
 
 const pg = getDatabaseConnection();
 const findByEmail = findByEmailFactory({ pg });
+const create = createUserFactory({ pg });
+const update = updateUserFactory({ pg });
 
 //
 
