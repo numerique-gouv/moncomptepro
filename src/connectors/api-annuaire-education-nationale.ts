@@ -1,3 +1,4 @@
+import { isEmailValid } from "@gouvfr-lasuite/proconnect.core/security";
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import { isEmpty, isString } from "lodash-es";
 import {
@@ -11,7 +12,6 @@ import {
   ApiAnnuaireNotFoundError,
 } from "../config/errors";
 import { logger } from "../services/log";
-import { isEmailValid } from "../services/security";
 
 type ApiAnnuaireEducationNationaleReponse = {
   total_count: number;
