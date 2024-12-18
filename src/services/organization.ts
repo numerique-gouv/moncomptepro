@@ -1,4 +1,4 @@
-import { isDomainValid } from "./security";
+import { isDomainValid } from "@gouvfr-lasuite/proconnect.core/security";
 
 /**
  * These fonctions return approximate results. As the data tranche effectifs is
