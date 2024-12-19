@@ -6,7 +6,7 @@ describe("sign-in with email verification renewal", () => {
 
     cy.login("lion.eljonson@darkangels.world");
 
-    cy.contains("Vérifier votre email");
+    cy.contains("Confirmer votre adresse");
 
     cy.contains(
       "Information : pour garantir la sécurité de votre compte, nous avons besoin d’authentifier votre navigateur.",
@@ -36,16 +36,8 @@ describe("sign-in with email verification renewal", () => {
 
     cy.login("rogal.dorn@imperialfists.world");
 
-    cy.get('a[href="/users/verify-email-help"]')
-      .contains(
-        "J'ai attendu quelques secondes et je ne reçois pas de code de vérification",
-      )
-      .click();
-
-    cy.contains("Vous ne recevez pas le code de vérification");
-
-    cy.get('[action="/users/send-email-verification"]  [type="submit"]')
-      .contains("Cliquez ici pour recevoir un nouveau code")
+    cy.get('[action="/users/send-email-verification"]')
+      .contains("Recevoir un nouvel email")
       .should("be.disabled");
 
     // Wait for countdown to last
@@ -53,8 +45,8 @@ describe("sign-in with email verification renewal", () => {
 
     cy.maildevDeleteAllMessages();
 
-    cy.get('[action="/users/send-email-verification"]  [type="submit"]')
-      .contains("Cliquez ici pour recevoir un nouveau code")
+    cy.get('[action="/users/send-email-verification"]')
+      .contains("Recevoir un nouvel email")
       .click();
 
     cy.contains(
