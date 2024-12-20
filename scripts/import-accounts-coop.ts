@@ -54,6 +54,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     columns: true,
     trim: true,
     cast: false,
+    delimiter: ";",
   }); // csv Stream is a read and write stream : it reads raw text in CSV and output untransformed records
   const outputCsvStream = stringify({
     quoted_empty: false,
