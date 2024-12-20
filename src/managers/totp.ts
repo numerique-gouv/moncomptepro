@@ -57,7 +57,7 @@ export const confirmAuthenticatorAppRegistration = async (
     throw new UserNotFoundError();
   }
 
-  if (!temporaryTotpKey || !validateToken(temporaryTotpKey, totpToken)) {
+  if (!temporaryTotpKey || !validateToken(temporaryTotpKey, totpToken, 2)) {
     throw new InvalidTotpTokenError();
   }
 
