@@ -1,4 +1,9 @@
+import { isEmailValid } from "@gouvfr-lasuite/proconnect.core/security";
 import { Welcome } from "@gouvfr-lasuite/proconnect.email";
+import type {
+  Organization,
+  OrganizationInfo,
+} from "@gouvfr-lasuite/proconnect.identite/types";
 import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
 import {
@@ -53,7 +58,6 @@ import {
   isEtablissementScolaireDuPremierEtSecondDegre,
   isSmallAssociation,
 } from "../../services/organization";
-import { isEmailValid } from "../../services/security";
 import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
 import { getOrganizationsByUserId, markDomainAsVerified } from "./main";
 

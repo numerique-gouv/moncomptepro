@@ -1,3 +1,7 @@
+import type {
+  Organization,
+  User,
+} from "@gouvfr-lasuite/proconnect.identite/types";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../../connectors/postgres";
 

@@ -1,4 +1,9 @@
 import {
+  generatePinToken,
+  generateToken,
+} from "@gouvfr-lasuite/proconnect.core/security";
+import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion";
+import {
   Add2fa,
   AddAccessKey,
   Delete2faProtection,
@@ -11,7 +16,15 @@ import {
   UpdateTotpApplication,
   VerifyEmail,
 } from "@gouvfr-lasuite/proconnect.email";
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty } from "lodash-es";
+import {
+  HOST,
+  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
+  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
+} from "../config/env";
 import {
   EmailUnavailableError,
   InvalidCredentialsError,
@@ -26,15 +39,6 @@ import {
 } from "../config/errors";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
-
-import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion/did-you-mean.js";
-import {
-  HOST,
-  MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
-  RESET_PASSWORD_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-  VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
-} from "../config/env";
 import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
@@ -46,8 +50,6 @@ import {
 } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
 import {
-  generatePinToken,
-  generateToken,
   hashPassword,
   isPasswordSecure,
   validatePassword,
@@ -182,7 +184,7 @@ export const sendEmailAddressVerificationEmail = async ({
     return { codeSent: false, updatedUser: user };
   }
 
-  const verify_email_token = await generatePinToken();
+  const verify_email_token = generatePinToken();
 
   const updatedUser = await update(user.id, {
     verify_email_token,
@@ -472,7 +474,7 @@ export const sendSendMagicLinkEmail = async (
     });
   }
 
-  const magicLinkToken = await generateToken();
+  const magicLinkToken = generateToken();
 
   await update(user.id, {
     magic_link_token: magicLinkToken,

@@ -1,4 +1,5 @@
 import { ModerationProcessed } from "@gouvfr-lasuite/proconnect.email";
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty } from "lodash-es";
 import { HOST } from "../config/env";
 import { ForbiddenError, NotFoundError } from "../config/errors";

@@ -1,6 +1,6 @@
 //
 
-import { isAFreeDomain } from "@gouvfr-lasuite/proconnect.core/services/email/isAFreeDomain.js";
+import { isAFreeDomain } from "@gouvfr-lasuite/proconnect.core/services/email";
 import { parse_host } from "tld-extract";
 import {
   FEATURE_CONSIDER_ALL_EMAIL_DOMAINS_AS_FREE,
