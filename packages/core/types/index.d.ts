@@ -1,5 +1,4 @@
 //
 
-declare module "is-disposable-email-domain" {
-  function isFree(email: string): boolean;
-}
+/// <reference path="./is-disposable-email-domain.d.ts" />
+/// <reference path="./tld-extract.d.ts" />
