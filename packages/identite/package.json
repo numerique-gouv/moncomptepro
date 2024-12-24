@@ -51,9 +51,11 @@
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.15",
     "@gouvfr-lasuite/proconnect.core": "^0.2.0",
+    "@gouvfr-lasuite/proconnect.insee": "^0.2.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
+    "await-to-js": "^3.0.0",
     "chai": "^5.1.2",
     "mocha": "^11.0.1",
     "node-pg-migrate": "^7.6.1",

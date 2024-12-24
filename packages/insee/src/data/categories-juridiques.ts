@@ -1,3 +1,6 @@
+//
+
+export type CategoriesJuridique = keyof typeof categoriesJuridiques;
 export const categoriesJuridiques = {
   1: "Entrepreneur individuel",
   2: "Groupement de droit privé non doté de la personnalité morale",

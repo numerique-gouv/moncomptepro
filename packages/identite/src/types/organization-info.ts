@@ -1,6 +1,6 @@
 //
 
-import type { TrancheEffectifs } from "./tranche-effectifs.js";
+import type { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.insee/types";
 
 //
 

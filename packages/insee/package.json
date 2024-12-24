@@ -13,8 +13,8 @@
   "type": "module",
   "imports": {
     "#src/*": {
-      "types": "./src/*",
-      "default": "./dist/*"
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
     }
   },
   "exports": {

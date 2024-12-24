@@ -1,4 +1,8 @@
-import type { TrancheEffectifs } from "@gouvfr-lasuite/proconnect.identite/types";
+//
+
+import type { TrancheEffectifs } from "#src/types/tranche-effectifs.js";
+
+//
 
 export const codesEffectifs: { [K in NonNullable<TrancheEffectifs>]: string } =
   {

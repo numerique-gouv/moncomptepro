@@ -1,3 +1,7 @@
+//
+
+export type CodeNaf = keyof typeof codesNaf;
+
 export const codesNaf = {
   "01.11Z":
     "Culture de céréales (à l’exception du riz), de légumineuses et de graines oléagineuses",

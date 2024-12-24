@@ -40,3 +40,7 @@ export function getInseeAccessTokenFactory(
     return access_token;
   };
 }
+
+export type GetInseeAccessTokenHandler = ReturnType<
+  typeof getInseeAccessTokenFactory
+>;

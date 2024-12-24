@@ -1,3 +1,6 @@
+//
+
+export type CodeVoie = keyof typeof codesVoies;
 export const codesVoies = {
   AIRE: "Aire",
   ALL: "Allée",
