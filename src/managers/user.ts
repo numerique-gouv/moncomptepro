@@ -1,3 +1,4 @@
+import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion";
 import {
   Add2fa,
   AddAccessKey,
@@ -27,7 +28,6 @@ import {
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
 
-import { getDidYouMeanSuggestion } from "@gouvfr-lasuite/proconnect.core/services/suggestion/did-you-mean.js";
 import {
   HOST,
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,

@@ -20,15 +20,15 @@
   "exports": {
     "./*": {
       "require": {
-        "types": "./dist/*",
-        "default": "./dist/*"
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
       },
       "import": {
-        "types": "./dist/*",
-        "default": "./dist/*"
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
       },
-      "types": "./dist/*",
-      "default": "./dist/*"
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
     }
   },
   "scripts": {
