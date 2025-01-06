@@ -9,20 +9,27 @@ document.addEventListener(
         const endDateInSeconds = new Date(rawEndDate).getTime() / 1000;
         const nowInSeconds = new Date().getTime() / 1000;
         let secondsToEndDate = Math.round(endDateInSeconds - nowInSeconds);
+        let intervalId;
         element.disabled = true;
         intervalId = setInterval(function () {
           secondsToEndDate--;
 
+          const prefixText =
+            element.textContent.match(
+              /(.*)(\s+\(disponible dans \d+:\d+\))/,
+            )?.[1] || element.textContent;
+          let suffixText = "";
+
           if (secondsToEndDate > 0) {
             const minutes = Math.floor(secondsToEndDate / 60);
             const seconds = String(secondsToEndDate % 60).padStart(2, "0");
-            element.textContent = `Recevoir un nouvel email (disponible dans ${minutes}:${seconds})`;
+            suffixText = ` (disponible dans ${minutes}:${seconds})`;
           }
+          element.textContent = prefixText + suffixText;
 
-          if (secondsToEndDate <= 0) {
-            element.textContent = `Recevoir un nouvel email`;
+          if (secondsToEndDate <= 0 || Number.isNaN(secondsToEndDate)) {
             element.disabled = false;
-            return;
+            clearInterval(intervalId);
           }
         }, 1000);
       } catch (error) {
