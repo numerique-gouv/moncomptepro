@@ -71,17 +71,28 @@ describe("sign-in with TOTP on untrusted browser", () => {
     cy.contains('"amr": [\n    "pwd",\n    "totp",\n    "mfa"\n  ],');
   });
 
-  it("should trigger totp rate limiting", function () {
+  it("should display error message", function () {
     cy.visit("/users/start-sign-in");
 
     cy.login("unused3@yopmail.com");
+
+    cy.get("[name=totpToken]").type("123456");
+    cy.get(
+      '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
+    ).click();
+    cy.contains("Code invalide.");
+  });
+
+  it("should trigger totp rate limiting", function () {
+    cy.visit("/users/start-sign-in");
+
+    cy.login("unused4@yopmail.com");
 
     for (let i = 0; i < 5; i++) {
       cy.get("[name=totpToken]").type("123456");
       cy.get(
         '[action="/users/2fa-sign-in-with-authenticator-app"] [type="submit"]',
       ).click();
-      cy.contains("le code que vous avez utilisé est invalide.");
     }
 
     cy.get("[name=totpToken]").type("123456");
