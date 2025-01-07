@@ -1,6 +1,8 @@
+import { getTrustedReferrerPath } from "@gouvfr-lasuite/proconnect.core/security";
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
+import { HOST } from "../config/env";
 import { UserNotFoundError } from "../config/errors";
 import { is2FACapable, shouldForce2faForUser } from "../managers/2fa";
 import { isBrowserTrustedForUser } from "../managers/browser-authentication";
@@ -22,15 +24,14 @@ import {
 } from "../managers/session/unauthenticated";
 import { needsEmailVerificationRenewal } from "../managers/user";
 import { getSelectedOrganizationId } from "../repositories/redis/selected-organization";
-import { getTrustedReferrerPath } from "../services/security";
 import { usesAuthHeaders } from "../services/uses-auth-headers";
 
 const getReferrerPath = (req: Request) => {
   // If the method is not GET (ex: POST), then the referrer must be taken from
   // the referrer header. This ensures the referrerPath can be redirected to.
   const originPath =
-    req.method === "GET" ? getTrustedReferrerPath(req.originalUrl) : null;
-  const referrerPath = getTrustedReferrerPath(req.get("Referrer"));
+    req.method === "GET" ? getTrustedReferrerPath(req.originalUrl, HOST) : null;
+  const referrerPath = getTrustedReferrerPath(req.get("Referrer"), HOST);
 
   return originPath || referrerPath || undefined;
 };

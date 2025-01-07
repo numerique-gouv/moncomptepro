@@ -1,13 +1,13 @@
-import { z } from "zod";
-import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
 import {
   isEmailValid,
   isNameValid,
-  isNotificationLabelValid,
   isPhoneNumberValid,
   isSiretValid,
   isVisibleString,
-} from "./security";
+} from "@gouvfr-lasuite/proconnect.core/security";
+import { z } from "zod";
+import { normalizeOfficialContactEmailVerificationToken } from "./normalize-official-contact-email-verification-token";
+import { isNotificationLabelValid } from "./security";
 
 export const siretSchema = () =>
   z
