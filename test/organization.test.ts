@@ -8,6 +8,7 @@ import {
   isSmallAssociation,
   isWasteManagementOrganization,
 } from "../src/services/organization";
+import type { Organization } from "../src/types/organization";
 
 const association_org_info = {
   siret: "83511518900010",

@@ -16,6 +16,7 @@ import {
 } from "../../repositories/organization/setters";
 import { setSelectedOrganizationId } from "../../repositories/redis/selected-organization";
 import { getEmailDomain } from "../../services/email";
+import type { Organization } from "../../types/organization";
 
 export const getOrganizationsByUserId = findByUserId;
 export const getOrganizationById = findOrganizationById;

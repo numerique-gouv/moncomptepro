@@ -108,11 +108,11 @@ jobs:
         with:
           cache: "npm"
           node-version-file: package.json
-      - run: npm ci --include=dev
+      - run: npm ci
+      - run: npm run build:workspaces
       - run: npm run migrate up
       - run: npm run fixtures:load-ci -- cypress/e2e/${{ matrix.e2e_test }}/fixtures.sql
       - run: npm run update-organization-info -- 500
-      - run: npm run build:workspaces
       - name: Cypress run
         uses: cypress-io/github-action@v6.7.7
         with:

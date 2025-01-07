@@ -75,7 +75,7 @@ describe("getOrganizationInfo", () => {
       enseigne: "",
       trancheEffectifs: null,
       trancheEffectifsUniteLegale: null,
-      libelleTrancheEffectif: null,
+      libelleTrancheEffectif: "",
       etatAdministratif: "A",
       estActive: true,
       statutDiffusion: "P",

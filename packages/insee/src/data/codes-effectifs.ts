@@ -1,3 +1,9 @@
+//
+
+import type { TrancheEffectifs } from "#src/types/tranche-effectifs.js";
+
+//
+
 export const codesEffectifs: { [K in NonNullable<TrancheEffectifs>]: string } =
   {
     NN: "Unité non employeuse (pas de salarié au cours de l'année de référence et pas d'effectif au 31/12)",

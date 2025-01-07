@@ -1,6 +1,8 @@
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../../connectors/postgres";
 import { hashToPostgresParams } from "../../services/hash-to-postgres-params";
+import type { Organization } from "../../types/organization";
+import type { OrganizationInfo } from "../../types/organization-info";
 
 export const upsert = async ({
   siret,
