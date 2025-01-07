@@ -10,7 +10,9 @@
             <script type="module" src="<%= js('go-back.js') %>"></script>
         </span>
     <% } %>
-    <button class="fr-btn" <%- locals.button ? `style="${locals.button}"` : '' %>  type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
+    <button class="<%- locals.buttonFullWidth ? ' fr-btn btn--fullwidth' : 'fr-btn' %>"
+    
+    <%- locals.button ? `style="${locals.button}"` : '' %>  type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
         <%= label; %>
     </button>
 </div>
