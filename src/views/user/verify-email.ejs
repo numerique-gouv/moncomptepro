@@ -54,6 +54,16 @@
     >
         Vous ne recevez rien ? Consulter la page d'aide
     </a>
-    <%- include('../partials/go-back.ejs') %>
+    <div class="card-button-container fr-mt-2w">
+        <span>
+          <button
+            class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
+          >
+            retour
+          </button>
+        </span>
+        <span></span>
+    </div>
 </div>
 <script type="module" src="<%= js('disabled-with-countdown.js') %>"></script>
+<script type="module" src="<%= js('go-back.js') %>"></script>
