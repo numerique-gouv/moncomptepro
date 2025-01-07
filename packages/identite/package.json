@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr-lasuite/proconnect.identite",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/identite#readme",
   "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
   "repository": {
@@ -50,8 +50,8 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.15",
-    "@gouvfr-lasuite/proconnect.core": "^0.2.0",
-    "@gouvfr-lasuite/proconnect.insee": "^0.2.0",
+    "@gouvfr-lasuite/proconnect.core": "^0.3.0",
+    "@gouvfr-lasuite/proconnect.insee": "^0.3.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
