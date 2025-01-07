@@ -54,6 +54,8 @@ import {
   isEtablissementScolaireDuPremierEtSecondDegre,
   isSmallAssociation,
 } from "../../services/organization";
+import type { Organization } from "../../types/organization";
+import type { OrganizationInfo } from "../../types/organization-info";
 import { unableToAutoJoinOrganizationMd } from "../../views/mails/unable-to-auto-join-organization";
 import { getOrganizationsByUserId, markDomainAsVerified } from "./main";
 

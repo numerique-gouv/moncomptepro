@@ -1,4 +1,5 @@
 import { isDomainValid } from "@gouvfr-lasuite/proconnect.core/security";
+import type { Organization } from "../types/organization";
 
 /**
  * These fonctions return approximate results. As the data tranche effectifs is
