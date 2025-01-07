@@ -1,6 +1,9 @@
+import type {
+  Organization,
+  User,
+} from "@gouvfr-lasuite/proconnect.identite/types";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../../connectors/postgres";
-import type { Organization } from "../../types/organization";
 
 export const findById = async (id: number) => {
   const connection = getDatabaseConnection();

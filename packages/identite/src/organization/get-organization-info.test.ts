@@ -1,11 +1,12 @@
+import { InseeNotFoundError } from "@gouvfr-lasuite/proconnect.insee/errors";
+import type { InseeEtablissement } from "@gouvfr-lasuite/proconnect.insee/types";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import nock from "nock";
-import { InseeNotFoundError } from "../src/config/errors";
-import { getOrganizationInfo } from "../src/connectors/api-sirene";
-import diffusible from "./api-sirene-data/diffusible.json";
-import partiallyNonDiffusible from "./api-sirene-data/partially-non-diffusible.json";
-import searchBySiren from "./api-sirene-data/search-by-siren.json";
+import diffusible from "./__mocks__/diffusible.json" with { type: "json" };
+import partiallyNonDiffusible from "./__mocks__/partially-non-diffusible.json" with { type: "json" };
+import searchBySiren from "./__mocks__/search-by-siren.json" with { type: "json" };
+import { getOrganizationInfoFactory } from "./get-organization-info.js";
 
 chai.use(chaiAsPromised);
 const assert = chai.assert;
@@ -42,9 +43,11 @@ describe("getOrganizationInfo", () => {
   };
 
   it("should return valid payload for diffusible établissement", async () => {
-    nock("https://api.insee.fr")
-      .get("/entreprises/sirene/siret/20007184300060")
-      .reply(200, diffusible);
+    const getOrganizationInfo = getOrganizationInfoFactory({
+      findBySiren: () => Promise.reject(),
+      findBySiret: () =>
+        Promise.resolve(diffusible.etablissement as any as InseeEtablissement),
+    });
     await assert.eventually.deepEqual(
       getOrganizationInfo("20007184300060"),
       diffusibleOrganizationInfo,
@@ -52,11 +55,13 @@ describe("getOrganizationInfo", () => {
   });
 
   it("should return valid payload for diffusible établissement", async () => {
-    nock("https://api.insee.fr")
-      .get(
-        "/entreprises/sirene/siret?q=siren:200071843 AND etablissementSiege:true",
-      )
-      .reply(200, searchBySiren);
+    const getOrganizationInfo = getOrganizationInfoFactory({
+      findBySiren: () =>
+        Promise.resolve(
+          searchBySiren.etablissements[0] as any as InseeEtablissement,
+        ),
+      findBySiret: () => Promise.reject(),
+    });
     await assert.eventually.deepEqual(
       getOrganizationInfo("200071843"),
       diffusibleOrganizationInfo,
@@ -64,9 +69,13 @@ describe("getOrganizationInfo", () => {
   });
 
   it("should show partial data for partially non diffusible établissement", async () => {
-    nock("https://api.insee.fr")
-      .get("/entreprises/sirene/siret/94957325700019")
-      .reply(200, partiallyNonDiffusible);
+    const getOrganizationInfo = getOrganizationInfoFactory({
+      findBySiren: () => Promise.reject(),
+      findBySiret: () =>
+        Promise.resolve(
+          partiallyNonDiffusible.etablissement as any as InseeEtablissement,
+        ),
+    });
 
     await assert.eventually.deepEqual(getOrganizationInfo("94957325700019"), {
       siret: "94957325700019",
@@ -92,14 +101,13 @@ describe("getOrganizationInfo", () => {
   });
 
   it("should throw for totally non diffusible établissement", async () => {
-    nock("https://api.insee.fr")
-      .get("/entreprises/sirene/siret/53512638700013")
-      .reply(403, {
-        header: {
-          statut: 403,
-          message: "Établissement non diffusable (53512638700013)",
-        },
-      });
+    const getOrganizationInfo = getOrganizationInfoFactory({
+      findBySiren: () => Promise.reject(),
+      findBySiret: () =>
+        Promise.resolve({
+          statutDiffusionEtablissement: "N",
+        } as InseeEtablissement),
+    });
     await assert.isRejected(
       getOrganizationInfo("53512638700013"),
       InseeNotFoundError,

@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --project ./tsconfig.lib.json",
+    "build": "tsc --build ./tsconfig.lib.json",
     "dev": "npm run build -- --watch --preserveWatchOutput",
     "storybook": "vite",
     "test": "tsc --noEmit"

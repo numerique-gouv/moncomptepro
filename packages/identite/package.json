@@ -1,20 +1,20 @@
 {
-  "name": "@gouvfr-lasuite/proconnect.core",
+  "name": "@gouvfr-lasuite/proconnect.identite",
   "version": "0.2.0",
-  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/core#readme",
+  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/identite#readme",
   "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/numerique-gouv/moncomptepro.git",
-    "directory": "packages/core"
+    "directory": "packages/identite"
   },
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
   "imports": {
     "#src/*": {
-      "types": "./src/*",
-      "default": "./dist/*"
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
     }
   },
   "exports": {
@@ -33,6 +33,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.lib.json",
+    "clean": "rm -rf dist tsconfig*.tsbuildinfo",
     "check": "npm run build -- --noEmit",
     "dev": "npm run build -- --watch --preserveWatchOutput",
     "test": "mocha"
@@ -45,22 +46,20 @@
     "spec": "src/**/*.test.ts"
   },
   "dependencies": {
-    "@zootools/email-spell-checker": "^1.12.0",
-    "bcryptjs": "^2.4.3",
-    "is-disposable-email-domain": "^1.0.7",
-    "lodash-es": "^4.17.21",
-    "nanoid": "^5.0.9",
-    "tld-extract": "^2.1.0"
+    "sql-template-tag": "^5.2.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.2.15",
+    "@gouvfr-lasuite/proconnect.core": "^0.2.0",
+    "@gouvfr-lasuite/proconnect.insee": "^0.2.0",
     "@tsconfig/node22": "^22.0.0",
-    "@types/bcrypt": "^5.0.2",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/lodash-es": "^4.17.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
+    "await-to-js": "^3.0.0",
     "chai": "^5.1.2",
     "mocha": "^11.0.1",
+    "node-pg-migrate": "^7.6.1",
+    "pg": "^8.13.0",
     "tsx": "^4.19.2"
   },
   "publishConfig": {
