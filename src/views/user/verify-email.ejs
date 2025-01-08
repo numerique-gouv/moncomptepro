@@ -14,8 +14,8 @@
         <form id="verify-email" action="/users/verify-email" method="post" class="fr-mb-4w">
             <% if (codeSent || newCodeSent) { %>
                 <div class="fr-alert fr-alert--success fr-mb-4w">
-                    <h3 class="fr-alert__title">Un <% if (newCodeSent) { %>nouveau <% } %>code de vérification a été envoyé à <%= email; %>.
-                    </h3>
+                    <p>Un <% if (newCodeSent) { %>nouveau <% } %>code de vérification a été envoyé à <%= email; %>.
+                    </p>
                 </div>
             <% } %>
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>" />

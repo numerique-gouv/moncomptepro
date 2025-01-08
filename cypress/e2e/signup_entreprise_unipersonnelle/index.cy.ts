@@ -15,7 +15,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.get('[action="/users/sign-up"]  [type="submit"]').click();
 
     // Check that the website is waiting for the user to verify their email
-    cy.get("#verify-email > div > h3").contains(
+    cy.get("#verify-email > div > p").contains(
       "lion.eljonson@darkangels.world",
     );
 
