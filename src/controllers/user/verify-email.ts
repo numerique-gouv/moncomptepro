@@ -49,6 +49,11 @@ export const getVerifyEmailController = async (
       pageTitle: "Vérifier votre email",
       notifications: await getNotificationsFromRequest(req),
       email,
+      countdownEndDate: moment(updatedUser.verify_email_sent_at)
+        .add(MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS, "s")
+        .tz("Europe/Paris")
+        .locale("fr")
+        .format(),
       csrfToken: csrfToken(req),
       newCodeSent: new_code_sent,
       codeSent,
@@ -133,31 +138,6 @@ export const postSendEmailVerificationController = async (
       );
     }
 
-    next(error);
-  }
-};
-
-export const getVerifyEmailHelpController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { email, verify_email_sent_at } =
-      getUserFromAuthenticatedSession(req);
-
-    return res.render("user/verify-email-help", {
-      pageTitle: "Aide code de vérification",
-      email,
-      countdownEndDate: moment(verify_email_sent_at)
-        .add(MIN_DURATION_BETWEEN_TWO_VERIFICATION_CODE_SENDING_IN_SECONDS, "s")
-        .tz("Europe/Paris")
-        .locale("fr")
-        .format(),
-      csrfToken: email && csrfToken(req),
-      illustration: "illu-password.svg",
-    });
-  } catch (error) {
     next(error);
   }
 };
