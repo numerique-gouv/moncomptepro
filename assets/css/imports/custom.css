@@ -14,6 +14,20 @@
   white-space: break-spaces;
 }
 
+.border-shadow {
+  border-radius: 4px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  /* border: 0.5px solid #e0e0e0; */
+}
+
+.blue-france {
+  color: #00008f;
+}
+
+.centered-content {
+  justify-content: center !important;
+}
+
 /* magic link icon */
 #magic-link-icon-inline {
   padding: 0 1.5rem;
