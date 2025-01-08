@@ -22,7 +22,6 @@ jobs:
       - run: npm ci
         env:
           CYPRESS_INSTALL_BINARY: 0
-      - run: npm run build:workspaces
       - run: npm run test:lint
       - run: npm run test:workspaces
       - run: npm run test:type-check
