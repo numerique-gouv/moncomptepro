@@ -19,7 +19,7 @@ FEATURE_SEND_MAIL=True
 Note that this will delete your database. Load the specific fixtures in the database:
 
 ```bash
-ENABLE_DATABASE_DELETION=True npm run delete-database ; npx run-s "migrate up" "fixtures:load-ci cypress/e2e/redirect_after_session_expiration/fixtures.sql" "update-organization-info 2000"
+ENABLE_DATABASE_DELETION=True npm run delete-database ; npx run-s "build:workspaces" "migrate up" "fixtures:load-ci cypress/e2e/redirect_after_session_expiration/fixtures.sql" "update-organization-info 2000"
 ```
 
 ### Start ProConnect Identité with the test configuration
