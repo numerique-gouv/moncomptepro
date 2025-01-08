@@ -17,8 +17,8 @@
   "scripts": {
     "build": "run-s build:**",
     "build:assets": "vite build --clearScreen false",
-    "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "build:workspaces": "npm run build --if-present --workspaces",
+    "build:db:conditionaly-load-fixtures": "if [ \"$RUN_FIXTURES\" = \"True\" ]; then npm run fixtures:load; fi",
     "build:db:migrate": "npm run --silent migrate -- up",
     "delete-database": "if [ \"$ENABLE_DATABASE_DELETION\" = \"True\" ]; then tsx scripts/run-sql-script.ts scripts/delete_all.sql; fi",
     "predev": "npm run build:workspaces",
