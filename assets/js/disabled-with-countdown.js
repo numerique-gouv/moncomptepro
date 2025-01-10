@@ -15,8 +15,9 @@ document.addEventListener(
           secondsToEndDate--;
 
           const prefixText =
-            element.value.match(/(.*)( \(disponible dans \d+:\d+\))/)?.[1] ||
-            element.value;
+            element.textContent.match(
+              /(.*)(\s+\(disponible dans \d+:\d+\))/,
+            )?.[1] || element.textContent;
           let suffixText = "";
 
           if (secondsToEndDate > 0) {
@@ -24,10 +25,9 @@ document.addEventListener(
             const seconds = String(secondsToEndDate % 60).padStart(2, "0");
             suffixText = ` (disponible dans ${minutes}:${seconds})`;
           }
+          element.textContent = prefixText + suffixText;
 
-          element.value = prefixText + suffixText;
-
-          if (secondsToEndDate <= 0) {
+          if (secondsToEndDate <= 0 || Number.isNaN(secondsToEndDate)) {
             element.disabled = false;
             clearInterval(intervalId);
           }

@@ -17,9 +17,9 @@ import {
   DEPLOY_ENV,
   FEATURE_USE_SECURE_COOKIES,
   FEATURE_USE_SECURITY_RESPONSE_HEADERS,
+  HOST,
   JWKS,
   LOG_LEVEL,
-  MONCOMPTEPRO_HOST,
   NODE_ENV,
   PORT,
   SENTRY_DSN,
@@ -52,7 +52,7 @@ if (SENTRY_DSN) {
     debug: LOG_LEVEL === "debug",
     dsn: SENTRY_DSN,
     environment: DEPLOY_ENV,
-    initialScope: { tags: { NODE_ENV, DEPLOY_ENV, HOST: MONCOMPTEPRO_HOST } },
+    initialScope: { tags: { NODE_ENV, DEPLOY_ENV, HOST } },
     integrations: [
       new Sentry.Integrations.Express({ app }),
       new Sentry.Integrations.Http({ tracing: true }),
@@ -163,16 +163,17 @@ let server: Server;
     (oidcClient) => omitBy(oidcClient, isNull) as ClientMetadata,
   );
 
-  const oidcProvider = new Provider(`${MONCOMPTEPRO_HOST}`, {
+  const oidcProvider = new Provider(`${HOST}`, {
     clients: clientsWithoutNullProperties,
     adapter: oidcProviderRepository,
     jwks: JWKS,
     async renderError(ctx, { error, error_description }, err) {
       if (
         !(
+          err instanceof errors.InvalidClient ||
+          err instanceof errors.InvalidRedirectUri ||
           err instanceof errors.InvalidRequest ||
-          err instanceof errors.InvalidRequestUri ||
-          err instanceof errors.InvalidClient
+          err instanceof errors.InvalidRequestUri
         )
       ) {
         logger.error(err);

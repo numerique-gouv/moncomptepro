@@ -12,6 +12,8 @@ describe("add 2fa authentication", () => {
       .contains("Configurer un code à usage unique")
       .click();
 
+    cy.contains("Configurer une application d’authentification");
+
     // Extract the code from the front to generate the TOTP key
     cy.get("#humanReadableTotpKey")
       .invoke("text")
@@ -35,5 +37,22 @@ describe("add 2fa authentication", () => {
         cy.maildevDeleteMessageById(email.id);
       },
     );
+  });
+
+  it("should see an help link on third failed attempt", function () {
+    cy.visit("/connection-and-account");
+
+    cy.login("unused1@yopmail.com");
+
+    cy.get('[href="/authenticator-app-configuration"]')
+      .contains("Configurer un code à usage unique")
+      .click();
+
+    cy.get("[name=totpToken]").type("123456");
+    cy.get(
+      '[action="/authenticator-app-configuration"] [type="submit"]',
+    ).click();
+
+    cy.contains("Code invalide.");
   });
 });

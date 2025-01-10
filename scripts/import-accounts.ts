@@ -1,13 +1,15 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
+import {
+  isEmailValid,
+  isNameValid,
+  isSiretValid,
+} from "@gouvfr-lasuite/proconnect.core/security";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
 import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
-import {
-  getInseeAccessToken,
-  getOrganizationInfo,
-} from "../src/connectors/api-sirene";
+import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { findByUserId } from "../src/repositories/organization/getters";
 import {
   linkUserToOrganization,
@@ -22,11 +24,6 @@ import {
   startDurationMesure,
   throttleApiCall,
 } from "../src/services/script-helpers";
-import {
-  isEmailValid,
-  isNameValid,
-  isSiretValid,
-} from "../src/services/security";
 
 const { INPUT_FILE, OUTPUT_FILE } = z
   .object({
@@ -44,8 +41,6 @@ const rateInMsFromArgs = toInteger(process.argv[2]);
 const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
 (async () => {
-  const access_token = await getInseeAccessToken();
-
   const readStream = fs.createReadStream(INPUT_FILE); // readStream is a read-only stream wit raw text content of the CSV file
   const writeStream = fs.createWriteStream(OUTPUT_FILE); // writeStream is a write-only stream to write on the disk
 
@@ -132,7 +127,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
           logger.error(`invalid name ${first_name} ${last_name}`);
           return done(null);
         }
-        if (isEmpty(sub) && sub.length !== 36) {
+        if (isEmpty(sub)) {
           i++;
           rejected_invalid_sub_count++;
           logger.error(`invalid sub ${sub}`);
@@ -165,10 +160,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
         for (let siret of sirets) {
           // 2. get organizationInfo
           try {
-            const organizationInfo = await getOrganizationInfo(
-              siret,
-              access_token,
-            );
+            const organizationInfo = await getOrganizationInfo(siret);
             if (!isOrganizationInfo(organizationInfo)) {
               throw Error("empty organization info");
             }

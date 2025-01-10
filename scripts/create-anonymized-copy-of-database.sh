@@ -7,7 +7,7 @@ logPrefix(){
 }
 
 if [ -n "$(which dbclient-fetcher)" ]; then
-  dbclient-fetcher psql 15.8
+  dbclient-fetcher psql 15.10
 fi
 
 export SRC_DB_URL=$SCALINGO_POSTGRESQL_URL

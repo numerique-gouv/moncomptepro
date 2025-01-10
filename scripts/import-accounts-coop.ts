@@ -1,19 +1,27 @@
 // src https://stackoverflow.com/questions/40994095/pipe-streams-to-edit-csv-file-in-node-js
+import {
+  isEmailValid,
+  isNameValid,
+  isPhoneNumberValid,
+  isSiretValid,
+} from "@gouvfr-lasuite/proconnect.core/security";
+import {
+  createUserFactory,
+  findByEmailFactory,
+  updateUserFactory,
+} from "@gouvfr-lasuite/proconnect.identite/user";
 import { AxiosError } from "axios";
 import { parse, stringify, transform } from "csv";
 import fs from "fs";
 import { isEmpty, isString, some, toInteger } from "lodash-es";
 import { z } from "zod";
-import {
-  getInseeAccessToken,
-  getOrganizationInfo,
-} from "../src/connectors/api-sirene";
+import { getOrganizationInfo } from "../src/connectors/api-sirene";
+import { getDatabaseConnection } from "../src/connectors/postgres";
 import { findByUserId } from "../src/repositories/organization/getters";
 import {
   linkUserToOrganization,
   upsert,
 } from "../src/repositories/organization/setters";
-import { create, findByEmail, update } from "../src/repositories/user";
 import { logger } from "../src/services/log";
 import {
   getNumberOfLineInFile,
@@ -22,12 +30,15 @@ import {
   startDurationMesure,
   throttleApiCall,
 } from "../src/services/script-helpers";
-import {
-  isEmailValid,
-  isNameValid,
-  isPhoneNumberValid,
-  isSiretValid,
-} from "../src/services/security";
+
+//
+
+const pg = getDatabaseConnection();
+const findByEmail = findByEmailFactory({ pg });
+const create = createUserFactory({ pg });
+const update = updateUserFactory({ pg });
+
+//
 
 const { INPUT_FILE, OUTPUT_FILE } = z
   .object({
@@ -45,8 +56,6 @@ const rateInMsFromArgs = toInteger(process.argv[2]);
 const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
 (async () => {
-  const access_token = await getInseeAccessToken();
-
   const readStream = fs.createReadStream(INPUT_FILE); // readStream is a read-only stream wit raw text content of the CSV file
   const writeStream = fs.createWriteStream(OUTPUT_FILE); // writeStream is a write-only stream to write on the disk
 
@@ -54,6 +63,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
     columns: true,
     trim: true,
     cast: false,
+    delimiter: ";",
   }); // csv Stream is a read and write stream : it reads raw text in CSV and output untransformed records
   const outputCsvStream = stringify({
     quoted_empty: false,
@@ -106,10 +116,10 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
       const start = startDurationMesure();
       try {
         const {
+          coordinateur,
           prenom: given_name,
           nom: family_name,
           téléphone: phone_number,
-          coordinateur,
           "email professionnel secondaire": professional_email,
           "SIRET structure": siret,
         } = data;
@@ -174,10 +184,7 @@ const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 125;
 
         // 2. get organizationInfo
         try {
-          const organizationInfo = await getOrganizationInfo(
-            siret,
-            access_token,
-          );
+          const organizationInfo = await getOrganizationInfo(siret);
           if (!isOrganizationInfo(organizationInfo)) {
             throw Error("empty organization info");
           }

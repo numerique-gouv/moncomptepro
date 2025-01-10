@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-22.04
     services:
       postgres:
-        image: postgres:15.8
+        image: postgres:15.10
         env:
           POSTGRES_USER: ${{ env.PGUSER }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
@@ -37,7 +37,10 @@ jobs:
         with:
           cache: "npm"
           node-version-file: package.json
-      - run: npm ci --omit=dev # omit dev dependencies to simulate deployed environment
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+      - run: npm run build:workspaces
       - run: npm run migrate up
       - run: npm run fixtures:load-ci -- scripts/fixtures.sql
       - run: npm run update-organization-info -- 500

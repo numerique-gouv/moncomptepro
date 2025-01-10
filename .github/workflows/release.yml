@@ -28,7 +28,10 @@ jobs:
           cache: "npm"
           node-version-file: package.json
 
-      - run: npm ci --include=dev
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
       - run: npm run build:workspaces
 
       - name: Create Release Pull Request

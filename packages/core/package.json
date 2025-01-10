@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr-lasuite/proconnect.core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/core#readme",
   "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
   "repository": {
@@ -20,19 +20,19 @@
   "exports": {
     "./*": {
       "require": {
-        "types": "./dist/*",
-        "default": "./dist/*"
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
       },
       "import": {
-        "types": "./dist/*",
-        "default": "./dist/*"
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
       },
-      "types": "./dist/*",
-      "default": "./dist/*"
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.lib.json",
+    "build": "tsc --build tsconfig.lib.json",
     "check": "npm run build -- --noEmit",
     "dev": "npm run build -- --watch --preserveWatchOutput",
     "test": "mocha"
@@ -46,14 +46,22 @@
   },
   "dependencies": {
     "@zootools/email-spell-checker": "^1.12.0",
-    "is-disposable-email-domain": "^1.0.7"
+    "bcryptjs": "^2.4.3",
+    "is-disposable-email-domain": "^1.0.7",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^5.0.9",
+    "tld-extract": "^2.1.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
-    "@types/mocha": "^10.0.7",
-    "chai": "^5.1.1",
-    "mocha": "^10.7.3",
-    "tsx": "^4.17.0"
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/lodash-es": "^4.17.12",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1",
+    "tsx": "^4.19.2"
   },
   "publishConfig": {
     "access": "public",

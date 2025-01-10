@@ -42,7 +42,13 @@ This guide provides steps to run the ProConnect Identité Node.js application lo
 
    Then fill your `.env` file with them.
 
-4. **Database Initialization**: The database will be automatically initialized with data from `scripts/fixtures.sql`.
+4. **Build internal dependencies**: Build the internal dependencies located in the `packages` directory.
+
+   ```bash
+   npm run build:workspaces
+   ```
+
+5. **Database Initialization**: The database will be automatically initialized with data from `scripts/fixtures.sql`.
 
    ```bash
    npm run fixtures:load

@@ -1,6 +1,7 @@
+import { generateDicewarePassword } from "@gouvfr-lasuite/proconnect.core/security";
 import { OfficialContactEmailVerification } from "@gouvfr-lasuite/proconnect.email";
 import { isEmpty } from "lodash-es";
-import { MONCOMPTEPRO_HOST } from "../../config/env";
+import { HOST } from "../../config/env";
 import {
   ApiAnnuaireError,
   InvalidTokenError,
@@ -20,7 +21,6 @@ import {
   isCommune,
   isEtablissementScolaireDuPremierEtSecondDegre,
 } from "../../services/organization";
-import { generateDicewarePassword } from "../../services/security";
 
 const OFFICIAL_CONTACT_EMAIL_VERIFICATION_TOKEN_EXPIRATION_DURATION_IN_MINUTES = 60;
 
@@ -94,8 +94,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     return { codeSent: false, contactEmail, libelle };
   }
 
-  const official_contact_email_verification_token =
-    await generateDicewarePassword();
+  const official_contact_email_verification_token = generateDicewarePassword();
 
   await updateUserOrganizationLink(organization_id, user_id, {
     official_contact_email_verification_token,
@@ -108,7 +107,7 @@ export const sendOfficialContactEmailVerificationEmail = async ({
     to: [contactEmail],
     subject: `[ProConnect] Authentifier un email sur ProConnect`,
     html: OfficialContactEmailVerification({
-      baseurl: MONCOMPTEPRO_HOST,
+      baseurl: HOST,
       given_name: given_name ?? "",
       family_name: family_name ?? "",
       email,
