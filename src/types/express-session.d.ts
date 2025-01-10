@@ -8,6 +8,7 @@ export interface UnauthenticatedSessionData {
   twoFactorsAuthRequested?: boolean;
   referrerPath?: string;
   authForProconnectFederation?: boolean;
+  executiveCertificationRequested?: boolean;
 }
 
 export type AmrValue =

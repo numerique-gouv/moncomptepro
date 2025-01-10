@@ -20,6 +20,7 @@ import {
 import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { findByClientId } from "../repositories/oidc-client";
 import {
+  executiveCertificationRequested,
   isAcrSatisfied,
   isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
@@ -42,6 +43,8 @@ export const interactionStartControllerFactory =
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
       req.session.twoFactorsAuthRequested = twoFactorsAuthRequested(prompt);
+      req.session.executiveCertificationRequested =
+        executiveCertificationRequested(prompt);
 
       const oidcClient = await findByClientId(client_id);
       req.session.authForProconnectFederation =
@@ -96,7 +99,10 @@ export const interactionEndControllerFactory =
         : isConsistencyChecked
           ? ACR_VALUE_FOR_IAL2_AAL1
           : ACR_VALUE_FOR_IAL1_AAL1;
-      currentAcr = ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT;
+
+      currentAcr = req.session.executiveCertificationRequested
+        ? ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT
+        : currentAcr;
 
       const amr = getSessionStandardizedAuthenticationMethodsReferences(req);
       const ts = user.last_sign_in_at

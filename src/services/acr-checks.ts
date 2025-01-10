@@ -1,6 +1,7 @@
 import { get, intersection, isArray, isEmpty } from "lodash-es";
 import type { UnknownObject } from "oidc-provider";
 import {
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT,
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
   ACR_VALUE_FOR_IAL2_AAL1,
@@ -74,6 +75,17 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
     !areAcrsRequestedInPrompt({
       prompt: prompt,
       acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
+    })
+  );
+};
+export const executiveCertificationRequested = (
+  prompt: EssentialAcrPromptDetail,
+) => {
+  return (
+    containsEssentialAcrs(prompt) &&
+    areAcrsRequestedInPrompt({
+      prompt: prompt,
+      acrs: [ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT],
     })
   );
 };
