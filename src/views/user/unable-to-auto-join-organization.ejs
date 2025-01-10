@@ -20,30 +20,33 @@
         <div class="fr-grid-row">
             <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Prénom</p>
             <div class="fr-col-7">
-                <span ><b><%= given_name; %></b></span>
-                <span class="fr-icon-edit-fill fr-ml-1w blue-france" aria-hidden="true"></span>
+                <span id="prenom-display"><b><%= given_name; %></b></span>
+                <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}` }) %>
             </div>
             <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Nom</p>
             <div class="fr-col-7">
                 <span >
                     <b><%= family_name; %></b>
                 </span>
-                <span class="fr-icon-edit-fill fr-ml-1w blue-france" aria-hidden="true"></span>
+                <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}` }) %>
             </div>
             <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Email</p>
             <div class="fr-col-7">
                 <span ><b><%= email; %></b></span>
-                <span class="fr-icon-edit-fill fr-ml-1w blue-france" aria-hidden="true"></span>
+                <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-sign-in/${moderation_id}` }) %>
+
             </div>
             <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Profession</p>
             <div class="fr-col-7">
                 <span ><b><%= job; %></b></span>
-                <span class="fr-icon-edit-fill fr-ml-1w blue-france" aria-hidden="true"></span>
+                
+                <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}` }) %>
+
             </div>
             <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w fr-mr-2w">Organisation</p>
             <div class="fr-col-7">
                 <span ><b><%= organization_label; %></b></span>
-                <span class="fr-icon-edit-fill fr-ml-1w blue-france" aria-hidden="true"></span>
+                <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-join-org/${moderation_id}` }) %>
             </div>
         </div>
     </div>

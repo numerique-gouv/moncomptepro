@@ -1,0 +1,14 @@
+<form
+  class="inline-form"
+  autocomplete="off"
+  action="<%= actionForUpdateModeration; %>"
+  method="post"
+>
+  <input type="hidden" name="_csrf" value="<%= csrfToken; %>" />
+  <button
+    type="submit"
+    class="fr-icon-edit-fill blue-france"
+    aria-label="Corriger ses informations personnelles"
+    title="Corriger ses informations personnelles"
+  ></button>
+</form>
