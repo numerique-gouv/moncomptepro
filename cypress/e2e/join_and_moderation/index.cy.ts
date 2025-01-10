@@ -11,10 +11,9 @@ describe("join and moderation", () => {
     cy.get('[name="siret"]').type("66204244933106");
     cy.get('[type="submit"]').click();
 
-    cy.contains("Rattachement en cours");
+    cy.contains("Demande en cours");
     cy.contains(
-      "⏱️ Notre équipe étudie votre demande de rattachement à l’organisation Bnp paribas - Bnp pariba",
+      "Nous vérifions votre lien à l’organisation, vous recevrez un email de confirmation dès que votre compte sera validé.",
     );
-    cy.contains("avec l’adresse email lion.eljonson@darkangels.world.");
   });
 });
