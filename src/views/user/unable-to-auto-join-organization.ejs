@@ -1,5 +1,5 @@
 <div>
-    <div class="fr-mt-7w fr-mb-2w">
+    <div class="fr-mb-2w">
         <img src="/dist/timer.svg" alt="" />
     </div>
     <h1 class="fr-h2">Demande en cours</h1>
@@ -17,32 +17,32 @@
     </div>
     <div class="border-shadow fr-p-2w">
         <h2 class="fr-h4">Récapitulatif de votre demande</h2>
-        <div class="fr-grid-row">
-            <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Prénom</p>
-            <div class="fr-col-7">
+        <div class="fr-grid-row centered-container-mobile">
+            <p class="fr-mb-1w fr-mb-md-2w fr-mr-md-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content">Prénom</p>
+            <div class="fr-col-md-7 fr-col-12 fr-mb-2w">
                 <span id="prenom-display"><b><%= given_name; %></b></span>
                 <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}`, messageToDisplay: "Corriger ses informations personnelles" }) %>
             </div>
-            <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Nom</p>
-            <div class="fr-col-7">
+            <p class="fr-mb-1w fr-mb-md-2w fr-mr-md-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content">Nom</p>
+            <div class="fr-col-md-7 fr-col-12 fr-mb-2w">
                 <span >
                     <b><%= family_name; %></b>
                 </span>
                 <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}`, messageToDisplay: "Corriger ses informations personnelles" }) %>
             </div>
-            <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Email</p>
-            <div class="fr-col-7">
+            <p class="fr-mb-1w fr-mb-md-2w fr-mr-md-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content">Email</p>
+            <div class="fr-col-md-7 fr-col-12 fr-mb-2w">
                 <span ><b><%= email; %></b></span>
                 <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-sign-in/${moderation_id}`, messageToDisplay: "Corriger l'adresse email" }) %>
 
             </div>
-            <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w">Profession</p>
-            <div class="fr-col-7">
+            <p class="fr-mb-1w fr-mb-md-2w fr-mr-md-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content">Profession</p>
+            <div class="fr-col-md-7 fr-col-12 fr-mb-2w">
                 <span ><b><%= job; %></b></span>
                 <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-personal-information/${moderation_id}`, messageToDisplay: "Corriger ses informations personnelles" }) %>
             </div>
-            <p class="fr-mb-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content fr-mr-2w fr-mr-2w">Organisation</p>
-            <div class="fr-col-7">
+            <p class="fr-mb-1w fr-mb-md-2w fr-mr-md-2w fr-badge fr-badge--info fr-badge--no-icon fr-col-4 centered-content">Organisation</p>
+            <div class="fr-col-md-7 fr-col-12 fr-mb-2w">
                 <span ><b><%= organization_label; %></b></span>
                 <%- include('../partials/icon-edit-personal-info-form.ejs', { actionForUpdateModeration: `/users/cancel-moderation-and-redirect-to-join-org/${moderation_id}`, messageToDisplay: "Corriger l'organisation de rattachement" }) %>
             </div>

@@ -336,9 +336,7 @@ export const joinOrganization = async ({
   let ticket_id = null;
   if (CRISP_WEBSITE_ID) {
     ticket_id = await startCripsConversation({
-      content: unableToAutoJoinOrganizationMd({
-        libelle: cached_libelle || siret,
-      }),
+      content: unableToAutoJoinOrganizationMd(),
       email,
       nickname: `${given_name} ${family_name}`,
       subject: `[ProConnect] Demande pour rejoindre ${cached_libelle || siret}`,
