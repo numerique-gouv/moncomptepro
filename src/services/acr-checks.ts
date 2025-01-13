@@ -78,7 +78,7 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
     })
   );
 };
-export const executiveCertificationRequested = (
+export const certificationDirigeantRequested = (
   prompt: EssentialAcrPromptDetail,
 ) => {
   return (
