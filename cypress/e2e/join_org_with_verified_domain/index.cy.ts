@@ -36,28 +36,25 @@ describe("join organizations", () => {
 
     // Check redirection to moderation block page
     cy.contains(
-      "Notre équipe étudie votre demande de rattachement à l’organisation Direction interministerielle du numerique (DINUM) avec l’adresse email lion.eljonson@darkangels.world",
+      "Nous vérifions votre lien à l’organisation, vous recevrez un email de confirmation dès que votre compte sera validé.",
     );
 
     // Try to change org
-    cy.get('a[href^="/users/edit-moderation"]')
-      .contains("J’ai fait une erreur dans ma demande")
-      .click();
-    cy.get('[action^="/users/cancel-moderation-and-redirect-to-join-org/"]')
-      .contains("Sélectionner une organisation différente")
-      .click();
+    cy.get(
+      'button[aria-label="Corriger l\'organisation de rattachement"]',
+    ).click();
+
+    cy.url().should("include", "users/join-organization");
 
     cy.get('[name="siret"]').type("13002526500013");
     cy.get('[type="submit"]').click();
-    cy.contains("Notre équipe étudie votre demande");
+    cy.contains("Demande en cours");
 
     // Try to change email
-    cy.get('a[href^="/users/edit-moderation"]')
-      .contains("J’ai fait une erreur dans ma demande")
-      .click();
-    cy.get('[action^="/users/cancel-moderation-and-redirect-to-sign-in/"]')
-      .contains("Utiliser une autre adresse email")
-      .click();
+
+    cy.get('button[aria-label="Corriger l\'adresse email"]').click();
+
+    cy.url().should("include", "/users/start-sign-in");
     cy.contains("S’inscrire ou se connecter");
   });
 });

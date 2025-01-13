@@ -11,10 +11,7 @@ import {
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
 import { postDeleteUserController } from "../controllers/user/delete";
-import {
-  getEditModerationController,
-  postCancelModerationAndRedirectControllerFactory,
-} from "../controllers/user/edit-moderation";
+import { postCancelModerationAndRedirectControllerFactory } from "../controllers/user/edit-moderation";
 import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
 import {
   getMagicLinkSentController,
@@ -317,13 +314,6 @@ export const userRouter = () => {
     checkUserHasPersonalInformationsMiddleware,
     csrfProtectionMiddleware,
     getUnableToAutoJoinOrganizationController,
-  );
-
-  userRouter.get(
-    "/edit-moderation",
-    checkUserHasPersonalInformationsMiddleware,
-    csrfProtectionMiddleware,
-    getEditModerationController,
   );
 
   userRouter.post(
