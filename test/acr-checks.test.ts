@@ -187,7 +187,7 @@ describe("isThereAnyRequestedAcr", () => {
     assert.equal(isThereAnyRequestedAcr(prompt), false);
   });
 
-  it("should return true for prompt with no acr required", () => {
+  it("should return false for prompt with no acr required", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
     assert.equal(isThereAnyRequestedAcr(prompt), false);
@@ -253,6 +253,7 @@ describe("certificationDirigeantRequested", () => {
           essential: true,
           values: [
             "https://proconnect.gouv.fr/assurance/certification-dirigeant",
+            "https://proconnect.gouv.fr/assurance/certification-dirigeant-2fa",
           ],
         },
       },
@@ -270,6 +271,7 @@ describe("certificationDirigeantRequested", () => {
           essential: true,
           values: [
             "https://proconnect.gouv.fr/assurance/certification-dirigeant",
+            "https://proconnect.gouv.fr/assurance/certification-dirigeant-2fa",
             "https://proconnect.gouv.fr/assurance/consistency-checked",
             "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
             "https://proconnect.gouv.fr/assurance/self-asserted",
