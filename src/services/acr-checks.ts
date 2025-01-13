@@ -74,7 +74,12 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
     }) &&
     !areAcrsRequestedInPrompt({
       prompt: prompt,
-      acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
+      acrs: [
+        ACR_VALUE_FOR_IAL1_AAL1,
+        ACR_VALUE_FOR_IAL1_AAL2,
+        ACR_VALUE_FOR_IAL2_AAL1,
+        ACR_VALUE_FOR_IAL2_AAL2,
+      ],
     })
   );
 };
@@ -86,6 +91,10 @@ export const certificationDirigeantRequested = (
     areAcrsRequestedInPrompt({
       prompt: prompt,
       acrs: [ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT],
+    }) &&
+    !areAcrsRequestedInPrompt({
+      prompt: prompt,
+      acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
     })
   );
 };
