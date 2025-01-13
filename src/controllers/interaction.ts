@@ -43,7 +43,7 @@ export const interactionStartControllerFactory =
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
       req.session.twoFactorsAuthRequested = twoFactorsAuthRequested(prompt);
-      req.session.executiveCertificationRequested =
+      req.session.certificationDirigeantRequested =
         certificationDirigeantRequested(prompt);
 
       const oidcClient = await findByClientId(client_id);
@@ -100,7 +100,7 @@ export const interactionEndControllerFactory =
           ? ACR_VALUE_FOR_IAL2_AAL1
           : ACR_VALUE_FOR_IAL1_AAL1;
 
-      currentAcr = req.session.executiveCertificationRequested
+      currentAcr = req.session.certificationDirigeantRequested
         ? ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1
         : currentAcr;
 

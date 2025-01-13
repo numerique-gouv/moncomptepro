@@ -1,4 +1,4 @@
-import { get, intersection, isArray, isEmpty } from "lodash-es";
+import { difference, get, intersection, isArray, isEmpty } from "lodash-es";
 import type { UnknownObject } from "oidc-provider";
 import {
   ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
@@ -30,6 +30,11 @@ const oneFactorAuthAcrValues = [
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL2_AAL1,
   ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+];
+
+const certificationDirigeantAcrValues = [
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2,
 ];
 
 interface EssentialAcrPromptDetail {
@@ -102,14 +107,19 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
     })
   );
 };
+
 export const certificationDirigeantRequested = (
   prompt: EssentialAcrPromptDetail,
 ) => {
   return (
     containsEssentialAcrs(prompt) &&
     areAcrsRequestedInPrompt({
-      prompt: prompt,
-      acrs: [ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1],
+      prompt,
+      acrs: certificationDirigeantAcrValues,
+    }) &&
+    !areAcrsRequestedInPrompt({
+      prompt,
+      acrs: difference(allAcrValues, certificationDirigeantAcrValues),
     })
   );
 };
@@ -132,7 +142,7 @@ export const isAcrSatisfied = (
 
   // if current acr is requested in prompt it is satisfied
   return areAcrsRequestedInPrompt({
-    prompt: prompt,
+    prompt,
     acrs: [currentAcr],
   });
 };
