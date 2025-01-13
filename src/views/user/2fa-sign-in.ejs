@@ -64,17 +64,10 @@
                     Valider
                 </button>
             <% } else { %>
-                <div class="card-button-container">
-                    <button
-                            type="button"
-                            class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-                    >
-                        retour
-                    </button>
-                    <button class="fr-btn" type="submit">
-                        Valider
-                    </button>
-                </div>
+                <%- include('../partials/go-back.ejs') %>
+                <button class="fr-btn" type="submit">
+                    Valider
+                </button>
             <% } %>
         </form>
     <% } %>
@@ -101,15 +94,7 @@
             <input type="hidden" name="webauthn_authentication_response_string">
             <button type="submit" class="fr-btn"></button>
         </form>
-
-        <button
-                type="button"
-                class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-        >
-            retour
-        </button>
+        <%- include('../partials/go-back.ejs') %>
         <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
     <% } %>
 </div>
-
-<script type="module" src="<%= js('go-back.js') %>"></script>
