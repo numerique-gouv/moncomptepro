@@ -98,11 +98,11 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
   return (
     containsEssentialAcrs(prompt) &&
     areAcrsRequestedInPrompt({
-      prompt: prompt,
+      prompt,
       acrs: twoFactorsAuthAcrValues,
     }) &&
     !areAcrsRequestedInPrompt({
-      prompt: prompt,
+      prompt,
       acrs: oneFactorAuthAcrValues,
     })
   );
@@ -126,7 +126,7 @@ export const certificationDirigeantRequested = (
 
 export const isThereAnyRequestedAcr = (prompt: EssentialAcrPromptDetail) => {
   return areAcrsRequestedInPrompt({
-    prompt: prompt,
+    prompt,
     acrs: allAcrValues,
   });
 };
