@@ -1,6 +1,7 @@
 import { get, intersection, isArray, isEmpty } from "lodash-es";
 import type { UnknownObject } from "oidc-provider";
 import {
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT,
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
   ACR_VALUE_FOR_IAL2_AAL1,
@@ -68,19 +69,39 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
   return (
     containsEssentialAcrs(prompt) &&
     areAcrsRequestedInPrompt({
-      prompt: prompt,
+      prompt,
       acrs: [ACR_VALUE_FOR_IAL1_AAL2, ACR_VALUE_FOR_IAL2_AAL2],
     }) &&
     !areAcrsRequestedInPrompt({
-      prompt: prompt,
+      prompt,
       acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
+    })
+  );
+};
+export const certificationDirigeantRequested = (
+  prompt: EssentialAcrPromptDetail,
+) => {
+  return (
+    containsEssentialAcrs(prompt) &&
+    areAcrsRequestedInPrompt({
+      prompt,
+      acrs: [ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT],
+    }) &&
+    !areAcrsRequestedInPrompt({
+      prompt,
+      acrs: [
+        ACR_VALUE_FOR_IAL1_AAL1,
+        ACR_VALUE_FOR_IAL1_AAL2,
+        ACR_VALUE_FOR_IAL2_AAL1,
+        ACR_VALUE_FOR_IAL2_AAL2,
+      ],
     })
   );
 };
 
 export const isThereAnyRequestedAcr = (prompt: EssentialAcrPromptDetail) => {
   return areAcrsRequestedInPrompt({
-    prompt: prompt,
+    prompt,
     acrs: [
       ACR_VALUE_FOR_IAL1_AAL1,
       ACR_VALUE_FOR_IAL1_AAL2,
@@ -101,7 +122,7 @@ export const isAcrSatisfied = (
 
   // if current acr is requested in prompt it is satisfied
   return areAcrsRequestedInPrompt({
-    prompt: prompt,
+    prompt,
     acrs: [currentAcr],
   });
 };
