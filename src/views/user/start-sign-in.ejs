@@ -17,7 +17,7 @@
         <form action="/users/start-sign-in" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
 
-            <div class="fr-input-group<% if (locals.hasEmailError) { %>  fr-input-group--error<% } %>">
+            <div class="fr-input-group <% if (locals.hasEmailError) { %>  fr-input-group--error<% } %>">
                 <label class="fr-label" for="did-you-mean-input">Email
                     <span class="fr-hint-text">Celui que vous utilisez dans le cadre de votre travail</span>
                 </label>
@@ -49,8 +49,8 @@
                     <script type="module" src="<%= js('did-you-mean.js') %>"></script>
                 <% } %>
             </div>
-
-            <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+            <%- include('../partials/card-button-container.ejs', {label: 'Valider'}) %>
+            <%- include('../partials/go-back.ejs') %>
         </form>
     </div>
 </div>

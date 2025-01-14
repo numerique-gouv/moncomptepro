@@ -1,10 +1,5 @@
 <div class="card-button-container">
-    <% if (locals.showGoBackButton) { %>
-        <%- include('./go-back.ejs') %>
-    <% } %>
-    <button class="<%- locals.buttonFullWidth ? ' fr-btn btn--fullwidth' : 'fr-btn' %>"
-    
-    <%- locals.button ? `style="${locals.button}"` : '' %>  type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
+    <button class="fr-btn btn--fullwidth" type="submit" <% if (locals.ariaLabel) { %>aria-label="<%= locals.ariaLabel; %>"<% } %>>
         <%= label; %>
     </button>
 </div>

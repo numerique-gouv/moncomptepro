@@ -60,14 +60,10 @@
                 <% } %>
             </div>
             <% if (showsPasskeySection) { %>
-                <button class="fr-btn btn--fullwidth" type="submit">
-                    Valider
-                </button>
+                <%- include('../partials/card-button-container.ejs', {label: 'Valider'}) %>
             <% } else { %>
+                <%- include('../partials/card-button-container.ejs', {label: 'Valider'}) %>
                 <%- include('../partials/go-back.ejs') %>
-                <button class="fr-btn" type="submit">
-                    Valider
-                </button>
             <% } %>
         </form>
     <% } %>
