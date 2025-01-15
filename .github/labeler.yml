@@ -1,0 +1,33 @@
+# Global
+
+":construction_worker: CI":
+  - changed-files:
+      - any-glob-to-any-file: ".github/**"
+":memo: documentation":
+  - changed-files:
+      - any-glob-to-any-file: "**/*.md"
+":traffic_light: e2e":
+  - changed-files:
+      - any-glob-to-any-file: "cypress/**/*"
+":file_cabinet: e2e":
+  - changed-files:
+      - any-glob-to-any-file: "migrations/**/*"
+":test_tube: unit test":
+  - changed-files:
+      - any-glob-to-any-file: "test/**/*"
+      - any-glob-to-any-file: "**/*.test.ts"
+
+# Scopes
+
+"scope: core":
+  - changed-files:
+      - any-glob-to-any-file: "packages/core/**/*"
+"scope: email":
+  - changed-files:
+      - any-glob-to-any-file: "packages/email/**/*"
+"scope: identite":
+  - changed-files:
+      - any-glob-to-any-file: "packages/identite/**/*"
+"scope: insee":
+  - changed-files:
+      - any-glob-to-any-file: "packages/insee/**/*"
