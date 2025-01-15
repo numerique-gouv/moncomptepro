@@ -22,6 +22,9 @@
 "scope: core":
   - changed-files:
       - any-glob-to-any-file: "packages/core/**/*"
+"scope: crisp":
+  - changed-files:
+      - any-glob-to-any-file: "packages/crisp/**/*"
 "scope: email":
   - changed-files:
       - any-glob-to-any-file: "packages/email/**/*"
