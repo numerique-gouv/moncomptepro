@@ -12,6 +12,7 @@
     "packages/core",
     "packages/email",
     "packages/insee",
+    "packages/crisp",
     "packages/identite"
   ],
   "scripts": {
@@ -51,8 +52,8 @@
     ]
   },
   "dependencies": {
-    "@gouvfr-lasuite/crisp": "https://github.com/douglasduteil/crisp/releases/download/v1.6.1/douglasduteil-crisp-1.6.1.tgz",
     "@gouvfr-lasuite/proconnect.core": "workspace:*",
+    "@gouvfr-lasuite/proconnect.crisp": "workspace:*",
     "@gouvfr-lasuite/proconnect.email": "workspace:*",
     "@gouvfr-lasuite/proconnect.identite": "workspace:*",
     "@gouvfr-lasuite/proconnect.insee": "workspace:*",
