@@ -65,27 +65,14 @@
                 <%- include('../partials/password-input-messages.ejs') %>
             </div>
 
-            <%- include('../partials/card-button-container.ejs', {label: 'Valider', ariaLabel: 'Valider le mot de passe'}) %>
-            <%- include('../partials/go-back.ejs') %>
+            <%- include('../partials/card-button.ejs', {label: 'Valider', ariaLabel: 'Valider le mot de passe'}) %>
         </form>
-
-        <p class="fr-hr-or">ou</p>
-
-        <div>
-            <p class="fr-text--sm">
-                <b>Connectez-vous sans mot de passe</b> en recevant <b>un lien par email.</b>
-            </p>
-            <div class="card-button-container">
-                <div id="magic-link-icon-inline">
-                    <img src="/dist/magic-link.svg" alt="">
-                </div>
-                <form action="/users/send-magic-link" method="post">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-
-                    <%- include('../partials/card-button-container.ejs', {label: 'Envoyer le lien'}) %>
-                </form>
-            </div>
-        </div>
+        <p class="fr-hr-or fr-mb-2w">ou</p>
+        <form action="/users/send-magic-link" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
+            <%- include('../partials/card-button.ejs', {label: 'Recevoir un lien d’identification', additionnalClass: 'fr-btn--secondary'}) %>
+        </form>
+        <%- include('../partials/go-back.ejs') %>
     </div>
 </div>
 <script type="module" src="<%= js('show-password.js') %>"></script>
