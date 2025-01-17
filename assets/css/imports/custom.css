@@ -20,25 +20,11 @@
 }
 
 .blue-france {
-  color: #00008f;
+  color: #00008f !important;
 }
 
 .centered-content {
   justify-content: center !important;
-}
-
-/* magic link icon */
-#magic-link-icon-inline {
-  padding: 0 1.5rem;
-}
-
-#magic-link-icon-block {
-  text-align: center;
-  margin: 3rem 0;
-}
-
-#magic-link-icon-block > img {
-  height: 46px;
 }
 
 /* proconnect-header */

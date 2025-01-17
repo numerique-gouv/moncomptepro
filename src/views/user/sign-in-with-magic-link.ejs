@@ -1,12 +1,12 @@
 <div>
+    <div class="fr-mb-3w fr-mt-3w">
+        <img src="/dist/letter.svg" alt="" />
+    </div>
     <h1 class="fr-h3">
         Lien de connexion
     </h1>
     <div>
-        <div id="magic-link-icon-block">
-            <img src="/dist/magic-link.svg" alt="">
-        </div>
-
+        <p>Pour continuer votre parcours d'authentification, cliquez sur le bouton ci-dessous.</p>
         <form action="/users/sign-in-with-magic-link" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <input type="hidden" name="magic_link_token" value="<%= magicLinkToken %>">
