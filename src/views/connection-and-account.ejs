@@ -5,266 +5,53 @@
         <h2>Compte et connexion</h2>
         <section class="fr-mb-6w">
             <h3>Identifiants</h3>
-            <div class="fr-container fr-notice notice--email fr-mb-3w">
-                <p>
-                    L’email rattaché à votre compte est <strong><%= email; %></strong>
-                </p>
+            <div class="fr-input-group fr-input-group--disabled">
+                <label class="fr-label" for="text-input-disabled">Adresse email</label>
+                <input class="fr-input" disabled type="text" id="text-input-disabled" name="text-input-disabled" value="<%=email%>">
             </div>
-            <p>
-                Vous avez oublié votre mot de passe ou souhaitez en changer, merci de cliquer sur le bouton ci-après.
-            </p>
+            <div class="fr-input-group fr-input-group--disabled fr-mb-1w">
+                <label class="fr-label" for="text-input-disabled">Mot de passe</label>
+                <input class="fr-input" disabled type="password" id="text-input-disabled" name="text-input-disabled" value="<%=encrypted_password%>">
+            </div>
             <form action="/users/reset-password" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-
-                <button class="fr-btn fr-btn--secondary" type="submit">
-                    Recevoir un lien de réinitialisation de mot de passe
+                <button class="fr-btn btn--fullwidth fr-btn--secondary" type="submit">
+                    Réinitialiser votre mot de passe
                 </button>
             </form>
         </section>
 
         <section class="fr-mb-6w">
-            <h3>Configurer un code à usage unique</h3>
-            <p>
-                Recevez un code à usage unique via une appli d’authentification, même si votre téléphone est hors
-                connexion.
-            </p>
-            <p>
-                Pour l’obtenir, vous devez utiliser une application mobile. Si vous n’avez pas encore d’application,
-                nous vous conseillons d’utiliser l’outil opensource FreeOTP Authenticator téléchargeable sur le
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp&pcampaignid=web_share"
-                >Google Play Store</a>
-                ou l’
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        href="https://apps.apple.com/us/app/freeotp-authenticator/id872559395"
-                >App Store iOS</a>.
-            </p>
-
+            <h3>Double authentification</h3>
             <% if (isAuthenticatorConfigured) { %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <div class="fr-col-12">
-                        <div class="fr-tile fr-tile--horizontal">
-                            <div class="fr-tile__body">
-                                <h4 class="fr-tile__title">Votre méthode d’authentification</h4>
-                                <p class="fr-tile__desc fr-pb-0">FreeOTP Authenticator</p>
-                                <p class="fr-tile__desc">Ajout : <%= totpKeyVerifiedAt; %></p>
-                                <div class="card-button-container">
-                                    <a
-                                            class="fr-btn fr-btn--secondary fr-btn--sm"
-                                            href="/authenticator-app-configuration"
-                                            type="submit"
-                                    >
-                                        Changer d’application d’authentification
-                                    </a>
-                                    <form action="/delete-authenticator-app-configuration" method="post">
-                                        <input
-                                                type="hidden"
-                                                name="_csrf"
-                                                value="<%= csrfToken; %>"
-                                        >
-                                        <button
-                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
-                                                data-confirm="Cette action est irreversible."
-                                                type="submit"
-                                        >
-                                            Supprimer l’application d’authentification
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="fr-tile__header">
-                                <div class="fr-tile__pictogram">
-                                    <svg
-                                            aria-hidden="true"
-                                            class="fr-artwork"
-                                            viewBox="0 0 80 80"
-                                            width="80px"
-                                            height="80px"
-                                    >
-                                        <use
-                                                class="fr-artwork-decorative"
-                                                href="/dist/application.svg#artwork-decorative"
-                                        ></use>
-                                        <use class="fr-artwork-minor" href="/dist/application.svg#artwork-minor"></use>
-                                        <use class="fr-artwork-major" href="/dist/application.svg#artwork-major"></use>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p>Bravo vous êtes un.e concitoyen.ne très conscient des questions de cybersécurité car vous avez activé la 2FA.</p>
             <% } else { %>
+                <p>
+                    Vous n'avez pas encore configuré la double authentification (2FA).
+                </p>
                 <a
+                        class="fr-btn fr-btn--secondary"
+                        href="/authenticator-app-configuration"
+                >
+                    Configurer la 2FA
+                </a>
+                <!-- <a
                         class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
                         href="/authenticator-app-configuration"
                 >
                     Configurer un code à usage unique
-                </a>
+                </a> -->
             <% } %>
         </section>
 
-        <section class="fr-mb-6w">
-            <h3>Configurer vos clés d’accès</h3>
-            <div class="fr-alert fr-alert--error fr-mb-1w" id="webauthn-alert-error" hidden></div>
-
-            <% if (passkeys.length <= 0) { %>
-                <div class="fr-callout fr-icon-information-line" id="webauthn-register">
-                    <h4 class="fr-callout__title">Créer une clé d'accès sur cet appareil</h4>
-                    <p class="fr-callout__text">
-                        Connectez-vous plus vite la prochaine fois en créant une clé d'accès sur cet appareil
-                    </p>
-                    <button class="fr-btn" id="webauthn-btn-begin-registration">
-                        Créer une clé d’accès
-                    </button>
-                </div>
-            <% } %>
-            <div class="fr-callout fr-icon-alert-line" id="webauthn-not-supported" hidden>
-                <h4 class="fr-callout__title">
-                    Impossible de créer une clé d’accès sur cet appareil
-                </h4>
-                <p class="fr-callout__text">
-                    Assurez-vous que le système d’exploitation de votre appareil est à jour, que le verrouillage de
-                    l’écran
-                    et le Bluetooth sont activés, et que vous utilisez un navigateur compatible.
-                </p>
-            </div>
-            <p>
-                Les clés d’accès vous permettent de vous connecter de façon sécurisée à votre compte ProConnect
-                en utilisant votre empreinte digitale, votre visage, le verrouillage de l’écran ou une clé de
-                sécurité physique. Ne configurez des clés d’accès que sur les appareils dont vous êtes
-                propriétaire.
-                <a
-                        class="fr-link" target="_blank" rel="noopener noreferrer"
-                        aria-label="En savoir plus sur les clés d'accès"
-                        href="https://fr.wikipedia.org/wiki/Cl%C3%A9_d%27acc%C3%A8s"
-                >En savoir plus</a>
-            </p>
-            <% if (passkeys.length > 0) { %>
-                <div class="fr-grid-row fr-grid-row--gutters">
-                    <% passkeys.forEach(({
-                                             credential_id,
-                                             usage_count,
-                                             display_name,
-                                             created_at,
-                                             last_used_at,
-                                             shows_second_factor_only_label
-                                         }) => { %>
-                        <div class="fr-col-12 fr-col-lg-10">
-                            <div class="fr-tile fr-tile--horizontal">
-                                <div class="fr-tile__body">
-                                    <% if (shows_second_factor_only_label) { %>
-                                        <div class="fr-tile__start">
-                                            <p class="fr-badge fr-badge--sm fr-badge--yellow-tournesol">
-                                                Second facteur uniquement
-                                            </p>
-                                        </div>
-                                    <% } %>
-                                    <h4 class="fr-tile__title">
-                                        <%= display_name; %>
-                                    </h4>
-                                    <p class="fr-tile__desc fr-pb-0">Création : <%= created_at; %></p>
-                                    <p class="fr-tile__desc fr-pb-0">
-                                        Dernière utilisation : <%= last_used_at; %>
-                                    </p>
-                                    <p class="fr-tile__desc">Nombre d’utilisations : <%= usage_count; %></p>
-                                    <form action="/delete-passkeys/<%= credential_id; %>" method="post">
-                                        <input
-                                                type="hidden"
-                                                name="_csrf"
-                                                value="<%= csrfToken; %>"
-                                        >
-                                        <button
-                                                aria-label="Supprimer la clé d'accès <%= display_name; %>"
-                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
-                                                data-confirm="Cette action est irreversible."
-                                                type="submit"
-                                        >
-                                            Supprimer cette clé d’accès
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
-                    <div class="fr-col-12">
-                        <button
-                                class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
-                                id="webauthn-btn-begin-registration"
-                        >
-                            Créer une clé d’accès sur cet appareil
-                        </button>
-                    </div>
-                </div>
-            <% } %>
-            <form id="webauthn-registration-response-form" action="/passkeys/verify-registration" method="post" hidden>
-                <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-                <input type="hidden" name="webauthn_registration_response_string">
-
-                <button type="submit" class="fr-btn"></button>
-            </form>
-
-            <script type="module" src="<%= js('webauthn-registration.js') %>"></script>
-        </section>
-
-        <% if (locals.is2faCapable) { %>
-            <section class="fr-mb-6w">
-                <h3>Validation en deux étapes</h3>
-                <% if (locals.force2fa) { %>
-                    <p>
-                        La validation en deux étapes vous est demandée à chaque connexion pour
-                        protéger votre compte des pirates informatique.
-                    </p>
-                    <p>
-                        Si vous désactivez cette fonctionnalité,
-                        elle vous sera demandée exclusivement pour les services sensibles.
-                    </p>
-
-                    <form class="fr-mt-4w" action="/disable-force-2fa" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-
-                        <button
-                                class="fr-btn btn--danger js-confirm"
-                                data-confirm="Pour protéger votre compte, nous vous recommandons de laisser cette fonctionnalité activée.&#10;&#10;Voulez vous la désactiver ?"
-                                type="submit"
-                        >
-                            Désactiver la validation en deux étapes
-                        </button>
-                    </form>
-                <% } else { %>
-                    <p>
-                        La validation en deux étapes vous est demandée exclusivement pour les services sensibles.
-                    </p>
-                    <p>
-                        Pour protéger votre compte des pirates informatique,
-                        nous vous recommandons d'activer cette fonctionnalité pour tous les services.
-                    </p>
-
-                    <form class="fr-mt-4w" action="/enable-force-2fa" method="post">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-
-                        <button
-                                class="fr-btn"
-                                type="submit"
-                        >
-                            Activer la validation en deux étapes
-                        </button>
-                    </form>
-                <% } %>
-            </section>
-        <% } %>
 
         <section class="fr-mb-6w">
-            <h3>Suppression</h3>
-
+            <h3>Suppression de mon compte</h3>
             <p>
-                Si vous n'utilisez plus ce compte, vous pouvez le supprimer.
+                Pour des raisons légales, vos données sont sauvegardées pendant 3 ans après la suppression de votre compte.
             </p>
-
             <form class="fr-mt-4w" action="/users/delete" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-
                 <button
                         class="fr-btn btn--danger js-confirm"
                         data-confirm="Si vous avez changé d’organisation, vous pouvez les modifier sur votre espace personnel.&#10;&#10;Si vous n’utilisez plus ProConnect avec cette adresse email, vous pouvez supprimer ce compte.&#10;&#10;Voulez vous continuer ?"
@@ -274,7 +61,6 @@
                 </button>
             </form>
         </section>
-
         <script type="module" src="<%= js('confirm.js') %>"></script>
     </div>
 </div>
