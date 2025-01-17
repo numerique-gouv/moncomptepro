@@ -1,5 +1,5 @@
-#email-badge-lowercase {
-  text-transform: lowercase;
+.email-badge-lowercase {
+  text-transform: lowercase !important;
 }
 
 .inline-form {

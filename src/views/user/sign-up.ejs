@@ -65,12 +65,12 @@
                 <%- include('../partials/password-input-messages.ejs') %>
             </div>
 
-            <%- include('../partials/card-button.ejs', {label: 'Valider', ariaLabel: 'Valider le mot de passe'}) %>
+            <%- include('../partials/submit-button.ejs', {label: 'Valider', ariaLabel: 'Valider le mot de passe'}) %>
         </form>
         <p class="fr-hr-or fr-mb-2w">ou</p>
         <form action="/users/send-magic-link" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
-            <%- include('../partials/card-button.ejs', {label: 'Recevoir un lien d’identification', additionnalClass: 'fr-btn--secondary'}) %>
+            <%- include('../partials/submit-button.ejs', {label: 'Recevoir un lien d’identification', additionnalClass: 'fr-btn--secondary'}) %>
         </form>
         <%- include('../partials/go-back.ejs') %>
     </div>

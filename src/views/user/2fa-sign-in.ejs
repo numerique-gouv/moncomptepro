@@ -59,12 +59,7 @@
                     </p>
                 <% } %>
             </div>
-            <% if (showsPasskeySection) { %>
-                <%- include('../partials/card-button.ejs', {label: 'Valider'}) %>
-            <% } else { %>
-                <%- include('../partials/card-button.ejs', {label: 'Valider'}) %>
-                <%- include('../partials/go-back.ejs') %>
-            <% } %>
+            <%- include('../partials/submit-button.ejs', {label: 'Valider'}) %>
         </form>
     <% } %>
 
@@ -90,7 +85,7 @@
             <input type="hidden" name="webauthn_authentication_response_string">
             <button type="submit" class="fr-btn"></button>
         </form>
-        <%- include('../partials/go-back.ejs') %>
         <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
     <% } %>
+    <%- include('../partials/go-back.ejs') %>
 </div>

@@ -33,7 +33,7 @@
                         name="verify_email_token"
                 >
             </div>
-            <%- include('../partials/card-button.ejs', {label: 'Valider'}) %>
+            <%- include('../partials/submit-button.ejs', {label: 'Valider'}) %>
         </form>
         <form
             class="inline-form" autocomplete="off"
@@ -42,7 +42,7 @@
         >
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <button data-countdown-end-date="<%= countdownEndDate %>"
-            class="fr-btn fr-btn--tertiary fr-mb-2w disabled-with-countdown btn--fullwidth" 
+            class="fr-btn fr-btn--tertiary fr-mb-2w disabled-with-countdown btn--fullwidth"
             >
                 Recevoir un nouvel email
             </button>
