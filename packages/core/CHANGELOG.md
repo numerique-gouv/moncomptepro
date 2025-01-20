@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.3.1
+
+### Patch Changes
+
+- [#931](https://github.com/numerique-gouv/moncomptepro/pull/931) [`9e2f382`](https://github.com/numerique-gouv/moncomptepro/commit/9e2f382a896330868e91f18c14978874e78691a9) Thanks [@douglasduteil](https://github.com/douglasduteil)! - 📦️ Publication d'une version cjs du core
+
 ## 0.3.0
 
 ### Minor Changes
