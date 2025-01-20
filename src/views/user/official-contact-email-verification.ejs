@@ -9,7 +9,7 @@
                 <p>
                     Pour vérifier votre appartenance à l’organisation <%= libelle %>,
                     nous avons envoyé un <% if (newCodeSent) { %>nouveau <% } %>code secret à l’adresse email de votre <%= organization_type_label; %> :
-                    <span id="email-badge-lowercase" class="fr-badge fr-badge--info fr-badge--no-icon">
+                    <span class="fr-badge fr-badge--info fr-badge--no-icon email-badge-lowercase">
                         <%= contactEmail; %>
                     </span>.
                 </p>
@@ -26,8 +26,8 @@
                            name="official_contact_email_verification_token"
                            autocomplete="off">
                 </div>
-
-                <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: true}) %>
+                <%- include('../partials/submit-button.ejs', {label: 'Valider'}) %>
+                <%- include('../partials/go-back.ejs') %>
             </form>
         </div>
     </div>

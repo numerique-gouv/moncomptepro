@@ -12,7 +12,7 @@ describe("join organizations", () => {
     cy.contains(
       "nous avons envoyé un code secret à l’adresse email de votre établissement scolaire",
     );
-    cy.get("#email-badge-lowercase").contains("rogal.dorn@imperialfists.world");
+    cy.get(".email-badge-lowercase").contains("rogal.dorn@imperialfists.world");
 
     cy.maildevGetMessageBySubject(
       "[ProConnect] Authentifier un email sur ProConnect",

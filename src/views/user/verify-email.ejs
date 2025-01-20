@@ -33,7 +33,7 @@
                         name="verify_email_token"
                 >
             </div>
-            <%- include('../partials/card-button-container.ejs', {label: 'Valider', showGoBackButton: false, buttonFullWidth: true}) %>
+            <%- include('../partials/submit-button.ejs', {label: 'Valider'}) %>
         </form>
         <form
             class="inline-form" autocomplete="off"
@@ -42,7 +42,7 @@
         >
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <button data-countdown-end-date="<%= countdownEndDate %>"
-            class="fr-btn fr-btn--tertiary fr-mb-2w disabled-with-countdown btn--fullwidth" 
+            class="fr-btn fr-btn--tertiary fr-mb-2w disabled-with-countdown btn--fullwidth"
             >
                 Recevoir un nouvel email
             </button>
@@ -54,16 +54,6 @@
     >
         Vous ne recevez rien ? Consulter la page d'aide
     </a>
-    <div class="card-button-container fr-mt-2w">
-        <span>
-          <button
-            class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-          >
-            retour
-          </button>
-        </span>
-        <span></span>
-    </div>
+    <%- include('../partials/go-back.ejs') %>
 </div>
 <script type="module" src="<%= js('disabled-with-countdown.js') %>"></script>
-<script type="module" src="<%= js('go-back.js') %>"></script>

@@ -59,23 +59,7 @@
                     </p>
                 <% } %>
             </div>
-            <% if (showsPasskeySection) { %>
-                <button class="fr-btn btn--fullwidth" type="submit">
-                    Valider
-                </button>
-            <% } else { %>
-                <div class="card-button-container">
-                    <button
-                            type="button"
-                            class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-                    >
-                        retour
-                    </button>
-                    <button class="fr-btn" type="submit">
-                        Valider
-                    </button>
-                </div>
-            <% } %>
+            <%- include('../partials/submit-button.ejs', {label: 'Valider'}) %>
         </form>
     <% } %>
 
@@ -84,7 +68,7 @@
     <% } %>
 
     <% if (showsPasskeySection) { %>
-        <div class="fr-mb-5w">
+        <div>
             <p>
                 Votre appareil vous demandera d'utiliser votre empreinte, votre visage ou
                 le verrouillage de l'écran pour valider votre identité.
@@ -101,15 +85,7 @@
             <input type="hidden" name="webauthn_authentication_response_string">
             <button type="submit" class="fr-btn"></button>
         </form>
-
-        <button
-                type="button"
-                class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-        >
-            retour
-        </button>
         <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
     <% } %>
+    <%- include('../partials/go-back.ejs') %>
 </div>
-
-<script type="module" src="<%= js('go-back.js') %>"></script>
