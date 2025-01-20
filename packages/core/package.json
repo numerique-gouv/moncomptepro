@@ -33,6 +33,19 @@
       "types": "./dist/services/suggestion/index.d.ts"
     }
   },
+  "typesVersions": {
+    "*": {
+      "services/security": [
+        "./dist/security/index.d.ts"
+      ],
+      "services/email": [
+        "./dist/services/email/index.d.ts"
+      ],
+      "services/suggestion": [
+        "./dist/services/suggestion/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "build": "pkgroll --tsconfig=tsconfig.lib.json",
     "check": "npm run build -- --noEmit",
