@@ -2,6 +2,7 @@ import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
   getConnectionAndAccountController,
+  getDoubleAuthenticationController,
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
@@ -38,6 +39,15 @@ export const mainRouter = (app: Express) => {
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     getConnectionAndAccountController,
+  );
+
+  mainRouter.get(
+    "/double-authentication",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    csrfProtectionMiddleware,
+    getDoubleAuthenticationController,
   );
 
   mainRouter.get(

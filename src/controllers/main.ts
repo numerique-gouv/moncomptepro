@@ -192,6 +192,54 @@ export const getConnectionAndAccountController = async (
   }
 };
 
+export const getDoubleAuthenticationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const {
+      id: user_id,
+      email,
+      force_2fa: force2fa,
+    } = getUserFromAuthenticatedSession(req);
+
+    const passkeys = await getUserAuthenticators(email);
+    const is2faCapable = await is2FACapable(user_id);
+
+    // Dirty ad hoc implementation waiting for complete acr support on ProConnect
+    const notificationLabel = await getNotificationLabelFromRequest(req);
+    if (notificationLabel === "2fa_not_configured_for_ds") {
+      setNeedsDirtyDSRedirect(req);
+    }
+    if (
+      notificationLabel &&
+      ["authenticator_added", "passkey_successfully_created"].includes(
+        notificationLabel,
+      ) &&
+      getNeedsDirtyDSRedirect(req)
+    ) {
+      deleteNeedsDirtyDSRedirect(req);
+
+      return res.redirect(DIRTY_DS_REDIRECTION_URL);
+    }
+
+    return res.render("double-authentication", {
+      pageTitle: "Double authentification",
+      notifications: await getNotificationsFromRequest(req),
+      email: email,
+      passkeys,
+      isAuthenticatorConfigured:
+        await isAuthenticatorAppConfiguredForUser(user_id),
+      csrfToken: csrfToken(req),
+      is2faCapable,
+      force2fa,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const postDisableForce2faController = async (
   req: Request,
   res: Response,
