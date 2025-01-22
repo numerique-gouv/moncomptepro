@@ -1,6 +1,7 @@
 import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
+  getConfiguringSingleUseCodeController,
   getConnectionAndAccountController,
   getDoubleAuthenticationController,
   getHomeController,
@@ -48,6 +49,15 @@ export const mainRouter = (app: Express) => {
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     getDoubleAuthenticationController,
+  );
+
+  mainRouter.get(
+    "/configuring-single-use-code",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    csrfProtectionMiddleware,
+    getConfiguringSingleUseCodeController,
   );
 
   mainRouter.get(
