@@ -36,29 +36,6 @@
   pointer-events: none;
 }
 
-/* proconnect-header */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* DELETE WHEN HEADER FROM DSFR WILL REPLACE MCP HEADER */
-  border-bottom: solid 1px #ddd;
-  /* DELETE WHEN WE'LL FOUND BEST SOLUTION TO MASK GREY */
-  background-color: white;
-}
-
-.header > img {
-  height: 4.5rem;
-  margin: 2.5rem 0 1.5rem;
-}
-
-@media all and (max-width: 576px) {
-  .header > img {
-    height: 3.5rem;
-    margin: 1.5rem 0 0.5rem;
-  }
-}
-
 /* display a loading bar on page load */
 #loader-bar {
   transition: width 150ms ease-in-out;
