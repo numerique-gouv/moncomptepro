@@ -3,17 +3,17 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "esModuleInterop": true,
     "module": "NodeNext",
     "moduleResolution": "nodenext",
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "./dist",
-    "resolveJsonModule": true,
-    "rootDir": "src",
+    "paths": { "#src/*": ["./src/*"] },
+    "strict": true,
     "types": ["node"],
-    "verbatimModuleSyntax": true,
-    "paths": {
-      "#src/*": ["./src/*"]
-    }
+    "verbatimModuleSyntax": true
   },
   "extends": "@tsconfig/node22/tsconfig.json",
   "references": [

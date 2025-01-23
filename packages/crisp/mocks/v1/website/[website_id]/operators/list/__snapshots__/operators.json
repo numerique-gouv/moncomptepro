@@ -1,0 +1,188 @@
+[
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "139ead4",
+      "email": "a0288a7@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/a0288a7/200/300",
+      "first_name": "Gaétan",
+      "last_name": "9a90f21",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "0d5abfc",
+      "email": "eb3b8c9@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/eb3b8c9/200/300",
+      "first_name": "Amandine",
+      "last_name": "733431b",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "8a9a67b",
+      "email": "2ea9da5@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/2ea9da5/200/300",
+      "first_name": "Raphaël",
+      "last_name": "dbd7126",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "a36ce8d",
+      "email": "3b6c5d2@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/3b6c5d2/200/300",
+      "first_name": "Douglas",
+      "last_name": "8da57eb",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "48b6fd6",
+      "email": "b841067@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/b841067/200/300",
+      "first_name": "Félix",
+      "last_name": "0ea2b68",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "4014be3",
+      "email": "91f05d4@inclusion.gouv.fr",
+      "avatar": "https://picsum.photos/seed/91f05d4/200/300",
+      "first_name": "Sonia",
+      "last_name": "db5301f",
+      "role": "member",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "1bcc660",
+      "email": "de19e9a@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/de19e9a/200/300",
+      "first_name": "Rebecca",
+      "last_name": "cf015aa",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "bb726df",
+      "email": "87b60eb@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/87b60eb/200/300",
+      "first_name": "Laetitia",
+      "last_name": "cc44507",
+      "role": "owner",
+      "title": null,
+      "availability": "online",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "f96929d",
+      "email": "8fc6982@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/8fc6982/200/300",
+      "first_name": "Benoit",
+      "last_name": "ef6f481",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "31c9f3b",
+      "email": "01792ae@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/01792ae/200/300",
+      "first_name": "Anaïs",
+      "last_name": "863f621",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "9eb0872",
+      "email": "44193c6@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/44193c6/200/300",
+      "first_name": "Arnaud",
+      "last_name": "d660214",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "operator",
+    "details": {
+      "user_id": "1cbaefa",
+      "email": "688fb98@beta.gouv.fr",
+      "avatar": "https://picsum.photos/seed/688fb98/200/300",
+      "first_name": "Aurelie",
+      "last_name": "0b815d0",
+      "role": "owner",
+      "title": null,
+      "availability": "away",
+      "has_token": false
+    }
+  },
+  {
+    "type": "invite",
+    "details": {
+      "email": "44193c6@beta.gouv.fr",
+      "role": "owner",
+      "avatar": "https://picsum.photos/seed/44193c6/200/300"
+    }
+  },
+  {
+    "type": "sandbox",
+    "details": {
+      "user_id": "8e113c4",
+      "email": "9084f46@beta.gouv.fr",
+      "first_name": "Raphaël",
+      "last_name": "dbd7126",
+      "avatar": "https://picsum.photos/seed/9084f46/200/300"
+    }
+  }
+]
