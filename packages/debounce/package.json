@@ -11,7 +11,9 @@
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
-  "imports": {},
+  "imports": {
+    "#src/types": "./src/types/index.ts"
+  },
   "exports": {
     "./api": {
       "require": "./dist/api/index.cjs",

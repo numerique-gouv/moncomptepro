@@ -1,7 +1,7 @@
 //
 
 import { codesEffectifs } from "#src/data";
-import type { TrancheEffectifs } from "#src/types/tranche-effectifs.js";
+import type { TrancheEffectifs } from "#src/types";
 
 //
 
