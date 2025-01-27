@@ -9,6 +9,7 @@
   },
   "main": "src/index.js",
   "workspaces": [
+    "packages/config/typescript",
     "packages/core",
     "packages/email",
     "packages/insee",
@@ -52,6 +53,7 @@
     ]
   },
   "dependencies": {
+    "@gouvfr-lasuite/proconnect.config.typescript": "workspace:*",
     "@gouvfr-lasuite/proconnect.core": "workspace:*",
     "@gouvfr-lasuite/proconnect.crisp": "workspace:*",
     "@gouvfr-lasuite/proconnect.email": "workspace:*",

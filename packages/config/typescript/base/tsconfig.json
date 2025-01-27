@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "ProConnect Base",
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    "checkJs": false,
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": false,
+    "lib": ["ESNext"],
+    "module": "node16",
+    "moduleResolution": "node16",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "types": [],
+    "composite": true,
+    "verbatimModuleSyntax": true,
+    "ignoreDeprecations": "5.0",
+    "isolatedModules": true,
+    "preserveWatchOutput": true
+  }
+}
