@@ -11,6 +11,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
   --mount=type=bind,source=packages/core/package.json,target=packages/core/package.json \
   --mount=type=bind,source=packages/crisp/package.json,target=packages/crisp/package.json \
+  --mount=type=bind,source=packages/debounce/package.json,target=packages/debounce/package.json \
   --mount=type=bind,source=packages/email/package.json,target=packages/email/package.json \
   --mount=type=bind,source=packages/identite/package.json,target=packages/identite/package.json \
   --mount=type=bind,source=packages/insee/package.json,target=packages/insee/package.json \
@@ -23,6 +24,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
   --mount=type=bind,source=package-lock.json,target=package-lock.json \
   --mount=type=bind,source=packages/core/package.json,target=packages/core/package.json \
   --mount=type=bind,source=packages/crisp/package.json,target=packages/crisp/package.json \
+  --mount=type=bind,source=packages/debounce/package.json,target=packages/debounce/package.json \
   --mount=type=bind,source=packages/email/package.json,target=packages/email/package.json \
   --mount=type=bind,source=packages/identite/package.json,target=packages/identite/package.json \
   --mount=type=bind,source=packages/insee/package.json,target=packages/insee/package.json \
