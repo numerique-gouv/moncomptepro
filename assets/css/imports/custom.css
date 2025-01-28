@@ -23,6 +23,10 @@
   color: #00008f !important;
 }
 
+.grey-background {
+  background-color: #f6f6f6 !important;
+}
+
 .centered-content {
   justify-content: center !important;
 }

@@ -24,7 +24,76 @@
         <section class="fr-mb-6w">
             <h3>Double authentification</h3>
             <% if (isAuthenticatorConfigured) { %>
-                <p>Bravo vous êtes un.e concitoyen.ne très conscient des questions de cybersécurité car vous avez activé la 2FA.</p>
+                <div class="fr-alert fr-alert--info fr-mb-3w">
+                    <p>La double authentification (2FA) protège mieux vos informations personnelles et réduit les risques de piratage.</p>
+                </div>
+                <h4 class="fr-h5">Méthode de double authentification</h4>
+                <div class="fr-card fr-card--horizontal fr-mb-3w">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h3 class="fr-card__title blue-france">FreeOTP Authenticator</h3>
+                            <div class="fr-card__desc">
+                                <p class="fr-mb-2w">Ajout : <%= totpKeyVerifiedAt; %>
+                                </p>
+                                <form action="/delete-authenticator-app-configuration" method="post">
+                                    <input
+                                            type="hidden"
+                                            name="_csrf"
+                                            value="<%= csrfToken; %>"
+                                    >
+                                    <button 
+                                        class="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-delete-bin-line"
+                                        data-confirm="Cette action est irreversible."
+                                        type="submit"
+                                    >
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="fr-card__start">
+                                <p class="fr-card__detail">Code à usage unique</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fr-card__header grey-background fr-hidden fr-unhidden-md">
+                        <div class="fr-card__img">
+                            <img class="fr-responsive-img" src="/dist/application.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="fr-fieldset fr-mb-3w" id="radio-hint" aria-labelledby="radio-hint-legend radio-hint-messages">
+                    <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="radio-hint-legend">
+                        Où voulez-vous activer la double authentification ?
+                    </legend>
+                    <div class="fr-fieldset__element">
+                        <div class="fr-radio-group">
+                            <input type="radio" id="radio-hint-1" name="radio-hint">
+                            <label class="fr-label" for="radio-hint-1">
+                                Sur tous les sites
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fr-fieldset__element">
+                        <div class="fr-radio-group">
+                            <input type="radio" id="radio-hint-2" name="radio-hint">
+                            <label class="fr-label" for="radio-hint-2">
+                                Uniquement sur les sites qui l’exigent
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fr-messages-group" id="radio-hint-messages" aria-live="assertive">
+                    <button class="fr-btn fr-btn--secondary">
+                        Valider
+                    </button>
+                    </div>
+                </fieldset>
+                <p>Vous pouvez configurer plusieurs méthodes de double authentification si vous le souhaitez.</p>
+                <a
+                    class="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-add-line"
+                    href="/double-authentication"
+                >
+                    Ajouter une méthode de validation supplémentaire
+                </a>
             <% } else { %>
                 <p>
                     Vous n'avez pas encore configuré la double authentification (2FA).
@@ -35,12 +104,6 @@
                 >
                     Configurer la 2FA
                 </a>
-                <!-- <a
-                        class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-add-line"
-                        href="/authenticator-app-configuration"
-                >
-                    Configurer un code à usage unique
-                </a> -->
             <% } %>
         </section>
         
