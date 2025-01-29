@@ -32,3 +32,7 @@ export function singleValidationFactory(
     return debounce;
   };
 }
+
+export type SingleValidationHandler = ReturnType<
+  typeof singleValidationFactory
+>;
