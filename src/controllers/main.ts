@@ -168,7 +168,6 @@ export const getConnectionAndAccountController = async (
 
       return res.redirect(DIRTY_DS_REDIRECTION_URL);
     }
-
     return res.render("connection-and-account", {
       pageTitle: "Compte et connexion",
       notifications: await getNotificationsFromRequest(req),
@@ -199,6 +198,7 @@ export const getDoubleAuthenticationController = async (
 ) => {
   try {
     const { id: user_id, email } = getUserFromAuthenticatedSession(req);
+    const passkeys = await getUserAuthenticators(email);
 
     return res.render("double-authentication", {
       pageTitle: "Double authentification",
@@ -207,6 +207,12 @@ export const getDoubleAuthenticationController = async (
       isAuthenticatorConfigured:
         await isAuthenticatorAppConfiguredForUser(user_id),
       csrfToken: csrfToken(req),
+      passkeys: passkeys,
+      breadcrumbs: [
+        { label: "Tableau de bord", href: "/" },
+        { label: "Compte et connexion", href: "/connection-and-account" },
+        { label: "Double authentification" },
+      ],
     });
   } catch (error) {
     next(error);
@@ -226,6 +232,12 @@ export const getConfiguringSingleUseCodeController = async (
       isAuthenticatorConfigured:
         await isAuthenticatorAppConfiguredForUser(user_id),
       csrfToken: csrfToken(req),
+      breadcrumbs: [
+        { label: "Tableau de bord", href: "/" },
+        { label: "Compte et connexion", href: "/connection-and-account" },
+        { label: "Double authentification", href: "/double-authentication" },
+        { label: "Code à usage unique" },
+      ],
     });
   } catch (error) {
     next(error);
