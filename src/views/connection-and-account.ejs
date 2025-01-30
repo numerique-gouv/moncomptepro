@@ -6,12 +6,12 @@
         <section class="fr-mb-6w">
             <h3>Identifiants</h3>
             <div class="fr-input-group fr-input-group--disabled">
-                <label class="fr-label" for="text-input-disabled">Adresse email</label>
-                <input class="fr-input" disabled type="text" id="text-input-disabled" name="text-input-disabled" value="<%=email%>">
+                <label class="fr-label" for="email-input-disabled">Adresse email</label>
+                <input class="fr-input" disabled type="text" id="email-input-disabled" name="email-input-disabled" value="<%=email%>">
             </div>
             <div class="fr-input-group fr-input-group--disabled fr-mb-1w">
-                <label class="fr-label" for="text-input-disabled">Mot de passe</label>
-                <input class="fr-input" disabled type="password" id="text-input-disabled" name="text-input-disabled" value="<%=encrypted_password%>">
+                <label class="fr-label" for="password-input-disabled">Mot de passe</label>
+                <input class="fr-input" disabled type="password" id="password-input-disabled" name="password-input-disabled" value="CeciEstUnFauxMotDePasseTuNeNousPiraterasPas">
             </div>
             <form action="/users/reset-password" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
