@@ -115,32 +115,6 @@
             <% }; %>
             
             <% if (isAuthenticatorConfigured || passkeys.length > 0){ %>
-                <fieldset class="fr-fieldset fr-mb-3w" id="radio-hint" aria-labelledby="radio-hint-legend radio-hint-messages">
-                    <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="radio-hint-legend">
-                        Où voulez-vous activer la double authentification ?
-                    </legend>
-                    <div class="fr-fieldset__element">
-                        <div class="fr-radio-group">
-                            <input type="radio" id="radio-hint-1" name="radio-hint">
-                            <label class="fr-label" for="radio-hint-1">
-                                Sur tous les sites
-                            </label>
-                        </div>
-                    </div>
-                    <div class="fr-fieldset__element">
-                        <div class="fr-radio-group">
-                            <input type="radio" id="radio-hint-2" name="radio-hint">
-                            <label class="fr-label" for="radio-hint-2">
-                                Uniquement sur les sites qui l’exigent
-                            </label>
-                        </div>
-                    </div>
-                    <div class="fr-messages-group" id="radio-hint-messages" aria-live="assertive">
-                    <button class="fr-btn fr-btn--secondary">
-                        Valider
-                    </button>
-                    </div>
-                </fieldset>
                 <p>Vous pouvez configurer plusieurs méthodes de double authentification si vous le souhaitez.</p>
                 <a
                     class="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-add-line"
