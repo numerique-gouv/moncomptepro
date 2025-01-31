@@ -23,11 +23,14 @@
 
         <section class="fr-mb-6w">
             <h3>Double authentification</h3>
-            <% if (isAuthenticatorConfigured) { %>
+            <% if (isAuthenticatorConfigured || passkeys.length > 0){ %>
                 <div class="fr-alert fr-alert--info fr-mb-3w">
                     <p>La double authentification (2FA) protège mieux vos informations personnelles et réduit les risques de piratage.</p>
                 </div>
-                <h4 class="fr-h5">Méthode de double authentification</h4>
+            <% }; %>
+
+            <% if (isAuthenticatorConfigured){ %>
+                <p><b>Code à usage unique</b></p>
                 <div class="fr-card fr-card--horizontal fr-mb-3w">
                     <div class="fr-card__body">
                         <div class="fr-card__content">
@@ -61,6 +64,57 @@
                         </div>
                     </div>
                 </div>
+            <% }; %>
+
+            <% if (passkeys.length > 0){ %>
+                <p><b>Clés d'accès</b></p>
+                <% passkeys.forEach(({
+                    credential_id,
+                    usage_count,
+                    display_name,
+                    created_at,
+                    last_used_at,
+                    shows_second_factor_only_label
+                }) => { %>
+                    <div class="fr-card fr-card--horizontal fr-mb-3w">
+                        <div class="fr-card__body">
+                            <div class="fr-card__content">
+                                <h3 class="fr-card__title blue-france"><%= display_name; %></h3>
+                                <div class="fr-card__desc">
+                                    <p class="fr-mb-2w">Ajout : <%= created_at; %>
+                                    </p>
+                                    
+                                    <form action="/delete-passkeys/<%= credential_id; %>" method="post">
+                                        <input
+                                                type="hidden"
+                                                name="_csrf"
+                                                value="<%= csrfToken; %>"
+                                        >
+                                        <button
+                                                aria-label="Supprimer la clé d'accès <%= display_name; %>"
+                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
+                                                data-confirm="Cette action est irreversible."
+                                                type="submit"
+                                        >
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="fr-card__start">
+                                    <p class="fr-card__detail">Clé d'authentification</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fr-card__header grey-background fr-hidden fr-unhidden-md">
+                            <div class="fr-card__img">
+                                <img class="fr-responsive-img" src="/dist/application.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% }; %>
+            
+            <% if (isAuthenticatorConfigured || passkeys.length > 0){ %>
                 <fieldset class="fr-fieldset fr-mb-3w" id="radio-hint" aria-labelledby="radio-hint-legend radio-hint-messages">
                     <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="radio-hint-legend">
                         Où voulez-vous activer la double authentification ?
@@ -94,17 +148,17 @@
                 >
                     Ajouter une méthode de validation supplémentaire
                 </a>
-            <% } else { %>
+            <% }; %>
+            
+            <% if (!isAuthenticatorConfigured && passkeys.length === 0) { %>
                 <p>
                     Vous n'avez pas encore configuré la double authentification (2FA).
                 </p>
-                <a
-                        class="fr-btn fr-btn--secondary"
-                        href="/double-authentication"
-                >
+                <a class="fr-btn fr-btn--secondary" href="/double-authentication">
                     Configurer la 2FA
                 </a>
             <% } %>
+
         </section>
         
         <section class="fr-mb-6w">
