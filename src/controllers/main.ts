@@ -146,6 +146,7 @@ export const getConnectionAndAccountController = async (
       email,
       totp_key_verified_at,
       force_2fa: force2fa,
+      encrypted_password,
     } = getUserFromAuthenticatedSession(req);
 
     const passkeys = await getUserAuthenticators(email);
@@ -183,6 +184,7 @@ export const getConnectionAndAccountController = async (
       csrfToken: csrfToken(req),
       is2faCapable,
       force2fa,
+      encrypted_password,
     });
   } catch (error) {
     next(error);
