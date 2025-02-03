@@ -8,7 +8,7 @@ describe("sign-in with magic link", () => {
     cy.get('[type="submit"]').click();
 
     cy.get('[action="/users/send-magic-link"]  [type="submit"]')
-      .contains("Envoyer le lien")
+      .contains("Recevoir un lien d’identification")
       .click();
 
     cy.contains("Votre lien vous attend à l’adresse...");
@@ -17,7 +17,7 @@ describe("sign-in with magic link", () => {
       (email) => {
         cy.maildevVisitMessageById(email.id);
         cy.contains(
-          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+          "Vous avez demandé un lien d'identification à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
         );
         cy.contains("Se connecter").click();
         cy.maildevDeleteMessageById(email.id);
@@ -38,7 +38,7 @@ describe("sign-in with magic link", () => {
     );
 
     cy.get('[action="/users/send-magic-link"]  [type="submit"]')
-      .contains("Envoyer le lien")
+      .contains("Recevoir un lien d’identification")
       .click();
 
     cy.contains("Votre lien vous attend à l’adresse...");
@@ -47,7 +47,7 @@ describe("sign-in with magic link", () => {
       (email) => {
         cy.maildevVisitMessageById(email.id);
         cy.contains(
-          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+          "Vous avez demandé un lien d'identification à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
         );
         cy.contains("Se connecter").click();
         cy.maildevDeleteMessageById(email.id);
@@ -103,7 +103,7 @@ describe("sign-in with magic link", () => {
       (email) => {
         cy.maildevVisitMessageById(email.id);
         cy.contains(
-          "Vous avez demandé un lien de connexion à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
+          "Vous avez demandé un lien d'identification à ProConnect. Utilisez le bouton ci-dessous pour vous connecter instantanément.",
         );
         cy.contains("Se connecter").click();
         cy.maildevDeleteMessageById(email.id);

@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr-lasuite/proconnect.core",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/core#readme",
   "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
   "repository": {
@@ -12,27 +12,42 @@
   "sideEffects": false,
   "type": "module",
   "imports": {
-    "#src/*": {
-      "types": "./src/*",
-      "default": "./dist/*"
-    }
+    "#src/data/gouvfr-domains": "./src/data/gouvfr-domains.ts",
+    "#src/data/most-used-free-email-domains": "./src/data/most-used-free-email-domains.ts",
+    "#src/data/other-gouv-domains": "./src/data/other-gouv-domains.ts"
   },
   "exports": {
-    "./*": {
-      "require": {
-        "types": "./dist/*/index.d.ts",
-        "default": "./dist/*/index.js"
-      },
-      "import": {
-        "types": "./dist/*/index.d.ts",
-        "default": "./dist/*/index.js"
-      },
-      "types": "./dist/*/index.d.ts",
-      "default": "./dist/*/index.js"
+    "./security": {
+      "require": "./dist/security/index.cjs",
+      "import": "./dist/security/index.js",
+      "types": "./dist/security/index.d.ts"
+    },
+    "./services/email": {
+      "require": "./dist/services/email/index.cjs",
+      "import": "./dist/services/email/index.js",
+      "types": "./dist/services/email/index.d.ts"
+    },
+    "./services/suggestion": {
+      "require": "./dist/services/suggestion/index.cjs",
+      "import": "./dist/services/suggestion/index.js",
+      "types": "./dist/services/suggestion/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "services/security": [
+        "./dist/security/index.d.ts"
+      ],
+      "services/email": [
+        "./dist/services/email/index.d.ts"
+      ],
+      "services/suggestion": [
+        "./dist/services/suggestion/index.d.ts"
+      ]
     }
   },
   "scripts": {
-    "build": "tsc --build tsconfig.lib.json",
+    "build": "pkgroll --tsconfig=tsconfig.lib.json",
     "check": "npm run build -- --noEmit",
     "dev": "npm run build -- --watch --preserveWatchOutput",
     "test": "mocha"
@@ -45,6 +60,8 @@
     "spec": "src/**/*.test.ts"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "@types/bcryptjs": "^2.4.6",
     "@zootools/email-spell-checker": "^1.12.0",
     "bcryptjs": "^2.4.3",
     "is-disposable-email-domain": "^1.0.7",
@@ -54,13 +71,11 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
-    "@types/bcrypt": "^5.0.2",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/lodash-es": "^4.17.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "chai": "^5.1.2",
     "mocha": "^11.0.1",
+    "pkgroll": "^2.6.1",
     "tsx": "^4.19.2"
   },
   "publishConfig": {

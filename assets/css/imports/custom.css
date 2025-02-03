@@ -1,5 +1,5 @@
-#email-badge-lowercase {
-  text-transform: lowercase;
+.email-badge-lowercase {
+  text-transform: lowercase !important;
 }
 
 .inline-form {
@@ -14,18 +14,17 @@
   white-space: break-spaces;
 }
 
-/* magic link icon */
-#magic-link-icon-inline {
-  padding: 0 1.5rem;
+.border-shadow {
+  border-radius: 4px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
 }
 
-#magic-link-icon-block {
-  text-align: center;
-  margin: 3rem 0;
+.blue-france {
+  color: #00008f !important;
 }
 
-#magic-link-icon-block > img {
-  height: 46px;
+.centered-content {
+  justify-content: center !important;
 }
 
 /* proconnect-header */

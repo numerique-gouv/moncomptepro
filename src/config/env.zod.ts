@@ -14,7 +14,7 @@ export const connectorEnvSchema = z.object({
   CRISP_WEBSITE_ID: z.string().default(""),
   CRISP_MODERATION_TAG: zCoerceArray(z.string()).default("identite,moderation"),
   DATABASE_URL: z.string().url(),
-  DEBOUNCE_API_KEY: z.string().optional(),
+  DEBOUNCE_API_KEY: z.string().default(""),
   INSEE_CONSUMER_KEY: z.string(),
   INSEE_CONSUMER_SECRET: z.string(),
   REDIS_URL: z.string().url().default("redis://:@127.0.0.1:6379"),

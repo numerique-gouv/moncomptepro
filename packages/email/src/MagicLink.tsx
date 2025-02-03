@@ -12,8 +12,8 @@ export default function MagicLink(props: Props) {
       <Text>Bonjour,</Text>
       <br />
       <Text>
-        Vous avez demandé un <b>lien de connexion</b> à ProConnect. Utilisez le
-        bouton ci-dessous pour vous connecter instantanément.
+        Vous avez demandé un <b>lien d'identification</b> à ProConnect. Utilisez
+        le bouton ci-dessous pour vous connecter instantanément.
         <br />
         <Em>Il est valable 1 heure</Em>.
       </Text>

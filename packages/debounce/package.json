@@ -1,0 +1,59 @@
+{
+  "name": "@gouvfr-lasuite/proconnect.debounce",
+  "version": "0.4.1",
+  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/debounce#readme",
+  "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/numerique-gouv/moncomptepro.git",
+    "directory": "packages/debounce"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "imports": {},
+  "exports": {
+    "./api": {
+      "require": "./dist/api/index.cjs",
+      "import": "./dist/api/index.js",
+      "types": "./dist/api/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "api": [
+        "./dist/api/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "pkgroll --tsconfig=tsconfig.lib.json",
+    "check": "npm run build -- --noEmit",
+    "dev": "npm run build -- --watch --preserveWatchOutput",
+    "test": "mocha"
+  },
+  "mocha": {
+    "reporter": "spec",
+    "require": [
+      "tsx"
+    ],
+    "spec": "src/**/*.test.ts"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1",
+    "pkgroll": "^2.6.1",
+    "tsx": "^4.19.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

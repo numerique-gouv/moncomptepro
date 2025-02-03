@@ -173,23 +173,21 @@
                                         Dernière utilisation : <%= last_used_at; %>
                                     </p>
                                     <p class="fr-tile__desc">Nombre d’utilisations : <%= usage_count; %></p>
-                                    <div class="card-button-container">
-                                        <form action="/delete-passkeys/<%= credential_id; %>" method="post">
-                                            <input
-                                                    type="hidden"
-                                                    name="_csrf"
-                                                    value="<%= csrfToken; %>"
-                                            >
-                                            <button
-                                                    aria-label="Supprimer la clé d'accès <%= display_name; %>"
-                                                    class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
-                                                    data-confirm="Cette action est irreversible."
-                                                    type="submit"
-                                            >
-                                                Supprimer cette clé d’accès
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <form action="/delete-passkeys/<%= credential_id; %>" method="post">
+                                        <input
+                                                type="hidden"
+                                                name="_csrf"
+                                                value="<%= csrfToken; %>"
+                                        >
+                                        <button
+                                                aria-label="Supprimer la clé d'accès <%= display_name; %>"
+                                                class="fr-btn fr-btn--secondary fr-btn--sm js-confirm"
+                                                data-confirm="Cette action est irreversible."
+                                                type="submit"
+                                        >
+                                            Supprimer cette clé d’accès
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

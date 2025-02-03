@@ -18,9 +18,7 @@ document.addEventListener(
     var organizationAlertContentElement =
       organizationAlertElement.querySelector(".alert--content");
     var siretSelectorElement = document.getElementById("siret-selector");
-    var submitElement = document.querySelector(
-      '.card-button-container button[type="submit"]',
-    );
+    var submitElement = document.querySelector('button[type="submit"]');
 
     function clearOrganizationInfo() {
       organizationInfoElement.style.display = "none";

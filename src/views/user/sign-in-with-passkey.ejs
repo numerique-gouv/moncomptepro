@@ -22,12 +22,7 @@
         <button class="fr-btn btn--fullwidth fr-mb-2w" id="webauthn-btn-begin-authentication">
             Continuer
         </button>
-        <button
-            type="button"
-            class="fr-btn fr-btn--tertiary fr-icon-arrow-go-back-line fr-btn--icon-left go-back-link"
-        >
-            retour
-        </button>
+        <%- include('../partials/go-back.ejs') %>
     </div>
     <form id="webauthn-authentication-response-form" action="/users/sign-in-with-passkey" method="post" hidden>
         <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
@@ -37,4 +32,3 @@
 </div>
 
 <script type="module" src="<%= js('webauthn-authentication.js') %>"></script>
-<script type="module" src="<%= js('go-back.js') %>"></script>
