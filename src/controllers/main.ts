@@ -16,6 +16,7 @@ import {
 } from "../managers/session/dirty-ds-redirect";
 import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
 import {
+  getUserVerificationLabel,
   sendUpdatePersonalInformationEmail,
   updatePersonalInformations,
 } from "../managers/user";
@@ -45,6 +46,8 @@ export const getPersonalInformationsController = async (
 ) => {
   try {
     const user = getUserFromAuthenticatedSession(req);
+    const verifiedBy = await getUserVerificationLabel(user.id);
+
     return res.render("personal-information", {
       pageTitle: "Informations personnelles",
       email: user.email,
@@ -54,6 +57,7 @@ export const getPersonalInformationsController = async (
       job: user.job,
       notifications: await getNotificationsFromRequest(req),
       csrfToken: csrfToken(req),
+      verifiedBy,
     });
   } catch (error) {
     next(error);
@@ -68,16 +72,15 @@ export const postPersonalInformationsController = async (
   try {
     const { given_name, family_name, phone_number, job } =
       await getParamsForPostPersonalInformationsController(req);
+    const { id: userId } = getUserFromAuthenticatedSession(req);
+    const verifiedBy = await getUserVerificationLabel(userId);
 
-    const updatedUser = await updatePersonalInformations(
-      getUserFromAuthenticatedSession(req).id,
-      {
-        given_name,
-        family_name,
-        phone_number,
-        job,
-      },
-    );
+    const updatedUser = await updatePersonalInformations(userId, {
+      given_name,
+      family_name,
+      phone_number,
+      job,
+    });
 
     await sendUpdatePersonalInformationEmail({
       previousInformations: getUserFromAuthenticatedSession(req),
@@ -85,7 +88,6 @@ export const postPersonalInformationsController = async (
     });
 
     updateUserInAuthenticatedSession(req, updatedUser);
-
     return res.render("personal-information", {
       pageTitle: "Informations personnelles",
       email: updatedUser.email,
@@ -97,6 +99,7 @@ export const postPersonalInformationsController = async (
         notificationMessages["personal_information_update_success"],
       ],
       csrfToken: csrfToken(req),
+      verifiedBy,
     });
   } catch (error) {
     if (error instanceof ZodError) {
