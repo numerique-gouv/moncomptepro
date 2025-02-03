@@ -168,6 +168,11 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "success",
     description: "L’application d’authentification a été modifiée.",
   },
+  certification_franceconnect_data_transmission_agreement_required: {
+    type: "error",
+    description:
+      "Erreur : vous devez accepter la transmission de vos données FranceConnect pour permettre la certification dirigeante.",
+  },
   "2fa_successfully_enabled": {
     type: "success",
     description: "La validation en deux étapes a bien été activée.",

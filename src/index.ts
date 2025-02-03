@@ -258,6 +258,11 @@ let server: Server;
     ejsLayoutMiddlewareFactory(app),
     interactionRouter(oidcProvider),
   );
+  app.use("/login-callback", function franceConnectLoginCallback(req, res) {
+    return res.redirect(
+      `/users/certification-dirigeant/login-as${req.url.substring(req.path.length)}`,
+    );
+  });
   app.use("/users", ejsLayoutMiddlewareFactory(app), userRouter());
   app.use("/api", apiRouter());
 

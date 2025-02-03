@@ -35,7 +35,7 @@ services:
       PC_CLIENT_SECRET: standard_client_secret
       PC_PROVIDER: http://localhost:3000
       PC_SCOPES: openid email profile organization
-      ACR_VALUE_FOR_2FA: "https://proconnect.gouv.fr/assurance/consistency-checked-2fa"
+      ACR_VALUE_FOR_2FA: "https://proconnect.gouv.fr/assurance/certification-dirigeant"
       STYLESHEET_URL:
     network_mode: "host"
 
