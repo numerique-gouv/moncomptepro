@@ -133,8 +133,43 @@
                     Configurer la 2FA
                 </a>
             <% } %>
-
         </section>
+
+        <% if (locals.is2faCapable) { %>
+            <form class="fr-mt-4w" id="2fa-form" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
+            
+                <fieldset class="fr-fieldset fr-mb-0" id="radio-hint" aria-labelledby="radio-hint-legend radio-hint-messages">
+                    <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="radio-hint-legend">
+                        Où voulez-vous activer la double authentification ?
+                    </legend>
+            
+                    <div class="fr-fieldset__element">
+                        <div class="fr-radio-group">
+                            <input type="radio" id="radio-enable" name="force2fa" value="enable" 
+                                <%= locals.force2fa ? 'checked' : '' %>>
+                            <label class="fr-label" for="radio-enable">
+                                Sur tous les sites
+                            </label>
+                        </div>
+                    </div>
+            
+                    <div class="fr-fieldset__element">
+                        <div class="fr-radio-group">
+                            <input type="radio" id="radio-disable" name="force2fa" value="disable" 
+                                <%= !locals.force2fa ? 'checked' : '' %>>
+                            <label class="fr-label" for="radio-disable">
+                                Uniquement sur les sites qui l'exigent
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            
+                <button class="fr-btn fr-btn--secondary fr-mb-6w" type="submit" id="submit-btn">
+                    Valider
+                </button>
+            </form>
+        <% } %>
         
         <section class="fr-mb-6w">
             <h3>Suppression de mon compte</h3>
@@ -153,5 +188,6 @@
             </form>
         </section>
         <script type="module" src="<%= js('confirm.js') %>"></script>
+        <script type="module" src="<%= js('force2fa.js') %>"></script>
     </div>
 </div>
