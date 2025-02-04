@@ -123,3 +123,23 @@ describe("sign-in with a client requiring certification dirigeant identity", () 
     );
   });
 });
+
+describe("sign-in with a client requiring certification dirigeant and 2fa identity", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:4000");
+    cy.setRequestedAcrs([
+      "https://proconnect.gouv.fr/assurance/certification-dirigeant",
+      "https://proconnect.gouv.fr/assurance/self-asserted-2fa",
+    ]);
+  });
+
+  it("should sign-in an return the right acr value", function () {
+    cy.get("button#custom-connection").click({ force: true });
+
+    cy.mfaLogin("certification-dirigeant-aal2@yopmail.com");
+
+    cy.contains(
+      '"acr": "https://proconnect.gouv.fr/assurance/self-asserted-2fa"',
+    );
+  });
+});
