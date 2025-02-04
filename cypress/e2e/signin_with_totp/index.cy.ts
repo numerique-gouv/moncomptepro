@@ -64,7 +64,7 @@ describe("sign-in with TOTP on untrusted browser", () => {
 
     cy.get("button#force-2fa").click();
 
-    cy.contains("Valider en deux étapes");
+    cy.contains("Valider avec la double authentification");
 
     cy.fillTotpFields();
 
