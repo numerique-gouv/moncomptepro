@@ -22,9 +22,9 @@ describe("add 2fa authentication", () => {
 
     cy.contains("Configurer un code à usage unique (OTP)");
 
-    cy.get('label[for="checkboxes-1"]').click();
+    cy.get('label[for="is-authenticator-app-installed"]').click();
 
-    cy.get("#checkboxes-1").should("be.checked");
+    cy.get("#is-authenticator-app-installed").should("be.checked");
 
     cy.get("#continue-button")
       .should("not.have.attr", "aria-disabled", "true")
@@ -76,9 +76,9 @@ describe("add 2fa authentication", () => {
 
     cy.contains("Configurer un code à usage unique (OTP)");
 
-    cy.get('label[for="checkboxes-1"]').click();
+    cy.get('label[for="is-authenticator-app-installed"]').click();
 
-    cy.get("#checkboxes-1").should("be.checked");
+    cy.get("#is-authenticator-app-installed").should("be.checked");
 
     cy.get("#continue-button")
       .should("not.have.attr", "aria-disabled", "true")

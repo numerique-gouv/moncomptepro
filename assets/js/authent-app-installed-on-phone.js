@@ -1,5 +1,5 @@
 const initializeCheckboxOTP = () => {
-  const checkbox = document.getElementById("checkboxes-1");
+  const checkbox = document.getElementById("is-authenticator-app-installed");
   const continueLink = document.getElementById("continue-button");
 
   if (!checkbox || !continueLink) return;
