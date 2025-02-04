@@ -59,6 +59,7 @@ export const createAuthenticatedSession = async (
     twoFactorsAuthRequested,
     referrerPath,
     authForProconnectFederation,
+    certificationDirigeantRequested,
   } = req.session;
 
   // as selected org is not stored in session,
@@ -82,6 +83,8 @@ export const createAuthenticatedSession = async (
         req.session.mustReturnOneOrganizationInPayload =
           mustReturnOneOrganizationInPayload;
         req.session.twoFactorsAuthRequested = twoFactorsAuthRequested;
+        req.session.certificationDirigeantRequested =
+          certificationDirigeantRequested;
         req.session.referrerPath = referrerPath;
         req.session.authForProconnectFederation = authForProconnectFederation;
         // new session reset amr

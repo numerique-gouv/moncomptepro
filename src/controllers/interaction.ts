@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
 import { z } from "zod";
 import {
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT,
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
   ACR_VALUE_FOR_IAL2_AAL1,
@@ -19,6 +20,7 @@ import {
 import { setLoginHintInUnauthenticatedSession } from "../managers/session/unauthenticated";
 import { findByClientId } from "../repositories/oidc-client";
 import {
+  certificationDirigeantRequested,
   isAcrSatisfied,
   isThereAnyRequestedAcr,
   twoFactorsAuthRequested,
@@ -42,6 +44,8 @@ export const interactionStartControllerFactory =
       req.session.mustReturnOneOrganizationInPayload =
         mustReturnOneOrganizationInPayload(scope);
       req.session.twoFactorsAuthRequested = twoFactorsAuthRequested(prompt);
+      req.session.certificationDirigeantRequested =
+        certificationDirigeantRequested(prompt);
 
       const oidcClient = await findByClientId(client_id);
       req.session.authForProconnectFederation =
@@ -96,6 +100,10 @@ export const interactionEndControllerFactory =
         : isConsistencyChecked
           ? ACR_VALUE_FOR_IAL2_AAL1
           : ACR_VALUE_FOR_IAL1_AAL1;
+
+      currentAcr = req.session.certificationDirigeantRequested
+        ? ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT
+        : currentAcr;
 
       const amr = getSessionStandardizedAuthenticationMethodsReferences(req);
       const ts = user.last_sign_in_at

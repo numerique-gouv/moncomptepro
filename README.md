@@ -170,6 +170,7 @@ Les valeurs `acr` utilisées par ProConnect Identité sont les suivantes :
   - code à usage unique envoyé par email à l'adresse de contact référencée dans un annuaire de référence
   - identité du dirigeant d'association conforme
 - `https://proconnect.gouv.fr/assurance/consistency-checked-2fa` : `https://proconnect.gouv.fr/assurance/consistency-checked` + authentification à double facteur
+- `https://proconnect.gouv.fr/assurance/certification-dirigeant` : pour activer la certification dirigeant
 
 ## 3. 👋 Contribuer à ProConnect Identité
 
