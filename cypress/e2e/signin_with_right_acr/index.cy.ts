@@ -142,4 +142,14 @@ describe("sign-in with a client requiring certification dirigeant and 2fa identi
       '"acr": "https://proconnect.gouv.fr/assurance/self-asserted-2fa"',
     );
   });
+
+  it("should warn the user that 2fa is required", function () {
+    cy.get("button#custom-connection").click({ force: true });
+
+    cy.login("certification-dirigeant@yopmail.com");
+
+    cy.contains(
+      "Attention : le site que vous voulez utiliser requiert la 2FA, qui réduit les risques de piratage.",
+    );
+  });
 });
