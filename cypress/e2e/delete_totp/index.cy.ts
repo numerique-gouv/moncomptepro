@@ -36,7 +36,7 @@ describe("delete TOTP connexion", () => {
 
     cy.contains("Double authentification");
 
-    cy.get('[data-testid="delete-totp-btn"]').click();
+    cy.get("form[action='/delete-authenticator-app-configuration']").submit();
 
     cy.maildevGetMessageBySubject(
       "Suppression d'une application d'authentification à double facteur",
