@@ -1,6 +1,8 @@
+import { inseeMockServer } from "@gouvfr-lasuite/proconnect.insee/mocks";
 import { AxiosError } from "axios";
 import { isDate, isEmpty, toInteger } from "lodash-es";
 import type { Pool } from "pg";
+import { NODE_ENV } from "../src/config/env";
 import { getOrganizationInfo } from "../src/connectors/api-sirene";
 import { getDatabaseConnection } from "../src/connectors/postgres";
 import { upsert } from "../src/repositories/organization/setters";
@@ -11,10 +13,18 @@ import {
   isOrganizationInfo,
 } from "../src/services/script-helpers";
 
+if (NODE_ENV === "development") {
+  inseeMockServer.listen();
+  logger.info("🎭️ https://api.insee.fr is mocked");
+}
+
 // ex: for public insee subscription the script can be run like so:
 // npm run update-organization-info 2000
 const rateInMsFromArgs = toInteger(process.argv[2]);
-const maxInseeCallRateInMs = rateInMsFromArgs !== 0 ? rateInMsFromArgs : 250;
+const maxInseeCallRateInMsFromArs =
+  rateInMsFromArgs !== 0 ? rateInMsFromArgs : 250;
+const maxInseeCallRateInMs =
+  NODE_ENV === "development" ? 0 : maxInseeCallRateInMsFromArs;
 
 (async () => {
   logger.info("Start updating organization info...");
