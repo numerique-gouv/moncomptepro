@@ -146,6 +146,7 @@ export const getConnectionAndAccountController = async (
       email,
       totp_key_verified_at,
       force_2fa: force2fa,
+      encrypted_password,
     } = getUserFromAuthenticatedSession(req);
 
     const passkeys = await getUserAuthenticators(email);
@@ -167,7 +168,6 @@ export const getConnectionAndAccountController = async (
 
       return res.redirect(DIRTY_DS_REDIRECTION_URL);
     }
-
     return res.render("connection-and-account", {
       pageTitle: "Compte et connexion",
       notifications: await getNotificationsFromRequest(req),
@@ -184,6 +184,60 @@ export const getConnectionAndAccountController = async (
       csrfToken: csrfToken(req),
       is2faCapable,
       force2fa,
+      encrypted_password,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getDoubleAuthenticationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
+    const passkeys = await getUserAuthenticators(email);
+
+    return res.render("double-authentication", {
+      pageTitle: "Double authentification",
+      notifications: await getNotificationsFromRequest(req),
+      email: email,
+      isAuthenticatorConfigured:
+        await isAuthenticatorAppConfiguredForUser(user_id),
+      csrfToken: csrfToken(req),
+      passkeys: passkeys,
+      breadcrumbs: [
+        { label: "Tableau de bord", href: "/" },
+        { label: "Compte et connexion", href: "/connection-and-account" },
+        { label: "Double authentification" },
+      ],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const getConfiguringSingleUseCodeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
+    return res.render("configuring-single-use-code", {
+      pageTitle: "Configurer un code à usage unique",
+      notifications: await getNotificationsFromRequest(req),
+      email: email,
+      isAuthenticatorConfigured:
+        await isAuthenticatorAppConfiguredForUser(user_id),
+      csrfToken: csrfToken(req),
+      breadcrumbs: [
+        { label: "Tableau de bord", href: "/" },
+        { label: "Compte et connexion", href: "/connection-and-account" },
+        { label: "Double authentification", href: "/double-authentication" },
+        { label: "Code à usage unique" },
+      ],
     });
   } catch (error) {
     next(error);

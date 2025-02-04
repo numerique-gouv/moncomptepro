@@ -16,7 +16,6 @@ import {
   MagicLink,
   ResetPassword,
   UpdatePersonalDataMail,
-  UpdateTotpApplication,
   VerifyEmail,
 } from "@gouvfr-lasuite/proconnect.email";
 import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
@@ -257,7 +256,7 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
 
   return sendMail({
     to: [email],
-    subject: "Désactivation de la validation en deux étapes",
+    subject: "Désactivation de la validation avec la double authentification",
     html: Delete2faProtection({
       baseurl: HOST,
       family_name: family_name ?? "",
@@ -276,16 +275,10 @@ export const sendChangeAppliTotpEmail = async ({
   if (isEmpty(user)) {
     throw new UserNotFoundError();
   }
-  const { given_name, family_name, email } = user;
+  const { email } = user;
   return sendMail({
     to: [email],
     subject: "Changement d'application d’authentification",
-    html: UpdateTotpApplication({
-      baseurl: HOST,
-      family_name: family_name ?? "",
-      given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
-    }).toString(),
     tag: "update-totp-application",
   });
 };
@@ -327,7 +320,7 @@ export const sendAddFreeTOTPEmail = async ({
 
   return sendMail({
     to: [email],
-    subject: "Validation en deux étapes activée",
+    subject: "Double authentification activée",
     html: Add2fa({
       baseurl: HOST,
       email,
