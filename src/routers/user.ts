@@ -10,6 +10,13 @@ import {
 } from "../controllers/organization";
 import { postSignInWithAuthenticatorAppController } from "../controllers/totp";
 import { get2faSignInController } from "../controllers/user/2fa-sign-in";
+import {
+  getCertificationDirigeantController,
+  getCertificationDirigeantLoginAsController,
+  getCertificationDirigeantRepresentingController,
+  postCertificationDirigeantController,
+  postCertificationDirigeantLoginAsController,
+} from "../controllers/user/certification-dirigeant";
 import { postDeleteUserController } from "../controllers/user/delete";
 import { postCancelModerationAndRedirectControllerFactory } from "../controllers/user/edit-moderation";
 import { issueSessionOrRedirectController } from "../controllers/user/issue-session-or-redirect";
@@ -416,6 +423,43 @@ export const userRouter = () => {
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     postDeleteUserController,
+  );
+
+  userRouter.get(
+    "/certification-dirigeant",
+    rateLimiterMiddleware,
+    csrfProtectionMiddleware,
+    getCertificationDirigeantController,
+  );
+
+  userRouter.post(
+    "/certification-dirigeant",
+    rateLimiterMiddleware,
+    csrfProtectionMiddleware,
+    postCertificationDirigeantController,
+  );
+
+  userRouter.get(
+    "/certification-dirigeant/login-as",
+    rateLimiterMiddleware,
+    csrfProtectionMiddleware,
+    getCertificationDirigeantLoginAsController,
+  );
+
+  userRouter.post(
+    "/certification-dirigeant/login-as",
+    rateLimiterMiddleware,
+    csrfProtectionMiddleware,
+    postCertificationDirigeantLoginAsController,
+    checkUserSignInRequirementsMiddleware,
+    issueSessionOrRedirectController,
+  );
+
+  userRouter.get(
+    "/certification-dirigeant/representing",
+    rateLimiterMiddleware,
+    csrfProtectionMiddleware,
+    getCertificationDirigeantRepresentingController,
   );
 
   return userRouter;

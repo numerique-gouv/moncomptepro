@@ -227,12 +227,38 @@ export const checkUserIsVerifiedMiddleware = (
     }
   });
 
-export const checkUserHasPersonalInformationsMiddleware = (
+export const checkUserNeedCertificationDirigeantMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) =>
   checkUserIsVerifiedMiddleware(req, res, async (error) => {
+    try {
+      if (error) return next(error);
+
+      const isRequested = req.session.certificationDirigeantRequested;
+      const isAlreadyCertified = req.session.__user_certified;
+
+      console.log("Loooooooooool");
+      console.log({ isRequested, isAlreadyCertified });
+      console.trace();
+
+      if (isAlreadyCertified) return next();
+
+      if (isRequested) return res.redirect("/users/certification-dirigeant");
+
+      return next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+export const checkUserHasPersonalInformationsMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) =>
+  checkUserNeedCertificationDirigeantMiddleware(req, res, async (error) => {
     try {
       if (error) return next(error);
 
