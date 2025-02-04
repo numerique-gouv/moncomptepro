@@ -44,11 +44,11 @@ describe("add 2fa authentication", () => {
 
     cy.contains("L’application d’authentification a été configurée.");
 
-    cy.maildevGetMessageBySubject("Validation en deux étapes activée").then(
+    cy.maildevGetMessageBySubject("Double authentification activée").then(
       (email) => {
         cy.maildevVisitMessageById(email.id);
         cy.contains(
-          "Votre compte ProConnect lion.eljonson@darkangels.world est à présent protégé par la validation en deux étapes",
+          "Votre compte ProConnect lion.eljonson@darkangels.world est à présent protégé par la double authentification.",
         );
         cy.maildevDeleteMessageById(email.id);
       },

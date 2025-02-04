@@ -256,7 +256,7 @@ export const sendDisable2faMail = async ({ user_id }: { user_id: number }) => {
 
   return sendMail({
     to: [email],
-    subject: "Désactivation de la validation en deux étapes",
+    subject: "Désactivation de la validation avec la double authentification",
     html: Delete2faProtection({
       baseurl: HOST,
       family_name: family_name ?? "",
@@ -320,7 +320,7 @@ export const sendAddFreeTOTPEmail = async ({
 
   return sendMail({
     to: [email],
-    subject: "Validation en deux étapes activée",
+    subject: "Double authentification activée",
     html: Add2fa({
       baseurl: HOST,
       email,

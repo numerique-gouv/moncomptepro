@@ -51,7 +51,7 @@ Cypress.Commands.add(
 
     if (totpSecret) {
       // redirect to the TOTP login page
-      cy.contains("Valider en deux étapes");
+      cy.contains("Valider avec la double authentification");
 
       cy.fillTotpFields(totpSecret);
     }
