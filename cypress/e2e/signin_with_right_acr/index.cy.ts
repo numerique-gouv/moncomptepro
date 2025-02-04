@@ -123,3 +123,30 @@ describe("sign-in with a client requiring certification dirigeant identity", () 
     );
   });
 });
+
+describe("Unable to sign in because the client requires a higher level of authentication assurance than self-asserted identity verification", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:4000");
+    cy.setRequestedAcrs([
+      "https://proconnect.gouv.fr/assurance/certification-dirigeant",
+      "https://proconnect.gouv.fr/assurance/consistency-checked",
+      "https://proconnect.gouv.fr/assurance/consistency-checked-2fa",
+    ]);
+  });
+
+  it("should return an error with no self asserted acr", function () {
+    cy.get("button#custom-connection").click({ force: true });
+
+    cy.login("ial1-aal1@yopmail.com");
+
+    cy.contains("Erreur access_denied");
+
+    cy.contains("none of the requested ACRs could be obtained");
+
+    cy.get("a.fr-btn").contains("Continuer").click();
+
+    cy.contains(
+      "AuthorizationResponseError: authorization response from the server is an error",
+    );
+  });
+});
