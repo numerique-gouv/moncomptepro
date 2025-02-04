@@ -170,11 +170,13 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
   },
   "2fa_successfully_enabled": {
     type: "success",
-    description: "La validation en deux étapes a bien été activée.",
+    description:
+      "La validation en deux étapes a été activée sur tous les sites.",
   },
   "2fa_successfully_disabled": {
     type: "success",
-    description: "La validation en deux étapes a bien été désactivée.",
+    description:
+      "La validation en deux étapes a été activée uniquement sur les sites qui l'exigent.",
   },
   "2fa_not_configured": {
     type: "warning",
