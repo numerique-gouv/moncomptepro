@@ -17,7 +17,7 @@ describe("force recent connexion + 2FA on admin pages", () => {
     // Wait for connexion to last
     cy.wait(5 * 1000);
 
-    cy.get('[data-testid="delete-totp-btn"]').click();
+    cy.get("form[action='/delete-authenticator-app-configuration']").submit();
 
     cy.contains("merci de vous identifier à nouveau");
 
