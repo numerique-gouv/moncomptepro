@@ -104,6 +104,7 @@ jobs:
 
       - run: docker compose up --build --detach maildev
 
+      - run: corepack enable
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
