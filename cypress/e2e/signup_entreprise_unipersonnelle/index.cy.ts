@@ -38,7 +38,7 @@ describe("Signup into new entreprise unipersonnelle", () => {
     cy.get('[type="submit"]').click();
 
     // Fill the user's organization information
-    cy.get('[name="siret"]').type("81801912700021");
+    cy.get('[name="siret"]').type("82869625200018");
     cy.get('[type="submit"]').click();
 
     // Click on "continue" on the welcome page
