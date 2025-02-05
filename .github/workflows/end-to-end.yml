@@ -92,7 +92,7 @@ jobs:
         ports:
           - 6379:6379
       postgres:
-        image: postgres:15.10
+        image: postgres:16.6
         env:
           POSTGRES_USER: ${{ env.PGUSER }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
