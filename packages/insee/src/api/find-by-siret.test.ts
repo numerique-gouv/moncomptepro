@@ -1,23 +1,31 @@
 //
 
+import { inseeMockServer } from "#mocks";
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import nock from "nock";
 import { findBySiretFactory } from "./find-by-siret.js";
+import { getInseeAccessTokenFactory } from "./get-insee-access-token.js";
 
 //
 
 const findBySiret = findBySiretFactory({
-  getInseeAccessToken: async () => "SECRET_INSEE_TOKEN",
+  getInseeAccessToken: getInseeAccessTokenFactory({
+    consumerKey: process.env.INSEE_CONSUMER_KEY ?? "",
+    consumerSecret: process.env.INSEE_CONSUMER_SECRET ?? "",
+  }),
 });
 
 describe("findBySiret", () => {
-  it("should return an establishment", async () => {
-    nock("https://api.insee.fr")
-      .get("/entreprises/sirene/siret/20007184300060")
-      .reply(200, { etablissement: { siren: "🦄" } });
+  before(() => inseeMockServer.listen());
+  afterEach(() => inseeMockServer.resetHandlers());
+  after(() => inseeMockServer.close());
 
+  it("should return an establishment", async () => {
     const establishment = await findBySiret("20007184300060");
-    expect(establishment).to.be.deep.equal({ siren: "🦄" });
+
+    expect(establishment).to.be.deep.include({
+      siren: "200071843",
+      siret: "20007184300060",
+    });
   });
 });

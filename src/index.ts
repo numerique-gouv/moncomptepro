@@ -1,3 +1,4 @@
+import { inseeMockServer } from "@gouvfr-lasuite/proconnect.insee/mocks";
 import * as Sentry from "@sentry/node";
 import RedisStore from "connect-redis";
 import type { NextFunction, Request, Response } from "express";
@@ -44,6 +45,11 @@ import {
   renderWithEjsLayout,
 } from "./services/renderer";
 import { usesAuthHeaders } from "./services/uses-auth-headers";
+
+if (NODE_ENV === "development") {
+  inseeMockServer.listen();
+  logger.info("🎭️ https://api.insee.fr is mocked");
+}
 
 const app = express();
 
