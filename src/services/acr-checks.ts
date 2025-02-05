@@ -1,12 +1,41 @@
-import { get, intersection, isArray, isEmpty } from "lodash-es";
+import { difference, get, intersection, isArray, isEmpty } from "lodash-es";
 import type { UnknownObject } from "oidc-provider";
 import {
-  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2,
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
   ACR_VALUE_FOR_IAL2_AAL1,
   ACR_VALUE_FOR_IAL2_AAL2,
+  ACR_VALUE_FOR_IAL3_AAL3,
 } from "../config/env";
+
+const allAcrValues = [
+  ACR_VALUE_FOR_IAL1_AAL1,
+  ACR_VALUE_FOR_IAL1_AAL2,
+  ACR_VALUE_FOR_IAL2_AAL1,
+  ACR_VALUE_FOR_IAL2_AAL2,
+  ACR_VALUE_FOR_IAL3_AAL3,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2,
+];
+
+const twoFactorsAuthAcrValues = [
+  ACR_VALUE_FOR_IAL1_AAL2,
+  ACR_VALUE_FOR_IAL2_AAL2,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2,
+];
+
+const oneFactorAuthAcrValues = [
+  ACR_VALUE_FOR_IAL1_AAL1,
+  ACR_VALUE_FOR_IAL2_AAL1,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+];
+
+const certificationDirigeantAcrValues = [
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2,
+];
 
 interface EssentialAcrPromptDetail {
   name: "login" | "consent" | string;
@@ -70,14 +99,15 @@ export const twoFactorsAuthRequested = (prompt: EssentialAcrPromptDetail) => {
     containsEssentialAcrs(prompt) &&
     areAcrsRequestedInPrompt({
       prompt,
-      acrs: [ACR_VALUE_FOR_IAL1_AAL2, ACR_VALUE_FOR_IAL2_AAL2],
+      acrs: twoFactorsAuthAcrValues,
     }) &&
     !areAcrsRequestedInPrompt({
       prompt,
-      acrs: [ACR_VALUE_FOR_IAL1_AAL1, ACR_VALUE_FOR_IAL2_AAL1],
+      acrs: oneFactorAuthAcrValues,
     })
   );
 };
+
 export const certificationDirigeantRequested = (
   prompt: EssentialAcrPromptDetail,
 ) => {
@@ -85,16 +115,11 @@ export const certificationDirigeantRequested = (
     containsEssentialAcrs(prompt) &&
     areAcrsRequestedInPrompt({
       prompt,
-      acrs: [ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT],
+      acrs: certificationDirigeantAcrValues,
     }) &&
     !areAcrsRequestedInPrompt({
       prompt,
-      acrs: [
-        ACR_VALUE_FOR_IAL1_AAL1,
-        ACR_VALUE_FOR_IAL1_AAL2,
-        ACR_VALUE_FOR_IAL2_AAL1,
-        ACR_VALUE_FOR_IAL2_AAL2,
-      ],
+      acrs: difference(allAcrValues, certificationDirigeantAcrValues),
     })
   );
 };
@@ -102,12 +127,7 @@ export const certificationDirigeantRequested = (
 export const isThereAnyRequestedAcr = (prompt: EssentialAcrPromptDetail) => {
   return areAcrsRequestedInPrompt({
     prompt,
-    acrs: [
-      ACR_VALUE_FOR_IAL1_AAL1,
-      ACR_VALUE_FOR_IAL1_AAL2,
-      ACR_VALUE_FOR_IAL2_AAL1,
-      ACR_VALUE_FOR_IAL2_AAL2,
-    ],
+    acrs: allAcrValues,
   });
 };
 

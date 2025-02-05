@@ -67,9 +67,15 @@ export const paramsEnvSchema = z.object({
   ACR_VALUE_FOR_IAL2_AAL2: z
     .string()
     .default("https://proconnect.gouv.fr/assurance/consistency-checked-2fa"),
-  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT: z
+  ACR_VALUE_FOR_IAL3_AAL3: z.string().default("eidas3"),
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1: z
     .string()
     .default("https://proconnect.gouv.fr/assurance/certification-dirigeant"),
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL2: z
+    .string()
+    .default(
+      "https://proconnect.gouv.fr/assurance/certification-dirigeant-2fa",
+    ),
   DEPLOY_ENV: z
     .enum(["localhost", "preview", "production", "sandbox"])
     .default("localhost"),
