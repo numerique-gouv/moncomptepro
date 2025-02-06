@@ -46,7 +46,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
+    "@gouvfr-lasuite/proconnect.devtools.typescript": "0.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "chai": "^5.1.2",
