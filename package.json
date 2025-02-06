@@ -42,7 +42,7 @@
     "watch:assets": "NODE_ENV=development vite build --clearScreen false --watch",
     "watch:ejs": "CHOKIDAR_USEPOLLING=true copy-and-watch --clean --watch \"src/views/**/*.ejs\" src/views/*.ejs build/views/",
     "watch:js": "tsc --watch --preserveWatchOutput",
-    "watch:node": "tsx --watch src/index.ts",
+    "watch:node": "tsx --inspect --watch src/index.ts",
     "watch:workspaces:core": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.core",
     "watch:workspaces:email": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.email",
     "watch:workspaces:identite": "npm run dev --if-present --workspace=@gouvfr-lasuite/proconnect.identite",
