@@ -921,17 +921,19 @@ VALUES
    'client_id',
    'client_secret',
    ARRAY [
+     'https://test.identite.proconnect.gouv.fr/login-callback',
      'https://test.moncomptepro.beta.gouv.fr/login-callback',
      'http://localhost:3000/login-callback',
      'http://localhost:3001/login-callback'
      ],
    ARRAY [
+     'https://test.identite.proconnect.gouv.fr/',
      'https://test.moncomptepro.beta.gouv.fr/',
      'http://localhost:3000/',
      'http://localhost:3001/'
      ],
    'openid email profile organization',
-   'https://test.moncomptepro.beta.gouv.fr/',
+   'https://test.identite.proconnect.gouv.fr/',
    'ProConnect test client. More info: https://github.com/numerique-gouv/proconnect-test-client.',
    null, null, null, null),
   (24,
