@@ -9,6 +9,7 @@
   },
   "main": "src/index.js",
   "workspaces": [
+    "packages/devtools/typescript",
     "packages/core",
     "packages/crisp",
     "packages/debounce",
@@ -53,6 +54,7 @@
     ]
   },
   "dependencies": {
+    "@gouvfr-lasuite/proconnect.devtools.typescript": "workspace:*",
     "@gouvfr-lasuite/proconnect.core": "workspace:*",
     "@gouvfr-lasuite/proconnect.debounce": "workspace:*",
     "@gouvfr-lasuite/proconnect.crisp": "workspace:*",
