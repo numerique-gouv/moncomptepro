@@ -33,8 +33,8 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.lib.json",
-    "clean": "rm -rf dist tsconfig*.tsbuildinfo",
     "check": "npm run build -- --noEmit",
+    "clean": "rm -rf dist tsconfig*.tsbuildinfo",
     "dev": "npm run build -- --watch --preserveWatchOutput",
     "test": "mocha"
   },
@@ -51,8 +51,8 @@
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.15",
     "@gouvfr-lasuite/proconnect.core": "^0.3.0",
+    "@gouvfr-lasuite/proconnect.devtools.typescript": "0.0.0",
     "@gouvfr-lasuite/proconnect.insee": "^0.3.0",
-    "@tsconfig/node22": "^22.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "await-to-js": "^3.0.0",

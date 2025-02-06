@@ -54,7 +54,7 @@
     "spec": "src/**/*.test.ts"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
+    "@gouvfr-lasuite/proconnect.devtools.typescript": "0.0.0",
     "@vitest/expect": "^2.1.8",
     "chai": "^5.1.2",
     "dotenv": "^16.4.5",
