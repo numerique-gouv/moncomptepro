@@ -13,3 +13,4 @@ updates:
       - dependencies
     schedule:
       interval: "weekly"
+    versioning-strategy: increase
