@@ -1,5 +1,13 @@
 # @gouvfr-lasuite/moncomptepro.email
 
+## 0.1.1
+
+### Patch Changes
+
+- [#964](https://github.com/numerique-gouv/moncomptepro/pull/964) [`eb63af3`](https://github.com/numerique-gouv/moncomptepro/commit/eb63af3bf33139adece820c1cfadf3ee387713f1) Thanks [@douglasduteil](https://github.com/douglasduteil)! - 🧑‍💻 Ajout du package @gouvfr-lasuite/proconnect.devtools.typescript
+
+  Partage de la configuration de TypeScript entre les packages.
+
 ## 0.1.0
 
 ### Minor Changes
