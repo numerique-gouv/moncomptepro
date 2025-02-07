@@ -9,7 +9,6 @@ import {
 } from "../managers/session/authenticated";
 import { isAuthenticatorAppConfiguredForUser } from "../managers/totp";
 import { sendDisable2faMail } from "../managers/user";
-import { getUserAuthenticators } from "../managers/webauthn";
 import { csrfToken } from "../middlewares/csrf-protection";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 
@@ -19,17 +18,14 @@ export const getDoubleAuthenticationController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
-    const passkeys = await getUserAuthenticators(email);
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
 
     return res.render("double-authentication", {
       pageTitle: "Double authentification",
       notifications: await getNotificationsFromRequest(req),
-      email: email,
       isAuthenticatorConfigured:
         await isAuthenticatorAppConfiguredForUser(user_id),
       csrfToken: csrfToken(req),
-      passkeys: passkeys,
       breadcrumbs: [
         { label: "Tableau de bord", href: "/" },
         { label: "Compte et connexion", href: "/connection-and-account" },
@@ -47,14 +43,9 @@ export const getConfiguringSingleUseCodeController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id, email } = getUserFromAuthenticatedSession(req);
     return res.render("configuring-single-use-code", {
       pageTitle: "Configurer un code à usage unique",
       notifications: await getNotificationsFromRequest(req),
-      email: email,
-      isAuthenticatorConfigured:
-        await isAuthenticatorAppConfiguredForUser(user_id),
-      csrfToken: csrfToken(req),
       breadcrumbs: [
         { label: "Tableau de bord", href: "/" },
         { label: "Compte et connexion", href: "/connection-and-account" },

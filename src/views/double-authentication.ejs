@@ -25,7 +25,7 @@
         <% if (isAuthenticatorConfigured){ %>
             <div class="fr-alert fr-alert--info fr-mb-2w">
                 <h3 class="fr-alert__title">Vous avez déjà configuré une application TOTP</h3>
-                <p>Pour en changer supprimez la configuration existante</p>
+                <p>Pour en changer, supprimez la configuration existante</p>
             </div>
         <% }; %>
         <div id="webauthn-btn-begin-registration" class="fr-card fr-card--horizontal fr-enlarge-link fr-card--horizontal-tier">
@@ -59,7 +59,7 @@
         <form id="webauthn-registration-response-form" action="/passkeys/verify-registration" method="post" hidden>
             <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             <input type="hidden" name="webauthn_registration_response_string">
-    
+
             <button type="submit" class="fr-btn"></button>
         </form>
     </div>

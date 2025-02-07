@@ -57,7 +57,6 @@ export const mainRouter = (app: Express) => {
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
-    csrfProtectionMiddleware,
     getConfiguringSingleUseCodeController,
   );
 

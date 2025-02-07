@@ -164,10 +164,6 @@ Si vous avez oublié votre mot de passe cliquez sur « Mot de passe oublié ?�
     type: "success",
     description: "L’application d’authentification a bien été supprimée.",
   },
-  authenticator_updated: {
-    type: "success",
-    description: "L’application d’authentification a été modifiée.",
-  },
   "2fa_successfully_enabled": {
     type: "success",
     description: "La double authentification a été activée sur tous les sites.",
