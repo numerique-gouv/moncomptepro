@@ -1,4 +1,4 @@
-name: End-to-end tests
+name: 🚥 End-to-end tests
 
 on:
   push:
@@ -12,18 +12,27 @@ env:
   PGDATABASE: moncomptepro
   PGHOST: 127.0.0.1
   PGPORT: 5432
-  BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
-  CYPRESS_BASE_URL: http://172.18.0.1:3000
-  CYPRESS_MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+  CYPRESS_BASE_URL: http://localhost:3000
   DATABASE_URL: postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro
   DEBOUNCE_API_KEY: ${{ secrets.DEBOUNCE_API_KEY }}
   FEATURE_SEND_MAIL: "True"
   INSEE_CONSUMER_KEY: ${{ secrets.INSEE_CONSUMER_KEY }}
   INSEE_CONSUMER_SECRET: ${{ secrets.INSEE_CONSUMER_SECRET }}
-  HOST: http://172.18.0.1:3000
+  HOST: http://localhost:3000
   ZAMMAD_TOKEN: ${{ secrets.ZAMMAD_TOKEN }}
 jobs:
+  build:
+    name: 🐳 Build Docker Image
+    uses: ./.github/workflows/docker.yml
+
+  container-tests:
+    needs: build
+    name: 🚥 Container
+    uses: ./.github/workflows/container.yml
+
   test:
+    needs: build
+    name: 🚥 End-to-end
     strategy:
       # don't fail the entire matrix on failure
       fail-fast: false
@@ -118,13 +127,30 @@ jobs:
         uses: cypress-io/github-action@v6.7.10
         with:
           wait-on: ${{ env.HOST }}/users/start-sign-in
-          build: npm run build:assets
-          start: npx dotenvx run -f cypress/e2e/${{ matrix.e2e_test }}/env.conf --overload -- npm start
+          build: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+          start: |
+            docker run \
+            -d \
+            --name proconnect \
+            -p 3000:3000 \
+            --env-file cypress/e2e/${{ matrix.e2e_test }}/env.conf \
+            --env INSEE_CONSUMER_KEY=${{ secrets.INSEE_CONSUMER_KEY }} \
+            --env INSEE_CONSUMER_SECRET=${{ secrets.INSEE_CONSUMER_SECRET }} \
+            --env DATABASE_URL=postgres://moncomptepro:moncomptepro@127.0.0.1:5432/moncomptepro \
+            --env DEBOUNCE_API_KEY=${{ secrets.DEBOUNCE_API_KEY }} \
+            --env FEATURE_SEND_MAIL=True \
+            --env FEATURE_USE_ANNUAIRE_EMAILS=True \
+            --env FEATURE_USE_SECURE_COOKIES=True \
+            --env FEATURE_USE_SECURITY_RESPONSE_HEADERS=True \
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
           install: false
           spec: cypress/e2e/${{ matrix.e2e_test }}/index.cy.ts
         env:
           NODE_ENV: production
       # Store tests runs in case of failure
+      - if: failure()
+        run: |
+          docker logs proconnect
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

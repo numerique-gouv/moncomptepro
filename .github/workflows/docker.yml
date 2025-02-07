@@ -1,10 +1,11 @@
-name: Docker Image
+name: 🐳 Docker Image
 
 on:
-  push:
+  workflow_call:
 
 jobs:
   build:
+    name: 🐳 Build Docker Image
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -41,16 +42,3 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
           build-args: |
             SOURCE_COMMIT=${{ github.sha }}
-
-  integration_test:
-    name: 🚥 Integration test
-    needs:
-      - Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
-      - name: 🚥 Run Container Tests
-        uses: docker://gcr.io/gcp-runtimes/container-structure-test:v1.15.0
-        with:
-          args: test --config container-structure-test.yml --image ghcr.io/${{ github.repository }}:${{ github.sha }} --verbosity debug

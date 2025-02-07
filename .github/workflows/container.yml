@@ -1,0 +1,16 @@
+name: 🚥 Container Tests
+
+on:
+  workflow_call:
+
+jobs:
+  integration_test:
+    name: 🚥 Container test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+      - name: 🚥 Run Container Tests
+        uses: docker://gcr.io/gcp-runtimes/container-structure-test:v1.15.0
+        with:
+          args: test --config container-structure-test.yml --image ghcr.io/${{ github.repository }}:${{ github.sha }} --verbosity debug
