@@ -2,13 +2,15 @@ import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
   getConfiguringSingleUseCodeController,
-  getConnectionAndAccountController,
   getDoubleAuthenticationController,
+  postDisableForce2faController,
+  postEnableForce2faController,
+} from "../controllers/2fa";
+import {
+  getConnectionAndAccountController,
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
-  postDisableForce2faController,
-  postEnableForce2faController,
   postPersonalInformationsController,
 } from "../controllers/main";
 import {
