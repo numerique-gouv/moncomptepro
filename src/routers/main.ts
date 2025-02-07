@@ -1,12 +1,15 @@
 import { type Express, Router, urlencoded } from "express";
 import nocache from "nocache";
 import {
+  getConfiguringSingleUseCodeController,
+  getDoubleAuthenticationController,
+  postSetForce2faController,
+} from "../controllers/2fa";
+import {
   getConnectionAndAccountController,
   getHomeController,
   getManageOrganizationsController,
   getPersonalInformationsController,
-  postDisableForce2faController,
-  postEnableForce2faController,
   postPersonalInformationsController,
 } from "../controllers/main";
 import {
@@ -38,6 +41,23 @@ export const mainRouter = (app: Express) => {
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
     getConnectionAndAccountController,
+  );
+
+  mainRouter.get(
+    "/double-authentication",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    csrfProtectionMiddleware,
+    getDoubleAuthenticationController,
+  );
+
+  mainRouter.get(
+    "/configuring-single-use-code",
+    urlencoded({ extended: false }),
+    ejsLayoutMiddlewareFactory(app, true),
+    checkUserCanAccessAdminMiddleware,
+    getConfiguringSingleUseCodeController,
   );
 
   mainRouter.get(
@@ -88,23 +108,13 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.post(
-    "/disable-force-2fa",
+    "/set-force-2fa",
     rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
-    postDisableForce2faController,
-  );
-
-  mainRouter.post(
-    "/enable-force-2fa",
-    rateLimiterMiddleware,
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    checkUserCanAccessAdminMiddleware,
-    csrfProtectionMiddleware,
-    postEnableForce2faController,
+    postSetForce2faController,
   );
 
   mainRouter.get(
