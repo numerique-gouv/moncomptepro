@@ -19,7 +19,7 @@ export type AmrValue =
   | "mfa"
   // "email-link" is described as "mail" here https://docs.partenaires.franceconnect.gouv.fr/fs/fs-technique/fs-technique-amr/
   | "email-link"
-  // "email-otp" and "uv" is used in MonComptePro for internal usage
+  // "email-otp" and "uv" is used in ProConnect Identité for internal usage
   | "email-otp"
   | "uv";
 

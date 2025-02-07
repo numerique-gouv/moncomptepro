@@ -217,7 +217,7 @@ export const sendDeleteUserEmail = async ({ user_id }: { user_id: number }) => {
       baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
+      support_email: "support+identite@proconnect.gouv.fr",
     }).toString(),
     tag: "delete-account",
   });
@@ -242,7 +242,7 @@ export const sendDeleteFreeTOTPApplicationEmail = async ({
       baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
+      support_email: "support+identite@proconnect.gouv.fr",
     }).toString(),
     tag: "delete-free-totp",
   });
@@ -284,7 +284,7 @@ export const sendChangeAppliTotpEmail = async ({
       baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
+      support_email: "support+identite@proconnect.gouv.fr",
     }).toString(),
     tag: "update-totp-application",
   });
@@ -308,7 +308,7 @@ export const sendDeleteAccessKeyMail = async ({
       baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
+      support_email: "support+identite@proconnect.gouv.fr",
     }).toString(),
     tag: "delete-access-key",
   });
@@ -356,7 +356,7 @@ export const sendActivateAccessKeyMail = async ({
       baseurl: HOST,
       family_name: family_name ?? "",
       given_name: given_name ?? "",
-      support_email: "contact@moncomptepro.beta.gouv.fr",
+      support_email: "support+identite@proconnect.gouv.fr",
     }).toString(),
     tag: "add-access-key",
   });
