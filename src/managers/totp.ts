@@ -3,8 +3,8 @@ import { isEmpty } from "lodash-es";
 import qrcode from "qrcode";
 import {
   APPLICATION_NAME,
-  MONCOMPTEPRO_IDENTIFIER,
   SYMMETRIC_ENCRYPTION_KEY,
+  WEBSITE_IDENTIFIER,
 } from "../config/env";
 import { InvalidTotpTokenError, UserNotFoundError } from "../config/errors";
 import { findById, update } from "../repositories/user";
@@ -20,12 +20,7 @@ export const generateAuthenticatorAppRegistrationOptions = async (
 ) => {
   let totpKey = existingTotpKey ?? generateSecret(32);
 
-  const uri = generateUri(
-    APPLICATION_NAME,
-    email,
-    totpKey,
-    MONCOMPTEPRO_IDENTIFIER,
-  );
+  const uri = generateUri(APPLICATION_NAME, email, totpKey, WEBSITE_IDENTIFIER);
 
   // lower case for easier usage (no caps lock required)
   // add a space every 4 char for better readability

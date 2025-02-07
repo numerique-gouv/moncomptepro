@@ -13,7 +13,7 @@ import type {
 import { isEmpty } from "lodash-es";
 import moment from "moment";
 import "moment-timezone";
-import { APPLICATION_NAME, HOST, MONCOMPTEPRO_IDENTIFIER } from "../config/env";
+import { APPLICATION_NAME, HOST, WEBSITE_IDENTIFIER } from "../config/env";
 import {
   NotFoundError,
   UserNotFoundError,
@@ -40,7 +40,7 @@ import { disableForce2fa, enableForce2fa, is2FACapable } from "./2fa";
 // Human-readable title for your website
 const rpName = APPLICATION_NAME;
 // A unique identifier for your website
-const rpID = MONCOMPTEPRO_IDENTIFIER;
+const rpID = WEBSITE_IDENTIFIER;
 // The URL at which registrations and authentications should occur
 const origin = HOST;
 
