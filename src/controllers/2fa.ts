@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
+import { z } from "zod";
 import { UserIsNot2faCapableError } from "../config/errors";
 import { disableForce2fa, enableForce2fa } from "../managers/2fa";
 import {
@@ -72,14 +73,12 @@ export const postSetForce2faController = async (
   next: NextFunction,
 ) => {
   try {
-    const { id: user_id } = getUserFromAuthenticatedSession(req);
-    const { force2fa } = req.body;
-
-    if (!force2fa || (force2fa !== "enable" && force2fa !== "disable")) {
-      return next(new HttpErrors.BadRequest("Valeur 2FA invalide."));
-    }
+    const schema = z.object({ force2fa: z.enum(["enable", "disable"]) });
+    const { force2fa } = await schema.parseAsync(req.body);
 
     let updatedUser;
+
+    const { id: user_id } = getUserFromAuthenticatedSession(req);
 
     if (force2fa === "enable") {
       updatedUser = await enableForce2fa(user_id);
@@ -99,6 +98,7 @@ export const postSetForce2faController = async (
     if (error instanceof UserIsNot2faCapableError) {
       return next(new HttpErrors.UnprocessableEntity());
     }
+
     next(error);
   }
 };
