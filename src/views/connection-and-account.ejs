@@ -135,7 +135,7 @@
         </section>
 
         <% if (locals.is2faCapable) { %>
-            <form class="fr-mt-4w" id="2fa-form" method="post">
+            <form class="fr-mt-4w" id="2fa-form" method="post" action="/set-force-2fa">
                 <input type="hidden" name="_csrf" value="<%= csrfToken; %>">
             
                 <fieldset class="fr-fieldset fr-mb-0" id="radio-hint" aria-labelledby="radio-hint-legend radio-hint-messages">
@@ -164,7 +164,7 @@
                     </div>
                 </fieldset>
             
-                <button class="fr-btn fr-btn--secondary fr-mb-6w" type="submit" id="submit-btn">
+                <button class="fr-btn fr-btn--secondary fr-mb-6w" type="submit">
                     Valider
                 </button>
             </form>
@@ -187,6 +187,5 @@
             </form>
         </section>
         <script type="module" src="<%= js('confirm.js') %>"></script>
-        <script type="module" src="<%= js('force2fa.js') %>"></script>
     </div>
 </div>

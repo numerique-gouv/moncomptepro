@@ -3,8 +3,7 @@ import nocache from "nocache";
 import {
   getConfiguringSingleUseCodeController,
   getDoubleAuthenticationController,
-  postDisableForce2faController,
-  postEnableForce2faController,
+  postSetForce2faController,
 } from "../controllers/2fa";
 import {
   getConnectionAndAccountController,
@@ -110,23 +109,13 @@ export const mainRouter = (app: Express) => {
   );
 
   mainRouter.post(
-    "/disable-force-2fa",
+    "/set-force-2fa",
     rateLimiterMiddleware,
     urlencoded({ extended: false }),
     ejsLayoutMiddlewareFactory(app, true),
     checkUserCanAccessAdminMiddleware,
     csrfProtectionMiddleware,
-    postDisableForce2faController,
-  );
-
-  mainRouter.post(
-    "/enable-force-2fa",
-    rateLimiterMiddleware,
-    urlencoded({ extended: false }),
-    ejsLayoutMiddlewareFactory(app, true),
-    checkUserCanAccessAdminMiddleware,
-    csrfProtectionMiddleware,
-    postEnableForce2faController,
+    postSetForce2faController,
   );
 
   mainRouter.get(

@@ -66,47 +66,39 @@ export const getConfiguringSingleUseCodeController = async (
   }
 };
 
-export const postDisableForce2faController = async (
+export const postSetForce2faController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const { id: user_id } = getUserFromAuthenticatedSession(req);
+    const { force2fa } = req.body;
 
-    const updatedUser = await disableForce2fa(user_id);
-
-    updateUserInAuthenticatedSession(req, updatedUser);
-    await sendDisable2faMail({ user_id });
-
-    return res.redirect(
-      `/connection-and-account?notification=2fa_successfully_disabled`,
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const postEnableForce2faController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { id: user_id } = getUserFromAuthenticatedSession(req);
-
-    const updatedUser = await enableForce2fa(user_id);
-
-    updateUserInAuthenticatedSession(req, updatedUser);
-
-    return res.redirect(
-      `/connection-and-account?notification=2fa_successfully_enabled`,
-    );
-  } catch (error) {
-    if (error instanceof UserIsNot2faCapableError) {
-      next(new HttpErrors.UnprocessableEntity());
+    if (!force2fa || (force2fa !== "enable" && force2fa !== "disable")) {
+      return next(new HttpErrors.BadRequest("Valeur 2FA invalide."));
     }
 
+    let updatedUser;
+
+    if (force2fa === "enable") {
+      updatedUser = await enableForce2fa(user_id);
+      updateUserInAuthenticatedSession(req, updatedUser);
+      return res.redirect(
+        `/connection-and-account?notification=2fa_successfully_enabled`,
+      );
+    } else {
+      updatedUser = await disableForce2fa(user_id);
+      updateUserInAuthenticatedSession(req, updatedUser);
+      await sendDisable2faMail({ user_id });
+      return res.redirect(
+        `/connection-and-account?notification=2fa_successfully_disabled`,
+      );
+    }
+  } catch (error) {
+    if (error instanceof UserIsNot2faCapableError) {
+      return next(new HttpErrors.UnprocessableEntity());
+    }
     next(error);
   }
 };
