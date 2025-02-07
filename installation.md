@@ -126,7 +126,7 @@ npx changeset
 ```
 
 You will be prompted to select the type of change you want to make.  
-As this changelog is for end frensh users, we recommend you write your change in french :fr:.
+As this changelog is intended for french end users, we recommend you write your change in French :fr:.
 
 Commit your changes and push them in your branch.  
 We will merge a "Version Packages" PR when we are ready to release :wink:
