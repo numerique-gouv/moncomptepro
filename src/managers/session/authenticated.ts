@@ -244,5 +244,13 @@ export const isIdentityConsistencyChecked = async (req: Request) => {
     throw new Error("link should be set");
   }
 
-  return link?.verification_type !== null;
+  return [
+    "code_sent_to_official_contact_email",
+    "domain",
+    "imported_from_inclusion_connect",
+    "imported_from_coop_mediation_numerique",
+    "in_liste_dirigeants_rna",
+    "official_contact_email",
+    "bypassed",
+  ].includes(link?.verification_type ?? "");
 };

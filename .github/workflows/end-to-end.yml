@@ -55,7 +55,6 @@ jobs:
           - signin_with_totp
           - signup_entreprise_unipersonnelle
           - update_personal_information
-          - update_totp_application
     runs-on: ubuntu-22.04
     services:
       standard-client:
@@ -104,6 +103,7 @@ jobs:
 
       - run: docker compose up --build --detach maildev
 
+      - run: corepack enable
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
@@ -114,7 +114,7 @@ jobs:
       - run: npm run fixtures:load-ci -- cypress/e2e/${{ matrix.e2e_test }}/fixtures.sql
       - run: npm run update-organization-info -- 500
       - name: Cypress run
-        uses: cypress-io/github-action@v6.7.7
+        uses: cypress-io/github-action@v6.7.10
         with:
           wait-on: ${{ env.HOST }}/users/start-sign-in
           build: npm run build:assets

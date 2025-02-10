@@ -87,4 +87,4 @@ export const {
   VERIFY_EMAIL_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
 } = parsedEnv.data;
 
-export const MONCOMPTEPRO_IDENTIFIER = new URL(HOST).hostname;
+export const WEBSITE_IDENTIFIER = new URL(HOST).hostname;

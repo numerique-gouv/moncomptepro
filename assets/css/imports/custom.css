@@ -1,5 +1,5 @@
-#email-badge-lowercase {
-  text-transform: lowercase;
+.email-badge-lowercase {
+  text-transform: lowercase !important;
 }
 
 .inline-form {
@@ -14,41 +14,30 @@
   white-space: break-spaces;
 }
 
-/* magic link icon */
-#magic-link-icon-inline {
-  padding: 0 1.5rem;
+.border-shadow {
+  border-radius: 4px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
 }
 
-#magic-link-icon-block {
-  text-align: center;
-  margin: 3rem 0;
+.blue-france {
+  color: #00008f !important;
 }
 
-#magic-link-icon-block > img {
-  height: 46px;
+.grey-background {
+  background-color: #f6f6f6 !important;
 }
 
-/* proconnect-header */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* DELETE WHEN HEADER FROM DSFR WILL REPLACE MCP HEADER */
-  border-bottom: solid 1px #ddd;
-  /* DELETE WHEN WE'LL FOUND BEST SOLUTION TO MASK GREY */
-  background-color: white;
+.centered-content {
+  justify-content: center !important;
 }
 
-.header > img {
-  height: 4.5rem;
-  margin: 2.5rem 0 1.5rem;
-}
-
-@media all and (max-width: 576px) {
-  .header > img {
-    height: 3.5rem;
-    margin: 1.5rem 0 0.5rem;
-  }
+.disabled-button {
+  background-color: #e0e0e0 !important;
+  color: #a0a0a0 !important;
+  cursor: not-allowed;
+  border: 1px solid #d0d0d0;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 /* display a loading bar on page load */

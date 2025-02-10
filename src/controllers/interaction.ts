@@ -30,14 +30,15 @@ import epochTime from "../services/epoch-time";
 import { mustReturnOneOrganizationInPayload } from "../services/must-return-one-organization-in-payload";
 
 export const interactionStartControllerFactory =
-  (oidcProvider: any) =>
+  (oidcProvider: Provider) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {
         uid: interactionId,
-        params: { client_id, login_hint, scope },
+        params,
         prompt,
       } = await oidcProvider.interactionDetails(req, res);
+      const { client_id, login_hint, scope } = params as OIDCContextParams;
 
       req.session.interactionId = interactionId;
       req.session.mustReturnOneOrganizationInPayload =

@@ -10,6 +10,7 @@ interface BaseUserOrganizationLink {
     | "no_verification_means_for_entreprise_unipersonnelle"
     | "no_verification_means_for_small_association"
     | "official_contact_email"
+    // Used in the sandbox environment to bypass the verification process
     | "bypassed"
     | null;
   // updated when verification_type is changed

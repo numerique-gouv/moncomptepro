@@ -212,6 +212,9 @@ export const getUnableToAutoJoinOrganizationController = async (
       pageTitle: "Rattachement en cours",
       csrfToken: csrfToken(req),
       email: user.email,
+      given_name: user.given_name,
+      family_name: user.family_name,
+      job: user.job,
       organization_label: cached_libelle,
       moderation_id,
     });

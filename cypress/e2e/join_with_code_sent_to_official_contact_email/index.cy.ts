@@ -16,7 +16,7 @@ describe("join organizations", () => {
     cy.contains(
       "nous avons envoyé un code secret à l’adresse email de votre mairie",
     );
-    cy.get("#email-badge-lowercase").contains(
+    cy.get(".email-badge-lowercase").contains(
       "alpharius.omegon@alphalegion.world",
     );
 
