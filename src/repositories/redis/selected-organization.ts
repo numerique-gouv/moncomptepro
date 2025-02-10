@@ -1,10 +1,12 @@
+import type { RedisOptions } from "ioredis";
 import { SESSION_MAX_AGE_IN_SECONDS } from "../../config/env";
 import { getNewRedisClient } from "../../connectors/redis";
 
+const selectedOrganizationRedisOptions: RedisOptions = {
+  keyPrefix: "mcp:selected-organization:",
+};
 const getRedisClient = () =>
-  getNewRedisClient({
-    keyPrefix: "mcp:selected-organization:",
-  });
+  getNewRedisClient(selectedOrganizationRedisOptions);
 
 export const getSelectedOrganizationId = async (user_id: number) => {
   const rawResult = await getRedisClient().get(user_id.toString());
