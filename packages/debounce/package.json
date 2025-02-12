@@ -1,11 +1,11 @@
 {
   "name": "@gouvfr-lasuite/proconnect.debounce",
   "version": "0.4.2",
-  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/debounce#readme",
-  "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
+  "homepage": "https://github.com/numerique-gouv/proconnect-identite/tree/master/packages/debounce#readme",
+  "bugs": "https://github.com/numerique-gouv/proconnect-identite/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/numerique-gouv/moncomptepro.git",
+    "url": "git+https://github.com/numerique-gouv/proconnect-identite.git",
     "directory": "packages/debounce"
   },
   "license": "MIT",

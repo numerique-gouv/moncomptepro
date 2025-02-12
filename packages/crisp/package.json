@@ -9,11 +9,11 @@
     "api",
     "rest"
   ],
-  "homepage": "https://github.com/numerique-gouv/moncomptepro/tree/master/packages/crisp#readme",
-  "bugs": "https://github.com/numerique-gouv/moncomptepro/issues",
+  "homepage": "https://github.com/numerique-gouv/proconnect-identite/tree/master/packages/crisp#readme",
+  "bugs": "https://github.com/numerique-gouv/proconnect-identite/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/numerique-gouv/moncomptepro.git",
+    "url": "git+https://github.com/numerique-gouv/proconnect-identite.git",
     "directory": "packages/crisp"
   },
   "license": "MIT",
