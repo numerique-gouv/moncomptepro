@@ -923,13 +923,13 @@ VALUES
    'client_secret',
    ARRAY [
      'https://test.identite.proconnect.gouv.fr/login-callback',
-     'https://test.identite.proconnect.gouv.fr/login-callback',
+     'https://test.identite-preprod.proconnect.gouv.fr/login-callback',
      'http://localhost:3000/login-callback',
      'http://localhost:3001/login-callback'
      ],
    ARRAY [
      'https://test.identite.proconnect.gouv.fr/',
-     'https://test.identite.proconnect.gouv.fr/',
+     'https://test.identite-preprod.proconnect.gouv.fr/',
      'http://localhost:3000/',
      'http://localhost:3001/'
      ],
