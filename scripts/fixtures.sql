@@ -1145,6 +1145,20 @@ VALUES
    'openid email organization profile',
    'https://localhost/',
    'Le Planka du Lab de l’ANSSI',
+   null, null, null, null),
+  (36,
+   'ProConnect ID - Usability test client',
+   '6HR83qf5zJXENcN2yrjVHPJvM9hxgVM4DuT70Zz0REtc1ZgCWNMPmijw0AK3TuC2gejwvLUkKCQ5XSxUtWmyYCrjnAGMeqkhS1yaTErc7YPdMpaDp9aPSprT01hdeZPA',
+   'Crvkykfi6yAeH0JFQMteCmwqateVH4rBQtKeTx7hf0H2NkUNqVxGTcyKR9PDVQN6QeJZr48W8kuH2z1YXGKwFJiJafiJ1jDriGf0dvfB58z3vKviHbx1g4ALUBWmC7Zy',
+   ARRAY [
+     'https://proconnect-identite-usability-test-client.osc-secnum-fr1.scalingo.io/'
+     ],
+   ARRAY [
+     'https://proconnect-identite-usability-test-client.osc-secnum-fr1.scalingo.io/'
+     ],
+   'openid email organization profile',
+   'https://proconnect-identite-usability-test-client.osc-secnum-fr1.scalingo.io/',
+   'Application pour tests UX',
    null, null, null, null)
 ON CONFLICT (id)
   DO UPDATE
