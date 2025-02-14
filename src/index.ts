@@ -86,7 +86,7 @@ if (FEATURE_USE_SECURITY_RESPONSE_HEADERS) {
           "*.crisp.chat",
           "wss://*.crisp.chat",
         ],
-        frameSrc: ["'self'", "agentconnect.crisp.help"],
+        frameSrc: ["'self'", "proconnect.crisp.help"],
         scriptSrc: ["'self'", "stats.data.gouv.fr", "*.crisp.chat"],
         styleSrc: ["'self'", "*.crisp.chat", "'unsafe-inline'"],
         fontSrc: ["'self'", "data:", "*.crisp.chat"],
