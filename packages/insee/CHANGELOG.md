@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/proconnect.insee
 
+## 0.3.2
+
+### Patch Changes
+
+- [#975](https://github.com/numerique-gouv/proconnect-identite/pull/975) [`8e57ecc`](https://github.com/numerique-gouv/proconnect-identite/commit/8e57eccff4d3d614a4264b63f2583a63f82a88e6) Thanks [@douglasduteil](https://github.com/douglasduteil)! - 🚚 Renommage de moncomptepro en proconnect-identite
+
 ## 0.3.1
 
 ### Patch Changes
