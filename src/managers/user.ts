@@ -18,9 +18,15 @@ import {
   UpdatePersonalDataMail,
   VerifyEmail,
 } from "@gouvfr-lasuite/proconnect.email";
-import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
+import {
+  UserVerificationTypeSchema,
+  type User,
+  type UserVerificationType,
+} from "@gouvfr-lasuite/proconnect.identite/types";
+import { to } from "await-to-js";
 import { isEmpty } from "lodash-es";
 import {
+  FRANCECONNECT_VERIFICATION_MAX_AGE_IN_MINUTES,
   HOST,
   MAGIC_LINK_TOKEN_EXPIRATION_DURATION_IN_MINUTES,
   MAX_DURATION_BETWEEN_TWO_EMAIL_ADDRESS_VERIFICATION_IN_MINUTES,
@@ -41,7 +47,6 @@ import {
 } from "../config/errors";
 import { isEmailSafeToSendTransactional } from "../connectors/debounce";
 import { sendMail } from "../connectors/mail";
-
 import { hasPasswordBeenPwned } from "../connectors/pwnedpasswords";
 import {
   create,
@@ -49,7 +54,9 @@ import {
   findById,
   findByMagicLinkToken,
   findByResetPasswordToken,
+  getUserVerificationLink,
   update,
+  upsetUserVerificationLink,
 } from "../repositories/user";
 import { isExpired } from "../services/is-expired";
 import { isWebauthnConfiguredForUser } from "./webauthn";
@@ -581,10 +588,57 @@ export const updatePersonalInformations = async (
     job,
   }: Pick<User, "given_name" | "family_name" | "phone_number" | "job">,
 ): Promise<User> => {
-  return await update(userId, {
-    given_name,
-    family_name,
+  const isUserVerified = await getUserVerificationLink(userId);
+  const names = isUserVerified ? {} : { given_name, family_name };
+
+  return update(userId, {
+    ...names,
     phone_number,
     job,
   });
 };
+
+export async function isUserVerifiedWith(
+  type: UserVerificationType,
+  user_id: number,
+) {
+  const userFranceConnect = await getUserVerificationLink(user_id);
+
+  if (isEmpty(userFranceConnect)) {
+    return false;
+  }
+
+  const expirationDuration = {
+    [UserVerificationTypeSchema.Enum.franceconnect]:
+      FRANCECONNECT_VERIFICATION_MAX_AGE_IN_MINUTES,
+  }[type];
+
+  return !isExpired(userFranceConnect.verified_at, expirationDuration);
+}
+
+export async function verifyUserWith(
+  type: UserVerificationType,
+  userId: number,
+  userInfo: { family_name: string; given_name: string },
+) {
+  await update(userId, userInfo);
+  await upsetUserVerificationLink({
+    user_id: userId,
+    verification_type: type,
+    verified_at: new Date(),
+  });
+}
+
+export async function getUserVerificationLabel(userId: number) {
+  const [, { verification_type } = {}] = await to(
+    getUserVerificationLink(userId),
+  );
+
+  if (!verification_type) {
+    return undefined;
+  }
+
+  return {
+    [UserVerificationTypeSchema.Enum.franceconnect]: "FranceConnect",
+  }[verification_type];
+}

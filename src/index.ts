@@ -17,6 +17,7 @@ import {
   DEPLOY_ENV,
   FEATURE_USE_SECURE_COOKIES,
   FEATURE_USE_SECURITY_RESPONSE_HEADERS,
+  FRANCECONNECT_CALLBACK_URL,
   HOST,
   JWKS,
   LOG_LEVEL,
@@ -29,6 +30,7 @@ import {
 import { OidcError } from "./config/errors";
 import { oidcProviderConfiguration } from "./config/oidc-provider-configuration";
 import { getNewRedisClient } from "./connectors/redis";
+import { getCertificationDirigeantOidcCallbackController } from "./controllers/user/certification-dirigeant";
 import { trustedBrowserMiddleware } from "./managers/browser-authentication";
 import { connectionCountMiddleware } from "./middlewares/connection-count";
 import { getClients } from "./repositories/oidc-client";
@@ -257,6 +259,10 @@ let server: Server;
     "/interaction",
     ejsLayoutMiddlewareFactory(app),
     interactionRouter(oidcProvider),
+  );
+  app.use(
+    FRANCECONNECT_CALLBACK_URL,
+    getCertificationDirigeantOidcCallbackController,
   );
   app.use("/users", ejsLayoutMiddlewareFactory(app), userRouter());
   app.use("/api", apiRouter());
