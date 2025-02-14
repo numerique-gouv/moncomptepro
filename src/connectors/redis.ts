@@ -6,19 +6,24 @@ import {
 import { REDIS_URL } from "../config/env";
 import { logger } from "../services/log";
 
-const redisClients: { [key: string]: Redis } = {};
+const redisClients = new WeakMap<RedisOptions, Redis>();
+const defaultRedisOptions: RedisOptions = {};
 
-export const getNewRedisClient = (options: RedisOptions = {}) => {
+export const getNewRedisClient = (
+  options: RedisOptions = defaultRedisOptions,
+) => {
   const clientKey = JSON.stringify(options);
-  if (!redisClients[clientKey]) {
-    const redisClient = new RedisClient(REDIS_URL, options);
-    redisClient.on("connect", () =>
-      logger.debug(
-        `Connected to database : ${REDIS_URL} with options: ${clientKey}`,
-      ),
-    );
-    redisClients[clientKey] = redisClient;
+  if (redisClients.has(options)) {
+    return redisClients.get(options)!;
   }
 
-  return redisClients[clientKey];
+  const redisClient = new RedisClient(REDIS_URL, options);
+  redisClient.on("connect", () =>
+    logger.debug(
+      `Connected to database : ${REDIS_URL} with options: ${clientKey}`,
+    ),
+  );
+  redisClients.set(options, redisClient);
+
+  return redisClient;
 };

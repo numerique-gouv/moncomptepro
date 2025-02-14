@@ -1,11 +1,12 @@
 // source https://github.com/panva/node-oidc-provider/blob/6fbcd71b08b8b8f381a97a82809de42c75904c6b/example/adapters/redis.js
+import type { RedisOptions } from "ioredis";
 import { isEmpty } from "lodash-es";
 import { getNewRedisClient } from "../../connectors/redis";
 
-const getClient = () =>
-  getNewRedisClient({
-    keyPrefix: "oidc:",
-  });
+const oidcRedisOptions: RedisOptions = {
+  keyPrefix: "oidc:",
+};
+const getClient = () => getNewRedisClient(oidcRedisOptions);
 
 const grantable = new Set([
   "AccessToken",
