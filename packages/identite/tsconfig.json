@@ -3,8 +3,8 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "resolveJsonModule": true,
-    "rootDir": "src",
     "types": ["node"]
   },
   "extends": "@gouvfr-lasuite/proconnect.devtools.typescript/base/tsconfig.json",
@@ -12,5 +12,5 @@
     { "path": "../core/tsconfig.lib.json" },
     { "path": "../insee/tsconfig.lib.json" }
   ],
-  "include": ["./src/**/*", "./src/**/*.json"]
+  "include": ["./testing/index.ts", "./src/**/*", "./src/**/*.json"]
 }

@@ -1,5 +1,6 @@
 import { generateDicewarePassword } from "@gouvfr-lasuite/proconnect.core/security";
 import { OfficialContactEmailVerification } from "@gouvfr-lasuite/proconnect.email";
+import type { UserOrganizationLink } from "@gouvfr-lasuite/proconnect.identite/types";
 import { isEmpty } from "lodash-es";
 import { HOST } from "../../config/env";
 import {

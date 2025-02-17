@@ -1,24 +1,16 @@
-import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import {
   createUserFactory,
   findByEmailFactory,
+  findByIdFactory,
   updateUserFactory,
-} from "@gouvfr-lasuite/proconnect.identite/user";
+} from "@gouvfr-lasuite/proconnect.identite/repositories/user";
+import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../connectors/postgres";
-export const findById = async (id: number) => {
-  const connection = getDatabaseConnection();
 
-  const { rows }: QueryResult<User> = await connection.query(
-    `
-SELECT *
-FROM users WHERE id = $1
-`,
-    [id],
-  );
+//
 
-  return rows.shift();
-};
+export const findById = findByIdFactory({ pg: getDatabaseConnection() });
 
 export const findByEmail = findByEmailFactory({ pg: getDatabaseConnection() });
 

@@ -1,6 +1,6 @@
 //
 
-import { getOrganizationInfoFactory } from "@gouvfr-lasuite/proconnect.identite/organization";
+import { getOrganizationInfoFactory } from "@gouvfr-lasuite/proconnect.identite/managers/organization";
 import {
   findBySirenFactory,
   findBySiretFactory,

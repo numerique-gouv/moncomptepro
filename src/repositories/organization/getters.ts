@@ -1,6 +1,8 @@
+import { getUsersByOrganizationFactory } from "@gouvfr-lasuite/proconnect.identite/repositories/organization";
 import type {
+  BaseUserOrganizationLink,
   Organization,
-  User,
+  UserOrganizationLink,
 } from "@gouvfr-lasuite/proconnect.identite/types";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../../connectors/postgres";
@@ -85,37 +87,9 @@ ORDER BY member_count desc NULLS LAST;`,
   return rows;
 };
 
-export const getUsersByOrganization = async (
-  organization_id: number,
-  additionalWhereClause: string = "",
-  additionalParams: any[] = [],
-) => {
-  const connection = getDatabaseConnection();
-  const baseParams = [organization_id];
-
-  const { rows }: QueryResult<User & BaseUserOrganizationLink> =
-    await connection.query(
-      `
-SELECT
-    u.*,
-    uo.is_external,
-    uo.verification_type,
-    uo.has_been_greeted,
-    uo.needs_official_contact_email_verification,
-    uo.official_contact_email_verification_token,
-    uo.official_contact_email_verification_sent_at
-FROM users u
-INNER JOIN users_organizations AS uo ON uo.user_id = u.id
-WHERE uo.organization_id = $1
-${additionalWhereClause}`,
-      [...baseParams, ...additionalParams],
-    );
-
-  return rows;
-};
-
-export const getUsers = (organization_id: number) =>
-  getUsersByOrganization(organization_id);
+export const getUsers = getUsersByOrganizationFactory({
+  pg: getDatabaseConnection(),
+});
 
 export const getUserOrganizationLink = async (
   organization_id: number,
