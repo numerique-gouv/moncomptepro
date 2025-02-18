@@ -2,7 +2,9 @@ import type { User } from "@gouvfr-lasuite/proconnect.identite/types";
 import {
   createUserFactory,
   findByEmailFactory,
+  getUserVerificationLinkFactory,
   updateUserFactory,
+  upsetUserVerificationLinkFactory,
 } from "@gouvfr-lasuite/proconnect.identite/user";
 import type { QueryResult } from "pg";
 import { getDatabaseConnection } from "../connectors/postgres";
@@ -69,3 +71,11 @@ export const deleteUser = async (id: number) => {
 
   return rowCount > 0;
 };
+
+export const getUserVerificationLink = getUserVerificationLinkFactory({
+  pg: getDatabaseConnection(),
+});
+
+export const upsetUserVerificationLink = upsetUserVerificationLinkFactory({
+  pg: getDatabaseConnection(),
+});

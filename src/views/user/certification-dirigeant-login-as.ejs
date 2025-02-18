@@ -1,0 +1,25 @@
+<div>
+  <%- include('../partials/notifications.ejs', {notifications: notifications}) %>
+  <h2 class="fr-h2">Vous allez vous connecter en tant que :</h2>
+  <center>
+    <h1 class="fr-h3 blue-france"><%= name; %></h1>
+  </center>
+
+  <form action="/users/certification-dirigeant/login-as" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrfToken; %>" />
+
+    <fieldset class="fr-fieldset" aria-labelledby="agreement">
+      <div class="fr-fieldset__element">
+        <div class="fr-checkbox-group">
+          <input name="agreement" id="agreement" type="checkbox" />
+          <label class="fr-label" for="agreement">
+            J'accepte que FranceConnect transmette mes données au service pour
+            me connecter
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <button class="fr-btn" type="submit">Continuer</button>
+  </form>
+</div>
