@@ -1,3 +1,4 @@
+import { getEmailDomain } from "@gouvfr-lasuite/proconnect.core/services/email";
 import type { NextFunction, Request, Response } from "express";
 import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
@@ -30,7 +31,6 @@ import {
   optionalBooleanSchema,
   siretSchema,
 } from "../services/custom-zod-schemas";
-import { getEmailDomain } from "../services/email";
 import getNotificationsFromRequest from "../services/get-notifications-from-request";
 import hasErrorFromField from "../services/has-error-from-field";
 

@@ -1,8 +1,11 @@
 import { isEmailValid } from "@gouvfr-lasuite/proconnect.core/security";
+import { getEmailDomain } from "@gouvfr-lasuite/proconnect.core/services/email";
 import { Welcome } from "@gouvfr-lasuite/proconnect.email";
 import type {
+  BaseUserOrganizationLink,
   Organization,
   OrganizationInfo,
+  UserOrganizationLink,
 } from "@gouvfr-lasuite/proconnect.identite/types";
 import * as Sentry from "@sentry/node";
 import { isEmpty, some } from "lodash-es";
@@ -45,7 +48,6 @@ import {
 } from "../../repositories/organization/setters";
 import { findById as findUserById } from "../../repositories/user";
 import {
-  getEmailDomain,
   isAFreeEmailProvider,
   usesAFreeEmailProvider,
 } from "../../services/email";

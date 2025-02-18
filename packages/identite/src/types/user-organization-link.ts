@@ -1,4 +1,4 @@
-interface BaseUserOrganizationLink {
+export interface BaseUserOrganizationLink {
   is_external: boolean;
   verification_type:
     | "code_sent_to_official_contact_email"
@@ -21,7 +21,7 @@ interface BaseUserOrganizationLink {
   official_contact_email_verification_sent_at: Date | null;
 }
 
-interface UserOrganizationLink extends BaseUserOrganizationLink {
+export interface UserOrganizationLink extends BaseUserOrganizationLink {
   user_id: number;
   organization_id: number;
   created_at: Date;

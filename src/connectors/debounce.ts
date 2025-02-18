@@ -1,3 +1,4 @@
+import { getEmailDomain } from "@gouvfr-lasuite/proconnect.core/services/email";
 import { singleValidationFactory } from "@gouvfr-lasuite/proconnect.debounce/api";
 import {
   DEBOUNCE_API_KEY,
@@ -5,7 +6,6 @@ import {
   FEATURE_CHECK_EMAIL_DELIVERABILITY,
   HTTP_CLIENT_TIMEOUT,
 } from "../config/env";
-import { getEmailDomain } from "../services/email";
 import { logger } from "../services/log";
 
 type EmailDebounceInfo = {

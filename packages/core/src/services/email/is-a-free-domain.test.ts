@@ -2,7 +2,7 @@
 
 import { expect } from "chai";
 import { test } from "mocha";
-import { isAFreeDomain } from "./isAFreeDomain.js";
+import { isAFreeDomain } from "./is-a-free-domain.js";
 
 //
 

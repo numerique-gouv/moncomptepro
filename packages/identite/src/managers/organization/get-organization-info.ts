@@ -1,4 +1,4 @@
-import type { OrganizationInfo } from "@gouvfr-lasuite/proconnect.identite/types";
+import type { OrganizationInfo } from "#src/types";
 import {
   type FindBySirenHandler,
   type FindBySiretHandler,

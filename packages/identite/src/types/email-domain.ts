@@ -1,4 +1,4 @@
-interface EmailDomain {
+export interface EmailDomain {
   id: number;
   organization_id: number;
   domain: string;
