@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import Provider, { errors } from "oidc-provider";
 import { z } from "zod";
 import {
-  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT,
+  ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1,
   ACR_VALUE_FOR_IAL1_AAL1,
   ACR_VALUE_FOR_IAL1_AAL2,
   ACR_VALUE_FOR_IAL2_AAL1,
@@ -102,7 +102,7 @@ export const interactionEndControllerFactory =
           : ACR_VALUE_FOR_IAL1_AAL1;
 
       currentAcr = req.session.certificationDirigeantRequested
-        ? ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT
+        ? ACR_VALUE_FOR_CERTIFICATION_DIRIGEANT_AAL1
         : currentAcr;
 
       const amr = getSessionStandardizedAuthenticationMethodsReferences(req);
