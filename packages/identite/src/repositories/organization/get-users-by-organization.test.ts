@@ -2,7 +2,7 @@
 
 import { emptyDatabase, migrate, pg } from "#testing";
 import { expect } from "chai";
-import { before, describe, it } from "mocha";
+import { describe, it } from "mocha";
 import { getUsersByOrganizationFactory } from "./get-users-by-organization.js";
 
 //
@@ -10,7 +10,7 @@ import { getUsersByOrganizationFactory } from "./get-users-by-organization.js";
 const getUsersByOrganization = getUsersByOrganizationFactory({ pg: pg as any });
 
 describe(getUsersByOrganizationFactory.name, () => {
-  before(migrate);
+  beforeAll(migrate);
   beforeEach(emptyDatabase);
 
   it("should find users by organization id", async () => {

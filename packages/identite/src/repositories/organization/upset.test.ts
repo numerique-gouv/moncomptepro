@@ -2,7 +2,7 @@
 
 import { emptyDatabase, migrate, pg } from "#testing";
 import { expect } from "chai";
-import { before, describe, it } from "mocha";
+import { describe, it } from "mocha";
 import { upsertFactory } from "./upsert.js";
 
 //
@@ -10,7 +10,7 @@ import { upsertFactory } from "./upsert.js";
 const upset = upsertFactory({ pg: pg as any });
 
 describe("upset", () => {
-  before(migrate);
+  beforeAll(migrate);
   beforeEach(emptyDatabase);
 
   it("should create the Tau Empire organization", async () => {

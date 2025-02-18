@@ -2,7 +2,7 @@
 
 import { emptyDatabase, migrate, pg } from "#testing";
 import { expect } from "chai";
-import { before, describe, it } from "mocha";
+import { describe, it } from "mocha";
 import { addDomainFactory } from "./add-domain.js";
 
 //
@@ -10,7 +10,7 @@ import { addDomainFactory } from "./add-domain.js";
 const addDomain = addDomainFactory({ pg: pg as any });
 
 describe(addDomainFactory.name, () => {
-  before(migrate);
+  beforeAll(migrate);
   beforeEach(emptyDatabase);
 
   it("should add domain", async () => {

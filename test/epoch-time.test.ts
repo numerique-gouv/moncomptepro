@@ -1,25 +1,17 @@
-import FakeTimers, { type InstalledClock } from "@sinonjs/fake-timers";
-import { assert } from "chai";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import epochTime from "../src/services/epoch-time";
 
 describe("epochTime", () => {
-  let clock: InstalledClock;
-
-  beforeEach(() => {
-    clock = FakeTimers.install({ now: new Date("2023-12-01T00:00:00.000Z") });
-  });
-
-  afterEach(() => {
-    clock.uninstall();
-  });
+  afterEach(vi.useRealTimers);
 
   it("should return current date in epoch format", () => {
-    assert.strictEqual(epochTime(), 1701388800);
+    vi.setSystemTime(new Date("2023-12-01T00:00:00.000Z"));
+    expect(epochTime()).toBe(1701388800);
   });
 
   it("should return a date in epoch format", () => {
     const emittedDate = new Date("2023-12-01T00:01:00.000Z");
 
-    assert.strictEqual(epochTime(emittedDate), 1701388860);
+    expect(epochTime(emittedDate)).toBe(1701388860);
   });
 });

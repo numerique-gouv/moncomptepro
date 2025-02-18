@@ -1,5 +1,5 @@
-import { assert } from "chai";
 import nock from "nock";
+import { describe, expect, it } from "vitest";
 import { ApiAnnuaireNotFoundError } from "../src/config/errors";
 import { getAnnuaireEducationNationaleContactEmail } from "../src/connectors/api-annuaire-education-nationale";
 import noResult from "./api-annuaire-education-nationale-data/no-result.json";
@@ -12,10 +12,9 @@ describe("getAnnuaireEducationNationaleContactEmail", () => {
         "/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D77672253000024",
       )
       .reply(200, noResult);
-    await assert.isRejected(
+    await expect(
       getAnnuaireEducationNationaleContactEmail("77672253000024"),
-      ApiAnnuaireNotFoundError,
-    );
+    ).rejects.toThrow(ApiAnnuaireNotFoundError);
   });
   it("should return valid email for a college and a lycee sharing the same SIRET", async () => {
     nock("https://data.education.gouv.fr")
@@ -23,9 +22,8 @@ describe("getAnnuaireEducationNationaleContactEmail", () => {
         "/api/v2/catalog/datasets/fr-en-annuaire-education/records?where=siren_siret%3D77672253000040",
       )
       .reply(200, twoEtablissementsData);
-    await assert.eventually.equal(
+    await expect(
       getAnnuaireEducationNationaleContactEmail("77672253000040"),
-      "jeannedarc.millau@gmail.com",
-    );
+    ).resolves.toBe("jeannedarc.millau@gmail.com");
   });
 });

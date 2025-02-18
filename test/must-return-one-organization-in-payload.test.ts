@@ -1,36 +1,32 @@
-import { assert } from "chai";
+import { describe, expect, it } from "vitest";
 import { mustReturnOneOrganizationInPayload } from "../src/services/must-return-one-organization-in-payload";
 
 describe("mustReturnOneOrganizationInPayload", () => {
   it("should return true if organization is amongst the scopes", () => {
-    assert.equal(
+    expect(
       mustReturnOneOrganizationInPayload("openid organization"),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return true even if organizationS id amongst the scopes", () => {
-    assert.equal(
+    expect(
       mustReturnOneOrganizationInPayload("openid organizations organization"),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return true for ProConnect Federation required scopes", () => {
-    assert.equal(
+    expect(
       mustReturnOneOrganizationInPayload(
         "openid uid given_name usual_name email siren siret organizational_unit belonging_population phone chorusdt idp_id idp_acr",
       ),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return false for DataPass required scopes", () => {
-    assert.equal(
+    expect(
       mustReturnOneOrganizationInPayload(
         "openid email profile phone organizations",
       ),
-      false,
-    );
+    ).toBeFalsy();
   });
 });

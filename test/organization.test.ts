@@ -1,5 +1,5 @@
 import type { Organization } from "@gouvfr-lasuite/proconnect.identite/types";
-import { assert } from "chai";
+import { describe, expect, it } from "vitest";
 import {
   isCommune,
   isEducationNationaleDomain,
@@ -48,40 +48,39 @@ const entreprise_unipersonnelle_org_info = {
 
 describe("isEntrepriseUnipersonnelle", () => {
   it("should return false for bad call", () => {
-    assert.equal(isEntrepriseUnipersonnelle({} as Organization), false);
+    expect(isEntrepriseUnipersonnelle({} as Organization)).toBeFalsy();
   });
 
   it("should return true for unipersonnelle organization", () => {
-    assert.equal(
+    expect(
       isEntrepriseUnipersonnelle(entreprise_unipersonnelle_org_info),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return false for association", () => {
-    assert.equal(isEntrepriseUnipersonnelle(association_org_info), false);
+    expect(isEntrepriseUnipersonnelle(association_org_info)).toBeFalsy();
   });
 
   it("should return false for small association", () => {
-    assert.equal(isEntrepriseUnipersonnelle(small_association_org_info), false);
+    expect(isEntrepriseUnipersonnelle(small_association_org_info)).toBeFalsy();
   });
 });
 
 describe("isSmallAssociation", () => {
   it("should return false for bad call", () => {
-    assert.equal(isSmallAssociation({} as Organization), false);
+    expect(isSmallAssociation({} as Organization)).toBeFalsy();
   });
 
   it("should return false for unipersonnelle organization", () => {
-    assert.equal(isSmallAssociation(entreprise_unipersonnelle_org_info), false);
+    expect(isSmallAssociation(entreprise_unipersonnelle_org_info)).toBeFalsy();
   });
 
   it("should return true for association", () => {
-    assert.equal(isSmallAssociation(association_org_info), true);
+    expect(isSmallAssociation(association_org_info)).toBeTruthy();
   });
 
   it("should return true for small association", () => {
-    assert.equal(isSmallAssociation(small_association_org_info), true);
+    expect(isSmallAssociation(small_association_org_info)).toBeTruthy();
   });
 });
 
@@ -135,15 +134,15 @@ const whitelisted_org_info = {
 
 describe("isCommune", () => {
   it("should return false for bad call", () => {
-    assert.equal(isCommune({} as Organization), false);
+    expect(isCommune({} as Organization)).toBeFalsy();
   });
 
   it("should return true for collectivite territoriale", () => {
-    assert.equal(isCommune(lamalou_org_info), true);
+    expect(isCommune(lamalou_org_info)).toBeTruthy();
   });
 
   it("should return false for administration centrale", () => {
-    assert.equal(isCommune(dinum_org_info), false);
+    expect(isCommune(dinum_org_info)).toBeFalsy();
   });
 });
 
@@ -162,48 +161,47 @@ const trackdechets_public_org_info = {
 
 describe("isPublicService", () => {
   it("should return false for bad call", () => {
-    assert.equal(isPublicService({} as Organization), false);
+    expect(isPublicService({} as Organization)).toBeFalsy();
   });
 
   it("should return true for collectivite territoriale", () => {
-    assert.equal(isPublicService(lamalou_org_info), true);
+    expect(isPublicService(lamalou_org_info)).toBeTruthy();
   });
 
   it("should return true for administration centrale", () => {
-    assert.equal(isPublicService(dinum_org_info), true);
+    expect(isPublicService(dinum_org_info)).toBeTruthy();
   });
 
   it("should return false for unipersonnelle organization", () => {
-    assert.equal(isPublicService(entreprise_unipersonnelle_org_info), false);
+    expect(isPublicService(entreprise_unipersonnelle_org_info)).toBeFalsy();
   });
 
   it("should return false for association", () => {
-    assert.equal(isPublicService(association_org_info), false);
+    expect(isPublicService(association_org_info)).toBeFalsy();
   });
 
   it("should return true for établissement public à caractère industriel et commercial", () => {
-    assert.equal(isPublicService(onf_org_info), true);
+    expect(isPublicService(onf_org_info)).toBeTruthy();
   });
 
   it("should return true for whitelisted établissement", () => {
-    assert.equal(isPublicService(whitelisted_org_info), true);
+    expect(isPublicService(whitelisted_org_info)).toBeTruthy();
   });
 
   it("should return true for public etablissement", () => {
-    assert.equal(isPublicService(trackdechets_public_org_info), true);
+    expect(isPublicService(trackdechets_public_org_info)).toBeTruthy();
   });
 });
 
 describe("isWasteManagementOrganization", () => {
   it("should return false for collectivité territoriale", () => {
-    assert.equal(isWasteManagementOrganization(lamalou_org_info), false);
+    expect(isWasteManagementOrganization(lamalou_org_info)).toBeFalsy();
   });
 
   it("should return true for waste management organization", () => {
-    assert.equal(
+    expect(
       isWasteManagementOrganization(trackdechets_public_org_info),
-      true,
-    );
+    ).toBeTruthy();
   });
 });
 
@@ -220,10 +218,9 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_categorie_juridique: "1000 ",
       cached_libelle_categorie_juridique: "Entrepreneur individuel",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(indep_org_info),
-      false,
-    );
+    ).toBeFalsy();
   });
   it("should return true for lycee public", () => {
     const lycee_public_org_info = {
@@ -248,10 +245,9 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_libelle_categorie_juridique:
         "Établissement public local d'enseignement",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(lycee_public_org_info),
-      true,
-    );
+    ).toBeTruthy();
   });
   it("should return true for college public", () => {
     const college_public_org_info = {
@@ -276,10 +272,9 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_libelle_categorie_juridique:
         "Établissement public local d'enseignement",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(college_public_org_info),
-      true,
-    );
+    ).toBeTruthy();
   });
   it("should return false for lycee prive", () => {
     const lycee_prive_org_info = {
@@ -303,10 +298,9 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_categorie_juridique: "9220",
       cached_libelle_categorie_juridique: "Association déclarée",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(lycee_prive_org_info),
-      false,
-    );
+    ).toBeFalsy();
   });
   it("should return true for ecole primaire publique", () => {
     const ecole_primaire_publique_org_info: Organization = {
@@ -330,12 +324,11 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_categorie_juridique: "7210",
       cached_libelle_categorie_juridique: "Commune et commune nouvelle",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(
         ecole_primaire_publique_org_info,
       ),
-      true,
-    );
+    ).toBeTruthy();
   });
   it("should return false for ecole primaire privee", () => {
     const ecole_primaire_privee_org_info = {
@@ -359,12 +352,11 @@ describe("isEtablissementScolaireDuPremierEtSecondDegre", () => {
       cached_categorie_juridique: "9220",
       cached_libelle_categorie_juridique: "Association déclarée",
     } as Organization;
-    assert.equal(
+    expect(
       isEtablissementScolaireDuPremierEtSecondDegre(
         ecole_primaire_privee_org_info,
       ),
-      false,
-    );
+    ).toBeFalsy();
   });
 });
 
@@ -372,13 +364,13 @@ describe("isEducationNationaleDomain", () => {
   ["zac-orleans.fr", "ac-bordeaux.fr.net", "ac-bordeaux.gouv.fr"].forEach(
     (domain) => {
       it("should return false for non educ nat domain", () => {
-        assert.equal(isEducationNationaleDomain(domain), false);
+        expect(isEducationNationaleDomain(domain)).toBeFalsy();
       });
     },
   );
   ["ac-orleans-tours.fr", "ac-bordeaux.fr"].forEach((domain) => {
     it("should return true for educ nat domain", () => {
-      assert.equal(isEducationNationaleDomain(domain), true);
+      expect(isEducationNationaleDomain(domain)).toBeTruthy();
     });
   });
 });

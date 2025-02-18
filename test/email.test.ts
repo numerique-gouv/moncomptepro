@@ -1,4 +1,4 @@
-import { assert } from "chai";
+import { describe, expect, it } from "vitest";
 import { usesAFreeEmailProvider } from "../src/services/email";
 
 describe("usesAFreeEmailProvider", () => {
@@ -11,7 +11,7 @@ describe("usesAFreeEmailProvider", () => {
 
   emailAddressesThatUsesFreeEmailProviders.forEach((email) => {
     it("should return true for free email provider address", () => {
-      assert.equal(usesAFreeEmailProvider(email), true);
+      expect(usesAFreeEmailProvider(email)).toBeTruthy();
     });
   });
 
@@ -23,7 +23,7 @@ describe("usesAFreeEmailProvider", () => {
 
   professionalEmailAddresses.forEach((professionalEmailAddress) => {
     it("should return false for non free provider email address", () => {
-      assert.equal(usesAFreeEmailProvider(professionalEmailAddress), false);
+      expect(usesAFreeEmailProvider(professionalEmailAddress)).toBeFalsy();
     });
   });
 });

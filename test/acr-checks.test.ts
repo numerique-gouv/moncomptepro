@@ -1,4 +1,4 @@
-import { assert } from "chai";
+import { describe, expect, it } from "vitest";
 import {
   certificationDirigeantRequested,
   isAcrSatisfied,
@@ -14,13 +14,13 @@ describe("twoFactorsAuthRequested", () => {
       details: { random: "random" },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), false);
+    expect(twoFactorsAuthRequested(prompt)).toBeFalsy();
   });
 
   it("should return false for prompt with no acr required", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
-    assert.equal(twoFactorsAuthRequested(prompt), false);
+    expect(twoFactorsAuthRequested(prompt)).toBeFalsy();
   });
 
   it("should return true for new session", () => {
@@ -35,7 +35,7 @@ describe("twoFactorsAuthRequested", () => {
       },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), true);
+    expect(twoFactorsAuthRequested(prompt)).toBeTruthy();
   });
 
   it("should return true for self asserted identity", () => {
@@ -50,7 +50,7 @@ describe("twoFactorsAuthRequested", () => {
       },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), true);
+    expect(twoFactorsAuthRequested(prompt)).toBeTruthy();
   });
 
   it("should return true for existing session", () => {
@@ -68,7 +68,7 @@ describe("twoFactorsAuthRequested", () => {
       },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), true);
+    expect(twoFactorsAuthRequested(prompt)).toBeTruthy();
   });
 
   it("should return false if non 2fa acr are requested", () => {
@@ -86,7 +86,7 @@ describe("twoFactorsAuthRequested", () => {
       },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), false);
+    expect(twoFactorsAuthRequested(prompt)).toBeFalsy();
   });
 
   it("should return false for unknown acr", () => {
@@ -101,7 +101,7 @@ describe("twoFactorsAuthRequested", () => {
       },
     };
 
-    assert.equal(twoFactorsAuthRequested(prompt), false);
+    expect(twoFactorsAuthRequested(prompt)).toBeFalsy();
   });
 });
 
@@ -113,25 +113,23 @@ describe("isAcrSatisfied", () => {
       details: { random: "random" },
     };
 
-    assert.equal(
+    expect(
       isAcrSatisfied(
         prompt,
         "https://proconnect.gouv.fr/assurance/self-asserted",
       ),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return true for prompt with no acr required", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
-    assert.equal(
+    expect(
       isAcrSatisfied(
         prompt,
         "https://proconnect.gouv.fr/assurance/self-asserted",
       ),
-      true,
-    );
+    ).toBeTruthy();
   });
 
   it("should return true for consistency checked identity", () => {
@@ -146,13 +144,12 @@ describe("isAcrSatisfied", () => {
       },
     };
 
-    assert.equal(
+    expect(
       isAcrSatisfied(
         prompt,
         "https://proconnect.gouv.fr/assurance/consistency-checked",
       ),
-      true,
-    );
+    ).toBeTruthy();
   });
   it("should return false for self-asserted identity", () => {
     const prompt = {
@@ -166,13 +163,12 @@ describe("isAcrSatisfied", () => {
       },
     };
 
-    assert.equal(
+    expect(
       isAcrSatisfied(
         prompt,
         "https://proconnect.gouv.fr/assurance/self-asserted",
       ),
-      false,
-    );
+    ).toBeFalsy();
   });
 });
 
@@ -184,13 +180,13 @@ describe("isThereAnyRequestedAcr", () => {
       details: { random: "random" },
     };
 
-    assert.equal(isThereAnyRequestedAcr(prompt), false);
+    expect(isThereAnyRequestedAcr(prompt)).toBeFalsy();
   });
 
   it("should return true for prompt with no acr required", () => {
     const prompt = { name: "login", reasons: ["no_session"], details: {} };
 
-    assert.equal(isThereAnyRequestedAcr(prompt), false);
+    expect(isThereAnyRequestedAcr(prompt)).toBeFalsy();
   });
 
   it("should return false for legacy acr", () => {
@@ -205,7 +201,7 @@ describe("isThereAnyRequestedAcr", () => {
       },
     };
 
-    assert.equal(isThereAnyRequestedAcr(prompt), false);
+    expect(isThereAnyRequestedAcr(prompt)).toBeFalsy();
   });
 
   it("should return true for non legacy acr", () => {
@@ -223,7 +219,7 @@ describe("isThereAnyRequestedAcr", () => {
       },
     };
 
-    assert.equal(isThereAnyRequestedAcr(prompt), true);
+    expect(isThereAnyRequestedAcr(prompt)).toBeTruthy();
   });
 
   it("should return true for mfa requested identity", () => {
@@ -241,7 +237,7 @@ describe("isThereAnyRequestedAcr", () => {
       },
     };
 
-    assert.equal(isThereAnyRequestedAcr(prompt), true);
+    expect(isThereAnyRequestedAcr(prompt)).toBeTruthy();
   });
 });
 
@@ -260,7 +256,7 @@ describe("certificationDirigeantRequested", () => {
       reasons: ["essential_acrs"],
     };
 
-    assert.equal(certificationDirigeantRequested(prompt), true);
+    expect(certificationDirigeantRequested(prompt)).toBeTruthy();
   });
 
   it("should return false if non certification dirigeant acr are requested", () => {
@@ -281,6 +277,6 @@ describe("certificationDirigeantRequested", () => {
       reasons: ["essential_acrs"],
     };
 
-    assert.equal(certificationDirigeantRequested(prompt), false);
+    expect(certificationDirigeantRequested(prompt)).toBeFalsy();
   });
 });
