@@ -236,7 +236,8 @@ VALUES
   (49, '50056940503239', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (50, '20004697700019', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   -- back to normal organizations
-  (51, '13003013300016', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (51, '13003013300016', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (52, '21850292000018', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   ON CONFLICT (id)
   DO UPDATE
          SET (siret, created_at, updated_at) = (EXCLUDED.siret, EXCLUDED.created_at, EXCLUDED.updated_at);
@@ -430,7 +431,8 @@ VALUES
   (74, 50, 'verified_email_domain', true),
   (75, 50, 'verified_email_domain', true),
   (76, 51, 'verified_email_domain', true),
-  (77, 51, 'verified_email_domain', true)
+  (77, 51, 'verified_email_domain', true),
+  (1, 52, 'verified_email_domain', true)
 ON CONFLICT (user_id, organization_id)
   DO UPDATE
   SET (verification_type, has_been_greeted)
