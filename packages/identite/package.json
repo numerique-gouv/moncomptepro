@@ -1,6 +1,6 @@
 {
   "name": "@gouvfr-lasuite/proconnect.identite",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "homepage": "https://github.com/numerique-gouv/proconnect-identite/tree/master/packages/identite#readme",
   "bugs": "https://github.com/numerique-gouv/proconnect-identite/issues",
   "repository": {
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.15",
-    "@gouvfr-lasuite/proconnect.core": "^0.3.4",
+    "@gouvfr-lasuite/proconnect.core": "^0.4.0",
     "@gouvfr-lasuite/proconnect.devtools.typescript": "0.0.0",
     "@gouvfr-lasuite/proconnect.insee": "^0.3.2",
     "@types/mocha": "^10.0.10",
