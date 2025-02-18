@@ -2,7 +2,7 @@
 
 import { emptyDatabase, migrate, pg } from "#testing";
 import { expect } from "chai";
-import { before, describe, it } from "mocha";
+import { describe, it } from "mocha";
 import { findByIdFactory } from "./find-by-id.js";
 
 //
@@ -10,7 +10,7 @@ import { findByIdFactory } from "./find-by-id.js";
 const findById = findByIdFactory({ pg: pg as any });
 
 describe(findByIdFactory.name, () => {
-  before(migrate);
+  beforeAll(migrate);
   beforeEach(emptyDatabase);
 
   it("should find the Necron organization", async () => {

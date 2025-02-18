@@ -2,7 +2,7 @@
 
 import { emptyDatabase, migrate, pg } from "#testing";
 import { expect } from "chai";
-import { before, describe, it } from "mocha";
+import { describe, it } from "mocha";
 import { findEmailDomainsByOrganizationIdFactory } from "./find-email-domains-by-organization-id.js";
 
 //
@@ -11,7 +11,7 @@ const findEmailDomainsByOrganizationId =
   findEmailDomainsByOrganizationIdFactory({ pg: pg as any });
 
 describe(findEmailDomainsByOrganizationIdFactory.name, () => {
-  before(migrate);
+  beforeAll(migrate);
   beforeEach(emptyDatabase);
 
   it("should find email domains by organization id", async () => {

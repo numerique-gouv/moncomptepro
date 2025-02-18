@@ -1,39 +1,26 @@
-import FakeTimers, { type InstalledClock } from "@sinonjs/fake-timers";
-import { assert } from "chai";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { isExpired } from "../src/services/is-expired";
 
 describe("isExpired", () => {
-  let clock: InstalledClock;
-
   beforeEach(() => {
-    clock = FakeTimers.install({ now: new Date(2022, 11, 20) });
-  });
-
-  afterEach(() => {
-    clock.uninstall();
+    vi.setSystemTime(new Date(2022, 11, 20));
   });
 
   const expirationDurationInMinutes = 24 * 60;
 
   it("should return true when Date is undefined", () => {
-    assert.strictEqual(isExpired(null, expirationDurationInMinutes), true);
+    expect(isExpired(null, expirationDurationInMinutes)).toBeTruthy();
   });
 
   it("should return false when Date is about to expire", () => {
     const emittedDate = new Date(2022, 11, 19, 0, 1);
 
-    assert.strictEqual(
-      isExpired(emittedDate, expirationDurationInMinutes),
-      false,
-    );
+    expect(isExpired(emittedDate, expirationDurationInMinutes)).toBeFalsy();
   });
 
   it("should return true when Date is expired", () => {
     const emittedDate = new Date(2022, 11, 18, 23, 59);
 
-    assert.strictEqual(
-      isExpired(emittedDate, expirationDurationInMinutes),
-      true,
-    );
+    expect(isExpired(emittedDate, expirationDurationInMinutes)).toBeTruthy();
   });
 });

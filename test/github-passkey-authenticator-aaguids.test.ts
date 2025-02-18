@@ -1,10 +1,6 @@
-import * as chai from "chai";
-import chaiAsPromised from "chai-as-promised";
 import nock from "nock";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getAuthenticatorFriendlyName } from "../src/connectors/github-passkey-authenticator-aaguids";
-
-chai.use(chaiAsPromised);
-const assert = chai.assert;
 
 describe("getOrganizationInfo", () => {
   beforeEach(() => {
@@ -32,15 +28,13 @@ describe("getOrganizationInfo", () => {
   });
 
   it("should return friendly name", async () => {
-    await assert.eventually.equal(
+    await expect(
       getAuthenticatorFriendlyName("ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4"),
-      "Google Password Manager",
-    );
+    ).resolves.toBe("Google Password Manager");
   });
 
   it("should return null", async () => {
-    await assert.eventually.equal(
-      getAuthenticatorFriendlyName("unknown_aaguid"),
+    await expect(getAuthenticatorFriendlyName("unknown_aaguid")).resolves.toBe(
       null,
     );
   });
@@ -48,9 +42,8 @@ describe("getOrganizationInfo", () => {
   it("should call github once", async () => {
     await getAuthenticatorFriendlyName("ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4");
 
-    await assert.eventually.equal(
+    await expect(
       getAuthenticatorFriendlyName("ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4"),
-      "Google Password Manager",
-    );
+    ).resolves.toBe("Google Password Manager");
   });
 });
