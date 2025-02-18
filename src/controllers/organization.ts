@@ -4,6 +4,7 @@ import HttpErrors from "http-errors";
 import { isEmpty } from "lodash-es";
 import { z, ZodError } from "zod";
 import {
+  ForbiddenError,
   InseeConnectionError,
   InseeNotActiveError,
   InvalidSiretError,
@@ -221,8 +222,11 @@ export const getUnableToAutoJoinOrganizationController = async (
   } catch (e) {
     if (e instanceof NotFoundError) {
       next(new HttpErrors.NotFound());
+    } else if (e instanceof ForbiddenError) {
+      next(new HttpErrors.Forbidden());
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
 
