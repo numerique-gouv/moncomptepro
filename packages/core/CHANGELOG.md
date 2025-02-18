@@ -1,5 +1,19 @@
 # @gouvfr-lasuite/moncomptepro.core
 
+## 0.4.0
+
+### Minor Changes
+
+- [#983](https://github.com/numerique-gouv/proconnect-identite/pull/983) [`5f866a6`](https://github.com/numerique-gouv/proconnect-identite/commit/5f866a6c57642229f8ccf8d517dc55519e7abee8) Thanks [@douglasduteil](https://github.com/douglasduteil)! - ♻️ Prélevement de la fonction getEmailDomain
+
+  Permet l'extraction du domain d'un email.
+
+  ```ts
+  import { getEmailDomain } from "@gouvfr-lasuite/proconnect.core/services/email";
+
+  getEmailDomain("lion.eljonson@darkangels.world"); // darkangels.world
+  ```
+
 ## 0.3.4
 
 ### Patch Changes

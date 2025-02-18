@@ -1,5 +1,11 @@
 # @gouvfr-lasuite/proconnect.identite
 
+## 0.4.0
+
+### Minor Changes
+
+- [#983](https://github.com/numerique-gouv/proconnect-identite/pull/983) [`5f866a6`](https://github.com/numerique-gouv/proconnect-identite/commit/5f866a6c57642229f8ccf8d517dc55519e7abee8) Thanks [@douglasduteil](https://github.com/douglasduteil)! - ♻️ Prélevement d'un partie du buisness proconnect identité
+
 ## 0.3.2
 
 ### Patch Changes
